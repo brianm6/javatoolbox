@@ -25,9 +25,9 @@ import toolbox.util.ui.event.DebugPropertyChangeListener;
  */
 public class JMultiSplitPane extends JPanel
 {
-    private static final Logger logger_ = 
+    private static final Logger logger_ =
         Logger.getLogger(JMultiSplitPane.class);
-    
+
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
@@ -36,19 +36,19 @@ public class JMultiSplitPane extends JPanel
      * List of panes.
      */
     private List splitPanes_;
-    
+
     /**
      * Listeners for location changed.
      */
     private Map fireLocationChangedListeners_;
-    
+
     /**
      * Listeners for divider location changed.
      */
     private List dividerLocationListeners_;
 
-    /** 
-     * Holds value of property orientation. 
+    /**
+     * Holds value of property orientation.
      */
     private SplitOrientation splitOrientation_;
 
@@ -67,10 +67,10 @@ public class JMultiSplitPane extends JPanel
     }
 
 
-    /** 
+    /**
      * Creates a JMultiSplitPane.
-     * 
-     * @param initNumber Number of panes. 
+     *
+     * @param initNumber Number of panes.
      */
     public JMultiSplitPane(int initNumber)
     {
@@ -78,10 +78,10 @@ public class JMultiSplitPane extends JPanel
     }
 
 
-    /** 
+    /**
      * Creates a JMultiSplitPane.
-     * 
-     * @param splitOrientation SplitOrientation.HORIZONTAL or VERTICAL. 
+     *
+     * @param splitOrientation SplitOrientation.HORIZONTAL or VERTICAL.
      */
     public JMultiSplitPane(SplitOrientation splitOrientation)
     {
@@ -89,11 +89,11 @@ public class JMultiSplitPane extends JPanel
     }
 
 
-    /** 
-     * Creates a JMultiSplitPane. 
-     * 
-     * @param initNumber Number of panes. 
-     * @param splitOrientation SplitOrientation.HORIZONTAL or VERTICAL. 
+    /**
+     * Creates a JMultiSplitPane.
+     *
+     * @param initNumber Number of panes.
+     * @param splitOrientation SplitOrientation.HORIZONTAL or VERTICAL.
      */
     public JMultiSplitPane(int initNumber, SplitOrientation splitOrientation)
     {
@@ -101,33 +101,37 @@ public class JMultiSplitPane extends JPanel
         addContainerListener(new DebugContainerListener());
         addPropertyChangeListener(new DebugPropertyChangeListener());
         addComponentListener(new MyComponentListener());
-        
+
         splitPanes_ = new ArrayList();
         fireLocationChangedListeners_ = new HashMap();
         dividerLocationListeners_ = new ArrayList();
-        
+
         initComponents();
-        
+
         // at least 2 panes (= 1 SplitPane)
         JSplitPane splitPane = new JSplitPane();
         splitPane.setResizeWeight(0.0);
         splitPane.setOpaque(false);
-        
+
         //splitPane.setDividerLocation(0.5);
         add(BorderLayout.CENTER, splitPane);
         splitPanes_.add(splitPane);
         registerFireLocationChangedListeners();
         setSplitOrientation(splitOrientation);
-        
+
         for (int i = 2; i < initNumber; i++)
             splitLastPane();
     }
 
+    //--------------------------------------------------------------------------
+    // MyComponentListener
+    //--------------------------------------------------------------------------
+
     class MyComponentListener extends ComponentAdapter
     {
-        
         /**
-         * @see java.awt.event.ComponentAdapter#componentShown(java.awt.event.ComponentEvent)
+         * @see java.awt.event.ComponentAdapter#componentShown(
+         *      java.awt.event.ComponentEvent)
          */
         public void componentResized(ComponentEvent e)
         {
@@ -139,31 +143,31 @@ public class JMultiSplitPane extends JPanel
             }
         }
     }
-    
+
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
-    
+
     /**
      * Distributes the splitpanes evenly across the available space.
      */
     public void distributeEvenly()
     {
         int pixels = 0;
-        
+
         if (getSplitOrientation() == SplitOrientation.HORIZONTAL)
             pixels = getWidth();
         else
             pixels = getHeight();
-            
+
         logger_.debug("Pixels = " + pixels);
-        
+
         if (pixels > 0)
         {
             pixels = pixels/3;
 
             logger_.debug("Distributing evenly with pixels = " + pixels);
-            
+
             for (int i = 0; i < getPanesCount() - 1; i++)
                 setDividerLocation(i, pixels);
         }
@@ -172,12 +176,12 @@ public class JMultiSplitPane extends JPanel
             logger_.debug("distributeonvisible = true");
             distributeOnVisible_ = true;
         }
-        
+
         /*
         else
         {
             logger_.debug("Cannot distribute evenly...pixels is zero");
-            
+
             SwingUtilities.invokeLater(new Runnable()
             {
                 public void run()
@@ -189,8 +193,8 @@ public class JMultiSplitPane extends JPanel
         }
         */
     }
-    
-    
+
+
     public void splitLastPane()
     {
         splitPane(splitPanes_.size(), false);
@@ -199,19 +203,19 @@ public class JMultiSplitPane extends JPanel
 
     public void splitPane(int index, boolean shiftComponent)
     {
-        JSplitPane pane = 
+        JSplitPane pane =
             new JSplitPane(getSplitOrientation().getSplitPaneConstant());
-        
+
         pane.setResizeWeight(1);
-        
-        
+
+
         //pane.setOpaque(false);
         //pane.setDividerLocation(0.5);
         //    pane.setBorder(null);
-        
-        
+
+
         JSplitPane splitPane;
-        
+
         if (index == splitPanes_.size())
         {
             splitPane = (JSplitPane) splitPanes_.get(index - 1);
@@ -224,7 +228,7 @@ public class JMultiSplitPane extends JPanel
             {
                 pane.setLeftComponent(comp);
             }
-            
+
             splitPanes_.add(index, pane);
         }
         else
@@ -232,16 +236,16 @@ public class JMultiSplitPane extends JPanel
             splitPane = (JSplitPane) splitPanes_.get(index);
             Component comp = splitPane.getRightComponent();
             pane.setRightComponent(comp);
-            
+
             if (shiftComponent)
             {
                 pane.setLeftComponent(splitPane.getLeftComponent());
                 splitPane.setLeftComponent(null);
             }
-            
+
             splitPanes_.add(index + 1, pane);
         }
-        
+
         splitPane.setRightComponent(pane);
         registerFireLocationChangedListeners();
     }
@@ -255,10 +259,10 @@ public class JMultiSplitPane extends JPanel
         }
         else
         {
-            ((JSplitPane) 
+            ((JSplitPane)
                 splitPanes_.get(index - 1)).setRightComponent(component);
         }
-        
+
         //repaint();
     }
 
@@ -266,15 +270,15 @@ public class JMultiSplitPane extends JPanel
     public Component getPane(int index)
     {
         Component component;
-        
+
         if (index < splitPanes_.size())
         {
-            component = ((JSplitPane) 
+            component = ((JSplitPane)
                 splitPanes_.get(index)).getLeftComponent();
         }
         else
         {
-            component = ((JSplitPane) 
+            component = ((JSplitPane)
                 splitPanes_.get(index - 1)).getRightComponent();
         }
         return component;
@@ -325,7 +329,7 @@ public class JMultiSplitPane extends JPanel
 
     /**
      * Getter for property orientation.
-     * 
+     *
      * @return Value of property orientation.
      */
     public SplitOrientation getSplitOrientation()
@@ -336,16 +340,16 @@ public class JMultiSplitPane extends JPanel
 
     /**
      * Setter for property orientation.
-     * 
-     * @param orientation New value of property orientation.
+     *
+     * @param splitOrientation New value of property orientation.
      */
     public void setSplitOrientation(SplitOrientation splitOrientation)
     {
         splitOrientation_ = splitOrientation;
-        
+
         for (int i = 0; i < splitPanes_.size(); i++)
         {
-            ((JSplitPane) 
+            ((JSplitPane)
                 splitPanes_.get(i))
                     .setOrientation(splitOrientation.getSplitPaneConstant());
         }
@@ -366,11 +370,11 @@ public class JMultiSplitPane extends JPanel
     //--------------------------------------------------------------------------
     // Protected
     //--------------------------------------------------------------------------
-    
+
     protected void fireLocationChanged(int index, int location)
     {
         for (int i = 0; i < dividerLocationListeners_.size(); i++)
-            ((DividerListener) 
+            ((DividerListener)
                 dividerLocationListeners_.get(i)).locationChanged(
                     this, index, location);
     }
@@ -381,24 +385,24 @@ public class JMultiSplitPane extends JPanel
         for (int i = 0; i < splitPanes_.size(); i++)
         {
             JSplitPane splitPane = (JSplitPane) splitPanes_.get(i);
-            
+
             if (fireLocationChangedListeners_.containsKey(splitPane))
             {
-                FireLocationChangedListener listener = 
-                    (FireLocationChangedListener) 
+                FireLocationChangedListener listener =
+                    (FireLocationChangedListener)
                         fireLocationChangedListeners_.get(splitPane);
-                
+
                 if (listener.getIndex() != i)
                     listener.setIndex(i);
             }
             else
             {
-                FireLocationChangedListener listener = 
+                FireLocationChangedListener listener =
                     new FireLocationChangedListener(i);
-                
+
                 splitPane.addPropertyChangeListener(
                     "dividerLocation", listener);
-                
+
                 fireLocationChangedListeners_.put(splitPane, listener);
             }
         }
@@ -409,10 +413,10 @@ public class JMultiSplitPane extends JPanel
     {
         if (fireLocationChangedListeners_.containsKey(splitPane))
         {
-            FireLocationChangedListener listener = 
-                (FireLocationChangedListener) 
+            FireLocationChangedListener listener =
+                (FireLocationChangedListener)
                     fireLocationChangedListeners_.get(splitPane);
-            
+
             splitPane.removePropertyChangeListener("dividerLocation", listener);
             fireLocationChangedListeners_.remove(splitPane);
         }
@@ -421,12 +425,12 @@ public class JMultiSplitPane extends JPanel
     //--------------------------------------------------------------------------
     // FireLocationChangedListener
     //--------------------------------------------------------------------------
-    
+
     class FireLocationChangedListener implements PropertyChangeListener
     {
 
-        /** 
-         * Holds value of property index. 
+        /**
+         * Holds value of property index.
          */
         private int index_;
 
@@ -439,7 +443,7 @@ public class JMultiSplitPane extends JPanel
 
         /**
          * Getter for property index.
-         * 
+         *
          * @return Value of property index.
          */
         public int getIndex()
@@ -451,14 +455,14 @@ public class JMultiSplitPane extends JPanel
         public void propertyChange(PropertyChangeEvent evt)
         {
             fireLocationChanged(
-                getIndex(), 
+                getIndex(),
                 ((Integer) evt.getNewValue()).intValue());
         }
 
 
         /**
          * Setter for property index.
-         * 
+         *
          * @param index New value of property index.
          */
         public void setIndex(int index)

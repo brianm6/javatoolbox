@@ -8,11 +8,10 @@ import java.awt.LayoutManager;
 import java.io.Serializable;
 
 /**
- * CenterLayout
+ * CenterLayout.
  */
 public class CenterLayout implements LayoutManager, Serializable
 {
-
     /**
      * Adds the specified component to the layout. Not used by this class.
      * 
@@ -23,58 +22,61 @@ public class CenterLayout implements LayoutManager, Serializable
     {
     }
 
+    
     /**
-     * Removes the specified component from the layout. Not used by
-     * this class.
+     * Removes the specified component from the layout. Not used by this class.
      * 
-     * @param comp  Component to remove
-     * @see   java.awt.Container#removeAll
+     * @param comp Component to remove
+     * @see java.awt.Container#removeAll()
      */
     public void removeLayoutComponent(Component comp)
     {
     }
 
+    
     /**
-     * Returns the preferred dimensions for this layout given the components
-     * in the specified target container.
+     * Returns the preferred dimensions for this layout given the components in
+     * the specified target container.
      * 
-     * @param   target  Component which needs to be laid out
-     * @return  Preferred dimensions to lay out the subcomponents of the 
-     *          specified container.
-     * @see     Container
-     * @see     #minimumLayoutSize
-     * @see     java.awt.Container#getPreferredSize
+     * @param target Component which needs to be laid out
+     * @return Preferred dimensions to lay out the subcomponents of the
+     *         specified container.
+     * @see Container
+     * @see #minimumLayoutSize(Container)
+     * @see java.awt.Container#getPreferredSize()
      */
     public Dimension preferredLayoutSize(Container target)
     {
         return target.getPreferredSize();
     }
 
+    
     /**
-     * Returns the minimum dimensions needed to layout the components
-     * contained in the specified target container.
+     * Returns the minimum dimensions needed to layout the components contained
+     * in the specified target container.
      * 
-     * @param   target the component which needs to be laid out
-     * @return  the minimum dimensions to lay out the subcomponents of the 
-     *          specified container.
-     * @see     #preferredLayoutSize
-     * @see     java.awt.Container
-     * @see     java.awt.Container#doLayout
+     * @param target the component which needs to be laid out
+     * @return the minimum dimensions to lay out the subcomponents of the
+     *         specified container.
+     * @see #preferredLayoutSize(Container)
+     * @see java.awt.Container
+     * @see java.awt.Container#doLayout()
      */
     public Dimension minimumLayoutSize(Container target)
     {
         return target.getMinimumSize();
     }
 
+    
     /**
-     * Lays out the container. This method lets each component take
-     * its preferred size by reshaping the components in the
-     * target container in order to satisfy the constraints of
-     * this <code>FlowLayout</code> object.
+     * Lays out the container. This method lets each component take its
+     * preferred size by reshaping the components in the target container in
+     * order to satisfy the constraints of this <code>FlowLayout</code>
+     * object.
      * 
-     * @param   target the specified component being laid out.
-     * @see     Container
-     * @see     java.awt.Container#doLayout
+     * @param target the specified component being laid out.
+     * @see Container
+     * @see java.awt.Container#doLayout()
      */
     public void layoutContainer(Container target)
     {

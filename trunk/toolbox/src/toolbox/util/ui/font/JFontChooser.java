@@ -618,7 +618,8 @@ public class JFontChooser extends JPanel
 
         
         /** 
-         * @see javax.swing.event.DocumentListener 
+         * @see javax.swing.event.DocumentListener#changedUpdate(
+         *      javax.swing.event.DocumentEvent) 
          */
         public void changedUpdate(DocumentEvent e)
         {
@@ -627,7 +628,8 @@ public class JFontChooser extends JPanel
        
         
         /**
-         *  @see javax.swing.event.DocumentListener 
+         * @see javax.swing.event.DocumentListener#insertUpdate(
+         *      javax.swing.event.DocumentEvent) 
          */
         public void insertUpdate(DocumentEvent e)
         {
@@ -636,7 +638,8 @@ public class JFontChooser extends JPanel
         
         
         /** 
-         * @see javax.swing.event.DocumentListener 
+         * @see javax.swing.event.DocumentListener#removeUpdate(
+         *      javax.swing.event.DocumentEvent) 
          */
         public void removeUpdate(DocumentEvent e)
         {

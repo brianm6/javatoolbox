@@ -35,7 +35,7 @@ public class SimpleStatusBar extends JStatusBar
     //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.workspace.IStatusBar#setStatus(java.lang.String)
+     * @see toolbox.workspace.IStatusBar#setStatus(String)
      */
     public void setStatus(String status)
     {
