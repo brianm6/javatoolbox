@@ -28,8 +28,8 @@ import toolbox.util.SwingUtil;
  *     or after execution.
  * </ul>  
  * <p>
- * Usage:
- * <pre>
+ * <b>Example:</b>
+ * <pre class="snippet">
  * 
  * public class MyAction extends SmartAction
  * {

@@ -45,14 +45,15 @@ import toolbox.util.ui.statusbar.JStatusBar;
  *   <li>WARN  - Warning status message.
  *   <li>ERROR - Error status message.
  * </ul>
- * Intended usage:
- * <pre>
- * WorkspaceStatusBar sb = new WorkspaceStatusBar();
- * sb.setInfo("Logging in ..");
- * sb.setBusy(true);
- * // go login
- * sb.setBusy(false);
- * sb.setInfo("Login succeeded.");
+ * <p>
+ * <b>Example:</b>
+ * <pre class="snippet">
+ *   WorkspaceStatusBar sb = new WorkspaceStatusBar();
+ *   sb.setInfo("Logging in ..");
+ *   sb.setBusy(true);
+ *   // go login
+ *   sb.setBusy(false);
+ *   sb.setInfo("Login succeeded.");
  * </pre>
  */
 public class WorkspaceStatusBar extends JStatusBar implements IStatusBar

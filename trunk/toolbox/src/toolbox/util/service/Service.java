@@ -4,11 +4,10 @@ package toolbox.util.service;
  * An object that implements the Service interface adheres to basic lifecycle
  * states and the deterministic transitions between states according to well
  * defined events.
- * 
- * state.
- * <pre>
- *                    Service Finite State Machine
- *                    ============================
+ * <p> 
+ * <pre class="snippet">
+ *                    Service State Finite State Machine
+ *                    ==================================
  *             
  *                                      
  *  (UNINITIALIZED)        [SUSPENDED]          (DESTROYED)

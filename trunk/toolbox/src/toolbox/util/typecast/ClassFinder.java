@@ -16,7 +16,7 @@ import toolbox.util.collections.LRUMap;
  * classes are combined to search for a corresponding class with the provided
  * prefix. As an example:
  * 
- * <pre>
+ * <pre class="snippet">
  * // Define Transposition of app and view
  * ClassFinder finder = new ClassFinder(&quot;app&quot;, &quot;view&quot;);
  * 

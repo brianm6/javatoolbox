@@ -9,8 +9,8 @@ import org.apache.commons.collections.set.AbstractSetDecorator;
  * a set of Strings but can also be applied to arbitrary objects. In this case, 
  * the result of <code>object.toString()<code> is used.  
  * <p>
- * Example:
- * <pre>
+ * <b>Example:</b>
+ * <pre class="snippet">
  *
  * Set s = new CaseInsensetiveSet(new HashSet());
  * s.add("abc");
@@ -26,7 +26,6 @@ import org.apache.commons.collections.set.AbstractSetDecorator;
  * 
  * if (s.isEmpty())
  *    System.out.println("Set is empty"); 
- *
  * </pre>
  */
 public class CaseInsensetiveSet extends AbstractSetDecorator

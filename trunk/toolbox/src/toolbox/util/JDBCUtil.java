@@ -26,8 +26,8 @@ import org.apache.log4j.Logger;
  * on by default and overcomes a failure with fast connect/disconnect when
  * using HSQL in server mode.
  * <p>
- * Sample usage:
- * <pre>
+ * <b>Example:</b>
+ * <pre class="snippet">
  * JDBCUtil.init("org.some.JDBCDriver", "jdbc:someurl", "username", "password");
  * String results = JDBCUtil.executeQuery("select * from users where age > 30");
  * System.out.println(results);
@@ -37,8 +37,8 @@ import org.apache.log4j.Logger;
  * JDBCUtil.shutdown();
  * </pre>
  * <p>
- * Sample Output: 
- * <pre>
+ * <b>Sample Output:</b>
+ * <pre class="snippet">
  * USERNAME  AGE  TITLE
  * ---------------------------
  * jsmith    23   Consultant
