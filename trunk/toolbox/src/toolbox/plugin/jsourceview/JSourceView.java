@@ -4,9 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -28,10 +26,10 @@ import javax.swing.JTextField;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
+import toolbox.util.ElapsedTime;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.Queue;
-import toolbox.util.ResourceCloser;
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.io.filter.DirectoryFilter;
@@ -53,10 +51,7 @@ import toolbox.util.ui.table.TableSorter;
  * TODO: Custom table cell renders to align cell contents/color code unusually
  *       high or low numbers, etc
  * TODO: Add regex filter to include/exclude files
- * TODO: Unit tests for non-gui statistics collection
- * TODO: Don't count java lines that start with import (add generic rules)
  * </pre> 
- * 
  */
 public class JSourceView extends JFrame implements ActionListener
 {
@@ -87,14 +82,10 @@ public class JSourceView extends JFrame implements ActionListener
     private Thread        parserThread_;
     private ParserWorker  parserWorker_;
     
-    /** 
-     * Platform path separator 
-     */
+    /** Platform path separator */
     private String pathSeparator_;
 
-    /** 
-     * Table column names 
-     */    
+    /** Table column names */    
     private String colNames_[] = 
     {
         "Num",
@@ -102,12 +93,13 @@ public class JSourceView extends JFrame implements ActionListener
         "File", 
         "Code", 
         "Comments", 
-        "Blank", 
+        "Blank",
+        "Thrown Out", 
         "Total", 
         "Percentage"
     };
 
-    //  Filter to identify source files
+    /** Filter to identify source files */
     private static OrFilter sourceFilter_;
     
     static
@@ -484,8 +476,10 @@ public class JSourceView extends JFrame implements ActionListener
          */
         public void run()
         {
-            FileStats totalStats = new FileStats();
+            ElapsedTime elapsed = new ElapsedTime();
+            FileStats totals = new FileStats();
             int fileCount = 0;
+            StatsCollector statsCollector = new StatsCollector();
             
             while (!workQueue_.isEmpty() || scanDirThread_.isAlive()) 
             {
@@ -501,8 +495,17 @@ public class JSourceView extends JFrame implements ActionListener
                         filename + " ...");
                      
                     // Parse file and add to totals
-                    FileStats fileStats = scanFile(filename);
-                    totalStats.add(fileStats);
+                    FileStats fileStats = null;
+                    try
+                    {
+                        fileStats = statsCollector.getStats(filename);
+                    }
+                    catch (IOException ioe)
+                    {
+                        ExceptionUtil.handleUI(ioe, logger_);
+                    }
+
+                    totals.add(fileStats);
                     ++fileCount;
 
                     // Create table row data and append                    
@@ -513,8 +516,9 @@ public class JSourceView extends JFrame implements ActionListener
                     tableRow[3] = new Integer(fileStats.getCodeLines());
                     tableRow[4] = new Integer(fileStats.getCommentLines());
                     tableRow[5] = new Integer(fileStats.getBlankLines());
-                    tableRow[6] = new Integer(fileStats.getTotalLines());
-                    tableRow[7] = new Integer(fileStats.getPercent()); // + "%";
+                    tableRow[6] = new Integer(fileStats.getThrownOutLines());
+                    tableRow[7] = new Integer(fileStats.getTotalLines());
+                    tableRow[8] = new Integer(fileStats.getPercent()); // + "%";
                     
                     tableModel_.addRow(tableRow);
                 }
@@ -524,11 +528,12 @@ public class JSourceView extends JFrame implements ActionListener
             NumberFormat pf = DecimalFormat.getPercentInstance();
             
             setParseStatus(
-             "[Total lines " + df.format(totalStats.getTotalLines()) + "]  " +
-             "[Code lines " + df.format(totalStats.getCodeLines()) + "]  " +
-             "[Comment lines " + df.format(totalStats.getCommentLines()) + "]  " +
-             "[Empty lines " + df.format(totalStats.getBlankLines()) + "]  " +
-             "[Percent code vs comments " + df.format(totalStats.getPercent()) + 
+             "[Total " + df.format(totals.getTotalLines()) + "]  " +
+             "[Code " + df.format(totals.getCodeLines()) + "]  " +
+             "[Comments " + df.format(totals.getCommentLines()) + "]  " +
+             "[Empty " + df.format(totals.getBlankLines()) + "]  " +
+             "[Thrown out " + df.format(totals.getThrownOutLines()) + "]  " + 
+             "[Percent code vs comments " + df.format(totals.getPercent()) + 
              "%]"); 
             
             setScanStatus("Done parsing.");
@@ -536,57 +541,9 @@ public class JSourceView extends JFrame implements ActionListener
             
             // Turn the sorter back on
             tableSorter_.setEnabled(true);
-        }
-        
-        /**
-         * Scans a given file and generates statistics
-         * 
-         * @param   filename  Name of the file
-         * @return  Stats of the file
-         */
-        protected FileStats scanFile(String filename)
-        {
-            FileStats filestats = new FileStats();
-            LineStatus  status  = new LineStatus();
-            LineScanner scanner = new LineScanner();
-            String line;
             
-            try
-            {
-                BufferedReader reader = 
-                    new BufferedReader(new FileReader(filename));
-                
-                while ((line = reader.readLine()) != null) 
-                {
-                    filestats.incrementTotalLines();
-                    line = line.replace('\t',' ');
-                    
-                    if (line.trim().length() == 0)  
-                    {
-                        filestats.incrementBlankLines();
-                    }
-                    else
-                    {
-                        scanner.setLine(line);
-                        Machine.scanLine(scanner, status);
-                        
-                        if (status.isRealCode())
-                            filestats.incrementCodeLines();
-                        else
-                            filestats.incrementCommentLines();
-                    }
-                }
-                
-                ResourceCloser.close(reader);
-            }
-            catch (Exception e)
-            {
-                ExceptionUtil.handleUI(e, logger_);
-            }
-            finally
-            {
-                return filestats;
-            }
+            elapsed.setEndTime();
+            setScanStatus("Elapsed time: " + elapsed.toString());
         }
         
         /** 
