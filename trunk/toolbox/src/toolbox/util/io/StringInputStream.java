@@ -44,4 +44,15 @@ public class StringInputStream extends InputStream
         else
             return -1;
     }
+    
+    /**
+     * Returns number of bytes available to read from the stream
+     * 
+     * @return  Number of bytes available
+     * @throws  IOException
+     */
+    public int available() throws IOException
+    {
+        return size - index;
+    }
 }
