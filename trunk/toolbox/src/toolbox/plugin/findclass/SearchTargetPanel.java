@@ -100,9 +100,6 @@ public class SearchTargetPanel extends JHeaderPanel
      */
     protected void buildView()
     {
-        //searchListModel_ = new DefaultListModel();
-        //searchList_ = new JSmartList(searchListModel_);
-
         //
         // Popup menu activated by right clicking on the search target list.
         // Allows the user to clear the list or remove individual entries.
