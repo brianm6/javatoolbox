@@ -39,10 +39,10 @@ import toolbox.util.XMLUtil;
 import toolbox.util.io.StringInputStream;
 import toolbox.util.ui.JFileExplorer;
 import toolbox.util.ui.JFileExplorerAdapter;
-import toolbox.util.ui.TryCatchAction;
 import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.util.ui.plugin.IPlugin;
 import toolbox.util.ui.plugin.IStatusBar;
+import toolbox.util.ui.plugin.WorkspaceAction;
 
 /**
  * XSLFO Plugin is a simple GUI interface to edit, process and view transformed
@@ -417,14 +417,14 @@ public class XSLFOPlugin extends JPanel implements IPlugin
     /**
      * Formats the XML with correct indentation and spacing
      */
-    private class FormatAction extends TryCatchAction 
+    private class FormatAction extends WorkspaceAction 
     {
         public FormatAction()
         {
-            super("Format");
+            super("Format", false, null, null);
         }
     
-        public void tryActionPerformed(ActionEvent e) throws Exception
+        public void runAction(ActionEvent e) throws Exception
         {
             xmlArea_.setText(XMLUtil.format(xmlArea_.getText()));
         }
@@ -433,14 +433,14 @@ public class XSLFOPlugin extends JPanel implements IPlugin
     /**
      * Launches FOP AWT viewer
      */
-    private class FOPAWTAction extends TryCatchAction
+    private class FOPAWTAction extends WorkspaceAction
     {
         public FOPAWTAction()
         {
-            super("Launch with FOP AWT");
+            super("Launch with FOP AWT", false, null, null);
         }
         
-        public void tryActionPerformed(ActionEvent e) throws Exception
+        public void runAction(ActionEvent e) throws Exception
         {
             String xml = xmlArea_.getText();
             String foFile  = FileUtil.getTempFilename() + ".xml";
@@ -452,14 +452,14 @@ public class XSLFOPlugin extends JPanel implements IPlugin
     /**
      * Renders the XSLFO and views using the internal PDF viewer
      */
-    private class FOPRenderAction extends TryCatchAction
+    private class FOPRenderAction extends WorkspaceAction
     {
         public FOPRenderAction()
         {
-            super("Render with FOP");
+            super("Render with FOP", true, XSLFOPlugin.this, statusBar_);
         }
         
-        public void tryActionPerformed(ActionEvent e) throws Exception
+        public void runAction(ActionEvent e) throws Exception
         {
             byte[] pdfBytes = getFOP().renderPDF(xmlArea_.getText());
             viewPDFEmbedded(new ByteArrayInputStream(pdfBytes));
@@ -469,14 +469,14 @@ public class XSLFOPlugin extends JPanel implements IPlugin
     /**
      * Uses FOP formatter and views externally as a PDF
      */
-    private class FOPLaunchAction extends TryCatchAction
+    private class FOPLaunchAction extends WorkspaceAction
     {
         public FOPLaunchAction()
         {
-            super("Launch with FOP");
+            super("Launch with FOP", true, XSLFOPlugin.this, statusBar_);
         }
         
-        public void tryActionPerformed(ActionEvent e) throws Exception
+        public void runAction(ActionEvent e) throws Exception
         {
             byte[] pdfBytes = getFOP().renderPDF(xmlArea_.getText());
             String pdfFile = FileUtil.getTempFilename() + ".pdf";
@@ -486,18 +486,18 @@ public class XSLFOPlugin extends JPanel implements IPlugin
     }    
     
     /**
-     * Launches FOP PDF viewer
+     * Saves generated PDF to file
      */
-    private class FOPExportToPDFAction extends TryCatchAction
+    private class FOPExportToPDFAction extends WorkspaceAction
     {
         private File lastDir_;
         
         public FOPExportToPDFAction()
         {
-            super("Export to PDF..");
+            super("Export to PDF..", false, null, null);
         }
         
-        public void tryActionPerformed(ActionEvent e) throws Exception
+        public void runAction(ActionEvent e) throws Exception
         {
             JFileChooser chooser = null;
             
@@ -526,14 +526,14 @@ public class XSLFOPlugin extends JPanel implements IPlugin
     /**
      * Uses XEP formatter and views as PDF
      */
-    private class XEPRenderAction extends TryCatchAction
+    private class XEPRenderAction extends WorkspaceAction
     {
         public XEPRenderAction()
         {
-            super("Render with XEP");
+            super("Render with XEP", true, XSLFOPlugin.this, statusBar_);
         }
         
-        public void tryActionPerformed(ActionEvent e) throws Exception
+        public void runAction(ActionEvent e) throws Exception
         {
             byte[] pdfBytes = getXEP().renderPDF(xmlArea_.getText());
             viewPDFEmbedded(new ByteArrayInputStream(pdfBytes));
@@ -543,14 +543,14 @@ public class XSLFOPlugin extends JPanel implements IPlugin
     /**
      * Uses XEP formatter and views externally as a PDF
      */
-    private class XEPLaunchAction extends TryCatchAction
+    private class XEPLaunchAction extends WorkspaceAction
     {
         public XEPLaunchAction()
         {
-            super("Launch with XEP");
+            super("Launch with XEP", true, XSLFOPlugin.this, statusBar_);
         }
         
-        public void tryActionPerformed(ActionEvent e) throws Exception
+        public void runAction(ActionEvent e) throws Exception
         {
             byte[] pdfBytes = getXEP().renderPDF(xmlArea_.getText());
             String pdfFile = FileUtil.getTempFilename() + ".pdf";
@@ -562,16 +562,16 @@ public class XSLFOPlugin extends JPanel implements IPlugin
     /**
      * Exports XSL-FO to a Postscript file
      */
-    private class FOPExportToPostscriptAction extends TryCatchAction
+    private class FOPExportToPostscriptAction extends WorkspaceAction
     {
         private File lastDir_;
         
         public FOPExportToPostscriptAction()
         {
-            super("Export to Postscript..");
+            super("Export to Postscript..", false, null, null);
         }
         
-        public void tryActionPerformed(ActionEvent e) throws Exception
+        public void runAction(ActionEvent e) throws Exception
         {
             JFileChooser chooser = null;
             
