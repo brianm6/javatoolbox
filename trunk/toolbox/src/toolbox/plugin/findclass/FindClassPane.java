@@ -391,35 +391,32 @@ public class JFindClass extends JFrame implements IPreferenced
      */
     public void applyPrefs(Element prefs) throws Exception
     {
-        Element root = null;
-        
-        if (prefs != null)
-        {
-            root = prefs.getFirstChildElement(NODE_JFINDCLASS_PLUGIN);
-                
-            ignoreCaseCheckBox_.setSelected(
-                XOMUtil.getBooleanAttribute(root, ATTR_IGNORECASE, true));
-                
-            showPathCheckBox_.setSelected(
-                XOMUtil.getBooleanAttribute(root, ATTR_SHOWPATH, true));
-    
-            hiliteMatchesCheckBox_.setSelected(
-                XOMUtil.getBooleanAttribute(root, ATTR_HILITE_MATCHES, false));
-                
-            searchField_.setText(
-                XOMUtil.getStringAttribute(root, ATTR_SEARCH, ""));
+        Element root = 
+            XOMUtil.getFirstChildElement(prefs, 
+                NODE_JFINDCLASS_PLUGIN, new Element(NODE_JFINDCLASS_PLUGIN));
             
-            if (root != null)
-            {
-                leftFlipPane_.applyPrefs(
-                    root.getFirstChildElement(NODE_LEFT_FLIPPANE));
-                    
-                topFlipPane_.applyPrefs(
-                    root.getFirstChildElement(NODE_TOP_FLIPPANE));
-            }
+        ignoreCaseCheckBox_.setSelected(
+            XOMUtil.getBooleanAttribute(root, ATTR_IGNORECASE, true));
+            
+        showPathCheckBox_.setSelected(
+            XOMUtil.getBooleanAttribute(root, ATTR_SHOWPATH, true));
+
+        hiliteMatchesCheckBox_.setSelected(
+            XOMUtil.getBooleanAttribute(root, ATTR_HILITE_MATCHES, false));
+            
+        searchField_.setText(
+            XOMUtil.getStringAttribute(root, ATTR_SEARCH, ""));
+        
+        leftFlipPane_.applyPrefs(
+            XOMUtil.getFirstChildElement(
+                root, NODE_LEFT_FLIPPANE, new Element(NODE_LEFT_FLIPPANE)));
                 
-            fileExplorer_.applyPrefs(root);
-        }
+        topFlipPane_.applyPrefs(
+            XOMUtil.getFirstChildElement(
+                root, NODE_TOP_FLIPPANE, new Element(NODE_TOP_FLIPPANE)));
+            
+        fileExplorer_.applyPrefs(root);
+        sourceArea_.applyPrefs(root);
     }
     
     /**
@@ -430,6 +427,7 @@ public class JFindClass extends JFrame implements IPreferenced
         Element root = new Element(NODE_JFINDCLASS_PLUGIN);
         
         fileExplorer_.savePrefs(root);
+        sourceArea_.savePrefs(root);
         
         Element topFlipPane = new Element(NODE_TOP_FLIPPANE);
         topFlipPane_.savePrefs(topFlipPane);

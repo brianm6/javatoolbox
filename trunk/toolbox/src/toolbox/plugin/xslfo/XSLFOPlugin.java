@@ -156,10 +156,10 @@ public class XSLFOPlugin extends JPanel implements IPlugin
         defaults_.caretVisible = true;
         defaults_.caretBlinks = false;
         defaults_.blockCaret = true;
-        //defaults.electricScroll=int??
+        defaults_.electricScroll=3;
         
         //public int cols;
-        defaults_.rows = 5;
+        //defaults_.rows = 5;
         defaults_.styles = getSyntaxStyles();
         //public Color caretColor;
         //public Color selectionColor;
@@ -171,6 +171,7 @@ public class XSLFOPlugin extends JPanel implements IPlugin
         defaults_.eolMarkers=false;
         defaults_.paintInvalid=false;
         defaults_.popup = new JEditPopupMenu();
+        
     }
 
     /**
@@ -424,19 +425,16 @@ public class XSLFOPlugin extends JPanel implements IPlugin
      */
     public void applyPrefs(Element prefs) throws Exception
     {
-        Element root = null;
+        Element root = 
+            XOMUtil.getFirstChildElement(
+                prefs, NODE_XSLFO_PLUGIN, new Element(NODE_XSLFO_PLUGIN));    
         
-        if (prefs != null)
-            root = prefs.getFirstChildElement(NODE_XSLFO_PLUGIN);
-        
-        if (root != null)
-        {
-            explorer_.applyPrefs(root);
-            flipPane_.applyPrefs(root);
+        explorer_.applyPrefs(root);
+        flipPane_.applyPrefs(root);
+        xmlArea_.applyPrefs(root);
             
-            pdfViewerPath_ = XOMUtil.getString(
-                root.getFirstChildElement(NODE_PDF_VIEWER), null);
-        }
+        pdfViewerPath_ = XOMUtil.getString(
+            root.getFirstChildElement(NODE_PDF_VIEWER), null);
     }
 
     /**
@@ -452,6 +450,8 @@ public class XSLFOPlugin extends JPanel implements IPlugin
      *    +--JFileExplorer
      *    |
      *    +--JFlipPane
+     *    |
+     *    '--JEditTextArea 
      * 
      * </pre>
      * 
@@ -463,6 +463,7 @@ public class XSLFOPlugin extends JPanel implements IPlugin
         
         explorer_.savePrefs(root);
         flipPane_.savePrefs(root);
+        xmlArea_.savePrefs(root);
         
         if (!StringUtil.isNullOrEmpty(pdfViewerPath_))
         {

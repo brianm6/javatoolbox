@@ -15,13 +15,14 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
+import nu.xom.Element;
+import nu.xom.Elements;
+
 import org.apache.log4j.Logger;
+
 import org.jedit.syntax.KeywordMap;
 import org.jedit.syntax.SQLTokenMarker;
 import org.jedit.syntax.TextAreaDefaults;
-
-import nu.xom.Element;
-import nu.xom.Elements;
 
 import toolbox.jedit.JEditTextArea;
 import toolbox.jedit.JavaDefaults;
@@ -176,7 +177,7 @@ public class QueryPlugin extends JPanel implements IPlugin
     protected void buildView()
     {
         sqlHistory_ = new HashMap();
-        sqlPopup_ = new JConveyorPopupMenu();
+        sqlPopup_ = new JConveyorPopupMenu("crapola",10);
 
         TextAreaDefaults defaults = new JavaDefaults();
         defaults.popup = sqlPopup_;
@@ -339,33 +340,27 @@ public class QueryPlugin extends JPanel implements IPlugin
      */
     public void applyPrefs(Element prefs)
     {
-        Element queryPlugin = null;
+        Element root = XOMUtil.getFirstChildElement(
+            prefs, NODE_QUERY_PLUGIN, new Element(NODE_QUERY_PLUGIN));
         
-        if (prefs != null)
-            queryPlugin = prefs.getFirstChildElement(NODE_QUERY_PLUGIN);
+        sqlPopup_.setCapacity(XOMUtil.getInteger(
+            root.getFirstChildElement(ATTR_HISTORY_MAX), 10));
         
-        if (queryPlugin != null)
-        {
-            sqlPopup_.setCapacity(XOMUtil.getInteger(
-                queryPlugin.getFirstChildElement(ATTR_HISTORY_MAX), 10));
-            
-            Elements historyItems = 
-                queryPlugin.getChildElements(NODE_HISTORY_ITEM);
-                    
-            logger_.debug(
-                "Restoring " + historyItems.size() + " saved sql stmts");
-            
-            for (int i=0; i<historyItems.size(); i++)
-                addToHistory(historyItems.get(i).getValue());
-            
-            sqlArea_.setText(
-                XOMUtil.getString(
-                    queryPlugin.getFirstChildElement(NODE_CONTENTS),""));
-            
-            leftFlipPane_.applyPrefs(queryPlugin);
-            dbConfigPane_.applyPrefs(queryPlugin);
-            resultsArea_.applyPrefs(queryPlugin);
-        }
+        Elements historyItems = root.getChildElements(NODE_HISTORY_ITEM);
+                
+        logger_.debug("Restoring " + historyItems.size() + " saved sql stmts");
+        
+        for (int i=0; i<historyItems.size(); i++)
+            addToHistory(historyItems.get(i).getValue());
+        
+        leftFlipPane_.applyPrefs(root);
+        dbConfigPane_.applyPrefs(root);
+        resultsArea_.applyPrefs(root);
+        sqlArea_.applyPrefs(root);
+
+        sqlArea_.setText(
+            XOMUtil.getString(
+                root.getFirstChildElement(NODE_CONTENTS),""));
     }
 
     /**
@@ -389,6 +384,7 @@ public class QueryPlugin extends JPanel implements IPlugin
         leftFlipPane_.savePrefs(root);
         dbConfigPane_.savePrefs(root);
         resultsArea_.savePrefs(root);
+        sqlArea_.savePrefs(root);
 
         XOMUtil.insertOrReplace(prefs, root);
     }
