@@ -24,6 +24,15 @@ import toolbox.graph.Vertex;
 public class JungGraphLib implements GraphLib
 {
     //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Lookup table for delegates.
+     */
+    private static final Map lookup_ = new HashMap();
+    
+    //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
     
@@ -131,6 +140,17 @@ public class JungGraphLib implements GraphLib
         return e;
     }
     
-
-    private static final Map lookup_ = new HashMap();
+    //--------------------------------------------------------------------------
+    // Overrides java.lang.Object
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Overridden so name is rendered correctly in comboboxes.
+     * 
+     * @see java.lang.Object#toString()
+     */
+    public String toString()
+    {
+        return "Jung";
+    }
 }

@@ -125,4 +125,18 @@ public class PrefuseGraphLib implements GraphLib
         Edge e = (Edge) lookup_.get(edge);
         return e;
     }
+    
+    //--------------------------------------------------------------------------
+    // Overrides java.lang.Object
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Overridden so name is rendered correctly in comboboxes.
+     * 
+     * @see java.lang.Object#toString()
+     */
+    public String toString()
+    {
+        return "Prefuse";
+    }
 }
