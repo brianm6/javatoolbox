@@ -5,6 +5,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.io.BufferedOutputStream;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
@@ -36,8 +37,6 @@ import toolbox.util.ui.plugin.IStatusBar;
  */
 public class JTcpTunnelPane extends JPanel implements IPreferenced
 {
-    // TODO: Auto-clear text areas after # of bytes exceeded
-
     private static final Logger logger_ = 
         Logger.getLogger(JTcpTunnelPane.class);
     
@@ -83,6 +82,11 @@ public class JTcpTunnelPane extends JPanel implements IPreferenced
      */
     private JLabel localLabel_;
 
+    /**
+     * Flip pane that contains the configuration information
+     */
+    private JFlipPane configFlipPane_;
+
     /** 
      * Field for the port number of the local host 
      */
@@ -97,6 +101,11 @@ public class JTcpTunnelPane extends JPanel implements IPreferenced
      * Field for the remote port number 
      */
     private JTextField remotePortField_;
+    
+    /**
+     * Field that captures the max capacity of the incoming/outgoing textareas
+     */
+    private JTextField capacityField_;
     
     /** 
      * Tunnel object 
@@ -204,10 +213,8 @@ public class JTcpTunnelPane extends JPanel implements IPreferenced
      */
     public void applyPrefs(Element prefs) throws Exception
     {
-        Element root = null;
-        
-        if (prefs != null) 
-            root = prefs.getFirstChildElement(NODE_TCPTUNNEL_PLUGIN);
+        Element root = XOMUtil.getFirstChildElement(
+            prefs, NODE_TCPTUNNEL_PLUGIN, new Element(NODE_TCPTUNNEL_PLUGIN));
         
         remotePortField_.setText(
             XOMUtil.getStringAttribute(root, ATTR_REMOTE_PORT, ""));
@@ -218,14 +225,18 @@ public class JTcpTunnelPane extends JPanel implements IPreferenced
         listenPortField_.setText(
             XOMUtil.getStringAttribute(root, ATTR_LOCAL_PORT, ""));
     
-        if (root != null)
-        {
-            incomingTextArea_.applyPrefs(
-                root.getFirstChildElement(NODE_INCOMING));
-                
-            outgoingTextArea_.applyPrefs(
-                root.getFirstChildElement(NODE_OUTGOING));
-        }
+        configFlipPane_.applyPrefs(root);
+    
+        incomingTextArea_.applyPrefs(XOMUtil.getFirstChildElement(
+            root, NODE_INCOMING, new Element(NODE_INCOMING)));
+
+        capacityField_.setText(incomingTextArea_.getCapacity()+"");
+            
+        outgoingTextArea_.applyPrefs(XOMUtil.getFirstChildElement(
+            root, NODE_OUTGOING, new Element(NODE_OUTGOING)));
+            
+        incomingTextArea_.setPruneFactor(50);
+        outgoingTextArea_.setPruneFactor(50);
     }
 
     /**
@@ -243,12 +254,18 @@ public class JTcpTunnelPane extends JPanel implements IPreferenced
 
         root.addAttribute(
             new Attribute(ATTR_REMOTE_HOST, remoteHostField_.getText()));
-        
+
+        configFlipPane_.savePrefs(root);
+            
         Element incoming = new Element(NODE_INCOMING);
+        incomingTextArea_.setCapacity(
+            Integer.parseInt(capacityField_.getText()));
         incomingTextArea_.savePrefs(incoming);
         root.appendChild(incoming);
 
         Element outgoing = new Element(NODE_OUTGOING);
+        outgoingTextArea_.setCapacity(
+            Integer.parseInt(capacityField_.getText()));
         outgoingTextArea_.savePrefs(outgoing);
         root.appendChild(outgoing);
         
@@ -320,24 +337,25 @@ public class JTcpTunnelPane extends JPanel implements IPreferenced
         
         configPanel.add(new JLabel("Local Tunnel Port"), 
             ParagraphLayout.NEW_PARAGRAPH);
-            
         configPanel.add(listenPortField_ = new JTextField(10));
         
         configPanel.add(new JLabel("Remote Host"), 
             ParagraphLayout.NEW_PARAGRAPH);
-            
         configPanel.add(remoteHostField_ = new JTextField(10));
         
         configPanel.add(new JLabel("Remote Port"), 
             ParagraphLayout.NEW_PARAGRAPH);
-            
         configPanel.add(remotePortField_ = new JTextField(10));      
         
-        JFlipPane configFlipPane = new JFlipPane(JFlipPane.LEFT);
-        configFlipPane.addFlipper("Config", configPanel);
-        configFlipPane.setExpanded(false);
+        configPanel.add(new JLabel("Max Capacity"),
+            ParagraphLayout.NEW_PARAGRAPH);
+        configPanel.add(capacityField_ = new JTextField(10));
+                        
+        configFlipPane_ = new JFlipPane(JFlipPane.LEFT);
+        configFlipPane_.addFlipper("Config", configPanel);
+        configFlipPane_.setExpanded(false);
         
-        add(BorderLayout.WEST, configFlipPane);
+        add(BorderLayout.WEST, configFlipPane_);
         
         // Done
         
@@ -418,11 +436,11 @@ public class JTcpTunnelPane extends JPanel implements IPreferenced
                     getRemoteHost(), 
                     getRemotePort());
                     
-            tunnel_.setIncomingSink(
-                new JTextAreaOutputStream(outgoingTextArea_));
+            tunnel_.setIncomingSink(new BufferedOutputStream(
+                new JTextAreaOutputStream(outgoingTextArea_)));
             
-            tunnel_.setOutgoingSink(
-                new JTextAreaOutputStream(incomingTextArea_));
+            tunnel_.setOutgoingSink(new BufferedOutputStream(
+                new JTextAreaOutputStream(incomingTextArea_)));
                 
             tunnel_.addTcpTunnelListener(this);
             
