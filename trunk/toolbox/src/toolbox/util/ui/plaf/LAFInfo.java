@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
 
 import toolbox.util.StringUtil;
 import toolbox.util.collections.AsMap;
+import toolbox.util.service.Nameable;
 import toolbox.workspace.IPreferenced;
 
 /**
@@ -23,7 +24,7 @@ import toolbox.workspace.IPreferenced;
  * For example a theme name or a theme file. Class name would be
  * LookAndFeelInfo if it was not for UIManager.LookAndFeelInfo.
  */
-public class LAFInfo implements IPreferenced
+public class LAFInfo implements IPreferenced, Nameable
 {
     private static final Logger logger_ = Logger.getLogger(LAFInfo.class);
 
@@ -97,7 +98,7 @@ public class LAFInfo implements IPreferenced
     }
 
     //--------------------------------------------------------------------------
-    // Public
+    // Nameable Interface
     //--------------------------------------------------------------------------
 
     /**
@@ -122,7 +123,10 @@ public class LAFInfo implements IPreferenced
         return name_;
     }
 
-
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
     /**
      * Returns the name of the class that implements this look and feel.
      *
@@ -188,7 +192,6 @@ public class LAFInfo implements IPreferenced
     {
         return props_;
     }
-
 
     //--------------------------------------------------------------------------
     // IPreferenced Interface

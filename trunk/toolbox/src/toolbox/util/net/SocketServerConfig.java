@@ -10,11 +10,12 @@ import org.apache.log4j.Logger;
 
 import toolbox.util.ResourceUtil;
 import toolbox.util.collections.AsMap;
+import toolbox.util.service.Nameable;
 
 /**
  * Encapsulates configuration properties for a {@link SocketServer}.
  */
-public class SocketServerConfig
+public class SocketServerConfig implements Nameable
 {
     private static final Logger logger_ = 
         Logger.getLogger(SocketServerConfig.class);
@@ -405,11 +406,14 @@ public class SocketServerConfig
         connectionHandlerType_ = type;
     }
 
-
+    //--------------------------------------------------------------------------
+    // Nameable Interface
+    //--------------------------------------------------------------------------
+    
     /**
      * Returns the name.
      * 
-     * @return String
+     * @see toolbox.util.service.Nameable#getName()
      */
     public String getName()
     {
@@ -420,7 +424,7 @@ public class SocketServerConfig
     /**
      * Sets the name.
      * 
-     * @param name The name to set.
+     * @see toolbox.util.service.Nameable#setName(java.lang.String)
      */
     public void setName(String name)
     {

@@ -27,6 +27,8 @@ import org.apache.commons.pool.ObjectPool;
 import org.apache.commons.pool.impl.GenericObjectPool;
 import org.apache.log4j.Logger;
 
+import toolbox.util.service.Nameable;
+
 /**
  * JDBCSession is an attempt to remedy the singleton like limitations of 
  * JDBCUtil. With the use of session names used to identify db sessions,
@@ -584,7 +586,7 @@ public final class JDBCSession
     /**
      * Session is responsible for capturing data that is unique to a session.
      */
-    static class Session
+    static class Session implements Nameable
     {
         //----------------------------------------------------------------------
         // Fields
@@ -703,6 +705,9 @@ public final class JDBCSession
             pooled_ = pooled;
         }
         
+        //----------------------------------------------------------------------
+        // Nameable Interface
+        //----------------------------------------------------------------------
         
         /**
          * Returns the name of this session.
