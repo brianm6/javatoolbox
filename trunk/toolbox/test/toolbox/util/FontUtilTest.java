@@ -1,6 +1,7 @@
 package toolbox.util;
 
 import java.awt.Font;
+import java.awt.GraphicsEnvironment;
 
 import javax.swing.JPanel;
 
@@ -140,5 +141,49 @@ public class FontUtilTest extends TestCase
         Font before = FontUtil.getPreferredSerifFont();
         Font after  = FontUtil.setSize(before, expected);
         assertEquals(expected, after.getSize());
+    }
+    
+    
+    /**
+     * Tests isMonospaced() for a monospaced font.
+     */
+    public void testIsMonospacedTrue() throws Exception
+    {
+        logger_.info("Running testIsMonospacedTrue...");
+        
+        Font f = FontUtil.getPreferredMonoFont();
+        assertTrue(
+            f.getName() + " should be a monospaced font", 
+            FontUtil.isMonospaced(f));
+    }
+
+    
+    /**
+     * Tests isMonospaced for a non-monospaced font.
+     */
+    public void testIsMonospacedFalse() throws Exception
+    {
+        logger_.info("Running testIsMonospacedFalse...");
+        
+        Font f = FontUtil.getPreferredSerifFont();
+        assertFalse(
+            f.getName() + " should not be monspaced", 
+            FontUtil.isMonospaced(f));
+    }
+    
+    
+    /**
+     * Tests all installed fonts for monospaced characteristic.
+     */
+    public void testIsMonospacedAll()
+    {
+        logger_.info("Running testIsMonospacedAll...");
+        
+        Font[] fonts = 
+            GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts();
+        
+        for (int i = 0; i < fonts.length; i++)
+            if (FontUtil.isMonospaced(fonts[i]))
+                logger_.info(fonts[i].getName() + " is monospaced"); 
     }
 }
