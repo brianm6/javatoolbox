@@ -31,7 +31,8 @@ import toolbox.util.ui.list.SmartListCellRenderer;
 import toolbox.util.ui.list.SortedListModel;
 
 /**
- * A java source file viewer.
+ * A java source file viewer with list box that contains method names. Uses
+ * the QDOX library for parsing java source and extracting line numbers.
  */
 public class JavaViewer extends JEditViewer
 {
@@ -40,12 +41,38 @@ public class JavaViewer extends JEditViewer
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
-    
+
+    /**
+     * Contains the main panel that displays java source code in a text editor.
+     */
     private JPanel sourceView_;
+    
+    /**
+     * Flipper that houses a listbox containing method names.
+     */
     private JFlipPane sourceFlipper_;
+    
+    /**
+     * Contains a list of methods. Once a method is selected in the list, 
+     * its corresponding declaration is selected and made visible in the source
+     * code viewer.
+     */
     private JSmartList methodList_;
+    
+    /**
+     * Header panel for the method list.
+     */
     private JHeaderPanel methodPane_;
+    
+    /**
+     * Sorted model for the list of methods.
+     */
     private SortedListModel methodListModel_;
+    
+    /**
+     * Maps a methods signature to the line number in the source code on which
+     * it appears.
+     */
     private Map lineNumbers_;
     
     //--------------------------------------------------------------------------
@@ -53,7 +80,7 @@ public class JavaViewer extends JEditViewer
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a JavaViewer.
+     * Creates a JavaViewer. Necessary for instantiation via reflection.
      */
     public JavaViewer()
     {
@@ -62,7 +89,10 @@ public class JavaViewer extends JEditViewer
     //--------------------------------------------------------------------------
     // Protected
     //--------------------------------------------------------------------------
-    
+
+    /**
+     * Populates the method listbox.
+     */
     protected void populateMethods() 
     {
         JavaDocBuilder builder = new JavaDocBuilder();
@@ -175,6 +205,10 @@ public class JavaViewer extends JEditViewer
     // MethodSelector
     //--------------------------------------------------------------------------
     
+    /**
+     * MethodSelector is responsible for making the currently selected method
+     * visible (if scrolled off the page) and selected.
+     */
     class MethodSelector implements ListSelectionListener 
     {
         /**
@@ -200,5 +234,4 @@ public class JavaViewer extends JEditViewer
             // TODO: QDox doesn't support line numbers for methods yet.
         }
     }
-    
 }
