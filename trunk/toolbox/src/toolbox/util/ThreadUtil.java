@@ -127,15 +127,6 @@ class MethodRunner implements Runnable
     {
         try
         {   
-            /* convert array of parameters into array of classes */
-            Class[] paramTypes = new Class[params.length];
-            for(int i=0; i<params.length; i++)
-                paramTypes[i] = params[i].getClass();
-            
-            /* get method and invoke */
-            //Method m = target.getClass().getMethod(method, paramTypes);
-            //m.invoke(target, params);    
-            
             SmartClass clazz = SmartClassManager.forClass(target.getClass());
             clazz.invoke(target, method, params);
         }
@@ -168,6 +159,6 @@ class MethodRunner implements Runnable
         return "\n" +
                "target=" + target.getClass().getName() + "\n" +
                "method=" + method + "\n" +
-               "params=" + ArrayUtil.toString(params);
+               "params=" + (params != null ? ArrayUtil.toString(params) : null);
     }
 }
