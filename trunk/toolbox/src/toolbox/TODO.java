@@ -22,7 +22,6 @@ package toolbox;
  * TODO: Add a filled bar mode to JSourceView
  * TODO: Create JSmartDialog - rememver size and position, bind esc to cancel
  * TODO: Writer a proper multisplit pane.
- * TODO:Add wildcard matchine to the file  switch in tree
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
@@ -51,7 +50,7 @@ package toolbox;
  * - Separate unit tests from main source branch + reconfig maven.
  * - Created JSmartInternalFrame
  * - DesktopPluginHost now rembers window position and sizes
- * - 
+ * - Add wildcard matchine to the file switch in tree 
  * ============================================================================= 
  * </pre>
  */
