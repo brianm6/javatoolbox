@@ -136,6 +136,7 @@ public class SmartComponentFactory implements ComponentFactory
         return createSeparator(text, SwingConstants.LEFT);
     }
     
+    
     /**
      * Creates and returns a labeled separator. Useful to separate paragraphs in
      * a panel, which is often a better choice than a <code>TitledBorder</code>.

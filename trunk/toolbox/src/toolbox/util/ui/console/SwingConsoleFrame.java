@@ -13,7 +13,7 @@ import javax.swing.WindowConstants;
 import toolbox.util.ui.JSmartFrame;
 
 /**
- * Frame containing a console.
+ * Frame containing a {@link SwingConsole}.
  */
 public class SwingConsoleFrame extends JSmartFrame 
 {
@@ -26,6 +26,15 @@ public class SwingConsoleFrame extends JSmartFrame
      */
     private SwingConsole console_;
 
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Entrypoint.
+     * 
+     * @param args None.
+     */
     public static void main(String[] args)
     {
          JFrame f = new SwingConsoleFrame("Hello", 10, 80);

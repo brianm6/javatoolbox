@@ -1,7 +1,8 @@
 package toolbox.util.ui.console;
 
 /**
- * CommandHandler is responsible executing commands.
+ * CommandHandler is responsible for executing commands once they have been 
+ * read in by the {@link Console}.
  */
 public interface CommandHandler
 {
@@ -12,6 +13,5 @@ public interface CommandHandler
      * @param command Command to execute (the full text of the line).
      * @throws Exception if an error occurs.
      */
-    void handleCommand(Console console, String command) 
-        throws Exception;
+    void handleCommand(Console console, String command) throws Exception;
 }
