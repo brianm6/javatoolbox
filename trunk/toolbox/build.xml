@@ -491,6 +491,7 @@
                     <!-- exclude the GUI tests -->
                     <exclude name="**/ui/**/*Test.java" />
                     <exclude name="**/SwingUtilTest.java"/>
+                    <exclude name="**/jedit/**"/>
                     
                 </fileset>
             </batchtest>
@@ -540,6 +541,12 @@
         <clover-setup initString="${clover}/coverage.db">
             <files>
                 <exclude name="**/test/*.java"/>
+                <exclude name="**/ui/**/*.java"/>
+                <exclude name="**/SwingUtil.java"/>
+                <exclude name="**/jedit/**/*.java"/>
+                <exclude name="**/jsourceview/*.java"/>
+                <exclude name="**/jtail/**/*.java"/>
+                <exclude name="**/tunnel/*.java"/>
             </files>             
         </clover-setup>
     </target>
