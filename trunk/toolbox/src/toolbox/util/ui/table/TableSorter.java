@@ -650,12 +650,17 @@ public class TableSorter extends AbstractTableModel
             {
                 JLabel label = (JLabel) c;
                 label.setHorizontalTextPosition(JLabel.LEFT);
-                int modelColumn = table.convertColumnIndexToModel(column);
                 
-                label.setIcon(
-                    getHeaderRendererIcon(
-                        modelColumn, 
-                        label.getFont().getSize()));
+                // FIXME: Workaround for FH LAF..table is null sometimes.
+                if (table != null)
+                {
+                    int modelColumn = table.convertColumnIndexToModel(column);
+                    
+                    label.setIcon( 
+                        getHeaderRendererIcon(
+                            modelColumn, 
+                            label.getFont().getSize()));
+                }
             }
             
             return c;
