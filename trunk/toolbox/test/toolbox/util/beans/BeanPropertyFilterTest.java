@@ -220,17 +220,17 @@ public class BeanPropertyFilterTest extends TestCase
         /**
          * Bean propery name = flavor.
          */
-        private String flavor;
+        private String flavor_;
 
         /**
          * Bean property name = acidity.
          */
-        private int acidity;
+        private int acidity_;
 
         /**
          * Bean that does not have a default equals() impl.
          */
-        private Origin origin;
+        private Origin origin_;
 
         //----------------------------------------------------------------------
         // Constructors
@@ -273,7 +273,7 @@ public class BeanPropertyFilterTest extends TestCase
          */
         public int getAcidity()
         {
-            return acidity;
+            return acidity_;
         }
 
 
@@ -284,7 +284,7 @@ public class BeanPropertyFilterTest extends TestCase
          */
         public void setAcidity(int acidity)
         {
-            this.acidity = acidity;
+            acidity_ = acidity;
         }
 
 
@@ -295,7 +295,7 @@ public class BeanPropertyFilterTest extends TestCase
          */
         public String getFlavor()
         {
-            return flavor;
+            return flavor_;
         }
 
 
@@ -306,7 +306,7 @@ public class BeanPropertyFilterTest extends TestCase
          */
         public void setFlavor(String flavor)
         {
-            this.flavor = flavor;
+            flavor_ = flavor;
         }
 
 
@@ -315,7 +315,7 @@ public class BeanPropertyFilterTest extends TestCase
          */
         public Origin getOrigin()
         {
-            return origin;
+            return origin_;
         }
 
 
@@ -324,7 +324,7 @@ public class BeanPropertyFilterTest extends TestCase
          */
         public void setOrigin(Origin origin)
         {
-            this.origin = origin;
+            origin_ = origin;
         }
 
     }
@@ -335,13 +335,12 @@ public class BeanPropertyFilterTest extends TestCase
 
     public class Origin
     {
-
-        String name;
+        String name_;
 
 
         public Origin(String s)
         {
-            name = s;
+            name_ = s;
         }
 
 
@@ -350,19 +349,19 @@ public class BeanPropertyFilterTest extends TestCase
             if (obj == null)
                 return false;
 
-            return name.equals(((Origin) obj).getName());
+            return name_.equals(((Origin) obj).getName());
         }
 
 
         public String getName()
         {
-            return name;
+            return name_;
         }
 
 
         public void setName(String string)
         {
-            name = string;
+            name_ = string;
         }
     }
 
