@@ -8,22 +8,32 @@ import org.apache.log4j.Category;
 
 /**
  * Reads as much content off a queue as possible (batch mode) and delivers 
- * in a single call to IBatchQueueListener.nofity()
+ * in a single call to IBatchQueueListener.nextBatch()
  */
 public class BatchingQueueReader implements Runnable
 {
     private static final Category logger_ = 
         Category.getInstance(BatchingQueueReader.class);
         
-    /** Queue to read from **/
+    /** 
+     * Queue to read elements from
+     */
     private BlockingQueue queue_;
     
-    /** Exit flag **/
+    /** 
+     * Exit flag 
+     */
     private boolean continue_ = true;
     
-    /** Listners **/
+    /** 
+     * Queue Listeners 
+     */
     private List listeners_ = new ArrayList();    
 
+
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
     
     /**
      * Constructor for MultiLinePopper.
@@ -33,7 +43,10 @@ public class BatchingQueueReader implements Runnable
         queue_ = queue;
     }
 
-
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
     /**
      * Shuts down reader
      */
@@ -42,7 +55,10 @@ public class BatchingQueueReader implements Runnable
         continue_ = false;
     }
 
-
+    //--------------------------------------------------------------------------
+    // Runnable Interface
+    //--------------------------------------------------------------------------
+    
     /**
      * Runs the reader
      */
@@ -85,10 +101,15 @@ public class BatchingQueueReader implements Runnable
             }
         }
     }
- 
+
+    //--------------------------------------------------------------------------
+    // Event Notification
+    //-------------------------------------------------------------------------- 
  
     /**
      * Fires notification of new elements available
+     * 
+     * @param  elements  New elements available
      */
     public void fireNotify(Object[] elements)
     {
@@ -105,6 +126,8 @@ public class BatchingQueueReader implements Runnable
     
     /**
      * Adds a listener 
+     * 
+     * @param  listener  Listener to add
      */   
     public void addBatchQueueListener(IBatchingQueueListener listener)
     {
@@ -114,6 +137,8 @@ public class BatchingQueueReader implements Runnable
     
     /**
      * Removes a listener
+     * 
+     * @param  listener  Listener to remove
      */
     public void removeBatchQueueListener(IBatchingQueueListener listener)
     {

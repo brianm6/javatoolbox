@@ -2,15 +2,25 @@ package toolbox.util.concurrent;
 
 import java.util.ArrayList;
 
+import org.apache.log4j.Category;
+
 /**
  * Queue that blocks on calls to pull() until an element is available
  */
 public class BlockingQueue
 {
+    /** Logger **/
+    private static final Category logger_ =
+        Category.getInstance(BlockingQueue.class);
+        
     private ArrayList   queue_      = null;
     private Semaphore   semaphore_  = null;
     private Mutex       mutex_      = new Mutex();
 
+    //--------------------------------------------------------------------------
+    // Constuctors
+    //--------------------------------------------------------------------------
+    
     /**
      * Default constructor
      */
@@ -20,7 +30,10 @@ public class BlockingQueue
         queue_ = new ArrayList(50);
     }
 
-    
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+        
     /**
      * Pulls element off the queue. Blocks until an element is available if the
      * queue is empty
@@ -56,7 +69,7 @@ public class BlockingQueue
      * Pushes an element onto the queue.
      * 
      * @param  obj  Object to push onto the queue
-     * @throws InterruptedException
+     * @throws InterruptedException on error
      */
     public void push(Object obj) throws InterruptedException
     {
@@ -68,7 +81,7 @@ public class BlockingQueue
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            logger_.error(e);
         }
         finally
         {
@@ -92,7 +105,7 @@ public class BlockingQueue
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            logger_.error(e);
         }
         finally
         {
