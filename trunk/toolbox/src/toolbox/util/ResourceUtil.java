@@ -50,50 +50,85 @@ public final class ResourceUtil
 	 * @param name Name of the resource
 	 * @return InputStream or null if resource not found.
 	 */
-    public static InputStream getResource(String name)
+    public static InputStream getResource(String name) throws IOException
     {
         InputStream is = null;
         
         try
         {
             is = getFileResource(name);
+            
             if (is == null)
+            {
+                logger_.debug("Throwing on null: file resource");
+                
                 throw new IOException(
                     "Resource " + name + " not found as a file resource");
+            }
         }
         catch(IOException e)
         {
             try
             {
                 is = getClassResource(name);
+                
                 if (is == null)
-                    throw new IOException(
+                {  
+                    logger_.debug("Throwing on null: class resource");
+                    
+                    IOException ex = new IOException(
                         "Resource " + name + " not found as a class resource");
+                    
+                    ex.initCause(e);
+                    throw ex;
+                }
             }
             catch(IOException ee)
             {
                 try
                 {
+                    ee.initCause(e);
+                    
                     is = getPackageResource(ResourceUtil.class, name);
+                    
                     if (is == null)
-                        throw new IOException(
+                    {
+                        logger_.debug("Throwing on null: package resource");
+                        
+                        IOException ex = new IOException(
                             "Resource " + name + 
-                                " not found as a package resource");
+                            " not found as a package resource");
+                        
+                        ex.initCause(ee);
+                        throw ex;
+                    }
                 }
                 catch(IOException eee)
                 {
                     try
                     {
+                        eee.initCause(ee);
+                        
                         is = getURLResource(name);
+                        
                         if (is == null)
-                            throw new IOException(
+                        {   
+                            logger_.debug("Throwing on null: url resource");
+                            
+                            IOException ex = new IOException(
                                 "Resource " + name + 
                                 " not found as a URL resource");
+                            
+                            ex.initCause(eee);
+                            throw ex;
+                        }
                     }
                     catch(IOException eeee)
                     {
                         logger_.debug("Resource " + name + " not found");
-                        is = null;
+                        eeee.initCause(eee);
+                        throw eeee;
+                        //is = null;
                     }
                 }
             }
@@ -174,10 +209,13 @@ public final class ResourceUtil
     
     /**
      * Returns a temp file that contains the resource with the given name.
-     * The caller is responsible for deleting after being used. 
+     * The caller is responsible for deleting after being used. This method is
+     * especially useful for passing resources that don't exist as Files (image
+     * in a jar file for example) to a method that requires a File as input. 
      * 
-     * @param name Resource name (file, url, etc)
+     * @param name Resource name (file, url, etc).
      * @return File
+     * @throws IOException on I/O error.
      */
     public static File getResourceAsTempFile(String name) throws IOException
     {
@@ -190,7 +228,7 @@ public final class ResourceUtil
             is = getResource(name);
             f = FileUtil.createTempFile();
             os = new FileOutputStream(f);
-            int len = CopyUtils.copy(is, os);
+            CopyUtils.copy(is, os);
         }
         finally
         {
@@ -236,7 +274,7 @@ public final class ResourceUtil
         if (u == null)
         {
             throw new IOException(
-                "URL '" + url + "' does not denote a valid resource");
+                "Resource '" + url + "' not found as resource URL.");
         }
 
         return u;
@@ -276,7 +314,7 @@ public final class ResourceUtil
         if (!(file.exists() && file.isFile()))
         {
             throw new IOException(
-                "File '" + filename + "' does not denote a valid resource");
+                "Resource '" + filename + "' not found as a URL resource");
         }
         else
         {
@@ -362,7 +400,8 @@ public final class ResourceUtil
         URL url = context.getResource(resource);
 
         if (url == null)
-            throw new IOException("Resource '" + resource + "' not found");
+            throw new IOException(
+                "Resource '" + resource + "' not found as a class resource.");
         else
             logger_.debug("Loaded " + resource + " by URL " + url);
 
@@ -421,7 +460,8 @@ public final class ResourceUtil
             while (url == null && index != -1);
     
             if (url == null)
-                throw new IOException("Resource '" + resource + "' not found");
+                throw new IOException("Resource '" + resource + 
+                    "' not found as a package resource.");
             else
                 logger_.debug("Loaded " + resource + " by URL " + url);
         }
