@@ -16,11 +16,11 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
-import nu.xom.Attribute;
 import nu.xom.Element;
 
 import org.apache.log4j.Logger;
 
+import toolbox.util.PreferencedUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.ui.AntiAliased;
@@ -35,9 +35,9 @@ import toolbox.workspace.IPreferenced;
  *   <li>Persistence of preferences
  * </ul>
  *
- * @see JSmartTableHeader
- * @see SmartTableModel
- * @see SmartTableCellRenderer
+ * @see toolbox.util.ui.table.JSmartTableHeader
+ * @see toolbox.util.ui.table.SmartTableModel
+ * @see toolbox.util.ui.table.SmartTableCellRenderer
  */
 public class JSmartTable extends JTable implements AntiAliased, IPreferenced
 {
@@ -53,14 +53,20 @@ public class JSmartTable extends JTable implements AntiAliased, IPreferenced
     private static final String NODE_JSMARTTABLE = "JSmartTable";
 
     /**
-     * Preference that stores automatic tailing of the table flag as a boolean.
+     * Javabean property for automatic tailing.
      */
-    private static final String ATTR_AUTOTAIL = "autotail";
+    public static final String PROP_AUTOTAIL = "autoTail";
+    
+    /**
+     * Javabean property for antialiased text.
+     */
+    public static final String PROP_ANTIALIASED = "antiAliased";
 
     /**
-     * Preference that stores antialiasing of the text flag as a boolean.
+     * List of properties that are saved via the IPreferenced interface.
      */
-    private static final String ATTR_ANTIALIAS = "antialias";
+    private static final String[] SAVED_PROPS = 
+        { PROP_AUTOTAIL, PROP_ANTIALIASED };
 
     //--------------------------------------------------------------------------
     // Fields
@@ -228,7 +234,7 @@ public class JSmartTable extends JTable implements AntiAliased, IPreferenced
             return;
 
         autoTail_ = autoTail;
-        firePropertyChange("autotail", !autoTail, autoTail);
+        firePropertyChange(PROP_AUTOTAIL, !autoTail, autoTail);
     }
 
     //--------------------------------------------------------------------------
@@ -238,25 +244,23 @@ public class JSmartTable extends JTable implements AntiAliased, IPreferenced
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs)
+    public void applyPrefs(Element prefs) throws Exception
     {
         Element root = XOMUtil.getFirstChildElement(
             prefs, NODE_JSMARTTABLE, new Element(NODE_JSMARTTABLE));
 
-        setAutoTail(XOMUtil.getBooleanAttribute(root, ATTR_AUTOTAIL, true));
-        setAntiAliased(XOMUtil.getBooleanAttribute(root, ATTR_ANTIALIAS, true));
+        PreferencedUtil.readPreferences(this, root, SAVED_PROPS);
     }
 
 
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs)
+    public void savePrefs(Element prefs) throws Exception
     {
         Element root = new Element(NODE_JSMARTTABLE);
-        root.addAttribute(new Attribute(ATTR_AUTOTAIL, isAutoTail() + ""));
-        root.addAttribute(new Attribute(ATTR_ANTIALIAS, isAntiAliased() + ""));
-        prefs.appendChild(root);
+        PreferencedUtil.writePreferences(this, root, SAVED_PROPS);
+        XOMUtil.insertOrReplace(prefs, root);
     }
 
     //--------------------------------------------------------------------------
@@ -299,6 +303,8 @@ public class JSmartTable extends JTable implements AntiAliased, IPreferenced
     //--------------------------------------------------------------------------
 
     /**
+     * Updates rendering hints to support antialiasing.
+     * 
      * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
      */
     public void paintComponent(Graphics gc)
