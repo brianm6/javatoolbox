@@ -58,7 +58,7 @@ class SourceParser implements Runnable
     public void cancel()
     {
         cancel_ = true;
-        sourceView_.getTableSorter().setEnabled(true);
+        // REMOVE: sourceView_.getTableSorter().setEnabled(true);
         sourceView_.setParseStatus("Search canceled!");            
     }
 
@@ -141,7 +141,7 @@ class SourceParser implements Runnable
         sourceView_.goButton_.setText(JSourceView.LABEL_GO);
         
         // Turn the sorter back on
-        sourceView_.getTableSorter().setEnabled(true);
+        // REMOVE: sourceView_.getTableSorter().setEnabled(true);
         
         elapsed.setEndTime();
         sourceView_.setScanStatus("Elapsed time: " + elapsed.toString());
