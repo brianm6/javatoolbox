@@ -2,6 +2,7 @@ package toolbox.tree.test;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.StringWriter;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
@@ -85,6 +86,7 @@ public class TreeTest extends TestCase
      */
     public void testShowTreeSimpleCascade() throws Exception
     {
+    	logger_.info("Running testShowTreeSimpleCascade...");
         logger_.info("Tree with cascading dirs: \n");
         
         File a = new File(rootDir_, "a");
@@ -112,6 +114,7 @@ public class TreeTest extends TestCase
      */
     public void testShowTreeSimpleFlat() throws Exception
     {
+		logger_.info("Running testShowTreeSimpleFlat...");
         logger_.info("Tree with flat struct at level 2: \n");
         
         File a = new File(rootDir_, "a");
@@ -139,6 +142,7 @@ public class TreeTest extends TestCase
      */
     public void testShowTreeExtensionBar() throws Exception
     {
+		logger_.info("Running testShowTreeExtensionBar...");
         logger_.info("Tree with an extension bar: \n");
                 
         // Create rootDir_\a\b\c\d 
@@ -178,6 +182,7 @@ public class TreeTest extends TestCase
      */
     public void testShowTreeManyInRoot() throws Exception
     {
+		logger_.info("Running testShowTreeManyInRoot...");
         logger_.info("Tree with > 1 dir in root: \n");
                 
         File a = new File(rootDir_, "a");
@@ -210,6 +215,7 @@ public class TreeTest extends TestCase
      */
     public void testShowTreeEmptyRoot() throws Exception
     {
+		logger_.info("Running testShowTreeEmptyRoot...");
         logger_.info("Tree with an empty root: \n");
         Tree tree = new Tree(rootDir_);
         tree.showTree();
@@ -232,6 +238,7 @@ public class TreeTest extends TestCase
      */
     public void testShowTreeOneDir() throws Exception
     {
+		logger_.info("Running testShowTreeOneDir...");
         logger_.info("Tree with a single directory: \n");
 
         File a = new File(rootDir_, "a");
@@ -251,6 +258,7 @@ public class TreeTest extends TestCase
      */
     public void xtestShowTreeLargeTree() throws Exception
     {
+		logger_.info("Running testShowTreeLargeTree...");
         Tree tree = new Tree(new File("/"));
         tree.showTree();
         
@@ -265,6 +273,7 @@ public class TreeTest extends TestCase
      */
     public void testShowTreeSimpleCascadeFile() throws Exception
     {
+		logger_.info("Running testShowTreeSimpleCascadeFile...");
         logger_.info("Tree with cascading dirs and one file: \n");
         
         createFile(rootDir_);
@@ -299,6 +308,7 @@ public class TreeTest extends TestCase
      */
     public void testShowTreeRootFiles() throws Exception
     {
+		logger_.info("Running testShowTreeRootFiles...");
         logger_.info("Tree with cascading dirs and one file: \n");
         
         createFile(rootDir_);
@@ -313,6 +323,34 @@ public class TreeTest extends TestCase
         printNativeFileTree(rootDir_);
     }
 
+	/**
+	 * Tests printing the help/usage information
+	 * 
+	 * @throws Exception on error
+	 */
+	public void testPrintUsage() throws Exception
+	{
+		logger_.info("Running testPrintUsage...");
+		
+		// Send in an invalid flag so usage information is shown
+		Tree.main(new String[] { "-xyz"});
+	}
+
+	/**
+	 * Tests the constructors
+	 * 
+	 * @throws Exception on error
+	 */
+	public void testConstructors() throws Exception
+	{
+		logger_.info("Running testConstructors...");
+		
+		Tree t = new Tree(FileUtil.getTempDir());
+		Tree t2 = new Tree(FileUtil.getTempDir(), true);
+		Tree t3 = new Tree(FileUtil.getTempDir(), new StringWriter());
+		Tree t4 = new Tree(FileUtil.getTempDir(), new StringWriter());		
+	}
+	
     //--------------------------------------------------------------------------
     // Helper Methods
     //--------------------------------------------------------------------------
@@ -373,5 +411,4 @@ public class TreeTest extends TestCase
         System.out.println(output);
         */
     }
-    
 }
