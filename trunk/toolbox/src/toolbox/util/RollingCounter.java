@@ -8,18 +8,22 @@ import java.util.List;
  */
 public class RollingCounter
 {
-    /** start of range **/
+    /** Start of range **/
     private int  start_;
     
-    /** end of range **/
+    /** End of range **/
     private int  end_;
     
-    /** current position in range **/
+    /** Current position in range **/
     private int  cnt_; 
     
-    /** list of counter listeners **/
+    /** List of counter listeners **/
     private List listeners_;
     
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+
     /**
      * Creates a counter that wraps around
      * 
@@ -35,7 +39,10 @@ public class RollingCounter
         listeners_ = new ArrayList();
     }
 
-
+	//--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
     /**
      * Increments the counter by 1
      *
@@ -86,6 +93,9 @@ public class RollingCounter
         return (cnt_ == start_);
     }
 
+    //--------------------------------------------------------------------------
+    // Event Support
+    //--------------------------------------------------------------------------
     
     /**
      * Fires event for before a roll occurs
@@ -126,6 +136,9 @@ public class RollingCounter
         return "{cnt=" + cnt_ + ", start=" + start_ + ", end=" + end_ + "}";
     }
     
+    //--------------------------------------------------------------------------
+    // Interfaces
+    //--------------------------------------------------------------------------
     
     /**
      * Interface for notification of rolling events
