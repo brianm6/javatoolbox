@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 
 import toolbox.util.ClassUtil;
 import toolbox.util.SwingUtil;
+import toolbox.util.ui.plaf.LookAndFeelUtil;
 
 /**
  * Base class UITestCase.
@@ -42,7 +43,7 @@ public class UITestCase extends TestCase
     {
         try
         {
-            SwingUtil.setPreferredLAF();
+            LookAndFeelUtil.setPreferredLAF();
         }
         catch (Exception e)
         {
@@ -91,6 +92,10 @@ public class UITestCase extends TestCase
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.getContentPane().setLayout(new BorderLayout());
         frame.getContentPane().add(c, BorderLayout.CENTER);
+        
+        if (menuBar_ != null)
+            frame.setJMenuBar(menuBar_);
+        
         frame.pack();
         SwingUtil.centerWindow(frame);
         frame.setVisible(true);

@@ -29,6 +29,7 @@ import toolbox.junit.UITestCase;
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.JSmartComboBox;
 import toolbox.util.ui.JSmartLabel;
+import toolbox.util.ui.plaf.LookAndFeelUtil;
 
 /**
  * Unit test for JEditTextArea.
@@ -50,7 +51,7 @@ public class JEditTextAreaTest extends UITestCase
      */
     public static void main(String[] args) throws Exception
     {
-        SwingUtil.setPreferredLAF();
+        LookAndFeelUtil.setPreferredLAF();
         TestRunner.run(JEditTextAreaTest.class);
     }
     

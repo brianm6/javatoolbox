@@ -5,8 +5,8 @@ import java.lang.reflect.Method;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
-import toolbox.util.SwingUtil;
 import toolbox.util.ThreadUtil;
+import toolbox.util.ui.plaf.LookAndFeelUtil;
 
 /**
  * Launches a java program with a predetermined Look and Feel.
@@ -78,7 +78,7 @@ public class LAFLauncher
      */
     private static void launch(String target, String[] args) throws Exception
     {
-        SwingUtil.setPreferredLAF();
+        LookAndFeelUtil.setPreferredLAF();
     
         Thread t = new Thread(new LAFRunner());
         t.start();
@@ -98,7 +98,7 @@ class LAFRunner implements Runnable
             
         try
         {
-            SwingUtil.setPreferredLAF();
+            LookAndFeelUtil.setPreferredLAF();
         }
         catch (Exception e)
         {
