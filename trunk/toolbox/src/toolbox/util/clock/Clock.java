@@ -19,7 +19,7 @@ public interface Clock
     /**
      * Sets this clock's current time.
      * 
-     * @param newTime
+     * @param newTime The new time.
      */
     void setTime(Date newTime);
     
@@ -35,7 +35,7 @@ public interface Clock
     /**
      * Fast forwards this clock the given number of milliseconds.
      * 
-     * @param millis Number of millis to fast forward.
+     * @param millis Number of millis to fast forward this clock.
      */
     void fastForward(long millis);
     
@@ -43,7 +43,7 @@ public interface Clock
     /**
      * Reverses this clock the given number of milliseconds.
      * 
-     * @param millis Number of millis to reverse.
+     * @param millis Number of millis to reverse this clock.
      */
     void reverse(long millis);
 }
