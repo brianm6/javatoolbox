@@ -112,6 +112,16 @@
     <body>
 
         <!-- =================================================================== -->
+        <!-- January 2005                                                       -->
+        <!-- =================================================================== -->
+
+        <release version="2.0" date="January 2005">
+            <action type="add"   >Util - Added Oracle specific utility classes to toolbox.util.db.oracle</action>
+            <action type="add"   >Workspace - Added preferences tab for Swing related properties</action>
+
+        </release>
+
+        <!-- =================================================================== -->
         <!-- December 2004                                                       -->
         <!-- =================================================================== -->
 
