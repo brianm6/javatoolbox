@@ -27,7 +27,7 @@
     <classpathentry kind="lib" path="lib/saxon.jar" sourcepath="lib/src/saxon-src.zip"/>
     <classpathentry kind="lib" path="lib/xep.jar"/>
     <classpathentry kind="lib" path="lib/xt.jar" sourcepath="lib/src/xt-src.zip"/>
-    <classpathentry kind="lib" path="lib/commons-cli.jar"/>
+    <classpathentry kind="lib" path="lib/commons-cli.jar" sourcepath="lib/src/commons-cli-src.zip"/>
     <classpathentry kind="lib" path="build/lib/clover.jar"/>
     <classpathentry kind="lib" path="lib/hsqldb.jar" sourcepath="lib/src/hsqldb-src.zip"/>
     <classpathentry kind="lib" path="lib/commons-io.jar" sourcepath="lib/src/commons-io-src.zip"/>
