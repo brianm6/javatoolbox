@@ -3,18 +3,12 @@ package toolbox.plugin.jdbc;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
@@ -31,7 +25,6 @@ import nu.xom.Elements;
 import org.apache.commons.collections.iterators.ArrayIterator;
 import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.lang.math.IntRange;
 import org.apache.log4j.Logger;
 
@@ -41,7 +34,10 @@ import toolbox.jedit.JEditActions;
 import toolbox.jedit.JEditPopupMenu;
 import toolbox.jedit.JEditTextArea;
 import toolbox.jedit.SQLDefaults;
+import toolbox.plugin.jdbc.action.BenchmarkAction;
+import toolbox.plugin.jdbc.action.ExecuteAllAction;
 import toolbox.plugin.jdbc.action.ExecuteCurrentAction;
+import toolbox.plugin.jdbc.action.ExecutePriorAction;
 import toolbox.plugin.jdbc.action.FormatSQLAction;
 import toolbox.plugin.jdbc.action.ListColumnsAction;
 import toolbox.plugin.jdbc.action.ListTablesAction;
@@ -51,13 +47,13 @@ import toolbox.util.ClassUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.FontUtil;
 import toolbox.util.JDBCUtil;
+import toolbox.util.PreferencedUtil;
 import toolbox.util.ResourceUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.db.SQLFormatter;
 import toolbox.util.db.SQLFormatterView;
-import toolbox.util.io.JTextAreaOutputStream;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JConveyorMenu;
 import toolbox.util.ui.JHeaderPanel;
@@ -70,7 +66,6 @@ import toolbox.util.ui.textarea.action.ClearAction;
 import toolbox.workspace.IPlugin;
 import toolbox.workspace.IStatusBar;
 import toolbox.workspace.PluginWorkspace;
-import toolbox.workspace.WorkspaceAction;
 
 /**
  * Simple SQL Plugin that allows you to query and update a database via JDBC.
@@ -151,18 +146,20 @@ public class QueryPlugin extends JPanel implements IPlugin
     
     /**
      * Terminator character for SQL statements is a semicolon.
-     * 
-     * TODO: Make this a preference.
      */
     public static final char SQL_TERMINATOR = ';';
     
     /**
      * The number of lines that must be contained in a given resultset before
      * the output textarea will autoscroll to the end.
-     * 
-     * TODO: Make this a preference
      */
     public static final int AUTO_SCROLL_THRESHOLD = 50;
+    
+    /**
+     * List of javabean properties that are persisted.
+     */
+    public static final String[] SAVED_PROPS = 
+        new String[] {"sendErrorToConsole"};
     
     //--------------------------------------------------------------------------
     // Fields
@@ -212,17 +209,27 @@ public class QueryPlugin extends JPanel implements IPlugin
      * View to edit the sql formatter.
      */
     private SQLFormatterView formatterView_;
+    
+    /**
+     * View to edit the query plugin preferences.
+     */
+    private DBPrefsView prefsView_;
+    
+    /**
+     * Flag to send error messages to the console.
+     */
+    private boolean sendErrorToConsole_;
 
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a QueryPlugin.
+     * Creates a QueryPlugin. Instantiated via reflection.
      */
     public QueryPlugin()
     {
-        // Instantiated via reflection
+        sendErrorToConsole_ = true;
     }
 
     //--------------------------------------------------------------------------
@@ -281,6 +288,39 @@ public class QueryPlugin extends JPanel implements IPlugin
     public void setFormatter(SQLFormatter formatter)
     {
         formatter_ = formatter;
+    }
+    
+    
+    /**
+     * Returns the sendErrorToConsole.
+     * 
+     * @return boolean
+     */
+    public boolean isSendErrorToConsole()
+    {
+        return sendErrorToConsole_;
+    }
+
+
+    /**
+     * Sets the sendErrorToConsole.
+     * 
+     * @param sendErrorToConsole The sendErrorToConsole to set.
+     */
+    public void setSendErrorToConsole(boolean sendErrorToConsole)
+    {
+        sendErrorToConsole_ = sendErrorToConsole;
+    }
+    
+    
+    /**
+     * Returns the currently selected database profile.
+     * 
+     * @return DBProfile
+     */
+    public DBProfile getCurrentProfile() 
+    {
+        return dbConfigPane_.getCurrentProfile();
     }
     
     
@@ -392,11 +432,13 @@ public class QueryPlugin extends JPanel implements IPlugin
         dbConfigPane_ = new DBConfig(this);
         formatter_ = new SQLFormatter();
         formatterView_ = new SQLFormatterView(formatter_);
+        prefsView_ = new DBPrefsView(this);
         
         leftFlipPane_ = new JFlipPane(JFlipPane.LEFT);
         leftFlipPane_.addFlipper("Databases", dbConfigPane_);
         leftFlipPane_.addFlipper("Reference", buildSQLReferencePane());
         leftFlipPane_.addFlipper("Formatter", formatterView_);
+        leftFlipPane_.addFlipper("Preferences", prefsView_);
         
         add(leftFlipPane_, BorderLayout.WEST);
         add(areaSplitPane_, BorderLayout.CENTER);
@@ -458,7 +500,7 @@ public class QueryPlugin extends JPanel implements IPlugin
         sqlEditor_.setSaveContents(true);
         
         sqlEditor_.getInputHandler().addKeyBinding(
-            "C+ENTER", new ExecuteAllAction());
+            "C+ENTER", new ExecuteAllAction(this));
 
         sqlEditor_.getInputHandler().addKeyBinding(
             "CS+ENTER", new ExecuteCurrentAction(this));
@@ -475,7 +517,7 @@ public class QueryPlugin extends JPanel implements IPlugin
         JButton executeAll = JHeaderPanel.createButton(
             ImageCache.getIcon(ImageCache.IMAGE_PLAY),
             "Execute All SQL",
-            new ExecuteAllAction());
+            new ExecuteAllAction(this));
 
         JButton executeCurrent = JHeaderPanel.createButton(
             ImageCache.getIcon(ImageCache.IMAGE_FORWARD),
@@ -497,7 +539,7 @@ public class QueryPlugin extends JPanel implements IPlugin
             "SQL Reference",
             new SQLReferenceAction(this));
         
-        JButton bench = JHeaderPanel.createButton(new BenchmarkAction());
+        JButton bench = JHeaderPanel.createButton(new BenchmarkAction(this));
         
         JToolBar toolbar = JHeaderPanel.createToolBar();
         toolbar.add(executeAll);
@@ -567,7 +609,7 @@ public class QueryPlugin extends JPanel implements IPlugin
      */
     protected void addToHistory(String sql)
     {
-        sqlMenu_.add(new JSmartMenuItem(new ExecutePriorAction(sql)));
+        sqlMenu_.add(new JSmartMenuItem(new ExecutePriorAction(this, sql)));
     }
 
 
@@ -590,7 +632,8 @@ public class QueryPlugin extends JPanel implements IPlugin
         if (!StringUtils.isEmpty(selected))
         {
             range = new IntRange(
-                sqlEditor_.getSelectionStart(), sqlEditor_.getSelectionEnd());
+                sqlEditor_.getSelectionStart(), 
+                sqlEditor_.getSelectionEnd());
         }
         else
         {
@@ -711,10 +754,12 @@ public class QueryPlugin extends JPanel implements IPlugin
         resultsArea_.applyPrefs(root);
         sqlEditor_.applyPrefs(root);
         areaSplitPane_.applyPrefs(root);
-        formatter_.applyPrefs(root);
         
         // Update the view
+        formatter_.applyPrefs(root);
         formatterView_.setFormatter(formatter_);
+                
+        PreferencedUtil.readPreferences(this, root, SAVED_PROPS);
     }
 
 
@@ -749,177 +794,14 @@ public class QueryPlugin extends JPanel implements IPlugin
         
         areaSplitPane_.savePrefs(root);
         formatter_.savePrefs(root);
+        
+        PreferencedUtil.writePreferences(this, root, SAVED_PROPS);
 
         XOMUtil.insertOrReplace(prefs, root);
     }
     
     //--------------------------------------------------------------------------
     // ExecuteAllAction
-    //--------------------------------------------------------------------------
-
-    /**
-     * Runs all SQL statements in the editor. Each SQL statement must be 
-     * terminated by a semicolon. The results are appendended to the output 
-     * textarea.
-     */
-    class ExecuteAllAction extends WorkspaceAction
-    {
-        /**
-         * Creates an ExecuteAllAction.
-         */
-        ExecuteAllAction()
-        {
-            super("Execute All SQL", true, QueryPlugin.this, statusBar_);
-            putValue(MNEMONIC_KEY, new Integer('E'));
-            putValue(SHORT_DESCRIPTION, "Executes all the SQL statements");
-        }
-
-
-        /**
-         * @see toolbox.util.ui.SmartAction#runAction(
-         *      java.awt.event.ActionEvent)
-         */
-        public void runAction(ActionEvent e) throws Exception
-        {
-            String sqlText = sqlEditor_.getText().trim();
-            
-            if (StringUtils.isBlank(sqlText))
-            {
-                statusBar_.setWarning(
-                    "Enter SQL statements to execute into the editor first.");
-            }
-            else
-            {
-                statusBar_.setInfo("Executing...");
-                
-	            String[] stmts = StringUtils.split(sqlText, SQL_TERMINATOR);
-	            
-	            //logger_.debug(
-	            //    StringUtil.addBars(ArrayUtil.toString(stmts, true)));
-	            
-                List errors = new ArrayList();
-                
-	            for (int i = 0; i < stmts.length; i++)
-	            {
-	                try
-	                {
-	                    stmts[i] = stmts[i].trim();
-	                    String results = executeSQL(stmts[i]);
-	                    
-	                    if (!StringUtil.isMultiline(results))
-	                    {
-	                        String command = StringUtils.split(stmts[i])[0];
-	                        resultsArea_.append(command + " ");
-	                    }
-	                    else
-	                    {
-	                        resultsArea_.append("\n");
-	                        
-	                        //resultsArea_.append(
-	                        //    "Multline found..skipping command : " + 
-	                        //    stmts[i].substring(0,10));
-	                    }
-	                    
-	                    //resultsArea_.append(StringUtil.addBars(results) + "\n");
-	                    resultsArea_.append(results + "\n");
-	                    
-	                    //StringOutputStream sos = new StringOutputStream();
-	                    //HexDump.dump(results.getBytes(), 0, sos, 0);
-	                    //resultsArea_.append(sos.toString());
-	                    
-	                    
-	                    //
-	                    // Scroll to the end of the output textarea if more
-	                    // than a couple of page fulls of results is appended
-	                    //
-	                    
-	                    if ((!StringUtils.isBlank(results)) &&
-	                        (StringUtil.tokenize(results, 
-	                            StringUtil.NL).length < AUTO_SCROLL_THRESHOLD))
-	                    {
-	                        resultsArea_.scrollToEnd();
-	                    }
-	                }
-	                catch (Exception ex)
-	                {
-                        // Collect the errors
-	                    errors.add(ex);
-	                }
-	                
-	                if (errors.size() == 1)
-	                {
-	                    throw (Exception) errors.get(0);
-	                }
-	                else if (errors.size() > 1)
-	                {
-                        // Merge errors into a single exception if many.
-	                    StringBuffer sb = new StringBuffer();
-	                    sb.append("Not all statements executed successfully.");
-	                    sb.append("\n");
-	                    
-	                    for (int j = 0; j < errors.size(); j++)
-	                    {
-	                        Exception ex = (Exception) errors.get(j);
-	                        sb.append(ex.getMessage()).append("\n");
-	                        sb.append(ExceptionUtils.getFullStackTrace(ex));
-	                        sb.append("\n");
-	                    }
-	                    
-	                    throw new SQLException(sb.toString());
-	                }
-	            }
-
-                statusBar_.setInfo("Done");
-            }
-        }
-    }
-    
-    //--------------------------------------------------------------------------
-    // ExecutePriorAction
-    //--------------------------------------------------------------------------
-
-    /**
-     * Runs the query selected from the SQL history popup menu.
-     */
-    class ExecutePriorAction extends AbstractAction
-    {
-        /**
-         * SQL statement to execute.
-         */
-        private String sql_;
-
-        /**
-         * Creates a ExecutePriorAction.
-         *
-         * @param sql SQL to execute.
-         */
-        ExecutePriorAction(String sql)
-        {
-            super(sql);
-            sql_ = sql;
-            SQLFormatter sf = new SQLFormatter();
-            sf.setIndent(2);
-            sf.setNewLine("<br>");
-            sql = sf.format(sql);
-            sql = "<html>" + sql + "</html>";
-            putValue(NAME, sql);
-            putValue(SHORT_DESCRIPTION, "Executes the SQL statement");
-        }
-
-
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
-         */
-        public void actionPerformed(ActionEvent e)
-        {
-            sqlEditor_.setText(sql_);
-            new ExecuteAllAction().actionPerformed(e);
-        }
-    }
-
-    //--------------------------------------------------------------------------
-    // CtrlUpAction
     //--------------------------------------------------------------------------
 
     /**
@@ -943,42 +825,8 @@ public class QueryPlugin extends JPanel implements IPlugin
         public void actionPerformed(ActionEvent e)
         {
             statusBar_.setWarning("TODO: Implement ctrl-up");
-
             String s = getActiveText();
-
-            System.out.println(StringUtil.addBars(s));
-        }
-    }
-    
-    //--------------------------------------------------------------------------
-    // BenchmarkAction
-    //--------------------------------------------------------------------------
-    
-    class BenchmarkAction extends WorkspaceAction 
-    {
-        BenchmarkAction() 
-        {
-            super("", true, true, null, statusBar_);
-            putValue(SMALL_ICON, ImageCache.getIcon(ImageCache.IMAGE_DUKE));
-            putValue(Action.NAME, "");
-            putValue(SHORT_DESCRIPTION, "Runs JDBC Benchmark");
-        }
-        
-        /**
-         * @see toolbox.util.ui.SmartAction#runAction(java.awt.event.ActionEvent)
-         */
-        public void runAction(ActionEvent e) throws Exception
-        {
-            DBProfile profile = dbConfigPane_.getCurrentProfile();
-            OutputStream os = new JTextAreaOutputStream(resultsArea_);                    
-            PrintWriter pw = new PrintWriter(new OutputStreamWriter(os), true);
-            
-            DBBenchmark benchmark = new DBBenchmark(
-                profile.getUrl(), 
-                profile.getUsername(), 
-                profile.getPassword(), 
-                true,
-                pw);
+            logger_.debug(StringUtil.addBars(s));
         }
     }
 }
