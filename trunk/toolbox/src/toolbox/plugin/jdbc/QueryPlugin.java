@@ -210,7 +210,7 @@ public class QueryPlugin extends JPanel implements IPlugin
     //--------------------------------------------------------------------------
     
     /** 
-     * Builds the GUI.
+     * Constructs the user interface.
      */
     protected void buildView()
     {
@@ -285,8 +285,8 @@ public class QueryPlugin extends JPanel implements IPlugin
      * Runs a query against the database and returns the results as a nicely 
      * formatted string.
      * 
-     * @param sql SQL query
-     * @return Formatted results
+     * @param sql SQL query,
+     * @return Formatted results,
      * @see JDBCUtil#format(ResultSet)
      */
     protected String executeSQL(String sql)
@@ -329,7 +329,7 @@ public class QueryPlugin extends JPanel implements IPlugin
     /**
      * Adds a sql statement to the popup menu history.
      * 
-     * @param sql SQL statement to add to the history
+     * @param sql SQL statement to add to the history,
      */
     protected void addToHistory(String sql)
     {

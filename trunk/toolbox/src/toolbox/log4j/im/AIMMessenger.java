@@ -28,6 +28,10 @@ public class AIMMessenger implements InstantMessenger
      // NOTE: Cannot use Log4J logging since this is included in the 
      //       implementation of a Log4J appender.
     
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
     /** 
      * Return code for a successful connection. 
      */
@@ -37,6 +41,10 @@ public class AIMMessenger implements InstantMessenger
      * Return code for a failed connection.
      */
     public static final String CONNECT_FAILED = "Connect failed!";
+    
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
     
     /** 
      * Available instant messaging protocols. 
@@ -242,7 +250,7 @@ public class AIMMessenger implements InstantMessenger
     }
     
     //--------------------------------------------------------------------------
-    // Inner Classes
+    // AIMListener
     //--------------------------------------------------------------------------
     
     /** 
@@ -265,7 +273,7 @@ public class AIMMessenger implements InstantMessenger
         //----------------------------------------------------------------------
 
         /** 
-         * Creates an AIMListener
+         * Creates an AIMListener.
          */
         public AIMListener()
         {
@@ -280,7 +288,7 @@ public class AIMMessenger implements InstantMessenger
         /**
          * Waits for a connect (failure or success).
          * 
-         * @return CONNECT_SUCCEEDED or CONNECT_FAILED
+         * @return CONNECT_SUCCEEDED or CONNECT_FAILED.
          * @throws InterruptedException if interrupted while pulling from the 
          *         <code>connected_</code> queue. 
          */                

@@ -9,21 +9,20 @@ import toolbox.log4j.SmartLogger;
 import toolbox.util.StringUtil;
 
 /**
- * Unit Test for SmartLogger
+ * Unit Test for SmartLogger.
  */
 public class SmartLoggerTest extends TestCase
 {
-    private static Logger logger_ = 
-        Logger.getLogger(SmartLoggerTest.class);
+    private static Logger logger_ = Logger.getLogger(SmartLoggerTest.class);
 
     //--------------------------------------------------------------------------
     // Main
     //--------------------------------------------------------------------------
 
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
-     * @param  args  Args
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -35,7 +34,7 @@ public class SmartLoggerTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Tests right() for proper truncation behavior
+     * Tests right() for proper truncation behavior.
      */
     public void testLog()
     {

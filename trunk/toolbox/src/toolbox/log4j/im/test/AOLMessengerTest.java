@@ -22,7 +22,11 @@ public class AOLMessengerTest extends TestCase implements StandaloneTestCase
 {
     private static final Logger logger_ =
         Logger.getLogger(AOLMessengerTest.class);
-        
+    
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
     /**
      * Yahoo user that will receive all test messages.
      */
@@ -46,7 +50,7 @@ public class AOLMessengerTest extends TestCase implements StandaloneTestCase
     /**
      * Entrypoint.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -60,7 +64,7 @@ public class AOLMessengerTest extends TestCase implements StandaloneTestCase
     /**
      * Tests full lifecycle of typical usage.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */    
     public void testLifeCycle() throws Exception
     {
@@ -90,6 +94,7 @@ public class AOLMessengerTest extends TestCase implements StandaloneTestCase
         logger_.debug("All done!");
     }
     
+    
     /**
      * Tests sending a whole slew of messages.
      * 
@@ -116,6 +121,7 @@ public class AOLMessengerTest extends TestCase implements StandaloneTestCase
         messenger.logout();
         messenger.shutdown();
     }
+    
     
     /**
      * Tests that the configuration in the xml file is read and executed

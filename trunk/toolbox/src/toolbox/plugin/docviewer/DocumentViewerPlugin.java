@@ -41,12 +41,12 @@ import toolbox.workspace.PluginWorkspace;
  */ 
 public class DocumentViewerPlugin extends JPanel implements IPlugin
 {
+    private static final Logger logger_ = 
+        Logger.getLogger(DocumentViewerPlugin.class);
+    
     //--------------------------------------------------------------------------
     // Constants
     //--------------------------------------------------------------------------
-    
-    private static final Logger logger_ = 
-        Logger.getLogger(DocumentViewerPlugin.class);
     
     /**
      * File containing hard coded list of doc viewers just in case runtime
@@ -160,7 +160,7 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
      * 
      * @param file File to view with the embedded PDF viewer.
      * @param dv Document viewer.
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     protected void viewDocument(DocumentViewer dv, File file) throws Exception
     {

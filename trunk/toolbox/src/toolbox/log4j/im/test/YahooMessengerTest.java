@@ -24,6 +24,10 @@ public class YahooMessengerTest extends TestCase implements StandaloneTestCase
     private static final Logger logger_ =
         Logger.getLogger(YahooMessengerTest.class);
 
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
     /**
      * Yahoo user that will receive all test messages.
      */
@@ -46,7 +50,7 @@ public class YahooMessengerTest extends TestCase implements StandaloneTestCase
     /**
      * Entrypoint.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -60,7 +64,7 @@ public class YahooMessengerTest extends TestCase implements StandaloneTestCase
     /**
      * Tests full lifecycle of typical usage.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */    
     public void testLifeCycle() throws Exception
     {
@@ -90,7 +94,7 @@ public class YahooMessengerTest extends TestCase implements StandaloneTestCase
     /**
      * Tests sending a whole slew of messages.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */    
     public void testSendMany() throws Exception
     {
@@ -118,7 +122,7 @@ public class YahooMessengerTest extends TestCase implements StandaloneTestCase
      * Tests that the configuration in the xml file is read and executed
      * correctly.
      *  
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testConfigByXML() throws Exception
     {

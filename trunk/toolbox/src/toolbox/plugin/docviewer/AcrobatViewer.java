@@ -23,8 +23,11 @@ import toolbox.util.FileUtil;
  */
 public class AcrobatViewer extends JPanel implements DocumentViewer
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(AcrobatViewer.class);
+    private static final Logger logger_ = Logger.getLogger(AcrobatViewer.class);
+    
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
     
     /**
      * Acrobat viewer component.

@@ -127,7 +127,6 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
      */
     public void applyPrefs(Element prefs)
     {
-
     }
 
     
@@ -136,7 +135,6 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
      */
     public void savePrefs(Element prefs)
     {
-    
     }
 
     
@@ -240,8 +238,8 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
     /**
      * Creates a map of the components.
      *
-     * @param components Input map
-     * @param key Map key
+     * @param components Input map.
+     * @param key Map key.
      * @return Map
      */
     private Map getComponentMap(Map components, String key)

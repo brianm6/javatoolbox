@@ -33,7 +33,7 @@ public class TcpTunnelTest extends TestCase
     /**
      * Entrypoint.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -48,7 +48,7 @@ public class TcpTunnelTest extends TestCase
      * Tests the TcpTunnel for an end to end scenario of sending/receiving
      * data though the tunnel.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testTcpTunnel() throws Exception 
     {    

@@ -10,6 +10,10 @@ import java.util.StringTokenizer;
  */
 public class Main
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /** 
      * List of paths remembered so dupes can be flagged. 
      */
@@ -22,7 +26,7 @@ public class Main
     /**
      * Entrypoint for showclasspath.
      * 
-     * @param args None recognized 
+     * @param args None recognized. 
      */
     public static void main(String[] args)
     {
@@ -67,8 +71,8 @@ public class Main
      * Checks if a path is a duplicate by checking the existing list. The
      * comparison is case-insensetive.
      * 
-     * @param dupe Path to check for duplicate
-     * @return True if duplicate, flase otherwise
+     * @param dupe Path to check for duplicate.
+     * @return True if duplicate, flase otherwise.
      */
     private boolean isDupe(String dupe)
     {

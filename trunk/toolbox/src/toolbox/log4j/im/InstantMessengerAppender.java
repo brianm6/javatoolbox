@@ -106,7 +106,7 @@ public class InstantMessengerAppender extends AppenderSkeleton
     /**
      * Sets the password. 
      * 
-     * @param string Cleartext password
+     * @param string Cleartext password.
      */
     public void setPassword(String string)
     {
@@ -117,7 +117,7 @@ public class InstantMessengerAppender extends AppenderSkeleton
     /**
      * Sets the recipients username.
      * 
-     * @param string Recipient
+     * @param string Recipient.
      */
     public void setRecipient(String string)
     {
@@ -128,7 +128,7 @@ public class InstantMessengerAppender extends AppenderSkeleton
     /**
      * Sets the username.
      * 
-     * @param string Username to use for the message origin
+     * @param string Username to use for the message origin.
      */
     public void setUsername(String string)
     {
@@ -164,7 +164,7 @@ public class InstantMessengerAppender extends AppenderSkeleton
     /** 
      * Connects to the instant messenger server and authenticates the user.
      * 
-     * @throws InstantMessengerException on connection or authentication error
+     * @throws InstantMessengerException on connection or authentication error.
      */
     protected void connect() throws InstantMessengerException
     {

@@ -22,6 +22,10 @@ public class AIMMessengerTest extends TestCase implements StandaloneTestCase
     private static final Logger logger_ =
         Logger.getLogger(AIMMessengerTest.class);
 
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
     /**
      * Yahoo user that will receive all test messages.
      */
@@ -45,7 +49,7 @@ public class AIMMessengerTest extends TestCase implements StandaloneTestCase
     /**
      * Entrypoint.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -59,7 +63,7 @@ public class AIMMessengerTest extends TestCase implements StandaloneTestCase
     /**
      * Tests full lifecycle of typical usage.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */    
     public void testLifeCycle() throws Exception
     {

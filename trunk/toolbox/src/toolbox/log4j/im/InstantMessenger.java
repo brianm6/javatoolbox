@@ -24,7 +24,7 @@ public interface InstantMessenger
      * Initializes the instant messenger with any properties needed for the
      * specific implementation.
      * 
-     * @param props Initialization properties
+     * @param props Initialization properties.
      * @throws InstantMessengerException on initialization error.
      */
     void initialize(Properties props)
@@ -34,8 +34,8 @@ public interface InstantMessenger
     /**
      * Logs the given user onto the instant messaging service.
      * 
-     * @param username Username
-     * @param password Password in cleartext
+     * @param username Username.
+     * @param password Password in cleartext.
      * @throws InstantMessengerException if authentication fails.
      */
     void login(String username, String password) 
@@ -45,8 +45,8 @@ public interface InstantMessenger
     /**
      * Sends an instant message to the given recipient.
      * 
-     * @param recipient Recipient of the instant message
-     * @param message Text of the message
+     * @param recipient Recipient of the instant message.
+     * @param message Text of the message.
      * @throws InstantMessengerException if sending fails.
      */
     void send(String recipient, String message)
@@ -56,7 +56,7 @@ public interface InstantMessenger
     /**
      * Logs the user off of the instant messaging system.
      * 
-     * @throws InstantMessengerException if an error occurs
+     * @throws InstantMessengerException if an error occurs.
      */
     void logout() throws InstantMessengerException;
     
@@ -64,7 +64,7 @@ public interface InstantMessenger
     /**
      * Shuts down the client.
      * 
-     * @throws InstantMessengerException if an error occurs during shutdown
+     * @throws InstantMessengerException if an error occurs during shutdown.
      */
     void shutdown() throws InstantMessengerException;
     
@@ -73,7 +73,7 @@ public interface InstantMessenger
      * Returns true if we're successfully connected to the instant messaging
      * server.
      * 
-     * @return True if connected, false otherwise
+     * @return True if connected, false otherwise.
      */
     boolean isConnected();
 }

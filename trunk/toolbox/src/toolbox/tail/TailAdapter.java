@@ -1,7 +1,7 @@
 package toolbox.tail;
 
 /**
- * Adapter class for TailListener 
+ * Adapter class for TailListener. 
  */
 public class TailAdapter implements TailListener
 {
@@ -12,6 +12,7 @@ public class TailAdapter implements TailListener
     {
     }
 
+    
     /**
      * @see toolbox.tail.TailListener#tailStopped(toolbox.tail.Tail)
      */
@@ -19,6 +20,7 @@ public class TailAdapter implements TailListener
     {
     }
 
+    
     /**
      * @see toolbox.tail.TailListener#tailEnded(toolbox.tail.Tail)
      */
@@ -26,6 +28,7 @@ public class TailAdapter implements TailListener
     {
     }
 
+    
     /**
      * @see toolbox.tail.TailListener#tailPaused(toolbox.tail.Tail)
      */
@@ -33,6 +36,7 @@ public class TailAdapter implements TailListener
     {
     }
 
+    
     /**
      * @see toolbox.tail.TailListener#tailUnpaused(toolbox.tail.Tail)
      */
@@ -40,6 +44,7 @@ public class TailAdapter implements TailListener
     {
     }
 
+    
     /**
      * @see toolbox.tail.TailListener#tailReattached(toolbox.tail.Tail)
      */
@@ -47,6 +52,7 @@ public class TailAdapter implements TailListener
     {
     }
 
+    
     /**
      * @see toolbox.tail.TailListener#nextLine(toolbox.tail.Tail, 
      *      java.lang.String)

@@ -23,9 +23,12 @@ import toolbox.util.StringUtil;
  */
 public class RemoteTelnet
 {
-    private static final Logger logger_ =
-        Logger.getLogger(RemoteTelnet.class);
-        
+    private static final Logger logger_ = Logger.getLogger(RemoteTelnet.class);
+    
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /** 
      * Used to read missing telnet info from the standard in. 
      */
@@ -110,12 +113,12 @@ public class RemoteTelnet
     /**
      * Creates a remote telnet with the given options.
      * 
-     * @param hostname Host to telnet to
-     * @param port Telnet port
-     * @param username Login user
-     * @param password Cleartext password
-     * @param command Command to execute on remote host
-     * @throws IOException on I/O error
+     * @param hostname Host to telnet to.
+     * @param port Telnet port.
+     * @param username Login user.
+     * @param password Cleartext password.
+     * @param command Command to execute on remote host.
+     * @throws IOException on I/O error.
      */ 
     public RemoteTelnet(
             String hostname, 
@@ -131,8 +134,8 @@ public class RemoteTelnet
     /**
      * Creates a remote telnet with the given options.
      * 
-     * @param options Telnet info
-     * @throws IOException on I/O error
+     * @param options Telnet info.
+     * @throws IOException on I/O error.
      */
     public RemoteTelnet(RemoteTelnetInfo options) throws IOException
     {
@@ -147,7 +150,7 @@ public class RemoteTelnet
      * Telnets to the remote host and executes the command.
      * 
      * @throws SocketException on socket communication error.
-     * @throws IOException on I/O error
+     * @throws IOException on I/O error.
      */    
     public void execute() throws SocketException, IOException
     {
@@ -186,8 +189,8 @@ public class RemoteTelnet
     /**
      * Enables interactive telnet.
      * 
-     * @param telnet Telnet client
-     * @throws IOException on I/O error
+     * @param telnet Telnet client.
+     * @throws IOException on I/O error.
      */
     public void commandLoop(RemoteTelnetClient telnet) throws IOException
     {
@@ -255,8 +258,8 @@ public class RemoteTelnet
     /**
      * Promps the user to enter a value via the command line.
      * 
-     * @param prompt Prompt that the user is presented with
-     * @return Value that the user typed in
+     * @param prompt Prompt that the user is presented with.
+     * @return Value that the user typed in.
      * @throws IOException on I/O error.
      */
     private String queryUser(String prompt) throws IOException

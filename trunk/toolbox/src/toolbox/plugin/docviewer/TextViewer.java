@@ -18,6 +18,10 @@ import toolbox.util.ui.JSmartTextArea;
  */
 public class TextViewer implements DocumentViewer
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
      * The contents of the file are dumped into this text area.
      */

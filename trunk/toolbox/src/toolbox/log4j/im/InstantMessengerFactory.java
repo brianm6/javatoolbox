@@ -9,8 +9,8 @@ public class InstantMessengerFactory
      * Creates an InstantMessenger given the name of the instant messaging
      * network.
      * 
-     * @param network Instant messaging network 
-     * @return InstantMessenger for the given instant messaging network
+     * @param network Instant messaging network. 
+     * @return InstantMessenger for the given instant messaging network.
      */
     public static InstantMessenger create(String network)
     {

@@ -247,7 +247,7 @@ public class SametimeMessenger implements InstantMessenger
     }
         
     //--------------------------------------------------------------------------
-    // Inner Classes
+    // SametimeLoginListener
     //--------------------------------------------------------------------------
     
     /**

@@ -40,8 +40,7 @@ import toolbox.workspace.WorkspaceAction;
  */    
 public class DBConfig extends JPanel implements IPreferenced
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(DBConfig.class);
+    private static final Logger logger_ = Logger.getLogger(DBConfig.class);
     
     //--------------------------------------------------------------------------
     // Constants
@@ -113,7 +112,7 @@ public class DBConfig extends JPanel implements IPreferenced
     /**
      * Creates a DBConfig for the given plugin.
      * 
-     * @param plugin Query plugin
+     * @param plugin Query plugin.
      */
     public DBConfig(QueryPlugin plugin)
     {
@@ -129,7 +128,7 @@ public class DBConfig extends JPanel implements IPreferenced
     /**
      * Adds a profile to the existing list displayed in the combobox.
      * 
-     * @param profile Database profile
+     * @param profile Database profile.
      */
     public void addProfile(DBProfile profile)
     {

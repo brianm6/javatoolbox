@@ -27,6 +27,10 @@ public class AOLMessenger implements InstantMessenger
      // NOTE: Cannot use Log4J logging since this is included in the 
      //       implementation of a Log4J appender.
     
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
     /** 
      * Return code for a successful connection. 
      */
@@ -36,6 +40,10 @@ public class AOLMessenger implements InstantMessenger
      * Return code for a failed connection. 
      */
     public static final String CONNECT_FAILED = "Connect failed!";
+    
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
     
     /** 
      * Connection to the AOL instant messaging server. 
@@ -202,7 +210,7 @@ public class AOLMessenger implements InstantMessenger
     }
         
     //--------------------------------------------------------------------------
-    // Inner Classes
+    // AOLListener
     //--------------------------------------------------------------------------
     
     /** 

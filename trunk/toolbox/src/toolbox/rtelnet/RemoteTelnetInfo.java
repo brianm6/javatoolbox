@@ -6,6 +6,10 @@ package toolbox.rtelnet;
  */
 public class RemoteTelnetInfo
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
      * Hostname of the machine we're telnetting to.
      */
@@ -47,11 +51,11 @@ public class RemoteTelnetInfo
     /**
      * Creates a RemoteTelnetInfo with the given parameters.
      * 
-     * @param hostname Host to telnet to
-     * @param port Port to connect to on telnet host
-     * @param username Username 
-     * @param password Password
-     * @param command Command to execute
+     * @param hostname Host to telnet to.
+     * @param port Port to connect to on telnet host.
+     * @param username Username.
+     * @param password Password.
+     * @param command Command to execute.
      */
     public RemoteTelnetInfo(String hostname, int port, String username, 
         String password, String command)
@@ -125,7 +129,7 @@ public class RemoteTelnetInfo
     /**
      * Sets the command.
      * 
-     * @param command The command to set
+     * @param command The command to set.
      */
     public void setCommand(String command)
     {
@@ -136,7 +140,7 @@ public class RemoteTelnetInfo
     /**
      * Sets the hostname.
      * 
-     * @param hostname The hostname to set
+     * @param hostname The hostname to set.
      */
     public void setHostname(String hostname)
     {
@@ -147,7 +151,7 @@ public class RemoteTelnetInfo
     /**
      * Sets the password.
      * 
-     * @param password The password to set
+     * @param password The password to set.
      */
     public void setPassword(String password)
     {
@@ -158,7 +162,7 @@ public class RemoteTelnetInfo
     /**
      * Sets the port.
      * 
-     * @param port The port to set
+     * @param port The port to set.
      */
     public void setPort(int port)
     {
@@ -169,7 +173,7 @@ public class RemoteTelnetInfo
     /**
      * Sets the username.
      * 
-     * @param username The username to set
+     * @param username The username to set.
      */
     public void setUsername(String username)
     {

@@ -217,7 +217,7 @@ public class Tree
      * Launcher for tree.
      *
      * @param args  [-f, -s -os, rootDir]
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public static void main(String args[]) throws Exception
     {
@@ -525,7 +525,7 @@ public class Tree
      * 
      * @param rootDir Root directory.
      * @param level Current level of decorated indentation.
-     * @return boolean True
+     * @return boolean True.
      */
     protected boolean showTree(File rootDir, String level)
     {

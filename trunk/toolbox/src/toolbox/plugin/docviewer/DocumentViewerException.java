@@ -16,7 +16,7 @@ public class DocumentViewerException extends Exception
     /**
      * Creates a DocumentViewerException.
      * 
-     * @param message Error message
+     * @param message Error message.
      */
     public DocumentViewerException(String message)
     {
@@ -38,8 +38,8 @@ public class DocumentViewerException extends Exception
     /**
      * Creates a DocumentViewerException.
      * 
-     * @param message Error message
-     * @param cause Originating exception
+     * @param message Error message.
+     * @param cause Originating exception.
      */
     public DocumentViewerException(String message, Throwable cause)
     {

@@ -33,7 +33,7 @@ public class SametimeMessengerTest
     /**
      * Entrypoint.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -47,7 +47,7 @@ public class SametimeMessengerTest
     /**
      * Tests full lifecycle of typical usage.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testLifeCycle() throws Exception
     {
@@ -86,7 +86,7 @@ public class SametimeMessengerTest
     /**
      * Tests sending a whole slew of messages.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void xtestSendMany() throws Exception
     {
@@ -115,7 +115,7 @@ public class SametimeMessengerTest
      * Tests that the configuration in the xml file is read and executed
      * correctly.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void xtestConfigByXML() throws Exception
     {

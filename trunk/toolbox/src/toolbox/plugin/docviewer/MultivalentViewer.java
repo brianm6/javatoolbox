@@ -173,7 +173,7 @@ public class MultivalentViewer extends JPanel implements DocumentViewer
     }
 
     //--------------------------------------------------------------------------
-    // Inner Classes
+    // SemanticSender
     //--------------------------------------------------------------------------
 
     /**

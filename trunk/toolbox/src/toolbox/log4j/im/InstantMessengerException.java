@@ -16,8 +16,8 @@ public class InstantMessengerException extends Exception
     /**
      * Creates an InstantMessengerException.
      * 
-     * @param message Error message
-     * @param cause Originating exception
+     * @param message Error message.
+     * @param cause Originating exception.
      */
     public InstantMessengerException(String message, Throwable cause)
     {
@@ -28,7 +28,7 @@ public class InstantMessengerException extends Exception
     /**
      * Creates an InstantMessengerException.
      * 
-     * @param cause Originating exception
+     * @param cause Originating exception.
      */
     public InstantMessengerException(Throwable cause)
     {
@@ -39,7 +39,7 @@ public class InstantMessengerException extends Exception
     /**
      * Creates an InstantMessengerException.
      * 
-     * @param message Error message
+     * @param message Error message.
      */
     public InstantMessengerException(String message)
     {
