@@ -25,17 +25,25 @@ public class JDBCUtil
     public static final Logger logger_ =
         Logger.getLogger(JDBCUtil.class);
 
-    /** JDBC connection properties **/
+    /** 
+     * JDBC connection properties 
+     */
     private static Properties connProps_;
         
-        
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
+
     /**
-     * Constructor for JDBCUtil.
+     * Prevent construction
      */
     private JDBCUtil()
     {
     }
 
+    //--------------------------------------------------------------------------
+    //  Static Methods
+    //--------------------------------------------------------------------------
     
     /**
      * Formats a results set in a table like manner

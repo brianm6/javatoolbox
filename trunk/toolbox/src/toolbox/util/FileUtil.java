@@ -13,11 +13,11 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-
 import toolbox.util.io.filter.DirectoryFilter;
 
 /**
@@ -28,13 +28,21 @@ public final class FileUtil
     /** Logger **/
     private static final Logger logger_ = 
         Logger.getLogger(FileUtil.class);
-    
+
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
+
     /**
      * Prevent construction
      */
     private FileUtil()
     {
     }
+
+    //--------------------------------------------------------------------------
+    //  Static Methods
+    //--------------------------------------------------------------------------
 
     /**
      * Deletes the contents of a directory including nested directories. The
@@ -56,8 +64,10 @@ public final class FileUtil
             for(int i=0; i<contents.length; i++)
             {
                 File sub = contents[i];
+                
                 if(sub.isDirectory())
                     cleanDir(sub);
+                    
                 sub.delete();
             }
         }
@@ -74,13 +84,14 @@ public final class FileUtil
     public static String getFileContents(String filename) 
         throws FileNotFoundException, IOException
     {
-        BufferedReader br = null; 
+        Reader br = null; 
         StringBuffer text = new StringBuffer();
 
         try 
         {
             br = new BufferedReader(new FileReader(filename));
             int i;
+            
             while ((i = br.read()) != -1) 
                 text.append((char)i);
         }
@@ -255,7 +266,7 @@ public final class FileUtil
         FilenameFilter filter)
     {
         File f = new File(startingDir);
-        ArrayList basket = new ArrayList(20);
+        List basket = new ArrayList(20);
 
         if (f.exists() && f.isDirectory()) 
         { 

@@ -30,7 +30,7 @@ public class StreamUtil
      *
      * @param      inputStream        The input stream to read from
      * @return     String representation of the input stream contents.
-     * @exception  IOException on IO error
+     * @throws     IOException on IO error
      */
     public static String asString(InputStream inputStream) throws IOException
     {
@@ -73,7 +73,8 @@ public class StreamUtil
      * @return  String contailing len characters read from input stream
      * @throws  IOException if underlying stream times out
      */
-    public static byte[] readExactly(InputStream is, int len) throws IOException
+    public static byte[] readExactly(InputStream is, int len) 
+        throws IOException
     {
         byte[] buffer = new byte[len];
 
@@ -118,7 +119,8 @@ public class StreamUtil
      * @return  String of characters read
      * @throws  IOException on IO error
      */
-    public static String readExactly(Reader reader, int len) throws IOException
+    public static String readExactly(Reader reader, int len) 
+        throws IOException
     {
         /* 
          * Could have just wrapped reader in a stream and called input streadm

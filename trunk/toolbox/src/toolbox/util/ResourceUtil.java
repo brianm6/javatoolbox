@@ -14,7 +14,7 @@ import org.apache.log4j.Logger;
 public final class ResourceUtil
 {
     /** Logger **/
-    public static final Logger logger_ = 
+    private static final Logger logger_ = 
         Logger.getLogger(ResourceUtil.class);
 
     /**
@@ -69,8 +69,8 @@ public final class ResourceUtil
      * Locates the resource identified by the url.
      *
      * @param     url  URL locating the resource.
-     * @return    an input stream representing the resource.
-     * @exception IOException if an error occurs.
+     * @return    Input stream representing the resource.
+     * @throws    IOException if an error occurs.
      */
     public static InputStream getURLResource(String url) throws IOException
     {
@@ -82,9 +82,9 @@ public final class ResourceUtil
     /**
      * Locates the resource identified by the file name.
      *
-     * @param     filename    the name of the file resource.
-     * @return    an input stream representing the file resource.
-     * @exception IOException if an error occurs.
+     * @param     filename    Name of the file resource.
+     * @return    Input stream representing the file resource.
+     * @throws    IOException if an error occurs.
      */
     public static InputStream getFileResource(String filename) 
         throws IOException
@@ -97,9 +97,9 @@ public final class ResourceUtil
     /**
      * Locates the resource associated with this class.
      *
-     * @param     resource    the relative name of the resource.
-     * @return    an input stream representing the resource.
-     * @exception IOException if an error occurs.
+     * @param     resource    Relative name of the resource.
+     * @return    Input stream representing the resource.
+     * @throws    IOException if an error occurs.
      */
     public static InputStream getClassResource(String resource) 
         throws IOException
@@ -112,10 +112,10 @@ public final class ResourceUtil
     /**
      * Locates the resource associated with the supplied class.
      *
-     * @param     context        the class context to use.
-     * @param     resource    the relative name of the resource.
-     * @return    an input stream representing the resource.
-     * @exception IOException if an error occurs.
+     * @param     context     Class context to use.
+     * @param     resource    Relative name of the resource.
+     * @return    Input stream representing the resource.
+     * @throws    IOException if an error occurs.
      */
     public static InputStream getClassResource(Class context, String resource)
         throws IOException
@@ -131,13 +131,13 @@ public final class ResourceUtil
      * Locates the resource associated with the package of the supplied
      * class.
      *
-     * @param     context        the class context to use.
-     * @param     resource    the relative name of the resource.
-     * @return    an input stream representing the resource.
-     * @exception IOException if an error occurs.
+     * @param     context     Class context to use.
+     * @param     resource    Relative name of the resource.
+     * @return    Input stream representing the resource.
+     * @throws    IOException if an error occurs.
      */
-    public static InputStream getPackageResource(Class context, String resource)
-        throws IOException
+    public static InputStream getPackageResource(Class context, 
+        String resource) throws IOException
     {
         logger_.debug(
             "getPackageResource(" + context.getName() + ", " + resource + ")");
@@ -149,9 +149,9 @@ public final class ResourceUtil
     /**
      * Locates the resource identified by the url.
      *
-     * @param     url        the url locating the resource.
-     * @return    a URL encapsulating the resource.
-     * @exception IOException if an error occurs.
+     * @param     url   URL locating the resource.
+     * @return    URL encapsulating the resource.
+     * @throws    IOException if an error occurs.
      */
     public static URL getResourceURL(String url)
         throws IOException
@@ -172,9 +172,9 @@ public final class ResourceUtil
     /**
      * Locates the resource identified by the file name.
      *
-     * @param     filename    the name of the file resource.
-     * @return    a URL encapsulating the resource.
-     * @exception IOException if an error occurs.
+     * @param     filename    Name of the file resource.
+     * @return    URL encapsulating the resource.
+     * @throws    IOException if an error occurs.
      */
     public static URL getFileResourceURL(String filename)
         throws IOException
@@ -195,9 +195,9 @@ public final class ResourceUtil
     /**
      * Locates the resource associated with this class.
      *
-     * @param     resource    the relative name of the resource.
-     * @return    a URL encapsulating the resource.
-     * @exception IOException if an error occurs.
+     * @param     resource    Relative name of the resource.
+     * @return    URL encapsulating the resource.
+     * @throws    IOException if an error occurs.
      */
     public static URL getClassResourceURL(String resource)
         throws IOException
@@ -209,10 +209,10 @@ public final class ResourceUtil
     /**
      * Locates the resource associated with the supplied class.
      *
-     * @param     context        the class context to use.
-     * @param     resource    the relative name of the resource.
-     * @return    a URL encapsulating the resource.
-     * @exception IOException if an error occurs.
+     * @param     context     Class context to use.
+     * @param     resource    Relative name of the resource.
+     * @return    URL encapsulating the resource.
+     * @throws    IOException if an error occurs.
      */
     public static URL getClassResourceURL(Class context, String resource)
         throws IOException
@@ -235,10 +235,10 @@ public final class ResourceUtil
      * Locates the resource associated with the package of the supplied
      * class. 
      *
-     * @param     context        the class context to use.
-     * @param     resource    the relative name of the resource.
-     * @return    a URL encapsulating the resource.
-     * @exception IOException if an error occurs.
+     * @param     context     Class context to use.
+     * @param     resource    Relative name of the resource.
+     * @return    URL encapsulating the resource.
+     * @throws    IOException if an error occurs.
      */
     public static URL getPackageResourceURL(Class context, String resource)
         throws IOException

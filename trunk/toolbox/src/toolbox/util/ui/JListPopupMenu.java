@@ -11,7 +11,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
 /**
- * JListPopupMenu
+ * PopupMenu for a JList
  */
 public class JListPopupMenu extends JPopupMenu
 {

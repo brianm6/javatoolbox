@@ -3,7 +3,26 @@ package toolbox.util;
 import java.util.Date;
 
 /**
- * Represents the time elapsed between two instances in time
+ * Represents the time elapsed between two instances in time. Useful for 
+ * determining the time elapsed for any given method call/operation/unit of
+ * work. 
+ * <pre>
+ *  
+ * Usage:
+ * 
+ * // Create new instance init'ed to current time
+ * ElapsedTime et = new ElapsedTime();
+ * 
+ * // Do some work
+ * object.doWork();
+ * 
+ * // Set the ending time. Current time is the default
+ * et.setEndTime();
+ * 
+ * // Show elapsed time
+ * System.out.println(et);
+ * 
+ * </pre>
  */
 public class ElapsedTime
 {
@@ -290,7 +309,10 @@ public class ElapsedTime
         return total;
     }
     
-    
+    //--------------------------------------------------------------------------
+    //  Overridden Methods from Object
+    //--------------------------------------------------------------------------
+        
     /**
      * Returns elapsed time as a formatted string: 3d 23h 34m 23s 897ms
      * 

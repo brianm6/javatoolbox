@@ -58,13 +58,20 @@ public final class ResourceCloser
     private static Logger logger_ =
         Logger.getLogger(ResourceCloser.class);
 
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
+
     /**
-     * Hidden constructor for ResourceCloser, because this is used like
-     * a Singleton with static methods only.
+     * Prevent construction
      */
     private ResourceCloser()
     {
     }
+
+    //--------------------------------------------------------------------------
+    //  Static Methods
+    //--------------------------------------------------------------------------
 
     /**
      * Closes a context quietly

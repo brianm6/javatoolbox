@@ -79,14 +79,14 @@ public final class StringUtil
      * Strings longer than the width are returned unaltered if 'trunc'
      * is false; else they are truncated
      *
-     * @param   str      String to justify
-     * @param   width    Width of resulting screen
-     * @param   padChar  Character to use for padding
-     * @param   doTruncate  if true, truncate; if false, leave unaltered
+     * @param   str         String to justify
+     * @param   width       Width of resulting screen
+     * @param   padChar     Character to use for padding
+     * @param   doTruncate  If true, truncate; if false, leave unaltered
      * @return  String of length width containing the given string on the left
      */
-    public static String left(String str, final int width, final char padChar,
-        final boolean doTruncate)
+    public static String left(String str, int width, char padChar, 
+        boolean doTruncate)
     {
         final int strLen = str.length();
         String justStr = str;
@@ -114,7 +114,7 @@ public final class StringUtil
     
     
     /**
-     * justify right a string representing the integer within given width.
+     * Justify right a string representing the integer within given width.
      * <P>the num is converted to a string
      * which is padded with space characters on the left to given width
      * if the string representing the integer is greater than width then 
@@ -122,7 +122,7 @@ public final class StringUtil
      *
      * @param  num    Number to right
      * @param  width  Max width
-     * @return a string representation of an int of length width right justified
+     * @return String representation of an int of length width right justified
      */
     public static String right(int num, int width)
     {
@@ -167,13 +167,13 @@ public final class StringUtil
      * @param   str         String to justify
      * @param   width       Width of resulting screen
      * @param   padChar     Character to use for padding
-     * @param   doTruncate  if true, truncate; if false, leave unaltered
+     * @param   doTruncate  If true, truncate; if false, leave unaltered
      * @return  String of length width containing the given string on the left
      */
-    public static String right(String str, final int width, final char padChar,
-        final boolean doTruncate)
+    public static String right(String str, int width, char padChar,
+        boolean doTruncate)
     {
-        final int strLen = str.length();
+        int strLen = str.length();
         String justStr = str;
 
         if( strLen > width )
@@ -397,7 +397,8 @@ public final class StringUtil
      * @param  suffix  Suffix after each line
      * @return Wrapped string
      */
-    public static String wrap(String s, int width, String prefix, String suffix)
+    public static String wrap(String s, int width, String prefix, 
+        String suffix)
     {
         String wrapped = null;
         

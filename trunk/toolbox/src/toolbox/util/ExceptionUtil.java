@@ -12,12 +12,20 @@ import org.apache.log4j.Logger;
  */
 public class ExceptionUtil
 {
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
+
     /**
      * Prevent construction
      */
     private ExceptionUtil()
     {
     }
+
+    //--------------------------------------------------------------------------
+    //  Static Methods
+    //--------------------------------------------------------------------------
 
     /**
      * Converts a <code>Throwable</code>'s stack trace to a string
