@@ -112,6 +112,7 @@ public class JFindClass extends JFrame
      * Entrypoint
      * 
      * @param  args  None recognized
+     * @throws Exception on error
      */    
     public static void main(String[] args) throws Exception
     {
@@ -125,6 +126,8 @@ public class JFindClass extends JFrame
 
     /**
      * Constructor for JFindClass
+     * 
+     * @throws Exception on error
      */
     public JFindClass() throws Exception
     {
@@ -136,6 +139,7 @@ public class JFindClass extends JFrame
      * Constructor for JFindClass
      * 
      * @param  title  Window title
+     * @throws Exception on error
      */
     public JFindClass(String title) throws Exception
     {
@@ -223,6 +227,8 @@ public class JFindClass extends JFrame
     /**
      * Builds the Decompiler panel which shows a class file (search result) in 
      * decompiled form
+     * 
+     * @return Decompiler panel
      */
     protected JPanel buildDecompilerPanel()
     {
@@ -242,6 +248,8 @@ public class JFindClass extends JFrame
     /**
      * Builds the Classpath panel which shows all paths/archives that have been
      * targeted for the current search
+     * 
+     * @return Classpath Panel
      */
     protected JPanel buildClasspathPanel()
     {
@@ -252,7 +260,10 @@ public class JFindClass extends JFrame
         // Create popup menu and wire it to the JList
         searchPopupMenu_ = new JPopupMenu();
         searchPopupMenu_.add(new JMenuItem(new ClearSearchListAction()));
-        searchPopupMenu_.add(new JMenuItem(new AddClasspathToSearchListAction()));
+        
+        searchPopupMenu_.add(
+            new JMenuItem(new AddClasspathToSearchListAction()));
+            
         searchList_.addMouseListener(new JPopupListener(searchPopupMenu_));
         
         JPanel pathPanel = new JPanel(new BorderLayout());
@@ -265,6 +276,8 @@ public class JFindClass extends JFrame
     /**
      * Builds the flippane at the top of the application which contains the
      * Classpath and Decompiler panels
+     * 
+     * @return  Top flip pane
      */
     protected JPanel buildTopFlipPane()
     {
@@ -272,11 +285,11 @@ public class JFindClass extends JFrame
         JPanel decompilerPanel = buildDecompilerPanel();
                 
         // Top flip pane
-        JFlipPane topFlipPane_ = new JFlipPane(JFlipPane.TOP);
-        topFlipPane_.addFlipper("Classpath", pathPanel);
-        topFlipPane_.addFlipper("Decompiler", decompilerPanel);
-        topFlipPane_.setSelectedFlipper(pathPanel);
-        return topFlipPane_;
+        JFlipPane topFlipPane = new JFlipPane(JFlipPane.TOP);
+        topFlipPane.addFlipper("Classpath", pathPanel);
+        topFlipPane.addFlipper("Decompiler", decompilerPanel);
+        topFlipPane.setSelectedFlipper(pathPanel);
+        return topFlipPane;
     }
 
     
@@ -429,14 +442,14 @@ public class JFindClass extends JFrame
          */
         public void searchingTarget(String target)
         {
-            final String target_ = target;
+            final String target2 = target;
             
             SwingUtilities.invokeLater(new Runnable()
             {
                 public void run()
                 {
-                    statusBar_.setStatus("Searching " + target_ + " ...");
-                    searchList_.setSelectedValue(target_, true);    
+                    statusBar_.setStatus("Searching " + target2 + " ...");
+                    searchList_.setSelectedValue(target2, true);    
                 }
             });
             
@@ -458,7 +471,7 @@ public class JFindClass extends JFrame
      */
     class JFileExplorerHandler extends JFileExplorerAdapter
     {
-        Logger logger_ = Logger.getLogger(JFileExplorerHandler.class);
+        private Logger logger_ = Logger.getLogger(JFileExplorerHandler.class);
         
         /**
          * Adds a directory to the path list
@@ -508,7 +521,7 @@ public class JFindClass extends JFrame
          * @param   table       JTable
          * @param   value       Value to assign to the cell at [row, column]
          * @param   isSelected  True if the cell is selected
-         * @param   isFocus     True if cell has focus
+         * @param   hasFocus    True if cell has focus
          * @param   row         Row of the cell to render
          * @param   column      Column of the cell to render
          * 
@@ -713,8 +726,7 @@ public class JFindClass extends JFrame
                     statusBar_.setStatus(results.length + " matches found");
                     
                     putValue(NAME, SEARCH);
-                    putValue(MNEMONIC_KEY, new Integer('S'));                    
-                    
+                    putValue(MNEMONIC_KEY, new Integer('S'));
                 }
             }
             catch (Exception ex)
