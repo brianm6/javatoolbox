@@ -25,27 +25,27 @@ public class Main extends FindClassAdapter
         Logger.getLogger(Main.class);
 
     /**
-     * Writer that output is sent to
+     * Writer that output is sent to.
      */
     private PrintWriter writer_;
     
     /**
-     * Number of classes found that match the search criteria
+     * Number of classes found that match the search criteria.
      */    
     private int numFound_;
     
     /**
-     * Case sensetivity search flag
+     * Case sensetivity search flag.
      */
     private boolean caseSensetive_;
     
     /**
-     * Flag to show the list of search targets 
+     * Flag to show the list of search targets. 
      */
     private boolean showTargets_;
     
     /**
-     * Search string expressed as a regular expression
+     * Search string expressed as a regular expression.
      */    
     private String classToFind_;
     
@@ -54,7 +54,7 @@ public class Main extends FindClassAdapter
     //--------------------------------------------------------------------------
     
     /**
-     * FindClass entry point
+     * FindClass entry point.
      * 
      * @param args Optional switches + name of class to find
      */
@@ -143,7 +143,7 @@ public class Main extends FindClassAdapter
     //--------------------------------------------------------------------------
 
     /**
-     * Creates main with the given writer for output
+     * Creates main with the given writer for output.
      * 
      * @param  writer  Writer that output will be written to
      */
@@ -157,7 +157,7 @@ public class Main extends FindClassAdapter
     //--------------------------------------------------------------------------
 
     /**
-     * Starts the search
+     * Starts the search.
      * 
      * @throws RESyntaxException on invalid regular expression
      * @throws IOException on I/O error
@@ -186,8 +186,9 @@ public class Main extends FindClassAdapter
         writer_.flush();
     }
 
+    
     /**
-     * Mutator for case sensetive flag
+     * Mutator for case sensetive flag.
      * 
      * @param b Case sensetive flag
      */    
@@ -196,8 +197,9 @@ public class Main extends FindClassAdapter
         caseSensetive_ = b;
     }
 
+    
     /**
-     * Mutator for the show targets flag
+     * Mutator for the show targets flag.
      * 
      * @param b Show targets flag
      */    
@@ -206,8 +208,9 @@ public class Main extends FindClassAdapter
         showTargets_ = b;
     }
 
+    
     /**
-     * Mutator for the class to find
+     * Mutator for the class to find.
      * 
      * @param find Class to find
      */
@@ -216,8 +219,9 @@ public class Main extends FindClassAdapter
         classToFind_ = find;
     }
 
+    
     /**
-     * Mutator for the output of the program
+     * Mutator for the output of the program.
      *
      * @param writer Writer to send output to
      */
@@ -231,7 +235,7 @@ public class Main extends FindClassAdapter
     //--------------------------------------------------------------------------
     
     /**
-     * Prints program usage
+     * Prints program usage.
      */
     private void printUsage()
     {
@@ -257,7 +261,7 @@ public class Main extends FindClassAdapter
     //--------------------------------------------------------------------------
  
     /**
-     * Implementation of IFindClassListener
+     * Implementation of IFindClassListener.
      * 
      * @param searchResult Results of class that was found.
      */   

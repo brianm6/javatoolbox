@@ -37,8 +37,12 @@ public class FindClass
     private static final Logger logger_ = 
         Logger.getLogger(Main.class);
     
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /** 
-     * Full/partial/regular expression of class to find 
+     * Full/partial/regular expression of class to find. 
      */
     private String classToFind_;
     
@@ -48,42 +52,42 @@ public class FindClass
     private boolean ignoreCase_;
 
     /** 
-     * Flag to cancel the search 
+     * Flag to cancel the search. 
      */
     private boolean isCancelled_;
 
     /** 
-     * Regular expression matcher 
+     * Regular expression matcher. 
      */
     private RE regExp_;
     
     /** 
-     * Holds ordered list of search targets (important is CLASSPATH) 
+     * Holds ordered list of search targets (important is CLASSPATH). 
      */
     private List searchTargets_;
 
     /** 
-     * Collection of listeners 
+     * Collection of listeners. 
      */ 
     private IFindClassListener[] findListeners_;
     
     /** 
-     * Default collector of search results 
+     * Default collector of search results. 
      */ 
     private FindClassCollector defaultCollector_;
 
     /** 
-     * Filter for class files 
+     * Filter for class files.
      */
     private FilenameFilter classFileFilter_;
     
     /** 
-     * Filter for archives 
+     * Filter for archives. 
      */
     private FilenameFilter archiveFilter_; 
     
     /** 
-     * Filter for directories 
+     * Filter for directories. 
      */
     private FilenameFilter directoryFilter_;
     
@@ -92,7 +96,7 @@ public class FindClass
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a FindClass
+     * Creates a FindClass.
      */
     public FindClass() 
     {
@@ -114,7 +118,7 @@ public class FindClass
     //--------------------------------------------------------------------------
 
     /**
-     * Finds a class
+     * Finds a class.
      * 
      * @param classToFind Regular expression for class to find
      * @param ignoreCase Ignores case in search
@@ -164,6 +168,7 @@ public class FindClass
         return defaultCollector_.getResults();
     }
 
+    
     /**
      * Returns a list of target jar, zips, and directories to be searched.
      * 
@@ -178,13 +183,15 @@ public class FindClass
         return searchTargets_;
     }
     
+    
     /**
-     * Cancels a pending search
+     * Cancels a pending search.
      */
     public void cancelSearch()
     {
         isCancelled_ = true;
     }
+    
     
     /**
      * Adds a search target to the front of the search target list.  A search 
@@ -196,6 +203,7 @@ public class FindClass
     {
         searchTargets_.add(searchTarget);
     }
+    
     
     /**
      * Adds a file or a directory as the search target. If a directory, then
@@ -218,8 +226,9 @@ public class FindClass
         }
     }
     
+    
     /**
-     * Removes a search target from the list of search targets
+     * Removes a search target from the list of search targets.
      *
      * @param searchTarget Search Target to remove
      */
@@ -228,17 +237,19 @@ public class FindClass
         searchTargets_.remove(searchTarget);
     }
     
+    
     /**
-     * Removes all search targets
+     * Removes all search targets.
      */
     public void removeSearchTargets()
     {
         searchTargets_.clear();
     }
 
+    
     /**
      * Returns a list of archives that exist in a given directory. The 
-     * directory is searched recursively
+     * directory is searched recursively.
      * 
      * @param dir Directory to find targets in
      * @return List of String filenames
@@ -253,7 +264,7 @@ public class FindClass
     //--------------------------------------------------------------------------
     
     /**
-     * Builds the list of search targets
+     * Builds the list of search targets.
      */
     protected void buildSearchTargets()
     {
@@ -271,6 +282,7 @@ public class FindClass
         //}
     }
     
+    
     /**
      * Returns a list of all search targets (archives and directories) on the 
      * classpath.
@@ -287,6 +299,7 @@ public class FindClass
         return targets;
     }
     
+    
     /**
      * Returns a list of all archives that are contained in the current
      * directory and all child directories.
@@ -298,6 +311,7 @@ public class FindClass
         return findFilesRecursively(".", archiveFilter_);        
     }
 
+    
     /**
      * Finds files recursively from a given starting directory using the
      * passed in filter as selection criteria.
@@ -337,8 +351,9 @@ public class FindClass
         return basket;
     }
     
+    
     /**
-     * Finds a class in a given jar file
+     * Finds a class in a given jar file.
      * 
      * @param jarName Name of the jar file to search
      * @throws IOException on I/O error
@@ -387,6 +402,7 @@ public class FindClass
         
         zf.close();
     }
+    
     
     /**
      * Finds a class in a given directory including child directories.
@@ -437,7 +453,7 @@ public class FindClass
     //--------------------------------------------------------------------------
 
     /**
-     * Called when a class is found matching the search criteria
+     * Called when a class is found matching the search criteria.
      *
      * @param result Detailed information on the class including location,
      *        size, name, etc.
@@ -448,6 +464,7 @@ public class FindClass
             findListeners_[i].classFound(result);
     }
 
+    
     /**
      * Called when a search has been completed.
      */
@@ -457,6 +474,7 @@ public class FindClass
             findListeners_[i].searchCompleted(classToFind_);
     }
 
+    
     /**
      * Called when a search target is about to be searched.
      *
@@ -468,8 +486,9 @@ public class FindClass
             findListeners_[i].searchingTarget(target);
     }
     
+    
     /**
-     * Called when the search is cancelled
+     * Called when the search is cancelled.
      */
     protected void fireSearchCancelled()
     {
@@ -477,6 +496,7 @@ public class FindClass
             findListeners_[i].searchCancelled();
     }
  
+    
     /**
      * Adds a search listener to the list of interested listeners. 
      * 
@@ -488,6 +508,7 @@ public class FindClass
             (IFindClassListener[]) ArrayUtil.add(findListeners_, listener);        
     }
     
+    
     /**
      * Removes a search listener from the list of interested listeners. 
      * 
@@ -498,6 +519,7 @@ public class FindClass
         findListeners_ = 
             (IFindClassListener[]) ArrayUtil.remove(findListeners_, listener);        
     }
+    
     
     /**
      * Removes all search listeners from the list of interested listeners.

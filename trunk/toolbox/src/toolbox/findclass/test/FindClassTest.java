@@ -10,7 +10,7 @@ import toolbox.findclass.FindClassResult;
 import toolbox.util.ArrayUtil;
 
 /**
- * Unit test for findclass
+ * Unit test for Findclass.
  */
 public class FindClassTest extends TestCase
 {
@@ -22,7 +22,7 @@ public class FindClassTest extends TestCase
     //--------------------------------------------------------------------------
         
     /**
-     * Test entry point
+     * Test entry point.
      * 
      * @param args None recognized
      */
@@ -36,7 +36,7 @@ public class FindClassTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Test finding a system class
+     * Test finding a system class.
      * 
      * @throws Exception on error
      */
@@ -55,8 +55,9 @@ public class FindClassTest extends TestCase
         assertTrue("Couldn't find " + searchFor, results.indexOf(searchFor)>=0);
     }
     
+    
     /**
-     * Test class not found
+     * Test class not found.
      * 
      * @throws Exception on error
      */
@@ -70,8 +71,9 @@ public class FindClassTest extends TestCase
         assertEquals("Class should not have been found", 0, results.length);
     }
 
+    
     /**
-     * Test case sensetivity
+     * Test case sensetivity.
      * 
      * @throws Exception on error
      */
@@ -88,8 +90,9 @@ public class FindClassTest extends TestCase
         assertEquals("Class should have been found", 1, results.length);
     }
     
+    
     /**
-     * Test finding an archive class
+     * Test finding an archive class.
      * 
      * @throws Exception on error
      */

@@ -9,7 +9,7 @@ import java.util.Map;
 import javax.swing.table.AbstractTableModel;
 
 /**
- * Table model for the search results
+ * Table model for the search results.
  */
 public class ResultsTableModel extends AbstractTableModel
 {
@@ -33,12 +33,12 @@ public class ResultsTableModel extends AbstractTableModel
     };
 
     /**
-     * Backing store for the list of results (FindClassResult)
+     * Backing store for the list of results (FindClassResult).
      */
     private List results_;
     
     /**
-     * Maps result # (not the row number) to its corresponding FindClassResult 
+     * Maps result # (not the row number) to its corresponding FindClassResult. 
      */
     private Map resultsMap_;
     
@@ -47,7 +47,7 @@ public class ResultsTableModel extends AbstractTableModel
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a ResultsTableModel
+     * Creates a ResultsTableModel.
      */
     public ResultsTableModel()
     {
@@ -60,7 +60,7 @@ public class ResultsTableModel extends AbstractTableModel
     //--------------------------------------------------------------------------
 
     /**
-     * Adds a search result to the end of the table
+     * Adds a search result to the end of the table.
      * 
      * @param results Search result
      */        
@@ -71,8 +71,9 @@ public class ResultsTableModel extends AbstractTableModel
         fireTableRowsInserted(results_.size()-1, results_.size());
     }
     
+    
     /**
-     * Clears the table
+     * Clears the table.
      */
     public void clear()
     {
@@ -81,8 +82,9 @@ public class ResultsTableModel extends AbstractTableModel
         fireTableDataChanged();
     }
     
+    
     /**
-     * Retrieves the FindClassResult for the given result number
+     * Retrieves the FindClassResult for the given result number.
      * 
      * @param number Result number (not row number)
      * @return FindClassResult or null if not found
@@ -104,6 +106,7 @@ public class ResultsTableModel extends AbstractTableModel
         return resultColumns_.length;
     }
 
+    
     /**
      * @see javax.swing.table.TableModel#getRowCount()
      */
@@ -112,6 +115,7 @@ public class ResultsTableModel extends AbstractTableModel
         return results_.size();
     }
 
+    
     /**
      * @see javax.swing.table.TableModel#getValueAt(int, int)
      */
@@ -133,6 +137,7 @@ public class ResultsTableModel extends AbstractTableModel
         return value;
     }
 
+    
     /**
      * Returns class associated with a given column. Needed for sorting
      * capability.
@@ -152,6 +157,7 @@ public class ResultsTableModel extends AbstractTableModel
         }
     }
 
+    
     /**
      * @see javax.swing.table.AbstractTableModel#getColumnName(int)
      */

@@ -10,7 +10,7 @@ import java.util.List;
 public class FindClassCollector extends FindClassAdapter
 {
     /** 
-     * Storage for search results 
+     * Storage for search results. 
      */
     private List results_;
     
@@ -19,7 +19,7 @@ public class FindClassCollector extends FindClassAdapter
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a FindClassCollector
+     * Creates a FindClassCollector.
      */
     public FindClassCollector()
     {
@@ -44,7 +44,7 @@ public class FindClassCollector extends FindClassAdapter
     //--------------------------------------------------------------------------
     
     /**
-     * Returns array of find class results 
+     * Returns array of find class results. 
      * 
      * @return FindClassResult[]
      */
@@ -54,8 +54,9 @@ public class FindClassCollector extends FindClassAdapter
             results_.toArray(new FindClassResult[results_.size()]);
     }
     
+    
     /**
-     * Clears the contents of the colletor
+     * Clears the contents of the colletor.
      * 
      * @return Number of elements cleared
      */

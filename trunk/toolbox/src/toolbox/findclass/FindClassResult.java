@@ -3,42 +3,46 @@ package toolbox.findclass;
 import java.util.Date;
 
 /**
- * Data object specific to the result of a successful class search
+ * Data object specific to the result of a successful class search.
  */
 public class FindClassResult
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /** 
-     * Search string used to find this result 
+     * Search string used to find this result. 
      */
     private String searchString_;
     
     /** 
-     * Location of the class file
+     * Location of the class file.
      */
     private String classLocation_;
     
     /** 
-     * Fully qualified name of the found class file
+     * Fully qualified name of the found class file.
      */
     private String classFQN_;
     
     /** 
-     * Size of the class file
+     * Size of the class file.
      */
     private long fileSize_;
     
     /** 
-     * File timestamp 
+     * File timestamp.
      */
     private Date timestamp_;
     
     /**
-     * Position at which the the match begins
+     * Position at which the the match begins.
      */
     private int matchBegin_;
     
     /**
-     * Position at which the match ends
+     * Position at which the match ends.
      */
     private int matchEnd_;
 
@@ -47,7 +51,7 @@ public class FindClassResult
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a FindClassResult with the given attributes
+     * Creates a FindClassResult with the given attributes.
      * 
      * @param searchString Original search string
      * @param classLocation Location where class was found (jar/path)
@@ -80,7 +84,7 @@ public class FindClassResult
     //--------------------------------------------------------------------------
 
     /**
-     * Returns the search string
+     * Returns the search string.
      * 
      * @return Search string 
      */    
@@ -89,8 +93,9 @@ public class FindClassResult
         return searchString_;
     }
 
+    
     /**
-     * Returns the class location
+     * Returns the class location.
      * 
      * @return Class location
      */    
@@ -99,8 +104,9 @@ public class FindClassResult
         return classLocation_;
     }
 
+    
     /**
-     * Returns the fully qualified class name
+     * Returns the fully qualified class name.
      * 
      * @return Fully qualified class name
      */    
@@ -109,8 +115,9 @@ public class FindClassResult
         return classFQN_;
     }
 
+    
     /**
-     * Returns the size of the class file
+     * Returns the size of the class file.
      * 
      * @return Size of the class file
      */
@@ -119,8 +126,9 @@ public class FindClassResult
         return fileSize_;
     }
     
+    
     /**
-     * Returns the timestamp of the class file
+     * Returns the timestamp of the class file.
      * 
      * @return Timestamp of the class file
      */
@@ -129,8 +137,9 @@ public class FindClassResult
         return timestamp_;
     }
 
+    
     /**
-     * Returns the index into the FQCN at which the match starts
+     * Returns the index into the FQCN at which the match starts.
      * 
      * @return Zero based index
      */
@@ -139,8 +148,9 @@ public class FindClassResult
         return matchBegin_;
     }
 
+    
     /**
-     * Returns the index into the FQCN at which the match ends
+     * Returns the index into the FQCN at which the match ends.
      * 
      * @return Zero based index
      */
@@ -149,8 +159,9 @@ public class FindClassResult
         return matchEnd_;
     }
 
+    
     /**
-     * Sets the starting index at which the match begins
+     * Sets the starting index at which the match begins.
      * 
      * @param i Zero based starting index
      */
@@ -159,8 +170,9 @@ public class FindClassResult
         matchBegin_ = i;
     }
 
+    
     /**
-     * Sets the ending index at which the match ends
+     * Sets the ending index at which the match ends.
      * 
      * @param i Zero based ending index
      */
@@ -174,7 +186,7 @@ public class FindClassResult
     //--------------------------------------------------------------------------
     
     /**
-     * Returns string containing the class location and the FQCN
+     * Returns string containing the class location and the FQCN.
      * 
      * @return String
      */    

@@ -1,17 +1,16 @@
 package toolbox.findclass;
 
 /**
- * Adapter class for IFindClassListener
+ * Adapter class for IFindClassListener.
  */
 public class FindClassAdapter implements IFindClassListener
 {
-
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
     
     /**
-     * Constructor for FindClassAdapter.
+     * Creates a FindClassAdapter.
      */
     public FindClassAdapter()
     {
@@ -28,6 +27,7 @@ public class FindClassAdapter implements IFindClassListener
     {
     }
 
+    
     /**
      * @see IFindClassListener#searchingTarget(String)
      */
@@ -35,6 +35,7 @@ public class FindClassAdapter implements IFindClassListener
     {
     }
 
+    
     /**
      * @see IFindClassListener#searchCancelled()
      */
@@ -42,8 +43,10 @@ public class FindClassAdapter implements IFindClassListener
     {
     }
     
+    
     /**
-     * @see toolbox.findclass.IFindClassListener#searchCompleted(java.lang.String)
+     * @see toolbox.findclass.IFindClassListener#searchCompleted(
+     *      java.lang.String)
      */
     public void searchCompleted(String search)
     {

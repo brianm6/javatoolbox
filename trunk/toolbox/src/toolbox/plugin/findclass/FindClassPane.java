@@ -148,7 +148,7 @@ public class JFindClass extends JFrame implements IPreferenced
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a JFindClass
+     * Creates a JFindClass.
      */
     public JFindClass()
     {
@@ -160,7 +160,7 @@ public class JFindClass extends JFrame implements IPreferenced
     //--------------------------------------------------------------------------
  
     /**
-     * Initiailizes the GUI
+     * Initiailizes the GUI.
      * 
      * @param params Map of initialization objects
      */
@@ -178,8 +178,9 @@ public class JFindClass extends JFrame implements IPreferenced
             searchListModel_.addElement(i.next()));
     }
 
+    
     /**
-     * Builds the GUI and adds it to the contentPane
+     * Builds the GUI and adds it to the contentPane.
      */
     protected void buildView()
     {
@@ -202,6 +203,7 @@ public class JFindClass extends JFrame implements IPreferenced
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
+    
     /**
      * Builds the search panel at the top of the GUI with the ignore case box.
      * Allows the user to enter a regular expression into the search field
@@ -245,9 +247,10 @@ public class JFindClass extends JFrame implements IPreferenced
         //getContentPane().add(searchPanel, BorderLayout.NORTH);
     }
 
+    
     /**
      * Builds the Decompiler panel which shows a class file (search result) in 
-     * decompiled form
+     * decompiled form.
      * 
      * @return Decompiler panel
      */
@@ -288,9 +291,10 @@ public class JFindClass extends JFrame implements IPreferenced
         return decompilerPanel;
     }
 
+    
     /**
      * Builds the Classpath panel which shows all paths/archives that have been
-     * targeted for the current search
+     * targeted for the current search.
      * 
      * @return Classpath Panel
      */
@@ -313,9 +317,10 @@ public class JFindClass extends JFrame implements IPreferenced
         return pathPanel;
     }
 
+    
     /**
      * Builds the flippane at the top of the application which contains the
-     * Classpath and Decompiler panels
+     * Classpath and Decompiler panels.
      * 
      * @return Top flip pane
      */
@@ -332,10 +337,11 @@ public class JFindClass extends JFrame implements IPreferenced
         return topFlipPane_;
     }
     
+    
     /**
      * Builds the Search Results panel which lists the results of the search in
      * a JTable. Once a result is selected, it can optionally be decompiled
-     * and have the resulting source code appear in the Decompiler panel
+     * and have the resulting source code appear in the Decompiler panel.
      */
     protected void buildSearchResultsPanel()
     {
@@ -365,10 +371,11 @@ public class JFindClass extends JFrame implements IPreferenced
         getContentPane().add(BorderLayout.CENTER, centerPanel);
     }
 
+    
     /**
      * Builds the left flip pane which contains the file explorer. The file
      * explorer can be used to add additional search targets to the Classpath
-     * panel
+     * panel.
      */
     protected void buildLeftFlipPane()
     {
@@ -381,8 +388,9 @@ public class JFindClass extends JFrame implements IPreferenced
         getContentPane().add(leftFlipPane_, BorderLayout.WEST);
     }
 
+    
     /**
-     * Tweaks the table columns for width and extents
+     * Tweaks the table columns for width and extents.
      */
     protected void tweakTable()
     {
@@ -454,6 +462,7 @@ public class JFindClass extends JFrame implements IPreferenced
         sourceArea_.applyPrefs(root);
     }
     
+    
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
@@ -488,7 +497,7 @@ public class JFindClass extends JFrame implements IPreferenced
     }
 
     //--------------------------------------------------------------------------
-    //  Inner Classes
+    //  SearchListener
     //--------------------------------------------------------------------------
 
     /**
@@ -502,7 +511,7 @@ public class JFindClass extends JFrame implements IPreferenced
         //----------------------------------------------------------------------
             
         /**
-         * When a class is found, add it to the result table
+         * When a class is found, add it to the result table.
          * 
          * @param searchResult Info on class that was found
          * @see toolbox.findclass.IFindClassListener#classFound(
@@ -512,6 +521,7 @@ public class JFindClass extends JFrame implements IPreferenced
         {
             resultTableModel_.addResult(searchResult);
         }
+        
         
         /**
          * When a target is searched, update the status bar and hilight the
@@ -535,8 +545,9 @@ public class JFindClass extends JFrame implements IPreferenced
             });
         }
         
+        
         /**
-         * When a search is cancelled, update the status bar
+         * When a search is cancelled, update the status bar.
          * 
          * @see toolbox.findclass.IFindClassListener#searchCancelled()
          */
@@ -545,6 +556,7 @@ public class JFindClass extends JFrame implements IPreferenced
             statusBar_.setStatus("Search cancelled");
             resultTableSorter_.setEnabled(true);
         }
+        
         
         /**
          * @see toolbox.findclass.IFindClassListener#searchCompleted(
@@ -571,6 +583,10 @@ public class JFindClass extends JFrame implements IPreferenced
         }
     }
 
+    //--------------------------------------------------------------------------
+    // FindDupesListener
+    //--------------------------------------------------------------------------
+    
     /**
      * Listener for classes found by find duplicates process. This class 
      * keeps track of which classes are found more than once and keeps a 
@@ -612,7 +628,7 @@ public class JFindClass extends JFrame implements IPreferenced
         //----------------------------------------------------------------------
             
         /**
-         * When a class is found, add it to the result table
+         * When a class is found, add it to the result table.
          * 
          * @param  searchResult  Info on class that was found
          */
@@ -638,6 +654,7 @@ public class JFindClass extends JFrame implements IPreferenced
             }
         }
         
+
         /**
          * When a target is searched, update the status bar and hilight the
          * archive being search in the search list.
@@ -650,14 +667,16 @@ public class JFindClass extends JFrame implements IPreferenced
             searchList_.setSelectedValue(target, true);    
         }
         
+        
         /**
-         * When a search is cancelled, update the status bar
+         * When a search is cancelled, update the status bar.
          */
         public void searchCancelled()
         {
             statusBar_.setStatus("Search canceled");
             runFinally();
         }
+        
         
         /**
          * @see toolbox.findclass.IFindClassListener#searchCompleted(
@@ -670,8 +689,12 @@ public class JFindClass extends JFrame implements IPreferenced
         }
     }
     
+    //--------------------------------------------------------------------------
+    // FileExplorerListener
+    //--------------------------------------------------------------------------
+    
     /**
-     * Handler class for the file explorer
+     * Handler class for the file explorer.
      */
     class FileExplorerListener extends JFileExplorerAdapter
     {
@@ -680,9 +703,9 @@ public class JFindClass extends JFrame implements IPreferenced
         //----------------------------------------------------------------------
         
         /**
-         * Adds a directory to the path list
+         * Adds a directory to the path list.
          * 
-         * @param  folder  Directory to add
+         * @param folder Directory to add
          */
         public void folderDoubleClicked(String folder)
         {
@@ -702,8 +725,9 @@ public class JFindClass extends JFrame implements IPreferenced
             searchListModel_.addElement(folder);
         }
  
+        
         /**
-         * Adds a file to the path list
+         * Adds a file to the path list.
          * 
          * @param  file  File to add
          */       
@@ -716,8 +740,12 @@ public class JFindClass extends JFrame implements IPreferenced
         }
     }
  
+    //--------------------------------------------------------------------------
+    // ResultsTableCellRenderer
+    //--------------------------------------------------------------------------
+        
     /**
-     * Renderer for the contents of the Results table
+     * Renderer for the contents of the Results table.
      */   
     class ResultsTableCellRenderer extends SmartTableCellRenderer
     {
@@ -741,7 +769,6 @@ public class JFindClass extends JFrame implements IPreferenced
          * @param hasFocus True if cell has focus
          * @param row Row of the cell to render
          * @param column Column of the cell to render
-         * 
          * @return Default table cell renderer
          */
         public Component getTableCellRendererComponent(
@@ -853,11 +880,11 @@ public class JFindClass extends JFrame implements IPreferenced
     }
     
     //--------------------------------------------------------------------------
-    //  Actions
+    // FindDupesAction
     //--------------------------------------------------------------------------
 
     /**
-     * Searches for duplicate classes
+     * Searches for duplicate classes.
      */
     class FindDupesAction extends WorkspaceAction
     {
@@ -868,6 +895,7 @@ public class JFindClass extends JFrame implements IPreferenced
             putValue(SHORT_DESCRIPTION, "Searches for duplicates classes");
         }
         
+        
         /**
          * @see toolbox.util.ui.SmartAction#runAction(
          *      java.awt.event.ActionEvent)
@@ -877,6 +905,7 @@ public class JFindClass extends JFrame implements IPreferenced
             statusBar_.setInfo("Searching...");
             findDupes();
         }
+        
         
         void findDupes() throws RESyntaxException, IOException 
         {
@@ -903,8 +932,12 @@ public class JFindClass extends JFrame implements IPreferenced
         }
     }
 
+    //--------------------------------------------------------------------------
+    // DecompileAction
+    //--------------------------------------------------------------------------
+        
     /**
-     * Action to decompile the currently selected class file
+     * Action to decompile the currently selected class file.
      */
     class DecompileAction extends WorkspaceAction
     {
@@ -914,6 +947,7 @@ public class JFindClass extends JFrame implements IPreferenced
             putValue(MNEMONIC_KEY, new Integer('D'));    
             putValue(SHORT_DESCRIPTION, "Decompiles the selected class");
         }
+        
         
         /**
          * @see toolbox.util.ui.SmartAction#runAction(
@@ -1001,8 +1035,12 @@ public class JFindClass extends JFrame implements IPreferenced
         }
     }
     
+    //--------------------------------------------------------------------------
+    // SearchAction
+    //--------------------------------------------------------------------------
+    
     /**
-     * Kicks off the search for a class matching the search criteria
+     * Kicks off the search for a class matching the search criteria.
      */
     class SearchAction extends WorkspaceAction
     {
@@ -1018,9 +1056,10 @@ public class JFindClass extends JFrame implements IPreferenced
             putValue(MNEMONIC_KEY, new Integer('S'));    
             putValue(SHORT_DESCRIPTION, "Searches for a class");
         }
+
         
         /**
-         * Branch on whether we're searching of canceling an existing search
+         * Branch on whether we're searching of canceling an existing search.
          */
         public void runAction(ActionEvent e) throws Exception
         {
@@ -1050,9 +1089,10 @@ public class JFindClass extends JFrame implements IPreferenced
                 statusBar_.setStatus("Search canceled");
             }
         }
+
         
         /**
-         * Do the search 
+         * Do the search. 
          * 
          * @throws RESyntaxException on regular expression error 
          * @throws IOException on I/O error
@@ -1089,8 +1129,12 @@ public class JFindClass extends JFrame implements IPreferenced
         }
     }
     
+    //--------------------------------------------------------------------------
+    // ClearTargetsAction
+    //--------------------------------------------------------------------------
+    
     /**
-     * Clears all entries in the search list
+     * Clears all entries in the search list.
      */
     class ClearTargetsAction extends AbstractAction
     {
@@ -1101,14 +1145,19 @@ public class JFindClass extends JFrame implements IPreferenced
             putValue(SHORT_DESCRIPTION, "Clears search targets");
         }
         
+        
         public void actionPerformed(ActionEvent e)
         {
             searchListModel_.removeAllElements();
         }
     }
     
+    //--------------------------------------------------------------------------
+    // AddClasspathTargetAction
+    //--------------------------------------------------------------------------
+    
     /**
-     * Adds the current classpath to the search list
+     * Adds the current classpath to the search list.
      */
     class AddClasspathTargetAction extends AbstractAction
     {
@@ -1119,6 +1168,7 @@ public class JFindClass extends JFrame implements IPreferenced
             putValue(SHORT_DESCRIPTION, 
                 "Adds the current classpath to the search list");
         }
+        
         
         public void actionPerformed(ActionEvent e)
         {
@@ -1133,8 +1183,12 @@ public class JFindClass extends JFrame implements IPreferenced
         }
     }
     
+    //--------------------------------------------------------------------------
+    // RemoteTargetsAction
+    //--------------------------------------------------------------------------
+    
     /**
-     * Removes selected target entries from the search list
+     * Removes selected target entries from the search list.
      */
     class RemoveTargetsAction extends AbstractAction
     {
@@ -1145,6 +1199,7 @@ public class JFindClass extends JFrame implements IPreferenced
             putValue(SHORT_DESCRIPTION, "Removes search targets");
         }
         
+        
         public void actionPerformed(ActionEvent e)
         {
             Object[] selected = searchList_.getSelectedValues();
@@ -1154,8 +1209,12 @@ public class JFindClass extends JFrame implements IPreferenced
         }
     }
     
+    //--------------------------------------------------------------------------
+    // TableRepaintAction
+    //--------------------------------------------------------------------------
+    
     /**
-     * Forces results table to repaint itself
+     * Forces results table to repaint itself.
      */
     class TableRepaintAction extends AbstractAction
     {

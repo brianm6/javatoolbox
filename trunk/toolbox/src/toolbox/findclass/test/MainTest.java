@@ -8,7 +8,7 @@ import junit.textui.TestRunner;
 import toolbox.findclass.Main;
 
 /**
- * Unit test for Main
+ * Unit test for Main.
  */
 public class MainTest extends TestCase
 {
@@ -20,9 +20,9 @@ public class MainTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Test entry point
+     * Test entry point.
      * 
-     * @param  args  None recognized
+     * @param args None recognized
      */
     public static void main(String[] args)
     {
@@ -34,7 +34,7 @@ public class MainTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Test finding a class in a jarfile
+     * Test finding a class in a jarfile.
      * 
      * @throws Exception on error
      */
@@ -45,8 +45,9 @@ public class MainTest extends TestCase
         Main.main(new String[] {  "filter$" } );
     }
     
+    
     /**
-     * Tests printUsage()
+     * Tests printUsage().
      */
     public void testPrintUsage()
     {

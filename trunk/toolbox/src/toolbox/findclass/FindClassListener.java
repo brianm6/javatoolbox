@@ -1,7 +1,7 @@
 package toolbox.findclass;
 
 /**
- * Interface for classes interested in listening to Findclass events
+ * Interface for classes interested in listening to Findclass events.
  */
 public interface IFindClassListener
 {
@@ -12,6 +12,7 @@ public interface IFindClassListener
      */
     public void classFound(FindClassResult searchResult);
     
+    
     /**
      * Notification that a search completed.
      * 
@@ -19,15 +20,17 @@ public interface IFindClassListener
      */
     public void searchCompleted(String search);
     
+    
     /**
-     * Notification that a given target is being searched
+     * Notification that a given target is being searched.
      * 
      * @param target Name of the target directory or archive
      */
     public void searchingTarget(String target);
     
+    
     /**
-     * Notification that a search was cancelled
+     * Notification that a search was cancelled.
      */
     public void searchCancelled();
 }

@@ -12,7 +12,7 @@ import toolbox.util.ExceptionUtil;
 import toolbox.workspace.IPlugin;
 
 /**
- * Plugin wrapper for JFindClass
+ * Plugin wrapper for JFindClass.
  */
 public class JFindClassPlugin implements IPlugin
 {
@@ -20,7 +20,7 @@ public class JFindClassPlugin implements IPlugin
         Logger.getLogger(JFindClassPlugin.class);
         
     /** 
-     * Delegate JFindClass 
+     * Delegate JFindClass. 
      */    
     private JFindClass delegate_;
     
@@ -29,7 +29,7 @@ public class JFindClassPlugin implements IPlugin
     //--------------------------------------------------------------------------
     
     /** 
-     * Creates a JFindClassPlugin 
+     * Creates a JFindClassPlugin. 
      */
     public JFindClassPlugin()
     {
@@ -48,6 +48,7 @@ public class JFindClassPlugin implements IPlugin
         return "Find Class";
     }
 
+    
     /**
      * @see toolbox.workspace.IPlugin#getComponent()
      */
@@ -56,6 +57,7 @@ public class JFindClassPlugin implements IPlugin
         return (JComponent) delegate_.getContentPane();
     }
 
+    
     /**
      * @see toolbox.workspace.IPlugin#getDescription()
      */
@@ -66,6 +68,7 @@ public class JFindClassPlugin implements IPlugin
                "regular expression for added flexbility.";
     }
 
+    
     /**
      * @see toolbox.workspace.IPlugin#startup(Map)
      */
@@ -81,6 +84,7 @@ public class JFindClassPlugin implements IPlugin
         }
     }
 
+    
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
@@ -88,6 +92,7 @@ public class JFindClassPlugin implements IPlugin
     {
         delegate_.applyPrefs(prefs);
     }
+    
     
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
@@ -97,6 +102,7 @@ public class JFindClassPlugin implements IPlugin
         delegate_.savePrefs(prefs);    
     }
 
+    
     /**
      * @see toolbox.workspace.IPlugin#shutdown()
      */
