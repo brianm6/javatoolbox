@@ -1,6 +1,7 @@
 package toolbox.workspace;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Frame;
 import java.awt.Point;
 import java.awt.Window;
@@ -154,12 +155,24 @@ public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
      */
     protected void setStatus(String status, Icon icon)
     {
-        //setStatus(status);
+        setStatus(status, UIManager.getColor("Label.foreground"), icon);
+    }
+
+    
+    /**
+     * Sets the status text and icon.
+     *
+     * @param status Status text.
+     * @param icon Icon that visually classifies the status.
+     */
+    protected void setStatus(String status, Color textColor, Icon icon)
+    {
         status_.setText(status);
+        status_.setForeground(textColor);
         status_.setIcon(icon);
         history_.add(status);
     }
-
+    
     //--------------------------------------------------------------------------
     // IStatusBar Interface
     //--------------------------------------------------------------------------
@@ -169,7 +182,6 @@ public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
      */
     public void setStatus(String status)
     {
-        //status_.setText(status);
         setStatus(status, ImageCache.getIcon(ImageCache.IMAGE_INFO));
     }
 
@@ -188,7 +200,7 @@ public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
      */
     public void setError(String status)
     {
-        setStatus(status);
+        setStatus(status, Color.red, ImageCache.getIcon(ImageCache.IMAGE_STOP));
     }
 
 
@@ -206,7 +218,8 @@ public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
      */
     public void setWarning(String status)
     {
-        setStatus(status, ImageCache.getIcon(ImageCache.IMAGE_WARNING));
+        setStatus(status, Color.orange, 
+            ImageCache.getIcon(ImageCache.IMAGE_WARNING));
     }
 
 
