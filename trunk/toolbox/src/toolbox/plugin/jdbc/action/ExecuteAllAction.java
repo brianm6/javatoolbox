@@ -140,6 +140,7 @@ public class ExecuteAllAction extends BaseAction
                 }
                 catch (SQLException se)
                 {
+                    // Wrap sql exceptions with their offending sql statements
                     SQLMessageException sme = 
                         new SQLMessageException(se, stmts[i]);
                     
@@ -188,9 +189,6 @@ public class ExecuteAllAction extends BaseAction
                         
                         sb.append((j + 1) + ") ")  // Exception number
                           .append(ex.getMessage())
-//                          .append((ex instanceof SQLMessageException) 
-//                              ? "\n" + ((SQLMessageException) ex).getStatement() 
-//                              : "")
                           .append("\n")
                           .append(ExceptionUtils.getFullStackTrace(ex))
                           .append("\n");
