@@ -213,7 +213,7 @@ public final class FileUtil
     public static void moveFile(File srcFile, File destDir)
     {
         /*
-         * TODO: This is a SIMPLE implementation. There are a lot more 
+         * NOTE: This is a SIMPLE implementation. There are a lot more 
          *       complicated scenarios involving permissions, attributes, 
          *       existence that need to be accounted for. 
          */

@@ -2358,7 +2358,8 @@ public class Banner
                  
                     StringBuffer sb = new StringBuffer();
     
-                    for (Iterator i=cmdLine.getArgList().iterator(); i.hasNext();)
+                    for (Iterator i=cmdLine.getArgList().iterator(); 
+                         i.hasNext();)
                     {
                         sb.append(i.next());
                         
@@ -2615,7 +2616,7 @@ public class Banner
 
     /**
      * Prints program usage and help information
-	 */
+     */
     private static void printUsage()
     {
         StringBuffer sb = new StringBuffer();
@@ -2625,9 +2626,11 @@ public class Banner
         sb.append("Usage  : java toolbox.util.Banner [options] text\n");
         sb.append("Options: -h, --help        => Prints this help\n");
         sb.append("         -s, --splitWords  => One word per line\n");
-        sb.append("         -l, --leftJustify => Left justify text (default is centered)\n");
+        sb.append("         -l, --leftJustify => Left justify text ");
+        sb.append("(default is centered)\n");
         sb.append("         -w  --lineWidth   => Max line width\n");
-        sb.append("Args   : text              => Text to convert to a banner\n");
+        sb.append("Args   : text              => Text to convert to a banner");
+        sb.append("\n");
         
         System.out.println(sb.toString());
     }

@@ -310,7 +310,7 @@ public class ClassUtil
      * 
      * @param   fqn  Fully qualified class name
      * @return  Name of class only
- 	 */
+     */
     public static String stripPackage(String fqn)
     {
         int idx = fqn.lastIndexOf('.');

@@ -351,9 +351,15 @@ public class SwingUtil
     }
     
     //--------------------------------------------------------------------------
-	//  Widget/Layout Stuff
-	//--------------------------------------------------------------------------
-    
+    //  Widget/Layout Stuff
+    //--------------------------------------------------------------------------
+
+    /**
+     * Wraps a component in a JPanel using a flowlayout
+     *
+     * @param  component  Component to wrap
+     * @return JPanel 
+     */    
     public static JPanel wrap(JComponent component)
     {
         JPanel panel = new JPanel(new FlowLayout());
