@@ -2,18 +2,24 @@ package toolbox.workspace.host;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.beans.PropertyVetoException;
 import java.util.Map;
 
 import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 import javax.swing.SwingUtilities;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
 
 import org.apache.commons.collections.BidiMap;
 import org.apache.commons.collections.bidimap.DualHashBidiMap;
+import org.apache.log4j.Logger;
 
+import toolbox.util.ExceptionUtil;
 import toolbox.util.SwingUtil;
 import toolbox.workspace.IPlugin;
+import toolbox.workspace.PluginWorkspace;
 
 /**
  * Plugin host that associates each plugin with a JInternalFrame. Multiple
@@ -21,6 +27,9 @@ import toolbox.workspace.IPlugin;
  */
 public class DesktopPluginHost extends AbstractPluginHost
 {
+    private static final Logger logger_ = 
+        Logger.getLogger(DesktopPluginHost.class);
+    
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
@@ -39,6 +48,11 @@ public class DesktopPluginHost extends AbstractPluginHost
      * Maps JInternalFrame -> IPlugin. 
      */
     private BidiMap frameToPluginMap_;
+
+    /**
+     * Parent workspace.
+     */
+    private PluginWorkspace workspace_;
     
     //--------------------------------------------------------------------------
     // PluginHost Interface
@@ -50,7 +64,8 @@ public class DesktopPluginHost extends AbstractPluginHost
     public void startup(Map props)
     {
         super.startup(props);
-        
+
+        workspace_ = (PluginWorkspace) props.get(PluginWorkspace.KEY_WORKSPACE);
         desktop_ = new JDesktopPane();
         pluginToFrameMap_ = new DualHashBidiMap();
         frameToPluginMap_ = pluginToFrameMap_.inverseBidiMap();
@@ -126,6 +141,41 @@ public class DesktopPluginHost extends AbstractPluginHost
         frame.setVisible(true);
         frame.moveToFront();
         pluginToFrameMap_.put(plugin, frame);
+
+        //
+        // When the internal frame is closed via the 'x' icon, route the event
+        // to the equivalent of removing the plugin.
+        //
+        frame.addInternalFrameListener(new InternalFrameAdapter()
+        {
+            /**
+             * @see javax.swing.event.InternalFrameAdapter#internalFrameClosed(
+             *      javax.swing.event.InternalFrameEvent)
+             */
+            public void internalFrameClosed(InternalFrameEvent e)
+            {
+                JInternalFrame jif = e.getInternalFrame();
+                IPlugin plugin = (IPlugin) frameToPluginMap_.get(jif);
+                
+                //
+                // Delegate removal of the plugin to the workspace since we
+                // have no visibility into all the other things that need to 
+                // happend (XML prefs, etc) that need to be saved at this
+                // level.
+                //
+                
+                
+                try
+                {
+                    workspace_.deregisterPlugin(
+                        plugin.getClass().getName(), true);
+                }
+                catch (Exception e1)
+                {
+                    ExceptionUtil.handleUI(e1, logger_);
+                }
+            }
+        });
     }
 
     
@@ -159,6 +209,15 @@ public class DesktopPluginHost extends AbstractPluginHost
     {
         JInternalFrame jif = (JInternalFrame) pluginToFrameMap_.get(plugin);
         jif.moveToFront();
+        
+        try
+        {
+            jif.setSelected(true);
+        }
+        catch (PropertyVetoException e)
+        {
+            ExceptionUtil.handleUI(e, logger_);
+        }
     }
     
     
