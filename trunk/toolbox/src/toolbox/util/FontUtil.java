@@ -17,26 +17,38 @@ import nu.xom.Element;
 
 import org.apache.log4j.Logger;
 
+import toolbox.workspace.IPreferenced;
+
 /**
  * Font Utilities.
  */
-public final class FontUtil
+public final class FontUtil implements IPreferenced
 {
     private static final Logger logger_ = Logger.getLogger(FontUtil.class);
-    
+
     //--------------------------------------------------------------------------
-    // Fields
+    // IPreferenced Constants
     //--------------------------------------------------------------------------
     
-    /** 
-     * Preferred monospaced font.
+    static final String NODE_FONTUTIL = "FontUtil";
+    static final String NODE_DEFAULT_MONO = "DefaultMono";
+    static final String NODE_DEFAULT_SERIF = "DefaultSerif";
+
+    static final String NODE_FONT = "Font";
+    static final String ATTR_SIZE = "size";
+    static final String ATTR_STYLE = "style";
+    static final String ATTR_FAMILY = "family";
+    static final String ATTR_FONTNAME = "fontName";
+    static final String ATTR_NAME = "name";
+
+    //--------------------------------------------------------------------------
+    // Static
+    //--------------------------------------------------------------------------
+
+    /**
+     * Singleton instance.
      */
-    private static Font monoFont_;
-    
-    /** 
-     * Preferred serif font. 
-     */
-    private static Font serifFont_;
+    private static FontUtil instance_;
 
     /**
      * Pick list for mono fonts. First one has the highest priority.
@@ -66,7 +78,105 @@ public final class FontUtil
     };
     
     //--------------------------------------------------------------------------
-    // Public
+    // Fields
+    //--------------------------------------------------------------------------
+    
+    /** 
+     * Preferred monospaced font.
+     */
+    private Font monoFont_;
+    
+    /** 
+     * Preferred serif font. 
+     */
+    private Font serifFont_;
+    
+    //--------------------------------------------------------------------------
+    // Static Private
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Returns the singleton instanec of FontUtil.
+     * 
+     * @return FontUtil.
+     */
+    public static FontUtil getInstance()
+    {
+        if (instance_ == null)
+            instance_ = new FontUtil();
+        
+        return instance_;
+    }
+
+    //--------------------------------------------------------------------------
+    // Preferred Fonts
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Returns the preferred monospaced font available on the system.
+     * 
+     * @return Font
+     */
+    public static synchronized Font getPreferredMonoFont()
+    {
+        FontUtil instance = getInstance();
+        
+        if (instance.monoFont_ == null)
+        {
+            instance.monoFont_ = getPreferredFont(preferredMono_);
+            
+            Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+            
+            // Make font smaller if desktop width beyound 1280. Just look
+            // better or the font ends up being too large.
+            
+            if (d.getWidth() >= 1280)
+                instance.monoFont_ = shrink(instance.monoFont_, 1);
+        }
+        
+        return instance.monoFont_;               
+    }
+
+
+    /**
+     * Returns the preferred variable text font available on the system.
+     * 
+     * @return Font
+     */
+    public static synchronized Font getPreferredSerifFont()
+    {
+        FontUtil instance = getInstance();
+        
+        if (instance.serifFont_ == null)
+            instance.serifFont_ = getPreferredFont(preferredSerif_);
+        
+        return instance_.serifFont_;               
+    }
+
+    
+    /**
+     * Sets the preferred serif font.
+     * 
+     * @param f Serif font.
+     */
+    public static void setPreferredSerifFont(Font f)
+    {
+        getInstance().serifFont_ = f;
+    }
+    
+    
+    /**
+     * Sets the preferred monospaced font.
+     * 
+     * @param f Monospaced font.
+     */
+    public static void setPreferredMonoFont(Font f)
+    {
+        getInstance().monoFont_ = f;
+    }
+    
+    //--------------------------------------------------------------------------
+    // XML <--> Font
     //--------------------------------------------------------------------------
     
     /**
@@ -77,12 +187,12 @@ public final class FontUtil
      */
     public static Element toElement(Font f)
     {
-        Element font = new Element("Font");
-        font.addAttribute(new Attribute("size", f.getSize() + ""));
-        font.addAttribute(new Attribute("style", f.getStyle() + ""));
-        font.addAttribute(new Attribute("family", f.getFamily()));
-        font.addAttribute(new Attribute("fontName", f.getFontName()));
-        font.addAttribute(new Attribute("name", f.getName()));
+        Element font = new Element(NODE_FONT);
+        font.addAttribute(new Attribute(ATTR_SIZE, f.getSize() + ""));
+        font.addAttribute(new Attribute(ATTR_STYLE, f.getStyle() + ""));
+        font.addAttribute(new Attribute(ATTR_FAMILY, f.getFamily()));
+        font.addAttribute(new Attribute(ATTR_FONTNAME, f.getFontName()));
+        font.addAttribute(new Attribute(ATTR_NAME, f.getName()));
         
         return font;
     }
@@ -96,12 +206,15 @@ public final class FontUtil
      */
     public static Font toFont(Element e)
     {
-        String name = e.getAttributeValue("name");
-        int size = Integer.parseInt(e.getAttributeValue("size"));
-        int style = Integer.parseInt(e.getAttributeValue("style"));
+        String name = e.getAttributeValue(ATTR_NAME);
+        int size = Integer.parseInt(e.getAttributeValue(ATTR_SIZE));
+        int style = Integer.parseInt(e.getAttributeValue(ATTR_STYLE));
         return new Font(name, style, size);
     }
     
+    //--------------------------------------------------------------------------
+    // Decorate Font
+    //--------------------------------------------------------------------------
     
     /**
      * Simple way to apply the bold style to an existing component.
@@ -111,44 +224,6 @@ public final class FontUtil
     public static void setBold(JComponent c)
     {
         c.setFont(c.getFont().deriveFont(Font.BOLD));
-    }
-
-
-    /**
-     * Returns the preferred monospaced font available on the system.
-     * 
-     * @return Font
-     */
-    public static synchronized Font getPreferredMonoFont()
-    {
-        if (monoFont_ == null)
-        {
-            monoFont_ = getPreferredFont(preferredMono_);
-            
-            Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-            
-            // Make font smaller if desktop width beyound 1280. Just look
-            // better or the font ends up being too large.
-            
-            if (d.getWidth() >= 1280)
-                monoFont_ = shrink(monoFont_, 1);
-        }
-        
-        return monoFont_;               
-    }
-
-
-    /**
-     * Returns the preferred variable text font available on the system.
-     * 
-     * @return Font
-     */
-    public static synchronized Font getPreferredSerifFont()
-    {
-        if (serifFont_ == null)
-            serifFont_ = getPreferredFont(preferredSerif_);
-        
-        return serifFont_;               
     }
 
     
@@ -191,6 +266,9 @@ public final class FontUtil
         return grow(font, size - font.getSize());
     }
     
+    //--------------------------------------------------------------------------
+    // Query Font
+    //--------------------------------------------------------------------------
     
     /**
      * Returns true if the given font is a monospaced font, false otherwise.
@@ -250,7 +328,6 @@ public final class FontUtil
 
         if (fontName != null)
         {
-
             fontAttribs = new HashMap();
             fontAttribs.put(TextAttribute.FAMILY, fontName);
             fontAttribs.put(TextAttribute.FONT, fontName);
@@ -258,5 +335,46 @@ public final class FontUtil
         }
 
         return new Font(fontAttribs);
+    }
+    
+    //--------------------------------------------------------------------------
+    // IPreferenced Interface
+    //--------------------------------------------------------------------------
+
+    /**
+     * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
+     */
+    public void applyPrefs(Element prefs) throws Exception
+    {
+        Element root = PreferencedUtil.getElement(prefs, NODE_FONTUTIL);
+        
+        monoFont_ = FontUtil.toFont(
+            PreferencedUtil.getElement(
+                PreferencedUtil.getElement(root, NODE_DEFAULT_MONO),
+                NODE_FONT));
+        
+        serifFont_ = FontUtil.toFont(
+            PreferencedUtil.getElement(
+                PreferencedUtil.getElement(root, NODE_DEFAULT_SERIF),
+                NODE_FONT));
+    }
+
+
+    /**
+     * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
+     */
+    public void savePrefs(Element prefs)
+    {
+        Element root = new Element(NODE_FONTUTIL);
+
+        Element mono = new Element(NODE_DEFAULT_MONO);
+        mono.appendChild(FontUtil.toElement(monoFont_));
+        XOMUtil.insertOrReplace(root, mono);
+
+        Element serif = new Element(NODE_DEFAULT_SERIF);
+        serif.appendChild(FontUtil.toElement(serifFont_));
+        XOMUtil.insertOrReplace(root, serif);
+        
+        XOMUtil.insertOrReplace(prefs, root);
     }
 }
