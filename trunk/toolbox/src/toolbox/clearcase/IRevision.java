@@ -8,49 +8,65 @@ package toolbox.clearcase;
 public interface IRevision
 {
     /**
-     * @return
+     * Returns the comment for this revision.
+     * 
+     * @return String
      */
     String getComment();
 
 
     /**
-     * @param comment
+     * Sets the comment for this revision.
+     * 
+     * @param comment Comment text.
      */
     void setComment(String comment);
 
 
     /**
-     * @return
+     * Returns the action that resulted in this revision being created.
+     * 
+     * @return String
      */
     String getAction();
 
 
     /**
-     * @param action
+     * Sets the action that resulted in this revision being created.
+     * 
+     * @param action Name of the action.
      */
     void setAction(String action);
 
 
     /**
-     * @return
+     * Returns the user that created this revision.
+     * 
+     * @return String
      */
     String getUser();
 
 
     /**
-     * @param user
+     * Sets the user that created this revision.
+     * 
+     * @param user Username
      */
     void setUser(String user);
 
 
     /**
-     * @return
+     * Returns the date that this revision was created.
+     * 
+     * @return String
      */
     String getDate();
 
 
     /**
-     * @param date
+     * Sets the date that this revision was created.
+     * 
+     * @param date Date string.
      */
     void setDate(String date);
 }
