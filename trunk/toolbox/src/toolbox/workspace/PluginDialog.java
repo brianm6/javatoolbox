@@ -37,6 +37,9 @@ import toolbox.util.ExceptionUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.collections.ObjectComparator;
 import toolbox.util.ui.JListPopupMenu;
+import toolbox.util.ui.JSmartButton;
+import toolbox.util.ui.JSmartLabel;
+import toolbox.util.ui.JSmartList;
 
 /**
  * Dialog that allows user to add/remove/find plugins
@@ -88,7 +91,7 @@ public class ManagePluginsDialog extends JDialog
     /**
      * Creates dialog to add/remove plugins from the workspace
      * 
-     * @param  parent  Plugin workspace
+     * @param parent Plugin workspace
      */    
     protected ManagePluginsDialog(PluginWorkspace parent)
     {
@@ -116,7 +119,7 @@ public class ManagePluginsDialog extends JDialog
             BorderFactory.createEtchedBorder());            
                 
         // List of active plugins
-        activeList_ = new JList();
+        activeList_ = new JSmartList();
         activeModel_ = new DefaultListModel();
         activeList_.setModel(activeModel_);
         new JListPopupMenu(activeList_);
@@ -126,7 +129,7 @@ public class ManagePluginsDialog extends JDialog
         activeScroller.setBorder(border);
         
         // List of found/removed plugins
-        inactiveList_ = new JList();
+        inactiveList_ = new JSmartList();
         inactiveModel_ = new DefaultListModel();
         inactiveList_.setModel(inactiveModel_);
         new JListPopupMenu(inactiveList_);
@@ -147,12 +150,12 @@ public class ManagePluginsDialog extends JDialog
         gbc.anchor     = GridBagConstraints.SOUTH;
         gbc.insets     = new Insets(5,0,5,0);
         midButtonPanel.add(
-            addButton_ = new JButton(new AddNewPluginAction()), gbc);
+            addButton_ = new JSmartButton(new AddNewPluginAction()), gbc);
         
         gbc.gridy++;
         gbc.anchor     = GridBagConstraints.NORTH;
         midButtonPanel.add(
-            removeButton_ = new JButton(new RemovePluginAction()), gbc);
+            removeButton_ = new JSmartButton(new RemovePluginAction()), gbc);
 
         // Lists and buttons
         JPanel listPanel = new JPanel(new GridBagLayout());
@@ -163,7 +166,7 @@ public class ManagePluginsDialog extends JDialog
         gbc.gridheight = 1;
         gbc.gridwidth  = 1;
         gbc.insets     = new Insets(0,0,0,0);
-        JLabel inactiveLabel = new JLabel("Inactive Plugins");
+        JLabel inactiveLabel = new JSmartLabel("Inactive Plugins");
         inactiveLabel.setHorizontalAlignment(SwingConstants.CENTER);
         inactiveLabel.setVerticalAlignment(SwingConstants.BOTTOM);
         listPanel.add(inactiveLabel, gbc);
@@ -184,7 +187,7 @@ public class ManagePluginsDialog extends JDialog
         gbc.weightx    = 1.0;        
         gbc.anchor     = GridBagConstraints.CENTER;
         gbc.insets     = new Insets(0,0,0,0);            
-        JLabel activeLabel = new JLabel("Active Plugins");
+        JLabel activeLabel = new JSmartLabel("Active Plugins");
         activeLabel.setHorizontalAlignment(SwingConstants.CENTER);
         activeLabel.setVerticalAlignment(SwingConstants.BOTTOM);
         listPanel.add(activeLabel, gbc);
@@ -197,8 +200,8 @@ public class ManagePluginsDialog extends JDialog
         
         // Find/Close Buttons on bottom
         JPanel buttonPanel = new JPanel(new FlowLayout());        
-        buttonPanel.add(new JButton(new FindPluginsAction()));            
-        buttonPanel.add(new JButton(new CloseAction()));
+        buttonPanel.add(new JSmartButton(new FindPluginsAction()));            
+        buttonPanel.add(new JSmartButton(new CloseAction()));
 
         // Glue everything together in the root pane
         getContentPane().setLayout(new BorderLayout());
