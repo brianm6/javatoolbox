@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 
 import toolbox.util.ui.JSmartPopupMenu;
 import toolbox.util.ui.explorer.JFileExplorer;
+import toolbox.util.ui.explorer.action.CreateDirAction;
 import toolbox.util.ui.explorer.action.RenameDirAction;
 
 /**
@@ -52,6 +53,7 @@ public class DirTreeMouseListener extends AbstractListener
             if (popup == null)
             {
                 popup = new JSmartPopupMenu("DirPopup");
+                popup.add(new CreateDirAction(getProxy()));
                 popup.add(new RenameDirAction(getProxy()));
                 getProxy().setFolderPopup(popup);
             }
