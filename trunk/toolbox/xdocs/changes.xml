@@ -100,6 +100,8 @@
       <action type="update">Util- Updated TableSorter so that auto-resize and sort don't conflict when mouse is clicked near the column dividers</action>
       <action type="update">Workspace - Updated to accept a preferences filename on the command line which overrides the default</action>
       <action type="update">FindClassPlugin - Reduced startup time by limited default search targets to those on the classpath only</action>
+      <action type="update">Misc - Converting all implementors of IPreferenced to use the javabean method for passivation/hydration</action>
+      <action type="add"   >Lib - Added janino.jar to use inside JTailPlugin for creating dynamic filters coded in java on the fly</action>
     </release>
     
     <release version="2.0" date="July 2004">
