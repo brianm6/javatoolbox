@@ -45,29 +45,29 @@ public class StringUtilTest extends TestCase implements Stringz
     public void testRightForTruncation()
     {
         logger_.info("Running testRightForTruncation...");
-        
+
         String s = "HELLO";
 
         String a1 = "   HELLO";
         String a2 = "333HELLO";
         String a3 = "HELLO";
         String a4 = "HELL";
-        String b1 = StringUtil.right( s, 8, ' ' );
-        String b2 = StringUtil.right( s, 8, '3' );
-        String b3 = StringUtil.right( s, 4, ' ' );
-        String b4 = StringUtil.right( s, 4, ' ', true );
+        String b1 = StringUtil.right(s, 8, ' ');
+        String b2 = StringUtil.right(s, 8, '3');
+        String b3 = StringUtil.right(s, 4, ' ');
+        String b4 = StringUtil.right(s, 4, ' ', true);
   
-        if( !a1.equals( b1 )) 
-            fail( "ERROR RIGHT 1" );
+        if (!a1.equals(b1))
+            fail("ERROR RIGHT 1");
 
-        if( !a2.equals( b2 )) 
-            fail( "ERROR RIGHT 2" );
+        if (!a2.equals(b2))
+            fail("ERROR RIGHT 2");
 
-        if( !a3.equals( b3 )) 
-            fail( "ERROR RIGHT 3" );
+        if (!a3.equals(b3))
+            fail("ERROR RIGHT 3");
 
-        if( !a4.equals( b4 )) 
-            fail( "ERROR RIGHT 4" );
+        if (!a4.equals(b4))
+            fail("ERROR RIGHT 4");
     }
 
     /**
@@ -100,29 +100,29 @@ public class StringUtilTest extends TestCase implements Stringz
     public void testLeftForTruncation()
     {
         logger_.info("Running testLeftForTruncation...");
-        
+
         String s = "HELLO";
 
         String a1 = "HELLO   ";
         String a2 = "HELLO333";
         String a3 = "HELLO";
         String a4 = "HELL";
-        String b1 = StringUtil.left( s, 8, ' ' );
-        String b2 = StringUtil.left( s, 8, '3' );
-        String b3 = StringUtil.left( s, 4, ' ' );
-        String b4 = StringUtil.left( s, 4, ' ', true );
+        String b1 = StringUtil.left(s, 8, ' ');
+        String b2 = StringUtil.left(s, 8, '3');
+        String b3 = StringUtil.left(s, 4, ' ');
+        String b4 = StringUtil.left(s, 4, ' ', true);
 
-        if( !a1.equals( b1 )) 
-            fail( "ERROR LEFT 1" );
+        if (!a1.equals(b1))
+            fail("ERROR LEFT 1");
 
-        if( !a2.equals( b2 )) 
-            fail( "ERROR LEFT 2" );
+        if (!a2.equals(b2))
+            fail("ERROR LEFT 2");
 
-        if( !a3.equals( b3 )) 
-            fail( "ERROR LEFT 3" );
+        if (!a3.equals(b3))
+            fail("ERROR LEFT 3");
 
-        if( !a4.equals( b4 )) 
-            fail( "ERROR LEFT 4" );
+        if (!a4.equals(b4))
+            fail("ERROR LEFT 4");
     }
 
     /**
@@ -143,19 +143,24 @@ public class StringUtilTest extends TestCase implements Stringz
     public void testToStringForList()
     {
         logger_.info("Running testToStringForList...");
-        
-        ArrayList theList = new ArrayList();
-        theList.add( "ELEM_ONE" );
-        theList.add( "ELEM_TWO" );
-        theList.add( "ELEM_THREE" );
 
-        String result = StringUtil.toString( theList );
+        ArrayList theList = new ArrayList();
+        theList.add("ELEM_ONE");
+        theList.add("ELEM_TWO");
+        theList.add("ELEM_THREE");
+
+        String result = StringUtil.toString(theList);
         String expected = " [0] = ELEM_ONE [1] = ELEM_TWO [2] = ELEM_THREE";
 
-        if (! expected.equals( result ))
+        if (!expected.equals(result))
         {
-            fail( " Result(" + result + ") does not match " +
-               "expected(" + expected + ")" );
+            fail(
+                " Result("
+                    + result
+                    + ") does not match "
+                    + "expected("
+                    + expected
+                    + ")");
         }
     }
     
