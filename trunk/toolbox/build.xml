@@ -520,7 +520,9 @@
     <!--=============================--> 
     <!--    BACKUP SRC               -->
     <!--=============================-->
-	<target name="backup-src" depends="init" description="Backs up source code to tmp dir">    
+	<target name="backup-src" 
+            depends="init" 
+            description="Backs up source code to tmp dir">    
 
         <property name="backup.dir" value="${java.io.tmpdir}/toolbox-backup"/>
         <mkdir dir="${backup.dir}"/>        
@@ -529,4 +531,37 @@
         </copy>
         
  	</target>
+    
+    <!--=============================--> 
+    <!--        CHECKSTYLE           -->
+    <!--=============================-->
+    <taskdef name="checkstyle" 
+             classname="com.puppycrawl.tools.checkstyle.CheckStyleTask"/>
+             
+    <target name="checkstyle" 
+            depends="init" 
+            description="Generates a report of code convention violations.">    
+
+        <mkdir dir="${doc}/checkstyle"/>
+        <delete dir="${doc}/checkstyle/*.*"/> 
+
+        <!-- run checkstyle on the source code -->
+        <checkstyle failOnViolation="false">
+            <fileset dir="${src}" includes="**/*.java"/>                        
+            <!--formatter type="plain"/-->                                               
+            <formatter type="xml" toFile="${doc}/checkstyle/checkstyle_report.xml"/>       
+        </checkstyle>
+                     
+        <!-- transform the xml report to html -->
+        <style  basedir="${doc}/checkstyle" 
+                destdir="${doc}/checkstyle"                           
+                includes="checkstyle_report.xml"                                    
+                style="${build}/conf/checkstyle-noframes.xsl"/>
+                
+        <exec executable="cmd.exe">
+            <arg line="/c start ${doc}/checkstyle/checkstyle_report.html"/>
+        </exec>            
+                
+    </target>
+        
 </project>
