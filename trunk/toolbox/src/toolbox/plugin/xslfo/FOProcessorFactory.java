@@ -5,10 +5,14 @@ package toolbox.util.xslfo;
  */
 public final class FOProcessorFactory
 {
-    /** Apache FOP http://xml.apache.org */
+    /** 
+     * Apache FOP http://xml.apache.org 
+     */
     public static final String FO_IMPL_APACHE = "fop";
     
-    /** RenderX XEP http://www.renderx.com */
+    /** 
+     * RenderX XEP http://www.renderx.com 
+     */
     public static final String FO_IMPL_RENDERX  = "xep";
     
     //--------------------------------------------------------------------------

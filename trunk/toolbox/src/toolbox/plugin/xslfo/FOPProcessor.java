@@ -20,16 +20,23 @@ import org.xml.sax.InputSource;
  */
 public class FOPProcessor implements FOProcessor
 {
-    /** Driver for PDF generation */
+    /** 
+     * Driver for PDF generation 
+     */
     private Driver pdfDriver_;
     
-    /** Driver for Postscript generation */
+    /** 
+     * Driver for Postscript generation 
+     */
     private Driver psDriver_;
 
     //--------------------------------------------------------------------------
     // FOProcessor Interface
     //--------------------------------------------------------------------------
-    
+
+    /**
+     * @see toolbox.util.xslfo.FOProcessor#initialize(java.util.Properties)
+     */
     public void initialize(Properties props)
     {
         // Common
@@ -47,6 +54,11 @@ public class FOPProcessor implements FOProcessor
         psDriver_.setRenderer(Driver.RENDER_PS);
     }
 
+
+    /**
+     * @see toolbox.util.xslfo.FOProcessor#
+     *      renderPDF(java.io.InputStream, java.io.OutputStream)
+     */
     public void renderPDF(InputStream foStream, OutputStream pdfStream)
         throws Exception
     {
@@ -65,6 +77,11 @@ public class FOPProcessor implements FOProcessor
         }
     }
     
+    
+    /**
+     * @see toolbox.util.xslfo.FOProcessor#
+     *      renderPostscript(java.io.InputStream, java.io.OutputStream)
+     */
     public void renderPostscript(InputStream foStream, OutputStream psStream)
         throws Exception
     {
