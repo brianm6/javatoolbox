@@ -2,14 +2,16 @@ package toolbox.jsourceview;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+
+import toolbox.util.ResourceUtil;
 
 /**
  * Collects source code statistics
@@ -52,7 +54,9 @@ public class StatsCollector
     public FileStats getStats(String filename) throws IOException, 
         FileNotFoundException
     {
-        BufferedReader reader = new BufferedReader(new FileReader(filename));
+        Reader reader = 
+            new InputStreamReader(ResourceUtil.getResource(filename));
+            
         FileStats stats = getStats(reader);
         reader.close();
         return stats; 
