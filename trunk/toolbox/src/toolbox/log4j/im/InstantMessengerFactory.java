@@ -5,18 +5,29 @@ package toolbox.log4j.im;
  */
 public class InstantMessengerFactory
 {
-    public static InstantMessenger create(String messenger)
+    /**
+     * Creates an InstantMessenger given the name of the instant messaging
+     * network.
+     * 
+     * @param  network Instant messaging network 
+     * @return InstantMessenger for the given instant messaging network
+     */
+    public static InstantMessenger create(String network)
     {
         InstantMessenger im = null;
         
-        if (messenger.equalsIgnoreCase("yahoo"))
+        if (network.equalsIgnoreCase("yahoo"))
         {
             im = new YahooMessenger();
+        }
+        else if (network.equalsIgnoreCase("aol"))
+        {
+            im = new AOLMessenger();
         }
         else
         {
             throw new IllegalArgumentException(
-                "Messenger type '" + messenger + "' not valid.");
+                "Messenger type '" + network + "' not valid.");
         }
             
         return im;    
