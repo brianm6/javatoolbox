@@ -9,7 +9,6 @@ import java.util.Set;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Transformer;
 import org.apache.commons.collections.TransformerUtils;
-import org.apache.commons.collections.functors.ChainedTransformer;
 import org.apache.commons.collections.map.MultiKeyMap;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
@@ -263,15 +262,21 @@ public class DefaultStateMachine implements StateMachine
         Transformer toTrans = 
             TransformerUtils.invokerTransformer("getToState");
       
-        ChainedTransformer stateTrans = 
-            new ChainedTransformer(new Transformer[] {
-                fromTrans, 
-                toTrans
-            });
         
-        Set states = new HashSet(tuples_);
-        CollectionUtils.transform(states, stateTrans);
-        return new ArrayList(states);
+//        ChainedTransformer stateTrans = 
+//            new ChainedTransformer(new Transformer[] {
+//                fromTrans, 
+//                toTrans
+//            });
+        
+        Set toStates = new HashSet(tuples_);
+        CollectionUtils.transform(toStates, toTrans);
+        
+        Set fromStates = new HashSet(tuples_);
+        CollectionUtils.transform(fromStates, fromTrans);
+        
+        toStates.addAll(fromStates);
+        return new ArrayList(toStates);
     }
 
     
