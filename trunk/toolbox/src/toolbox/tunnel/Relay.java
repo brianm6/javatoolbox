@@ -1,102 +1,56 @@
 package toolbox.tunnel;
 
 import java.awt.TextArea;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
-/*
- * The Apache Software License, Version 1.1
- *
- *
- * Copyright (c) 2000 The Apache Software Foundation.  All rights
- * reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- *
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- *
- * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in
- *    the documentation and/or other materials provided with the
- *    distribution.
- *
- * 3. The end-user documentation included with the redistribution,
- *    if any, must include the following acknowledgment:
- *       "This product includes software developed by the
- *        Apache Software Foundation (http://www.apache.org/)."
- *    Alternately, this acknowledgment may appear in the software itself,
- *    if and wherever such third-party acknowledgments normally appear.
- *
- * 4. The names "SOAP" and "Apache Software Foundation" must
- *    not be used to endorse or promote products derived from this
- *    software without prior written permission. For written
- *    permission, please contact apache@apache.org.
- *
- * 5. Products derived from this software may not be called "Apache",
- *    nor may "Apache" appear in their name, without prior written
- *    permission of the Apache Software Foundation.
- *
- * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
- * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
- * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
- * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
- * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
- * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
- * SUCH DAMAGE.
- * ====================================================================
- *
- * This software consists of voluntary contributions made by many
- * individuals on behalf of the Apache Software Foundation and was
- * originally based on software copyright (c) 2000, International
- * Business Machines, Inc., http://www.apache.org.  For more
- * information on the Apache Software Foundation, please see
- * <http://www.apache.org/>.
- */
-import java.io.*;
-
-import java.net.*;
-
+import javax.swing.JTextArea;
 
 /**
- * A <code>Relay</code> object is used by <code>TcpTunnel</code>
- * and <code>TcpTunnelGui</code> to relay bytes from an
- * <code>InputStream</code> to a <code>OutputStream</code>.
+ * A Relay object is used by TcpTunnel and JTcpTunnel to relay bytes from an
+ * InputStream to a OutputStream.
  */
 public class Relay extends Thread
 {
-    final static int BUFSIZ = 1000;
-    InputStream in;
-    OutputStream out;
-    byte[] buf = new byte[BUFSIZ];
-    TextArea ta;
+    private static final int BUFSIZ = 1000;
+    
+    private InputStream   in_;
+    private OutputStream  out_;
+    private byte[]        buf_ = new byte[BUFSIZ];
+    private JTextArea     textArea_;
 
-    Relay(InputStream in, OutputStream out, TextArea ta)
+    /**
+     * Creates a new relay
+     * 
+     * @param  in  Input stream
+     * @param  out Output stream
+     * @param  ta  Textarea
+     */
+    public Relay(InputStream in, OutputStream out, JTextArea ta)
     {
-        this.in = in;
-        this.out = out;
-        this.ta = ta;
+        in_ = in;
+        out_ = out;
+        textArea_ = ta;
     }
 
+    /**
+     * Starts the relay
+     */
     public void run()
     {
         int n;
 
         try
         {
-            while ((n = in.read(buf)) > 0)
+            while ((n = in_.read(buf_)) > 0)
             {
-                out.write(buf, 0, n);
-                out.flush();
+                out_.write(buf_, 0, n);
+                out_.flush();
 
-                if (ta != null)
+                if (textArea_ != null)
                 {
-                    ta.append(new String(buf, 0, n));
+                    textArea_.append(new String(buf_, 0, n));
                 }
             }
         }
@@ -107,8 +61,8 @@ public class Relay extends Thread
         {
             try
             {
-                in.close();
-                out.close();
+                in_.close();
+                out_.close();
             }
             catch (IOException e)
             {
