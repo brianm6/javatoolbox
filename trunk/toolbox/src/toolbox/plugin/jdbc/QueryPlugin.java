@@ -31,7 +31,6 @@ import toolbox.util.Stringz;
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.JConveyorPopupMenu;
 import toolbox.util.ui.JSmartTextArea;
-import toolbox.util.ui.JTextComponentPopupMenu;
 import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.util.ui.plugin.IPlugin;
 import toolbox.util.ui.plugin.IStatusBar;
@@ -70,7 +69,7 @@ public class QueryPlugin extends JPanel implements IPlugin
         Logger.getLogger(QueryPlugin.class);   
 
     /** Prefix for embedded configurable components */
-    public static final String PROP_PREFIX = "query";
+    public static final String PROP_PREFIX = "query.plugin";
     
     /** Property key for SQL history */
     public static final String PROP_HISTORY = "query.plugin.history";
@@ -167,7 +166,6 @@ public class QueryPlugin extends JPanel implements IPlugin
                          
         resultsArea_ = new JSmartTextArea();
         resultsArea_.setFont(SwingUtil.getPreferredMonoFont());
-        new JTextComponentPopupMenu(resultsArea_);
         
         JSplitPane splitPane = 
             new JSplitPane(JSplitPane.VERTICAL_SPLIT,
@@ -290,7 +288,7 @@ public class QueryPlugin extends JPanel implements IPlugin
 	// IPreferenced Interface
 	//--------------------------------------------------------------------------
 
-    public void applyPrefs(Properties prefs)
+    public void applyPrefs(Properties prefs) throws Exception
     {
         // Restore sql history
         sqlPopup_.setCapacity(
@@ -307,6 +305,7 @@ public class QueryPlugin extends JPanel implements IPlugin
         sqlArea_.setText(prefs.getProperty(PROP_CONTENTS, ""));
         leftFlipPane_.applyPrefs(prefs, PROP_PREFIX);
         dbConfigPane_.applyPrefs(prefs);
+        resultsArea_.applyPrefs(prefs, PROP_PREFIX);
     }
 
     public void savePrefs(Properties prefs)
@@ -321,6 +320,7 @@ public class QueryPlugin extends JPanel implements IPlugin
         prefs.setProperty(PROP_CONTENTS, sqlArea_.getText().trim());
         leftFlipPane_.savePrefs(prefs, PROP_PREFIX);
         dbConfigPane_.savePrefs(prefs);
+        resultsArea_.savePrefs(prefs, PROP_PREFIX);
     }
     
     //--------------------------------------------------------------------------
