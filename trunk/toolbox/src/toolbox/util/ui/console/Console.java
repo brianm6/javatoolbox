@@ -43,15 +43,29 @@ public interface Console
 
 
     /**
-     * Clear the contents of the console.
+     * Clears the contents of the console.
      */
     void clear();
 
 
     /**
-     * Sets the prompt to be used when reading input.
+     * Returns the text of the command prompt.
      * 
-     * @param prompt Command prompt.
+     * @return String
+     */
+    String getPrompt();
+
+    
+    /**
+     * Sets the text of the command prompt.
+     * 
+     * @param prompt Text of the command prompt.
      */
     void setPrompt(String prompt);
+    
+    
+    /**
+     * Renders the command prompt to the console.
+     */
+    void renderPrompt();
 }
