@@ -30,4 +30,9 @@ public class ResourceCloserTest extends TestCase
     //--------------------------------------------------------------------------
     // Unit Tests
     //--------------------------------------------------------------------------
+    
+    public void testResourceCloser()
+    {
+        logger_.info("Running testResourceCloser...");
+    }
 }
