@@ -7,16 +7,24 @@ import toolbox.util.collections.AsMap;
  */
 public class FileStats
 {
-    /** Total number of lines in file */    
+    /** 
+     * Total number of lines in file 
+     */    
     private int totalLines_;
     
-    /** Number of comment lines in file */
+    /** 
+     * Number of comment lines in file 
+     */
     private int commentLines_;
     
-    /** Number of code lines in file */
+    /** 
+     * Number of code lines in file 
+     */
     private int codeLines_;
     
-    /** Number of blank lines in file */
+    /** 
+     * Number of blank lines in file 
+     */
     private int blankLines_;
     
     /** 
@@ -42,7 +50,9 @@ public class FileStats
     //--------------------------------------------------------------------------
     
     /**
-     * @return Percentage of source code lines to total lines
+     * Returns percentage of source code lines to total lines
+     * 
+     * @return Percent of source to total
      */
     public int getPercent()
     {
@@ -113,7 +123,9 @@ public class FileStats
     //--------------------------------------------------------------------------
     
     /**
-     * @return Number of blank lines
+     * Returns the number of blank lines
+     * 
+     * @return int
      */
     public int getBlankLines()
     {
@@ -121,7 +133,9 @@ public class FileStats
     }
 
     /**
-     * @return Number of source code lines
+     * Return the number of source code lines
+     * 
+     * @return int
      */
     public int getCodeLines()
     {
@@ -129,7 +143,9 @@ public class FileStats
     }
 
     /**
-     * @return Number of comment lines
+     * Returns the number of comment lines
+     * 
+     * @return int
      */
     public int getCommentLines()
     {
@@ -137,7 +153,9 @@ public class FileStats
     }
 
     /**
-     * @return Total number of lines
+     * Returns the total number of lines
+     * 
+     * @return int
      */
     public int getTotalLines()
     {
@@ -145,7 +163,9 @@ public class FileStats
     }
 
     /**
-     * @return Number of lines thrown out
+     * Returns the number of lines thrown out
+     * 
+     * @return int
      */
     public int getThrownOutLines()
     {

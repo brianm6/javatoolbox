@@ -32,10 +32,14 @@ public class StatsCollectorTest extends TestCase
         TestRunner.run(StatsCollectorTest.class);
     }
 
+    //--------------------------------------------------------------------------
+    // Unit Tests
+    //--------------------------------------------------------------------------
+    
     /**
      * Tests getStats() on an empty file
      * 
-     * @throws Exception
+     * @throws Exception on error
      */
     public void testGetStatsEmptyFile() throws Exception
     {
@@ -55,7 +59,7 @@ public class StatsCollectorTest extends TestCase
     /**
      * Tests getStats() on a small java file
      * 
-     * @throws Exception
+     * @throws Exception on error
      */
     public void testGetStats() throws Exception
     {

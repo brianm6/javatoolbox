@@ -44,6 +44,8 @@ public class LineStatus
     }
 
     /**
+     * Returns true if the line is in a comment, false otherwise
+     * 
      * @return  Is line in a comment
      */    
     public boolean getInComment()
@@ -62,6 +64,9 @@ public class LineStatus
     }
     
     /**
+     * Returns true if the line is considered a real line of code, false
+     * otherwise.
+     * 
      * @return Count the line flag
      */
     public boolean isRealCode()

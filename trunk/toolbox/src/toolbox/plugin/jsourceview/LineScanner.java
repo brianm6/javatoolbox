@@ -125,7 +125,9 @@ public class LineScanner implements MachineConstants
     }
     
     /**
-     * @return  Returns the next token 
+     * Returns the next token
+     * 
+     * @return token 
      */
     public int getNextToken()
     {
