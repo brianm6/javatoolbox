@@ -45,6 +45,21 @@ public class TextViewer implements DocumentViewer
     }
 
     //--------------------------------------------------------------------------
+    // Protected
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Returns the textarea. For use by subclasses which needs access to the 
+     * textarea.
+     * 
+     * @return JSmartTextArea
+     */
+    public JSmartTextArea getTextArea()
+    {
+        return textArea_;
+    }
+    
+    //--------------------------------------------------------------------------
     // DocumentViewer Interface
     //--------------------------------------------------------------------------
     
@@ -60,6 +75,8 @@ public class TextViewer implements DocumentViewer
 
     
     /**
+     * Reads in the file via a Reader and displays it in the textarea.
+     * 
      * @see toolbox.plugin.docviewer.DocumentViewer#view(java.io.File)
      */
     public void view(File file) throws DocumentViewerException
@@ -91,6 +108,8 @@ public class TextViewer implements DocumentViewer
 
     
     /**
+     * Accepts all file types.
+     * 
      * @see toolbox.plugin.docviewer.DocumentViewer#canView(java.io.File)
      */
     public boolean canView(File file)
@@ -110,6 +129,8 @@ public class TextViewer implements DocumentViewer
 
     
     /**
+     * Returns the JScrollPane wrapping the text area.
+     * 
      * @see toolbox.plugin.docviewer.DocumentViewer#getComponent()
      */
     public JComponent getComponent()
