@@ -246,7 +246,7 @@ public class JSourceView extends JFrame implements ActionListener
         String dir = dirField_.getText();
         
         if (!StringUtil.isNullOrEmpty(dir))
-            prefs.setProperty("jsourceview.dir", dir.trim());
+            prefs.setProperty(PROP_LAST_DIR, dir.trim());
     }
 
     /**
@@ -256,7 +256,7 @@ public class JSourceView extends JFrame implements ActionListener
      */
     public void applyPrefs(Properties prefs)
     {
-        String dir = prefs.getProperty("jsourceview.dir");
+        String dir = prefs.getProperty(PROP_LAST_DIR);
         
         if (!StringUtil.isNullOrEmpty(dir))
         {
