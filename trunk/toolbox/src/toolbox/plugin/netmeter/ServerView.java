@@ -7,8 +7,12 @@ import java.util.Collections;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import com.jgoodies.forms.builder.DefaultFormBuilder;
+import com.jgoodies.forms.layout.FormLayout;
+
 import org.apache.log4j.Logger;
 
+import toolbox.forms.SmartComponentFactory;
 import toolbox.util.StringUtil;
 import toolbox.util.io.throughput.ThroughputEvent;
 import toolbox.util.io.throughput.ThroughputListener;
@@ -22,15 +26,14 @@ import toolbox.util.service.ServiceException;
 import toolbox.util.service.ServiceListener;
 import toolbox.util.service.ServiceView;
 import toolbox.util.ui.JHeaderPanel;
-import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartTextField;
-import toolbox.util.ui.layout.ParagraphLayout;
 
 /**
  * ServerView is UI component that presents an updateable view of the Server 
  * object.
  * 
- * @see toolbox.plugin.netmeter.Server 
+ * @see toolbox.plugin.netmeter.Server
+ * @see toolbox.plugin.netmeter.ServerFactoryView 
  */
 public class ServerView extends JHeaderPanel 
     implements ServiceListener, ISocketServerListener, ThroughputListener
@@ -108,27 +111,27 @@ public class ServerView extends JHeaderPanel
      */
     protected JPanel buildInputPanel()
     {
-        // Port
-        JPanel p = new JPanel(new ParagraphLayout());
-        p.add(new JSmartLabel("Port"), ParagraphLayout.NEW_PARAGRAPH);
-        p.add(serverPortField_ = new JSmartTextField(10));
+        FormLayout layout = new FormLayout("r:p:g, p, l:p:g", "");
+        DefaultFormBuilder builder = new DefaultFormBuilder(layout);
+        builder.setComponentFactory(SmartComponentFactory.getInstance());
+        builder.setDefaultDialogBorder();
+
+        serverPortField_ = new JSmartTextField(10);
         serverPortField_.setEditable(false);
+        builder.append("Port", serverPortField_);
+        builder.nextLine();
         
-        // Throughput
-        p.add(new JSmartLabel("Server Throughput"),
-            ParagraphLayout.NEW_PARAGRAPH);
         throughPutField_ = new JSmartTextField(10);
         throughPutField_.setEditable(false);
-        p.add(throughPutField_);
+        builder.append("Server Throughput", throughPutField_);
+        builder.nextLine();
 
-        // Status
-        p.add(new JSmartLabel("Status"), ParagraphLayout.NEW_PARAGRAPH);
         statusField_ = new JSmartTextField(10);
         statusField_.setText("Stopped");
         statusField_.setEditable(false);
-        p.add(statusField_);
-        
-        return p;
+        builder.append("Status", statusField_);
+
+        return builder.getPanel();
     }
     
     //--------------------------------------------------------------------------
