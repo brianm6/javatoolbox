@@ -6,6 +6,8 @@ import java.net.Socket;
 
 import org.apache.log4j.Logger;
 
+import toolbox.util.io.MulticastOutputStream;
+
 /**
  * A TcpTunnel object listens on the given port, and once Start is pressed, 
  * will forward all bytes to the given host and port.
@@ -59,12 +61,21 @@ public class TcpTunnel
                 " to port " + tunnelport + " on host " + tunnelhost);
 
             // relay the stuff thru
-            logger_.debug(method + "Settup in relays...");
+            logger_.debug(method + "Setting up relays...");
             
-            new Relay(sc.getInputStream(), st.getOutputStream()).start();
-            new Relay(st.getInputStream(), sc.getOutputStream()).start();
+            MulticastOutputStream tos = new MulticastOutputStream();
+            tos.addStream(st.getOutputStream());
+            tos.addStream(System.out);
+            
+            MulticastOutputStream sos = new MulticastOutputStream();
+            sos.addStream(sc.getOutputStream());
+            sos.addStream(System.out);
+            
+            new Thread(new Relay(sc.getInputStream(), tos)).start();
+            new Thread(new Relay(st.getInputStream(), sos)).start();
 
             logger_.debug(method + "Done!");
+            
             // that's it .. they're off; now I go back to my stuff.
         }
     }
