@@ -4,10 +4,10 @@
 
 <project name="toolbox" default="all" basedir=".">
 
-	<description>
+    <description>
         Java Toolbox
-	</description>
-	
+    </description>
+    
     <!--=============================-->
     <!--            PREP             -->
     <!--=============================-->
@@ -33,7 +33,7 @@
         
         <!-- Directories in /doc -->
         <property name="javadoc"    location="${doc}/javadoc"/>
-		<property name="clover"     location="${doc}/clover"/>        
+        <property name="clover"     location="${doc}/clover"/>        
         <property name="junit"      location="${doc}/junit"/>
         
         <!-- Directories in /doc/junit -->
@@ -65,8 +65,8 @@
         <property name="toolbox.id" value=""/>
         <property name="toolbox.rundir" location="."/>
         <property name="toolbox.junit.log" value="test.log"/>
-		<!-- property name="build.compiler" value="jikes"/ -->        
-		
+        <!-- property name="build.compiler" value="jikes"/ -->        
+        
         <!-- define project tools classpath -->
         <path id="project.tools.path">
             <fileset dir="${top}/lib">
@@ -208,158 +208,158 @@
             <fileset dir="${dist}" includes="**/*.jar"/>
         </delete>
 
-        <unjar 	
-        	src		 ="${lib}/log4j.jar" 
-        	dest	 ="${classes}" 
-        	overwrite="false" />
+        <unjar     
+            src       ="${lib}/log4j.jar" 
+            dest      ="${classes}" 
+            overwrite ="false" />
         
-        <unjar 	
-        	src       ="${lib}/jakarta-regexp.jar" 
-        	dest      ="${classes}" 
-        	overwrite ="false" />
-        	
-        <unjar 
-        	src       ="${lib}/java2html.jar" 
-            dest      ="${classes}" 
-            overwrite ="false" />
-
-        <unjar 
-        	src       ="${lib}/jode.jar" 
-            dest      ="${classes}" 
-            overwrite ="false" />
-
-        <unjar 
-        	src       ="${lib}/metouia.jar" 
-            dest      ="${classes}" 
-            overwrite ="false" />
-
-        <unjar 
-        	src       ="${lib}/commons-cli.jar" 
-            dest      ="${classes}" 
-            overwrite ="false" />
-
-        <unjar 
-        	src       ="${lib}/commons-lang.jar" 
-            dest      ="${classes}" 
-            overwrite ="false" />
-
-        <unjar 
-        	src       ="${lib}/commons-beanutils.jar" 
-            dest      ="${classes}" 
-            overwrite ="false" />
-
-        <unjar 
-        	src       ="${lib}/commons-logging.jar" 
-            dest      ="${classes}" 
-            overwrite ="false" />
-
-        <unjar 
-        	src       ="${lib}/commons-collections.jar" 
-            dest      ="${classes}" 
-            overwrite ="false" />
-
-        <unjar 
-        	src       ="${lib}/commons-net.jar" 
-            dest      ="${classes}" 
-            overwrite ="false" />
-
-        <unjar 
-        	src       ="${lib}/plastic.jar" 
+        <unjar     
+            src       ="${lib}/jakarta-regexp.jar" 
             dest      ="${classes}" 
             overwrite ="false" />
             
         <unjar 
-        	src       ="${lib}/junit.jar" 
+            src       ="${lib}/java2html.jar" 
             dest      ="${classes}" 
             overwrite ="false" />
 
         <unjar 
-        	src       ="${lib}/kunststoff.jar" 
+            src       ="${lib}/jode.jar" 
             dest      ="${classes}" 
             overwrite ="false" />
 
         <unjar 
-        	src       ="${lib}/xplookandfeel.jar" 
+            src       ="${lib}/metouia.jar" 
             dest      ="${classes}" 
             overwrite ="false" />
 
         <unjar 
-        	src       ="${lib}/xml-apis.jar" 
+            src       ="${lib}/commons-cli.jar" 
+            dest      ="${classes}" 
+            overwrite ="false" />
+
+        <unjar 
+            src       ="${lib}/commons-lang.jar" 
+            dest      ="${classes}" 
+            overwrite ="false" />
+
+        <unjar 
+            src       ="${lib}/commons-beanutils.jar" 
+            dest      ="${classes}" 
+            overwrite ="false" />
+
+        <unjar 
+            src       ="${lib}/commons-logging.jar" 
+            dest      ="${classes}" 
+            overwrite ="false" />
+
+        <unjar 
+            src       ="${lib}/commons-collections.jar" 
+            dest      ="${classes}" 
+            overwrite ="false" />
+
+        <unjar 
+            src       ="${lib}/commons-net.jar" 
+            dest      ="${classes}" 
+            overwrite ="false" />
+
+        <unjar 
+            src       ="${lib}/plastic.jar" 
+            dest      ="${classes}" 
+            overwrite ="false" />
+            
+        <unjar 
+            src       ="${lib}/junit.jar" 
+            dest      ="${classes}" 
+            overwrite ="false" />
+
+        <unjar 
+            src       ="${lib}/kunststoff.jar" 
+            dest      ="${classes}" 
+            overwrite ="false" />
+
+        <unjar 
+            src       ="${lib}/xplookandfeel.jar" 
+            dest      ="${classes}" 
+            overwrite ="false" />
+
+        <unjar 
+            src       ="${lib}/xml-apis.jar" 
             dest      ="${classes}" 
             overwrite ="false" />
 
         <unjar  
-        	src       ="${lib}/xercesImpl.jar" 
+            src       ="${lib}/xercesImpl.jar" 
             dest      ="${classes}" 
             overwrite ="false" />
 
-		<!--=======================-->
-		<!-- Supports XSLFO plugin -->
-		<!--=======================-->
-		
+        <!--=======================-->
+        <!-- Supports XSLFO plugin -->
+        <!--=======================-->
+        
         <unjar 
-        	src       ="${lib}/acrobat.jar" 
-            dest      ="${classes}" 
-            overwrite ="false" />
-
-        <unjar 
-        	src       ="${lib}/jedit-syntax.jar" 
+            src       ="${lib}/acrobat.jar" 
             dest      ="${classes}" 
             overwrite ="false" />
 
         <unjar 
-        	src       ="${lib}/fop.jar" 
+            src       ="${lib}/jedit-syntax.jar" 
+            dest      ="${classes}" 
+            overwrite ="false" />
+
+        <unjar 
+            src       ="${lib}/fop.jar" 
             dest      ="${classes}" 
             overwrite ="false" />
             
         <unjar 
-        	src       ="${lib}/batik.jar" 
+            src       ="${lib}/batik.jar" 
             dest      ="${classes}" 
             overwrite ="false" />
             
         <unjar 
-        	src       ="${lib}/avalon-framework.jar" 
+            src       ="${lib}/avalon-framework.jar" 
             dest      ="${classes}" 
             overwrite ="false" />
         
-       	<unjar 
-        	src       ="${lib}/apple-mrj.jar" 
+           <unjar 
+            src       ="${lib}/apple-mrj.jar" 
             dest      ="${classes}" 
             overwrite ="false" />
             
-       	<unjar 
-        	src       ="${lib}/xep.jar" 
+           <unjar 
+            src       ="${lib}/xep.jar" 
             dest      ="${classes}" 
             overwrite ="false" />
             
-       	<unjar 
-        	src       ="${lib}/xt.jar" 
+           <unjar 
+            src       ="${lib}/xt.jar" 
             dest      ="${classes}" 
             overwrite ="false" />
             
-       	<unjar 
-        	src       ="${lib}/saxon.jar" 
+           <unjar 
+            src       ="${lib}/saxon.jar" 
             dest      ="${classes}" 
             overwrite ="false" />
             
-		<unjar 
-        	src       ="${lib}/cryptix32.jar" 
+        <unjar 
+            src       ="${lib}/cryptix32.jar" 
             dest      ="${classes}" 
             overwrite ="false" />
 
-		<unjar 
-        	src       ="${lib}/cryptix32-pgp.jar" 
+        <unjar 
+            src       ="${lib}/cryptix32-pgp.jar" 
             dest      ="${classes}" 
             overwrite ="false" />
 
-		<!-- ==================================== -->
+        <!-- ==================================== -->
 
-		<copy todir="${classes}" overwrite="yes" verbose="true">
+        <copy todir="${classes}" overwrite="yes" verbose="true">
             <fileset dir="${top}/debug" includes="**/*.class"/>
         </copy>
-		            
+                    
         <jar 
-        	jarfile ="${dist}/toolbox.jar" 
+            jarfile ="${dist}/toolbox.jar" 
             manifest="${src}/META-INF/MANIFEST.MF"
             compress="yes">
 
@@ -409,16 +409,16 @@
     <!--          JAVADOC            -->
     <!--=============================-->
     <target name="javadoc" 
-    	    depends="init"
-    	    description="Generates javadocs">
+            depends="init"
+            description="Generates javadocs">
     
-	    <mkdir dir="${doc}"/>
-	    <mkdir dir="${javadoc}"/>
-	    
-    	<delete>
+        <mkdir dir="${doc}"/>
+        <mkdir dir="${javadoc}"/>
+        
+        <delete>
             <fileset dir="${javadoc}" includes="**/**"/>
-    	</delete>
-            	
+        </delete>
+                
         <javadoc 
             access="private" 
             author="true"
@@ -430,7 +430,7 @@
             noindex="false" 
             nonavbar="false"
             notree="false"
-			packagenames="toolbox.*"
+            packagenames="toolbox.*"
             sourcepath="${src}"
             splitindex="false" 
             use="true" 
@@ -487,9 +487,9 @@
                 
                     <!-- if junit.class is defined, run only tests that match the class name -->
                     <include name="**/*Test.java" unless="junit.class"/>                
-		 			<include name="**/test/*${junit.class}Test.java"/>
-		 			
-		 			<!-- exclude the GUI tests -->
+                     <include name="**/test/*${junit.class}Test.java"/>
+                     
+                     <!-- exclude the GUI tests -->
                     <exclude name="**/ui/**/*Test.java" />
                     <exclude name="**/SwingUtilTest.java"/>
                     
@@ -504,8 +504,10 @@
     <!--=============================-->
     <!--        JUNIT.REPORT         -->
     <!--=============================-->
-    <target name="junit.report" depends="init"
-            description="Launches report containing results of the JUnit test cases">
+    <target name="junit.report" 
+    		depends="init"
+            description=
+            	"Launches report containing results of the JUnit test cases">
 
         <junitreport todir="${junit.xml}">
             <fileset dir="${junit.xml}">
@@ -517,7 +519,7 @@
         <echo message="OS=${os.name}"/>
         
         <exec executable="cmd.exe">
-        	<!-- os="Windows NT" -->
+            <!-- os="Windows NT" -->
             <arg line="/c start ${junit.html}/index.html"/>
         </exec>            
             
@@ -618,11 +620,11 @@
     <!--        CLOVER.CLEAN         -->
     <!--=============================-->
     <target name="clover.clean"
-    		depends="clover.init"
+            depends="clover.init"
             description="Removes clover generated files">
                     
         <delete verbose="true" quiet="off">
-        	<fileset dir="${clover}" includes="*.*"/>	
+            <fileset dir="${clover}" includes="*.*"/>    
         </delete>
         
     </target>
@@ -631,7 +633,7 @@
     <!--=============================--> 
     <!--    BACKUP SRC               -->
     <!--=============================-->
-	<target name="backup-src" 
+    <target name="backup-src" 
             depends="init" 
             description="Backs up source code to tmp dir">    
 
@@ -641,7 +643,7 @@
             <fileset dir="${src}"/>
         </copy>
         
- 	</target>
+     </target>
 
     
     <!--=============================--> 
@@ -655,24 +657,36 @@
             depends="init" 
             description="Generates a report of code convention violations.">    
 
-        <mkdir dir="${doc}/checkstyle"/>
-        <delete dir="${doc}/checkstyle/*.*"/> 
-
-        <!-- run checkstyle on the source code -->
-        <checkstyle failOnViolation="false"	properties="${build}/conf/checkstyle.properties">
+		<!-- directory for checkstyle generated docs -->
+		<property 
+			name="checkstyle" 
+			value="${doc}/checkstyle"/>
+		
+        <mkdir dir="${checkstyle}"/>
+        <delete dir="${checkstyle}/*.*"/> 
+    
+        <checkstyle 
+        	failOnViolation="false"    
+            properties="${build.conf}/checkstyle.properties">
+            
             <fileset dir="${src}" includes="**/*.java"/>                        
+            
             <!--formatter type="plain"/-->                                               
-            <formatter type="xml" toFile="${doc}/checkstyle/checkstyle_report.xml"/>       
+            
+            <formatter 
+            	type="xml" 
+            	toFile="${checkstyle}/checkstyle_report.xml"/>       
+            
         </checkstyle>
                      
         <!-- transform the xml report to html -->
-        <style  basedir="${doc}/checkstyle" 
-                destdir="${doc}/checkstyle"                           
-                includes="checkstyle_report.xml"                                    
-                style="${build.conf}/checkstyle-noframes.xsl"/>
+        <style basedir  = "${checkstyle}" 
+               destdir  = "${checkstyle}"                           
+               includes = "checkstyle_report.xml"                                    
+               style    = "${build.conf}/checkstyle-noframes.xsl"/>
                 
         <exec executable="cmd.exe">
-            <arg line="/c start ${doc}/checkstyle/checkstyle_report.html"/>
+            <arg line="/c start ${checkstyle}/checkstyle_report.html"/>
         </exec>            
                 
     </target>
@@ -680,125 +694,130 @@
     <!--=============================--> 
     <!--          CVSLOG             -->
     <!--=============================-->
-	<target name="cvslog" depends="init">
+    <target name="cvslog" depends="init">
 
-		<delete file="${top}/.cvspass" verbose="true"/>
-			
-		<input message="Enter CVS password:" addproperty="cvs.password"/>	
+        <mkdir dir="${doc}/statcvs"/>        
+        
+        <delete file="${top}/.cvspass" verbose="true"/>
+            
+        <input message="Enter CVS password:" addproperty="cvs.password"/>    
+        
+		<property 
+			name="cvsroot" 
+			value=":pserver:analogue@hemisfear.dyndns.org:2401/k//cvs/cvsrep"/>
+		
+        <cvspass password="${cvs.password}"
+                 cvsroot="${cvsroot}"
+                 passfile="${top}/.cvspass"/>
+                 
+         <loadfile property="cvspass" srcFile="${top}/.cvspass"/>                 
+         <echo message="${cvspass}"/>
+                 
+        <cvs cvsroot="${cvsroot}"
+             output="${doc}/statcvs/cvs.log"
+             command="log"
+             passfile="${top}/.cvspass"/>
 
-		<cvspass password="${cvs.password}"
-		         cvsroot=":pserver:analogue@hemisfear.dyndns.org:k:/cvs/cvsrep"
-		         passfile="${top}/.cvspass"/>
-				 
-	 	<loadfile property="cvspass" srcFile="${top}/.cvspass"/>				 
-	 	<echo message="${cvspass}"/>
-				 
-		<cvs cvsroot=":pserver:analogue@hemisfear.dyndns.org:k:/cvs/cvsrep"
-		     output="${doc}/statcvs/cvs.log"
-		     command="log"
-		     passfile="${top}/.cvspass"/>
-
-		<delete file="${top}/.cvspass"/>
-	
-	</target>
-			
+        <delete file="${top}/.cvspass"/>
+    
+    </target>
 
     <!--=============================--> 
     <!--          STATCVS            -->
     <!--=============================-->
-	<taskdef name="statcvs" 
-	         classname="net.sf.statcvs.ant.StatCvsTask"
-	         classpath="build/lib/statcvs.jar"/>
-	
+    <taskdef name="statcvs" 
+             classname="net.sf.statcvs.ant.StatCvsTask"
+             classpath="build/lib/statcvs.jar"/>
+    
     <target name="statcvs" 
-    		depends="init, cvslog"
-    		description="Generates a report with CVS statistics">
-    		
-	    <statcvs 
-	        projectName="Toolbox"
-	        projectDirectory="${top}"
-	        cvsLogFile="${doc}/statcvs/cvs.log"
-	        outputDirectory="${doc}/statcvs"
-	        cssFile="http://statcvs.sf.net/stats/statcvs.css"
-	        showCredits="no"/>
-	        
-	</target>
+            depends="init, cvslog"
+            description="Generates a report with CVS statistics">
+            
+        <statcvs 
+            projectName="Toolbox"
+            projectDirectory="${top}"
+            cvsLogFile="${doc}/statcvs/cvs.log"
+            outputDirectory="${doc}/statcvs"
+            cssFile="http://statcvs.sf.net/stats/statcvs.css"
+            showCredits="no"/>
+            
+    </target>
 
 
     <!--=============================--> 
     <!--       OBFUSCATE             -->
     <!--=============================-->
     <!--
-	<taskdef name="obfuscate"
-		     classname="com.yworks.yguard.ObfuscatorTask" 
-		     classpath="build/lib/yguard.jar"/>
+    <taskdef name="obfuscate"
+             classname="com.yworks.yguard.ObfuscatorTask" 
+             classpath="build/lib/yguard.jar"/>
 
-	<target name="obfuscate"
+    <target name="obfuscate"
             depends="init" 
-		    description="Creates obfuscated version of toolbox.jar">
-		    
-		<obfuscate mainclass="toolbox.launcher.Main" 
-			       conserveManifest="true">
-				
-				
-					
-			<inoutpair in="${dist}/toolbox.jar" out="${dist}/toolbox_obf.jar"/>
-	
-			<expose>
-				<class classes="protected" methods="protected" fields="protected"/>
-				
-				<class name="toolbox.findclass.Main"/>
-				
-				<class name="toolbox.showclasspath.Main"/>
-				<class name="toolbox.showpath.Main"/>
-				<class name="toolbox.jsourceview.JSourceView"/>
-				<class name="toolbox.jtail.JTail"/>
-				<class name="toolbox.tail.Main"/>
-				<class name="toolbox.tunnel.JTcpTunnel"/>
-				<class name="toolbox.tunnel.TcpTunnel"/>
-				<class name="toolbox.tree.Tree"/>
-				<class name="toolbox.sqlviewer.SQLViewer"/>
-				<class name="toolbox.util.Banner"/>
-				<class name="toolbox.util.ui.plugin.PluginWorkspace"/>
+            description="Creates obfuscated version of toolbox.jar">
+            
+        <obfuscate mainclass="toolbox.launcher.Main" 
+                   conserveManifest="true">
+                
+                
+                    
+            <inoutpair in="${dist}/toolbox.jar" out="${dist}/toolbox_obf.jar"/>
+    
+            <expose>
+                <class classes="protected" methods="protected" fields="protected"/>
+                
+                <class name="toolbox.findclass.Main"/>
+                
+                <class name="toolbox.showclasspath.Main"/>
+                <class name="toolbox.showpath.Main"/>
+                <class name="toolbox.jsourceview.JSourceView"/>
+                <class name="toolbox.jtail.JTail"/>
+                <class name="toolbox.tail.Main"/>
+                <class name="toolbox.tunnel.JTcpTunnel"/>
+                <class name="toolbox.tunnel.TcpTunnel"/>
+                <class name="toolbox.tree.Tree"/>
+                <class name="toolbox.sqlviewer.SQLViewer"/>
+                <class name="toolbox.util.Banner"/>
+                <class name="toolbox.util.ui.plugin.PluginWorkspace"/>
 
-				<class name="toolbox.jtail.FileSelectionPane"/>
-				<class name="toolbox.jtail.config.tinyxml.ConfigManager"/>
-				<class name="toolbox.tail.Tail"/>				
-				<class name="toolbox.util.concurrent.BlockingQueue"/>
-				<class name="toolbox.util.concurrent.BatchingQueueReader"/>				
-				<class name="toolbox.util.io.filter.ExtensionFilter"/>
-				<class name="toolbox.util.ui.ThreadSafeTableModel"/>
-				<class name="toolbox.util.ui.JFileExplorer"/>
-				<class name="toolbox.util.ClassUtil"/>
-				<class name="toolbox.util.StringUtil"/>
-				<class name="toolbox.util.SwingUtil"/>
-				<class name="toolbox.util.ThreadUtil"/>
-				<class name="toolbox.util.ui.plugin.ManagePluginsDialog"/>
-				
-				<class>
-					<patternset>
-						<include name="org."/>	
-						<include name="com."/>
-						<include name="net."/>
-						<include name="toolbox.util.ui.JFlipPane*$*"/>						
-						<include name="toolbox.findclass.JFindClass*$*"/>
-						<include name="toolbox.**.*Plugin"/>
-					</patternset>
-				</class>
+                <class name="toolbox.jtail.FileSelectionPane"/>
+                <class name="toolbox.jtail.config.tinyxml.ConfigManager"/>
+                <class name="toolbox.tail.Tail"/>                
+                <class name="toolbox.util.concurrent.BlockingQueue"/>
+                <class name="toolbox.util.concurrent.BatchingQueueReader"/>                
+                <class name="toolbox.util.io.filter.ExtensionFilter"/>
+                <class name="toolbox.util.ui.ThreadSafeTableModel"/>
+                <class name="toolbox.util.ui.JFileExplorer"/>
+                <class name="toolbox.util.ClassUtil"/>
+                <class name="toolbox.util.StringUtil"/>
+                <class name="toolbox.util.SwingUtil"/>
+                <class name="toolbox.util.ThreadUtil"/>
+                <class name="toolbox.util.ui.plugin.ManagePluginsDialog"/>
+                
+                <class>
+                    <patternset>
+                        <include name="org."/>    
+                        <include name="com."/>
+                        <include name="net."/>
+                        <include name="toolbox.util.ui.JFlipPane*$*"/>                        
+                        <include name="toolbox.findclass.JFindClass*$*"/>
+                        <include name="toolbox.**.*Plugin"/>
+                    </patternset>
+                </class>
 
-				<method name="void main(java.lang.String[])">
-			        <patternset>
-					    <include name="toolbox."/>
-				    </patternset>
-				</method>
-				
-			</expose>
-			
-			
-		</obfuscate>
-		
-		
-	</target>
-	-->
-	
+                <method name="void main(java.lang.String[])">
+                    <patternset>
+                        <include name="toolbox."/>
+                    </patternset>
+                </method>
+                
+            </expose>
+            
+            
+        </obfuscate>
+        
+        
+    </target>
+    -->
+    
 </project>
