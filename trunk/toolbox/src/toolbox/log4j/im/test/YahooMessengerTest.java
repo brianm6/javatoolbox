@@ -136,7 +136,7 @@ public class YahooMessengerTest extends TestCase implements StandaloneTestCase
                 "/toolbox/log4j/im/test/YahooMessengerTest.xml");
 
         // Load config from xml file        
-        DOMConfigurator.configure(XMLUtil.loadElement(xmlConfig));
+        DOMConfigurator.configure(XMLUtil.toElement(xmlConfig));
         Logger logger = Logger.getLogger(loggerName);
         
         logger.debug("debug");

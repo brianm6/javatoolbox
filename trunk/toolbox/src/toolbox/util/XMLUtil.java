@@ -90,7 +90,7 @@ public class XMLUtil
      * @throws IOException on I/O error.
      * @throws SAXException on XML parsing error.
      */
-    public static Element loadElement(String xml) 
+    public static Element toElement(String xml) 
         throws IOException, SAXException
     {
         DOMParser parser = new DOMParser();

@@ -138,7 +138,7 @@ public class AOLMessengerTest extends TestCase implements StandaloneTestCase
                 "/toolbox/log4j/im/test/AOLMessengerTest.xml");
         
         //BasicConfigurator.resetConfiguration();
-        DOMConfigurator.configure(XMLUtil.loadElement(xmlConfig));
+        DOMConfigurator.configure(XMLUtil.toElement(xmlConfig));
         
         Logger logger = Logger.getLogger("testXMLInit_logger");
         

@@ -126,7 +126,7 @@ public class SametimeMessengerTest
                 "/toolbox/log4j/im/test/SametimeMessengerTest.xml");
 
         //BasicConfigurator.resetConfiguration();
-        DOMConfigurator.configure(XMLUtil.loadElement(xmlConfig));
+        DOMConfigurator.configure(XMLUtil.toElement(xmlConfig));
 
         Logger logger = Logger.getLogger("testXMLInit_logger");
 
