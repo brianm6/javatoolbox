@@ -31,7 +31,7 @@ public class CutLineFilter extends AbstractLineFilter
     /** 
      * Ending column number.
      */
-    private int end_ = 0;
+    private int end_;
 
     //--------------------------------------------------------------------------
     // Constructors
