@@ -20,12 +20,12 @@ import org.apache.log4j.Logger;
 import nu.xom.Attribute;
 import nu.xom.Element;
 
-import toolbox.util.ExceptionUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.io.JTextAreaOutputStream;
 import toolbox.util.ui.JSmartTextArea;
+import toolbox.util.ui.SmartAction;
 import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.util.ui.layout.ParagraphLayout;
 import toolbox.util.ui.plugin.IPreferenced;
@@ -42,44 +42,65 @@ public class JTcpTunnelPane extends JPanel implements IPreferenced
         Logger.getLogger(JTcpTunnelPane.class);
     
     private static final String NODE_TCPTUNNEL_PLUGIN = "TCPTunnelPlugin";
-    private static final String NODE_INCOMING = "Incoming";
-    private static final String NODE_OUTGOING = "Outgoing";
+    private static final String   ATTR_REMOTE_PORT    = "remoteport";
+    private static final String   ATTR_REMOTE_HOST    = "remotehost";
+    private static final String   ATTR_LOCAL_PORT     = "localport";
+    private static final String   NODE_INCOMING       = "Incoming";
+    private static final String   NODE_OUTGOING       = "Outgoing";
     
-    private static final String ATTR_REMOTE_PORT = "remoteport";
-    private static final String ATTR_REMOTE_HOST = "remotehost";
-    private static final String ATTR_LOCAL_PORT  = "localport";
-    
-    /** Textarea that incoming data from the tunnel is dumped to */
+    /** 
+     * Textarea that incoming data from the tunnel is dumped to 
+     */
     private JSmartTextArea incomingTextArea_;
     
-    /** Textarea that outgoing data to the tunnel is dumped to */ 
+    /** 
+     * Textarea that outgoing data to the tunnel is dumped to 
+     */ 
     private JSmartTextArea outgoingTextArea_;
     
-    /** Workspace status bar */
+    /** 
+     * Refernce to the workspace status bar 
+     */
     private IStatusBar statusBar_;
     
-    /** Splits the input and output textareas */
+    /** 
+     * Splits the input and output textareas 
+     */
     private JSplitPane splitter_;
     
-    /** Clears the text areas */
+    /** 
+     * Clears the text areas 
+     */
     private JButton clearButton_;
     
-    /** Status label for the incoming text area */
+    /** 
+     * Status label for the incoming text area 
+     */
     private JLabel remoteLabel_;
     
-    /** Status label for the outgoing text area */
+    /** 
+     * Status label for the outgoing text area 
+     */
     private JLabel localLabel_;
 
-    /** Field for the port number of the local host */
+    /** 
+     * Field for the port number of the local host 
+     */
     private JTextField listenPortField_;
     
-    /** Field for the remote hostname */
+    /** 
+     * Field for the remote hostname 
+     */
     private JTextField remoteHostField_;
     
-    /** Field for the remote port number */
+    /** 
+     * Field for the remote port number 
+     */
     private JTextField remotePortField_;
     
-    /** Tunnel object */
+    /** 
+     * Tunnel object 
+     */
     private TcpTunnel tunnel_;    
 
     //--------------------------------------------------------------------------
@@ -339,7 +360,7 @@ public class JTcpTunnelPane extends JPanel implements IPreferenced
      */
     class ClearAction extends AbstractAction
     {
-        public ClearAction()
+        ClearAction()
         {
             super("Clear");
         }
@@ -354,11 +375,11 @@ public class JTcpTunnelPane extends JPanel implements IPreferenced
     /**
      * Starts the tunnel
      */    
-    class StartTunnelAction extends AbstractAction implements TcpTunnelListener
+    class StartTunnelAction extends SmartAction implements TcpTunnelListener
     {
-        public StartTunnelAction()
+        StartTunnelAction()
         {
-            super("Start");
+            super("Start", true, false, null);
         }
         
         public void statusChanged(TcpTunnel tunnel, String status)
@@ -385,41 +406,33 @@ public class JTcpTunnelPane extends JPanel implements IPreferenced
             statusBar_.setStatus("Tunnel started");
         }
 
-        public void actionPerformed(ActionEvent e)
+        public void runAction(ActionEvent e) throws Exception
         {
-            try
-            {
-                if (StringUtil.isNullOrEmpty(getRemoteHost()))
-                    throw new IllegalArgumentException(
-                        "Please specify the remote hostname");
-                        
-                tunnel_ = 
-                    new TcpTunnel(
-                        getListenPort(), 
-                        getRemoteHost(), 
-                        getRemotePort());
-                        
-                tunnel_.setIncomingSink(
-                    new JTextAreaOutputStream(outgoingTextArea_));
-                
-                tunnel_.setOutgoingSink(
-                    new JTextAreaOutputStream(incomingTextArea_));
+            if (StringUtil.isNullOrEmpty(getRemoteHost()))
+                throw new IllegalArgumentException(
+                    "Please specify the remote hostname");
                     
-                tunnel_.addTcpTunnelListener(this);
+            tunnel_ = 
+                new TcpTunnel(
+                    getListenPort(), 
+                    getRemoteHost(), 
+                    getRemotePort());
+                    
+            tunnel_.setIncomingSink(
+                new JTextAreaOutputStream(outgoingTextArea_));
+            
+            tunnel_.setOutgoingSink(
+                new JTextAreaOutputStream(incomingTextArea_));
                 
-                new Thread(new Runnable()
-                {
-                    public void run()
-                    {
-                        tunnel_.start();
-                    }
-                }).start();    
-                
-            } 
-            catch (Exception ex)
+            tunnel_.addTcpTunnelListener(this);
+            
+            new Thread(new Runnable()
             {
-                ExceptionUtil.handleUI(ex, logger_);
-            }
+                public void run()
+                {
+                    tunnel_.start();
+                }
+            }).start();    
         }
     }
 
@@ -428,7 +441,7 @@ public class JTcpTunnelPane extends JPanel implements IPreferenced
      */
     class StopTunnelAction extends AbstractAction
     {
-        public StopTunnelAction()
+        StopTunnelAction()
         {
             super("Stop");
         }
