@@ -329,4 +329,23 @@ public class ArrayUtilTest extends TestCase
         assertTrue("Should have found in an array with size > one", 
             ArrayUtil.contains(new String[] {"one", "two", "three" }, "two"));
     }    
+    
+    /**
+     * Tests the isNullOrEmpty() method
+     */
+    public void testIsNullOrEmpty()
+    {
+        String[] nullArray  = null;
+        String[] emptyArray = new String[0];
+        String[] oneArray   = new String[] { "zero" };
+        
+        assertTrue("Should have returned true for null array", 
+            ArrayUtil.isNullOrEmpty(nullArray));
+            
+        assertTrue("Should have returned true for empty array",
+            ArrayUtil.isNullOrEmpty(emptyArray));
+            
+        assertTrue("Should have returned false for non-empty array", 
+            !ArrayUtil.isNullOrEmpty(oneArray));            
+    }
 }
