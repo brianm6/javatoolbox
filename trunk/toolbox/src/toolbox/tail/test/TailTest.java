@@ -5,13 +5,16 @@ import java.io.PipedWriter;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-import org.apache.log4j.Logger;
-
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import org.apache.log4j.Logger;
+
 import toolbox.tail.ITailListener;
 import toolbox.tail.Tail;
+import toolbox.util.FileUtil;
+import toolbox.util.RandomUtil;
+import toolbox.util.StringUtil;
 import toolbox.util.ThreadUtil;
 import toolbox.util.concurrent.BlockingQueue;
 import toolbox.util.io.StringOutputStream;
@@ -21,10 +24,12 @@ import toolbox.util.io.StringOutputStream;
  */
 public class TailTest extends TestCase
 {
-    /** Logger */
     public static final Logger logger_ =
         Logger.getLogger(TailTest.class);
 
+    /** Word list used for test data */
+    private String[] words_;
+    
     //--------------------------------------------------------------------------
     // Main
     //--------------------------------------------------------------------------
@@ -40,8 +45,56 @@ public class TailTest extends TestCase
     }
 
     //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Default constructor - builds the word list
+     */
+    public TailTest()
+    {
+        String paragraph =         
+            "now is the time for all good men to come to the aid of " +
+            "their country the early bird gets the worm what hast " +
+            "thou done for me lately build it and they will come " +
+            "evil knows no bounds i know you are but what am i zoinks " +
+            "scooby ummmm donuts take it easy big fella life is like " +
+            "a box of chocolates shit happens and then you're " +
+            "reincarnated don't have a cow man";
+                   
+        words_ = StringUtil.tokenize(paragraph, " ");        
+    }
+    
+    //--------------------------------------------------------------------------
     // Unit Tests
     //--------------------------------------------------------------------------
+    
+    /**
+     * Tests tailing of a regular old file sitting around not doing anything.<p>
+     * This implies the file:               <br>
+     * - exists                             <br>
+     * - has no locks                       <br>
+     * - has no intended future activity    <br>
+     * - can be deleted without consequence
+     */
+    public void testTailUnattachedFile() throws Exception
+    {
+        logger_.info("Running testTailUnattachedFile...");
+        
+        String file = FileUtil.getTempFilename();
+        FileUtil.setFileContents(file, makeParagraph(200), false);
+        TestTailListener listener = new TestTailListener();
+               
+        Tail tail = new Tail();
+        tail.setTailFile(file);
+        tail.addOutputStream(System.out);
+        tail.addTailListener(listener);
+        tail.start();
+        listener.waitForStart();
+        listener.waitForEnded();
+                
+        logger_.info("Done!");
+    }
     
     /**
      * Tests tail using a reader
@@ -199,6 +252,33 @@ public class TailTest extends TestCase
         
         pw.close();
     }
+    
+    /**
+     * Creates a paragraph full of random words.
+     * 
+     * @param  lines  Number of lines contained in the paragraph
+     * @return Paragraph of random and gramatically incorrect sentences
+     */
+    protected String makeParagraph(int lines)
+    {
+        StringBuffer sb = new StringBuffer();
+        for (int i=0; i < lines; i++)
+            sb.append(i + " " + makeSentence() + "\n");
+        return sb.toString();
+    }
+    
+    /**
+     * Creates a sentence full of random words
+     * 
+     * @return Sentence
+     */
+    protected String makeSentence()
+    {
+        StringBuffer sb = new StringBuffer();
+        for (int i=0, n = RandomUtil.nextInt(6,10); i<n; i++)
+            sb.append(RandomUtil.nextElement(words_) + " ");
+        return sb.toString();
+    }
 }
 
 //--------------------------------------------------------------------------
@@ -347,5 +427,10 @@ class TestTailListener implements ITailListener
     public void waitForUnpause() throws InterruptedException
     {
         unpauseEvents_.pull();
+    }
+    
+    public void waitForEnded() throws InterruptedException
+    {
+        endedEvents_.pull();
     }
 }
