@@ -12,30 +12,30 @@ import toolbox.util.SwingUtil;
 import toolbox.util.ui.JSmartTextArea;
 
 /**
- * A Log4J appender that dumps into a text area.
+ * A Log4J appender that empties into a text area.
  */
 public class JTextAreaAppender extends AppenderSkeleton
     implements DocumentListener
 {
     //--------------------------------------------------------------------------
-    // Fields 
+    // Fields
     //--------------------------------------------------------------------------
-    
-    /** 
-     * Text area that logging statements are directed to. 
-     */ 
+
+    /**
+     * Text area that logging statements are directed to.
+     */
     private JTextArea textArea_;
-    
-    /** 
+
+    /**
      * Layout for logging statements.
-     */ 
+     */
     private PatternLayout layout_;
 
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
-    
-    /** 
+
+    /**
      * Creates a new text area appender.
      */
     public JTextAreaAppender()
@@ -43,10 +43,10 @@ public class JTextAreaAppender extends AppenderSkeleton
         this(new JSmartTextArea(true, SwingUtil.getDefaultAntiAlias()));
     }
 
-    
-    /** 
+
+    /**
      * Creates a new text area appender.
-     * 
+     *
      * @param textArea Text area to connect the appender to.
      */
     public JTextAreaAppender(JTextArea textArea)
@@ -55,14 +55,14 @@ public class JTextAreaAppender extends AppenderSkeleton
         textArea_.getDocument().addDocumentListener(this);
         layout_ = new PatternLayout("%-5p %3x - %m%n");
     }
-    
+
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
-    
+
     /**
      * Returns the text area.
-     *  
+     *
      * @return JTextArea
      */
     public JTextArea getTextArea()
@@ -73,7 +73,7 @@ public class JTextAreaAppender extends AppenderSkeleton
     //--------------------------------------------------------------------------
     // Overrides org.apache.log4j.AppenderSkeleton
     //--------------------------------------------------------------------------
-    
+
     /**
      * @see org.apache.log4j.AppenderSkeleton#append(
      *      org.apache.log4j.spi.LoggingEvent)
@@ -103,7 +103,7 @@ public class JTextAreaAppender extends AppenderSkeleton
     //--------------------------------------------------------------------------
     // javax.swing.event.DocumentListener Interface
     //--------------------------------------------------------------------------
-    
+
     /**
      * @see javax.swing.event.DocumentListener#changedUpdate(
      *      javax.swing.event.DocumentEvent)
@@ -125,7 +125,7 @@ public class JTextAreaAppender extends AppenderSkeleton
     /**
      * Sets the caret position to the end of the text in the text component
      * whenever it is updated.
-     * 
+     *
      * @see javax.swing.event.DocumentListener#insertUpdate(
      *      javax.swing.event.DocumentEvent)
      */
