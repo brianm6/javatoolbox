@@ -93,7 +93,7 @@ public class TailTest extends TestCase
     {
         logger_.info("Running testTailBacklog...");
 
-        String file = FileUtil.generateTempFilename();
+        String file = FileUtil.createTempFilename();
         
         try
         {
@@ -142,7 +142,7 @@ public class TailTest extends TestCase
     {
         logger_.info("Running testTailFile...");
        
-        String file = FileUtil.generateTempFilename();
+        String file = FileUtil.createTempFilename();
         File   ffile = new File(file);
         FileStuffer stuffer = new FileStuffer(ffile, 250);
         Writer sink = null;

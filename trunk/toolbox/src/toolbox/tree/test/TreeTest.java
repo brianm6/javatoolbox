@@ -391,7 +391,7 @@ public class TreeTest extends TestCase
      */
     protected File createFile(File dir) throws IOException
     {
-        String f = FileUtil.generateTempFilename(dir);
+        String f = FileUtil.createTempFilename(dir);
         FileUtil.setFileContents(f, "testing", false);
         return new File(f);
     }

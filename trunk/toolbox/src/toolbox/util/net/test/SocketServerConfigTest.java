@@ -47,7 +47,7 @@ public class SocketServerConfigTest extends TestCase
         logger_.info("Running testLoadByFile...");
         
         // Create properties file
-        String file = FileUtil.generateTempFilename();
+        String file = FileUtil.createTempFilename();
         
         logger_.info("Props file: " + file);
         

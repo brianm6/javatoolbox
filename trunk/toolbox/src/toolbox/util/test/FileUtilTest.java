@@ -67,7 +67,7 @@ public class FileUtilTest extends TestCase
         logger_.info("Running testGenerateTempFilename...");
         
         // Generate temp file name
-        String tempFile = FileUtil.generateTempFilename();
+        String tempFile = FileUtil.createTempFilename();
         assertNotNull("temp filename is null", tempFile);
         
         // Use temp file name to create a file
@@ -90,7 +90,7 @@ public class FileUtilTest extends TestCase
         logger_.info("Running testGenerateTempFilenameForDir...");
         
         // Generate temp file name in temp directory
-        String tempFile = FileUtil.generateTempFilename(FileUtil.getTempDir());
+        String tempFile = FileUtil.createTempFilename(FileUtil.getTempDir());
         assertNotNull("temp filename is null", tempFile);
         
         // Use temp file name to create a file
@@ -118,7 +118,7 @@ public class FileUtilTest extends TestCase
         int numFiles = 10;
         
         // Create a directory
-        String dirName = FileUtil.generateTempFilename();
+        String dirName = FileUtil.createTempFilename();
         File dir = new File(dirName);
         dir.mkdir();
         
@@ -164,7 +164,7 @@ public class FileUtilTest extends TestCase
         logger_.info("Running testCleanDirFailure1...");
         
         // Create a file
-        String file = FileUtil.generateTempFilename();
+        String file = FileUtil.createTempFilename();
         FileUtil.setFileContents(file, "hello", false);
         File f = new File(file);
         
@@ -194,7 +194,7 @@ public class FileUtilTest extends TestCase
         logger_.info("Running testCleanDirFailure2...");
         
         // Create a bogus dir name
-        String dir = FileUtil.generateTempFilename();
+        String dir = FileUtil.createTempFilename();
         
         try
         {
@@ -221,7 +221,7 @@ public class FileUtilTest extends TestCase
         logger_.info("Running testGetFileContents...");
         
         // Create a file
-        String file = FileUtil.generateTempFilename();
+        String file = FileUtil.createTempFilename();
         String contents = "blah blah blah";
         FileUtil.setFileContents(file, contents, false);
         
@@ -249,7 +249,7 @@ public class FileUtilTest extends TestCase
         int fileSize = 500000;
         
         // Create a file
-        String file = FileUtil.generateTempFilename();
+        String file = FileUtil.createTempFilename();
         StringBuffer contents = new StringBuffer();
         for(int i=0; i<fileSize; i++)
             contents.append(RandomUtil.nextAlpha());
@@ -282,7 +282,7 @@ public class FileUtilTest extends TestCase
     {
         logger_.info("Running testGetFileAsBytes...");
         
-        String file = FileUtil.generateTempFilename();
+        String file = FileUtil.createTempFilename();
         
         try
         {
@@ -313,7 +313,7 @@ public class FileUtilTest extends TestCase
         logger_.info("Running testSetFileContents...");
         
         // Create a file
-        String file = FileUtil.generateTempFilename();
+        String file = FileUtil.createTempFilename();
         String contents = "blah blah blah";
         FileUtil.setFileContents(file, contents, false);
         
@@ -339,7 +339,7 @@ public class FileUtilTest extends TestCase
         logger_.info("Running testSetFileContentsBytes...");
         
         // Create a file
-        String file = FileUtil.generateTempFilename();
+        String file = FileUtil.createTempFilename();
         byte[] contents = "blah blah blah".getBytes();
         FileUtil.setFileContents(file, contents, false);
         
@@ -365,7 +365,7 @@ public class FileUtilTest extends TestCase
         logger_.info("Running testSetFileContents2...");
         
         // Create a file
-        String file = FileUtil.generateTempFilename();
+        String file = FileUtil.createTempFilename();
         String contents = "blah blah blah";
         FileUtil.setFileContents(new File(file), contents, false);
         
@@ -409,19 +409,19 @@ public class FileUtilTest extends TestCase
         logger_.info("Running testMoveFile..."); 
         
         // Make src dir
-        String srcDirName = FileUtil.generateTempFilename();
+        String srcDirName = FileUtil.createTempFilename();
         File   srcDir     = new File(srcDirName);
         srcDir.mkdir();
         
         // Make dest dir
-        String destDirName = FileUtil.generateTempFilename();
+        String destDirName = FileUtil.createTempFilename();
         File   destDir     = new File(destDirName);
         destDir.mkdir();
  
         try
         {
             // Make src file
-            String srcFilename = FileUtil.generateTempFilename(srcDir);
+            String srcFilename = FileUtil.createTempFilename(srcDir);
             File   srcFile     = new File(srcFilename);
             String srcContents =  "test file for move";
             FileUtil.setFileContents(srcFilename, srcContents, false);
@@ -523,7 +523,7 @@ public class FileUtilTest extends TestCase
     {
         logger_.info("Running testDeleteByFile...");
         
-        String file = FileUtil.generateTempFilename();
+        String file = FileUtil.createTempFilename();
         FileUtil.setFileContents(file, "test data", false);
         File f = new File(file);
         assertTrue(f.exists());
@@ -541,7 +541,7 @@ public class FileUtilTest extends TestCase
     {
         logger_.info("Running testDeleteByFilename...");
         
-        String file = FileUtil.generateTempFilename();
+        String file = FileUtil.createTempFilename();
         FileUtil.setFileContents(file, "test data", false);
         File f = new File(file);
         assertTrue(f.exists());

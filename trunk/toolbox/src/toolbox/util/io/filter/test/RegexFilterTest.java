@@ -48,7 +48,7 @@ public class RegexFilterTest extends TestCase
      */
     protected void setUp() throws Exception
     {
-        testDir_ = new File(FileUtil.generateTempFilename());
+        testDir_ = new File(FileUtil.createTempFilename());
         testDir_.mkdir();
         String base = testDir_.getAbsolutePath() + File.separator;
         

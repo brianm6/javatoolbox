@@ -564,7 +564,7 @@ public class XSLFOPlugin extends JPanel implements IPlugin
         public void runAction(ActionEvent e) throws Exception
         {
             String xml = xmlArea_.getText();
-            String foFile  = FileUtil.generateTempFilename() + ".xml";
+            String foFile  = FileUtil.createTempFilename() + ".xml";
             FileUtil.setFileContents(foFile, xml, false);
             Fop.main(new String[] { foFile, "-awt"});
         }
@@ -617,7 +617,7 @@ public class XSLFOPlugin extends JPanel implements IPlugin
             getFOP().renderPDF(input, output);
             byte[] pdfBytes = output.toByteArray();
             
-            String pdfFile = FileUtil.generateTempFilename() + ".pdf";
+            String pdfFile = FileUtil.createTempFilename() + ".pdf";
             FileUtil.setFileContents(pdfFile, pdfBytes, false);
             viewPDFExternal(pdfFile);
         }
@@ -707,7 +707,7 @@ public class XSLFOPlugin extends JPanel implements IPlugin
             ByteArrayOutputStream output = new ByteArrayOutputStream();
             getXEP().renderPDF(input, output);
              
-            String pdfFile = FileUtil.generateTempFilename() + ".pdf";
+            String pdfFile = FileUtil.createTempFilename() + ".pdf";
             FileUtil.setFileContents(pdfFile, output.toByteArray(), false);
             viewPDFExternal(pdfFile);
         }

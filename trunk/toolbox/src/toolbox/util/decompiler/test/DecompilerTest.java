@@ -79,7 +79,7 @@ public class DecompilerTest extends TestCase
                 InputStream is = 
                     ResourceUtil.getResource("java/lang/Object.class");
                 
-                tmpClass = FileUtil.generateTempFilename() + ".class";
+                tmpClass = FileUtil.createTempFilename() + ".class";
                 
                 FileUtil.setFileContents(
                         tmpClass, StreamUtil.toBytes(is), false);

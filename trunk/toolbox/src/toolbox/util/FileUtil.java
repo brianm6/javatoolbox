@@ -261,7 +261,7 @@ public final class FileUtil
      */
     public static File createTempDir() throws IOException
     {
-        File f = new File(generateTempFilename(getTempDir()));
+        File f = new File(createTempFilename(getTempDir()));
         f.mkdir();
         return f;
     }
@@ -274,9 +274,9 @@ public final class FileUtil
      * @return Temporary file name
      * @throws IOException on I/O error
      */
-    public static String generateTempFilename() throws IOException
+    public static String createTempFilename() throws IOException
     {
-        return generateTempFilename(getTempDir());
+        return createTempFilename(getTempDir());
     }
 
     
@@ -287,7 +287,7 @@ public final class FileUtil
      * @return Tempory filename in absolute form
      * @throws IOException on I/O error
      */
-    public static String generateTempFilename(File forDir) throws IOException
+    public static String createTempFilename(File forDir) throws IOException
     {
         // Create temp file, delete it, and return the name 
         File tmpFile = File.createTempFile("temp", "", forDir);

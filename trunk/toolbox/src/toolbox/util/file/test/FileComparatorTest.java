@@ -114,8 +114,8 @@ public class FileComparatorTest extends TestCase
     {
         logger_.info("Running testCompareBySize...");
         
-        File fileA = new File(FileUtil.generateTempFilename());
-        File fileB = new File(FileUtil.generateTempFilename());
+        File fileA = new File(FileUtil.createTempFilename());
+        File fileB = new File(FileUtil.createTempFilename());
         
         try
         {
@@ -144,8 +144,8 @@ public class FileComparatorTest extends TestCase
     {
         logger_.info("Running testCompareByTimestamp...");
         
-        File fileA = new File(FileUtil.generateTempFilename());
-        File fileB = new File(FileUtil.generateTempFilename());
+        File fileA = new File(FileUtil.createTempFilename());
+        File fileB = new File(FileUtil.createTempFilename());
         
         try
         {
@@ -174,10 +174,10 @@ public class FileComparatorTest extends TestCase
     {
         logger_.info("Running testCompareByContents...");
         
-        File fileA = new File(FileUtil.generateTempFilename());
-        File fileB = new File(FileUtil.generateTempFilename());
-        File fileC = new File(FileUtil.generateTempFilename());
-        File fileD = new File(FileUtil.generateTempFilename());
+        File fileA = new File(FileUtil.createTempFilename());
+        File fileB = new File(FileUtil.createTempFilename());
+        File fileC = new File(FileUtil.createTempFilename());
+        File fileD = new File(FileUtil.createTempFilename());
         
         try
         {

@@ -46,7 +46,7 @@ public class ReverseFileReaderTest extends TestCase
     {
         logger_.info("Running testReadLineEmptyFile...");
         
-        String f = FileUtil.generateTempFilename();
+        String f = FileUtil.createTempFilename();
         
         try
         {
@@ -70,7 +70,7 @@ public class ReverseFileReaderTest extends TestCase
     {
         logger_.info("Running testReadLineOneByteFile...");
         
-        String f = FileUtil.generateTempFilename();
+        String f = FileUtil.createTempFilename();
         
         try
         {
@@ -95,7 +95,7 @@ public class ReverseFileReaderTest extends TestCase
     {
         logger_.info("Running testReadLineOneLineFile...");
         
-        String f = FileUtil.generateTempFilename();
+        String f = FileUtil.createTempFilename();
         
         try
         {
@@ -121,7 +121,7 @@ public class ReverseFileReaderTest extends TestCase
     {
         logger_.info("Running testReadLineMultiLineFile...");
         
-        String f = FileUtil.generateTempFilename();
+        String f = FileUtil.createTempFilename();
         FileUtil.setFileContents(f, "one\ntwo\nthree\nfour\nfive", false);
         
         try
@@ -151,7 +151,7 @@ public class ReverseFileReaderTest extends TestCase
     {
         logger_.info("Running testReadLineMultiLineFile...");
         
-        String f = FileUtil.generateTempFilename();
+        String f = FileUtil.createTempFilename();
         FileUtil.setFileContents(f, "one\ntwo\nthree\nfour\nfive", false);
         
         try
@@ -184,7 +184,7 @@ public class ReverseFileReaderTest extends TestCase
     {
         logger_.info("Running testReadEmptyFile...");
         
-        String f = FileUtil.generateTempFilename();
+        String f = FileUtil.createTempFilename();
         FileUtil.setFileContents(f, "", false);
         
         try
@@ -208,7 +208,7 @@ public class ReverseFileReaderTest extends TestCase
     {
         logger_.info("Running testReadOneByteFile...");
         
-        String f = FileUtil.generateTempFilename();
+        String f = FileUtil.createTempFilename();
         FileUtil.setFileContents(f, "x", false);
         
         try
