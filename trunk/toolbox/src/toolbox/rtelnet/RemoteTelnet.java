@@ -28,12 +28,12 @@ public class RemoteTelnet
     //--------------------------------------------------------------------------
     
     /** 
-     * Used to read missing telnet info from the standard in. 
+     * Used to read missing telnet info from standard input. 
      */
     private LineNumberReader reader_;
     
     /** 
-     * Remote telnet authentication, connection, command information. 
+     * Telnet authentication, connection, and command information. 
      */
     private RemoteTelnetInfo options_;
     
@@ -44,37 +44,40 @@ public class RemoteTelnet
     /**
      * Launches RemoteTelnet.
      * 
-     * @param args -h host:port Host and to telnet to
-     *             -u username  Telnet username    
-     *             -p password  Telnet password
-     *             -c command   Telnet command
+     * @param args See following: 
+     * <pre>
+     * -h host:port Host and port to telnet to
+     * -u username  Telnet username    
+     * -p password  Telnet password
+     * -c command   Telnet command
+     * </pre>
      * 
      * @throws IOException on I/O error.
      * @throws ParseException on command line parsing error.
+     * @throws InterruptedException on reader thread interruption.
      */
     public static void main(String[] args) 
         throws IOException, ParseException, InterruptedException
     {
-        // Parse args
-        CommandLineParser parser = new PosixParser();
+        // TODO: Add support for telnet port
         
-        Options cliOptions = new Options();
+        // Parse args
+        Options options = new Options();
         Option  hostname = new Option("h", "hostname", true , "Hostname");
-        //Option  port     = new Option("o", "port"    , false, "Port");
         Option  username = new Option("u", "username", true , "Username");
         Option  password = new Option("p", "password", true , "Password");
         Option  command  = new Option("c", "command" , true , "Command");
         Option  help     = new Option("?", "help"    , false, "Print Usage");
         
-        cliOptions.addOption(hostname);
-        //cliOptions.addOption(portOption);
-        cliOptions.addOption(username);
-        cliOptions.addOption(password);
-        cliOptions.addOption(command);
-        //cliOptions.addOption(helpOption);        
+        options.addOption(hostname);
+        options.addOption(username);
+        options.addOption(password);
+        options.addOption(command);
+        options.addOption(help);        
 
-        CommandLine cmdLine = parser.parse(cliOptions, args, true);
-        RemoteTelnetInfo options = new RemoteTelnetInfo();
+        CommandLineParser parser = new PosixParser();
+        CommandLine cmdLine = parser.parse(options, args, true);
+        RemoteTelnetInfo info = new RemoteTelnetInfo();
         
         for (Iterator i = cmdLine.iterator(); i.hasNext();)
         {
@@ -85,24 +88,20 @@ public class RemoteTelnet
             logger_.debug("Processing opt " + opt + " with value " + value);
             
             if (opt.equals(hostname.getOpt()))
-                options.setHostname(value);
-            //else if (opt.equals(portOption.getOpt()))
-            //    options.setPort(Integer.parseInt(value));
+                info.setHostname(value);
             else if (opt.equals(username.getOpt()))
-                options.setUsername(value);
+                info.setUsername(value);
             else if (opt.equals(password.getOpt()))
-                options.setPassword(value);
+                info.setPassword(value);
             else if (opt.equals(command.getOpt()))
-                options.setCommand(value);
+                info.setCommand(value);
             else if (opt.equals(help.getOpt()))
                 printUsage();
         }
         
-        RemoteTelnet rtelnet = new RemoteTelnet(options);
+        RemoteTelnet rtelnet = new RemoteTelnet(info);
         rtelnet.verifyOptions();
         rtelnet.execute();        
-        
-        //System.exit(0);
     }
 
     //--------------------------------------------------------------------------
@@ -115,7 +114,7 @@ public class RemoteTelnet
      * @param hostname Host to telnet to.
      * @param port Telnet port.
      * @param username Login user.
-     * @param password Cleartext password.
+     * @param password Clear text password.
      * @param command Command to execute on remote host.
      * @throws IOException on I/O error.
      */ 
@@ -150,6 +149,7 @@ public class RemoteTelnet
      * 
      * @throws SocketException on socket communication error.
      * @throws IOException on I/O error.
+     * @throws InterruptedException on reader thread interruption.
      */    
     public void execute() 
         throws SocketException, IOException, InterruptedException
@@ -220,7 +220,6 @@ public class RemoteTelnet
             "RemoteTelnetClient  : Runs a command remotely via telnet");
             
         System.out.println("Usage    : rtelnet -h hostname " +
-                                              "-o port " + 
                                               "-u username " + 
                                               "-p password " + 
                                               "-c command");
