@@ -11,7 +11,7 @@ public interface Invoker
      * @param invokable Runnable 
      * @throws Exception on error
      */
-    public void invoke(Runnable invokable) throws Exception;
+    void invoke(Runnable invokable) throws Exception;
 
     
     /**
@@ -22,8 +22,7 @@ public interface Invoker
      * @param params Method parameters
      * @throws Exception on error
      */
-    public void invoke(Object target, String method, Object[] params)
-        throws Exception;
+    void invoke(Object target, String method, Object[] params) throws Exception;
     
     
     /**
@@ -31,5 +30,5 @@ public interface Invoker
      * 
      * @throws Exception on error
      */    
-    public void shutdown() throws Exception;
+    void shutdown() throws Exception;
 }
