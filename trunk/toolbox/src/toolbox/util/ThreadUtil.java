@@ -170,7 +170,11 @@ public final class ThreadUtil
     {
         // Create thread with a MethodRunner and start
         Runnable runnable = new MethodRunner(target, methodName, params);
-        Thread thread = new Thread(runnable);
+        
+        Thread thread = 
+        	new Thread(runnable, ClassUtil.stripPackage(
+      			target.getClass().getName()) + ":" + methodName);
+
         thread.start(); 
         return thread; 
     }
@@ -191,7 +195,10 @@ public final class ThreadUtil
         Runnable runnable = 
             new ThreadUtil.MethodRunner(target, method, params, clazzes);
             
-        Thread thread = new Thread(runnable);
+        Thread thread = 
+            new Thread(runnable, ClassUtil.stripPackage(
+                target.getClass().getName()) + ":" + method);
+                
         thread.start();
         return thread;
     }
