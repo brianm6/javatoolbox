@@ -27,6 +27,16 @@ public class QueuedInvoker implements Invoker
      */
     private Thread consumer_;
 
+    /**
+     * Invokable unit of work
+     */
+    private Invokable invokable_;
+
+    /**
+     * Optional delay between invocations in millis
+     */
+    private long delay_;
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -47,40 +57,26 @@ public class QueuedInvoker implements Invoker
     public QueuedInvoker(final long millis)
     {
         queue_ = new BlockingQueue();
+        delay_ = millis;
 
-        // Creates the consumer thread and starts it    
-        consumer_ = new Thread(new Runnable()
-        {
-            public void run()
-            {
-                boolean shutdown = false;
-                
-                while (!shutdown)
-                {
-                    try
-                    {
-                        Runnable r = (Runnable) queue_.pull();
-                        r.run();
-                        Thread.sleep(millis);
-                    }
-                    catch (InterruptedException ie)
-                    {
-                        shutdown = true;
-                        logger_.debug("Thread " + consumer_.getName() + 
-                            " was interrupted(). Shutting down...");
-                    }
-                }
-            }
-        }, Thread.currentThread().getName() + "->QueuedInvoker");
+        // Creates the consumer thread and starts it
+        consumer_ = new Thread(
+            invokable_ = new Invokable(),
+            Thread.currentThread().getName() + "->QueuedInvoker");
 
         // Start the consumer
         consumer_.start();
     }
-    
+
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
-    
+
+    public boolean isIdle()
+    {
+        return isEmpty() && !invokable_.isRunning();
+    }
+
     /**
      * Returns true if the invocation queue is empty, false otherwise. Use to 
      * check if it is safe to shutdown invoker.
@@ -146,6 +142,53 @@ public class QueuedInvoker implements Invoker
      */
     public void shutdown() throws Exception
     {
+        if (!isEmpty())
+            logger_.warn("Shutting down queued invoker  even though there are "+
+                getSize() + " items remaining in the invocation queue.");
+        else if (!isIdle())
+            logger_.warn("Shutting down queue even though there is still an " +
+                "invocation pending execution.");
+
         ThreadUtil.stop(consumer_);
+    }
+
+    //--------------------------------------------------------------------------
+    // Inner Classes
+    //--------------------------------------------------------------------------
+
+    /**
+     * Invokable unit of work
+     */
+    class Invokable implements Runnable
+    {
+        private boolean running_ = false;
+
+        public void run()
+        {
+            boolean shutdown = false;
+
+            while (!shutdown)
+            {
+                try
+                {
+                    Runnable r = (Runnable) queue_.pull();
+                    running_ = true;
+                    r.run();
+                    running_ = false;
+                    Thread.sleep(delay_);
+                }
+                catch (InterruptedException ie)
+                {
+                    shutdown = true;
+                    logger_.debug("Thread " + consumer_.getName() +
+                        " was interrupted(). Shutting down...");
+                }
+            }
+        }
+
+        public boolean isRunning()
+        {
+            return running_;
+        }
     }
 }
