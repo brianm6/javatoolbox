@@ -82,17 +82,6 @@ public class ObjectSequence extends AbstractSequence
     //--------------------------------------------------------------------------
     
     /**
-     * Returns the size of the sequence.
-     * 
-     * @return int
-     */
-    public int getSize()
-    {
-        return pool_.size();
-    }
-
-    
-    /**
      * Returns the pool.
      * 
      * @return List
