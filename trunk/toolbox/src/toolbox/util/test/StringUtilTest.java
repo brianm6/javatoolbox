@@ -557,4 +557,25 @@ public class StringUtilTest extends TestCase implements Stringz
         assertEquals("jkl", StringUtil.getLine(s, 3));                        
         assertNull(StringUtil.getLine(s, 500));
     }
+    
+    /**
+     * Tests reverse()
+     */
+    public void testReverse()
+    {
+        logger_.info("Running testReverse...");
+        
+        // Zero
+        assertEquals("", StringUtil.reverse(""));
+        
+        // One
+        assertEquals("x", StringUtil.reverse("x"));
+        
+        // Many
+        assertEquals("ydwoh", StringUtil.reverse("howdy"));
+        
+        // Reverse x 2 = original
+        assertEquals("original", 
+            StringUtil.reverse(StringUtil.reverse("original")));
+    }
 }
