@@ -38,6 +38,8 @@ import toolbox.util.XOMUtil;
 import toolbox.util.file.FileStuffer;
 import toolbox.util.ui.JConveyorMenu;
 import toolbox.util.ui.JFileExplorerAdapter;
+import toolbox.util.ui.JSmartMenu;
+import toolbox.util.ui.JSmartMenuItem;
 import toolbox.util.ui.SmartAction;
 import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.util.ui.font.FontChooserException;
@@ -203,24 +205,24 @@ public class JTail extends JFrame implements IPreferenced
     protected JMenuBar buildMenuBar()
     {
         JMenuBar menuBar = new JMenuBar();
-        JMenu fileMenu   = new JMenu("File");
+        JMenu fileMenu   = new JSmartMenu("File");
         fileMenu.setMnemonic('F');
-        fileMenu.add(new PreferencesAction());
-        fileMenu.add(new SetFontAction());
-        fileMenu.add(new TailSystemOutAction());
-        fileMenu.add(new TailLog4JAction());
+        fileMenu.add(new JSmartMenuItem(new PreferencesAction()));
+        fileMenu.add(new JSmartMenuItem(new SetFontAction()));
+        fileMenu.add(new JSmartMenuItem(new TailSystemOutAction()));
+        fileMenu.add(new JSmartMenuItem(new TailLog4JAction()));
         fileMenu.addSeparator();
                 
         if (testMode_)
         {
             fileMenu.addSeparator();
-            fileMenu.add(new CreateFileAction());
+            fileMenu.add(new JSmartMenuItem(new CreateFileAction()));
         }
             
         menuBar.add(fileMenu);
         
         recentMenu_ = new JConveyorMenu("Recent", 10);
-        recentMenu_.add(new ClearRecentAction());
+        recentMenu_.add(new JSmartMenuItem(new ClearRecentAction()));
         menuBar.add(recentMenu_);
         
         return menuBar;
