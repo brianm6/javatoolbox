@@ -5,7 +5,7 @@ package toolbox.util.reflect;
  */
 public class MethodHolder implements IMethodHolder
 {
-    protected SmartMethod method;
+    private SmartMethod method_;
 
     // CONSTRUCTORS
 
@@ -16,7 +16,7 @@ public class MethodHolder implements IMethodHolder
      */
     public MethodHolder(SmartMethod method)
     {
-        this.method = method;
+        this.method_ = method;
     }
 
     // METHODHOLDER METHODS
@@ -30,7 +30,7 @@ public class MethodHolder implements IMethodHolder
      */
     public SmartMethod getMethod(Class[] paramType) throws NoSuchMethodException
     {
-        return method;
+        return method_;
     }
 
     /**
@@ -41,9 +41,9 @@ public class MethodHolder implements IMethodHolder
      */
     public IMethodHolder addMethod(SmartMethod newMethod)
     {
-        return method.getParameterTypes().length == 
-               newMethod.getParameterTypes().length
-            ? (IMethodHolder) new MethodParamTypeHolder(method, newMethod)
-            : (IMethodHolder) new MethodParamCountHolder(method, newMethod);
+        return method_.getParameterTypes().length == 
+               newMethod.getParameterTypes().length ? 
+               (IMethodHolder) new MethodParamTypeHolder(method_, newMethod) : 
+               (IMethodHolder) new MethodParamCountHolder(method_, newMethod);
     }
 }

@@ -5,8 +5,8 @@ package toolbox.util.reflect;
  */
 public class MethodParamCountHolder implements IMethodHolder
 {
-    protected int paramOffset;
-    protected IMethodHolder[] holders;
+    private int paramOffset_;
+    private IMethodHolder[] holders_;
 
     // CONSTRUCTORS
 
@@ -20,9 +20,9 @@ public class MethodParamCountHolder implements IMethodHolder
     {
         int offset1 = method1.getParameterTypes().length;
         int offset2 = method2.getParameterTypes().length;
-        holders = new IMethodHolder[Math.max(offset1, offset2) + 1];
-        holders[offset1] = new MethodHolder(method1);
-        holders[offset2] = new MethodHolder(method2);
+        holders_ = new IMethodHolder[Math.max(offset1, offset2) + 1];
+        holders_[offset1] = new MethodHolder(method1);
+        holders_[offset2] = new MethodHolder(method2);
     }
 
     /**
@@ -36,9 +36,9 @@ public class MethodParamCountHolder implements IMethodHolder
         int count)
     {
         int offset = method.getParameterTypes().length;
-        holders = new IMethodHolder[Math.max(offset, count) + 1];
-        holders[offset] = new MethodHolder(method);
-        holders[count] = holder;
+        holders_ = new IMethodHolder[Math.max(offset, count) + 1];
+        holders_[offset] = new MethodHolder(method);
+        holders_[count] = holder;
     }
 
     // METHODHOLDER METHODS
@@ -53,7 +53,7 @@ public class MethodParamCountHolder implements IMethodHolder
     public SmartMethod getMethod(Class[] paramTypes) 
         throws NoSuchMethodException
     {
-        return holders[paramTypes.length].getMethod(paramTypes);
+        return holders_[paramTypes.length].getMethod(paramTypes);
     }
 
     /**
@@ -66,22 +66,21 @@ public class MethodParamCountHolder implements IMethodHolder
     {
         int offset = method.getParameterTypes().length;
 
-        if (offset > holders.length - 1)
+        if (offset > holders_.length - 1)
         {
-            IMethodHolder[] temp = holders;
-            holders = new IMethodHolder[offset + 1];
-            System.arraycopy(temp, 0, holders, 0, temp.length);
-            holders[offset] = new MethodHolder(method);
+            IMethodHolder[] temp = holders_;
+            holders_ = new IMethodHolder[offset + 1];
+            System.arraycopy(temp, 0, holders_, 0, temp.length);
+            holders_[offset] = new MethodHolder(method);
         }
         else
         {
-            IMethodHolder holder = holders[offset];
+            IMethodHolder holder = holders_[offset];
             
-            holder = holder == null 
-                ? new MethodHolder(method) 
-                : holder.addMethod(method);
+            holder = holder == null  ? new MethodHolder(method) : 
+                holder.addMethod(method);
                 
-            holders[offset] = holder;
+            holders_[offset] = holder;
         }
 
         return this;

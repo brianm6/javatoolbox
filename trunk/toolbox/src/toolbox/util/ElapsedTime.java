@@ -7,10 +7,19 @@ import java.util.Date;
  */
 public class ElapsedTime
 {
+    /** 1 millisecond */
     public static final int MILLI  = 1;
+    
+    /** 1 second */
     public static final int SECOND = 1000 * MILLI;
+    
+    /** 1 minute */
     public static final int MINUTE = 60 * SECOND;
+    
+    /** 1 hour */
     public static final int HOUR   = 60 * MINUTE;
+    
+    /** 1 day */
     public static final int DAY    = 24 * HOUR;
     
     private long startTime_;

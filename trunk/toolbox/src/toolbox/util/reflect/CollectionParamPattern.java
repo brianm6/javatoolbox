@@ -10,7 +10,7 @@ import java.util.Vector;
  */
 public class CollectionParamPattern extends ParamPattern
 {
-    protected Method convertMethod;
+    private Method convertMethod_;
 
     // CONSTRUCTORS
 
@@ -82,7 +82,7 @@ public class CollectionParamPattern extends ParamPattern
     {
         try
         {
-            return convertMethod.invoke(
+            return convertMethod_.invoke(
                 null, new Object[] { paramType, object });
         }
         catch (Exception ex)
@@ -98,12 +98,10 @@ public class CollectionParamPattern extends ParamPattern
     {
         try
         {
-            convertMethod = paramType.isArray()
-            
-                ? getClass().getMethod("toArray", 
-                    new Class[] { Class.class, Vector.class })
-                    
-                : getClass().getMethod("toVector", 
+            convertMethod_ = paramType.isArray() ? 
+                getClass().getMethod("toArray", 
+                    new Class[] { Class.class, Vector.class }) : 
+                getClass().getMethod("toVector", 
                     new Class[] { Class.class, Object.class });
         }
         catch (Exception ex)
@@ -153,7 +151,8 @@ public class CollectionParamPattern extends ParamPattern
     }
 
     // STATIC INITIALIZER
-    static {
+    static 
+    {
         ParamPattern.register(new CollectionParamPattern());
     }
 }

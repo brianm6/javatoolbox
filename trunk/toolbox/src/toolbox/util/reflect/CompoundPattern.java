@@ -2,12 +2,12 @@ package toolbox.util.reflect;
 
 
 /**
- * CompountPattern
+ * CompoundPattern
  */
 public class CompoundPattern extends ParamPattern
 {
-    protected ParamPattern pp1;
-    protected ParamPattern pp2;
+    private ParamPattern pattern1_;
+    private ParamPattern pattern2_;
 
     // CONSTRUCTORS
 
@@ -40,17 +40,17 @@ public class CompoundPattern extends ParamPattern
         this(pp1.paramType);
 
         if (pp1 instanceof CompoundPattern && 
-            ((CompoundPattern) pp1).pp2.getFactor(paramType) < 
+            ((CompoundPattern) pp1).pattern2_.getFactor(paramType) < 
                 pp2.getFactor(paramType))
         {
             CompoundPattern cp1 = (CompoundPattern) pp1;
-            this.pp1 = new CompoundPattern(cp1.pp1, pp2);
-            this.pp2 = cp1.pp2;
+            this.pattern1_ = new CompoundPattern(cp1.pattern1_, pp2);
+            this.pattern2_ = cp1.pattern2_;
         }
         else
         {
-            this.pp1 = pp1;
-            this.pp2 = pp2;
+            this.pattern1_ = pp1;
+            this.pattern2_ = pp2;
         }
     }
 
@@ -64,10 +64,10 @@ public class CompoundPattern extends ParamPattern
      */
     protected int getFactor(Class aClass)
     {
-        if (pp1.isApplicable(aClass))
-            return pp1.getFactor(aClass);
-        else if (pp2.isApplicable(aClass))
-            return pp2.getFactor(aClass);
+        if (pattern1_.isApplicable(aClass))
+            return pattern1_.getFactor(aClass);
+        else if (pattern2_.isApplicable(aClass))
+            return pattern2_.getFactor(aClass);
         else
             return ParamPattern.MATCH_NOT;
     }
@@ -80,7 +80,7 @@ public class CompoundPattern extends ParamPattern
      */
     protected boolean isApplicable(Class aClass)
     {
-        return pp1.isApplicable(aClass) || pp2.isApplicable(aClass);
+        return pattern1_.isApplicable(aClass) || pattern2_.isApplicable(aClass);
     }
 
     /**
@@ -91,9 +91,9 @@ public class CompoundPattern extends ParamPattern
      */
     protected Object advancedConvert(Object object)
     {
-        return pp1.isApplicable(object.getClass()) 
-            ? pp1.convert(object) 
-            : pp2.convert(object);
+        return pattern1_.isApplicable(object.getClass()) ? 
+               pattern1_.convert(object) : 
+               pattern2_.convert(object);
     }
 
     /**
@@ -105,6 +105,6 @@ public class CompoundPattern extends ParamPattern
     protected ParamPattern newPattern(Class aClass)
     {
         return new CompoundPattern(
-            pp1.newPattern(aClass), pp2.newPattern(aClass));
+            pattern1_.newPattern(aClass), pattern2_.newPattern(aClass));
     }
 }
