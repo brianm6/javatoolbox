@@ -53,8 +53,8 @@ public class SmartTableModel extends DefaultTableModel
     /**
      * Creates a SmartTableModel.
      * 
-     * @param i Number of columns
-     * @param j Number of rows
+     * @param i Number of columns.
+     * @param j Number of rows.
      */
     public SmartTableModel(int i, int j)
     {
@@ -66,8 +66,8 @@ public class SmartTableModel extends DefaultTableModel
     /**
      * Creates a SmartTableModel.
      * 
-     * @param vector Vector of data
-     * @param i Number of columns
+     * @param vector Vector of data.
+     * @param i Number of columns.
      */
     public SmartTableModel(Vector vector, int i)
     {
@@ -79,8 +79,8 @@ public class SmartTableModel extends DefaultTableModel
     /**
      * Creates a SmartTableModel.
      * 
-     * @param aobj Array of objects
-     * @param i Number of columns
+     * @param aobj Array of objects.
+     * @param i Number of columns.
      */
     public SmartTableModel(Object aobj[], int i)
     {
@@ -150,7 +150,7 @@ public class SmartTableModel extends DefaultTableModel
             // Thread safe..just add rows directly
             for (int i = 0; i < rows.length; i++)
                 super.addRow((Vector) rows[i]);
-        }        
+        }
     }
 
 
