@@ -15,7 +15,7 @@
 
         <tstamp/>
 
-        <!-- Directories from the root -->
+        <!-- Directories hanging off of root -->
         <property name="top"        location="."/>
         <property name="src"        location="${top}/src"/>
         <property name="dist"       location="${top}/dist"/>
@@ -182,24 +182,24 @@
     
         <property name="cp" refid="project.class.path"/>
 
-		<!-- Prints out the classpath -->        
-        <property name="tokenizer.input"    value="${cp}"/>
-        <property name="tokenizer.delimiter" value=";"/>
-        <antcall target="tokenizer" inheritall="true" inheritrefs="true"/>
-        <echo message="CLASSPATH"/>
-        <echo message="=============="/>
-        <echo message="${tokenizer.output}"/>
-        
-        <!--echo message="Classpath=${cp}"/-->
+		<!-- Dump the classpath -->        
+        <script language="beanshell"> <![CDATA[
+	        print("CLASSPATH:");
+			sb = new StringBuffer();
+			cp = toolbox.getProperty("cp");
+			for (t = new StringTokenizer(cp, File.pathSeparator); t.hasMoreTokens(); )
+				sb.append(t.nextToken() + System.getProperty("line.separator"));
+			print(sb.toString());
+        ]]></script>
         
         <javac 
-            srcdir="${src}" 
-            destdir="${classes}" 
-            debug="${project.debug}" 
-            optimize="${optimize}" 
-            target="${javavm}" 
-            fork="yes"
-            failonerror="${project.failonerror}">
+            srcdir = "${src}" 
+            destdir = "${classes}" 
+            debug = "${project.debug}" 
+            optimize = "${optimize}" 
+            target = "${javavm}" 
+            fork = "yes"
+            failonerror = "${project.failonerror}">
             
             <classpath refid="project.class.path"/>
         </javac>
@@ -540,6 +540,7 @@
     <!--        WITH.CLOVER          -->
     <!--=============================-->
 	<taskdef resource="clovertasks"/>
+    <typedef resource="clovertypes"/>
 
 	<target name="with.clover" 
 			depends="init"
@@ -742,74 +743,5 @@
             showCredits="no"/>
             
     </target>
-    
-    <!--=============================--> 
-    <!--         TOKENIZER           -->
-    <!--=============================-->
-	<target name="tokenizer">
-	
-		<echo message="Running tokenizer..."/>
-		
-        <script language="beanshell"> <![CDATA[
-
-			dumpProps(Hashtable props) 
-			{
-		        List list = new ArrayList();        
-		        int max = 0;
-		        
-		        for (Iterator i = props.keySet().iterator(); i.hasNext(); )
-		        {
-		            Object name = i.next();
-		            //if(name.length() > max)
-		            //    max = name.length();
-		            list.add(name);
-		        }
-		
-		        Object[] arr = list.toArray();
-		        Arrays.sort(arr);
-		
-		        for(int i=0; i<arr.length; i++ )
-		        {
-		            Object name = (Object)arr[i];
-		            Object value = props.get(name);
-		            print(name + " = " + value);
-		        }
-			}
-	
-			////////////////////////////////////////////////////////////////////		
-			
-			print("Called tokenizer!");
-				
-			//javap(toolbox);
-			javap(self);
-			
-			dumpProps(toolbox.getProperties());			
-		    
-			input = toolbox.getProperty("tokenizer.input");
-			
-			print("tokenizer.input=" + input);			
-		
-			delimiter = toolbox.getProperty("tokenizer.delimiter");
-			                	
-			print ("tokenizer.delimiter=" + delimiter);
-			
-			tokenizer = new StringTokenizer(input, delimiter);
-			
-			StringBuffer sb = new StringBuffer();
-			while (tokenizer.hasMoreTokens())
-				sb.append(tokenizer.nextToken().toString() + "\n");
-			    //print(tokenizer.nextToken());
-			    
-			print (sb.toString());    
-			    
-			toolbox.setNewProperty("tokenizer.output", sb.toString());
-
-			dumpProps(toolbox.getProperties());
-
-			//==================================================================
-        ]]></script>
-        
-  	</target>
-    
     
 </project>
