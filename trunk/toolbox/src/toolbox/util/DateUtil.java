@@ -9,15 +9,21 @@ import java.util.Date;
  * Utility class that deals only with the DATE portions of the 
  * java.util.Date object
  * 
+ * <p><pre>
+ * 
  * DESIGN NOTE: All behavior defined on this class applies to only the date
  *              portion of a java.util.Date object. This means day, month, and 
  *              year are the only attributes of a Date used for comparison,
  *              equality, operations, etc. Do not be fooled by the name of 
  *              this class!!! Use DateTimeUtil instead. 
- * 
+ * </pre>
  */
 public class DateUtil
 {
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Private constructor
      */
@@ -25,9 +31,15 @@ public class DateUtil
     {
     }
 
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
     /**
+     * Formats a date to MM-dd-yyyy
+     * 
      * @param   d  Date to format
-     * @return  Time in hh:mma format. ex: 3:43pm
+     * @return  Date in MM-dd-yyyy format
      */
     public static String format(Date d)
     {
@@ -37,12 +49,12 @@ public class DateUtil
 
 
     /**
-     * Adds a given number of days to a date. 
-     * The original date is returned for chaining.
+     * Adds a given number of days to a date. The original date is returned 
+     * for chaining.
      * 
      * @param   date  Date to add days to
      * @param   days  Number of days to add. Can be unsigned to subtract days.
-     * @return  Modified date 
+     * @return  Reference to modified passed in date
      */
     public static Date addDays(Date date, int days)
     {
@@ -55,17 +67,18 @@ public class DateUtil
 
 
     /**
-     * Adds a given number of weeks to a date.
-     * The original date is returned for chaining.
+     * Adds a given number of weeks to a date. The original date is returned 
+     * for chaining.
      * 
      * @param   date   Date to add weeks to
      * @param   weeks  Number of weeks to add
-     * @return  Modified date
+     * @return  Reference to modified passed in date
      */
     public static Date addWeeks(Date date, int weeks)
     {
         return addDays(date, weeks * 7);
     }
+
 
     /**
      * Compares only the date portions of a Date object
@@ -89,8 +102,8 @@ public class DateUtil
 
 
     /**
-     * Copies only the date portion of an existing date. The time
-     * portion is zeroed out.
+     * Copies only the date portion of an existing date. The time portion is 
+     * zeroed out.
      * 
      * @param  d   Date to copy
      * @return Copy of date with time portion zeroed out
@@ -106,9 +119,9 @@ public class DateUtil
         return c.getTime();
     }
 
+
     /**
-     * Gets the beginning of the current month.
-     * Time portion is zeroed out.
+     * Gets the beginning of the current month. Time portion is zeroed out.
      *
      * @return  First day of the current month
      */
