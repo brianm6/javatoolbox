@@ -11,7 +11,7 @@ public interface AntiAliased
      * 
      * @return boolean
      */
-    public boolean isAntiAliased();
+    boolean isAntiAliased();
     
     
     /**
@@ -19,5 +19,5 @@ public interface AntiAliased
      * 
      * @param b Set to true to turn on antialiasing, false otherwise.
      */
-    public void setAntiAliased(boolean b);
+    void setAntiAliased(boolean b);
 }
