@@ -53,7 +53,7 @@ public class AcrobatViewer extends JPanel implements DocumentViewer
     /**
      * Lazily loads the UI component.
      */
-    public void lazyLoad() 
+    protected void lazyLoad() 
     {
         if (viewer_ == null)
         {    
