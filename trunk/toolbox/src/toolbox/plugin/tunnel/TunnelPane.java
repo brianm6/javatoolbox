@@ -35,6 +35,7 @@ import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.SmartAction;
 import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.util.ui.layout.ParagraphLayout;
+import toolbox.util.ui.textarea.AutoScrollAction;
 import toolbox.workspace.IPreferenced;
 import toolbox.workspace.IStatusBar;
 
@@ -296,8 +297,12 @@ public class TunnelPane extends JPanel implements IPreferenced
                         
         configFlipPane_ = new JFlipPane(JFlipPane.LEFT);
         
-        configFlipPane_.addFlipper(
-            "Config", new JHeaderPanel("Config", null, configPanel));
+        configFlipPane_.addFlipper("Config", 
+            new JHeaderPanel(
+                //ImageCache.getIcon(ImageCache.IMAGE_CONFIG),
+                "Config", 
+                null, 
+                configPanel));
         
         configFlipPane_.setExpanded(false);
         
@@ -324,6 +329,11 @@ public class TunnelPane extends JPanel implements IPreferenced
     protected JToolBar createHeaderToolBar(JSmartTextArea area)
     {
         JToolBar tb = JHeaderPanel.createToolBar();
+        
+        tb.add(JHeaderPanel.createToggleButton(
+            ImageCache.getIcon(ImageCache.IMAGE_LOCK),
+            "Scroll Lock", 
+            new AutoScrollAction(area)));
         
         tb.add(JHeaderPanel.createButton(
             ImageCache.getIcon(ImageCache.IMAGE_CLEAR),
@@ -525,11 +535,11 @@ public class TunnelPane extends JPanel implements IPreferenced
                     getRemoteHost(), 
                     getRemotePort());
                     
-            tunnel_.setIncomingSink(new BufferedOutputStream(
-                new JTextAreaOutputStream(outgoingArea_)));
+            tunnel_.setIncomingSink(new BufferedOutputStream( //System.out));
+                new JTextAreaOutputStream(outgoingArea_), 20480));
             
-            tunnel_.setOutgoingSink(new BufferedOutputStream(
-                new JTextAreaOutputStream(incomingArea_)));
+            tunnel_.setOutgoingSink(new BufferedOutputStream( //System.err));
+                new JTextAreaOutputStream(incomingArea_), 20480));
                 
             tunnel_.addTcpTunnelListener(this);
             
