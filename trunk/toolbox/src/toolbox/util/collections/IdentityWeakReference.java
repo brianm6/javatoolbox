@@ -24,8 +24,10 @@ public class IdentityWeakReference extends WeakReference
      * <p>
      * Example:
      * <pre>
+     * 
      *   // Create a map who's keys are based on IdentityWeakReference
      *   Map map = new ReferenceMap( IdentityWeakReference.REFERENCE_FACTORY );
+     * 
      * </pre>
      */
     public static final ReferenceFactory REFERENCE_FACTORY =
@@ -49,8 +51,7 @@ public class IdentityWeakReference extends WeakReference
     //--------------------------------------------------------------------------
     
     /**
-     * Hashcode of key, stored here since the key
-     * may be tossed by the GC
+     * Hashcode of key, stored here since the key may be tossed by the GC
      * 
      * @param  k  Key
      */
@@ -79,8 +80,11 @@ public class IdentityWeakReference extends WeakReference
     /**
      * Determines equality by the object references
      * pointed to by each <tt>Reference</tt>.<p>
+     * <pre>
      * 
-     * <pre>return this.get() == ((IdentityWeakReference) o2).get();</pre>
+     * return this.get() == ((IdentityWeakReference) o2).get();
+     * 
+     * </pre>
      * 
      * @param  o2  Object to compare
      * @return True if equals, false otherwise
