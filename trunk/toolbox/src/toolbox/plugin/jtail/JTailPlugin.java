@@ -3,8 +3,6 @@ package toolbox.jtail;
 import java.awt.Component;
 import java.util.Properties;
 
-import javax.swing.JMenu;
-
 import toolbox.util.ui.plugin.IPlugin;
 import toolbox.util.ui.plugin.IStatusBar;
 
@@ -42,11 +40,6 @@ public class JTailPlugin implements IPlugin
     public Component getComponent()
     {
         return jtail_.getContentPane();
-    }
-
-    public JMenu getMenu()
-    {
-        return jtail_.getJMenuBar().getMenu(0);
     }
 
     public String getDescription()
