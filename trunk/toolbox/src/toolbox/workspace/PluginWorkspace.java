@@ -189,11 +189,14 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     {
         // Workaround for annoying WebStart dlg box asking for disk in drive a:
         System.setSecurityManager(null);
-
-        JFrame.setDefaultLookAndFeelDecorated(true);      // to decorate frames
+        
+        // Decoration flag has to be set before the first JFrame is instantiated
+        boolean decorate = shouldDecorate();
+        JFrame.setDefaultLookAndFeelDecorated(decorate);
+        JDialog.setDefaultLookAndFeelDecorated(decorate);
+        
         Toolkit.getDefaultToolkit().setDynamicLayout(true);
-        //JDialog.setDefaultLookAndFeelDecorated(true);   // to decorate dialogs
-
+        
         try
         {
             new PluginWorkspace();
@@ -400,6 +403,42 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         return preferencesManager_;
     }
 
+    //--------------------------------------------------------------------------
+    // Static Protected
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Loads the preferences specifically to read the look and feel decorations
+     * flag. Returns true if look and feel decorations should be used, false
+     * otherwise.
+     * 
+     * @return boolean
+     */
+    protected static boolean shouldDecorate()
+    {
+        boolean result = false;
+        
+        String userhome = 
+            FileUtil.trailWithSeparator(System.getProperty("user.home"));
+        
+        File file = new File(userhome + FILE_PREFS);
+
+        try
+        {
+            result = XOMUtil.getBooleanAttribute(
+                new Builder().build(file).getRootElement(),
+                ATTR_DECORATIONS,
+                false);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        logger_.debug("shouldDecorate = " + result);
+        return result;
+    }
+    
     //--------------------------------------------------------------------------
     // Protected
     //--------------------------------------------------------------------------
