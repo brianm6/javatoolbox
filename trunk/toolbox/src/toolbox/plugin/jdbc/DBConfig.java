@@ -13,12 +13,14 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.JToolBar;
 
 import org.apache.log4j.Logger;
 
 import toolbox.util.ExceptionUtil;
 import toolbox.util.JDBCUtil;
 import toolbox.util.StringUtil;
+import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.layout.ParagraphLayout;
 import toolbox.util.ui.plugin.IPreferenced;
 import toolbox.util.ui.plugin.IStatusBar;
@@ -41,7 +43,7 @@ public class DBConfig extends JPanel implements IPreferenced
     /**
      * Combobox that allows selection of the database profile to use
      */
-    private JComboBox  dbCombo_;
+    private JComboBox profileCombo_;
     
     /**
      * JDBC driver (dot notated class name)
@@ -59,7 +61,7 @@ public class DBConfig extends JPanel implements IPreferenced
     private JTextField userField_;
     
     /**
-     * JDBC password. This is clear text
+     * JDBC password. This is in clear text
      */
     private JTextField passwordField_;
     
@@ -95,12 +97,13 @@ public class DBConfig extends JPanel implements IPreferenced
      */
     public void addProfile(DBProfile profile)
     {
-        DefaultComboBoxModel model = (DefaultComboBoxModel) dbCombo_.getModel();
+        DefaultComboBoxModel model = 
+            (DefaultComboBoxModel) profileCombo_.getModel();
         
         if (model.getIndexOf(profile) > 0)
             return;
         else
-            dbCombo_.addItem(profile);
+            profileCombo_.addItem(profile);
     }
 
     /**
@@ -112,9 +115,9 @@ public class DBConfig extends JPanel implements IPreferenced
     {
         XMLNode profiles = new XMLNode("DBProfileList");
         
-        for (int i=0, n=dbCombo_.getItemCount(); i<n; i++)
+        for (int i=0, n=profileCombo_.getItemCount(); i<n; i++)
         {
-            DBProfile profile = (DBProfile) dbCombo_.getItemAt(i);
+            DBProfile profile = (DBProfile) profileCombo_.getItemAt(i);
             profiles.addNode(profile.toDOM());
         }
         
@@ -134,12 +137,18 @@ public class DBConfig extends JPanel implements IPreferenced
     {
         setLayout(new ParagraphLayout());
 
-        add(new JLabel("Database"), ParagraphLayout.NEW_PARAGRAPH);
-        add(dbCombo_ = new JComboBox());
-        dbCombo_.setEditable(true);
-        dbCombo_.setAction(new ProfileChangedAction());
-        add(new JButton(new SaveAction()));
+        add(new JLabel("Profile"), ParagraphLayout.NEW_PARAGRAPH);
+        add(profileCombo_ = new JComboBox());
+        profileCombo_.setEditable(true);
+        profileCombo_.setAction(new ProfileChangedAction());
         
+        JToolBar tb = new JToolBar();
+        tb.setFloatable(false);
+        tb.setBorderPainted(false);
+        tb.add(new SaveAction());
+        tb.add(new DeleteAction());
+        add(tb);
+                
         add(new JLabel("Driver"), ParagraphLayout.NEW_PARAGRAPH);
         add(driverField_ = new JTextField(20));
 
@@ -169,23 +178,24 @@ public class DBConfig extends JPanel implements IPreferenced
     {
         String xmlProfiles = prefs.getProperty(QueryPlugin.PROP_PROFILES, "");
         
-        if (StringUtil.isNullOrBlank(xmlProfiles))
+        if (StringUtil.isNullOrBlank(xmlProfiles) || 
+            xmlProfiles.trim().equals("<DBProfileList/>"))
         {
-            dbCombo_.addItem(new DBProfile(
+            profileCombo_.addItem(new DBProfile(
                 "DB2",
                 "COM.ibm.db2.jdbc.app.DB2Driver",
                 "jdbc:db2:<dbname>",
                 "",
                 ""));
         
-            dbCombo_.addItem(new DBProfile(
+            profileCombo_.addItem(new DBProfile(
                 "Oracle",
                 "oracle.jdbc.driver.OracleDriver",
                 "jdbc:oracle:thin:@<host>:<port>:<sid>",
                 "",
                 ""));
             
-            dbCombo_.addItem(new DBProfile(
+            profileCombo_.addItem(new DBProfile(
                 "HSQL",
                 "org.hsqldb.jdbcDriver",
                 "jdbc:hsqldb:<database>",
@@ -216,19 +226,44 @@ public class DBConfig extends JPanel implements IPreferenced
     //--------------------------------------------------------------------------
     // Actions
     //--------------------------------------------------------------------------
+
+    /**
+     * Connects to the database
+     */
+    class ConnectAction extends WorkspaceAction
+    {
+        public ConnectAction()  
+        {
+            super("Connect", true, plugin_.getComponent(), statusBar_);
+            putValue(SHORT_DESCRIPTION, "Connects to the database");
+        }
+    
+        public void runAction(ActionEvent e) throws Exception
+        {
+            statusBar_.setInfo("Connecting to the database...");
+            
+            JDBCUtil.init(
+                driverField_.getText(),
+                urlField_.getText(),
+                userField_.getText(),
+                passwordField_.getText());
+         
+            statusBar_.setInfo("Connected to the database!");
+        }
+    }
     
     /** 
-     * Updated database profile fields when the profile selection changes.
+     * Updates the database profile fields when the profile selection changes.
      */
     class ProfileChangedAction extends AbstractAction
     {
         public void actionPerformed(ActionEvent e)
         { 
-            Object obj = dbCombo_.getSelectedItem();
+            Object obj = profileCombo_.getSelectedItem();
             
             if (obj instanceof DBProfile)
             {
-                DBProfile profile = (DBProfile) dbCombo_.getSelectedItem();
+                DBProfile profile = (DBProfile) profileCombo_.getSelectedItem();
                 driverField_.setText(profile.getDriver());
                 urlField_.setText(profile.getUrl());
                 userField_.setText(profile.getUsername());
@@ -243,21 +278,22 @@ public class DBConfig extends JPanel implements IPreferenced
      */
     class SaveAction extends AbstractAction
     {
-        public SaveAction()
+        SaveAction()
         {
-            super("Save");
+            super("", ImageCache.getIcon("/toolbox/util/ui/images/Save.gif"));
+            putValue(SHORT_DESCRIPTION, "Saves the profile");
+            
         }
         
         public void actionPerformed(ActionEvent e)
         {
-            String current = dbCombo_.getEditor().getItem().toString();
+            String current = profileCombo_.getEditor().getItem().toString();
             
-            logger_.debug("Profile=" + current);
             boolean found = false;
             
-            for (int i=0; i< dbCombo_.getItemCount(); i++)
+            for (int i=0; i< profileCombo_.getItemCount(); i++)
             {
-                DBProfile profile = (DBProfile) dbCombo_.getItemAt(i);
+                DBProfile profile = (DBProfile) profileCombo_.getItemAt(i);
                 
                 if (profile.getProfileName().equals(current))
                 {
@@ -265,11 +301,9 @@ public class DBConfig extends JPanel implements IPreferenced
                     profile.setUrl(urlField_.getText());
                     profile.setUsername(userField_.getText());
                     profile.setPassword(passwordField_.getText());
-                    found = true;
+                    found |= true;
                     break;
                 }
-                else
-                    found |= false;
             }
             
             if (!found)
@@ -281,33 +315,53 @@ public class DBConfig extends JPanel implements IPreferenced
                     userField_.getText(),
                     passwordField_.getText());
                     
-                dbCombo_.addItem(profile);
-                dbCombo_.setSelectedItem(profile);    
-            }   
+                profileCombo_.addItem(profile);
+                profileCombo_.setSelectedItem(profile);    
+            }
+            
+            statusBar_.setStatus("Profile " + current + " saved.");               
         }
     }
 
     /**
-     * Connects to the database
+     * Deletes the selected db profile
      */
-    class ConnectAction extends WorkspaceAction
+    class DeleteAction extends AbstractAction
     {
-        public ConnectAction()  
+        public DeleteAction()  
         {
-            super("Connect", true, plugin_.getComponent(), statusBar_);
+            super("", ImageCache.getIcon("/toolbox/util/ui/images/Delete.gif"));
+            putValue(SHORT_DESCRIPTION, "Deletes the profile");
         }
     
-        public void runAction(ActionEvent e) throws Exception
+        public void actionPerformed(ActionEvent e)
         {
-            statusBar_.setInfo("Connecting to the database...");
+            String current = profileCombo_.getEditor().getItem().toString();
             
-            JDBCUtil.init(
-                driverField_.getText(),
-                urlField_.getText(),
-                userField_.getText(),
-                passwordField_.getText());
-         
-            statusBar_.setInfo("Connected to the database!");
+            boolean found = false;
+            
+            for (int i=0; i< profileCombo_.getItemCount(); i++)
+            {
+                DBProfile profile = (DBProfile) profileCombo_.getItemAt(i);
+                
+                if (profile.getProfileName().equals(current))
+                {
+                    logger_.debug("Removing " + i);
+                    profileCombo_.removeItemAt(i);                    
+                    
+                    if (profileCombo_.getItemCount() > 0)
+                        profileCombo_.setSelectedIndex(0);
+                    
+                    statusBar_.setStatus("Profile " + current + " deleted.");    
+                    found |= true;
+                    break;
+                }
+            }
+            
+            if (!found)
+            {
+                statusBar_.setStatus("Profile " + current + " does not exist.");
+            }   
         }
     }
 }
