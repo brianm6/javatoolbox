@@ -302,7 +302,7 @@ public class PluginWorkspace extends JFrame implements IStatusBar
     }
 
     //--------------------------------------------------------------------------
-    // Preferences
+    // Preferences Support
     //--------------------------------------------------------------------------
     
     /**
@@ -314,8 +314,7 @@ public class PluginWorkspace extends JFrame implements IStatusBar
         
         String userhome = System.getProperty("user.home");
         
-        if (!userhome.endsWith(File.separator))
-            userhome = userhome + File.separator;
+        userhome = FileUtil.trailWithSeparator(userhome);
             
         File f = new File( userhome + FILE_PREFS);
         
@@ -324,19 +323,18 @@ public class PluginWorkspace extends JFrame implements IStatusBar
             try
             {
                 prefs_.load(new FileInputStream(f));
-                
-                //StringWriter sw = new StringWriter();
-                //prefs_.list(new PrintWriter(sw));
-                //logger_.debug("Prefs:\n" + sw.toString());
-                
+                SmartLogger.debug(logger_, PropertiesUtil.toString(prefs_));
             }
             catch (IOException ioe)
             {
-                logger_.warn("loadPrefs", ioe);
+                ExceptionUtil.handleUI(ioe, logger_);
             }
         }
         else
-            logger_.debug("Preferences file not found.");
+        {
+            logger_.info("Preferences file " + FILE_PREFS + 
+                " is either non-existant, unreadable, or not a file.");
+        }
     }
 
     /**
