@@ -284,14 +284,21 @@ public class QueryPlugin extends JPanel implements IPlugin
         tb.setRollover(true);
         tb.add(help);
         
+        JButton clear = 
+            new JSmartButton(ImageCache.getIcon(ImageCache.IMAGE_TRASHCAN));
+        clear.setFocusPainted(false);
+        clear.setToolTipText("Clear results");
+        clear.addActionListener(resultsArea_.new ClearAction());
+        
+        JToolBar rb = new JToolBar();
+        rb.setRollover(true);
+        rb.add(clear);
+        
         areaSplitPane_ = 
             new JSmartSplitPane(
                 JSplitPane.VERTICAL_SPLIT,
                 new JHeaderPanel("SQL Editor", tb, sqlEditor_),
-                new JHeaderPanel(
-                    "Results", 
-                    null, 
-                    new JScrollPane(resultsArea_)));
+                new JHeaderPanel("Results", rb, new JScrollPane(resultsArea_)));
 
         // Buttons 
         JPanel buttonPanel = new JPanel(new FlowLayout());
@@ -299,8 +306,8 @@ public class QueryPlugin extends JPanel implements IPlugin
         queryButton_ = new JSmartButton(new ExecuteAction());
         buttonPanel.add(queryButton_);
 
-        clearButton_ = new JSmartButton(resultsArea_.new ClearAction());
-        buttonPanel.add(clearButton_);
+        //clearButton_ = new JSmartButton(resultsArea_.new ClearAction());
+        //buttonPanel.add(clearButton_);
         
         buttonPanel.add(new JSmartButton(new ListTablesAction()));
         buttonPanel.add(new JSmartButton(new ListColumnsAction()));
