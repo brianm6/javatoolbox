@@ -38,7 +38,7 @@ public class FindClass
         Logger.getLogger(Main.class);
     
     /** 
-     * Class to find 
+     * Full/partial/regular expression of class to find 
      */
     private String classToFind_;
     

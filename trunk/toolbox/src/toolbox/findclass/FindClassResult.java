@@ -49,13 +49,13 @@ public class FindClassResult
     /**
      * Creates a FindClassResult with the given attributes
      * 
-     * @param  searchString   Original search string
-     * @param  classLocation  Location where class was found (jar/path)
-     * @param  classFQN       Fully qualified name of the class found
-     * @param  fileSize       Size of the class file in bytes
-     * @param  timestamp      Timestamp on classfile
-     * @param  matchBegin     Beginning index into classFQN of the match
-     * @param  matchEnd       Ending index into classFQN of the match
+     * @param searchString Original search string
+     * @param classLocation Location where class was found (jar/path)
+     * @param classFQN Fully qualified name of the class found
+     * @param fileSize Size of the class file in bytes
+     * @param timestamp Timestamp on classfile
+     * @param matchBegin Beginning index into classFQN of the match
+     * @param matchEnd Ending index into classFQN of the match
      */
     public FindClassResult(
         String searchString, 
