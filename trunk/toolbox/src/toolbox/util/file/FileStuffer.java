@@ -12,15 +12,27 @@ import org.apache.commons.lang.math.RandomUtils;
 import toolbox.util.DateTimeUtil;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.ThreadUtil;
+import toolbox.util.service.Startable;
 
 /**
  * File stuffer continously sends output to a file at a configurable delay
  * interval. Good to use to show a file growing slowly in real time.
+ * <p>
+ * <b>Example:</b>
+ * <pre class="snippet">
+ * // Create file to be stuffed
+ * File stuffedFile = new File("growing.txt");
+ * FileStuffer fs = new FileStuffer(stuffedFile, 500);
+ * 
+ * // Starts stuffer asynchronously
+ * fs.start();
+ * 
+ * // Stops stuffer 
+ * fs.stop();
+ * </pre>
  */
-public class FileStuffer implements Runnable
+public class FileStuffer implements Startable
 {
-    // TODO: Refactor as a Service.
-    
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
@@ -137,58 +149,63 @@ public class FileStuffer implements Runnable
     // Runnable Interface
     //--------------------------------------------------------------------------
     
-    /**
-     * Writes out to the file at specified intervals.
-     */
-    public void run()
+    class Runner implements Runnable
     {
-        PrintWriter pw = null;
-        
-        try
+        /**
+         * Writes out to the file at specified intervals.
+         */
+        public void run()
         {
-            if (!openClose_)
+            PrintWriter pw = null;
+            
+            try
             {
-                pw = new PrintWriter(new BufferedWriter(
-                        new FileWriter(getFile())));
-                        
-                while (!stop_)
+                if (!openClose_)
                 {
-                    pw.println(stuffer_.getStuff());
-                    pw.flush();
-                    ThreadUtil.sleep(delay_);
-                }                
+                    pw = new PrintWriter(new BufferedWriter(
+                            new FileWriter(getFile())));
+                            
+                    while (!stop_)
+                    {
+                        pw.println(stuffer_.getStuff());
+                        pw.flush();
+                        ThreadUtil.sleep(delay_);
+                    }                
+                }
+                else
+                {
+                    while (!stop_)
+                    {
+                        pw = new PrintWriter(new FileWriter(getFile(), true));
+                        pw.println(stuffer_.getStuff());
+                        pw.close();
+                        ThreadUtil.sleep(delay_);
+                    }   
+                }
             }
-            else
+            catch (Exception e)
             {
-                while (!stop_)
-                {
-                    pw = new PrintWriter(new FileWriter(getFile(), true));
-                    pw.println(stuffer_.getStuff());
-                    pw.close();
-                    ThreadUtil.sleep(delay_);
-                }   
+                throw new IllegalArgumentException(e.getMessage());
             }
-        }
-        catch (Exception e)
-        {
-            throw new IllegalArgumentException(e.getMessage());
-        }
-        finally
-        {
-            IOUtils.closeQuietly(pw);
+            finally
+            {
+                IOUtils.closeQuietly(pw);
+            }
         }
     }
 
     //--------------------------------------------------------------------------
-    // Public
+    // Startable Interface
     //--------------------------------------------------------------------------
     
     /**
      * Starts the stuffer.
-     */    
-    public void start()
+     * 
+     * @see toolbox.util.service.Startable#start()
+     */
+    public void start() 
     {
-        thread_ = new Thread(this, "FileStuffer " + file_.getName());
+        thread_ = new Thread(new Runner(), "FileStuffer " + file_.getName());
         thread_.start();
     }
 
@@ -209,8 +226,26 @@ public class FileStuffer implements Runnable
             System.err.println(ie);
             System.err.println(ExceptionUtil.getStackTrace(ie));        
         }
+        finally
+        {
+            thread_ = null;
+        }
     }
     
+    
+    /**
+     * Returns true if this stuffer is running, false otherwise.
+     * 
+     * @see toolbox.util.service.Startable#isRunning()
+     */
+    public boolean isRunning()
+    {
+        return thread_ != null;
+    }
+    
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
     
     /**
      * Returns the file.
