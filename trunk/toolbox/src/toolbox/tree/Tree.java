@@ -103,22 +103,22 @@ public class Tree
     /**
      * Do not sort.
      */
-    private static final String SORT_NONE = "x";
+    public static final String SORT_NONE = "x";
 
     /**
      * Sort by file name. 
      */
-    private static final String SORT_NAME = "n";
+    public static final String SORT_NAME = "n";
 
     /**
      * Sort by the file size.
      */
-    private static final String SORT_SIZE = "s";
+    public static final String SORT_SIZE = "s";
     
     /**
      * Sort by the file timestamp.
      */
-    private static final String SORT_DATE = "d";
+    public static final String SORT_DATE = "d";
 
     //--------------------------------------------------------------------------
     // Default Constants
@@ -291,11 +291,16 @@ public class Tree
         // Root directory argument        
         switch (cmdLine.getArgs().length)
         {
-            case 0  :  rootDir = System.getProperty("user.dir"); break;
-            case 1  :  rootDir = cmdLine.getArgs()[0]; break;
-            default :  System.err.println("ERROR: Invalid arguments");
-                       printUsage(options); 
-                       return;
+            case 0  : rootDir = System.getProperty("user.dir"); 
+                      break;
+            
+            case 1  : rootDir = cmdLine.getArgs()[0]; 
+                      break;
+            
+            default : System.err.println("ERROR: Invalid arguments " + 
+                          ArrayUtil.toString(cmdLine.getArgs()));
+                      printUsage(options); 
+                      return;
         }
         
         // Create us a tree and let it ride..
