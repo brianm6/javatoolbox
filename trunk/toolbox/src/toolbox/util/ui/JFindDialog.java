@@ -18,6 +18,7 @@ import org.apache.log4j.Logger;
 
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
+import toolbox.util.ui.statusbar.SimpleStatusBar;
 
 /**
  * Simple text search find dialog that is tied to a SearchInitiator.
@@ -45,7 +46,7 @@ public class JFindDialog extends JDialog
     /** 
      * Used to display informative information regarding the search. 
      */
-    private JStatusBar status_;
+    private SimpleStatusBar status_;
 
     /** 
      * Most recently used search string.
@@ -105,7 +106,7 @@ public class JFindDialog extends JDialog
         findPanel.add(new JSmartButton(new CancelAction()));
         c.add(BorderLayout.CENTER, buttonPanel);
         
-        c.add(BorderLayout.SOUTH, status_ = new JStatusBar());
+        c.add(BorderLayout.SOUTH, status_ = new SimpleStatusBar());
 
         // Bind ESC to the CancelAction
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
