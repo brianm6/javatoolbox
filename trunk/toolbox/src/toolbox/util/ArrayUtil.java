@@ -59,7 +59,7 @@ public class ArrayUtil
         if (len == 0)
             return new double[0];
 
-        /* do bounds checking */
+        // Do bounds checking
         Assert.isTrue(startIndex <= endIndex, 
                       "Start index " + startIndex + 
                       " must be <= end index of " + 
@@ -69,7 +69,7 @@ public class ArrayUtil
                       "End index " + endIndex + 
                       " must be <= array length of " + len);
 
-        /* copy array */
+        // Copy array
         int subLen = (endIndex - startIndex) + 1;
         double[] sub = new double[subLen];
         int s = 0;
@@ -99,7 +99,7 @@ public class ArrayUtil
             return (Object[])Array.newInstance(classType, 0);
         else
         {        
-            /* do bounds checking */
+            // Do bounds checking
             Assert.isTrue(startIndex <= endIndex, 
                           "Start index " + startIndex + 
                           " must be <= end index of " + 
@@ -109,7 +109,7 @@ public class ArrayUtil
                           "End index " + endIndex + 
                           " must be < array length of " + len);
     
-            /* copy array */
+            // Copy array
             int subLen = (endIndex - startIndex) + 1;
             subArray = (Object[])Array.newInstance(classType, subLen);
             int s = 0;
