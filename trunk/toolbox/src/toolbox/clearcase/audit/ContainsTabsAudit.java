@@ -4,8 +4,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
@@ -47,13 +49,14 @@ public class ContainsTabsAudit implements IAudit
     public List audit(List versionedFiles)
     {
         List results = new ArrayList();
+        Map tabCountMap = new HashMap();
         
         Collection matches = 
             CollectionUtils.select(
                 versionedFiles, 
                 new AndPredicate(
                     new SuffixFilter(), 
-                    new ContainsTabsFilter()));
+                    new ContainsTabsFilter(tabCountMap)));
         
         for (Iterator iter = matches.iterator(); iter.hasNext();)
         {
@@ -78,7 +81,7 @@ public class ContainsTabsAudit implements IAudit
             }
             
             IAuditResult result = new AuditResult(file);
-            result.setReason("Contains tabs");
+            result.setReason("Contains " + tabCountMap.get(file) + " tabs");
             results.add(result);
         }
 
@@ -115,6 +118,15 @@ public class ContainsTabsAudit implements IAudit
      */
     class ContainsTabsFilter implements Predicate
     {
+        private Map tabCountMap_;
+        
+        
+        public ContainsTabsFilter(Map tabCountMap) 
+        {
+            tabCountMap_ = tabCountMap;
+        }
+
+        
         /**
          * @see org.apache.commons.collections.Predicate#evaluate(
          *      java.lang.Object)
@@ -126,6 +138,7 @@ public class ContainsTabsAudit implements IAudit
             {
                 String s = FileUtil.getFileContents(file.getName());
                 int numTabs = StringUtils.countMatches(s, "\t");
+                tabCountMap_.put(file, new Integer(numTabs));
             }
             catch (FileNotFoundException e)
             {
