@@ -48,37 +48,6 @@ public class ExtensionFilterTest extends TestCase
     }
 
     //--------------------------------------------------------------------------
-    //  Setup/Teardown
-    //--------------------------------------------------------------------------
-    
-    /** 
-     * Create a temporary directory with files to use for testing
-     */
-    protected void setUp() throws Exception
-    {
-        testDir_ = new File(FileUtil.getTempFilename());
-        testDir_.mkdir();
-        String base = testDir_.getAbsolutePath() + File.separator;
-        
-        FileUtil.setFileContents(base + "file.txt", "testing", false);
-        FileUtil.setFileContents(base + "widget.java", "testing", false);
-        FileUtil.setFileContents(base + "b2b.xml", "testing", false);
-        FileUtil.setFileContents(base + "EVENT.java", "testing", false);
-        super.setUp();
-    }
-
-
-    /**
-     * Clean up temporary directory 
-     */
-    protected void tearDown() throws Exception
-    {
-        FileUtil.cleanDir(testDir_);
-        testDir_.delete();
-        super.tearDown();
-    }
-   
-    //--------------------------------------------------------------------------
     //  Unit Tests
     //--------------------------------------------------------------------------
     
