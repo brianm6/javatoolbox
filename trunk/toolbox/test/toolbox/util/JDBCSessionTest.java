@@ -179,6 +179,50 @@ public class JDBCSessionTest extends TestCase
         assertEquals(0, JDBCSession.getSessionCount());
     }
 
+    
+    /**
+     * Tests init() for failure that should result from initing the same
+     * session twice.
+     *
+     * @throws Exception on error.
+     */
+    public void testInitSameSessionFailure() throws Exception
+    {
+        logger_.info("Running testInitSameSessionFailure...");
+
+        String prefix = "JDBCSessionTest-SameSession-" + RandomUtils.nextInt();
+        String name = "SessionInitedTwice";
+
+        try
+        {
+            JDBCSession.init(
+                name, 
+                DB_DRIVER, 
+                DB_URL + prefix, 
+                DB_USER, DB_PASSWORD);
+         
+            try 
+            {
+                JDBCSession.init(
+                    name, 
+                    DB_DRIVER, 
+                    DB_URL + prefix, 
+                    DB_USER, DB_PASSWORD);
+            }
+            catch (IllegalArgumentException iae)
+            {
+                logger_.info("SUCCESS: " + iae.getMessage());
+            }
+        }
+        finally
+        {
+            JDBCSession.shutdown(name);
+            cleanup(prefix);
+        }
+        
+        assertEquals(0, JDBCSession.getSessionCount());
+    }
+
 
     /**
      * Tests getConnection()
