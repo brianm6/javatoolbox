@@ -577,28 +577,18 @@ public class TunnelPane extends JPanel implements IPreferenced
                 throw new IllegalArgumentException(
                     "Please specify the remote hostname");
 
-//            tunnel_ =
-//                new TcpTunnel(
-            
             tunnel_.setLocalPort(getListenPort());
             tunnel_.setRemoteHost(getRemoteHost());
             tunnel_.setRemotePort(getRemotePort());
 
             tunnel_.setIncomingSink(new BufferedOutputStream(//System.out));
-                new JTextAreaOutputStream(outgoingArea_), 20480));
+                new JTextAreaOutputStream(outgoingArea_) /*, 20480 */ ));
 
             tunnel_.setOutgoingSink(new BufferedOutputStream(//System.err));
-                new JTextAreaOutputStream(incomingArea_), 20480));
+                new JTextAreaOutputStream(incomingArea_) /*, 20480 */ ));
 
             tunnel_.addTcpTunnelListener(this);
-
-            new Thread(new Runnable()
-            {
-                public void run()
-                {
-                    tunnel_.start();
-                }
-            }).start();
+            tunnel_.start();
         }
     }
 
