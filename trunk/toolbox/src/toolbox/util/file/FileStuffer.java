@@ -187,7 +187,7 @@ public class FileStuffer implements Runnable
      */    
     public void start()
     {
-        thread_ = new Thread(this);
+        thread_ = new Thread(this, "FileStuffer " + file_.getName());
         thread_.start();
     }
 
