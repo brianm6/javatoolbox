@@ -2,6 +2,7 @@ package toolbox.tree;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 
 import junit.framework.TestCase;
@@ -11,6 +12,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.FileUtil;
+import toolbox.util.RandomUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.io.NullWriter;
 
@@ -355,6 +357,74 @@ public class Tree2Test extends TestCase
         printNativeFileTree(rootTestDir_);
     }
 
+
+    /**
+     * Shows tree with file sizes.
+     * 
+     * @throws Exception on error.
+     */
+    public void testShowTreeFileSizes() throws Exception
+    {
+        logger_.info("Running testShowTreeFileSizes...");
+        
+        createFile(rootTestDir_);
+        createFile(rootTestDir_);
+        createFile(rootTestDir_);
+        createFile(rootTestDir_);
+        createFile(rootTestDir_);
+               
+        Tree2 tree = new Tree2(rootTestDir_, true, true);
+        tree.showTree();
+        
+        printNativeFileTree(rootTestDir_);
+    }
+    
+
+    /**
+     * Shows tree with file dates
+     * 
+     * @throws Exception on error.
+     */
+    public void testShowTreeFileDates() throws Exception
+    {
+        logger_.info("Running testShowTreeFileDates...");
+        
+        createFile(rootTestDir_);
+        createFile(rootTestDir_);
+        createFile(rootTestDir_);
+        createFile(rootTestDir_);
+        createFile(rootTestDir_);
+               
+        Tree2 tree = new Tree2(
+            rootTestDir_, 
+            true, 
+            false, 
+            true, 
+            false, 
+            Tree2.SORT_DATE, 
+            ".*", 
+            Integer.MAX_VALUE,
+            new OutputStreamWriter(System.out));
+        
+        tree.showTree();
+        
+        printNativeFileTree(rootTestDir_);
+    }
+    
+    
+    /**
+     * Tests toString(); 
+     */
+    public void testToString()
+    {
+        logger_.info("Running testToString...");
+        
+        Tree2 t = new Tree2(FileUtil.getTempDir());
+        String s = t.toString();
+        logger_.info(s);
+        assertNotNull(s);
+    }
+    
     
     /**
      * Tests printing the help/usage information.
@@ -410,7 +480,15 @@ public class Tree2Test extends TestCase
         StringWriter sw = new StringWriter();
         
         Tree2 tree = new Tree2(
-            rootTestDir_, false, false, false, false, Tree2.SORT_NONE, "", 1, sw);
+            rootTestDir_, 
+            false, 
+            false, 
+            false, 
+            false, 
+            Tree2.SORT_NONE, 
+            "", 
+            1, 
+            sw);
         
         tree.showTree();
         
@@ -427,7 +505,8 @@ public class Tree2Test extends TestCase
         sw = new StringWriter();
         
         tree = new Tree2(
-            rootTestDir_, false, false, false, false, Tree2.SORT_NONE, "", 2, sw);
+            rootTestDir_, 
+            false, false, false, false, Tree2.SORT_NONE, "", 2, sw);
         
         tree.showTree();
         
@@ -541,7 +620,8 @@ public class Tree2Test extends TestCase
     protected File createFile(File dir) throws IOException
     {
         File f = FileUtil.createTempFile(dir);
-        FileUtil.setFileContents(f, "testing", false);
+        FileUtil.setFileContents(f, 
+            RandomUtil.nextString(RandomUtil.nextInt(100, 10000)), false);
         return f;
     }
 
