@@ -50,6 +50,7 @@
  * TODO: Ctrl-S in Save Dialog box should remember where it was last opened up
  * TODO: Fileexplorer: right click on a directory to create a new directory
  * TODO: Fileexplorer: F2 to rename a file or directory
+ * TODO: Integrate JDiff Plugin/make Toolbox Plugin
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
