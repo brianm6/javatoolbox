@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.AbstractAction;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -17,6 +18,8 @@ import javax.swing.JScrollPane;
 
 import junit.textui.TestRunner;
 
+import nu.xom.Element;
+
 import org.apache.log4j.Logger;
 
 import org.jedit.syntax.TextAreaDefaults;
@@ -24,6 +27,8 @@ import org.jedit.syntax.XMLTokenMarker;
 
 import toolbox.junit.testcase.UITestCase;
 import toolbox.util.SwingUtil;
+import toolbox.util.formatter.XMLFormatter;
+import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartComboBox;
 import toolbox.util.ui.JSmartDialog;
 import toolbox.util.ui.JSmartLabel;
@@ -140,6 +145,30 @@ public class JEditTextAreaTest extends UITestCase
             
             fgCombo_.addActionListener(this);
             bgCombo_.addActionListener(this);
+            
+            JSmartButton savePrefs = 
+                new JSmartButton(
+                    new AbstractAction("Save Prefs") 
+                    {
+                        public void actionPerformed(ActionEvent e)
+                        {
+                            Element root = new Element("root");
+                            
+                            try
+                            {
+                                jeta_.savePrefs(root);
+                                jeta_.setText(
+                                    new XMLFormatter().format(root.toXML()));
+                            }
+                            catch (Exception e1)
+                            {
+                                logger_.error(e1);
+                            }
+                        }
+                    });
+            
+            p.add(savePrefs);
+            
             return p;
         }
         
