@@ -275,6 +275,10 @@
             dest      ="${classes}" 
             overwrite ="false" />
 
+        <unjar 
+        	src       ="${lib}/kunststoff.jar" 
+            dest      ="${classes}" 
+            overwrite ="false" />
                              
         <jar 
         	jarfile ="${dist}/toolbox.jar" 
