@@ -11,5 +11,5 @@ public interface SmartTabbedPaneListener
      * @param tabbedPane Tabbed pane associated with the tab
      * @param tabIndex Tab index starting at zero
      */
-    public void tabClosing(JSmartTabbedPane tabbedPane, int tabIndex);
+    void tabClosing(JSmartTabbedPane tabbedPane, int tabIndex);
 }

@@ -15,7 +15,7 @@ public interface StatusArea
      * 
      * @return boolean
      */
-    public boolean isRelativeWidth();
+    boolean isRelativeWidth();
     
     
     /**
@@ -24,5 +24,5 @@ public interface StatusArea
      * @param component Component to get required width of
      * @return Required width for the component
      */
-    public float getRequiredWidth(Component component);
+    float getRequiredWidth(Component component);
 }
