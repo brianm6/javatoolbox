@@ -13,7 +13,6 @@ import java.util.Stack;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
-import toolbox.util.StreamUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.ThreadUtil;
 import toolbox.util.collections.AsMap;
@@ -217,7 +216,10 @@ public class Tail
 
                 ThreadUtil.stop(tailer_);
                 
-                StreamUtil.close(reader_);
+                // Change of plans..when the tail is stopped, 
+                // don't close the stream.
+                
+                //StreamUtil.close(reader_);
             }
             finally
             {
