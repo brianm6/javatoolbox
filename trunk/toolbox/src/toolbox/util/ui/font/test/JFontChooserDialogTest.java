@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import toolbox.util.SwingUtil;
 import toolbox.util.ui.font.IFontChooserDialogListener;
 import toolbox.util.ui.font.JFontChooser;
 import toolbox.util.ui.font.JFontChooserDialog;
@@ -27,9 +28,11 @@ public class JFontChooserDialogTest extends TestCase
      * Entry point
      * 
      * @param  args  None recognized
+     * @throws Exception on LAF error
      */
-    public static void main(String[] args)
+    public static void main(String[] args) throws Exception
     {
+    	SwingUtil.setPreferredLAF();
         TestRunner.run(JFontChooserDialogTest.class);
     }
 
@@ -38,7 +41,7 @@ public class JFontChooserDialogTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Test for void JFontChooser()
+     * Test for the font chooser dialog
      */
     public void testFontSelectionPanel()
     {
@@ -64,6 +67,7 @@ public class JFontChooserDialogTest extends TestCase
             new JFontChooserDialog(new JFrame(), "Select font", false);
             
         fsd.addFontDialogListener(listener);
+        SwingUtil.centerWindow(fsd);
         fsd.setVisible(true);            
     }
 }
