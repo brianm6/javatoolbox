@@ -16,6 +16,15 @@ import toolbox.workspace.PluginWorkspace;
 public class JSourceViewPlugin implements IPlugin
 {
     //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
+    /**
+     * This plugins name.
+     */
+    public static final String NAME = "JSourceview";
+    
+    //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
     
@@ -33,7 +42,7 @@ public class JSourceViewPlugin implements IPlugin
      */
     public String getPluginName()
     {
-        return "JSourceview";
+        return NAME;
     }
 
     
