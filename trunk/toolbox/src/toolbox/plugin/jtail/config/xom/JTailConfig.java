@@ -110,7 +110,6 @@ public class JTailConfig implements IJTailConfig, XMLConstants, IPreferenced
 
         for (int i=0; i<tailPaneConfigs_.length; i++)
         { 
-            int j;
             Element tail = new Element(NODE_TAIL) ;
             tailPaneConfigs_[i].savePrefs(tail);
             root.appendChild(tail);
