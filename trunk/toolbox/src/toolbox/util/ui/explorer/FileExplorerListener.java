@@ -18,4 +18,11 @@ public interface JFileExplorerListener
      * @param  folder  Name of the directory selected
      */
     public void folderSelected(String folder);    
+    
+    /**
+     * Called when a folder is doubleclicked in the tree view
+     * 
+     * @param  folder  Name of directory double clicked
+     */
+    public void folderDoubleClicked(String folder);    
 }
