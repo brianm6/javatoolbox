@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -26,7 +27,7 @@ public class JConveyorMenuTest extends TestCase
     private static final Logger logger_ =
         Logger.getLogger(JListPopupMenuTest.class);
 
-    static int cnt = 1;
+    private static int cnt = 1;
         
     //--------------------------------------------------------------------------
     // Main
@@ -55,8 +56,8 @@ public class JConveyorMenuTest extends TestCase
     {
         logger_.info("Running testJConveyorMenu...");
         
-        JFrame frame = new JFrame("testJConveyorMenu");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        JDialog frame = new JDialog(new JFrame(), "testJConveyorMenu", true);
+        frame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                 
         JMenuBar menuBar = new JMenuBar();
         frame.setJMenuBar(menuBar);

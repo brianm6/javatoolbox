@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPopupMenu;
 
@@ -55,12 +56,12 @@ public class JConveyorPopupMenuTest extends TestCase
     {
         logger_.info("Running testJConveyorPopupMenu...");
         
-        JFrame frame = new JFrame("testJConveyorPopupMenu");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        JDialog dialog=new JDialog(new JFrame(),"testJConveyorPopupMenu",true);
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         
         final JPopupMenu popupMenu = new JConveyorPopupMenu("Menu", 5);
         
-        Container cp = frame.getContentPane();
+        Container cp = dialog.getContentPane();
         cp.setLayout(new BorderLayout());
 
         class DummyAction extends AbstractAction
@@ -93,8 +94,8 @@ public class JConveyorPopupMenuTest extends TestCase
         add.addMouseListener(new JPopupListener(popupMenu));
         
         cp.add(BorderLayout.CENTER, add);
-        frame.pack();
-        SwingUtil.centerWindow(frame);
-        frame.setVisible(true);
+        dialog.pack();
+        SwingUtil.centerWindow(dialog);
+        dialog.setVisible(true);
     }
 }

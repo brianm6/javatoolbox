@@ -3,6 +3,7 @@ package toolbox.util.ui.test;
 import java.awt.BorderLayout;
 import java.awt.Container;
 
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
@@ -50,8 +51,8 @@ public class JListPopupMenuTest extends TestCase
     {
         logger_.info("Running testListPopup...");
         
-        JFrame frame = new JFrame("testListPopup");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        JDialog frame = new JDialog(new JFrame(), "testListPopup", true);
+        frame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                 
         Container cp = frame.getContentPane();
         cp.setLayout(new BorderLayout());

@@ -4,8 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 
-import javax.swing.AbstractAction;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 
 import junit.framework.TestCase;
@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.RandomUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.JMemoryMonitor;
+import toolbox.util.ui.SmartAction;
 
 /**
  * Unit test for JMemoryMonitor
@@ -52,7 +53,7 @@ public class JMemoryMonitorTest extends TestCase
     {
         logger_.info("Running testMemoryMonitor...");
         
-        JFrame frame = new JFrame("testMemoryMonitor");
+        JDialog frame = new JDialog(new JFrame(), "testMemoryMonitor", true);
                 
         Container cp = frame.getContentPane();
         cp.setLayout(new BorderLayout());
@@ -61,19 +62,26 @@ public class JMemoryMonitorTest extends TestCase
         JButton button = new JButton(new EatMemoryAction());
         cp.add(button, BorderLayout.SOUTH);        
         frame.setSize(300,75);
-        frame.setVisible(true);
         SwingUtil.centerWindow(frame);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        frame.setVisible(true);
     }
     
-    class EatMemoryAction extends AbstractAction
+    //--------------------------------------------------------------------------
+    // Inner Classes
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Supposed to eat memory, but gets GC'ed 
+     */
+    class EatMemoryAction extends SmartAction
     {
-        public EatMemoryAction()
+        EatMemoryAction()
         {
-            super("Eat Memory");    
+            super("Eat Memory", true, true, null);    
         }
         
-        public void actionPerformed(ActionEvent e)
+        public void runAction(ActionEvent e) throws Exception
         {
             for (int i=0; i<2000000; i++)
             {

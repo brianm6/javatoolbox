@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -27,7 +28,9 @@ public class SmartActionTest extends TestCase
     private static final Logger logger_ =
         Logger.getLogger(SmartActionTest.class);
         
-    /** Time to simulate action execution doing work */        
+    /** 
+     * Time to simulate action execution doing work 
+     */        
     private int delay_ = 3000;
             
     //--------------------------------------------------------------------------
@@ -63,14 +66,14 @@ public class SmartActionTest extends TestCase
     {
         logger_.info("Running testSmartAction...");
 
-        JFrame frame = new JFrame("testSmartAction");        
-        Container cp = frame.getContentPane();
+        JDialog dialog = new JDialog(new JFrame(), "testSmartAction", true);        
+        Container cp = dialog.getContentPane();
         cp.setLayout(new BorderLayout());
         cp.add(buildButtonPanel());
-        frame.pack();
-        frame.setVisible(true);
-        SwingUtil.centerWindow(frame);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        dialog.pack();
+        SwingUtil.centerWindow(dialog);
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dialog.setVisible(true);
     }
     
     //--------------------------------------------------------------------------

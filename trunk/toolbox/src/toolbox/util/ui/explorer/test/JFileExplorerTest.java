@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -36,22 +37,12 @@ public class JFileExplorerTest extends TestCase
      * Entrypoint
      * 
      * @param  args  None recognized
+     * @throws Exception on error
      */
-    public static void main(String[] args)
-    {
-        TestRunner.run(JFileExplorerTest.class);
-    }
-    
-    //--------------------------------------------------------------------------
-    // Constructors
-    //--------------------------------------------------------------------------
-
-    /**
-     * Default constructor
-     */
-    public JFileExplorerTest() throws Exception
+    public static void main(String[] args) throws Exception
     {
         SwingUtil.setPreferredLAF();
+        TestRunner.run(JFileExplorerTest.class);
     }
     
     //--------------------------------------------------------------------------
@@ -59,15 +50,15 @@ public class JFileExplorerTest extends TestCase
     //--------------------------------------------------------------------------
     
     /** 
-     * Tests launcher
+     * Tests JFileExplorer
      */
     public void testJFileExplorer()
     {
         // Just launch the file explorer in a jframe..nuttin else
-        JFrame testFrame = new TestFrame();
-        testFrame.pack();
-        SwingUtil.centerWindow(testFrame);
-        testFrame.setVisible(true);
+        JDialog dialog = new TestDialog();
+        dialog.pack();
+        SwingUtil.centerWindow(dialog);
+        dialog.setVisible(true);
     }
     
     //--------------------------------------------------------------------------
@@ -75,27 +66,19 @@ public class JFileExplorerTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Test class
+     * Test dialog
      */
-    static class TestFrame extends JFrame implements JFileExplorerListener, 
-        ActionListener
+    static class TestDialog extends JDialog 
+        implements JFileExplorerListener, ActionListener
     {
-        /** Textfield for testing */
         private JTextField testField_;
-        
-        /** Button for testing */
         private JButton testButton_;
-        
-        /** Explorer for testing */
         private JFileExplorer jfe_;
-        
-        /** 
-         * Creates a test frame 
-         */
-        public TestFrame()
+
+        public TestDialog()
         {
-            super("JFileExplorer");
-            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            super(new JFrame(), "JFileExplorer", true);
+            setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
             jfe_ = new JFileExplorer(false);
             jfe_.addJFileExplorerListener(this);

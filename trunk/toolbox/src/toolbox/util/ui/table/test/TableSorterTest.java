@@ -3,6 +3,7 @@ package toolbox.util.ui.table.test;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -34,54 +35,43 @@ public class TableSorterTest extends TestCase
     /** 
      * Entry point
      * 
-     * @param  args  None recognized
+     * @param args None recognized
+     * @throws Exception on error
      */
-    public static void main(String[] args)
+    public static void main(String[] args) throws Exception
     {
+        SwingUtil.setPreferredLAF();
         TestRunner.run(TableSorterTest.class);
     }
 
-    //--------------------------------------------------------------------------
-    // Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Default constructor
-     * 
-     * @throws Exception on error
-     */
-    public TableSorterTest() throws Exception
-    {
-        SwingUtil.setPreferredLAF();    
-    }
-    
     //--------------------------------------------------------------------------
     // Unit Tests 
     //--------------------------------------------------------------------------
     
     /**
-     * Tests autoscroll feature
+     * Tests the features of the TableSorter
      */
     public void testTableSorter()
     {
         logger_.info("Running testTableSorter...");
 
-        TableSorterFrame frame = new TableSorterFrame();
-        frame.pack();
-        SwingUtil.centerWindow(frame);
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        TableSorterDialog dialog = new TableSorterDialog();
+        dialog.pack();
+        SwingUtil.centerWindow(dialog);
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dialog.setVisible(true);
+        
     }
 
     //--------------------------------------------------------------------------
     // Helper Classes
     //--------------------------------------------------------------------------
     
-    class TableSorterFrame extends JFrame
+    class TableSorterDialog extends JDialog
     {
-        public TableSorterFrame()
+        public TableSorterDialog()
         {
-            super("TableSorterTest");
+            super(new JFrame(), "testTableSorter", true);
             MyTableModel myModel = new MyTableModel();
             TableSorter sorter = new TableSorter(myModel);
             JTable table = new JTable(sorter);
@@ -175,14 +165,11 @@ public class TableSorterTest extends TestCase
             {
                 //Note that the data/cell address is constant,
                 //no matter where the cell appears onscreen.
+                
                 if (col < 2)
-                {
                     return false;
-                }
                 else
-                {
                     return true;
-                }
             }
     
             /*
@@ -193,19 +180,13 @@ public class TableSorterTest extends TestCase
             {
                 if (DEBUG)
                 {
-                    System.out.println(
-                        "Setting value at "
-                            + row
-                            + ","
-                            + col
-                            + " to "
-                            + value
-                            + " (an instance of "
-                            + value.getClass()
-                            + ")");
+                    System.out.println("Setting value at " + row + "," + col + 
+                        " to " + value + " (an instance of " + 
+                            value.getClass() + ")");
                 }
     
-                if (data[0][col] instanceof Integer && !(value instanceof Integer))
+                if (data[0][col] instanceof Integer && 
+                    !(value instanceof Integer))
                 {
                     //With JFC/Swing 1.1 and JDK 1.2, we need to create
                     //an Integer from the value; otherwise, the column
@@ -221,11 +202,9 @@ public class TableSorterTest extends TestCase
                     }
                     catch (NumberFormatException e)
                     {
-                        JOptionPane.showMessageDialog(
-                            TableSorterFrame.this,
-                            "The \""
-                                + getColumnName(col)
-                                + "\" column accepts only integer values.");
+                        JOptionPane.showMessageDialog(TableSorterDialog.this,
+                            "The \"" + getColumnName(col) + 
+                                "\" column accepts only integer values.");
                     }
                 }
                 else
@@ -250,12 +229,13 @@ public class TableSorterTest extends TestCase
                 for (int i = 0; i < numRows; i++)
                 {
                     System.out.print("    row " + i + ":");
+                    
                     for (int j = 0; j < numCols; j++)
-                    {
                         System.out.print("  " + data[i][j]);
-                    }
+                        
                     System.out.println();
                 }
+                
                 System.out.println("--------------------------");
             }
         }

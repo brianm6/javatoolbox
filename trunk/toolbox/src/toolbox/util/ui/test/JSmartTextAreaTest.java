@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.io.StringReader;
 
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 
@@ -54,18 +55,20 @@ public class JSmartTextAreaTest extends TestCase
     {
         logger_.info("Running testAutoScroll...");
         
-        JFrame frame = new JFrame("testAutoScroll");        
-        Container cp = frame.getContentPane();
+        JDialog dialog = new JDialog(new JFrame(), "testAutoScroll", true);        
+        Container cp = dialog.getContentPane();
         cp.setLayout(new BorderLayout());
         cp.add(new JScrollPane(new JSmartTextArea("hello")));
-        frame.setSize(150,150);
-        frame.setVisible(true);
-        SwingUtil.centerWindow(frame);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        dialog.setSize(150,150);
+        SwingUtil.centerWindow(dialog);
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dialog.setVisible(true);
     }
     
     /**
      * Tests savePrefs() and applyPrefs()
+     * 
+     * @throws Exception on error
      */
     public void testSaveApplyPrefs() throws Exception
     {
