@@ -28,6 +28,7 @@ package toolbox;
  * TODO: Make plugins detachable
  * TODO: Write log4j pattern layout that combines class name and method
  * TODO: Investigate JModalWindow
+ * TODO: Update banner with more external fonts.
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
