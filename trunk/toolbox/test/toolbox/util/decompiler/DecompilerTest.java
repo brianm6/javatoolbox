@@ -15,7 +15,7 @@ import toolbox.util.ResourceUtil;
 import toolbox.util.StringUtil;
 
 /**
- * Unit test for all Decompiler implementors.
+ * Unit test for all {@link toolbox.util.decompiler.Decompiler} implementations.
  */
 public class DecompilerTest extends TestCase
 {

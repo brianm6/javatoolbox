@@ -6,7 +6,7 @@ import junit.textui.TestRunner;
 import org.apache.log4j.Logger;
 
 /**
- * Unit test for DecompilerFactory.
+ * Unit test for {@link toolbox.util.decompiler.DecompilerFactory}.
  */
 public class DecompilerFactoryTest extends TestCase
 {

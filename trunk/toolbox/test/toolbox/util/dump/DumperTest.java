@@ -12,7 +12,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.StringUtil;
 
 /**
- * Unit test for Dumper.
+ * Unit test for {@link toolbox.util.dump.Dumper}.
  */
 public class DumperTest extends TestCase
 {
