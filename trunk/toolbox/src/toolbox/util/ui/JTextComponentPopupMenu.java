@@ -18,6 +18,8 @@ import javax.swing.text.JTextComponent;
 
 import org.apache.log4j.Logger;
 
+import toolbox.util.Banner;
+import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.font.FontChooserException;
@@ -159,8 +161,15 @@ public class JTextComponentPopupMenu extends JPopupMenu
             Frame frame = 
                 (w != null && w instanceof Frame) ? (Frame) w : new Frame();
             
-            JFontChooserDialog fontChooser = new JFontChooserDialog(
-                frame, false, textComponent_.getFont());
+            boolean antialias = 
+                textComponent_ instanceof AntiAliased ? 
+                    ((AntiAliased) textComponent_).isAntiAlias():false;
+
+            logger_.debug("\n" + Banner.getBanner("Antialias = " + antialias));
+                    
+            JFontChooserDialog fontChooser =
+                new JFontChooserDialog(
+                    frame, false, textComponent_.getFont(), antialias);
                 
             fontChooser.addFontDialogListener(new IFontChooserDialogListener()
             {
@@ -171,17 +180,15 @@ public class JTextComponentPopupMenu extends JPopupMenu
                         // Set the newly selected font
                         textComponent_.setFont(fontChooser.getSelectedFont());
 
-                        // Fix this and define a common interface to subvert 
-                        // casting                        
-                        if (textComponent_ instanceof JSmartTextArea)
+                        if (textComponent_ instanceof AntiAliased)
                         {
-                            ((JSmartTextArea) textComponent_).setAntiAlias(
+                            ((AntiAliased) textComponent_).setAntiAlias(
                                 fontChooser.isAntiAlias());
                         }
                     }
                     catch (FontChooserException fce)
                     {
-                        logger_.error(fce);
+                        ExceptionUtil.handleUI(fce, logger_);
                     }
                 }
 
