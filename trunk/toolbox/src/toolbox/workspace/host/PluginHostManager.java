@@ -58,12 +58,20 @@ public class PluginHostManager
         "toolbox.workspace.host.DesktopPluginHost";
 
     /**
+     * JFrame plugin host.
+     */
+    public static final String PLUGIN_HOST_FRAME =
+        "toolbox.workspace.host.FramePluginHost";
+    
+    
+    /**
      * Array of all know plugin host types.
      */
     public static final String[] pluginHosts_ = new String[]
     {
         PLUGIN_HOST_TABBED,
-        PLUGIN_HOST_DESKTOP
+        PLUGIN_HOST_DESKTOP,
+        PLUGIN_HOST_FRAME
     };
 
     //--------------------------------------------------------------------------
