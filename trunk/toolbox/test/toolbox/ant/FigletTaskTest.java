@@ -44,7 +44,7 @@ public class FigletTaskTest extends TestCase implements StandaloneTestCase
         
         String args[] =
         {
-            "-f", "resources/toolbox/ant/test/FigletTaskTest.xml"
+            "-f", "test/toolbox/ant/FigletTaskTest.xml"
         };
             
         Main.main(args); 
