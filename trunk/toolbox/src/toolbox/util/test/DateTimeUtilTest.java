@@ -15,7 +15,7 @@ import toolbox.util.DateTimeUtil;
  */
 public class DateTimeUtilTest extends TestCase
 {
-    /** Logger **/
+    /** Logger */
     private static final Logger logger_ =
         Logger.getLogger(DateTimeUtilTest.class);
         
@@ -66,4 +66,52 @@ public class DateTimeUtilTest extends TestCase
         assertTrue("millis not zero", c.get(Calendar.MILLISECOND) == 0);
     }
 
+    /**
+     * Tests add()
+     */
+    public void testAdd()
+    {
+        logger_.info("Running testAdd...");
+        
+        Date d = DateTimeUtil.getBeginningOfDay();
+        logger_.info("Before adding: " + DateTimeUtil.format(d));
+        
+        DateTimeUtil.add(d, 1, 1, 1, 1, 1, 1);
+        logger_.info("After adding: " + DateTimeUtil.format(d));      
+        
+        // TODO: Assert correctness
+    }
+    
+    /**
+     * Tests getBeginningOfTime()
+     */
+    public void testGetBeginningOfTime()
+    {
+       logger_.info("Running testGetBeginningOfTime...");        
+       
+       Date d = DateTimeUtil.getBeginningOfTime();
+       logger_.info("Beginning of time: " + DateTimeUtil.format(d));
+    }   
+    
+    /**
+     * Test getEndOfDay()
+     */
+    public void testGetEndOfDay()
+    {
+       logger_.info("Running testGetEndOfDay...");
+       
+       Date d = DateTimeUtil.getEndOfDay();
+       logger_.info("End of day: " + DateTimeUtil.format(d));
+    }
+    
+    /**
+     * Tests getEndOfTime()
+     */
+    public void testGetEndOfTime()
+    {
+       logger_.info("Running testGetEndOfTime...");        
+       
+       Date d = DateTimeUtil.getEndOfTime();
+       logger_.info("End of time: " + DateTimeUtil.format(d));
+    }   
 }
