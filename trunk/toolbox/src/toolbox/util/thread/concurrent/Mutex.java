@@ -77,8 +77,8 @@ public class Mutex
     /**
      * Attempt to release the mutex.
      *
-     * @throws    UnderflowException if mutex has not been acquired.
-     * @throws    NotOwnerException if calling thread does not own mutex.
+     * @throws  UnderflowException if mutex has not been acquired.
+     * @throws  NotOwnerException if calling thread does not own mutex.
      */
     public synchronized void unlock() throws UnderflowException,
         NotOwnerException
@@ -113,7 +113,7 @@ public class Mutex
      * different thread already aquires the mutex.  Since this lock is
      * recursive, the same thread may obtain it multiple times.
      *
-     * @return    true if thread was able to aquire the mutex, false otherwise.
+     * @return  True if thread was able to aquire the mutex, false otherwise.
      */
     public synchronized boolean tryLock()
     {
