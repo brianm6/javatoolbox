@@ -45,6 +45,27 @@ public class RegexFilterReaderTest extends TestCase
     //--------------------------------------------------------------------------
     //  Unit Tests
     //--------------------------------------------------------------------------
+    
+    /**
+     * Tests the constructors
+     * 
+     * @throws Exception on error
+     */
+    public void testConstructors() throws Exception
+    {
+        logger_.info("Running testConstructors...");
+        
+        RegexFilterReader rfr = 
+            new RegexFilterReader(new StringReader("boo"));
+        
+        assertEquals("boo", rfr.readLine());
+            
+        RegexFilterReader rfr2 = 
+            new RegexFilterReader(new StringReader("ya"), "y", true);
+            
+        assertNotNull(rfr);
+        assertNotNull(rfr2);
+    }
         
     /**
      * Tests readLine() for a simple test case
