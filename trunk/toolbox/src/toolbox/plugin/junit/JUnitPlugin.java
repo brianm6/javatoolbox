@@ -48,10 +48,9 @@ public class JUnitPlugin extends JPanel implements IPlugin
     private static final Logger logger_ = Logger.getLogger(JUnitPlugin.class);
 
     //--------------------------------------------------------------------------
-    // Constants 
+    // XML Constants 
     //--------------------------------------------------------------------------
     
-    // XML Preferences nodes and attributes. 
     private static final String NODE_JUNIT_PLUGIN = "JUnitPlugin";
     private static final String ATTR_FILTER       =   "filter";
 
@@ -71,7 +70,7 @@ public class JUnitPlugin extends JPanel implements IPlugin
     private JList packageList_;
     
     /**
-     * Model for the pacakge list.
+     * Model for the the package list.
      */
     private DefaultListModel packageModel_;
     
