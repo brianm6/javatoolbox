@@ -7,15 +7,53 @@ import org.apache.log4j.helpers.LogLog;
 import org.apache.log4j.spi.LoggingEvent;
 
 /**
- * Instant Messenger Appender is a Log4J appender capable of sending logging
- * output to a few of the more popular instant messaging systems.
+ * InstantMessengerAppender is a Log4J appender capable of sending logging
+ * messages to an online buddy via an instant messenging network. AOL and
+ * Yahoo are supported at this time.
+ * <br>
+ * Example configuration of an appender which logs messages via Yahoo Messenger:
+ * <pre>
+ * 
+ * &lt;appender name=&quot;instantmessenger&quot;
+ *           class=&quot;toolbox.log4j.im.InstantMessengerAppender&quot;&gt;
+ *     &lt;param name=&quot;Messenger&quot; value=&quot;Yahoo&quot;/&gt;
+ *     &lt;param name=&quot;Username&quot;  value=&quot;superfuzz&quot;/&gt;
+ *     &lt;param name=&quot;Password&quot;  value=&quot;mellowdigs&quot;/&gt;
+ *     &lt;param name=&quot;Recipient&quot; value=&quot;booyakasha&quot;/&gt;
+ * &lt;/appender&gt;
+ *  
+ * &lt;logger name=&quot;errorlogger&quot;&gt;
+ *     &lt;level value=&quot;ERROR&quot;/&gt;
+ *     &lt;appender-ref ref=&quot;instantmessenger&quot;/&gt;
+ * &lt;/logger&gt;  
+ * 
+ * </pre> 
  */
 public class InstantMessengerAppender extends AppenderSkeleton
 {
+    /**
+     * IM network specific instant messenger interface
+     */
     private InstantMessenger messenger_;
+    
+    /**
+     * Identifies the IM network to send messages to. (AOL, Yahoo, etc)
+     */
     private String messengerType_;
+    
+    /**
+     * Username to logon the the IM network
+     */
     private String username_;
+    
+    /**
+     * Clear text password used for authentication
+     */
     private String password_;
+    
+    /**
+     * Username of the online buddy to send the log messages to 
+     */
     private String recipient_;
     
     //--------------------------------------------------------------------------
@@ -35,7 +73,9 @@ public class InstantMessengerAppender extends AppenderSkeleton
     //--------------------------------------------------------------------------
     
     /**
-     * @param string
+     * Sets the IM network. 
+     * 
+     * @param string IM network type. Valid values include AOL and Yahoo.
      */
     public void setMessenger(String string)
     {
@@ -44,7 +84,9 @@ public class InstantMessengerAppender extends AppenderSkeleton
     }
 
     /**
-     * @param string
+     * Sets the password 
+     * 
+     * @param string Cleartext password
      */
     public void setPassword(String string)
     {
@@ -52,7 +94,9 @@ public class InstantMessengerAppender extends AppenderSkeleton
     }
 
     /**
-     * @param string
+     * Sets the recipients username
+     * 
+     * @param string Recipient
      */
     public void setRecipient(String string)
     {
@@ -60,7 +104,9 @@ public class InstantMessengerAppender extends AppenderSkeleton
     }
 
     /**
-     * @param string
+     * Sets the username
+     * 
+     * @param string Username to use for the message origin
      */
     public void setUsername(String string)
     {
@@ -76,18 +122,13 @@ public class InstantMessengerAppender extends AppenderSkeleton
      */
     protected void init()
     {
-        //setMessenger("yahoo");
-        //setUsername("supahfuzz");
-        //setPassword("techno");
-        //setRecipient("analogue");
-        
         messenger_ = InstantMessengerFactory.create(messengerType_);
     }
 
     /** 
      * Connects to the instant messenger server and authenticates the user.
      * 
-     * @throws InstantMessengerException on error
+     * @throws InstantMessengerException on connection or authentication error
      */
     protected void connect() throws InstantMessengerException
     {
@@ -105,7 +146,8 @@ public class InstantMessengerAppender extends AppenderSkeleton
     //--------------------------------------------------------------------------
     
     /**
-     * @see org.apache.log4j.AppenderSkeleton#append(org.apache.log4j.spi.LoggingEvent)
+     * @see org.apache.log4j.AppenderSkeleton#append(
+     *      org.apache.log4j.spi.LoggingEvent)
      */
     protected void append(LoggingEvent event)
     {

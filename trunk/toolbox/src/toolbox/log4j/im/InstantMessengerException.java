@@ -1,10 +1,12 @@
 package toolbox.log4j.im;
 
+/**
+ * Exception class for InstantMessenger related failures
+ */
 public class InstantMessengerException extends Exception
 {
     public InstantMessengerException()
     {
-        super();
     }
 
     public InstantMessengerException(String message, Throwable cause)
