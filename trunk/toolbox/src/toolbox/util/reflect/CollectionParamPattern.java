@@ -146,10 +146,10 @@ public class CollectionParamPattern extends ParamPattern
     {
         int size = v.size();
         Object array = Array.newInstance(paramType.getComponentType(), size);
-        Enumeration enum = v.elements();
+        Enumeration e = v.elements();
 
         for (int i = 0; i < size; i++)
-            Array.set(array, i, enum.nextElement());
+            Array.set(array, i, e.nextElement());
 
         return array;
     }

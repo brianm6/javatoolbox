@@ -232,9 +232,9 @@ public class UIDefaultsPlugin extends AbstractPlugin implements ActionListener
         UIDefaults defaults = UIManager.getDefaults();
 
         //  Build of Map of attributes for each component
-        for (Enumeration enum = defaults.keys(); enum.hasMoreElements();)
+        for (Enumeration e = defaults.keys(); e.hasMoreElements();)
         {
-            Object key = enum.nextElement();
+            Object key = e.nextElement();
             Object value = defaults.get(key);
 
             Map componentMap = getComponentMap(components, key.toString());

@@ -119,11 +119,11 @@ public class ParamPattern
         {
             pattern = new ParamPattern(clazz);
 
-            for (Enumeration enum = RegisteredPatterns.elements(); 
-                 enum.hasMoreElements();)
+            for (Enumeration e = RegisteredPatterns.elements(); 
+                 e.hasMoreElements();)
 
                 pattern = ((ParamPattern) 
-                    enum.nextElement()).applyTo(pattern, clazz);
+                    e.nextElement()).applyTo(pattern, clazz);
 
             if (pattern != null)
                 CachedPatterns.put(clazz, pattern);
