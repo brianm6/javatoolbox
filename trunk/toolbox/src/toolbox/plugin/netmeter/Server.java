@@ -2,21 +2,14 @@ package toolbox.plugin.netmeter;
 
 import java.io.IOException;
 
-import javax.swing.JPanel;
-
 import toolbox.util.net.SocketServer;
 import toolbox.util.net.SocketServerConfig;
 
 /**
  * NetMeter Server.
  */
-public class Server extends JPanel implements Service
+public class Server extends AbstractService
 {
-    /**
-     * Default server port if one is not specified.
-     */
-    public static final int DEFAULT_PORT = 19999;
-
     /**
      * Server socket.
      */
@@ -63,8 +56,9 @@ public class Server extends JPanel implements Service
      */
     public Server()
     {
-        this(DEFAULT_PORT);
+        this(NetMeterPlugin.DEFAULT_PORT);
     }
+    
     
     /**
      * Creates a Server with the given port.
@@ -76,6 +70,27 @@ public class Server extends JPanel implements Service
         port_ = port;
     }
 
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @return Returns the port.
+     */
+    public int getPort()
+    {
+        return port_;
+    }
+
+    
+    /**
+     * @param port The port to set.
+     */
+    public void setPort(int port)
+    {
+        port_ = port;
+    }
+        
     //--------------------------------------------------------------------------
     // Protected  
     //--------------------------------------------------------------------------
@@ -117,6 +132,10 @@ public class Server extends JPanel implements Service
         {
             throw new ServiceException(ioe);
         }
+        finally
+        {
+            super.start();
+        }
     }
 
 
@@ -132,6 +151,10 @@ public class Server extends JPanel implements Service
         catch (IOException ioe)
         {
             throw new ServiceException(ioe);
+        }
+        finally
+        {
+            super.stop();
         }
     }
 
