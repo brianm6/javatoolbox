@@ -29,7 +29,6 @@ import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -62,6 +61,7 @@ import toolbox.util.ArrayUtil;
 import toolbox.util.Platform;
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
+import toolbox.util.io.filter.DirectoryFilter;
 import toolbox.util.ui.images.HardDriveGIF;
 import toolbox.util.ui.images.TreeCloseGIF;
 import toolbox.util.ui.images.TreeOpenGIF;
@@ -86,13 +86,13 @@ public class JFileExplorer extends JPanel
     private JTree            tree_;
     private DefaultTreeModel treeModel_;
     private String           root_, 
-                             currentPath_;
-    private FileFilter       fileFilter_, 
-                             folderFilter_;
+                              currentPath_;
     private ImageIcon        driveIcon_;
 
 
-    /** Collection of listeners **/
+    /**
+     * Collection of listeners 
+     */
     private List fileExplorerListeners_ = new ArrayList();
 
     //--------------------------------------------------------------------------
@@ -100,7 +100,7 @@ public class JFileExplorer extends JPanel
     //--------------------------------------------------------------------------
 
     /**
-     * Default constructor
+     * Creates a JFileExplorer with a default vertical splitter
      */
     public JFileExplorer()
     {
@@ -111,7 +111,7 @@ public class JFileExplorer extends JPanel
     /**
      * Creates a JFileExplorer
      * 
-     * @param  verticalSplitter  Set to true if you want the folder and file
+     * @param  verticalSplitter Set to true if you want the folder and file
      *                           panes to be split by a vertical splitter, 
      *                           otherwise a horizontal splitter will be used.
      */
@@ -121,248 +121,8 @@ public class JFileExplorer extends JPanel
     }
 
     //--------------------------------------------------------------------------
-    //  Implementation
+    //  Public
     //--------------------------------------------------------------------------
-
-    /**
-     * Builds the GUI 
-     * 
-     * @param  verticalSplitter  Splitter orientation
-     */
-    protected void buildView(boolean verticalSplitter)
-    {
-        // File system roots 
-        rootsComboBox_ = new JComboBox(getRoots());
-        rootsComboBox_.setSelectedItem(new File(getDefaultRoot()));
-        rootsComboBox_.addItemListener(new ComboBoxAdapter());
-        rootsComboBox_.setRenderer(new IconCellRenderer());
-        
-        // File list
-        fileList_ = new JList();
-        fileList_.setModel(listModel_ = new DefaultListModel());
-        fileList_.addMouseListener(new JFEMouseHandler());
-        setFileList(getDefaultRoot());
-        fileList_.setFixedCellHeight(15);
-        fileList_.setFont(SwingUtil.getPreferredSerifFont());
-        JScrollPane filesScrollPane = new JScrollPane(fileList_);
-
-        // Set up our Tree
-        setTreeRoot(getDefaultRoot());
-
-        // Load tree icons        
-        DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer(); 
-        renderer.setClosedIcon(new ImageIcon(TreeOpenGIF.getBytes()));
-        renderer.setLeafIcon(new ImageIcon(TreeCloseGIF.getBytes()));
-        renderer.setOpenIcon(new ImageIcon(TreeOpenGIF.getBytes()));
-
-        // Directory tree
-        treeModel_ = new DefaultTreeModel(rootNode_);
-        tree_ = new JTree(treeModel_);
-        tree_.setEditable(false);
-        tree_.getSelectionModel().setSelectionMode(
-            TreeSelectionModel.SINGLE_TREE_SELECTION);
-        tree_.setRootVisible(true);
-        tree_.setScrollsOnExpand(true);
-        tree_.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        tree_.addTreeSelectionListener(new TreeFolderAdapter());
-        tree_.addMouseListener(new TreeMouseHandler());
-        tree_.setCellRenderer(renderer);
-        tree_.putClientProperty("JTree.lineStyle", "Angled");
-
-        setTreeFolders(getDefaultRoot(), null);
-        JScrollPane foldersScrollPane = new JScrollPane(tree_);
-
-        JSplitPane  splitPane;
-
-        // Configurable splitter orientation
-        if (verticalSplitter)
-            splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-                foldersScrollPane, filesScrollPane);
-        else
-            splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
-                foldersScrollPane, filesScrollPane);
-
-        GridBagLayout gridbag = new GridBagLayout();
-        GridBagConstraints constraints = new GridBagConstraints();        
-        setLayout(gridbag);
-        constraints.gridx = 0;
-        constraints.gridy = 0;
-        constraints.gridwidth = 1;
-        constraints.gridheight = 1;
-        constraints.weightx = 0;
-        constraints.weighty = 0;
-        constraints.fill = GridBagConstraints.HORIZONTAL;
-        constraints.anchor = GridBagConstraints.NORTH;
-        gridbag.setConstraints(rootsComboBox_, constraints);
-        add(rootsComboBox_);
-
-        constraints.gridx = 0;
-        constraints.gridy = 1;
-        constraints.gridwidth = 1;
-        constraints.gridheight = 1;
-        constraints.weightx = 100;
-        constraints.weighty = 100;
-        constraints.fill = GridBagConstraints.BOTH;
-        constraints.anchor = GridBagConstraints.CENTER;
-        gridbag.setConstraints(splitPane, constraints);
-        add(splitPane);
-              
-        splitPane.setDividerLocation(150);
-    }
-
-
-    /**
-     * Returns a file array of all available roots.
-     *
-     * @return File[]
-     */
-    private File[] getRoots()
-    {
-        return File.listRoots();
-    }
-
-
-    /**
-     * Returns the root of our JTree as a String.
-     *
-     * @return  String
-     */
-    private String getTreeRoot()
-    {
-        return root_;
-    }
-
-
-    /**
-     * Sets the root for the JTree.
-     *
-     * @param root  Root of the tree
-     */
-    private void setTreeRoot(String root)
-    {
-        rootNode_ = new FileNode(root);
-        
-        if (treeModel_ != null)
-            treeModel_.setRoot(rootNode_);
-
-        root_ = root;
-    }
-
-
-    /**
-     * Sets the tree folders
-     *
-     * @param  pathToAddFolders  Path to add folders to
-     * @param  currentNode       Current node
-     */
-    private void setTreeFolders(final String pathToAddFolders,
-        DefaultMutableTreeNode currentNode)
-    {
-        File[] files = new File(pathToAddFolders).listFiles(getFolderFilter());
-        Arrays.sort(files, new FileComparator());
-        String[] fileList = new String[files.length];
-
-        for (int i = 0; i < files.length; i++)
-            fileList[i] = files[i].getName();
-
-        if (fileList.length > 0)
-            addTreeNodes(fileList, currentNode);
-    }
-
-
-    /**
-     * Finds, sorts, and adds the files according to the path to the file list.
-     *
-     * @param  path  Path with files
-     */
-    public void setFileList(String path)
-    {
-        setCurrentPath(path);
-        listModel_.clear();
-        File f = new File(path);
-        File[] files = f.listFiles(getFileFilter());
-        Arrays.sort(files, new FileComparator());
-        
-        for (int i = 0; i < files.length; i++)
-            listModel_.addElement(files[i].getName());
-    }
-
-
-    /**
-     * Removes all children of the tree root.
-     */
-    private void clear()
-    {
-        rootNode_.removeAllChildren();
-        treeModel_.reload();
-    }
-
-
-    /**
-     * Adds folders to the tree.
-     *
-     * @param  folderList  An array of folders to add
-     * @param  parentNode  Parent node of nodes to add
-     */
-    private void addTreeNodes(String[] folderList, 
-        DefaultMutableTreeNode parentNode)
-    {
-        if (parentNode == null)
-            parentNode = rootNode_;
-
-        DefaultMutableTreeNode childNode = null;
-        for (int i = 0; i < folderList.length; i++)
-        {
-            childNode = new FileNode(folderList[i]);
-            
-            // Only insert if it doesn't already exist.
-            boolean shouldAdd = true;
-            Enumeration e = parentNode.children();
-            
-            while (e.hasMoreElements())
-            {
-                DefaultMutableTreeNode tNode = 
-                    (DefaultMutableTreeNode) e.nextElement();
-                    
-                if (tNode.toString().equals(childNode.toString()))
-                {
-                    // Already exist, we're not going to add.
-                    shouldAdd = false;
-                    break;
-                }
-            }
-            if (shouldAdd)
-            {
-                treeModel_.insertNodeInto(
-                    childNode, parentNode, parentNode.getChildCount());
-            }
-        }
-
-        tree_.expandPath(new TreePath(parentNode.getPath()));
-        tree_.scrollPathToVisible(new TreePath(childNode.getPath()));
-    }
-
-
-    /**
-     * Returns the default root.
-     *
-     * @return  String
-     */
-    private String getDefaultRoot()
-    {
-        File[] roots = getRoots();
-        String userHome = System.getProperty("user.home");
-        
-        for (int i = 0; i < roots.length; i++)
-        {
-            if (userHome.startsWith(roots[i].toString()))
-                return roots[i].toString();
-        }
-        
-        // Should never happen
-        return "";
-    }
-
 
     /**
      * Returns the current directory path.
@@ -398,128 +158,6 @@ public class JFileExplorer extends JPanel
         s.append(File.separator);
         s.append(fileList_.getSelectedValue().toString());
         return s.toString();
-    }
-
-
-    /**
-     * Returns the folder filter
-     *
-     * @return FileFilter
-     */
-    private FileFilter getFolderFilter()
-    {
-        if (folderFilter_ == null)
-            folderFilter_ = new JFileExplorerFolderFilter();
-
-        return folderFilter_;
-    }
-
-
-    /**
-     * Returns the current file filter
-     *
-     * @return FileFilter
-     */
-    private FileFilter getFileFilter()
-    {
-        if (fileFilter_ == null)
-            fileFilter_ = new JFileExplorerFileFilter();
-
-        return fileFilter_;
-    }
-
-
-    /**
-     * Sets the current file filter
-     *
-     * @param  fileFilter  Filter for the listbox containing files
-     */
-    private void setFileFilter(FileFilter fileFilter)
-    {
-        if (fileFilter != null)
-            fileFilter_ = fileFilter;
-    }
-
-
-    /**
-     * Gets the Drive Icon for the Roots drop down menu display.
-     *
-     * @return  ImageIcon of the drive
-     * @throws  IOException on IO error
-     */
-    private ImageIcon getDriveIcon() throws IOException
-    {
-        if (driveIcon_ == null)
-            driveIcon_ = new ImageIcon(HardDriveGIF.getBytes());
-            
-        return driveIcon_;
-    }
-
-
-
-
-    /**
-     * Adds a JFileExplorerListener
-     *
-     * @param  listener   The listener to add
-     */
-    public void addJFileExplorerListener(JFileExplorerListener listener)
-    {
-        fileExplorerListeners_.add(listener);
-    }
-
-
-    /**
-     * Removes a JFileExplorerListener
-     *
-     * @param  listener  The listener to remove
-     */
-    public void removeJFileExplorerListener(JFileExplorerListener listener)
-    {
-        fileExplorerListeners_.remove(listener);
-    }
-
-
-    /**
-     * Fires an event when a file is double clicked by the user
-     */
-    protected void fireFileDoubleClicked()
-    {
-        for(Iterator i = fileExplorerListeners_.iterator(); i.hasNext(); )
-        {
-             JFileExplorerListener listener = (JFileExplorerListener)i.next();
-             listener.fileDoubleClicked(getFilePath());
-        }
-    }
-
-    
-    /**
-     * Fires an event when a directory is selected
-     * 
-     * @param  folder  Folder that was selected
-     */
-    protected void fireFolderSelected(String folder)
-    {
-        for(Iterator i = fileExplorerListeners_.iterator(); i.hasNext(); )
-        {
-             JFileExplorerListener listener = (JFileExplorerListener)i.next();
-             listener.folderSelected(folder);
-        }
-    }
-
-    
-    /**
-     * Fire an event when a directory is double clicked
-     * 
-     * @param  folder  Folder that was double clicked
-     */
-    protected void fireFolderDoubleClicked(String folder)
-    {
-        for(Iterator i = fileExplorerListeners_.iterator(); i.hasNext(); )
-        {
-             JFileExplorerListener listener = (JFileExplorerListener)i.next();
-             listener.folderDoubleClicked(folder); 
-        }
     }
 
     
@@ -649,15 +287,334 @@ public class JFileExplorer extends JPanel
             throw new IllegalArgumentException("Root didnt match in model!");
     }
 
+    //--------------------------------------------------------------------------
+    //  Overridden from Component
+    //--------------------------------------------------------------------------
     
     /**
-     * @return Dimension
+     * @return Preferred dimension
      */
     public Dimension getPreferredSize()
     {
         return new Dimension(200, 400);
     }
+
+    //--------------------------------------------------------------------------
+    //  Event Notification Support
+    //--------------------------------------------------------------------------
+
+    /**
+     * Adds a JFileExplorerListener
+     *
+     * @param  listener   The listener to add
+     */
+    public void addJFileExplorerListener(JFileExplorerListener listener)
+    {
+        fileExplorerListeners_.add(listener);
+    }
+
+
+    /**
+     * Removes a JFileExplorerListener
+     *
+     * @param  listener  The listener to remove
+     */
+    public void removeJFileExplorerListener(JFileExplorerListener listener)
+    {
+        fileExplorerListeners_.remove(listener);
+    }
+
+
+    /**
+     * Fires an event when a file is double clicked by the user
+     */
+    protected void fireFileDoubleClicked()
+    {
+        for(Iterator i = fileExplorerListeners_.iterator(); i.hasNext(); )
+        {
+             JFileExplorerListener listener = (JFileExplorerListener)i.next();
+             listener.fileDoubleClicked(getFilePath());
+        }
+    }
+
     
+    /**
+     * Fires an event when a directory is selected
+     * 
+     * @param  folder  Folder that was selected
+     */
+    protected void fireFolderSelected(String folder)
+    {
+        for(Iterator i = fileExplorerListeners_.iterator(); i.hasNext(); )
+        {
+             JFileExplorerListener listener = (JFileExplorerListener)i.next();
+             listener.folderSelected(folder);
+        }
+    }
+
+    
+    /**
+     * Fire an event when a directory is double clicked
+     * 
+     * @param  folder  Folder that was double clicked
+     */
+    protected void fireFolderDoubleClicked(String folder)
+    {
+        for(Iterator i = fileExplorerListeners_.iterator(); i.hasNext(); )
+        {
+             JFileExplorerListener listener = (JFileExplorerListener)i.next();
+             listener.folderDoubleClicked(folder); 
+        }
+    }
+
+    //--------------------------------------------------------------------------
+    //  Private
+    //--------------------------------------------------------------------------
+
+    /**
+     * Builds the GUI 
+     * 
+     * @param  verticalSplitter  Splitter orientation
+     */
+    protected void buildView(boolean verticalSplitter)
+    {
+        // File system roots 
+        rootsComboBox_ = new JComboBox(File.listRoots());
+        rootsComboBox_.setSelectedItem(new File(getDefaultRoot()));
+        rootsComboBox_.addItemListener(new ComboBoxAdapter());
+        rootsComboBox_.setRenderer(new IconCellRenderer());
+        
+        // File list
+        fileList_ = new JList();
+        fileList_.setModel(listModel_ = new DefaultListModel());
+        fileList_.addMouseListener(new JFEMouseHandler());
+        setFileList(getDefaultRoot());
+        fileList_.setFixedCellHeight(15);
+        fileList_.setFont(SwingUtil.getPreferredSerifFont());
+        JScrollPane filesScrollPane = new JScrollPane(fileList_);
+
+        // Set up our Tree
+        setTreeRoot(getDefaultRoot());
+
+        // Load tree icons        
+        DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer(); 
+        renderer.setClosedIcon(new ImageIcon(TreeOpenGIF.getBytes()));
+        renderer.setLeafIcon(new ImageIcon(TreeCloseGIF.getBytes()));
+        renderer.setOpenIcon(new ImageIcon(TreeOpenGIF.getBytes()));
+
+        // Directory tree
+        treeModel_ = new DefaultTreeModel(rootNode_);
+        tree_ = new JTree(treeModel_);
+        tree_.setEditable(false);
+        tree_.getSelectionModel().setSelectionMode(
+            TreeSelectionModel.SINGLE_TREE_SELECTION);
+        tree_.setRootVisible(true);
+        tree_.setScrollsOnExpand(true);
+        tree_.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        tree_.addTreeSelectionListener(new TreeFolderAdapter());
+        tree_.addMouseListener(new TreeMouseHandler());
+        tree_.setCellRenderer(renderer);
+        tree_.putClientProperty("JTree.lineStyle", "Angled");
+
+        setTreeFolders(getDefaultRoot(), null);
+        JScrollPane foldersScrollPane = new JScrollPane(tree_);
+
+        JSplitPane  splitPane;
+
+        // Configurable splitter orientation
+        if (verticalSplitter)
+            splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+                foldersScrollPane, filesScrollPane);
+        else
+            splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
+                foldersScrollPane, filesScrollPane);
+
+        GridBagLayout gridbag = new GridBagLayout();
+        GridBagConstraints constraints = new GridBagConstraints();        
+        setLayout(gridbag);
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.gridwidth = 1;
+        constraints.gridheight = 1;
+        constraints.weightx = 0;
+        constraints.weighty = 0;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.anchor = GridBagConstraints.NORTH;
+        gridbag.setConstraints(rootsComboBox_, constraints);
+        add(rootsComboBox_);
+
+        constraints.gridx = 0;
+        constraints.gridy = 1;
+        constraints.gridwidth = 1;
+        constraints.gridheight = 1;
+        constraints.weightx = 100;
+        constraints.weighty = 100;
+        constraints.fill = GridBagConstraints.BOTH;
+        constraints.anchor = GridBagConstraints.CENTER;
+        gridbag.setConstraints(splitPane, constraints);
+        add(splitPane);
+              
+        splitPane.setDividerLocation(150);
+    }
+
+
+    /**
+     * Returns the root of our JTree as a String.
+     *
+     * @return  String
+     */
+    private String getTreeRoot()
+    {
+        return root_;
+    }
+
+
+    /**
+     * Sets the root for the JTree.
+     *
+     * @param root  Root of the tree
+     */
+    protected void setTreeRoot(String root)
+    {
+        rootNode_ = new FileNode(root);
+        
+        if (treeModel_ != null)
+            treeModel_.setRoot(rootNode_);
+
+        root_ = root;
+    }
+
+
+    /**
+     * Sets the tree folders
+     *
+     * @param  pathToAddFolders  Path to add folders to
+     * @param  currentNode       Current node
+     */
+    protected void setTreeFolders(String pathToAddFolders,
+        DefaultMutableTreeNode currentNode)
+    {
+        File[] files = new File(pathToAddFolders).listFiles(new DirectoryFilter());
+        Arrays.sort(files, new FileComparator());
+        String[] fileList = new String[files.length];
+
+        for (int i = 0; i < files.length; i++)
+            fileList[i] = files[i].getName();
+
+        if (fileList.length > 0)
+            addTreeNodes(fileList, currentNode);
+    }
+
+
+    /**
+     * Finds, sorts, and adds the files according to the path to the file list.
+     *
+     * @param  path  Path with files
+     */
+    protected void setFileList(String path)
+    {
+        setCurrentPath(path);
+        listModel_.clear();
+        File f = new File(path);
+        File[] files = f.listFiles(new toolbox.util.io.filter.FileFilter());
+        Arrays.sort(files, new FileComparator());
+        
+        for (int i = 0; i < files.length; i++)
+            listModel_.addElement(files[i].getName());
+    }
+
+
+    /**
+     * Removes all children of the tree root.
+     */
+    protected void clear()
+    {
+        rootNode_.removeAllChildren();
+        treeModel_.reload();
+    }
+
+
+    /**
+     * Adds folders to the tree.
+     *
+     * @param  folderList  An array of folders to add
+     * @param  parentNode  Parent node of nodes to add
+     */
+    protected void addTreeNodes(String[] folderList, 
+        DefaultMutableTreeNode parentNode)
+    {
+        if (parentNode == null)
+            parentNode = rootNode_;
+
+        DefaultMutableTreeNode childNode = null;
+        
+        for (int i = 0; i < folderList.length; i++)
+        {
+            childNode = new FileNode(folderList[i]);
+            
+            // Only insert if it doesn't already exist.
+            boolean shouldAdd = true;
+            Enumeration e = parentNode.children();
+            
+            while (e.hasMoreElements())
+            {
+                DefaultMutableTreeNode tNode = 
+                    (DefaultMutableTreeNode) e.nextElement();
+                    
+                if (tNode.toString().equals(childNode.toString()))
+                {
+                    // Already exist, we're not going to add.
+                    shouldAdd = false;
+                    break;
+                }
+            }
+            if (shouldAdd)
+            {
+                treeModel_.insertNodeInto(
+                    childNode, parentNode, parentNode.getChildCount());
+            }
+        }
+
+        tree_.expandPath(new TreePath(parentNode.getPath()));
+        tree_.scrollPathToVisible(new TreePath(childNode.getPath()));
+    }
+
+
+    /**
+     * Returns the default root.
+     *
+     * @return  Default root drive/directory
+     */
+    protected String getDefaultRoot()
+    {
+        File[] roots = File.listRoots();
+        String userHome = System.getProperty("user.home");
+        
+        for (int i = 0; i < roots.length; i++)
+        {
+            if (userHome.startsWith(roots[i].toString()))
+                return roots[i].toString();
+        }
+        
+        // Should never happen
+        return "";
+    }
+
+
+    /**
+     * Gets the Drive Icon for the Roots drop down menu display.
+     *
+     * @return  ImageIcon of the drive
+     * @throws  IOException on IO error
+     */
+    protected ImageIcon getDriveIcon() throws IOException
+    {
+        if (driveIcon_ == null)
+            driveIcon_ = new ImageIcon(HardDriveGIF.getBytes());
+            
+        return driveIcon_;
+    }
+
     //--------------------------------------------------------------------------
     //  Inner Classes
     //--------------------------------------------------------------------------
@@ -672,13 +629,12 @@ public class JFileExplorer extends JPanel
          */
         public FileNode()
         {
-            super();
         }
     
         /**
          * Constructor for FileNode.
          * 
-         * @param userObject  User object
+         * @param userObject  Object to associate with the file node
          */
         public FileNode(Object userObject)
         {
@@ -803,12 +759,12 @@ public class JFileExplorer extends JPanel
         {
             if (evt.getClickCount() == 2 && fileList_.getSelectedIndex() != -1)
             {
-                /* double click on a file fires event to listeners */
+                // double click on a file fires event to listeners 
                 fireFileDoubleClicked();
             }
             else if ((evt.getModifiers() & InputEvent.BUTTON3_MASK) != 0)
             {
-                /* nothing tied to right mouse button click */
+                // nothing tied to right mouse button click
             }
         }
     }
@@ -874,61 +830,26 @@ public class JFileExplorer extends JPanel
             StringBuffer s = new StringBuffer();
             TreePath path = e.getPath();
             Object[] o = path.getPath();
-
+    
             DefaultMutableTreeNode currentNode =
                 (DefaultMutableTreeNode) (path.getLastPathComponent());
-
+    
             // Should optimize
             s.append(o[0]);
+            
             for (int i = 1; i < o.length; i++)
             {
                 if (!o[i - 1].toString().endsWith(File.separator))
                     s.append(File.separator);
+                    
                 s.append(o[i]);
             }
-
+    
             String folder = s.toString();
             setTreeFolders(folder, currentNode);
             setFileList(folder);
             
             fireFolderSelected(folder);
-        }
-    }
-
-
-    /**
-     * Inner class for filtering only folders
-     */
-    private class JFileExplorerFolderFilter implements FileFilter
-    {
-        /**
-         * Accepts only directories as folders
-         *
-         * @param   file  File to scrutinize
-         * @return  True if file is accepted, false otherwise
-         */
-        public boolean accept(File file)
-        {
-            return file.isDirectory();
-        }
-    }
-
-
-    /**
-     * Inner class for filtering files
-     */
-    private class JFileExplorerFileFilter implements FileFilter
-    {
-        /**
-         * Accepts only files
-         *
-         * @param   file  File to scrutinize
-         * @return  True if file is really a file (not a directory), 
-         *          false otherwise
-         */
-        public boolean accept(File file)
-        {
-            return !file.isDirectory();
         }
     }
 }
