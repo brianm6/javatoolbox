@@ -9,14 +9,16 @@ import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
 import toolbox.util.ThreadUtil;
+import toolbox.util.service.ServiceException;
+import toolbox.util.service.Startable;
 
 /**
  * Monitors a directory for file activity based on a configurable selection 
  * criteria. Interested parties can register for notification of activity by 
- * implementing the {@link IDirectoryListener} interface.
+ * implementing the {@link toolbox.util.file.IDirectoryListener} interface.
  * <p>
- * Example:
- * <pre>
+ * <b>Example:</b>
+ * <pre class="snippet">
  * 
  * // Monitor the current directory
  * DirectoryMonitor dm = new DirectoryMonitor(new File("."));
@@ -32,10 +34,13 @@ import toolbox.util.ThreadUtil;
  *      }
  *  });
  *
+ * // Starts the monitor asynchronously
  * dm.start();
  *
- * // Directory now being monitored...
+ * // Directory now being monitored...any file activity in the directory will
+ * // be reported via the IDirectoryListener interface.
  *
+ * // All done..shutdown 
  * dm.stop();
  * </pre>
  * 
@@ -43,7 +48,7 @@ import toolbox.util.ThreadUtil;
  * @see toolbox.util.file.IDirectoryListener
  * @see toolbox.util.file.FileCreatedActivity
  */
-public class DirectoryMonitor
+public class DirectoryMonitor implements Startable
 {
     private static Logger logger_ =  Logger.getLogger(DirectoryMonitor.class);
 
@@ -93,15 +98,14 @@ public class DirectoryMonitor
      */
     public DirectoryMonitor(File dir)
     {
-        setDirectory(dir);
-        
         listeners_ = new ArrayList();
         activities_ = new ArrayList();
-        delay_ = 5000;
+        setDirectory(dir);
+        setDelay(5000);
     }
 
     //--------------------------------------------------------------------------
-    // Public
+    // Startable Interface
     //--------------------------------------------------------------------------
     
     /**
@@ -130,18 +134,38 @@ public class DirectoryMonitor
      * Requests termination of the monitor. Does not block on termination
      * nor does it guarantee termination.
      * 
-     * @throws InterruptedException when interrupted.
+     * @see toolbox.util.service.Startable#stop()
      */
-    public void stop() throws InterruptedException
+    public void stop() throws ServiceException
     {
         logger_.debug("Shutting down..");
         shutdown_ = true;
         
-        // wait at most 10 secs for monitor to shutdown
-        monitor_.join(10000);
+        try
+        {
+            // wait at most 10 secs for monitor to shutdown
+            monitor_.join(10000);
+        }
+        catch (InterruptedException e)
+        {
+            throw new ServiceException(e);
+        }
+        
         monitor_ = null;
     }
 
+    
+    /**
+     * @see toolbox.util.service.Startable#isRunning()
+     */
+    public boolean isRunning()
+    {
+        return !shutdown_;
+    }
+    
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
     
     /**
      * Returns the polling delay in milliseconds.
@@ -215,9 +239,9 @@ public class DirectoryMonitor
     /**
      * Fires notification of file activity to the directory monitor listeners.
      *
-     * @param activity Activity that generated this event
-     * @param files Files affected by the activity 
-     * @throws Exception on error
+     * @param activity Activity that generated this event.
+     * @param files Files affected by the activity.
+     * @throws Exception on error.
      */
     protected void fireFileActivity(IFileActivity activity, File[] files) 
         throws Exception
@@ -235,7 +259,7 @@ public class DirectoryMonitor
      * Removes a listener from the list that is notified each time a file
      * becomes available.
      * 
-     * @param listener Listener to remove from the notification list
+     * @param listener Listener to remove from the notification list.
      */
     public void removeDirectoryListener(IDirectoryListener listener)
     {
@@ -247,7 +271,7 @@ public class DirectoryMonitor
      * Adds a listener to the list that's notified each time a new file is 
      * available.
      *
-     * @param listener Listener to add to notification list
+     * @param listener Listener to add to notification list.
      */
     public void addDirectoryListener(IDirectoryListener listener)
     {
