@@ -104,7 +104,7 @@ public class SmartActionTest extends TestCase
         public SyncTimedNoProbsAction(
             String name, boolean async, JComponent scope)
         {
-            super(name, async, scope);
+            super(name, true, async, scope);
         }
 
         public void runAction(ActionEvent e)
@@ -119,7 +119,7 @@ public class SmartActionTest extends TestCase
         public SyncTimedThrowingAction(
             String name, boolean async, JComponent scope)
         {
-            super(name, async, scope);
+            super(name, true, async, scope);
         }
 
         public void runAction(ActionEvent e)
@@ -137,7 +137,7 @@ public class SmartActionTest extends TestCase
         public AsyncTimedNoProbsAction(
             String name, boolean async, JComponent scope)
         {
-            super(name, async, scope);
+            super(name, true, async, scope);
         }
 
         public void runAction(ActionEvent e)
@@ -152,7 +152,7 @@ public class SmartActionTest extends TestCase
         public AsyncTimedThrowingAction(
             String name, boolean async, JComponent scope)
         {
-            super(name, async, scope);
+            super(name, true, async, scope);
         }
 
         public void runAction(ActionEvent e)
