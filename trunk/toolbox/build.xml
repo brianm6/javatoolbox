@@ -260,11 +260,18 @@
             dest      ="${classes}" 
             overwrite ="false" />
 
+		<!--
         <unjar 
         	src       ="${lib}/skinlf.jar" 
             dest      ="${classes}" 
             overwrite ="false" />
-
+            
+        <unjar 
+        	src       ="${lib}/themepack.zip"
+            dest      ="${classes}" 
+            overwrite ="false" />
+		-->
+		
         <unjar 
         	src       ="${lib}/plastic.jar" 
             dest      ="${classes}" 
@@ -277,6 +284,11 @@
 
         <unjar 
         	src       ="${lib}/kunststoff.jar" 
+            dest      ="${classes}" 
+            overwrite ="false" />
+
+        <unjar 
+        	src       ="${lib}/xplookandfeel.jar" 
             dest      ="${classes}" 
             overwrite ="false" />
                              
