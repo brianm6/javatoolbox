@@ -61,9 +61,8 @@ import toolbox.workspace.lookandfeel.LookAndFeelManager;
  */
 public class PluginWorkspace extends JFrame implements IPreferenced
 {
-     // TODO: Make plugins detachable
-     // TODO: Make webstart enabled
-     // TODO: Write log4j pattern layout that combines class name and method
+    // TODO: Make plugins detachable
+    // TODO: Write log4j pattern layout that combines class name and method
     
     //--------------------------------------------------------------------------
     // Constants
@@ -594,14 +593,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     //--------------------------------------------------------------------------
 
     /**
-     * <pre>
-     * 
-     * Workspace
-     *  |
-     *  +--Plugin
-     * 
-     * </pre>
-     * @see toolbox.util.ui.plugin.IPreferenced#savePrefs(nu.xom.Element)
+     * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
     public void savePrefs(Element prefs) throws Exception
     {
@@ -701,7 +693,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     }
 
     /**
-     * @see toolbox.util.ui.plugin.IPreferenced#applyPrefs(nu.xom.Element)
+     * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
     public void applyPrefs(Element prefs)
     {

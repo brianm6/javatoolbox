@@ -10,7 +10,7 @@ import toolbox.util.SwingUtil;
 import toolbox.workspace.WorkspaceAction;
 
 /**
- * Action that activates a given {@LookAndFeel}
+ * Action that activates a given look and feel.
  */    
 public class ActivateLookAndFeelAction extends WorkspaceAction
 {

@@ -89,7 +89,7 @@ public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
     //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.util.ui.plugin.IStatusBar#setStatus(java.lang.String)
+     * @see toolbox.workspace.IStatusBar#setStatus(java.lang.String)
      */
     public void setStatus(String status)
     {
@@ -97,7 +97,7 @@ public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
     }
 
     /**
-     * @see toolbox.util.ui.plugin.IStatusBar#setBusy(boolean)
+     * @see toolbox.workspace.IStatusBar#setBusy(boolean)
      */
     public void setBusy(boolean busy)
     {
@@ -105,7 +105,7 @@ public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
     }
 
     /**
-     * @see toolbox.util.ui.plugin.IStatusBar#setError(java.lang.String)
+     * @see toolbox.workspace.IStatusBar#setError(java.lang.String)
      */
     public void setError(String status)
     {
@@ -113,7 +113,7 @@ public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
     }
 
     /**
-     * @see toolbox.util.ui.plugin.IStatusBar#setInfo(java.lang.String)
+     * @see toolbox.workspace.IStatusBar#setInfo(java.lang.String)
      */
     public void setInfo(String status)
     {
@@ -121,7 +121,7 @@ public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
     }
 
     /**
-     * @see toolbox.util.ui.plugin.IStatusBar#setWarning(java.lang.String)
+     * @see toolbox.workspace.IStatusBar#setWarning(java.lang.String)
      */
     public void setWarning(String status)
     {
@@ -129,7 +129,7 @@ public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
     }
 
     /**
-     * @see toolbox.util.ui.plugin.IStatusBar#getStatus()
+     * @see toolbox.workspace.IStatusBar#getStatus()
      */
     public String getStatus()
     {
