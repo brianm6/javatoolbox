@@ -11,8 +11,7 @@ import junit.textui.TestRunner;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ThreadUtil;
-import toolbox.util.concurrent.BlockingQueue;
-import toolbox.util.net.ISocketServerListener;
+import toolbox.util.net.DefaultSocketServerListener;
 import toolbox.util.net.SocketConnection;
 import toolbox.util.net.SocketServer;
 import toolbox.util.net.SocketServerConfig;
@@ -32,7 +31,7 @@ public class SocketServerTest extends TestCase
     /**
      * Entry point
      * 
-     * @param  args  None
+     * @param  args  None recognized 
      */
     public static void main(String[] args)
     {
@@ -213,7 +212,7 @@ public class SocketServerTest extends TestCase
         
         // Start server and attach listener
         SocketServer server = new SocketServer(config);
-        TestListener listener = new TestListener();
+        DefaultSocketServerListener listener = new DefaultSocketServerListener();
         server.addSocketServerListener(listener);
         server.start();
 
@@ -234,37 +233,5 @@ public class SocketServerTest extends TestCase
         // Cleanup
         server.removeSocketServerListener(listener);
         server.stop();
-    }
-    
-    //--------------------------------------------------------------------------
-    // Helper Classes
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Listener used to verify that notifications are being generated for
-     * socket server events
-     */        
-    class TestListener implements ISocketServerListener
-    {
-        BlockingQueue accepted_ = new BlockingQueue();
-            
-        public void socketAccepted(Socket socket)
-        {
-            logger_.info("Listener notified of accept on socket " + socket);
-            
-            try
-            {
-                accepted_.push("accepted");
-            }
-            catch (InterruptedException e)
-            {
-                logger_.error("socketAccepted", e);
-            }
-        }
-        
-        public void waitForAccept() throws InterruptedException
-        {
-            accepted_.pull();
-        }
     }
 }
