@@ -27,7 +27,7 @@ import org.apache.log4j.Logger;
  */
 public class SwingUtil
 {
-    /** Logger **/
+    /** Logger */
     private static final Logger logger_ =
         Logger.getLogger(SwingUtil.class);
     
@@ -294,8 +294,8 @@ public class SwingUtil
      */
     public static void setPreferredLAF() throws Exception
     { 
-        setSkinLAF();
-        //setMetouiaLAF();
+        //setSkinLAF();
+        setMetouiaLAF();
     }
     
     //--------------------------------------------------------------------------
