@@ -260,5 +260,16 @@ public class ArrayUtil
         else
             return true;    
     }
+
+    /**
+     * Determines if an array is null or empty
+     * 
+     * @return True if an array is null or has a size of length zero,
+     *         false otherwise
+     */
+    public static boolean isNullOrEmpty(Object[] array)
+    {
+        return (array == null || array.length == 0);
+    }
     
 }
