@@ -15,16 +15,15 @@ import toolbox.util.SwingUtil;
 import toolbox.util.ui.plugin.IStatusBar;
 
 /**
- * JStatusPane is a simple component to show a text message as status.
+ * JStatusBar is a simple component to show a text message as status.
  * 
  * <pre>
- * TODO: Rename to JStatusBar
  * TODO: Add RMB accessible status history
  * TODO: Add knight right like busy meter
  * TODO: Add log4j like prioity with visual cues (TBD)
  * </pre>
  */
-public class JStatusPane extends JPanel implements IStatusBar
+public class JStatusBar extends JPanel implements IStatusBar
 {
     private JLabel statusLabel_;
 
@@ -35,7 +34,7 @@ public class JStatusPane extends JPanel implements IStatusBar
     /**
      * Default construtor
      */
-    public JStatusPane()
+    public JStatusBar()
     {
         buildView();
     }

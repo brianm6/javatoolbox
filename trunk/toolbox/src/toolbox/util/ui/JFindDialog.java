@@ -33,7 +33,7 @@ public class JFindDialog extends JDialog
     private SearchInitiator initiator_;
     
     /** Used to display informative information regarding the search */
-    private JStatusPane status_;
+    private JStatusBar status_;
 
     /** Most recently used search string */
     private String lastSearched_;
@@ -91,7 +91,7 @@ public class JFindDialog extends JDialog
         findPanel.add(new JButton(new CancelAction()));
         c.add(BorderLayout.CENTER, buttonPanel);
         
-        c.add(BorderLayout.SOUTH, status_ = new JStatusPane());
+        c.add(BorderLayout.SOUTH, status_ = new JStatusBar());
     }
     
     //--------------------------------------------------------------------------

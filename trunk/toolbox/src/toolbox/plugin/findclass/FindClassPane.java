@@ -56,7 +56,7 @@ import toolbox.util.io.NullWriter;
 import toolbox.util.ui.JFileExplorer;
 import toolbox.util.ui.JFileExplorerAdapter;
 import toolbox.util.ui.JPopupListener;
-import toolbox.util.ui.JStatusPane;
+import toolbox.util.ui.JStatusBar;
 import toolbox.util.ui.ThreadSafeTableModel;
 import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.util.ui.plugin.IStatusBar;
@@ -99,7 +99,7 @@ public class JFindClass extends JFrame
     private FindClass            findClass_;
 
     // Status
-    private IStatusBar statusBar_ = new JStatusPane();
+    private IStatusBar statusBar_ = new JStatusBar();
     
     /** 
      * Result table column headers 
