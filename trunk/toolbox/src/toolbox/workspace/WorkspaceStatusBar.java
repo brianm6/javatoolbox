@@ -26,12 +26,12 @@ import toolbox.util.ui.statusbar.JStatusBar;
 public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
 {
     /** 
-     * Progress bar for indicating execution of an operation is in progress 
+     * Progress bar for indicating execution of an operation is in progress. 
      */
     private JProgressBar progressBar_;
     
     /** 
-     * Label for displaying status text 
+     * Label for displaying status text. 
      */
     private JSmartLabel status_;
     
@@ -40,7 +40,7 @@ public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a WorkspaceStatusBar
+     * Creates a WorkspaceStatusBar.
      */
     public WorkspaceStatusBar()
     {
@@ -52,7 +52,7 @@ public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
     //--------------------------------------------------------------------------
     
     /**
-     * Builds the GUI
+     * Builds the GUI.
      */
     protected void buildView()
     {
@@ -96,6 +96,7 @@ public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
         status_.setText(status);
     }
 
+    
     /**
      * @see toolbox.workspace.IStatusBar#setBusy(boolean)
      */
@@ -104,6 +105,7 @@ public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
         progressBar_.setIndeterminate(busy);
     }
 
+    
     /**
      * @see toolbox.workspace.IStatusBar#setError(java.lang.String)
      */
@@ -112,6 +114,7 @@ public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
         setStatus(status);
     }
 
+    
     /**
      * @see toolbox.workspace.IStatusBar#setInfo(java.lang.String)
      */
@@ -120,6 +123,7 @@ public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
         setStatus(status);
     }
 
+    
     /**
      * @see toolbox.workspace.IStatusBar#setWarning(java.lang.String)
      */
@@ -128,6 +132,7 @@ public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
         setStatus(status);
     }
 
+    
     /**
      * @see toolbox.workspace.IStatusBar#getStatus()
      */

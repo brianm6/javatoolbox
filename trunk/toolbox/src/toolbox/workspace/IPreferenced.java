@@ -17,6 +17,7 @@ public interface IPreferenced
      */
     public void applyPrefs(Element prefs) throws Exception;
     
+    
     /**
      * Saves preferences to the prefs DOM.
      *  
@@ -24,5 +25,4 @@ public interface IPreferenced
      * @throws Exception on error
      */
     public void savePrefs(Element prefs) throws Exception;
-    
 }

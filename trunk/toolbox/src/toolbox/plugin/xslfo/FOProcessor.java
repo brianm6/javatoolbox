@@ -5,7 +5,7 @@ import java.io.OutputStream;
 import java.util.Properties;
 
 /**
- * Common interface for all 3rd party XSL-FO implementations
+ * Common interface for all 3rd party XSL-FO implementations.
  */
 public interface FOProcessor
 {
@@ -15,6 +15,7 @@ public interface FOProcessor
      * @param props Initialization properties
      */
     public void initialize(Properties props);
+    
     
     /**
      * Transforms the FO originating from an inputstream and writes the
@@ -26,6 +27,7 @@ public interface FOProcessor
      */
     public void renderPDF(InputStream foStream, OutputStream pdfStream) 
         throws Exception;
+    
     
     /**
      * Renders XSL-FO to a Postscript document.

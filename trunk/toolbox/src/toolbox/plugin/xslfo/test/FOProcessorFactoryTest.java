@@ -9,7 +9,7 @@ import toolbox.util.xslfo.FOProcessor;
 import toolbox.util.xslfo.FOProcessorFactory;
 
 /**
- * Unit test for FOPProcessorFactory
+ * Unit test for FOPProcessorFactory.
  */
 public class FOProcessorFactoryTest extends TestCase
 {
@@ -21,9 +21,9 @@ public class FOProcessorFactoryTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
-     * @param  args  None recognized
+     * @param args None recognized
      */
     public static void main(String[] args)
     {
@@ -35,7 +35,7 @@ public class FOProcessorFactoryTest extends TestCase
     //--------------------------------------------------------------------------
 
     /**
-     * Simple case: create processor for Apache FOP
+     * Simple case: create processor for Apache FOP.
      * 
      * @throws Exception on error
      */
@@ -50,8 +50,9 @@ public class FOProcessorFactoryTest extends TestCase
         assertNotNull(fop);
     }
 
+    
     /**
-     * Simple case: create processor for RenderX XEP
+     * Simple case: create processor for RenderX XEP.
      * 
      * @throws Exception on error
      */
@@ -66,8 +67,9 @@ public class FOProcessorFactoryTest extends TestCase
         assertNotNull(fop);
     }
 
+    
     /**
-     * Test fault generation on unknown FO implementation
+     * Test fault generation on unknown FO implementation.
      * 
      * @throws Exception on error
      */

@@ -1,19 +1,20 @@
 package toolbox.workspace;
 
 /**
- * PluginException
+ * PluginException is thrown for plugin specific errors.
  */
 public class PluginException extends Exception
 {
     /**
-     * Creates a PluginException
+     * Creates a PluginException.
      */
     public PluginException()
     {
     }
 
+    
     /**
-     * Creates a PluginException
+     * Creates a PluginException.
      * 
      * @param message Error message
      */
@@ -22,8 +23,9 @@ public class PluginException extends Exception
         super(message);
     }
 
+    
     /**
-     * Creates a PluginException
+     * Creates a PluginException.
      * 
      * @param cause Originating exception
      */
@@ -32,8 +34,9 @@ public class PluginException extends Exception
         super(cause);
     }
 
+    
     /**
-     * Creates a PluginException
+     * Creates a PluginException.
      * 
      * @param message Error message
      * @param cause Originating exception
@@ -42,5 +45,4 @@ public class PluginException extends Exception
     {
         super(message, cause);
     }
-
 }

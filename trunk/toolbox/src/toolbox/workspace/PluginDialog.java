@@ -41,7 +41,7 @@ import toolbox.util.ui.list.JListPopupMenu;
 import toolbox.util.ui.list.JSmartList;
 
 /**
- * Dialog that allows user to add/remove/find plugins
+ * Dialog that allows user to add/remove/find plugins.
  */
 public class ManagePluginsDialog extends JDialog
 {
@@ -53,37 +53,37 @@ public class ManagePluginsDialog extends JDialog
     //--------------------------------------------------------------------------
     
     /**
-     * Button to remove a plugin from the workspace
+     * Button to remove a plugin from the workspace.
      */
     private JButton removeButton_;
     
     /**
-     * Button to add a plugin to the workspace
+     * Button to add a plugin to the workspace.
      */
     private JButton addButton_;
     
     /**
-     * Workspace that is the parent of this dialog box
+     * Workspace that is the parent of this dialog box.
      */
     private PluginWorkspace workspace_;
     
     /**
-     * List of active (loaded) plugins in the workspace
+     * List of active (loaded) plugins in the workspace.
      */
     private JList activeList_;
     
     /**
-     * List of inactive plugins that can be added to the workspace 
+     * List of inactive plugins that can be added to the workspace. 
      */
     private JList inactiveList_;
     
     /**
-     * List model for the list of active plugins
+     * List model for the list of active plugins.
      */
     private DefaultListModel activeModel_;
     
     /**
-     * List model for the list of inactive plugins
+     * List model for the list of inactive plugins.
      */
     private DefaultListModel inactiveModel_;
 
@@ -92,7 +92,7 @@ public class ManagePluginsDialog extends JDialog
     //--------------------------------------------------------------------------
     
     /**
-     * Creates dialog to add/remove plugins from the workspace
+     * Creates dialog to add/remove plugins from the workspace.
      * 
      * @param parent Plugin workspace
      */    
@@ -111,7 +111,7 @@ public class ManagePluginsDialog extends JDialog
     //--------------------------------------------------------------------------
     
     /**
-     * Builds the view of the GUI
+     * Builds the view of the GUI.
      */
     protected void buildView()
     {
@@ -213,8 +213,9 @@ public class ManagePluginsDialog extends JDialog
         getContentPane().add(BorderLayout.SOUTH, buttonPanel);
     }
 
+    
     /**
-     * Populates the active plugins list based on currently loaded plugins
+     * Populates the active plugins list based on currently loaded plugins.
      */    
     protected void populateActive()
     {
@@ -232,9 +233,10 @@ public class ManagePluginsDialog extends JDialog
         activeList_.setSelectedIndex(0);
     }
     
+    
     /**
      * Populates the inactive plugins list based on currently available
-     * plugins visible on the classpath
+     * plugins visible on the classpath.
      */
     protected void populateInactive()
     {
@@ -341,7 +343,7 @@ public class ManagePluginsDialog extends JDialog
     //--------------------------------------------------------------------------
     
     /**
-     * PluginMeta info used to populate the active/inactive lists
+     * PluginMeta info used to populate the active/inactive lists.
      */
     public class PluginMeta
     {
@@ -407,7 +409,7 @@ public class ManagePluginsDialog extends JDialog
     
     /**
      * Adds a plugin - moves the plugin from the inactive list to the active 
-     * list
+     * list.
      */
     class AddNewPluginAction extends AbstractAction
     {
@@ -466,7 +468,7 @@ public class ManagePluginsDialog extends JDialog
     
     /**
      * Deactivates/removes a plugin and moves the plugin from the active list 
-     * to the inactive list
+     * to the inactive list.
      */
     class RemovePluginAction extends AbstractAction
     {
@@ -525,7 +527,7 @@ public class ManagePluginsDialog extends JDialog
     //--------------------------------------------------------------------------
     
     /**
-     * Dismisses the dialog box
+     * Dismisses the dialog box.
      */
     class CloseAction extends AbstractAction
     {
@@ -546,7 +548,7 @@ public class ManagePluginsDialog extends JDialog
     //--------------------------------------------------------------------------
     
     /**
-     * Finds plugins on the classpath and populates the inactive plugins list
+     * Finds plugins on the classpath and populates the inactive plugins list.
      */
     class FindPluginsAction extends WorkspaceAction
     {
@@ -577,7 +579,7 @@ public class ManagePluginsDialog extends JDialog
     class ListPluginsAction extends WorkspaceAction
     {
         /**
-         * Creates a ListPluginsAction
+         * Creates a ListPluginsAction.
          */
         ListPluginsAction()
         {
@@ -640,5 +642,4 @@ public class ManagePluginsDialog extends JDialog
             addButton_.setEnabled(inactiveModel_.size() > 0);
         }
     }
-    
 }

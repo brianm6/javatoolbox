@@ -14,7 +14,7 @@ import toolbox.util.xslfo.FOProcessor;
 import toolbox.util.xslfo.FOProcessorFactory;
 
 /**
- * Unit test for FOPProcessor
+ * Unit test for FOPProcessor.
  */
 public class FOPProcessorTest extends TestCase
 {
@@ -22,7 +22,7 @@ public class FOPProcessorTest extends TestCase
         Logger.getLogger(FOPProcessorTest.class);
 
     /**
-     * File containing sample xslfo content suitable for testing
+     * File containing sample xslfo content suitable for testing.
      */
     private static final String FILE_TEST_XSLFO = 
         "/toolbox/util/xslfo/test/FOPProcessorTest.fo";
@@ -32,9 +32,9 @@ public class FOPProcessorTest extends TestCase
     //--------------------------------------------------------------------------
 
     /**
-     * Entrypoint 
+     * Entrypoint. 
      * 
-     * @param  args  None recognized
+     * @param args None recognized
      */
     public static void main(String[] args)
     {
@@ -46,7 +46,7 @@ public class FOPProcessorTest extends TestCase
     //--------------------------------------------------------------------------
 
     /**
-     * Tests renderPDF() with successive calls in parallel
+     * Tests renderPDF() with successive calls in parallel.
      *  
      * @throws Exception on error
      */
@@ -74,8 +74,9 @@ public class FOPProcessorTest extends TestCase
         }
     }
 
+    
     /**
-     * Tests renderPDF() with successive calls in sequence
+     * Tests renderPDF() with successive calls in sequence.
      *  
      * @throws Exception on error
      */
@@ -91,6 +92,7 @@ public class FOPProcessorTest extends TestCase
         for (int i = 0; i < iterations; i++)
             new RenderRequest(i, foXML).run();
     }
+    
     
     /**
      * Tests renderPostscript()
@@ -131,7 +133,7 @@ public class FOPProcessorTest extends TestCase
     //--------------------------------------------------------------------------
 
     /**
-     * PDF render request
+     * PDF render request.
      */    
     class RenderRequest implements Runnable
     {

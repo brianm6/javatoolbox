@@ -21,12 +21,12 @@ import org.xml.sax.InputSource;
 public class FOPProcessor implements FOProcessor
 {
     /** 
-     * Driver for PDF generation 
+     * Driver for PDF generation. 
      */
     private Driver pdfDriver_;
     
     /** 
-     * Driver for Postscript generation 
+     * Driver for Postscript generation. 
      */
     private Driver psDriver_;
 

@@ -1,7 +1,7 @@
 package toolbox.util.xslfo;
 
 /**
- * Factory class that creates implementations of the FOProcessor interface
+ * Factory class that creates implementations of the FOProcessor interface.
  */
 public final class FOProcessorFactory
 {
@@ -20,7 +20,7 @@ public final class FOProcessorFactory
     //--------------------------------------------------------------------------
     
     /**
-     * Prevent construction
+     * Prevent construction.
      */
     private FOProcessorFactory()
     {
@@ -31,7 +31,7 @@ public final class FOProcessorFactory
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a FOProcessor
+     * Creates a FOProcessor.
      * 
      * @param foImpl Implementation to create. See FO_* constants
      * @return FOProcessor

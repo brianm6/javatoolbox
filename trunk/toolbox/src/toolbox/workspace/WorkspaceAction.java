@@ -16,7 +16,7 @@ import toolbox.util.ui.SmartAction;
 public abstract class WorkspaceAction extends SmartAction
 {
     /** 
-     * Reference to the workspace status bar 
+     * Reference to the workspace status bar. 
      */
     private IStatusBar statusBar_;
 
@@ -44,6 +44,7 @@ public abstract class WorkspaceAction extends SmartAction
     {
         this(name, true, async, scope, statusBar);
     }
+    
     
     /**
      * Creates a workspace action.
@@ -85,7 +86,7 @@ public abstract class WorkspaceAction extends SmartAction
     //--------------------------------------------------------------------------
     
     /**
-     * Sets the progress bar to busy 
+     * Sets the progress bar to busy. 
      */
     class BusyProgressBarAction extends AbstractAction
     {
@@ -95,8 +96,9 @@ public abstract class WorkspaceAction extends SmartAction
         }
     }
 
+    
     /**
-     * Sets the progress bar to not busy  
+     * Sets the progress bar to not busy.  
      */    
     class DoneProgressBarAction extends AbstractAction
     {
@@ -106,8 +108,9 @@ public abstract class WorkspaceAction extends SmartAction
         }
     }
 
+    
     /**
-     * Displays error message on the status bar
+     * Displays error message on the status bar.
      */    
     class DisplayErrorOnStatusBarAction extends AbstractAction
     {

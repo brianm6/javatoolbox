@@ -92,13 +92,13 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     private static final String NODE_ROOT = "Root";
 
     /**
-     * Name of file that application and plugin preferences are stored in
+     * Name of file that appliation and plugin preferences are stored in.
      */
     private static final String FILE_PREFS = ".toolbox.xml";
     
     /**
      * Plugin property used to identify a reference to the workspace's shared
-     * statusbar
+     * statusbar.
      */    
     public static final String PROP_STATUSBAR = "workspace.statusbar";
     
@@ -107,17 +107,17 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     //--------------------------------------------------------------------------
      
     /** 
-     * Status bar at bottom of screen 
+     * Status bar at bottom of screen. 
      */
     private IStatusBar statusBar_;
     
     /** 
-     * Look and Feel Menu Items 
+     * Look and Feel Menu Items. 
      */
     private JMenu lookAndFeelMenu_;
     
     /** 
-     * Preferences stored as XML 
+     * Preferences stored as XML. 
      */
     private Element prefs_;
     
@@ -127,12 +127,12 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     private Map bootstrapMap_;
     
     /**
-     * Unloaded preferences
+     * Unloaded preferences.
      */
     private Element unloadedPrefs_;
         
     /**
-     * Smooth fonts check box
+     * Smooth fonts check box.
      */
     private JCheckBoxMenuItem smoothFontsCheckBoxItem_;
     
@@ -142,12 +142,12 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     private LookAndFeelManager lafManager_;
 
     /**
-     * Maps Log Level -> JCheckBoxMenuItem
+     * Maps Log Level -> JCheckBoxMenuItem.
      */
     private Map levelMap_;
     
     /**
-     * Manages the plugin host
+     * Manages the plugin host.
      */
     private PluginHostManager pluginHostManager_;
     
@@ -156,7 +156,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     //--------------------------------------------------------------------------
     
     /**
-     * Starts up the workspace 
+     * Starts up the workspace. 
      * 
      * @param args None recognized
      */
@@ -182,7 +182,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a PluginWorkspace
+     * Creates a PluginWorkspace.
      * 
      * @throws Exception on error
      */
@@ -202,7 +202,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     //--------------------------------------------------------------------------
 
     /**
-     * Registers a plugin with the GUI. Must be called prior buildView()
+     * Registers a plugin with the GUI. Must be called prior buildView().
      * 
      * @param plugin Plugin to add to the GUI
      * @throws Exception on error
@@ -239,8 +239,9 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         plugin.applyPrefs(pluginWrapper);
     }
 
+    
     /**
-     * Registers a plugin with the GUI. Must be called prior buildView()
+     * Registers a plugin with the GUI. Must be called prior buildView().
      * 
      * @param plugin Plugin to add to the GUI
      * @param prefs Plugin preferences DOM
@@ -255,8 +256,9 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         plugin.applyPrefs(prefs);
     }
 
+    
     /**
-     * Registers a plugin given its FQN
+     * Registers a plugin given its FQCN.
      * 
      * @param pluginClass Name of plugin class that implements the IPlugin 
      *        interface
@@ -275,8 +277,9 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         }
     }
 
+    
     /**
-     * Registers a plugin given its FQN and preferences 
+     * Registers a plugin given its FQCN and preferences. 
      * 
      * @param pluginClass Name of plugin class that implements the IPlugin 
      *        interface
@@ -298,8 +301,9 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         }                
     }
 
+    
     /**
-     * Deregisters a plugin given its fully qualified name
+     * Deregisters a plugin given its fully qualified name.
      * 
      * @param pluginClass Class name of plugin to remove
      * @throws Exception on error
@@ -330,7 +334,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     //--------------------------------------------------------------------------
 
     /**
-     * Returns the workspace status bar
+     * Returns the workspace status bar.
      * 
      * @return Status bar
      */
@@ -344,7 +348,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     //--------------------------------------------------------------------------
 
     /**
-     * Initializes the plugin workspace
+     * Initializes the plugin workspace.
      */
     protected void init()
     {
@@ -361,7 +365,9 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     
     
     /**
-     * Builds the GUI
+     * Builds the GUI.
+     * 
+     * @throws PluginException on plugin error.
      */
     protected void buildView() throws PluginException
     {
@@ -393,7 +399,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
 
     
     /**
-     * Creates and configures the menu bar
+     * Creates and configures the menu bar.
      * 
      * @return JMenuBar
      */
@@ -409,7 +415,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
 
     
     /**
-     * Creates the File menu 
+     * Creates the File menu.
      * 
      * @return JMenu
      */
@@ -425,7 +431,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
 
 
     /**
-     * Creates the preferences menu
+     * Creates the preferences menu.
      * 
      * @return JMenu 
      */
@@ -446,7 +452,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
 
     
     /**
-     * Creates the Logging menu 
+     * Creates the Logging menu. 
      * 
      * @return JMenu
      */
@@ -480,8 +486,9 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         return fileMenu;            
     }
 
+    
     /**
-     * Returns the plugin host
+     * Returns the plugin host.
      * 
      * @return PluginHost
      */
@@ -490,8 +497,9 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         return pluginHostManager_.getPluginHost();
     }
     
+    
     /**
-     * Determines if a plugin is active given its FQN
+     * Determines if a plugin is active given its FQN.
      * 
      * @param pluginClass FQN of plugin class
      * @return True if plugin is registered, false otherwise
@@ -503,7 +511,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     
     
     /**
-     * Returns a plugin given its class name
+     * Returns a plugin given its class name.
      * 
      * @param pluginClass FQCN of the plugin
      * @return IPlugin
@@ -515,7 +523,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
 
     
     /**
-     * Loads the workspace and plugin preferences from $user.home/.toolbox.xml
+     * Loads the workspace and plugin preferences from $user.home/.toolbox.xml.
      */
     protected void loadPrefs()
     {
@@ -553,8 +561,9 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         }
     }
 
+    
     /**
-     * Sets only the LookAndFeel based on the loaded preferences
+     * Sets only the LookAndFeel based on the loaded preferences.
      * 
      * @param prefs DOM representing the saved preferences.
      */
@@ -681,6 +690,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         statusBar_.setStatus("Saved preferences");
     }
 
+    
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
@@ -789,7 +799,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     //--------------------------------------------------------------------------
 
     /**
-     * Saves preferences when the application is closed
+     * Saves preferences when the application is closed.
      */
     class CloseWindowListener extends WindowAdapter
     {
@@ -812,7 +822,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     //--------------------------------------------------------------------------
 
     /**
-     * Exits the appication
+     * Exits the appication.
      */
     class ExitAction extends AbstractAction
     {
@@ -839,7 +849,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     //--------------------------------------------------------------------------
 
     /**
-     * Adds/removes plugins to/from the plugin frame
+     * Adds/removes plugins to/from the plugin frame.
      */
     class PluginsAction extends AbstractAction
     {
@@ -886,7 +896,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     //--------------------------------------------------------------------------
 
     /**
-     * Triggers garbage collection
+     * Triggers garbage collection.
      */
     class GarbageCollectAction extends WorkspaceAction
     {
@@ -931,7 +941,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     //--------------------------------------------------------------------------
 
     /**
-     * Toggles smooth fonts  
+     * Toggles smooth fonts.  
      */
     class AntiAliasAction extends AbstractAction
     {
@@ -958,14 +968,14 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     //--------------------------------------------------------------------------
 
     /**
-     * Action to set the logging level
+     * Action to set the logging level.
      */
     class SetLogLevelAction extends AbstractAction
     {
         private Level level_;
         
         /**
-         * Creates a SetLogLevelAction
+         * Creates a SetLogLevelAction.
          * 
          * @param level Logging level to activate
          */

@@ -177,7 +177,6 @@ public class XSLFOPlugin extends JPanel implements IPlugin
         defaults_.eolMarkers=false;
         defaults_.paintInvalid=false;
         defaults_.popup = new JEditPopupMenu();
-        
     }
 
 
