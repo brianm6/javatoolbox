@@ -1,13 +1,16 @@
 package toolbox.util.ui.plaf;
 
+import java.awt.Color;
 import java.awt.Font;
 
 import javax.swing.UIManager;
+import javax.swing.border.LineBorder;
 
 import com.incors.plaf.alloy.AlloyLookAndFeel;
 import com.incors.plaf.alloy.AlloyTheme;
 import com.incors.plaf.alloy.DefaultAlloyTheme;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -54,7 +57,8 @@ public class ActivateAlloyLookAndFeelAction extends ActivateLookAndFeelAction
         //String name = info.getProperty("theme.name"); 
         String clazz = info.getProperty("theme.class");
         String license = info.getProperty("theme.license");
-      
+        license = new String(Base64.decodeBase64(license.getBytes()));
+        
         AlloyLookAndFeel.setProperty("alloy.licenseCode", license);
         AlloyTheme defaultTheme = new DefaultAlloyTheme();
         AlloyTheme theme = defaultTheme;
@@ -76,16 +80,7 @@ public class ActivateAlloyLookAndFeelAction extends ActivateLookAndFeelAction
         UIManager.setLookAndFeel(alloy);
 
         // Fix alloy fonts
-        
         Font f = new Font("Tahoma", Font.PLAIN, 11);
-        //Font f = new Font("Bitstream Vera Sans", Font.PLAIN, 11);
-        //Font f = new Font("Trebuchet MS", Font.PLAIN, 11);
-        //Font f = new Font("Lucida Sans", Font.PLAIN, 11);
-        //Font f = new Font("Lucida Sans Typewriter", Font.PLAIN, 10);
-        
-        //Font f = FontUtil.getPreferredSerifFont();
-        //Font f = FontUtil.getPreferredMonoFont();
-        
         UIManager.put("Button.font", f);
         UIManager.put("DesktopIcon.font", f);
         UIManager.put("ComboBox.font", f);
@@ -128,7 +123,8 @@ public class ActivateAlloyLookAndFeelAction extends ActivateLookAndFeelAction
         //UIManager.put("ToolTip.border", new LineBorder(Color.black));
         
         //UIManager.put(
-        //    "ToolTip.background", UIManager.getColor("Panel.background"));
+        //    "ToolTip.background", 
+        //    UIManager.getColor("Panel.background"));
         
         UIManager.getLookAndFeel().getDefaults().put(
             LAFInfo.PROP_HIDDEN_KEY, getLookAndFeelInfo());

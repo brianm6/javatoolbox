@@ -45,6 +45,7 @@
  * TODO: Integrate automatic build number generation into the build process. 
  * TODO: Update PluginWorkspace to accept a command line flag to load
  *       preferences from a different file.
+ * TODO: Add a way to change the lookand feel font globally
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
