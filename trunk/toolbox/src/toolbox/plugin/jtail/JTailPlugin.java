@@ -57,12 +57,12 @@ public class JTailPlugin implements IPlugin
 
     public void savePrefs(Properties prefs)
     {
-        jtail_.saveConfiguration(prefs);
+        jtail_.savePrefs(prefs);
     }
 
     public void applyPrefs(Properties prefs)
     {
-        jtail_.applyConfiguration(prefs);
+        jtail_.applyPrefs(prefs);
     }
 
     public void setStatusBar(IStatusBar statusBar)
