@@ -84,7 +84,7 @@ public class RemoteTelnetClient extends TelnetClient
      * 
      * @param searchString String to search for in the response.
      */    
-    public synchronized void waitFor(String searchString)
+    public void waitFor(String searchString)
     {
         while (true)
         {
@@ -100,11 +100,12 @@ public class RemoteTelnetClient extends TelnetClient
             }
             else
             {
-                //ThreadUtil.sleep(1);
-                
                 try
                 {
-                    responseStream_.wait();
+                    synchronized (responseStream_)
+                    {
+                        responseStream_.wait(1000);
+                    }
                 }
                 catch (InterruptedException e)
                 {
