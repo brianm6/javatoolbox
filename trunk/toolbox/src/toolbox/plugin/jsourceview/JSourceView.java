@@ -53,6 +53,7 @@ import toolbox.util.ui.table.TableSorter;
  * TODO: Custom table cell renders to align cell contents/color code unusually
  *       high or low numbers, etc
  * TODO: Add regex filter to include/exclude files
+ * TODO: Unit tests for non-gui statistics collection
  * </pre> 
  * 
  */
