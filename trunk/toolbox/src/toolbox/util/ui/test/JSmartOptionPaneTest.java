@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 import toolbox.util.ExceptionUtil;
+import toolbox.util.SwingUtil;
 import toolbox.util.ui.JSmartOptionPane;
 
 /**
@@ -22,14 +23,21 @@ public class JSmartOptionPaneTest extends TestCase
         
     private static String MSG_DETAIL;
 
-
     private static final JFrame PARENT = new JFrame();
-    
+
+    /**
+     * Entry point
+     * 
+     * @param  args  None recognized
+     */    
     public static void main(String[] args)
     {
         TestRunner.run(JSmartOptionPaneTest.class);
     }
 
+    /**
+     * Setup 
+     */
     public void setUp()
     {
         MSG_DETAIL = ExceptionUtil.getStackTrace(
@@ -38,7 +46,8 @@ public class JSmartOptionPaneTest extends TestCase
 
     /**
      * Constructor for DetailedDialogTest.
-     * @param arg0
+     * 
+     * @param arg0  Name
      */
     public JSmartOptionPaneTest(String arg0)
     {
@@ -48,7 +57,7 @@ public class JSmartOptionPaneTest extends TestCase
     /**
      * Tests showMessageDialog() for defaults 
      */
-    public void testShowMessageDialogDefault()
+    public void testShowDetailedMessageDialogDefault()
     {
         JSmartOptionPane.showDetailedMessageDialog(
             PARENT, MSG_TEXT, MSG_DETAIL);
@@ -57,9 +66,31 @@ public class JSmartOptionPaneTest extends TestCase
     /**
      * Tests showMessageDialog() for error msg type
      */ 
-    public void testShowMessageDialogError()
+    public void testShowDetailedMessageDialogError() throws Exception
     {
+        SwingUtil.setMotifLAF();
         JSmartOptionPane.showDetailedMessageDialog(
             PARENT, MSG_TEXT, MSG_DETAIL, MSG_TITLE, JOptionPane.ERROR_MESSAGE);
+    }
+    
+    /**
+     * Tests showMessageDialog() for variable paramteres
+     */
+    public void testShowDetailedMessageDialogParams() throws Exception
+    {
+        SwingUtil.setWindowsLAF();
+        JSmartOptionPane.showDetailedMessageDialog(
+            PARENT, "message text", MSG_DETAIL, "message title", 
+                JOptionPane.WARNING_MESSAGE);    
+    }
+    
+    /**
+     * Tests showExceptionMessageDialog()
+     */
+    public void testShowExceptionMessageDialog()  throws Exception
+    {
+        SwingUtil.setMetalLAF();
+        JSmartOptionPane.showExceptionMessageDialog(PARENT, 
+            new Exception("testing"));
     }
 }
