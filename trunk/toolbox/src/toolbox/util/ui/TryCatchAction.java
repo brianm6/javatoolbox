@@ -61,5 +61,5 @@ public abstract class TryCatchAction extends AbstractAction
      * actionPerformed delegates to this method after surrounding it with a 
      * try/catch block to handle errors.
      */
-    public abstract void tryActionPerformed(ActionEvent e);
+    public abstract void tryActionPerformed(ActionEvent e) throws Throwable;
 }
