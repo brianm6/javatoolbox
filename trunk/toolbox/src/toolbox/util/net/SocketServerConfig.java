@@ -161,6 +161,25 @@ public class SocketServerConfig implements Nameable
     {
         load(file);
     }
+    
+    
+    /**
+     * Creates a SocketServerConfig.
+     * 
+     * @param name Server name.
+     * @param port Port number.
+     * @param connectionHandler Connection handler.
+     */
+    public SocketServerConfig(
+        String name,
+        int port,
+        String connectionHandler) 
+    {
+        this(defaults_);
+        setName(name);
+        setServerPort(port);
+        setConnectionHandlerType(connectionHandler);
+    }
 
     //--------------------------------------------------------------------------
     //  Public
