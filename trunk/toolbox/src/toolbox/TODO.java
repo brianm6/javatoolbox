@@ -11,7 +11,6 @@ package toolbox;
  * TODO: Add package.html to all packages
  * TODO: Add support to minimize to system tray - systray4j
  * TODO: Upgrade to ant 1.5.3
- * TODO: Create a nice UI to run statcvs
  * TODO: Integrate automatic build number generation into the build process.
  * </pre>
  */
