@@ -1,5 +1,6 @@
 package toolbox.jedit;
 
+import java.awt.Dialog;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Window;
@@ -24,9 +25,13 @@ import toolbox.util.ui.font.IFontChooserDialogListener;
 import toolbox.util.ui.font.JFontChooser;
 import toolbox.util.ui.font.JFontChooserDialog;
 
+/**
+ * UI Actions for the JEditTextArea
+ */
 public final class JEditActions
 {
-    static final Logger logger_ = Logger.getLogger(JEditActions.class);
+    static final Logger logger_ = 
+        Logger.getLogger(JEditActions.class);
     
     /**
      * Abstract class for all JEdit actions 
@@ -68,7 +73,7 @@ public final class JEditActions
     }
 
     /**
-     * Inserts the text of a file at the currnet cursor location
+     * Saves the contents of the text area to a file.
      */
     static class SaveAsAction extends JEditAction
     {
@@ -179,12 +184,21 @@ public final class JEditActions
             
             // Find parent frame
             Window w = SwingUtilities.getWindowAncestor(area_);
+
+            if (w == null)
+                w = new Frame();
+
+            JFontChooserDialog fontChooser = null;
+                        
+            if (w instanceof Frame)
+                fontChooser = new JFontChooserDialog(
+                    (Frame)w, false, originalFont, area_.isAntiAlias());
+                    
+            else if (w instanceof Dialog)
+                fontChooser = new JFontChooserDialog(
+                    (Dialog)w, false, originalFont, area_.isAntiAlias());
             
-            Frame frame = 
-                (w != null && w instanceof Frame) ? (Frame) w : new Frame();
-            
-            JFontChooserDialog fontChooser = new JFontChooserDialog(
-                frame, false, originalFont);
+            /* Listener for font chooser dialog events */
                 
             fontChooser.addFontDialogListener(new IFontChooserDialogListener()
             {
@@ -194,6 +208,8 @@ public final class JEditActions
                     {
                         area_.getPainter().setFont(
                             fontChooser.getSelectedFont());
+                            
+                        area_.setAntiAlias(fontChooser.isAntiAlias());    
                     }
                     catch (FontChooserException fce)
                     {
@@ -214,7 +230,7 @@ public final class JEditActions
                 }
             });
 
-            SwingUtil.centerWindow(frame, fontChooser);                        
+            SwingUtil.centerWindow(w, fontChooser);                        
             fontChooser.setVisible(true);            
         }
     }
@@ -282,5 +298,4 @@ public final class JEditActions
             area_.selectAll();
         }
     }
-
 }

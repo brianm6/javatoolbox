@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -21,10 +22,10 @@ import junit.textui.TestRunner;
 import org.apache.log4j.Logger;
 
 import org.jedit.syntax.TextAreaDefaults;
+import org.jedit.syntax.XMLTokenMarker;
 
-import toolbox.jedit.DynamicTokenMarker;
-import toolbox.jedit.JEditTextArea;
 import toolbox.jedit.JEditPopupMenu;
+import toolbox.jedit.JEditTextArea;
 import toolbox.jedit.JavaDefaults;
 import toolbox.util.SwingUtil;
 
@@ -62,7 +63,7 @@ public class JEditTextAreaTest extends TestCase
      */
     public void testJEditTextArea()
     {
-        JEditTest test = new JEditTest();
+        JEditTester test = new JEditTester();
         test.setVisible(true);            
     }
     
@@ -73,17 +74,21 @@ public class JEditTextAreaTest extends TestCase
     /**
      * Frame to encompass the JEditTextArea
      */
-    class JEditTest extends JFrame implements ActionListener
+    class JEditTester extends JDialog implements ActionListener
     {
         private JEditTextArea jeta_;
         private JComboBox fgCombo_;
         private JComboBox bgCombo_;
         private Map clut_;
                         
-        public JEditTest()
+        public JEditTester()
         {
-            super("testJEditTextArea");
-            buildView();             
+            super( (JFrame) null, "testJEditTextArea", true);
+            buildView();
+            
+            setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+            pack();
+            SwingUtil.centerWindow(this);
         }
         
         protected void buildView()
@@ -93,15 +98,12 @@ public class JEditTextAreaTest extends TestCase
            TextAreaDefaults defaults = new JavaDefaults();
            defaults.popup = new JEditPopupMenu();
            
-           jeta_ = new JEditTextArea(new DynamicTokenMarker(), defaults);
+           jeta_ = new JEditTextArea(new XMLTokenMarker(), defaults);
            ((JEditPopupMenu) defaults.popup).setTextArea(jeta_);
            ((JEditPopupMenu) defaults.popup).buildView();
 
            c.add(BorderLayout.CENTER, new JScrollPane(jeta_));
            c.add(BorderLayout.SOUTH, buildControlView());
-           setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-           
-           pack();
         }
         
         protected JPanel buildControlView() 
@@ -129,11 +131,13 @@ public class JEditTextAreaTest extends TestCase
             
             if (obj == fgCombo_)
             {
-                jeta_.getPainter().setForeground((Color) clut_.get(fgCombo_.getSelectedItem()));
+                jeta_.getPainter().setForeground((Color) 
+                    clut_.get(fgCombo_.getSelectedItem()));
             }
             else if (obj == bgCombo_)
             {
-                jeta_.getPainter().setBackground((Color) clut_.get(bgCombo_.getSelectedItem()));
+                jeta_.getPainter().setBackground((Color) 
+                    clut_.get(bgCombo_.getSelectedItem()));
             }
             else
                 logger_.debug("Nothing to do!");
