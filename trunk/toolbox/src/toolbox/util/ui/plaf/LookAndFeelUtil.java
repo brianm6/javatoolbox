@@ -4,15 +4,21 @@ import java.awt.Frame;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.swing.AbstractButton;
 import javax.swing.Action;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JFrame;
 import javax.swing.JMenu;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
@@ -395,6 +401,48 @@ public final class LookAndFeelUtil
             "com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
             
         propagateChangeInLAF();            
+    }
+    
+    
+    /**
+     * Shows look and feel properties in a JTable.
+     */
+    public static void showUIProperties()
+    {
+        JFrame f = new JFrame("UI Properties");
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        Set defaults = UIManager.getLookAndFeelDefaults().entrySet();
+        
+        Set ts = new TreeSet(new Comparator()
+        {
+            public int compare(Object a, Object b)
+            {
+                Map.Entry ea = (Map.Entry) a;
+                Map.Entry eb = (Map.Entry) b;
+                return ((String)ea.getKey()).compareTo(((String) eb.getKey()));
+            }
+        });
+        
+        ts.addAll(defaults);
+        Object[][] nvPairs = new Object[defaults.size()][2];
+        Object[] columnNames = new Object[]{"Key", "Value"};
+        int row = 0;
+        
+        for (Iterator i = ts.iterator(); i.hasNext();)
+        {
+            Object o = i.next();
+            Map.Entry entry = (Map.Entry) o;
+            nvPairs[row][0] = entry.getKey();
+            nvPairs[row][1] = entry.getValue();
+            row++;
+        }
+        
+        JTable table = new JTable(nvPairs, columnNames);
+        JScrollPane sp = new JScrollPane(table);
+        f.getContentPane().add(sp);
+        f.pack();
+        f.setVisible(true);
     }
     
     //--------------------------------------------------------------------------
