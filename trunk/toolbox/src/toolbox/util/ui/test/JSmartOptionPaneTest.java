@@ -3,11 +3,11 @@ package toolbox.util.ui.test;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import org.apache.log4j.Logger;
-
-import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import org.apache.log4j.Logger;
+
+import toolbox.junit.UITestCase;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.RandomUtil;
 import toolbox.util.StringUtil;
@@ -17,7 +17,7 @@ import toolbox.util.ui.JSmartOptionPane;
 /**
  * Unit test for JSmartOptionPane.
  */
-public class JSmartOptionPaneTest extends TestCase
+public class JSmartOptionPaneTest extends UITestCase
 {
     private static final Logger logger_ =
         Logger.getLogger(JSmartOptionPaneTest.class);
@@ -29,7 +29,7 @@ public class JSmartOptionPaneTest extends TestCase
         
     private static String MSG_DETAIL;
 
-    private static final JFrame PARENT = new JFrame();
+    private JFrame parent_;
 
     //--------------------------------------------------------------------------
     // Main
@@ -50,12 +50,25 @@ public class JSmartOptionPaneTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Creates the detail portion of the test message. 
+     * Creates the detail portion of the test message.
+     * 
+     * @throws Exception on error 
      */
-    public void setUp()
+    public void setUp() throws Exception
     {
+        super.setUp();
+        parent_ = new JFrame();
         MSG_DETAIL = ExceptionUtil.getStackTrace(
             new Exception("This is an exception"));        
+    }
+    
+    /**
+     * @see junit.framework.TestCase#tearDown()
+     */
+    protected void tearDown() throws Exception
+    {
+        parent_.dispose();
+        super.tearDown();
     }
     
     //--------------------------------------------------------------------------
@@ -70,7 +83,7 @@ public class JSmartOptionPaneTest extends TestCase
         logger_.info("Running testShowDetailedMessageDialogDefault...");
         
         JSmartOptionPane.showDetailedMessageDialog(
-            PARENT, MSG_TEXT, MSG_DETAIL);
+            parent_, MSG_TEXT, MSG_DETAIL);
     }
     
     
@@ -85,7 +98,7 @@ public class JSmartOptionPaneTest extends TestCase
         
         SwingUtil.setMotifLAF();
         JSmartOptionPane.showDetailedMessageDialog(
-            PARENT, MSG_TEXT, MSG_DETAIL, MSG_TITLE, JOptionPane.ERROR_MESSAGE);
+            parent_, MSG_TEXT, MSG_DETAIL, MSG_TITLE, JOptionPane.ERROR_MESSAGE);
     }
     
     
@@ -100,7 +113,7 @@ public class JSmartOptionPaneTest extends TestCase
         
         SwingUtil.setWindowsLAF();
         JSmartOptionPane.showDetailedMessageDialog(
-            PARENT, "message text", MSG_DETAIL, "message title", 
+            parent_, "message text", MSG_DETAIL, "message title", 
                 JOptionPane.WARNING_MESSAGE);    
     }
     
@@ -115,7 +128,7 @@ public class JSmartOptionPaneTest extends TestCase
         logger_.info("Running testShowExceptionMessageDialog...");
         
         SwingUtil.setMetalLAF();
-        JSmartOptionPane.showExceptionMessageDialog(PARENT, 
+        JSmartOptionPane.showExceptionMessageDialog(parent_, 
             new Exception("testing"));
     }
     
@@ -134,6 +147,6 @@ public class JSmartOptionPaneTest extends TestCase
             
         String msg = StringUtil.wrap(sb.toString(), 50, true);
         
-        JSmartOptionPane.showDetailedMessageDialog(PARENT, "yo yo yo!", msg);
+        JSmartOptionPane.showDetailedMessageDialog(parent_, "yo yo yo!", msg);
     }
 }

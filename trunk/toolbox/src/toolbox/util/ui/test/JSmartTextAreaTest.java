@@ -1,14 +1,11 @@
 package toolbox.util.ui.test;
 
 import java.awt.BorderLayout;
-import java.awt.Container;
 import java.io.StringReader;
 
-import javax.swing.JDialog;
-import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
 import nu.xom.Builder;
@@ -16,6 +13,7 @@ import nu.xom.Element;
 
 import org.apache.log4j.Logger;
 
+import toolbox.junit.UITestCase;
 import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.ui.JSmartTextArea;
@@ -23,8 +21,10 @@ import toolbox.util.ui.JSmartTextArea;
 /**
  * Unit test for JSmartTextArea.
  */
-public class JSmartTextAreaTest extends TestCase
+public class JSmartTextAreaTest extends UITestCase
 {
+    // TODO: This test needs more interactive ways to test.
+    
     private static final Logger logger_ =
         Logger.getLogger(JSmartTextAreaTest.class);
         
@@ -36,11 +36,9 @@ public class JSmartTextAreaTest extends TestCase
      * Entry point.
      * 
      * @param args None recognized
-     * @throws Exception on error
      */
-    public static void main(String[] args) throws Exception
+    public static void main(String[] args) 
     {
-        SwingUtil.setPreferredLAF();
         TestRunner.run(JSmartTextAreaTest.class);
     }
 
@@ -49,25 +47,20 @@ public class JSmartTextAreaTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Tests autoscroll feature
+     * Tests autoscroll feature.
      */
     public void testAutoScroll()
     {
         logger_.info("Running testAutoScroll...");
         
-        JDialog dialog = new JDialog(new JFrame(), "testAutoScroll", true);        
-        Container cp = dialog.getContentPane();
-        cp.setLayout(new BorderLayout());
+        JPanel cp = new JPanel(new BorderLayout());
         cp.add(new JScrollPane(new JSmartTextArea("hello")));
-        dialog.setSize(150,150);
-        SwingUtil.centerWindow(dialog);
-        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        dialog.setVisible(true);
+        launchInDialog(cp, SCREEN_ONE_THIRD);
     }
     
     
     /**
-     * Tests savePrefs() and applyPrefs()
+     * Tests savePrefs() and applyPrefs().
      * 
      * @throws Exception on error
      */
