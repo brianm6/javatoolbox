@@ -122,19 +122,7 @@ public class ElapsedTime
      */
     public ElapsedTime(Date startTime)
     {
-        this(startTime.getTime(), startTime.getTime());
-    }
-
-    
-    /**
-     * Creates an elapsed time from the given time span.
-     * 
-     * @param startTime Starting time.
-     * @param endTime Ending time.
-     */
-    public ElapsedTime(Date startTime, Date endTime)
-    {
-        this(startTime.getTime(), endTime.getTime());
+        this(startTime, startTime);
     }
 
     
@@ -146,8 +134,20 @@ public class ElapsedTime
      */
     public ElapsedTime(long startTime, long endTime)
     {
-        startTime_ = startTime;
-        endTime_   = endTime;
+        this(new Date(startTime), new Date(endTime));
+    }
+    
+    
+    /**
+     * Creates an elapsed time from the given time span.
+     * 
+     * @param startTime Starting time.
+     * @param endTime Ending time.
+     */
+    public ElapsedTime(Date startTime, Date endTime)
+    {
+        setStartTime(startTime);
+        setEndTime(endTime);
 
         days_    = 0;
         hours_   = 0;
@@ -157,7 +157,7 @@ public class ElapsedTime
  
         recalc();
     }
-    
+
     
     /**
      * Creates an elapsed time from the given time components.
@@ -186,8 +186,10 @@ public class ElapsedTime
      */
     public ElapsedTime(ElapsedTime elapsedTime)
     {
-        this(elapsedTime.getDays(), elapsedTime.getHours(),
-            elapsedTime.getMinutes(), elapsedTime.getSeconds(), 
+        this(elapsedTime.getDays(), 
+            elapsedTime.getHours(),
+            elapsedTime.getMinutes(), 
+            elapsedTime.getSeconds(), 
             elapsedTime.getMillis());        
     }
 
@@ -284,7 +286,7 @@ public class ElapsedTime
     /**
      * Sets the starting time for the elapsed time to the current time.
      */
-    public void setStartTimeNow()
+    public void setStartTime()
     {
         startTime_ = new Date().getTime();
     }
