@@ -46,7 +46,6 @@
  * TODO: Add System wide prefs for the default mono and serif fonts
  * TODO: Make monospaced fonts stand out in JFontChooser
  * TODO: Add dbcopy functionality from dbunit
- * TODO: Replace invoker with executor
  * TODO: Write ndoc maven plugin
  * =============================================================================
  *                              Build
@@ -123,6 +122,7 @@
             <action type="update">FindClass - Now implements the Cancelable interface</action>
             <action type="update">JSourceView - SourceScanner now implements Cancelable</action>
             <action type="update">Util - Removed dependence on toolbox.util.io.filter and refactored to use commons-io filter classes</action>
+            <action type="update">Util - Removed toolbox.util.invoker and replaced with backported JDK1.5 Executor classes</action>
         </release>
 
         <!-- =================================================================== -->
