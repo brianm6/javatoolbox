@@ -146,6 +146,17 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
             profileCombo_.addItem(profile);
     }
     
+    
+    /**
+     * Returns the currently selected profile.
+     *  
+     * @return DBProfile
+     */
+    public DBProfile getCurrentProfile()
+    {
+        return (DBProfile) profileCombo_.getSelectedItem();
+    }
+    
     //--------------------------------------------------------------------------
     // Protected 
     //--------------------------------------------------------------------------
