@@ -7,6 +7,7 @@ import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
+
 import toolbox.util.StringUtil;
 import toolbox.util.dump.Dumper;
 
@@ -31,8 +32,8 @@ public class DumperTest extends TestCase
     }
 
     //--------------------------------------------------------------------------
-	//  Constructors
-	//--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
     
     /**
      * Constructor for ObjectDumperTest.
@@ -45,23 +46,23 @@ public class DumperTest extends TestCase
     }
 
     //--------------------------------------------------------------------------
-	//  Overridden Methods from TestCase
-	//--------------------------------------------------------------------------
+    //  Overridden Methods from TestCase
+    //--------------------------------------------------------------------------
 
     /**
-	 * @see junit.framework.TestCase#setUp()
-	 */
-	protected void setUp() throws Exception
-	{
-		super.setUp();
+     * @see junit.framework.TestCase#setUp()
+     */
+    protected void setUp() throws Exception
+    {
+        super.setUp();
         
         System.out.println("\n" + StringUtil.repeat("=", 80));
-	}
+    }
 
 
     //--------------------------------------------------------------------------
-	//  Unit Tests
-	//--------------------------------------------------------------------------
+    //  Unit Tests
+    //--------------------------------------------------------------------------
     
     /**
      * Tests an empty class
@@ -116,33 +117,37 @@ public class DumperTest extends TestCase
         logger_.info("Running testDumpMaxDepth...");
         logger_.info("\n\n" + Dumper.dump(new Employee(), 3));        
     }
-    
-    ////////////////////////////////////////////////////////////////////////////
-       
+     
+    /**
+     * Tests legacy version 
+     */   
     public void testLegacy()
     {
-        System.out.println();
+        logger_.info("Running testLegacy...");
         String dump = Dumper.dump(new D());
-        System.out.println(dump);
+        logger_.info("\n\n" + dump);
     }
             
     //--------------------------------------------------------------------------
-	//  Tests Helper Classes
-	//--------------------------------------------------------------------------
+    //  Tests Helper Classes
+    //--------------------------------------------------------------------------
             
     class EmptyClass
     {
         // No fields
     }
-                
-    public class Employee
+    
+    /**
+     * Employee
+     */            
+    class Employee
     {
-        String  firstName_;
-        String  lastName_;
-        int     ssn_;
-        float   salary_;
-        Address address_;
-        Status  status_;
+        private String  firstName_;
+        private String  lastName_;
+        private int     ssn_;
+        private float   salary_;
+        private Address address_;
+        private Status  status_;
             
         public Employee()
         {
@@ -156,13 +161,16 @@ public class DumperTest extends TestCase
         }
     }    
     
-    public class Address
+    /**
+     * Address
+     */
+    class Address
     {
-        String street_;
-        String city_;
-        String state_;
-        String zipCode_;
-        Country country_;
+        private String street_;
+        private String city_;
+        private String state_;
+        private String zipCode_;
+        private Country country_;
                 
         public Address()
         {
@@ -174,21 +182,30 @@ public class DumperTest extends TestCase
         }
     }
 
+    /**
+     * Country
+     */
     public class Country
     {
-        String country_ = "USA";
+        private String country_ = "USA";
     }
     
+    /**
+     * Status 
+     */
     public class Status
     {
-        boolean citizen_ = true;
-        String  status_  = null; //"Naturalized";
+        private boolean citizen_ = true;
+        private String  status_  = null; //"Naturalized";
     }
     
+    /**
+     * MultipleReferences
+     */
     public class MultipleReferences
     {
-        Address address_   = new Address();
-        Address reference_ = address_; 
+        private Address address_   = new Address();
+        private Address reference_ = address_; 
     } 
 }
 
