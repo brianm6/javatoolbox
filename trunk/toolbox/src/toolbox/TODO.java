@@ -44,7 +44,6 @@ package toolbox;
  * TODO: Lift more stuff from hsqldb manager
  * TODO: Move benchmark to its own panel with preferences.
  * TODO: Base 64 encode passwords (statcvs, jdbcplugin, etc)
- * TODO: Migrate connection pooled JDBCUtil over
  * =============================================================================
  * 								FindClassPlugin
  * =============================================================================
@@ -74,6 +73,7 @@ package toolbox;
  *  - Upgraded to commons-net-1.2.1
  *  - Encoded passwords in JDBC plugin
  *  - StatcvsPlugin cvs project combobox is sorted
+ *  - Added connection pooling to JDBCUtil
  * 
  * April 2004 
  * 	- Scan source for refactorings to use DisposeAction 
