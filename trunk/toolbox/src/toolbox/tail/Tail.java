@@ -83,7 +83,7 @@ public class Tail
     /** Flag set if the tailer thread needs to shutdown */ 
     private boolean pendingShutdown_;
     
-    /** Thread name..mostly for debugging a stream */
+    /** Thread name..mostly for debugging */
     private String threadName_;
     
     //--------------------------------------------------------------------------
@@ -138,8 +138,10 @@ public class Tail
     }
     
     /**
-     * @return  True if the tail is running, false otherwise. This has no 
-     *          bearing on whether the tail is paused or not
+     * Returns true if the tail is running, false otherwise. This has no 
+     * bearing on whether the tail is paused or not.
+     * 
+     * @return boolean
      */
     public boolean isAlive()
     {
@@ -225,7 +227,9 @@ public class Tail
     }
     
     /**
-     * @return  True if the tail is paused, false otherwise
+     * Returns true if the tail is paused, false otherwise.
+     * 
+     * @return boolean
      */
     public boolean isPaused()
     {
@@ -233,7 +237,10 @@ public class Tail
     }
 
     /**
-     * @return Number of backlog lines to print when initially tailing a file
+     * Returns the number of backlog lines to print when initially tailing a 
+     * file.
+     * 
+     * @return int
      */
     public int getBacklog()
     {
@@ -241,6 +248,8 @@ public class Tail
     }
 
     /**
+     * Sets the number of lines to backlog.
+     * 
      * @param i Number of backlog lines to print when initially tailing a file
      */
     public void setBacklog(int i)
@@ -249,7 +258,9 @@ public class Tail
     }
 
     /**
-     * @return  True if tailing a file, false if tailing a reader
+     * Returns true if tailing a file, false if tailing a reader
+     * 
+     * @return boolean
      */
     public boolean isFile()
     {
@@ -257,20 +268,23 @@ public class Tail
     }
 
     /**
-     * @return File being tailed
+     * Returns the file being tailed.
+     * 
+     * @return File
      */
     public File getFile()
     {
         return file_;
     }
 
-
     //--------------------------------------------------------------------------
     // Overrides java.lang.Object
     //--------------------------------------------------------------------------
     
     /**
-     * @return String dump
+     * Returns string dump of this tail.
+     * 
+     * @return String
      */
     public String toString()
     {
@@ -282,7 +296,7 @@ public class Tail
     //--------------------------------------------------------------------------
 
     /**
-     * Spin while tail is paused
+     * Wait while the tail is paused
      */
     protected void checkPaused()
     {
@@ -354,6 +368,8 @@ public class Tail
     //--------------------------------------------------------------------------
 
     /**
+     * Adds a listener to the tail.
+     * 
      * @param  listener   Listener to add
      */
     public void addTailListener(TailListener listener)
@@ -362,6 +378,8 @@ public class Tail
     }
 
     /**
+     * Removes a listener from the tail.
+     * 
      * @param  listener  Listener to remove
      */
     public void removeTailListener(TailListener listener)
@@ -450,10 +468,12 @@ public class Tail
     //--------------------------------------------------------------------------
     // Inner Classes
     //--------------------------------------------------------------------------
-        
+
+    /**
+     * Continuous tailer
+     */        
     class Tailer implements Runnable
     {
-        
         public void run()
         {
             try
