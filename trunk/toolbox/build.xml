@@ -187,6 +187,7 @@
                 <include name="xercesImpl.jar"/>
                 <include name="xom.jar"/>
                 <include name="jedit-syntax.jar"/>
+                <include name="multivalent.jar"/>
                 
                 <!-- ===== Apache Commons ===== -->
                 <include name="commons-cli.jar"/>
