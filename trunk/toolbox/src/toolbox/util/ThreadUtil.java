@@ -14,7 +14,7 @@ import org.apache.log4j.Category;
 public final class ThreadUtil
 {
     /** Logger **/
-    protected static final Category logger = 
+    protected static final Category logger_ = 
         Category.getInstance(ThreadUtil.class);
         
     /**
@@ -37,7 +37,6 @@ public final class ThreadUtil
         }
         catch(Exception e)
         {
-              logger.error(e);          
         }
     }
     
@@ -142,19 +141,19 @@ class MethodRunner implements Runnable
         }
         catch (NoSuchMethodException nsme)
         {
-            ThreadUtil.logger.error(toString(), nsme);
+            ThreadUtil.logger_.error(toString(), nsme);
         }        
         catch (IllegalAccessException iae)
         {
-            ThreadUtil.logger.error("run", iae);
+            ThreadUtil.logger_.error("run", iae);
         }
         catch (InvocationTargetException ite)
         {
-            ThreadUtil.logger.error("run", ite);
+            ThreadUtil.logger_.error("run", ite);
         }
         catch (Exception e)
         {
-            ThreadUtil.logger.error("run", e);
+            ThreadUtil.logger_.error("run", e);
         }
         
     }
