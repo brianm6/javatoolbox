@@ -463,7 +463,15 @@ public class ManagePluginsDialog extends JDialog
         
         public void actionPerformed(ActionEvent e)
         {
-            populateInactive(); 
+            try
+            {
+                SwingUtil.setWaitCursor(ManagePluginsDialog.this);
+                populateInactive(); 
+            }
+            finally
+            {
+                SwingUtil.setDefaultCursor(ManagePluginsDialog.this);
+            }
         }
     }
 }
