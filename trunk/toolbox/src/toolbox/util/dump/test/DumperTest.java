@@ -174,7 +174,7 @@ public class DumperTest extends TestCase implements Stringz
         BasicDumpFormatter formatter = new BasicDumpFormatter();
         formatter.excludeFields("lastName_");
         String dump = Dumper.dump(emp, 10, formatter);
-        logger_.info("\n\n" + dump);
+        logger_.info(NL+NL+dump);
         assertTrue(dump.indexOf("lastName_") < 0);        
     }
      
