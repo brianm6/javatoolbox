@@ -18,20 +18,20 @@ import org.apache.log4j.Logger;
 
 /**
  * JDBC Utility class
- * 
- * TODO: Write unit tests using HSQLDB
  */
 public final class JDBCUtil
 {
+    /*
+     * TODO: Write unit tests using HSQLDB    
+     */
+     
     public static final Logger logger_ =
         Logger.getLogger(JDBCUtil.class);
 
     // Clover private constructor workaround
     static { new JDBCUtil(); }
 
-    /** 
-     * JDBC connection properties 
-     */
+    /** JDBC connection properties */
     private static Properties connProps_;
         
     //--------------------------------------------------------------------------
@@ -58,27 +58,26 @@ public final class JDBCUtil
      */
     public static String format(ResultSet rs) throws SQLException 
     {
-        ResultSetMetaData m = rs.getMetaData();
+        ResultSetMetaData meta = rs.getMetaData();
     
-        int    nCols    = m.getColumnCount();
-        String header[] = new String[nCols];
-        int    max[]    = new int[nCols];                
+        int    numCols    = meta.getColumnCount();
+        String header[]   = new String[numCols];
+        int    colWidth[] = new int[numCols];                
         
-        // Column headers
-        for (int i = 1; i <= nCols; i++) 
+        // Figure out column headers and width
+        for (int i = 1; i <= numCols; i++) 
         {
-            String label = m.getColumnLabel(i);
+            String colName = meta.getColumnLabel(i);
             
-            if (label == null)
-                label = "[NULL]";
-                
-            int colLen = label.length();
-            max[i-1] = colLen;
-            header[i-1] = label;
+            colName = 
+                (StringUtil.isNullOrBlank(colName) ? "[NULL]" : colName.trim());
+                    
+            header  [i-1] = colName;
+            colWidth[i-1] = colName.length();
         }
         
         int numRows = 0;
-        long time = System.currentTimeMillis();
+        ElapsedTime time = new ElapsedTime();
         List rows = new ArrayList();
         rows.add(header);
 
@@ -87,15 +86,15 @@ public final class JDBCUtil
         {
             ++numRows;
 
-            String row[] = new String[nCols];
+            String row[] = new String[numCols];
              
-            for (int i = 1; i <= nCols; i++) 
+            for (int i = 1; i <= numCols; i++) 
             {
                 Object obj = null;
                 
                 try 
                 {
-                    if (m.getColumnType(i) == Types.LONGVARBINARY)
+                    if (meta.getColumnType(i) == Types.LONGVARBINARY)
                         obj = rs.getBytes(i);
                     else
                         obj = rs.getObject(i);
@@ -111,24 +110,26 @@ public final class JDBCUtil
                 String value = null;
                 
                 if (obj != null)
-                    value = obj.toString();
+                    value = obj.toString().trim();
                 else
                     value= "[NULL]";
                 
                 // Add extra spaces at the end    
-                max[i-1] = Math.max(value.length(), max[i-1]) + 2;
+                colWidth[i-1] = Math.max(value.length(), colWidth[i-1]);// + 2;
                 row[i-1] = value;
             }
 
             rows.add(row);
         }
 
-        time = System.currentTimeMillis() - time;
+        time.setEndTime();
 
-        String[] dashes = new String[nCols];
+        for (int i=0; i<colWidth.length; colWidth[i] = colWidth[i++] + 2);
+
+        String[] dashes = new String[numCols];
         
-        for(int i=0; i<nCols; i++)
-            dashes[i] = StringUtil.repeat("-", max[i]);
+        for(int i=0; i<numCols; i++)
+            dashes[i] = StringUtil.repeat("-", colWidth[i]);
 
         rows.add(1, dashes);
 
@@ -136,10 +137,10 @@ public final class JDBCUtil
         
         for (Iterator i = rows.iterator(); i.hasNext(); ) 
         {
-            String[] row = (String[])i.next();
+            String[] row = (String[]) i.next();
 
-            for(int j=0; j<row.length; j++) 
-                sb.append(StringUtil.left(row[j], max[j]));
+            for (int j=0; j < row.length; j++) 
+                sb.append(StringUtil.left(row[j], colWidth[j]));
             
             sb.append("\n");
         }
@@ -151,7 +152,7 @@ public final class JDBCUtil
     }
  
     /**
-     * Returns a connection to the TURBO database
+     * Returns a connection to the database
      * 
      * @return  Connection ready for use
      * @throws  SQLException on SQL error
@@ -237,7 +238,7 @@ public final class JDBCUtil
             conn = getConnection();
             PreparedStatement stmt = conn.prepareStatement(sql);
             ResultSet results = stmt.executeQuery();
-            formattedResults = JDBCUtil.format(results);
+            formattedResults = format(results);
         }
         finally
         {
@@ -267,9 +268,9 @@ public final class JDBCUtil
         // Will force DriverManager.register() to get called
         Class.forName(driver);
         connProps_ = new Properties();
-        connProps_.put("user", user);
-        connProps_.put("password", password);
-        connProps_.put("url", url);
+        connProps_.put("user"     , user);
+        connProps_.put("password" , password);
+        connProps_.put("url"      , url);
         
         // Get meta data 
         Connection conn = getConnection();
