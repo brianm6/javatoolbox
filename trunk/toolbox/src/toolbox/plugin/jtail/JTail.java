@@ -37,7 +37,7 @@ import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.file.FileStuffer;
 import toolbox.util.ui.JConveyorMenu;
-import toolbox.util.ui.JFileExplorerAdapter;
+import toolbox.util.ui.explorer.FileExplorerAdapter;
 import toolbox.util.ui.JSmartMenu;
 import toolbox.util.ui.JSmartMenuItem;
 import toolbox.util.ui.SmartAction;
@@ -455,7 +455,7 @@ public class JTail extends JFrame implements IPreferenced
     /**
      * Adds a tail for a file double clicked by the user via the file explorer.
      */
-    class FileSelectionListener extends JFileExplorerAdapter
+    class FileSelectionListener extends FileExplorerAdapter
     {
         public void fileDoubleClicked(String file)
         {

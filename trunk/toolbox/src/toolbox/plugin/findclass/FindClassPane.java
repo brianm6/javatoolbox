@@ -49,8 +49,8 @@ import toolbox.util.MathUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.ThreadUtil;
 import toolbox.util.XOMUtil;
-import toolbox.util.ui.JFileExplorer;
-import toolbox.util.ui.JFileExplorerAdapter;
+import toolbox.util.ui.explorer.JFileExplorer;
+import toolbox.util.ui.explorer.FileExplorerAdapter;
 import toolbox.util.ui.JPopupListener;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartCheckBox;
@@ -708,10 +708,10 @@ public class JFindClass extends JFrame implements IPreferenced
     /**
      * Handler class for the file explorer.
      */
-    class FileExplorerListener extends JFileExplorerAdapter
+    class FileExplorerListener extends FileExplorerAdapter
     {
         //----------------------------------------------------------------------
-        // Overrides toolbox.util.ui.explorer.JFileExplorerAdapter
+        // Overrides toolbox.util.ui.explorer.FileExplorerAdapter
         //----------------------------------------------------------------------
         
         /**

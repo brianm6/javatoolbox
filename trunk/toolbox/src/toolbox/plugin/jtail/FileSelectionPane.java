@@ -6,8 +6,8 @@ import java.awt.FlowLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import toolbox.util.ui.JFileExplorer;
 import toolbox.util.ui.JSmartButton;
+import toolbox.util.ui.explorer.JFileExplorer;
 
 /**
  * Custom file explorer panel for JTail. Just adds a "Tail" button to the

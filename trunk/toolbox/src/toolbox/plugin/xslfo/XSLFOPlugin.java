@@ -38,8 +38,8 @@ import toolbox.util.SwingUtil;
 import toolbox.util.XMLUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.io.StringInputStream;
-import toolbox.util.ui.JFileExplorer;
-import toolbox.util.ui.JFileExplorerAdapter;
+import toolbox.util.ui.explorer.JFileExplorer;
+import toolbox.util.ui.explorer.FileExplorerAdapter;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartSplitPane;
 import toolbox.util.ui.flippane.JFlipPane;
@@ -508,7 +508,7 @@ public class XSLFOPlugin extends JPanel implements IPlugin
     /**
      * Populates file that is double clicked on in the text area.
      */
-    class FileSelectionListener extends JFileExplorerAdapter
+    class FileSelectionListener extends FileExplorerAdapter
     {
         public void fileDoubleClicked(String file)
         {
