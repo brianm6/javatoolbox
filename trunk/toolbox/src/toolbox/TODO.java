@@ -30,7 +30,8 @@ package toolbox;
  * TODO: Investigate JModalWindow
  * TODO: Update banner with more external fonts.
  * TODO: Fix JTail recent menu
- * TODO: Update all command line tools using new help format in findclass 
+ * TODO: Update all command line tools using new help format in findclass
+ * TODO: Tree - add inverse regex, case sensetive regex, and html output 
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
@@ -69,6 +70,9 @@ package toolbox;
  * 
  * =============================== COMPLETED ===================================
  *
+ * June 2004
+ *  - 
+ * 
  * May 2004
  *  - Added JDBC benchmark to JDBC plugin
  *  - Added NapkinLookAndFeel to the Look and Feel menu
