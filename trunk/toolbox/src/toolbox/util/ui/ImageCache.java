@@ -23,6 +23,7 @@ public class ImageCache
     public static final String IMAGE_FIND    = ROOT + "Search.gif";
     public static final String IMAGE_DELETE  = ROOT + "Delete.gif";
     public static final String IMAGE_CROSS   = ROOT + "Cross.gif";
+    public static final String IMAGE_TRIANGLE= ROOT + "Triangle.gif";
     
     public static final String IMAGE_SORT_ASCENDING = ROOT+"SortAscending.gif";
     public static final String IMAGE_SORT_DESCENDING= ROOT+"SortDescending.gif";
