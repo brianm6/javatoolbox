@@ -1,10 +1,21 @@
 package toolbox.plugin.netmeter;
 
 import java.awt.BorderLayout;
+import java.net.Socket;
 
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import org.apache.log4j.Logger;
+
+import toolbox.util.StringUtil;
+import toolbox.util.io.throughput.ThroughputEvent;
+import toolbox.util.io.throughput.ThroughputListener;
+import toolbox.util.net.AsyncConnectionHandler;
+import toolbox.util.net.IConnection;
+import toolbox.util.net.IConnectionHandler;
+import toolbox.util.net.ISocketServerListener;
+import toolbox.util.net.SocketServer;
 import toolbox.util.service.Service;
 import toolbox.util.service.ServiceException;
 import toolbox.util.service.ServiceListener;
@@ -20,8 +31,11 @@ import toolbox.util.ui.layout.ParagraphLayout;
  * 
  * @see toolbox.plugin.netmeter.Server 
  */
-public class ServerView extends JHeaderPanel implements ServiceListener
+public class ServerView extends JHeaderPanel 
+    implements ServiceListener, ISocketServerListener, ThroughputListener
 {
+    private static final Logger logger_ = Logger.getLogger(ServerView.class);
+    
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
@@ -63,6 +77,7 @@ public class ServerView extends JHeaderPanel implements ServiceListener
         buildView();
         server_.addServiceListener(this);
         server_.initialize();
+        server_.getSocketServer().addSocketServerListener(this);
     }
     
     //--------------------------------------------------------------------------
@@ -126,5 +141,71 @@ public class ServerView extends JHeaderPanel implements ServiceListener
     public void serviceStateChanged(Service service) throws ServiceException
     {
         statusField_.setText(service.getState().toString());
+    }
+    
+    //--------------------------------------------------------------------------
+    // SocketServerListener Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see toolbox.util.net.ISocketServerListener#connectionHandled(
+     *      toolbox.util.net.IConnectionHandler)
+     */
+    public void connectionHandled(IConnectionHandler connectionHandler)
+    {
+        logger_.debug(StringUtil.addBars("connectionHandled"));
+        
+        AsyncConnectionHandler async =
+            (AsyncConnectionHandler) connectionHandler;
+        
+        ServerConnectionHandler handler = 
+            (ServerConnectionHandler) async.getConnectionHandler();
+            
+        handler.setServerView(this);
+        
+        synchronized(handler) 
+        {
+            handler.notify();
+        }
+    }
+
+
+    /**
+     * @see toolbox.util.net.ISocketServerListener#serverStarted(
+     *      toolbox.util.net.SocketServer)
+     */
+    public void serverStarted(SocketServer server)
+    {
+    }
+
+
+    /**
+     * @see toolbox.util.net.ISocketServerListener#serverStopped(
+     *      toolbox.util.net.SocketServer)
+     */
+    public void serverStopped(SocketServer server)
+    {
+    }
+
+
+    /**
+     * @see toolbox.util.net.ISocketServerListener#socketAccepted(
+     *      java.net.Socket, toolbox.util.net.IConnection)
+     */
+    public void socketAccepted(Socket socket, IConnection connection)
+    {
+    }
+    
+    //--------------------------------------------------------------------------
+    // ThroughputListener
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see toolbox.util.io.throughput.ThroughputListener#currentThroughput(
+     *      toolbox.util.io.throughput.ThroughputEvent)
+     */
+    public void currentThroughput(ThroughputEvent event)
+    {
+        throughPutField_.setText(event.getThroughput() + "");
     }
 }
