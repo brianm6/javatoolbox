@@ -3,6 +3,8 @@ package toolbox.util;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import javax.swing.JFrame;
+
 import org.apache.log4j.Logger;
 
 import toolbox.util.ui.JSmartOptionPane;
@@ -55,6 +57,8 @@ public final class ExceptionUtil
     public static void handleUI(Throwable t, Logger c)
     {
         c.error(t.getMessage(), t);
-        JSmartOptionPane.showExceptionMessageDialog(null,t);
+        JFrame frame = new JFrame();
+        JSmartOptionPane.showExceptionMessageDialog(frame,t);
+        frame.dispose();
     }
 }
