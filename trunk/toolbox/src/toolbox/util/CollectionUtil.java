@@ -18,7 +18,7 @@ public final class CollectionUtil
 
     
     /**
-     * Assembles the union of a pair of sets
+     * Assembles the union of a pair of collections
      * 
      * @param   set1  First set
      * @param   set2  Second set
@@ -33,7 +33,7 @@ public final class CollectionUtil
 
     
     /**
-     * Assembles the intersection of a pair of sets
+     * Assembles the intersection of a pair of collections
      * 
      * @param   set1  First set
      * @param   set2  Second set
@@ -48,7 +48,7 @@ public final class CollectionUtil
 
 
     /**
-     * Assembles the set difference of a pair of sets
+     * Assembles the set difference of a pair of collections
      * 
      * @param   set1  First set
      * @param   set2  Second set
