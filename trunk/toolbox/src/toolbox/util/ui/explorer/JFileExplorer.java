@@ -27,6 +27,7 @@ import javax.swing.tree.TreeSelectionModel;
 import nu.xom.Attribute;
 import nu.xom.Element;
 
+import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -35,7 +36,6 @@ import toolbox.util.Platform;
 import toolbox.util.StringUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.file.FileComparator;
-import toolbox.util.io.filter.DirectoryFilter;
 import toolbox.util.io.filter.FileFilter;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JSmartComboBox;
@@ -162,7 +162,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
     private JComboBox rootsComboBox_;
     
     /**
-     * Popup menu for the file list.
+     * Popup menu for the directory tree.
      */
     private JPopupMenu folderPopup_;
     
@@ -719,8 +719,8 @@ public class JFileExplorer extends JPanel implements IPreferenced
         String pathToAddFolders,
         DefaultMutableTreeNode currentNode)
     {
-        File[] files = 
-            new File(pathToAddFolders).listFiles(new DirectoryFilter());
+        File[] files = new File(pathToAddFolders).listFiles(
+            (FileFilter) DirectoryFileFilter.INSTANCE);
             
         Arrays.sort(files, FileComparator.COMPARE_NAME);
         String[] fileList = new String[files.length];

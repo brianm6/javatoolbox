@@ -1,10 +1,11 @@
 package toolbox.plugin.jsourceview;
 
 import java.io.File;
-import java.io.FilenameFilter;
+import java.io.FileFilter;
+
+import org.apache.commons.io.filefilter.DirectoryFileFilter;
 
 import toolbox.util.ArrayUtil;
-import toolbox.util.io.filter.DirectoryFilter;
 import toolbox.util.io.filter.ExtensionFilter;
 import toolbox.util.io.filter.OrFilter;
 
@@ -33,11 +34,6 @@ class SourceScanner implements Runnable
     private boolean cancel_;
     
     /** 
-     * Filter for list on directories. 
-     */
-    private FilenameFilter dirFilter_;
-
-    /** 
      * File filter used to identify source files. 
      */
     private static OrFilter sourceFilter_;
@@ -56,7 +52,6 @@ class SourceScanner implements Runnable
     {
         dir_  = dir;
         this.sourceView_ = view;
-        dirFilter_ = new DirectoryFilter();
         cancel_ = false;
         
         sourceFilter_ = new OrFilter();
@@ -92,13 +87,13 @@ class SourceScanner implements Runnable
                     srcFiles[i].getAbsolutePath());
         
         // Process dirs in current directory
-        File dirs[] = dir.listFiles(dirFilter_);
+        File dirs[] = dir.listFiles((FileFilter) DirectoryFileFilter.INSTANCE);
         
         if (!ArrayUtil.isNullOrEmpty(dirs))
         {
             for (int i = 0; i < dirs.length; i++)
             {
-                this.sourceView_.setScanStatus("Scanning " + dirs[i] + " ...");
+                sourceView_.setScanStatus("Scanning " + dirs[i] + " ...");
                 findJavaFiles(dirs[i]);
             }    
         }

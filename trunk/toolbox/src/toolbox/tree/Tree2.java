@@ -24,6 +24,7 @@ import com.martiansoftware.jsap.stringparsers.IntegerStringParser;
 import com.martiansoftware.jsap.stringparsers.StringStringParser;
 
 import org.apache.commons.collections.comparators.NullComparator;
+import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 
@@ -33,7 +34,6 @@ import toolbox.util.FileUtil;
 import toolbox.util.collections.AsMap;
 import toolbox.util.file.FileComparator;
 import toolbox.util.io.filter.AndFilter;
-import toolbox.util.io.filter.DirectoryFilter;
 import toolbox.util.io.filter.FileFilter;
 import toolbox.util.io.filter.RegexFilter;
 
@@ -219,11 +219,6 @@ public class Tree2
      * Output writer. 
      */    
     private PrintWriter writer_;
-    
-    /** 
-     * Filter to identify directories. 
-     */
-    private FilenameFilter dirFilter_;
     
     /** 
      * Filter to identify files. 
@@ -591,7 +586,6 @@ public class Tree2
         showSize_     = showSize;
         showDate_     = showDate;
         writer_       = new PrintWriter(writer, true);  // turn on autoflush
-        dirFilter_    = new DirectoryFilter();
         regex_        = regex;
         maxDepth_     = maxDepth;
         
@@ -679,7 +673,8 @@ public class Tree2
             writer_.println(rootDir.getAbsolutePath());
             
         // Get list of directories in root
-        File[] dirs = rootDir.listFiles(dirFilter_);
+        File[] dirs = rootDir.listFiles(
+            (FileFilter) DirectoryFileFilter.INSTANCE);
         
         if (dirs == null)
             dirs = new File[0];

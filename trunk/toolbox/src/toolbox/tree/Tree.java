@@ -20,6 +20,7 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.PosixParser;
+import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.lang.StringUtils;
 
 import toolbox.util.ArrayUtil;
@@ -28,7 +29,6 @@ import toolbox.util.FileUtil;
 import toolbox.util.collections.AsMap;
 import toolbox.util.file.FileComparator;
 import toolbox.util.io.filter.AndFilter;
-import toolbox.util.io.filter.DirectoryFilter;
 import toolbox.util.io.filter.FileFilter;
 import toolbox.util.io.filter.RegexFilter;
 
@@ -179,11 +179,6 @@ public class Tree
      * Output writer. 
      */    
     private PrintWriter writer_;
-    
-    /** 
-     * Filter to identify directories. 
-     */
-    private FilenameFilter dirFilter_;
     
     /** 
      * Filter to identify files. 
@@ -570,8 +565,6 @@ public class Tree
         showSize_ = showSize;
         showDate_ = showDate;
         writer_ = new PrintWriter(writer, true);
-        dirFilter_ = new DirectoryFilter();
-
         regex_ = regex;
         
         //
@@ -654,9 +647,10 @@ public class Tree
             writer_.println(rootDir.getAbsolutePath());
             
         // Get list of directories in root
-        File[] dirs = rootDir.listFiles(dirFilter_);
+        File[] dirs = rootDir.listFiles(
+            (FileFilter) DirectoryFileFilter.INSTANCE);
+        
         Arrays.sort(dirs, (Comparator) sortByMap_.get(sortBy_));
-
         String filler = (dirs.length == 0 ? SPACER : BAR);
         
         // Print files

@@ -5,11 +5,11 @@ import java.io.File;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.lang.math.RandomUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.tree.Tree;
-import toolbox.util.io.filter.DirectoryFilter;
 
 /**
  * Unit test for {@link toolbox.util.FileUtil}.
@@ -720,7 +720,6 @@ public class FileUtilTest extends TestCase
     }
     
     
-    
     /**
      * Tests createTempDir().
      * 
@@ -735,7 +734,10 @@ public class FileUtilTest extends TestCase
         // Make sure created temp dir shows up in the list.
         
         File tempDir = FileUtil.createTempDir();
-        String[] dirs = FileUtil.getTempDir().list(new DirectoryFilter());
+        
+        String[] dirs = 
+            FileUtil.getTempDir().list(DirectoryFileFilter.INSTANCE);
+        
         assertTrue(ArrayUtil.contains(dirs, tempDir.getName()));
         FileUtil.removeDir(tempDir);
     }
