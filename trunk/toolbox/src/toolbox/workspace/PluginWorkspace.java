@@ -55,7 +55,7 @@ public class PluginWorkspace extends JFrame implements IStatusBar
     private static final Logger logger_ = 
         Logger.getLogger(PluginWorkspace.class);
 
-    private static final String FILE_PREFS      = ".pluginframe.properties";
+    private static final String FILE_PREFS      = ".toolbox.properties";
     private static final String KEY_WIDTH       = "pluginframe.width";
     private static final String KEY_HEIGHT      = "pluginframe.height";
     private static final String KEY_XCOORD      = "pluginframe.xcoord";
@@ -163,8 +163,8 @@ public class PluginWorkspace extends JFrame implements IStatusBar
     /**
      * Registeres a plugin given its FQN
      * 
-     * @param  pluginClass  Name of plugin class that 
-     *                      implements IPugin interface
+     * @param  pluginClass  Name of plugin class that implements the IPlugin 
+     *                      interface
      * @throws Exception on instantiation error
      */
     public void registerPlugin(String pluginClass) throws Exception
@@ -486,8 +486,7 @@ public class PluginWorkspace extends JFrame implements IStatusBar
     }
 
 	/**
-	 * Post initialization of the GUI after the frame has
-	 * been realized
+	 * Post initialization of the GUI after the frame has been realized
 	 */    
     class PostInit implements Runnable
     {
