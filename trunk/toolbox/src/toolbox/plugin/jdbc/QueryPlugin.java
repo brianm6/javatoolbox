@@ -37,6 +37,7 @@ import toolbox.jedit.JEditTextArea;
 import toolbox.jedit.SQLDefaults;
 import toolbox.plugin.jdbc.action.ListColumnsAction;
 import toolbox.plugin.jdbc.action.ListTablesAction;
+import toolbox.plugin.jdbc.action.SQLReferenceAction;
 import toolbox.util.ClassUtil;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
@@ -230,6 +231,17 @@ public class QueryPlugin extends JPanel implements IPlugin
     {
         return resultsArea_;
     }    
+
+    
+    /**
+     * Returns the sql editor.
+     * 
+     * @return JEditTextArea
+     */
+    public JEditTextArea getSQLEditor()
+    {
+        return sqlEditor_;
+    }
     
     //--------------------------------------------------------------------------
     // Build UI
@@ -351,7 +363,7 @@ public class QueryPlugin extends JPanel implements IPlugin
         JButton help = JHeaderPanel.createButton(
             ImageCache.getIcon(ImageCache.IMAGE_QUESTION_MARK),
             "SQL Reference",
-            new SQLReferenceAction());
+            new SQLReferenceAction(this));
 
         JToolBar toolbar = JHeaderPanel.createToolBar();
         toolbar.add(executeAll);
@@ -692,35 +704,6 @@ public class QueryPlugin extends JPanel implements IPlugin
     
     //--------------------------------------------------------------------------
     // SQLReferenceAction
-    //--------------------------------------------------------------------------
-
-    /**
-     * Dumps a short SQL reference text to the SQL editor.
-     */
-    class SQLReferenceAction extends AbstractAction
-    {
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
-         */
-        public void actionPerformed(ActionEvent e)
-        {
-            String sqlRef = File.separator +
-                FileUtil.trailWithSeparator(
-                    ClassUtil.packageToPath(
-                        ClassUtil.stripClass(
-                            QueryPlugin.class.getName()))) +
-                                "sqlref.txt";
-
-            sqlRef = sqlRef.replace(File.separatorChar, '/');
-
-            sqlEditor_.setText(sqlEditor_.getText() + "\n" +
-                ResourceUtil.getResourceAsString(sqlRef));
-        }
-    }
-
-    //--------------------------------------------------------------------------
-    // ExecuteAllAction
     //--------------------------------------------------------------------------
 
     /**
