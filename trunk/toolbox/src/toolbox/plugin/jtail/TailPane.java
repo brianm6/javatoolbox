@@ -163,7 +163,7 @@ public class TailPane extends JPanel
     }
     
     //--------------------------------------------------------------------------
-    //  Private
+    // Protected
     //--------------------------------------------------------------------------
     
     /**
@@ -239,7 +239,7 @@ public class TailPane extends JPanel
         tailArea_ = new JSmartTextArea("");
         tailArea_.setFont(SwingUtil.getPreferredMonoFont());
         
-        clearButton_    = new JButton(new ClearAction());
+        clearButton_    = new JButton(tailArea_.new ClearAction());
         pauseButton_    = new JButton(new PauseUnpauseAction());
         
         String startMode =  
@@ -443,7 +443,7 @@ public class TailPane extends JPanel
     /**
      * Listener for tail
      */
-    private class TailListener extends TailAdapter
+    class TailListener extends TailAdapter
     {
         /**
          * Called when next line of input is available. When a new line is
@@ -477,7 +477,7 @@ public class TailPane extends JPanel
      * Pops groups of messages off the queue (as many as can be read without 
      * waiting) and consolidates before sending then to the textarea
      */
-    private class TailQueueListener implements IBatchingQueueListener
+    class TailQueueListener implements IBatchingQueueListener
     {
         //----------------------------------------------------------------------
         //  IBatchingQueueListener Interface
@@ -507,7 +507,7 @@ public class TailPane extends JPanel
      * Listens for changes in the regular expression (user must press enter) and
      * applies the new regular expression accordingly.
      */    
-    public class RegexActionListener implements ActionListener
+    class RegexActionListener implements ActionListener
     {
         public void actionPerformed(ActionEvent e)
         {
@@ -527,7 +527,7 @@ public class TailPane extends JPanel
      * Listens for changes in the cut expression (user must press enter) and
      * applies the new cut expression accordingly.
      */    
-    public class CutActionListener implements ActionListener
+    class CutActionListener implements ActionListener
     {
         public void actionPerformed(ActionEvent e)
         {
@@ -547,11 +547,11 @@ public class TailPane extends JPanel
     /**
      * Starts/stops the tail
      */
-    private class StartStopAction extends AbstractAction
+    class StartStopAction extends AbstractAction
     {
         private String mode_;
             
-        public StartStopAction(String mode)
+        StartStopAction(String mode)
         {
             super(mode);
             mode_ = mode;
@@ -602,12 +602,12 @@ public class TailPane extends JPanel
     /**
      * Pauses/unpauses the tail
      */
-    private class PauseUnpauseAction extends AbstractAction
+    class PauseUnpauseAction extends AbstractAction
     {
         private static final String MODE_PAUSE   = "Pause";
         private static final String MODE_UNPAUSE = "Unpause";
             
-        public PauseUnpauseAction()
+        PauseUnpauseAction()
         {
             super(MODE_PAUSE);
             putValue(MNEMONIC_KEY, new Integer('P'));
@@ -636,9 +636,9 @@ public class TailPane extends JPanel
     /**
      * Closes the tail pane
      */
-    private class CloseAction extends AbstractAction
+    class CloseAction extends AbstractAction
     {
-        public CloseAction()
+        CloseAction()
         {
             super("Close");
             putValue(MNEMONIC_KEY, new Integer('e'));
@@ -658,29 +658,11 @@ public class TailPane extends JPanel
     }
 
     /**
-     * Clears the output area
-     */
-    private class ClearAction extends AbstractAction
-    {
-        public ClearAction()
-        {
-            super("Clear");
-            putValue(MNEMONIC_KEY, new Integer('r'));
-            putValue(SHORT_DESCRIPTION, "Clears the output area");
-        }
-    
-        public void actionPerformed(ActionEvent e)
-        { 
-            tailArea_.setText("");
-        }
-    }
-    
-    /**
      * Toggles autoscroll of the output text area
      */
-    private class AutoScrollAction extends AbstractAction
+    class AutoScrollAction extends AbstractAction
     {
-        public AutoScrollAction()
+        AutoScrollAction()
         {
             super("Autoscroll");
             putValue(MNEMONIC_KEY, new Integer('a'));
@@ -696,9 +678,9 @@ public class TailPane extends JPanel
     /**
      * Toggles line numbers in the output area
      */
-    private class ShowLineNumbersAction extends AbstractAction
+    class ShowLineNumbersAction extends AbstractAction
     {
-        public ShowLineNumbersAction()
+        ShowLineNumbersAction()
         {
             super("Line numbers");
             putValue(MNEMONIC_KEY, new Integer('L'));
