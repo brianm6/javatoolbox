@@ -27,12 +27,12 @@ import org.apache.tools.ant.Task;
  */
 public class PropertyPromptTask extends Task
 {
-    private String  propertyName_;    // required
-    private String  defaultValue_;
-    private String  proposedValue_;   // required
-    private String  promptText_;      // required
-    private String  promptCharacter_;
-    private int     timeout_;
+    private String propertyName_;    // required
+    private String defaultValue_;
+    private String proposedValue_;   // required
+    private String promptText_;      // required
+    private String promptCharacter_;
+    private int timeout_;
     private boolean useExistingValue_;
 
     //--------------------------------------------------------------------------
@@ -40,7 +40,7 @@ public class PropertyPromptTask extends Task
     //--------------------------------------------------------------------------
         
     /**
-     * Creates a ProprertyPromptTask
+     * Creates a ProprertyPromptTask.
      */
     public PropertyPromptTask()
     {
@@ -71,8 +71,9 @@ public class PropertyPromptTask extends Task
     }
     
     /**
-     * Returns the terminating character used to 
-     * punctuate the prompt text.
+     * Returns the terminating character used to punctuate the prompt text.
+     * 
+     * @return String
      */
     public String getPromptcharacter()
     {
@@ -90,8 +91,7 @@ public class PropertyPromptTask extends Task
     }
     
     /**
-     * Returns name of the Ant Project Property
-     * being set by this task.
+     * Returns name of the Ant Project Property being set by this task.
      * 
      * @return String
      */
@@ -113,7 +113,7 @@ public class PropertyPromptTask extends Task
     /**
      * Sets defaultValue for the Property being set by this task.
      * 
-     * @param newDefaultvalue String
+     * @param newDefaultvalue Default value
      */
     public void setDefaultvalue(String newDefaultvalue)
     {
@@ -124,7 +124,7 @@ public class PropertyPromptTask extends Task
      * Sets the terminating character used to punctuate the prompt text 
      * (default is "?").
      * 
-     * @param newPromptcharacter String
+     * @param newPromptcharacter Prompt character
      */
     public void setPromptcharacter(String newPromptcharacter)
     {
@@ -134,7 +134,7 @@ public class PropertyPromptTask extends Task
     /**
      * Sets text of the prompt.
      * 
-     * @param newPrompttext String
+     * @param newPrompttext Prompt
      */
     public void setPrompttext(String newPrompttext)
     {
@@ -144,7 +144,7 @@ public class PropertyPromptTask extends Task
     /**
      * Specifies the Ant Project Property being set by this task.
      * 
-     * @param newPropertyname String
+     * @param newPropertyname Property name
      */
     public void setPropertyname(String newPropertyname)
     {
@@ -250,7 +250,7 @@ public class PropertyPromptTask extends Task
     //--------------------------------------------------------------------------
 
     /**
-     * Initializes the timeout
+     * Initializes the timeout.
      */
     protected void initTimeout()
     {

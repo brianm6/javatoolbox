@@ -6,7 +6,7 @@ import junit.textui.TestRunner;
 import org.apache.tools.ant.Main;
 
 /**
- * Unit test for BannerTask
+ * Unit test for BannerTask.
  */
 public class BannerTaskTest extends TestCase
 {
@@ -15,9 +15,9 @@ public class BannerTaskTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
-     * @param  args  None recognized
+     * @param args None recognized
      */
     public static void main(String[] args)
     {
@@ -29,7 +29,7 @@ public class BannerTaskTest extends TestCase
     //--------------------------------------------------------------------------
 
     /**
-     * Tests the banner task
+     * Tests the banner task.
      */        
     public void testBannerTask()
     {

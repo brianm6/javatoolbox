@@ -11,7 +11,7 @@ import toolbox.util.Banner;
 public class BannerTask extends Task
 {
     /** 
-     * Banner text 
+     * Banner text.
      */
     private String msg_;
 
@@ -20,9 +20,9 @@ public class BannerTask extends Task
     //--------------------------------------------------------------------------
     
     /**
-     * Sets the banner message
+     * Sets the banner message.
      * 
-     * @param  msg  Banner message
+     * @param msg Banner message
      */
     public void setMessage(String msg)
     {
