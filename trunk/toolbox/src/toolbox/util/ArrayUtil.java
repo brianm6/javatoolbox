@@ -96,6 +96,39 @@ public final class ArrayUtil
 
     
     /**
+     * Returns subset of a given byte array.
+     *
+     * @param array The array to get subset of.
+     * @param startIndex The starting index (inclusive).
+     * @param endIndex The ending index (inclusive).
+     * @return Subset of the array.
+     */
+    public static byte[] subset(byte[] array, int startIndex, int endIndex)
+    {
+        int len = array.length;
+
+        if (len == 0)
+            return new byte[0];
+
+        // Do bounds checking
+        Assert.isTrue(startIndex <= endIndex, 
+                      "Start index " + startIndex + 
+                      " must be <= end index of " + 
+                      endIndex);
+                      
+        Assert.isTrue(endIndex <= len, 
+                      "End index " + endIndex + 
+                      " must be <= array length of " + len);
+
+        // Copy array
+        byte[] sub = new byte[endIndex - startIndex + 1];
+        for (int s = 0, i = startIndex; i <= endIndex;)
+            sub[s++] = array[i++];
+        return sub;
+    }
+
+    
+    /**
      * Returns the subset of an array of objects.
      * 
      * @param array Array to extract subset from.
