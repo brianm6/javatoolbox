@@ -5,6 +5,9 @@ import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
 
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+
 import toolbox.util.XMLUtil;
 
 /**
@@ -135,5 +138,28 @@ public class XMLUtilTest extends TestCase
         assertNotNull(formatted);
         
         logger_.info("Formatted XML:\n\n" + formatted);
+    }
+    
+    
+    /**
+     * Tests toElement()
+     * 
+     * @throws Exception on error.
+     */
+    public void testToElement() throws Exception
+    {
+        logger_.info("Running testToElement...");
+        
+        String xml = new String("<root a=\"1\"><child>value</child></root>");
+        Element node = XMLUtil.toElement(xml);
+        
+        assertEquals("root", node.getLocalName());
+        assertEquals("1", node.getAttribute("a"));
+        assertEquals(1, node.getChildNodes().getLength());
+        
+        Node child = node.getChildNodes().item(0);
+        
+        assertEquals("child", child.getLocalName());
+        assertEquals("value", child.getChildNodes().item(0).getNodeValue());
     }
 }
