@@ -6,7 +6,6 @@ import java.util.Map;
 import org.apache.commons.collections.keyvalue.MultiKey;
 import org.apache.commons.lang.ClassUtils;
 
-import toolbox.util.ArrayUtil;
 import toolbox.util.statemachine.StateMachine;
 import toolbox.util.statemachine.StateMachineFactory;
 
@@ -17,15 +16,15 @@ public abstract class AbstractService implements Service
 {
     // TODO: Left off here!
     
-    public static StateMachine createStateMachine(Object serviceable)
+    public static StateMachine createStateMachine(ServiceNature serviceNature)
     {
         StateMachine machine = 
             StateMachineFactory.createStateMachine(
                 ClassUtils.getShortClassName(
-                    serviceable, "ServiceStateMachine"));
+                    serviceNature, "ServiceStateMachine"));
 
         
-        if (serviceable instanceof Startable)
+        if (serviceNature instanceof Startable)
         {
             machine.addState(ServiceState.RUNNING);
             machine.addState(ServiceState.STOPPED);
@@ -42,7 +41,7 @@ public abstract class AbstractService implements Service
                 ServiceState.STOPPED);
         }
         
-        if (serviceable instanceof Suspendable)
+        if (serviceNature instanceof Suspendable)
         {
             machine.addState(ServiceState.SUSPENDED);
             
@@ -57,7 +56,7 @@ public abstract class AbstractService implements Service
                 ServiceState.RUNNING);
         }
         
-        if (serviceable instanceof Initializable)
+        if (serviceNature instanceof Initializable)
         {
             machine.addState(ServiceState.UNINITIALIZED);
             machine.addState(ServiceState.INITIALIZED);
@@ -74,7 +73,7 @@ public abstract class AbstractService implements Service
                 ServiceState.RUNNING);
         }
         
-        if (serviceable instanceof Destroyable)
+        if (serviceNature instanceof Destroyable)
         {
             machine.addState(ServiceState.DESTROYED);
             
@@ -83,7 +82,7 @@ public abstract class AbstractService implements Service
                 ServiceState.STOPPED, 
                 ServiceState.DESTROYED);
             
-            if (serviceable instanceof Initializable)
+            if (serviceNature instanceof Initializable)
             {
                 machine.addTransition(
                     ServiceTransition.DESTROY, 
@@ -274,9 +273,11 @@ public abstract class AbstractService implements Service
     protected AbstractService(boolean strict)
     {
         setStrict(strict);
-        setPreviousState(ServiceState.UNINITIALIZED);
-        setState(ServiceState.UNINITIALIZED);
-        listeners_ = new ServiceListener[0];
+        //setPreviousState(ServiceState.UNINITIALIZED);
+        //setState(ServiceState.UNINITIALIZED);
+        //listeners_ = new ServiceListener[0];
+        
+        machine_ = createStateMachine(this);
     }
 
     //--------------------------------------------------------------------------
@@ -290,7 +291,7 @@ public abstract class AbstractService implements Service
      */
     public ServiceState getState()
     {
-        return state_;
+        return (ServiceState) machine_.getState();
     }
 
     
@@ -301,8 +302,11 @@ public abstract class AbstractService implements Service
      */
     public void setState(ServiceState state)
     {
-        setPreviousState(getState());
-        state_ = state;
+        machine_.setBeginState(state);
+        machine_.reset();
+        
+        //setPreviousState(getState());
+        //state_ = state;
     }
 
     
@@ -313,7 +317,7 @@ public abstract class AbstractService implements Service
      */
     public ServiceState getPreviousState()
     {
-        return previousState_;
+        return (ServiceState) machine_.getPreviousState();
     }
     
     
@@ -324,7 +328,7 @@ public abstract class AbstractService implements Service
      */
     public void setPreviousState(ServiceState previousState)
     {
-        previousState_ = previousState;
+        // previousState_ = previousState;
     }
     
     //--------------------------------------------------------------------------
@@ -336,7 +340,7 @@ public abstract class AbstractService implements Service
      */
     public void initialize(Map configuration) throws ServiceException
     {
-        transition(ServiceActivity.INITIALIZE);
+        machine_.transition(ServiceTransition.INITIALIZE);
     }
     
     
@@ -345,7 +349,7 @@ public abstract class AbstractService implements Service
      */
     public void start() throws ServiceException
     {
-        transition(ServiceActivity.START);
+        machine_.transition(ServiceTransition.START);
     }
 
     
@@ -354,7 +358,7 @@ public abstract class AbstractService implements Service
      */
     public void suspend() throws ServiceException 
     {
-        transition(ServiceActivity.SUSPEND);
+        machine_.transition(ServiceTransition.SUSPEND);
     }
 
     
@@ -363,7 +367,7 @@ public abstract class AbstractService implements Service
      */
     public void resume() throws ServiceException
     {
-        transition(ServiceActivity.RESUME);
+        machine_.transition(ServiceTransition.RESUME);
     }
 
     
@@ -372,7 +376,7 @@ public abstract class AbstractService implements Service
      */
     public void stop() throws ServiceException
     {
-        transition(ServiceActivity.STOP);
+        machine_.transition(ServiceTransition.STOP);
     }
 
     
@@ -381,7 +385,7 @@ public abstract class AbstractService implements Service
      */
     public void destroy() throws ServiceException
     {
-        transition(ServiceActivity.DESTROY);
+        machine_.transition(ServiceTransition.DESTROY);
     }
 
     
@@ -390,7 +394,7 @@ public abstract class AbstractService implements Service
      */
     public boolean isRunning()
     {
-        return getState() == ServiceState.RUNNING;
+        return machine_.getState() == ServiceState.RUNNING;
     }
 
     
@@ -399,7 +403,7 @@ public abstract class AbstractService implements Service
      */
     public boolean isSuspended()
     {
-        return getState() == ServiceState.SUSPENDED;
+        return machine_.getState() == ServiceState.SUSPENDED;
     }
 
     
@@ -409,7 +413,7 @@ public abstract class AbstractService implements Service
      */
     public void addServiceListener(ServiceListener listener)
     {
-        listeners_ = (ServiceListener[]) ArrayUtil.add(listeners_, listener);
+        //listeners_ = (ServiceListener[]) ArrayUtil.add(listeners_, listener);
     }
 
     
@@ -419,7 +423,7 @@ public abstract class AbstractService implements Service
      */
     public void removeServiceListener(ServiceListener listener)
     {
-        listeners_ = (ServiceListener[]) ArrayUtil.remove(listeners_, listener);
+        //listeners_ = (ServiceListener[]) ArrayUtil.remove(listeners_, listener);
     }
     
     
@@ -465,25 +469,25 @@ public abstract class AbstractService implements Service
      * @throws ServiceException if the activity is not a valid from the current
      *         state.
      */
-    protected void checkTransition(ServiceActivity activity) 
-        throws ServiceException
-    {
-        if (isStrict()) 
-        {
-            ServiceState nextState = (ServiceState)
-                TRANSITIONS_STRICT.get(new MultiKey(getState(), activity));
-
-            if (nextState == null)
-            {
-                throw new ServiceException(
-                    "Invalid service state transition from " 
-                    + getState()
-                    + " state with the "
-                    + activity 
-                    + " activity.");
-            }
-        }
-    }
+//    protected void checkTransition(ServiceActivity activity) 
+//        throws ServiceException
+//    {
+//        if (isStrict()) 
+//        {
+//            ServiceState nextState = (ServiceState)
+//                TRANSITIONS_STRICT.get(new MultiKey(getState(), activity));
+//
+//            if (nextState == null)
+//            {
+//                throw new ServiceException(
+//                    "Invalid service state transition from " 
+//                    + getState()
+//                    + " state with the "
+//                    + activity 
+//                    + " activity.");
+//            }
+//        }
+//    }
     
     
     /**
@@ -493,10 +497,8 @@ public abstract class AbstractService implements Service
      * @param activity Service activity.
      * @throws ServiceException if the state transition is invalid.
      */
-    protected void transition(ServiceActivity activity) throws ServiceException
+    protected void transition(ServiceTransition activity) throws ServiceException
     {
-        checkTransition(activity);
-        setState((ServiceState) TRANSITIONS_RELAXED.get(activity));
-        fireServiceStateChanged();
+        machine_.transition(activity);
     }
 }
