@@ -3,7 +3,7 @@ package toolbox.graph;
 import java.util.Set;
 
 /**
- * A Vertex is a single node in a {@link Graph}
+ * A Vertex is a single node in a {@link Graph}.
  */
 public interface Vertex extends Delegator
 {
@@ -16,7 +16,7 @@ public interface Vertex extends Delegator
     
     
     /**
-     * Returns the text of this vertex.
+     * Returns the text label of this vertex.
      * 
      * @return String
      */
@@ -24,7 +24,7 @@ public interface Vertex extends Delegator
     
     
     /**
-     * Sets the text label of this vertex.
+     * Sets the text label for this vertex.
      * 
      * @param text Label
      */
