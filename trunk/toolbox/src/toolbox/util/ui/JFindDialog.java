@@ -5,14 +5,10 @@ import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.KeyStroke;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -24,7 +20,7 @@ import toolbox.util.ui.statusbar.SimpleStatusBar;
 /**
  * Simple text search find dialog that is tied to a SearchInitiator.
  */
-public class JFindDialog extends JDialog
+public class JFindDialog extends JSmartDialog
 {
     // TODO: Search from current cursor position
 
@@ -108,15 +104,6 @@ public class JFindDialog extends JDialog
         c.add(BorderLayout.CENTER, buttonPanel);
 
         c.add(BorderLayout.SOUTH, status_ = new SimpleStatusBar());
-
-        // Bind ESC to the CancelAction
-        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-            KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
-            "escPressed");
-
-        getRootPane().getActionMap().put(
-            "escPressed",
-            new DisposeAction(this));
     }
 
     //--------------------------------------------------------------------------
