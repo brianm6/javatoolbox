@@ -81,6 +81,7 @@ package toolbox;
  *  - Added ThroughputMonitor component
  *  - Added TransferredMonitor component
  *  - Added MonitoredInput/OutputStream
+ *  - Updated to commons-dbcp-1.2 and commons-pool-1.2
  * 
  * May 2004
  *  - Added JDBC benchmark to JDBC plugin
