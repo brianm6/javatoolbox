@@ -186,6 +186,7 @@ Commands:
   jnlp-deploy   Copies the jnlp distribution to the http server
   test          Runs unit tests
   site          Generates project website with reports and all.
+  umlgraph      Generate UML graph
   update-props  Copies build.properties to $HOME
 
 ================================================================================
@@ -213,17 +214,41 @@ Commands:
 		    property="umlgraph.classpath" 
 		    refid="umlgraph.classpath"/>
 		    
+		    
+            doclet           = "UmlGraph"
+            docletpath       = "${basedir}/build/lib/umlgraph.jar"
+		    
+                <param name="-operations" value=""/>
+                <param name="-visibility" value=""/>
+                <param name="-types" value=""/>
+                <param name="-qualify"/>
+		    
         <echo>classpath=${umlgraph.classpathy}</echo>
         -->
         
         <javadoc 
-            doclet           = "UmlGraph"
-            docletpath       = "${basedir}/lib/UmlGraph.jar"
-            source           = "*.java"
             sourcepath       = "${basedir}/src"
-            packagenames     = "toolbox.jtail.*"
+            packagenames     = "toolbox.findclass.*"
             classpathref     = "umlgraph.classpath"
-            verbose          = "false"/>
+            verbose          = "false">
+            
+            <doclet name="UmlGraph" path="${basedir}/build/lib/umlgraph.jar">
+                <param name="-all"/>
+                <param name="-bgcolor" value="lightgray"/>
+                <param name="-nodefontname" value="lucon"/>
+                <param name="-nodefontabstractname" value="lucon"/>
+                <param name="-edgefontname" value="lucon"/>
+                <param name="-nodefillcolor" value="lightblue"/>
+                <param name="-nodefontcolor" value="blue"/>
+                <param name="-edgecolor" value="white"/>
+                
+            </doclet>    
+        </javadoc>
+            
+		<exec executable="dot">
+		    <arg value="-Tgif"/>
+		    <arg value="graph.dot"/>
+		    <arg value="-ograph.gif"/>
+		</exec>            
     </goal>
-    
 </project>
