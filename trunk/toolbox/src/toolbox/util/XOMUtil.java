@@ -185,5 +185,30 @@ public class XOMUtil
         serializer.setLineSeparator("\n");
         serializer.write(new Document((Element)node.copy()));
         return sos.toString();
-    }    
+    }
+    
+    /**
+     * Gets the first named child element from a given node. If the node is 
+     * null or the child does not exist, then the defaultNode is returned 
+     * instead.
+     * 
+     * @param node        Node to retrieve child element from
+     * @param elementName Name of child element
+     * @param defaultNode Returned if child element is not found
+     * @return First child element if it exists, or defaultNode otherwise
+     */    
+    public static Element getFirstChildElement(
+        Element node, 
+        String elementName, 
+        Element defaultNode)
+    {
+        Element child = null;
+        
+        if (node == null)
+            child = defaultNode;
+        else    
+            child = node.getFirstChildElement(elementName);
+            
+        return (child == null ? defaultNode : child);
+    }
 }
