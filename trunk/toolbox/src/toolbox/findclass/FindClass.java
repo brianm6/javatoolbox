@@ -345,7 +345,9 @@ public class FindClass
                         jarName,
                         name,
                         size,
-                        date);
+                        date,
+                        regExp_.getParenStart(0),
+                        regExp_.getParenEnd(0));
                     
                     fireClassFound(result);
                 }
@@ -390,7 +392,9 @@ public class FindClass
                         pathName,
                         dotted,
                         classFile.length(),
-                        new Date(classFile.lastModified()));
+                        new Date(classFile.lastModified()),
+                        regExp_.getParenStart(0),
+                        regExp_.getParenEnd(0));
                     
                 fireClassFound(result);
             }
