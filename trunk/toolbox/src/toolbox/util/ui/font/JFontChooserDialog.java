@@ -1,6 +1,7 @@
 package toolbox.util.ui.font;
 
 import java.awt.BorderLayout;
+import java.awt.Dialog;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Frame;
@@ -140,6 +141,22 @@ public class JFontChooserDialog extends JDialog
     {
         super(owner, title, modal);
         buildView();
+    }
+
+    /**
+     * Creates a JFontChooserDialog witha Dialog parent
+     * 
+     * @param owner Parent dialog
+     * @param modal Set to true for a model dialog
+     * @param defaultFont Font to select by default
+     */
+    public JFontChooserDialog(Dialog owner, boolean modal, Font defaultFont, 
+        boolean antialiased)
+    {
+        super(owner, "Select Font", modal);
+        buildView();
+        fontChooser_.setSelectedFont(defaultFont);
+        fontChooser_.setAntiAlias(antialiased);
     }
 
     //--------------------------------------------------------------------------
