@@ -346,21 +346,20 @@
     <!--        JAR-ANTTASKS         -->
     <!--=============================-->
     <target name        = "jar-anttasks" 
-            depends     = "jar" 
+            depends     = "init"
             description = "Creates toolbox-anttasks.jar.">
 
         <delete verbose="true">
             <fileset dir="${dist}" includes="toolbox-anttasks.jar"/>
         </delete>
 
-        <!-- Jar up only the ant task and dependencies -->                    
-        <jar jarfile  = "${dist}/toolbox-anttasks.jar" 
-             compress = "yes">
-             
-            <fileset dir="${build.stage}/toolbox" includes="toolbox/ant/*.*"/>	
-            <fileset dir="${build.stage}/toolbox" includes="toolbox/util/Banner*.*"/>	
-        </jar>
+		<classfileset id="anttasks" dir="${classes}">
+			<rootfileset dir="${classes}" includes="toolbox/ant/*.class"/>
+		</classfileset>
         
+        <jar jarfile  = "${dist}/toolbox-anttasks.jar" compress = "yes">
+            <fileset refid="anttasks"/> 
+        </jar>
     </target>
 
     
@@ -451,7 +450,6 @@
     <!--=============================-->
     <!--            JUNIT            -->
     <!--=============================-->
-    
     <target name        = "junit" 
             depends     = "init"
             description = "Executes JUnit tests and generates report. Use -Djunit.class to single out test class.">
