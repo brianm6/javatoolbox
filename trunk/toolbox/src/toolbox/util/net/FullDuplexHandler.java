@@ -29,6 +29,10 @@ public abstract class FullDuplexHandler implements IConnectionHandler
     private static final Logger logger_ = 
         Logger.getLogger(FullDuplexHandler.class);
 
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /** 
      * Connection to be handled.
      */
@@ -64,8 +68,8 @@ public abstract class FullDuplexHandler implements IConnectionHandler
      * Handles a connection by taking the input/output streams and 
      * spawning them off into separate threads of execution.
      * 
-     * @param conn Connection to read/write messages to/from
-     * @return Null
+     * @param conn Connection to read/write messages to/from.
+     * @return Null.
      */
     public final Object handle(IConnection conn) 
     {
@@ -85,7 +89,7 @@ public abstract class FullDuplexHandler implements IConnectionHandler
     /**
      * Handles the inputstream.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public abstract void handleInput() throws Exception;
     
@@ -93,7 +97,7 @@ public abstract class FullDuplexHandler implements IConnectionHandler
     /**
      * Handles the output stream.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public abstract void handleOutput() throws Exception;
 
@@ -105,7 +109,7 @@ public abstract class FullDuplexHandler implements IConnectionHandler
     /**
      * Mutator for the connection.
      * 
-     * @param newConnection The connection
+     * @param newConnection The connection.
      */
     public void setConnection(IConnection newConnection)
     {
@@ -116,7 +120,7 @@ public abstract class FullDuplexHandler implements IConnectionHandler
     /**
      * Accessor for the connection.
      * 
-     * @return IConnection
+     * @return IConnection.
      */
     public IConnection getConnection()
     {
@@ -127,8 +131,8 @@ public abstract class FullDuplexHandler implements IConnectionHandler
     /**
      * Convenience accessor for the input stream.
      * 
-     * @return Inputstream
-     * @throws IOException on I/O error
+     * @return Inputstream.
+     * @throws IOException on I/O error.
      */    
     public InputStream getInputStream() throws IOException
     {
@@ -139,8 +143,8 @@ public abstract class FullDuplexHandler implements IConnectionHandler
     /**
      * Convenience accessor for the output stream.
      * 
-     * @return OutputStream
-     * @throws IOException on I/O error
+     * @return OutputStream.
+     * @throws IOException on I/O error.
      */
     public OutputStream getOutputStream() throws IOException
     {
@@ -151,7 +155,7 @@ public abstract class FullDuplexHandler implements IConnectionHandler
     /**
      * Returns the inputStreamThread.
      * 
-     * @return Thread
+     * @return Thread.
      */
     public Thread getInputStreamThread()
     {
@@ -162,7 +166,7 @@ public abstract class FullDuplexHandler implements IConnectionHandler
     /**
      * Returns the outputStreamThread.
      * 
-     * @return Thread
+     * @return Thread.
      */
     public Thread getOutputStreamThread()
     {

@@ -25,7 +25,7 @@ public class EventInputStreamTest extends TestCase
     /**
      * Entrypoint.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -84,6 +84,7 @@ public class EventInputStreamTest extends TestCase
             
             /**
              * Waits for notification of a byte being read from the inputstream.
+             * 
              * @return byte that was read.
              * @throws InterruptedException on interruption.
              */
@@ -162,6 +163,7 @@ public class EventInputStreamTest extends TestCase
             
             /**
              * Waits for notification of a byte being read from the inputstream.
+             * 
              * @return byte that was read.
              * @throws InterruptedException on interruption.
              */

@@ -23,7 +23,7 @@ public class MulticastOutputStreamTest extends TestCase
     /**
      * Entrypoint.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -55,7 +55,7 @@ public class MulticastOutputStreamTest extends TestCase
     /**
      * Tests write(byte[]).
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testWrite() throws Exception
     {
@@ -83,7 +83,7 @@ public class MulticastOutputStreamTest extends TestCase
     /**
      * Tests write(byte[], offset, length).
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testWrite2() throws Exception
     {
@@ -114,7 +114,7 @@ public class MulticastOutputStreamTest extends TestCase
     /**
      * Tests write(int).
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testWrite3() throws Exception
     {
@@ -136,7 +136,7 @@ public class MulticastOutputStreamTest extends TestCase
     /**
      * Tests close().
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testClose() throws Exception
     {
@@ -158,7 +158,7 @@ public class MulticastOutputStreamTest extends TestCase
     /**
      * Tests flush().
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testFlush() throws Exception
     {

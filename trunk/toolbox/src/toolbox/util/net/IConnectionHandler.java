@@ -16,8 +16,8 @@ public interface IConnectionHandler
     /**
      * Handles a new connection.
      * 
-     * @param conn Connection to service
-     * @return An arbitrary object as specified by the implementor
+     * @param conn Connection to service.
+     * @return An arbitrary object as specified by the implementor.
      */
     Object handle(IConnection conn);
 }

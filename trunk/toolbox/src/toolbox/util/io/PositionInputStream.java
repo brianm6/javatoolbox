@@ -40,7 +40,7 @@ public class PositionInputStream extends InputStream
     /**
      * Creates a PositionInputStream.
      * 
-     * @param is Input stream
+     * @param is Input stream.
      */
     public PositionInputStream(InputStream is)
     {
@@ -57,8 +57,8 @@ public class PositionInputStream extends InputStream
     /**
      * Read a single byte.
      *
-     * @return Single byte that was read
-     * @throws IOException if an I/O error occurs
+     * @return Single byte that was read.
+     * @throws IOException if an I/O error occurs.
      */
     public int read() throws IOException
     {
@@ -74,11 +74,11 @@ public class PositionInputStream extends InputStream
     /**
      * Read a byte into a portion of an array.
      * 
-     * @param b Byte array to store read data
-     * @param off Offset in byte array to store read data
-     * @param len Number of bytes to copy to byte array
-     * @return Number of bytes read
-     * @throws IOException if an I/O error occurs
+     * @param b Byte array to store read data.
+     * @param off Offset in byte array to store read data.
+     * @param len Number of bytes to copy to byte array.
+     * @return Number of bytes read.
+     * @throws IOException if an I/O error occurs.
      */
     public int read(byte b[], int off, int len) throws IOException
     {
@@ -98,9 +98,9 @@ public class PositionInputStream extends InputStream
     /**
      * Skip characters.
      *
-     * @param n Number of bytes to skip
-     * @return Number of characters skipped
-     * @throws IOException if an I/O error occurs
+     * @param n Number of bytes to skip.
+     * @return Number of characters skipped.
+     * @throws IOException if an I/O error occurs.
      */
     public long skip(long n) throws IOException
     {
@@ -115,8 +115,8 @@ public class PositionInputStream extends InputStream
     /**
      * Returns number of bytes available to read from stream without blocking.
      * 
-     * @return Number of bytes available to read
-     * @throws IOException on I/O error
+     * @return Number of bytes available to read.
+     * @throws IOException on I/O error.
      */
     public int available() throws IOException
     {
@@ -127,7 +127,7 @@ public class PositionInputStream extends InputStream
     /**
      * Close the stream.
      *
-     * @exception IOException if an I/O error occurs
+     * @exception IOException if an I/O error occurs.
      */
     public void close() throws IOException
     {
@@ -138,7 +138,7 @@ public class PositionInputStream extends InputStream
     /**
      * Tell whether this stream supports the mark() operation.
      * 
-     * @return True if mark is supported, false otherwise
+     * @return True if mark is supported, false otherwise.
      */
     public boolean markSupported()
     {
@@ -149,7 +149,7 @@ public class PositionInputStream extends InputStream
     /**
      * Mark the present position in the stream.
      *
-     * @param readAheadLimit Read ahead limit
+     * @param readAheadLimit Read ahead limit.
      */
     public void mark(int readAheadLimit)
     {
@@ -161,7 +161,7 @@ public class PositionInputStream extends InputStream
     /**
      * Reset the stream.
      *
-     * @exception IOException if an I/O error occurs
+     * @exception IOException if an I/O error occurs.
      */
     public void reset() throws IOException
     {
@@ -176,9 +176,9 @@ public class PositionInputStream extends InputStream
     /**
      * Reads until a given byte.
      * 
-     * @param stopAt Byte to stop at
+     * @param stopAt Byte to stop at.
      * @return Bytes from the current postion until the stopAt or EOF is found.
-     * @throws IOException on I/O error
+     * @throws IOException on I/O error.
      */
     public byte[] readUntil(byte stopAt) throws IOException
     {
@@ -189,9 +189,9 @@ public class PositionInputStream extends InputStream
     /**
      * Reads until any number of given bytes.
      * 
-     * @param stopAt Any byte to stop at
+     * @param stopAt Any byte to stop at.
      * @return Bytes from the current postion until the stopAt or EOF is found.
-     * @throws IOException on I/O error
+     * @throws IOException on I/O error.
      */
     public byte[] readUntil(byte[] stopAt) throws IOException
     {

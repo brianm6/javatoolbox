@@ -24,7 +24,7 @@ public class NullWriterTest extends TestCase
     /**
      * Entrypoint.
      * 
-     * @param args None
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -38,7 +38,7 @@ public class NullWriterTest extends TestCase
     /**
      * Tests the NullWriter.
      * 
-     * @throws IOException on error
+     * @throws IOException on error.
      */
     public void testNullWriter() throws IOException
     {

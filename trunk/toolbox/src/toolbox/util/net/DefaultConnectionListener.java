@@ -13,6 +13,10 @@ public class DefaultConnectionListener implements IConnectionListener
     private static final Logger logger_ =
         Logger.getLogger(DefaultConnectionListener.class);
     
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
      * Queue for connection closed events.
      */    
@@ -89,8 +93,8 @@ public class DefaultConnectionListener implements IConnectionListener
     /**
      * Blocks indefinitely until a close event is received.
      * 
-     * @return IConnection
-     * @throws InterruptedException on error
+     * @return IConnection.
+     * @throws InterruptedException on error.
      */
     public IConnection waitForClose() throws InterruptedException
     {
@@ -101,8 +105,8 @@ public class DefaultConnectionListener implements IConnectionListener
     /**
      * Blocks indefinitely until a closing event is received.
      * 
-     * @return IConnection
-     * @throws InterruptedException on error
+     * @return IConnection.
+     * @throws InterruptedException on error.
      */
     public IConnection waitForClosing() throws InterruptedException
     {
@@ -113,8 +117,8 @@ public class DefaultConnectionListener implements IConnectionListener
     /**
      * Blocks indefinitely until a interrupted event is received.
      * 
-     * @return IConnection
-     * @throws InterruptedException on error
+     * @return IConnection.
+     * @throws InterruptedException on error.
      */
     public IConnection waitForInterrupted() throws InterruptedException
     {
@@ -125,8 +129,8 @@ public class DefaultConnectionListener implements IConnectionListener
     /**
      * Blocks indefinitely until a started event is received.
      * 
-     * @return IConnection
-     * @throws InterruptedException on error
+     * @return IConnection.
+     * @throws InterruptedException on error.
      */
     public IConnection waitForStarted() throws InterruptedException
     {

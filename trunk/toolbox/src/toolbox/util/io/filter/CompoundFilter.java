@@ -11,6 +11,10 @@ import java.util.List;
  */
 public abstract class CompoundFilter implements FilenameFilter
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
      * Collection of the filters that make up the compound filter.
      */
@@ -23,7 +27,7 @@ public abstract class CompoundFilter implements FilenameFilter
     /**
      * Adds a filter.
      * 
-     * @param filter  Filter to add
+     * @param filter Filter to add.
      */
     public void addFilter(FilenameFilter filter)
     {
@@ -37,7 +41,7 @@ public abstract class CompoundFilter implements FilenameFilter
     /**
      * Returns an iterator over the filters making up the compound filter.
      * 
-     * @return Iterator over filters
+     * @return Iterator over filters.
      */
     protected Iterator iterator()
     {

@@ -32,7 +32,7 @@ public class EventOutputStreamTest extends TestCase
     /**
      * Entrypoint.   
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -61,7 +61,7 @@ public class EventOutputStreamTest extends TestCase
     /**
      * Tests the write(byte) method.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testWriteByte() throws Exception
     {
@@ -81,7 +81,7 @@ public class EventOutputStreamTest extends TestCase
     /**
      * Tests the write(byte[]) method.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testWriteByteArray() throws Exception
     {
@@ -101,7 +101,7 @@ public class EventOutputStreamTest extends TestCase
     /**
      * Tests the write(byte[], begin, len) method.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testWriteByteArraySubset() throws Exception
     {
@@ -121,7 +121,7 @@ public class EventOutputStreamTest extends TestCase
     /**
      * Tests the event generation and listener notification.
      *
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testListener() throws Exception
     {
@@ -146,7 +146,7 @@ public class EventOutputStreamTest extends TestCase
     /**
      * Tests the streamThroughput() method on the EventOutputStream.Listener.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testStreamThroughput() throws Exception
     {
@@ -191,10 +191,10 @@ public class EventOutputStreamTest extends TestCase
      * Stuffs a stream with a packet of random data as fast as possible for a 
      * given duration of time.
      * 
-     * @param os OutputStream to stuff
-     * @param packetSize Number of bytes to stuff per write
-     * @param duration Number of seconds to stuff the stream
-     * @throws IOException on I/O error
+     * @param os OutputStream to stuff.
+     * @param packetSize Number of bytes to stuff per write.
+     * @param duration Number of seconds to stuff the stream.
+     * @throws IOException on I/O error.
      */
     protected void stuffStream(OutputStream os, int packetSize, int duration)
         throws IOException

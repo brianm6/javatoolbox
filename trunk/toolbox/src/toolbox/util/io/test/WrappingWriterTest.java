@@ -26,7 +26,7 @@ public class WrappingWriterTest extends TestCase
     /**
      * Entrypoint.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */    
     public static void main(String[] args)
     {
@@ -40,7 +40,7 @@ public class WrappingWriterTest extends TestCase
     /**
      * Tests WrappingWriter.
      * 
-     * @throws IOException on error
+     * @throws IOException on error.
      */
     public void testWrappingWriter() throws IOException
     {
@@ -62,7 +62,7 @@ public class WrappingWriterTest extends TestCase
     /**
      * Tests WrappingWriter.
      * 
-     * @throws IOException on error
+     * @throws IOException on error.
      */
     public void testWrappingWriterWithPrePost() throws IOException
     {
@@ -84,7 +84,7 @@ public class WrappingWriterTest extends TestCase
     /**
      * Tests writer with zero characters.
      * 
-     * @throws IOException on error
+     * @throws IOException on error.
      */
     public void testEmpty() throws IOException
     {
@@ -105,7 +105,7 @@ public class WrappingWriterTest extends TestCase
     /**
      * Tests writer with one character.
      * 
-     * @throws IOException on error
+     * @throws IOException on error.
      */
     public void testOne() throws IOException
     {
@@ -126,7 +126,7 @@ public class WrappingWriterTest extends TestCase
     /**
      * Tests exactly one line.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testOneLine() throws Exception
     {
@@ -147,7 +147,7 @@ public class WrappingWriterTest extends TestCase
     /**
      * Tests exactly one line and one char.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testOneLineOneChar() throws Exception
     {
@@ -168,7 +168,7 @@ public class WrappingWriterTest extends TestCase
     /**
      * Tests exactly one line and two char.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testOneLineTwoChar() throws Exception
     {
@@ -189,7 +189,7 @@ public class WrappingWriterTest extends TestCase
     /**
      * Tests wrapper for a width of 1.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testSmallWidth() throws Exception
     {
@@ -210,7 +210,7 @@ public class WrappingWriterTest extends TestCase
     /**
      * Tests writer with zero characters.
      * 
-     * @throws IOException on error
+     * @throws IOException on error.
      */
     public void testEmptyDecorated() throws IOException
     {
@@ -230,7 +230,7 @@ public class WrappingWriterTest extends TestCase
     /**
      * Tests writer with one character.
      * 
-     * @throws IOException on error
+     * @throws IOException on error.
      */
     public void testOneDecorated() throws IOException
     {
@@ -252,7 +252,7 @@ public class WrappingWriterTest extends TestCase
     /**
      * Tests exactly one line.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testOneLineDecorated() throws Exception
     {
@@ -273,7 +273,7 @@ public class WrappingWriterTest extends TestCase
     /**
      * Tests exactly one line and one char.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testOneLineOneCharDecorated() throws Exception
     {
@@ -294,7 +294,7 @@ public class WrappingWriterTest extends TestCase
     /**
      * Tests exactly one line and two char.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testOneLineTwoCharDecorated() throws Exception
     {
@@ -315,7 +315,7 @@ public class WrappingWriterTest extends TestCase
     /**
      * Tests wrapper for a width of 1.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testSmallWidthDecorated() throws Exception
     {
@@ -335,7 +335,7 @@ public class WrappingWriterTest extends TestCase
     /**
      * Tests toString().
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testToString() throws Exception
     {

@@ -8,6 +8,10 @@ import java.io.Reader;
  */
 public class PositionReader extends Reader
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
      * Internal reader.
      */
@@ -30,7 +34,7 @@ public class PositionReader extends Reader
     /**
      * Creates a position reader.
      * 
-     * @param reader Reader to chain
+     * @param reader Reader to chain.
      */
     public PositionReader(Reader reader)
     {
@@ -45,8 +49,8 @@ public class PositionReader extends Reader
     /**
      * Read a single character.
      *
-     * @return Single character read
-     * @throws IOException if an I/O error occurs
+     * @return Single character read.
+     * @throws IOException if an I/O error occurs.
      */
     public int read() throws IOException
     {
@@ -61,11 +65,11 @@ public class PositionReader extends Reader
     /**
      * Read characters into a portion of an array.
      * 
-     * @param array Storage for read characters
-     * @param off Offset in array to store chars
-     * @param len Number of chars to read
-     * @return Number of characters read
-     * @throws IOException if an I/O error occurs
+     * @param array Storage for read characters.
+     * @param off Offset in array to store chars.
+     * @param len Number of chars to read.
+     * @return Number of characters read.
+     * @throws IOException if an I/O error occurs.
      */
     public int read(char[] array, int off, int len) throws IOException
     {
@@ -84,9 +88,9 @@ public class PositionReader extends Reader
     /**
      * Skip characters.
      *
-     * @param n Number of characters to skip
-     * @return Number of characters skipped
-     * @throws IOException if an I/O error occurs
+     * @param n Number of characters to skip.
+     * @return Number of characters skipped.
+     * @throws IOException if an I/O error occurs.
      */
     public long skip(long n) throws IOException
     {
@@ -101,8 +105,8 @@ public class PositionReader extends Reader
     /**
      * Tell whether this stream is ready to be read.
      *
-     * @return True if read, false otherwise
-     * @throws IOException if an I/O error occurs
+     * @return True if read, false otherwise.
+     * @throws IOException if an I/O error occurs.
      */
     public boolean ready() throws IOException
     {
@@ -113,7 +117,7 @@ public class PositionReader extends Reader
     /**
      * Tell whether this stream supports the mark() operation.
      * 
-     * @return True if mark supported, false otherwise
+     * @return True if mark supported, false otherwise.
      */
     public boolean markSupported()
     {
@@ -124,8 +128,8 @@ public class PositionReader extends Reader
     /**
      * Mark the present position in the stream.
      *
-     * @param readAheadLimit Read ahead limit
-     * @throws IOException if an I/O error occurs
+     * @param readAheadLimit Read ahead limit.
+     * @throws IOException if an I/O error occurs.
      */
     public void mark(int readAheadLimit) throws IOException
     {
@@ -137,7 +141,7 @@ public class PositionReader extends Reader
     /**
      * Reset the stream.
      *
-     * @throws IOException if an I/O error occurs
+     * @throws IOException if an I/O error occurs.
      */
     public void reset() throws IOException
     {
@@ -149,7 +153,7 @@ public class PositionReader extends Reader
     /**
      * Close the stream.
      *
-     * @throws IOException if an I/O error occurs
+     * @throws IOException if an I/O error occurs.
      */
     public void close() throws IOException
     {
@@ -163,10 +167,10 @@ public class PositionReader extends Reader
     /**
      * Reads until the given character is encountered.
      * 
-     * @param stopAt Character to stop at
+     * @param stopAt Character to stop at.
      * @return Characters from the current postion until the stopAt or EOF is 
      *         found.
-     * @throws IOException on I/O error
+     * @throws IOException on I/O error.
      */
     public String readUntil(char stopAt) throws IOException
     {

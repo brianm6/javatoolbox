@@ -30,6 +30,10 @@ public class SocketServer implements Runnable
     private static final Logger logger_ = 
         Logger.getLogger(SocketServer.class);
 
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /** 
      * Server configuration contains info such as server port, timeout, etc. 
      */
@@ -70,9 +74,9 @@ public class SocketServer implements Runnable
     //--------------------------------------------------------------------------
     
     /**
-     * Create a SocketServer with the given server configuration
+     * Create a SocketServer with the given server configuration.
      * 
-     * @param newConfig Server configuration
+     * @param newConfig Server configuration.
      */
     public SocketServer(SocketServerConfig newConfig)
     {
@@ -87,7 +91,7 @@ public class SocketServer implements Runnable
     /**
      * Starts the socket server.
      * 
-     * @throws IOException on I/O error
+     * @throws IOException on I/O error.
      */
     public void start() throws IOException
     {
@@ -136,7 +140,7 @@ public class SocketServer implements Runnable
     /** 
      * Stops the socket server.
      * 
-     * @throws IOException on I/O error
+     * @throws IOException on I/O error.
      */
     public void stop() throws IOException
     {
@@ -157,7 +161,7 @@ public class SocketServer implements Runnable
      * the connection handler. In this case, the default returns the config 
      * specified connection handler decorated by an async connection handler.
      * 
-     * @return IConnectionHandler
+     * @return IConnectionHandler.
      */
     public IConnectionHandler getConnectionHandler()
     {
@@ -169,7 +173,7 @@ public class SocketServer implements Runnable
     /**
      * Accessor for the port the server is running on.
      * 
-     * @return Server port number
+     * @return Server port number.
      */
     public int getServerPort()
     {
@@ -183,7 +187,7 @@ public class SocketServer implements Runnable
     /**
      * Configure the server with config info provided at time of construction.
      * 
-     * @throws SocketException When socket error occurs
+     * @throws SocketException When socket error occurs.
      */
     private void configure() throws SocketException
     {

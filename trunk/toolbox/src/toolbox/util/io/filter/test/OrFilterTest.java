@@ -17,6 +17,10 @@ public class OrFilterTest extends TestCase
 {
     private static final Logger logger_ = Logger.getLogger(OrFilterTest.class);
      
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /** 
      * Test directory for filtering files. 
      */
@@ -29,7 +33,7 @@ public class OrFilterTest extends TestCase
     /** 
      * Entrypoint.
      * 
-     * @param args None recognized.
+     * @param args None recognized..
      */
     public static void main(String[] args)
     {

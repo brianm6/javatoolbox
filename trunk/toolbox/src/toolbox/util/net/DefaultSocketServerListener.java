@@ -15,6 +15,10 @@ public class DefaultSocketServerListener implements ISocketServerListener
     private static final Logger logger_ =
         Logger.getLogger(DefaultSocketServerListener.class);
     
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
      * Queue for accepted events.
      */    
@@ -45,8 +49,8 @@ public class DefaultSocketServerListener implements ISocketServerListener
     /**
      * Wait for a server socket to accept().
      * 
-     * @return Connection after its socket has been accepted
-     * @throws InterruptedException on error
+     * @return Connection after its socket has been accepted.
+     * @throws InterruptedException on error.
      */
     public IConnection waitForAccept() throws InterruptedException
     {
@@ -57,8 +61,8 @@ public class DefaultSocketServerListener implements ISocketServerListener
     /**
      * Waits for a server socket to startup successfully.
      * 
-     * @return Socket server after it has been started 
-     * @throws InterruptedException on error
+     * @return Socket server after it has been started. 
+     * @throws InterruptedException on error.
      */
     public SocketServer waitForStart() throws InterruptedException
     {

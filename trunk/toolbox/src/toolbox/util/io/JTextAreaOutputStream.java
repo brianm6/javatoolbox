@@ -9,6 +9,10 @@ import javax.swing.JTextArea;
  */
 public class JTextAreaOutputStream extends OutputStream
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /** 
      * Textarea to dump to. 
      */

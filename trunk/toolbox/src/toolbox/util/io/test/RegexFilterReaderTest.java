@@ -24,7 +24,7 @@ public class RegexFilterReaderTest extends TestCase
     /**
      * Entrypoint.
      *
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -38,7 +38,7 @@ public class RegexFilterReaderTest extends TestCase
     /**
      * Tests the constructors.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testConstructors() throws Exception
     {
@@ -60,7 +60,7 @@ public class RegexFilterReaderTest extends TestCase
     /**
      * Tests readLine() for a simple test case.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testReadLine() throws Exception
     {

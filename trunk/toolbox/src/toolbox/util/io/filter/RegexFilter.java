@@ -12,6 +12,10 @@ import org.apache.regexp.RESyntaxException;
  */
 public class RegexFilter implements FilenameFilter
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /** 
      * Regular expression as a string. 
      */

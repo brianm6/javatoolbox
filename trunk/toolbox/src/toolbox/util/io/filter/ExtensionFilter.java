@@ -12,7 +12,11 @@ public class ExtensionFilter implements FilenameFilter
 {
     private static final Logger logger_ = 
         Logger.getLogger(ExtensionFilter.class);
-        
+    
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /** 
      * Extension to filter on. 
      */

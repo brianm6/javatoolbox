@@ -18,7 +18,11 @@ public class AndFilterTest extends TestCase
 {
     private static final Logger logger_ = 
         Logger.getLogger(AndFilterTest.class);
-     
+   
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /** 
      * Test directory for filtering files. 
      */
@@ -31,7 +35,7 @@ public class AndFilterTest extends TestCase
     /** 
      * Entrypoint.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -58,7 +62,7 @@ public class AndFilterTest extends TestCase
     /**
      * Clean up temporary directory.
      * 
-     * @throws Exception on error 
+     * @throws Exception on error.
      */
     protected void tearDown() throws Exception
     {

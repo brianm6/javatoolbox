@@ -64,8 +64,8 @@ public class FileConnection extends AbstractConnection implements IConnection
      * Creates a FileConnection with a single file for input and another file
      * for output.
      * 
-     * @param inputFile File tied to the input stream
-     * @param outputFile File tied to the output stream
+     * @param inputFile File tied to the input stream.
+     * @param outputFile File tied to the output stream.
      */
     public FileConnection(File inputFile, File outputFile)
     {
@@ -79,9 +79,9 @@ public class FileConnection extends AbstractConnection implements IConnection
     /**
      * Creates a FileConnection with the given input and output file names.
      * 
-     * @param inputFile File tied to the input stream
-     * @param outputFile File tied to the output stream
-     * @throws IOException on I/O error
+     * @param inputFile File tied to the input stream.
+     * @param outputFile File tied to the output stream.
+     * @throws IOException on I/O error.
      */
     public FileConnection(String inputFile, String outputFile) 
         throws IOException 
@@ -96,7 +96,7 @@ public class FileConnection extends AbstractConnection implements IConnection
     /**
      * Opens the connection.
      * 
-     * @throws IOException on I/O error
+     * @throws IOException on I/O error.
      */
     public void connect() throws IOException
     {
@@ -126,7 +126,7 @@ public class FileConnection extends AbstractConnection implements IConnection
     /**
      * Closes the connection.
      * 
-     * @throws IOException on I/O error
+     * @throws IOException on I/O error.
      */
     public void close() throws IOException
     {
@@ -145,8 +145,8 @@ public class FileConnection extends AbstractConnection implements IConnection
     /**
      * Accessor for the input stream.
      * 
-     * @return InputStream
-     * @throws IOException on I/O error
+     * @return InputStream.
+     * @throws IOException on I/O error.
      */
     public InputStream getInputStream() throws IOException
     {
@@ -157,8 +157,8 @@ public class FileConnection extends AbstractConnection implements IConnection
     /**
      * Accessor for the output stream.
      * 
-     * @return OutputStream
-     * @throws IOException on I/O error
+     * @return OutputStream.
+     * @throws IOException on I/O error.
      */
     public OutputStream getOutputStream() throws IOException
     {

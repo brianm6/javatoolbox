@@ -15,10 +15,18 @@ public class SocketConnection extends AbstractConnection implements IConnection
 {
     // TODO: Implement notification for connectionInterrupted
     
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
     /** 
      * Default retry interval is 10 seconds. 
      */
     private static final int DEFAULT_RETRY_INTERVAL = 10;
+    
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
     
     /** 
      * Socket to manage.
@@ -69,7 +77,7 @@ public class SocketConnection extends AbstractConnection implements IConnection
      * Creates a SocketConnection with an existing Socket by wrapping the
      * socket. Assumes the socket is already connected to an endpoint.
      * 
-     * @param s Existing socket endpoint
+     * @param s Existing socket endpoint.
      */
     public SocketConnection(Socket s)
     {
@@ -85,10 +93,10 @@ public class SocketConnection extends AbstractConnection implements IConnection
      * Creates a SocketConnection with the given host and port. Connects 
      * by default.
      * 
-     * @param host Hostname to connect to
-     * @param port Port number to connect to 
-     * @throws IOException on I/O error
-     * @throws UnknownHostException on invalid hostname
+     * @param host Hostname to connect to.
+     * @param port Port number to connect to. 
+     * @throws IOException on I/O error.
+     * @throws UnknownHostException on invalid hostname.
      */
     public SocketConnection(String host, int port) throws IOException, 
         UnknownHostException
@@ -101,12 +109,12 @@ public class SocketConnection extends AbstractConnection implements IConnection
      * Creates a SocketConnection with given connection parameters. Connects 
      * on construction by default.
      * 
-     * @param host Hostname to connect to
-     * @param port Port number to connect to 
+     * @param host Hostname to connect to.
+     * @param port Port number to connect to. 
      * @param forceConnect Forces connection to be established. Retries 
      *        indefinitely until successful.
-     * @throws IOException on I/O error
-     * @throws UnknownHostException on invalid hostname
+     * @throws IOException on I/O error.
+     * @throws UnknownHostException on invalid hostname.
      */
     public SocketConnection(
         String host, 
@@ -122,14 +130,14 @@ public class SocketConnection extends AbstractConnection implements IConnection
      * Creates a SocketConnection with the given connection parameters. Connects
      * on construction by default.
      * 
-     * @param host Hostname to connect to
-     * @param port Port number to connect to 
+     * @param host Hostname to connect to.
+     * @param port Port number to connect to. 
      * @param forceConnect Forces connection to be established. Retries 
-     *        indefinitely until successful.
+     *        indefinitely until successful..
      * @param retryInterval Delay between connect attempts if forceConnect 
      *        is true.
-     * @throws IOException on I/O error
-     * @throws UnknownHostException on invalid hostname
+     * @throws IOException on I/O error.
+     * @throws UnknownHostException on invalid hostname.
      */
     public SocketConnection(
         String host, 
@@ -153,7 +161,7 @@ public class SocketConnection extends AbstractConnection implements IConnection
     /**
      * Opens the connection.
      * 
-     * @throws IOException on I/O error
+     * @throws IOException on I/O error.
      */
     public void connect() throws IOException
     {
@@ -170,7 +178,7 @@ public class SocketConnection extends AbstractConnection implements IConnection
     /**
      * Closes the connection.
      * 
-     * @throws IOException on I/O error
+     * @throws IOException on I/O error.
      */
     public void close() throws IOException
     {
@@ -186,8 +194,8 @@ public class SocketConnection extends AbstractConnection implements IConnection
     /**
      * Accessor for the input stream.
      * 
-     * @return InputStream
-     * @throws IOException on I/O error
+     * @return InputStream.
+     * @throws IOException on I/O error.
      */
     public InputStream getInputStream() throws IOException
     {
@@ -198,8 +206,8 @@ public class SocketConnection extends AbstractConnection implements IConnection
     /**
      * Accessor for the output stream.
      * 
-     * @return OutputStream
-     * @throws IOException on I/O error
+     * @return OutputStream.
+     * @throws IOException on I/O error.
      */
     public OutputStream getOutputStream() throws IOException
     {
@@ -224,7 +232,7 @@ public class SocketConnection extends AbstractConnection implements IConnection
     /**
      * Mutator for the socket.
      * 
-     * @param newSocket Socket
+     * @param newSocket Socket.
      */
     protected void setSocket(Socket newSocket)
     {
@@ -268,7 +276,7 @@ public class SocketConnection extends AbstractConnection implements IConnection
     /**
      * Sets the host.
      * 
-     * @param host The host to set
+     * @param host The host to set.
      */
     public void setHost(String host)
     {
@@ -279,7 +287,7 @@ public class SocketConnection extends AbstractConnection implements IConnection
     /**
      * Sets the port.
      * 
-     * @param port The port to set
+     * @param port The port to set.
      */
     public void setPort(int port)
     {
@@ -312,7 +320,7 @@ public class SocketConnection extends AbstractConnection implements IConnection
     /**
      * Sets the forceConnect.
      * 
-     * @param forceConnect The forceConnect to set
+     * @param forceConnect The forceConnect to set.
      */
     public void setForceConnect(boolean forceConnect)
     {
@@ -323,7 +331,7 @@ public class SocketConnection extends AbstractConnection implements IConnection
     /**
      * Sets the retryInterval.
      * 
-     * @param retryInterval The retryInterval to set
+     * @param retryInterval The retryInterval to set.
      */
     public void setRetryInterval(int retryInterval)
     {

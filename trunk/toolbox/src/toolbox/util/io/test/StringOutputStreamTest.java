@@ -22,7 +22,7 @@ public class StringOutputStreamTest extends TestCase
     /**
      * Entrypoint.   
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -48,7 +48,7 @@ public class StringOutputStreamTest extends TestCase
     /**
      * Tests the write() method.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testWrite() throws Exception
     {
@@ -65,7 +65,7 @@ public class StringOutputStreamTest extends TestCase
     /**
      * Tests the close() method.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testClose() throws Exception
     {

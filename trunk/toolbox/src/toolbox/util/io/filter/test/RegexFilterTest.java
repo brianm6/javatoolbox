@@ -18,6 +18,10 @@ public class RegexFilterTest extends TestCase
     private static final Logger logger_ =
         Logger.getLogger(RegexFilterTest.class);
         
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /** 
      * Test directory for filtering files. 
      */

@@ -54,7 +54,7 @@ public class PrintableOutputStreamTest extends TestCase
     /**
      * Tests the write() method for a string that passes through unchanged.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testWritePassThrough() throws Exception
     {

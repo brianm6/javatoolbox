@@ -25,7 +25,7 @@ public class ExtensionFilterTest extends TestCase
     /** 
      * Entrypoint.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -39,7 +39,7 @@ public class ExtensionFilterTest extends TestCase
     /**
      * Tests accept() for a file with a matching extension.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testAcceptMatches() throws Exception
     {
@@ -60,7 +60,7 @@ public class ExtensionFilterTest extends TestCase
      * Tests accept() for a files with a matching extension with a dot
      * included in the extension.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testAcceptMatchesWithDot() throws Exception
     {
@@ -80,7 +80,7 @@ public class ExtensionFilterTest extends TestCase
     /**
      * Tests accept() for a file which don't match.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testAcceptMatchFails() throws Exception
     {

@@ -79,7 +79,7 @@ public class ReverseFileReaderTest extends TestCase
     /**
      * Tests readLine() on a zero byte file.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testReadLineEmptyFile() throws Exception
     {
@@ -94,7 +94,7 @@ public class ReverseFileReaderTest extends TestCase
     /**
      * Tests readLine() on a 1 byte file.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testReadLineOneByteFile() throws Exception
     {
@@ -110,7 +110,7 @@ public class ReverseFileReaderTest extends TestCase
     /**
      * Test readLine() on a one line file.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testReadLineOneLineFile() throws Exception
     {
@@ -127,7 +127,7 @@ public class ReverseFileReaderTest extends TestCase
     /**
      * Tests readLine() on a file with multiple lines.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testReadLineMultiLineFile() throws Exception
     {
@@ -149,7 +149,7 @@ public class ReverseFileReaderTest extends TestCase
     /**
      * Tests readLine() on a file with multiple lines.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void xtestReadLineNormalMultiLineFile() throws Exception
     {
@@ -173,7 +173,7 @@ public class ReverseFileReaderTest extends TestCase
     /**
      * Tests read() on a zero byte file.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testReadEmptyFile() throws Exception
     {
@@ -188,7 +188,7 @@ public class ReverseFileReaderTest extends TestCase
     /**
      * Tests read() on a one byte file.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testReadOneByteFile() throws Exception
     {

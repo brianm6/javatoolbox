@@ -9,6 +9,10 @@ import java.io.FilenameFilter;
  */
 public class NotFilter implements FilenameFilter
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
      * Filter to negate.
      */

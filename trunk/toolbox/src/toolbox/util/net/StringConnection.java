@@ -13,6 +13,10 @@ import toolbox.util.io.StringOutputStream;
  */
 public class StringConnection extends AbstractConnection implements IConnection
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /** 
      * Internal string based InputStream. 
      */
@@ -44,7 +48,7 @@ public class StringConnection extends AbstractConnection implements IConnection
     /**
      * Creates a StringConnection with the given input string.
      * 
-     * @param str Input stream contents
+     * @param str Input stream contents.
      */
     public StringConnection(String str)
     {

@@ -25,8 +25,8 @@ public class AndFilter extends CompoundFilter implements FilenameFilter
     /**
      * Creates an AndFilter with the two given filters.
      * 
-     * @param filterOne First filter
-     * @param filterTwo Second filter
+     * @param filterOne First filter.
+     * @param filterTwo Second filter.
      */   
     public AndFilter(FilenameFilter filterOne, FilenameFilter filterTwo)
     {
@@ -41,9 +41,9 @@ public class AndFilter extends CompoundFilter implements FilenameFilter
     /**
      * Accepts files that that meet the criteria of filterOne AND filterTwo.
      * 
-     * @param dir Directory file is contained in
-     * @param name Name of file
-     * @return True if the file matches both filters' criteria, false otherwise
+     * @param dir Directory file is contained in.
+     * @param name Name of file.
+     * @return True if the file matches both filters' criteria, false otherwise.
      */
     public boolean accept(File dir, String name)
     {
