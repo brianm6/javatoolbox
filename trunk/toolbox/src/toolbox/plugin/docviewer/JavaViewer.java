@@ -84,9 +84,18 @@ public class JavaViewer extends JEditViewer
      */
     public JavaViewer()
     {
-        super("Java Viewer");
+        this("Java Viewer");
     }
 
+    
+    /**
+     * Creates a JavaViewer. Necessary for instantiation via reflection.
+     */
+    public JavaViewer(String name)
+    {
+        super(name);
+    }
+    
     //--------------------------------------------------------------------------
     // Protected
     //--------------------------------------------------------------------------
