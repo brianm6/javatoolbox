@@ -9,7 +9,6 @@ import junit.framework.TestCase;
 import junit.textui.TestRunner;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Category;
-import sun.security.krb5.internal.i;
 import toolbox.tail.ITailListener;
 import toolbox.tail.Tail;
 import toolbox.util.ThreadUtil;

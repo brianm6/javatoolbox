@@ -14,18 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Category;
-import sun.security.krb5.internal.i;
-import sun.security.krb5.internal.w;
-import sun.security.krb5.internal.crypto.e;
-import sun.security.krb5.internal.crypto.j;
-import sun.security.krb5.internal.util.k;
 import toolbox.util.ThreadUtil;
 
 /**
- * @author analogue
- *
- * To change this generated comment edit the template variable "typecomment":
- * Window>Preferences>Java>Templates.
+ * Tail
  */
 public class Tail
 {
