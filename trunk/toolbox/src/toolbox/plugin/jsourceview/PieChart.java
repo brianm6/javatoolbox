@@ -10,8 +10,8 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.labels.StandardPieItemLabelGenerator;
 import org.jfree.chart.plot.PiePlot3D;
-import org.jfree.data.DefaultPieDataset;
-import org.jfree.data.PieDataset;
+import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.data.general.PieDataset;
 
 /**
  * Pie chart that visualizes source code categories.
