@@ -85,7 +85,7 @@ public class SocketServer implements Runnable
     }
 
     //--------------------------------------------------------------------------
-    //  Implementation
+    //  Public
     //--------------------------------------------------------------------------
     
     /**
@@ -161,29 +161,6 @@ public class SocketServer implements Runnable
 
 
     /**
-     * Configure the server with config info provided at time of construction
-     * 
-     * @throws  SocketException  When socket error occurs
-     */
-    private void configure() throws SocketException
-    {
-        // Name thread based on server socket port
-        serverThread_.setName(
-            config_.getName() + ":" + config_.getServerPort());
-            
-        serverThread_.setDaemon(true);
-        serverSocket_.setSoTimeout(config_.getSocketTimeout());
-
-        // Create thread pool
-        ThreadedDispatcherStrategy strategy = 
-            new ThreadPoolStrategy(config_.getActiveConnections(), 
-                config_.getHandlerQueueSize());
-
-        // Init thread pool with strategy
-        dispatcher_ = new ThreadDispatcher(strategy);
-    }
-
-    /**
      * Default behavior is to ask the server config for a 
      * concrete instance of the connection handler. In this
      * case, the default returns the config specified connection
@@ -208,6 +185,37 @@ public class SocketServer implements Runnable
         return serverSocket_.getLocalPort();
     }
 
+
+    //--------------------------------------------------------------------------
+    //  Private
+    //--------------------------------------------------------------------------
+
+    /**
+     * Configure the server with config info provided at time of construction
+     * 
+     * @throws  SocketException  When socket error occurs
+     */
+    private void configure() throws SocketException
+    {
+        // Name thread based on server socket port
+        serverThread_.setName(
+            config_.getName() + ":" + config_.getServerPort());
+            
+        serverThread_.setDaemon(true);
+        serverSocket_.setSoTimeout(config_.getSocketTimeout());
+
+        // Create thread pool
+        ThreadedDispatcherStrategy strategy = 
+            new ThreadPoolStrategy(config_.getActiveConnections(), 
+                config_.getHandlerQueueSize());
+
+        // Init thread pool with strategy
+        dispatcher_ = new ThreadDispatcher(strategy);
+    }
+
+    //--------------------------------------------------------------------------
+    //  Overidden from java.lang.Object
+    //--------------------------------------------------------------------------
 
     /**
      * Dumps SocketServer state to a string 
@@ -243,6 +251,7 @@ public class SocketServer implements Runnable
             ((ISocketServerListener)i.next()).socketAccepted(socket);
     }
 
+
     /**
      * Adds a listener to the socket server
      * 
@@ -252,6 +261,7 @@ public class SocketServer implements Runnable
     {
         listeners_.add(listener);
     }
+
     
     /**
      * Removes a listener from the socket server
