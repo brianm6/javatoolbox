@@ -66,7 +66,7 @@ public class FOPProcessor implements FOProcessor
         throws IllegalStateException, ServiceException
     {
         // Common
-        Logger logger = new ConsoleLogger(ConsoleLogger.LEVEL_INFO);
+        Logger logger = new ConsoleLogger(ConsoleLogger.LEVEL_FATAL);
         MessageHandler.setScreenLogger(logger);
 
         // PDF
@@ -105,19 +105,7 @@ public class FOPProcessor implements FOProcessor
     public void renderPDF(InputStream foStream, OutputStream pdfStream)
         throws Exception
     {
-        try
-        {
-            pdfDriver_.reset();
-            pdfDriver_.setOutputStream(pdfStream);
-            Reader reader = new InputStreamReader(foStream, "UTF-8");
-            pdfDriver_.setInputSource(new InputSource(reader));
-            pdfDriver_.run();
-        }
-        finally
-        {
-            IOUtils.closeQuietly(foStream);
-            IOUtils.closeQuietly(pdfStream);
-        }
+        render(pdfDriver_, foStream, pdfStream);
     }
 
 
@@ -128,18 +116,36 @@ public class FOPProcessor implements FOProcessor
     public void renderPostscript(InputStream foStream, OutputStream psStream)
         throws Exception
     {
+        render(psDriver_, foStream, psStream);
+    }
+
+    //--------------------------------------------------------------------------
+    // Protected
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Renders xslfo to a given output format using a driver.
+     * 
+     * @param driver Driver initialized to use an output format.
+     * @param in InputStream to read xsl-fo from.
+     * @param out OutputStream to write resulting output to.
+     * @throws Exception on error.
+     */
+    public void render(Driver driver, InputStream in, OutputStream out)
+        throws Exception
+    {
         try
         {
-            psDriver_.reset();
-            psDriver_.setOutputStream(psStream);
-            Reader reader = new InputStreamReader(foStream, "UTF-8");
-            psDriver_.setInputSource(new InputSource(reader));
-            psDriver_.run();
+            driver.reset();
+            driver.setOutputStream(out);
+            Reader reader = new InputStreamReader(in, "UTF-8");
+            driver.setInputSource(new InputSource(reader));
+            driver.run();
         }
         finally
         {
-            IOUtils.closeQuietly(foStream);
-            IOUtils.closeQuietly(psStream);
+            IOUtils.closeQuietly(in);
+            IOUtils.closeQuietly(out);
         }
     }
 }
