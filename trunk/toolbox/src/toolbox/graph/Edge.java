@@ -6,4 +6,6 @@ package toolbox.graph;
  */
 public interface Edge extends Delegator
 {
+    Vertex getSource();
+    Vertex getDestination();
 }
