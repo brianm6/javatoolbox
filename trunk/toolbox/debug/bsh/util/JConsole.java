@@ -50,8 +50,6 @@ import java.awt.Cursor;
 import javax.swing.text.*;
 import javax.swing.*;
 
-import toolbox.util.StringUtil;
-
 // Things that are not in the core packages
 
 import bsh.util.NameCompletion;
@@ -69,17 +67,11 @@ import bsh.util.NameCompletion;
     DEBUG PATCH:
     
         Commented out unicode patch in acceptLine()
-*/
+*/ 
 public class JConsole extends JScrollPane
     implements GUIConsoleInterface, Runnable, KeyListener,
     MouseListener, ActionListener, PropertyChangeListener 
 {
-    static
-    {
-        System.out.println(StringUtil.addBars(
-            "Loaded debug bsh.util.JConsole"));
-    }
-    
     private final static String CUT = "Cut";
     private final static String COPY = "Copy";
     private final static String PASTE = "Paste";
@@ -177,6 +169,12 @@ public class JConsole extends JScrollPane
         requestFocus();
     }
 
+    public void requestFocus() 
+    {
+        super.requestFocus();
+        text.requestFocus();
+    }
+
     public void keyPressed( KeyEvent e ) {
         type( e );
         gotUp=false;
@@ -192,8 +190,8 @@ public class JConsole extends JScrollPane
     }
 
     private synchronized void type( KeyEvent e ) {
-        switch ( e.getKeyCode() ) {
-
+        switch ( e.getKeyCode() ) 
+        {
             case ( KeyEvent.VK_ENTER ):
                 if (e.getID() == KeyEvent.KEY_PRESSED) {
                     if (gotUp) {
@@ -224,7 +222,8 @@ public class JConsole extends JScrollPane
             case ( KeyEvent.VK_BACK_SPACE ):
             case ( KeyEvent.VK_DELETE ):
                 if (text.getCaretPosition() <= cmdStart) {
-// Why isn't this working? JDK1.3 ignores this consume...
+                    // This doesn't work for backspace.
+                    // See default case for workaround
                     e.consume();
                 }
                 break;
@@ -300,6 +299,19 @@ public class JConsole extends JScrollPane
                     // plain character
                     forceCaretMoveToEnd();
                 }
+
+                /*
+                    The getKeyCode function always returns VK_UNDEFINED for
+                    keyTyped events, so backspace is not fully consumed.
+                */
+                if (e.paramString().indexOf("Backspace") != -1)
+                { 
+                  if (text.getCaretPosition() <= cmdStart) {
+                        e.consume();
+                        break;
+                    }
+                }
+
                 break;
         }
     }
@@ -456,6 +468,10 @@ public class JConsole extends JScrollPane
     {
         // Patch to handle Unicode characters
         // Submitted by Daniel Leuck
+        
+        //======================================================================
+        // OVERRIDE: Turned of unicode character crap
+        
 //        StringBuffer buf = new StringBuffer(); 
 //        int lineLength = line.length(); 
 //        for(int i=0; i<lineLength; i++) {  
@@ -464,6 +480,8 @@ public class JConsole extends JScrollPane
 //                buf.append("\\u" + val);
 //        } 
 //        line = buf.toString();
+        //======================================================================
+        
         // End unicode patch
 
         if (outPipe == null )
@@ -501,6 +519,10 @@ public class JConsole extends JScrollPane
 
     public void error( String s ) {
         print( s, Color.red );
+    }
+
+    public void error( Object s ) {
+        print( s.toString() , Color.red );
     }
 
     public void println(Object object) {
@@ -852,5 +874,3 @@ public class JConsole extends JScrollPane
     private int textLength() { return text.getDocument().getLength(); }
 
 }
-
-
