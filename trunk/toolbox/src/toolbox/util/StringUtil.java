@@ -21,7 +21,7 @@ public final class StringUtil
     
     //--------------------------------------------------------------------------
     // Constructors
-    //-------------------------------------------------------------------------- 
+    //--------------------------------------------------------------------------
     
     /**
      * Static class...prevent construction
@@ -35,14 +35,15 @@ public final class StringUtil
     //--------------------------------------------------------------------------
     
     /**
-     * Left justify a string representing an integer with a given width.
+     * Left justifies a string representing an integer with a given width.
      * The num is converted to a string which is padded with space characters 
      * on the right to the given width. If the string representing the integer 
-     * is greater than width then the string is returned.
+     * is greater than width then the string is returned. A space is used by
+     * default as the padding character.
      *
-     * @param      num     Number to format
-     * @param      width   Width of string
-     * @return     String left justified
+     * @param    num     Number to format
+     * @param    width   Width of string
+     * @return   Left justified string
      */
     public static String left(int num, int width)
     {
@@ -51,13 +52,13 @@ public final class StringUtil
 
 
     /**
-     * justify string left within given width.
-     * <P>the string is padded with space characters on the right to given width
-     * strings longer than width are returned unaltered
+     * Left justifies a string within the given width. The string is padded with
+     * space characters on the right to given width. Strings longer than the 
+     * width are returned unaltered.
      *
-     * @param  str   String to left
-     * @param  width Max width
-     * @return a string of length width containing the given string on the left
+     * @param   str    String to left
+     * @param   width  Max width
+     * @return  Left justified string
      */
     public static String left(String str, int width)
     {
@@ -66,8 +67,8 @@ public final class StringUtil
 
 
     /**
-     * Left justify a string to a given width using a pad character.
-     * Strings longer than the width are returned unaltered.
+     * Left justifies a string to a given width using a pad character. Strings 
+     * longer than the width are returned unaltered.
      *
      * @param   str      String to justify
      * @param   width    Width of resulting screen
@@ -81,9 +82,9 @@ public final class StringUtil
     
     
     /**
-     * Left justify a string to a given width using a pad character.
-     * Strings longer than the width are returned unaltered if 'trunc'
-     * is false; else they are truncated
+     * Left justifies a string to a given width using a pad character. Strings 
+     * longer than the width are returned unaltered if 'trunc' is false; else 
+     * they are truncated.
      *
      * @param   str         String to justify
      * @param   width       Width of resulting screen
@@ -120,15 +121,14 @@ public final class StringUtil
     
     
     /**
-     * Justify right a string representing the integer within given width.
-     * <P>the num is converted to a string
-     * which is padded with space characters on the left to given width
-     * if the string representing the integer is greater than width then 
-     * this string is returned
+     * Right justifies a string representing an integer within the given width.
+     * The num is converted to a string which is padded with space characters
+     * on the left to the given width. If the string representing the integer 
+     * is greater than width then the unaltered string is returned.
      *
-     * @param  num    Number to right
-     * @param  width  Max width
-     * @return String representation of an int of length width right justified
+     * @param   num    Number to right justify
+     * @param   width  Max width
+     * @return  Right justified string
      */
     public static String right(int num, int width)
     {
@@ -137,12 +137,12 @@ public final class StringUtil
 
 
     /**
-     * Right justifies a string to the given width using spaces.
-     * String longer than the width are returned as is.
+     * Right justifies a string to the given width using spaces. If the string 
+     * is longer than the width then the string is returned unaltered.
      *
-     * @param    str      String to right justify
-     * @param    width    Width of justified string
-     * @return   Right justified string
+     * @param   str     String to right justify
+     * @param   width   Width of justified string
+     * @return  Right justified string
      */
     public static String right(String str, int width)
     {
@@ -151,8 +151,8 @@ public final class StringUtil
 
 
     /**
-     * Right justifies a string to the given width and fill character.
-     * String longer than the width are returned as is.
+     * Right justifies a string to the given width and pad character. If the 
+     * string is longer than the width, the string is returned unalteded.
      *
      * @param    str      String to right justify
      * @param    width    Width of justified string
@@ -166,9 +166,10 @@ public final class StringUtil
    
    
     /**
-     * Right justify a string to a given width using a pad character.
-     * Strings longer than the width are returned unaltered if 'trunc'
-     * is false; else they are truncated
+     * Right justifies a string to a given width using a pad character. If the
+     * string is longer than the width and doTruncate is false, then the 
+     * string is returned unaltered otherwise the string is truncated to the
+     * width specified.
      *
      * @param   str         String to justify
      * @param   width       Width of resulting screen
@@ -207,14 +208,15 @@ public final class StringUtil
     /**
      * Return the given list as a debug string
      * 
-     * @param  theList  The list to convert to a string
-     * @return List converted to a string
+     * @param   list   List to convert to a string
+     * @return  List converted to a string
      */
-    public static String toString( List theList )
+    public static String toString(List list)
     {
         StringBuffer buf = new StringBuffer( 20 );
-        Iterator iter = theList.iterator();
+        Iterator iter = list.iterator();
         int index = 0;
+        
         while( iter.hasNext() )
         {
             buf.append( " [" ).append( index++ )
@@ -228,8 +230,8 @@ public final class StringUtil
     /**
      * Convenience method to check if a string is null or of zero length
      *
-     * @param  s The string to check
-     * @return   True if the string is null or empty, false otherwise
+     * @param   s   String to check
+     * @return  True if the string is null or empty, false otherwise
      */
     public static final boolean isNullOrEmpty(String s) 
     {
@@ -244,7 +246,7 @@ public final class StringUtil
      * Convenience method to check if a string is null, empty, or blank
      * (contains only spaces)
      * 
-     * @param   s  The string to check
+     * @param   s   String to check
      * @return  True if not null, empty, or blank; false otherwise
      */
     public static final boolean isNullEmptyOrBlank(String s)
@@ -271,7 +273,7 @@ public final class StringUtil
      *                  111 <- read upwards
      * </pre> 
      * 
-     * @param   s    String
+     * @param   s    String to generate a ruler for
      * @return  String containing the original string with the ruler appended
      */
     public static final String getStringRuler(String s)
@@ -300,13 +302,12 @@ public final class StringUtil
 
     
     /**
-     * Truncate a string to the given length.
-     * If s.length() <= n, returns s.
+     * Truncates a string to the given length. If s.length() <= n, returns s.
      * Else, returns the first n characters of s.
      * 
-     * @param  s   String to truncate
-     * @param  n   Length to truncate to
-     * @return Truncated string
+     * @param   s   String to truncate
+     * @param   n   Length to truncate to
+     * @return  Truncated string
      */
     public static String truncate(String s, int n)
     {
@@ -320,15 +321,17 @@ public final class StringUtil
     /**
      * Repeats a string a specified number of times
      * 
-     * @param  s         String to repeat
-     * @param  numTimes  Number of times to repeat the string
-     * @return String containing numTimes concatenated instances of s
+     * @param   s         String to repeat
+     * @param   numTimes  Number of times to repeat the string
+     * @return  String containing numTimes concatenated instances of s
      */
     public static final String repeat(String s, int numTimes)
     {
         StringBuffer sb = new StringBuffer();
+        
         for(int i=0; i<numTimes; i++)
             sb.append(s);
+            
         return sb.toString();
     }
 
@@ -397,11 +400,11 @@ public final class StringUtil
     /**
      * Wraps a string to the specified criteria
      * 
-     * @param  s       String to wrap
-     * @param  width   Width to wrap the string
-     * @param  prefix  Prefix before each line
-     * @param  suffix  Suffix after each line
-     * @return Wrapped string
+     * @param   s       String to wrap
+     * @param   width   Width to wrap the string
+     * @param   prefix  Prefix before each line
+     * @param   suffix  Suffix after each line
+     * @return  Wrapped string
      */
     public static String wrap(String s, int width, String prefix, 
         String suffix)
@@ -440,8 +443,8 @@ public final class StringUtil
 
 
     /**
-     * Replace a string with another string inside a larger string,
-     * for the first max values of the search string.
+     * Replace a string with another string inside a larger string, for the 
+     * first max values of the search string.
      *
      * @param   text  Text to search and replace in
      * @param   repl  String to search for
@@ -473,15 +476,17 @@ public final class StringUtil
     /**
      * Returns arary of individual tokens from a string
      * 
-     * @param  s          String to tokenize
-     * @param  delimiter  Delimiter used for separate tokens
-     * @return Array of string tokens
+     * @param   s          String to tokenize
+     * @param   delimiter  Delimiter used for separate tokens
+     * @return  Array of string tokens
      */  
     public static String[] tokenize(String s, String delimiter)
     {
         StringTokenizer st = new StringTokenizer(s, delimiter);
         String[] tokens = new String[st.countTokens()];   
+        
         for(int i=0; st.hasMoreTokens(); tokens[i++] = st.nextToken());
+        
         return tokens;
     }
 
