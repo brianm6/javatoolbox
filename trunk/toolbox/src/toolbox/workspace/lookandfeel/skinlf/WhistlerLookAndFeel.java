@@ -1,14 +1,5 @@
 package toolbox.workspace.lookandfeel.skinlf;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
-import javax.swing.ImageIcon;
-import javax.swing.SwingUtilities;
-import javax.swing.UIDefaults;
-import javax.swing.plaf.IconUIResource;
 
 /**
  * Look and Feel that is just a wrapper for the SkinLF look and feel coupled
