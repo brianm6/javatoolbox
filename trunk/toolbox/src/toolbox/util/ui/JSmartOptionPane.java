@@ -356,8 +356,8 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener,
         Object[] options,
         Object initialValue)
     {
-        forwardIcon_ = ImageCache.getIcon("toolbox/util/ui/images/Forward.gif");
-        reverseIcon_ = ImageCache.getIcon("toolbox/util/ui/images/Reverse.gif");
+        forwardIcon_ = ImageCache.getIcon(ImageCache.IMAGE_FORWARD);
+        reverseIcon_ = ImageCache.getIcon(ImageCache.IMAGE_REVERSE);
         
         message_ = message;
         details_ = details;
