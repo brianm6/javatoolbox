@@ -2,10 +2,10 @@ package toolbox.util.test;
 
 import java.text.DecimalFormat;
 
-import org.apache.log4j.Logger;
-
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
+
+import org.apache.log4j.Logger;
 
 import toolbox.util.DoubleUtil;
 
@@ -17,9 +17,7 @@ public class DoubleUtilTest extends TestCase
     private static final Logger logger_ =
         Logger.getLogger(DoubleUtilTest.class);
     
-    /** 
-     * Format 
-     */
+    /** Format */
     public static final DecimalFormat TWO_DIGIT_FORMAT = 
         new DecimalFormat("#########.##");
 
@@ -337,6 +335,7 @@ public class DoubleUtilTest extends TestCase
         logger_.info("Running testSum...");
         
         double[] d = new double[] { 1.0, 1.1, 1.2 };
-        assertEquals( (double) 3.3, (double) DoubleUtil.sum(d), 0.0);
+        assertEquals((double) 3.3, (double) DoubleUtil.sum(d), 0.0);
+        assertEquals((double) 0.0, (double) DoubleUtil.sum(new double[0]), 0.0);
     }
 }

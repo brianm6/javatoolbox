@@ -91,8 +91,8 @@ public class MathUtilTest extends TestCase
         logger_.info("Running testSum...");
         
         int[] n = new int[] { 1, 2, 3};
-        int sum = MathUtil.sum(n);
-        assertEquals(1 + 2 + 3, sum);
+        assertEquals("sum incorrect", 1 + 2 + 3, MathUtil.sum(n));
+        assertEquals("sum empty array incorrect", 0, MathUtil.sum(new int[0]));
     }
     
     /**
