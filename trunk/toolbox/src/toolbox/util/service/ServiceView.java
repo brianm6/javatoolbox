@@ -9,6 +9,8 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JPanel;
 
+import org.apache.commons.collections.MapUtils;
+
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.SmartAction;
 
@@ -25,6 +27,8 @@ public class ServiceView extends JPanel
     //--------------------------------------------------------------------------
     // Action Constants
     //--------------------------------------------------------------------------
+
+    private static final String ACTION_INITIALIZE = "initialize";
     
     /**
      * Action name to start the service.
@@ -46,6 +50,9 @@ public class ServiceView extends JPanel
      */
     private static final String ACTION_STOP = "stop";
     
+    
+    private static final String ACTION_DESTROY = "destroy";
+    
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
@@ -64,6 +71,8 @@ public class ServiceView extends JPanel
      * Internal listener for this service.
      */
     private ServiceListener myServiceListener_;
+
+
     
     //--------------------------------------------------------------------------
     // Constructors
@@ -124,14 +133,34 @@ public class ServiceView extends JPanel
     protected void buildView()
     {
         setLayout(new FlowLayout());
-        actions_.put(ACTION_START, new StartAction());
-        actions_.put(ACTION_SUSPEND, new SuspendAction());
-        actions_.put(ACTION_RESUME, new ResumeAction());
-        actions_.put(ACTION_STOP, new StopAction());
-        add(new JSmartButton((Action) actions_.get(ACTION_START)));
-        add(new JSmartButton((Action) actions_.get(ACTION_SUSPEND)));
-        add(new JSmartButton((Action) actions_.get(ACTION_RESUME)));
-        add(new JSmartButton((Action) actions_.get(ACTION_STOP)));
+
+        if (service_ instanceof Initializable)
+        {    
+            actions_.put(ACTION_INITIALIZE, new InitializeAction());
+            add(new JSmartButton((Action) actions_.get(ACTION_INITIALIZE)));
+        }
+
+        if (service_ instanceof Startable)
+        {    
+            actions_.put(ACTION_START, new StartAction());
+            actions_.put(ACTION_STOP, new StopAction());
+            add(new JSmartButton((Action) actions_.get(ACTION_START)));
+            add(new JSmartButton((Action) actions_.get(ACTION_STOP)));
+        }
+        
+        if (service_ instanceof Suspendable)
+        {
+            actions_.put(ACTION_SUSPEND, new SuspendAction());
+            actions_.put(ACTION_RESUME, new ResumeAction());
+            add(new JSmartButton((Action) actions_.get(ACTION_SUSPEND)));
+            add(new JSmartButton((Action) actions_.get(ACTION_RESUME)));
+        }
+        
+        if (service_ instanceof Destroyable)
+        {    
+            //actions_.put(ACTION_DESTROY, new DestroyAction());
+            add(new JSmartButton((Action) actions_.get(ACTION_DESTROY)));
+        }
     }
     
     
@@ -151,6 +180,18 @@ public class ServiceView extends JPanel
          */
         public void serviceStateChanged(Service service) throws ServiceException
         {
+            ServiceState current = service.getState();
+            
+            if (service instanceof ObservableService)
+            {
+                // TODO: Left off here
+                
+                //ObservableService obs = (ObservableService) service;
+                //obs.
+            }
+            
+            
+            
             if (service.getState() == ServiceState.INITIALIZED)
             {
                 ((AbstractAction) actions_.get(ACTION_START)).setEnabled(true);
@@ -162,9 +203,42 @@ public class ServiceView extends JPanel
     }
     
     //--------------------------------------------------------------------------
-    // StartAction
+    // InitializeAction
     //--------------------------------------------------------------------------
 
+    /**
+     * Initializes the service.
+     */
+    class InitializeAction extends SmartAction
+    {
+        /**
+         * Creates an InitializeAction.
+         */
+        public InitializeAction()
+        {
+            super("Init", true, false, null);
+        }
+
+        
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
+        public void runAction(ActionEvent e) throws Exception
+        {
+            ((Initializable) service_).initialize(MapUtils.EMPTY_MAP);
+            
+            //((AbstractAction) actions_.get(ACTION_START)).setEnabled(false);
+            //((AbstractAction) actions_.get(ACTION_STOP)).setEnabled(true);
+            //((AbstractAction) actions_.get(ACTION_SUSPEND)).setEnabled(true);
+            //((AbstractAction) actions_.get(ACTION_RESUME)).setEnabled(false);
+        }
+    }
+
+    //--------------------------------------------------------------------------
+    // StartAction
+    //--------------------------------------------------------------------------
+    
     /**
      * StartAction starts the attached service and sets the state of the buttons
      * according to the next available set of state transitions.
