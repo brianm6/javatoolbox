@@ -218,6 +218,7 @@ public class UITestCase extends TestCase
      */
     protected void launchInPanel(JComponent c)
     {
+        throw new IllegalArgumentException("Not implemented");
     }
     
     
