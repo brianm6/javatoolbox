@@ -10,12 +10,14 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -33,6 +35,7 @@ import nu.xom.ParseException;
 import nu.xom.Serializer;
 
 import org.apache.commons.collections.SequencedHashMap;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import toolbox.log4j.SmartLogger;
@@ -413,6 +416,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         menubar.add(createFileMenu());
         menubar.add(lafManager_.createLookAndFeelMenu());
         menubar.add(createPreferencesMenu());
+        menubar.add(createLoggingMenu());
         return menubar;
     }
 
@@ -450,6 +454,32 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         menu.add(smoothFontsCheckBoxItem_);
         return menu;
     }
+
+	/**
+	 * Creates the Logging menu 
+	 * 
+	 * @return JMenu
+	 */
+	protected JMenu createLoggingMenu()
+	{
+		JMenu fileMenu = new JSmartMenu("Logging");
+		fileMenu.setMnemonic('L');
+		
+		ButtonGroup group = new ButtonGroup();
+		
+		group.add(new JSmartCheckBoxMenuItem(new SetLogLevelAction(Level.ALL)));
+		group.add(new JSmartCheckBoxMenuItem(new SetLogLevelAction(Level.DEBUG)));
+		group.add(new JSmartCheckBoxMenuItem(new SetLogLevelAction(Level.INFO)));
+		group.add(new JSmartCheckBoxMenuItem(new SetLogLevelAction(Level.WARN)));
+		group.add(new JSmartCheckBoxMenuItem(new SetLogLevelAction(Level.ERROR)));
+		group.add(new JSmartCheckBoxMenuItem(new SetLogLevelAction(Level.FATAL)));
+		group.add(new JSmartCheckBoxMenuItem(new SetLogLevelAction(Level.OFF)));
+
+		for (Enumeration e = group.getElements(); e.hasMoreElements();)
+		    fileMenu.add((Component) e.nextElement());
+		
+		return fileMenu;            
+	}
 
     /**
      * Determines if a plugin is active given its FQN
@@ -542,60 +572,6 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         {
             ExceptionUtil.handleUI(lfe, logger_);
         }
-
-
-//        // Restore look and feel
-//        String lafClass = XOMUtil.getStringAttribute(root, ATTR_LAF, null);
-//        String lafTheme = XOMUtil.getStringAttribute(root, ATTR_LAF_THEME, null);
-//
-//        if (!StringUtil.isNullOrEmpty(lafClass))
-//        {
-//            try
-//            {
-//                boolean found = false;
-//
-//                UIManager.LookAndFeelInfo[] infos = 
-//                    UIManager.getInstalledLookAndFeels();
-//
-//                for (int i=0; i<infos.length; i++)
-//                {
-//                    if (infos[i].getClassName().equals(lafClass))
-//                    {
-//                        found = true;
-//
-//                        if (lafClass.equals(SkinLookAndFeel.class.getName()))
-//                        {
-//                            found = true;
-//
-//                            WorkspaceAction sla = 
-//                                new SetSkinLAFAction(
-//                                    infos[i],
-//                                    (String) skinThemes_.get(lafTheme),
-//                                    lafTheme);
-//
-//                            sla.runAction(new ActionEvent(this,-1,""));
-//                            break;
-//        
-//                        }
-//                        else
-//                        {
-//                            WorkspaceAction sla = new SetLAFAction(infos[i]);
-//                            sla.runAction(new ActionEvent(this,-1,""));
-//                            break;
-//                        }
-//                    }
-//                }
-//
-//                if (!found)
-//                    logger_.warn("Look and Feel "+lafClass+" is not installed.");
-//            }
-//            catch (Exception e)
-//            {
-//                ExceptionUtil.handleUI(e, logger_);
-//            }   
-//        }
-//        else
-//            logger_.error("\n" + Banner.getBanner("Skipping LAF"));
     }       
 
     //--------------------------------------------------------------------------
@@ -857,7 +833,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     }
 
     //--------------------------------------------------------------------------
-    // Actions
+    // ExitAction
     //--------------------------------------------------------------------------
 
     /**
@@ -882,7 +858,11 @@ public class PluginWorkspace extends JFrame implements IPreferenced
             System.exit(0);
         }
     }
-    
+
+	//--------------------------------------------------------------------------
+	// PluginsAction
+	//--------------------------------------------------------------------------
+
     /**
      * Adds/removes plugins to/from the plugin frame
      */
@@ -900,6 +880,10 @@ public class PluginWorkspace extends JFrame implements IPreferenced
             dialog.setVisible(true);    
         }
     }
+
+	//--------------------------------------------------------------------------
+	// SavePreferencesAction
+	//--------------------------------------------------------------------------
 
     /**
      * Saves the preferences for the workspaces in addition to all the
@@ -921,6 +905,10 @@ public class PluginWorkspace extends JFrame implements IPreferenced
             savePrefs(prefs_);
         }
     }
+
+	//--------------------------------------------------------------------------
+	// GarbageCollectAction
+	//--------------------------------------------------------------------------
 
     /**
      * Triggers garbage collection
@@ -962,13 +950,17 @@ public class PluginWorkspace extends JFrame implements IPreferenced
                 "</html>");
         }
     }
-    
+
+	//--------------------------------------------------------------------------
+	// AntiAliasAction
+	//--------------------------------------------------------------------------
+
     /**
      * Toggles smooth fonts  
      */
     class AntiAliasAction extends AbstractAction
     {
-        public AntiAliasAction()
+        AntiAliasAction()
         {
             super("Smooth Fonts");
         }
@@ -985,4 +977,37 @@ public class PluginWorkspace extends JFrame implements IPreferenced
             PluginWorkspace.this.repaint();
         }
     }
+
+	//--------------------------------------------------------------------------
+	// SetLogLevelAction
+	//--------------------------------------------------------------------------
+
+	/**
+	 * Action to set the logging level
+	 */
+	class SetLogLevelAction extends AbstractAction
+	{
+		private Level level_;
+	    
+		/**
+		 * Creates a SetLogLevelAction
+		 * 
+		 * @param level Logging level to activate
+		 */
+		SetLogLevelAction(Level level)
+		{
+		    super(level.toString());
+			level_ = level;
+		}
+	    
+		/**
+		 * @see java.awt.event.ActionListener#actionPerformed(
+		 *      java.awt.event.ActionEvent)
+		 */
+		public void actionPerformed(ActionEvent arg0)
+		{
+		    Logger logger = Logger.getLogger("toolbox");
+		    logger.setLevel(level_);
+		}
+	}
 }
