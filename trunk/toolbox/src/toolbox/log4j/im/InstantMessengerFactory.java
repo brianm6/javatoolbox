@@ -10,6 +10,9 @@ public class InstantMessengerFactory
      * network.
      *
      * @param network Instant messaging network.
+     *         - yahoo
+     *         - msn
+     *         - aol / aim
      * @return InstantMessenger for the given instant messaging network.
      */
     public static InstantMessenger create(String network)
@@ -20,7 +23,7 @@ public class InstantMessengerFactory
         {
             im = new YahooMessenger();
         }
-        else if (network.equalsIgnoreCase("msg"))
+        else if (network.equalsIgnoreCase("msn"))
         {
             im = new MSNMessenger();
         }
