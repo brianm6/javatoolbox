@@ -13,6 +13,9 @@ import toolbox.util.ui.plugin.IStatusBar;
  */
 public class JSourceViewPlugin implements IPlugin
 {
+    /**
+     * Delegate JSourceView
+     */
     private JSourceView sourceView_;
     
     //--------------------------------------------------------------------------
