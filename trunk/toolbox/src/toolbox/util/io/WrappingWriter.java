@@ -234,7 +234,7 @@ public class WrappingWriter extends Writer
         } 
         catch(IOException e) 
         {
-            // Ignore
+            ;   // Ignore
         }
     }
 

@@ -107,7 +107,7 @@ public class StringInputStream extends InputStream
                 }
                 catch (InterruptedException ie) 
                 {
-                    // Ignore
+                    ;   // Ignore
                 }
             }
         }
