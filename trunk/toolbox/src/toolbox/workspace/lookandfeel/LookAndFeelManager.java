@@ -32,6 +32,7 @@ public class LookAndFeelManager
     // TODO: Added themes for Tiny Look and Feel
     // TODO: Fix resource loading for Skin LFs
     // TODO: Fix frame decoration for LAFs that don't support it
+    // TODO: Gracefully fail when toolbox-lookandfeel.jar is not on the classpath
        
     private static final Logger logger_ =
         Logger.getLogger(LookAndFeelManager.class);
