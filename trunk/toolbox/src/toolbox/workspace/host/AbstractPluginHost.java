@@ -1,9 +1,9 @@
 package toolbox.workspace.host;
 
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.apache.commons.collections.SequencedHashMap;
 import org.apache.log4j.Logger;
 
 import toolbox.workspace.IPlugin;
@@ -43,9 +43,10 @@ public abstract class AbstractPluginHost implements PluginHost
      */
     public void startup(Map props)
     {
-        logger_.debug("startup");
+        //logger_.debug("startup");
         
-        plugins_ = new SequencedHashMap();
+        // Make sure map is ordered by insertion.
+        plugins_ = new LinkedHashMap();
         init_ = props;
     }
 
