@@ -114,7 +114,7 @@ public class MonitoredInputStreamTest extends TestCase
             
             /**
              * @see toolbox.util.io.MonitoredInputStream.Listener#streamClosed(
-             *      toolbox.util.io.MonitoredInputStream)
+             *      MonitoredOutputStream)
              */
             public void streamClosed(MonitoredInputStream stream)
             {
@@ -172,7 +172,7 @@ public class MonitoredInputStreamTest extends TestCase
             
             /**
              * @see toolbox.util.io.MonitoredInputStream.Listener#streamClosed(
-             *      toolbox.util.io.MonitoredInputStream)
+             *      MonitoredOutputStream)
              */
             public void streamClosed(MonitoredInputStream stream)
             {
