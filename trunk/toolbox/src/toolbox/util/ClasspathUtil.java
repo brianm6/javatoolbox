@@ -14,17 +14,8 @@ import javax.swing.JTextArea;
 /**
  * Classpath Util
  */
-public class ClasspathUtil
+public final class ClasspathUtil
 {
-
-    /**
-     * Constructor for ClasspathUtil.
-     */
-    public ClasspathUtil()
-    {
-        super();
-    }
-
     /**
      * Entry point
      * 
@@ -34,6 +25,13 @@ public class ClasspathUtil
     {
         ClasspathUnwrapper gui = new ClasspathUnwrapper();
         gui.setVisible(true);   
+    }
+    
+    /**
+     * Constructor for ClasspathUtil.
+     */
+    private ClasspathUtil()
+    {
     }
     
     /**
