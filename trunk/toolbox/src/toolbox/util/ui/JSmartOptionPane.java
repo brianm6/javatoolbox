@@ -1162,11 +1162,11 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener,
 
         if (window instanceof Frame)
         {
-            dialog = new JDialog((Frame) window, title, true);
+            dialog = new JSmartDialog((Frame) window, title, true);
         }
         else
         {
-            dialog = new JDialog((Dialog) window, title, true);
+            dialog = new JSmartDialog((Dialog) window, title, true);
         }
 
         Container contentPane = dialog.getContentPane();
