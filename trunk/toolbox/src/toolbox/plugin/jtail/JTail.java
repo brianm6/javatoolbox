@@ -37,7 +37,7 @@ import toolbox.util.ui.JSmartOptionPane;
 import toolbox.util.ui.JSmartStatusBar;
 import toolbox.util.ui.font.FontSelectionDialog;
 import toolbox.util.ui.font.FontSelectionException;
-import toolbox.util.ui.font.FontSelectionPanel;
+import toolbox.util.ui.font.FontSelectionPane;
 import toolbox.util.ui.font.IFontDialogListener;
 
 /**
@@ -49,7 +49,6 @@ public class JTail extends JFrame
     private static final Category logger_ = 
         Category.getInstance(JTail.class);
 
-    
     private FileSelectionPane fileSelectionPane_;
     private JTabbedPane       tabbedPane_;
     private JSmartStatusBar   statusBar_;    
@@ -57,10 +56,12 @@ public class JTail extends JFrame
     private Map               tailMap_;
     private boolean           testMode_ = true;
 
-    // TODO: make factory 
+    /** Configuration manager **/
     private IConfigManager configManager_ = new ConfigManager();
     
+    /** JTail configuration information **/
     private IJTailConfig jtailConfig_;            
+        
         
     /**
      * Entry point 
@@ -210,7 +211,7 @@ public class JTail extends JFrame
 
          
     /**
-     * Loads properties from $HOME/.jtail.xml
+     * Loads properties (delegated to configuration manager)
      * 
      * @throws  IOException on I/O error
      */
@@ -221,8 +222,8 @@ public class JTail extends JFrame
     
     
     /**
-     * Saves the current configuration of all tail instances to 
-     * $HOME/.jtail.xml
+     * Saves the current configuration of all tail instances
+     * (delegated to configuration manager)
      */
     protected void saveConfiguration()
     {
@@ -530,7 +531,7 @@ public class JTail extends JFrame
          * 
          * @param  fontPanel  Font selection panel in the dialog box
          */
-        public void applyButtonPressed(FontSelectionPanel fontPanel)
+        public void applyButtonPressed(FontSelectionPane fontPanel)
         {
             try
             {
@@ -547,7 +548,7 @@ public class JTail extends JFrame
         /**
          *  Cancel button was pressed 
          */
-        public void cancelButtonPressed(FontSelectionPanel fontPanel)
+        public void cancelButtonPressed(FontSelectionPane fontPanel)
         {
             // Restore last font
             getSelectedTail().setTailFont(lastFont_);            
@@ -556,7 +557,7 @@ public class JTail extends JFrame
         /**
          * OK button was pressed
          */
-        public void okButtonPressed(FontSelectionPanel fontPanel)
+        public void okButtonPressed(FontSelectionPane fontPanel)
         {
             try
             {

@@ -10,14 +10,14 @@ public interface IFontDialogListener
 	 * 
 	 * @param  fontPanel  Font selection panel
 	 */
-    public void okButtonPressed(FontSelectionPanel fontPanel);
+    public void okButtonPressed(FontSelectionPane fontPanel);
     
 	/**
 	 * Called when the cancel button is pressed
 	 * 
 	 * @param  fontPanel  Font selection panel
 	 */
-    public void cancelButtonPressed(FontSelectionPanel fontPanel);
+    public void cancelButtonPressed(FontSelectionPane fontPanel);
     
     
    	/**
@@ -25,5 +25,5 @@ public interface IFontDialogListener
 	 * 
 	 * @param  fontPanel  Font selection panel
 	 */
-	public void applyButtonPressed(FontSelectionPanel fontPanel);
+	public void applyButtonPressed(FontSelectionPane fontPanel);
 }

@@ -52,9 +52,9 @@ import javax.swing.event.ListSelectionListener;
 
 
 /**
- * FontSelectionPanel
+ * FontSelectionPane
  */
-public class FontSelectionPanel extends JPanel
+public class FontSelectionPane extends JPanel
 {
     /** JList for font family */
     protected JList fontFamilyList_;
@@ -82,24 +82,24 @@ public class FontSelectionPanel extends JPanel
     //
     
     /**
-     * Like {@link #FontSelectionPanel(java.awt.Font)}, except an initialFont of 
+     * Like {@link #FontSelectionPane(java.awt.Font)}, except an initialFont of 
      * <code>null</code> will be used.
      */
-    public FontSelectionPanel()
+    public FontSelectionPane()
     {
         this(null);
     }
 
 
     /**
-     * Like {@link #FontSelectionPanel(java.awt.Font, String[], int[])}, except 
+     * Like {@link #FontSelectionPane(java.awt.Font, String[], int[])}, except 
      * that a default list of styles{"Plain", "Bold", "Italic", "Bold Italic"}
      * and font sizes {8, 9, 10, 12, 14} will be used.
      * 
      * @param initialFont see 
-     *        @link #FontSelectionPanel(java.awt.Font, String[], int[])}
+     *        @link #FontSelectionPane(java.awt.Font, String[], int[])}
      */
-    public FontSelectionPanel(Font initialFont)
+    public FontSelectionPane(Font initialFont)
     {
         this(initialFont,
         
@@ -110,14 +110,14 @@ public class FontSelectionPanel extends JPanel
 
 
     /**
-     * Construct a new FontSelectionPanel whose family, style & size widget
+     * Construct a new FontSelectionPane whose family, style & size widget
      * selections are set according to the supplied initial Font. Additionally,
      * the style & size values available will be dictated by the values in
      * styleDisplayNames and predefinedSizes, respectively.
      * 
      * @param initialFont 
      * 
-     *      Newly constructed FontSelectionPanel's family, style, and size 
+     *      Newly constructed FontSelectionPane's family, style, and size 
      *      widgets will be set according to this value. This value may be 
      *      null, in which case an initial font will be automatically created.
      *      This auto-created font will have a family, style, and size 
@@ -136,7 +136,7 @@ public class FontSelectionPanel extends JPanel
      *      available to the user as a convenience for populating the font 
      *      size text field; all values must be greater than 0.
      */    
-    public FontSelectionPanel(Font initialFont, String[] styleDisplayNames,
+    public FontSelectionPane(Font initialFont, String[] styleDisplayNames,
         int[] predefinedSizes)
     {
         
@@ -303,9 +303,9 @@ public class FontSelectionPanel extends JPanel
 
 
     /**
-     * Adds an Observer to this FontSelectionPanel; the supplied Observer will 
+     * Adds an Observer to this FontSelectionPane; the supplied Observer will 
      * have its update() method called any time the Font currently specified
-     * in the FontSelectionPanel changes. (The <tt>arg</tt> supplied to the
+     * in the FontSelectionPane changes. (The <tt>arg</tt> supplied to the
      * Observer will be <tt>null</tt>.)
      * 
      * @param   observer   Observer to be added
@@ -318,7 +318,7 @@ public class FontSelectionPanel extends JPanel
     
     
     /**
-     * Removes an Observer from this FontSelectionPanel.
+     * Removes an Observer from this FontSelectionPane.
      * 
      * @param   observer   Observer to be removed
      * @see     java.util.Observer
@@ -412,7 +412,7 @@ public class FontSelectionPanel extends JPanel
      * @return Currently selected font.
      * @throws FontSelectionException thrown if no valid font is currently 
      *         specified; the actual class of the exception thrown may be
-     *         {@link FontSelectionPanel.FontSelectionException},
+     *         {@link FontSelectionPane.FontSelectionException},
      */
     public Font getSelectedFont() throws FontSelectionException
     {
@@ -664,7 +664,7 @@ public class FontSelectionPanel extends JPanel
                     (String) fontFamilyList_.getSelectedValue());
                     
                 phraseCanvas_.setFont(
-                    FontSelectionPanel.this.getSelectedFont());
+                    FontSelectionPane.this.getSelectedFont());
             }
             catch (FontSelectionException e)
             {

@@ -27,7 +27,7 @@ public class FontSelectionDialog extends JDialog
     private  static final Category logger_ = 
         Category.getInstance(FontSelectionDialog.class);
         
-    private  FontSelectionPanel fontPanel_;
+    private  FontSelectionPane fontPanel_;
     private  JButton okButton_;
     private  JButton cancelButton_;
     private  JButton applyButton_;
@@ -113,7 +113,7 @@ public class FontSelectionDialog extends JDialog
     protected void buildView()
     {
         getContentPane().setLayout(new BorderLayout());
-        fontPanel_ = new FontSelectionPanel();
+        fontPanel_ = new FontSelectionPane();
         getContentPane().add(BorderLayout.CENTER, fontPanel_);
 
         okButton_     = new JButton(new OKAction());

@@ -5,7 +5,7 @@ import junit.framework.TestCase;
 
 import org.apache.log4j.Category;
 import toolbox.util.ui.font.FontSelectionDialog;
-import toolbox.util.ui.font.FontSelectionPanel;
+import toolbox.util.ui.font.FontSelectionPane;
 import toolbox.util.ui.font.IFontDialogListener;
 
 /**
@@ -37,23 +37,23 @@ public class FontSelectionDialogTest extends TestCase
     }
 
     /**
-     * Test for void FontSelectionPanel()
+     * Test for void FontSelectionPane()
      */
     public void testFontSelectionPanel()
     {
         IFontDialogListener fsdListener = new IFontDialogListener()
         {
-            public void okButtonPressed(FontSelectionPanel fontPanel)
+            public void okButtonPressed(FontSelectionPane fontPanel)
             {
                 logger_.info("OK button pressed");                
             }
 
-            public void cancelButtonPressed(FontSelectionPanel fontPanel)
+            public void cancelButtonPressed(FontSelectionPane fontPanel)
             {
                 logger_.info("Cancel button pressed");                
             }
 
-            public void applyButtonPressed(FontSelectionPanel fontPanel)
+            public void applyButtonPressed(FontSelectionPane fontPanel)
             {
                 logger_.info("Apply button pressed");
             }
