@@ -42,6 +42,7 @@ import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.NativeBrowser;
 import toolbox.util.ui.layout.GridLayoutPlus;
 import toolbox.util.ui.layout.ParagraphLayout;
+import toolbox.util.ui.textarea.ClearAction;
 import toolbox.workspace.IPlugin;
 import toolbox.workspace.IStatusBar;
 import toolbox.workspace.PluginWorkspace;
@@ -245,7 +246,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         b.add(new JSmartButton(new LogAction()));
         b.add(new JSmartButton(new GenerateStatsAction()));
         b.add(new JSmartButton(new LaunchAction()));
-        b.add(new JSmartButton(outputArea_.new ClearAction()));
+        b.add(new JSmartButton(new ClearAction(outputArea_)));
         
         JPanel base = new JPanel(new BorderLayout());
         base.add(BorderLayout.WEST, p);

@@ -47,6 +47,7 @@ import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.SmartAction;
 import toolbox.util.ui.flippane.JFlipPane;
+import toolbox.util.ui.textarea.ClearAction;
 import toolbox.workspace.IPlugin;
 import toolbox.workspace.IStatusBar;
 import toolbox.workspace.PluginWorkspace;
@@ -144,7 +145,7 @@ public class TextToolsPlugin extends JPanel implements IPlugin
         
         // Buttons 
         JPanel buttonPanel = new JPanel(new FlowLayout());
-        buttonPanel.add(new JSmartButton(outputArea_.new ClearAction()));
+        buttonPanel.add(new JSmartButton(new ClearAction(outputArea_)));
         buttonPanel.add(new JSmartButton(new SortAction()));
         buttonPanel.add(new JSmartButton(new BannerAction()));
         buttonPanel.add(new JSmartButton(new QuoteAction()));

@@ -338,7 +338,7 @@ public class TunnelPane extends JPanel implements IPreferenced
         tb.add(JHeaderPanel.createButton(
             ImageCache.getIcon(ImageCache.IMAGE_CLEAR),
             "Clear",
-            area.new ClearAction()));
+            new ClearAction()));
         
         return tb;
     }

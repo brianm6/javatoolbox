@@ -48,6 +48,7 @@ import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.SmartAction;
+import toolbox.util.ui.textarea.ClearAction;
 import toolbox.workspace.IStatusBar;
 
 /**
@@ -288,7 +289,7 @@ public class TailPane extends JPanel
         tailArea_ = new JSmartTextArea("");
         tailArea_.setFont(FontUtil.getPreferredMonoFont());
         
-        JButton clearButton = new JSmartButton(tailArea_.new ClearAction());
+        JButton clearButton = new JSmartButton(new ClearAction(tailArea_));
         pauseButton_ = new JSmartButton(new PauseUnpauseAction());
         
         String startMode =  

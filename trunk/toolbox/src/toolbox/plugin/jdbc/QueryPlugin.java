@@ -52,6 +52,7 @@ import toolbox.util.ui.JSmartPopupMenu;
 import toolbox.util.ui.JSmartSplitPane;
 import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.flippane.JFlipPane;
+import toolbox.util.ui.textarea.ClearAction;
 import toolbox.workspace.IPlugin;
 import toolbox.workspace.IStatusBar;
 import toolbox.workspace.PluginWorkspace;
@@ -307,7 +308,7 @@ public class QueryPlugin extends JPanel implements IPlugin
         JButton clear = JHeaderPanel.createButton(
                 ImageCache.getIcon(ImageCache.IMAGE_CLEAR),
                 "Clear results",
-                resultsArea_.new ClearAction());
+                new ClearAction(resultsArea_));
         
         JButton listTables = JHeaderPanel.createButton(
                 ImageCache.getIcon(ImageCache.IMAGE_TABLES),

@@ -525,45 +525,4 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
             setLineWrap(wrapLinesCheckBox_.isSelected());
         }
     }
-
-    //--------------------------------------------------------------------------
-    // ClearAction
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Clears the text area.
-     */
-    public class ClearAction extends AbstractAction
-    {
-        /**
-         * Creates a ClearAction.
-         */
-        public ClearAction()
-        {
-            this("Clear");
-        }
-        
-        
-        /**
-         * Creates a ClearAction.
-         * 
-         * @param name Label of the action target.
-         */
-        public ClearAction(String name)
-        {
-            super(name);
-            putValue(MNEMONIC_KEY, new Integer('C'));
-            putValue(SHORT_DESCRIPTION, "Clears the output");
-        }
-        
-        
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
-         */
-        public void actionPerformed(ActionEvent e)
-        {
-            setText("");
-        }
-    }
 }
