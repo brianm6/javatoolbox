@@ -14,12 +14,16 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 
+import com.jgoodies.forms.builder.DefaultFormBuilder;
+import com.jgoodies.forms.layout.FormLayout;
+
 import nu.xom.Attribute;
 import nu.xom.Element;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
+import toolbox.forms.SmartComponentFactory;
 import toolbox.tunnel.TcpTunnel;
 import toolbox.tunnel.TcpTunnelListener;
 import toolbox.util.FontUtil;
@@ -28,13 +32,11 @@ import toolbox.util.io.JTextAreaOutputStream;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JHeaderPanel;
 import toolbox.util.ui.JSmartButton;
-import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartSplitPane;
 import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.SmartAction;
 import toolbox.util.ui.flippane.JFlipPane;
-import toolbox.util.ui.layout.ParagraphLayout;
 import toolbox.util.ui.textarea.action.AutoScrollAction;
 import toolbox.util.ui.textarea.action.LineWrapAction;
 import toolbox.workspace.IPreferenced;
@@ -276,25 +278,6 @@ public class TunnelPane extends JPanel implements IPreferenced
         actionPanel.add(BorderLayout.CENTER, buttonPanel);
         add(BorderLayout.SOUTH, actionPanel);
 
-        // West
-        JPanel configPanel = new JPanel(new ParagraphLayout());
-
-        configPanel.add(new JSmartLabel("Local Tunnel Port"),
-            ParagraphLayout.NEW_PARAGRAPH);
-        configPanel.add(listenPortField_ = new JSmartTextField(10));
-
-        configPanel.add(new JSmartLabel("Remote Host"),
-            ParagraphLayout.NEW_PARAGRAPH);
-        configPanel.add(remoteHostField_ = new JSmartTextField(10));
-
-        configPanel.add(new JSmartLabel("Remote Port"),
-            ParagraphLayout.NEW_PARAGRAPH);
-        configPanel.add(remotePortField_ = new JSmartTextField(10));
-
-        configPanel.add(new JSmartLabel("Max Capacity"),
-            ParagraphLayout.NEW_PARAGRAPH);
-        configPanel.add(capacityField_ = new JSmartTextField(10));
-
         configFlipPane_ = new JFlipPane(JFlipPane.LEFT);
 
         configFlipPane_.addFlipper(
@@ -304,7 +287,7 @@ public class TunnelPane extends JPanel implements IPreferenced
                 ImageCache.getIcon(ImageCache.IMAGE_CONFIG),
                 "Config",
                 null,
-                configPanel));
+                buildConfigView()));
 
         configFlipPane_.setExpanded(false);
 
@@ -324,6 +307,38 @@ public class TunnelPane extends JPanel implements IPreferenced
 
 
     /**
+     * Configuration view for the tcp tunnel.
+     * 
+     * @return JPanel
+     */
+    protected JPanel buildConfigView()
+    {
+        FormLayout layout = new FormLayout("r:p:n, p, f:p:g", "");
+        DefaultFormBuilder builder = new DefaultFormBuilder(layout);
+        builder.setComponentFactory(SmartComponentFactory.getInstance());
+        builder.setDefaultDialogBorder();
+
+        listenPortField_ = new JSmartTextField(10);
+        builder.append("Local Tunnel Port", listenPortField_);
+        builder.nextLine();
+        
+        remoteHostField_ = new JSmartTextField(10);
+        builder.append("Remote Host", remoteHostField_);
+        builder.nextLine();
+
+        remotePortField_ = new JSmartTextField(10);
+        builder.append("Remote Port", remotePortField_);
+        builder.nextLine();
+
+        capacityField_ = new JSmartTextField(10);
+        builder.append("Max Capacity", capacityField_);
+        builder.nextLine();
+
+        return builder.getPanel();
+    }
+
+    
+    /**
      * Creates the common toolbar that is used in the input and output text
      * areas.
      *
@@ -335,29 +350,22 @@ public class TunnelPane extends JPanel implements IPreferenced
         JToolBar tb = JHeaderPanel.createToolBar();
 
         tb.add(JHeaderPanel.createToggleButton(
-            ImageCache.getIcon(ImageCache.IMAGE_LINEWRAP),
-            "Wrap Lines",
+            new SupressBinaryAction(),
+            area,
+            "supress"));
+        
+        tb.add(JHeaderPanel.createToggleButton(
             new LineWrapAction(area),
             area,
             "lineWrap"));
 
         tb.add(JHeaderPanel.createToggleButton(
-            ImageCache.getIcon(ImageCache.IMAGE_LOCK),
-            "Scroll Lock",
             new AutoScrollAction(area),
             area,
             "autoscroll"));
 
         tb.add(JHeaderPanel.createButton(
-            ImageCache.getIcon(ImageCache.IMAGE_CLEAR),
-            "Clear",
-            new ClearAction()));
-
-        // TODO: link to property change
-        tb.add(JHeaderPanel.createToggleButton(
-            ImageCache.getIcon(ImageCache.IMAGE_FUNNEL),
-            "Supress Binary Data",
-            new SupressBinaryAction()));
+            new toolbox.util.ui.textarea.action.ClearAction(area)));
 
         return tb;
     }
@@ -451,6 +459,7 @@ public class TunnelPane extends JPanel implements IPreferenced
         ClearAction()
         {
             super("Clear", ImageCache.getIcon(ImageCache.IMAGE_CLEAR));
+            putValue(SHORT_DESCRIPTION, "Clears both textareas");
         }
 
 
@@ -484,9 +493,8 @@ public class TunnelPane extends JPanel implements IPreferenced
         StartTunnelAction()
         {
             super("Start", true, false, null);
-
-            putValue(AbstractAction.SMALL_ICON,
-                ImageCache.getIcon(ImageCache.IMAGE_PLAY));
+            putValue(SMALL_ICON, ImageCache.getIcon(ImageCache.IMAGE_PLAY));
+            putValue(SHORT_DESCRIPTION, "Starts the tunnel");
         }
 
         //----------------------------------------------------------------------
@@ -592,6 +600,7 @@ public class TunnelPane extends JPanel implements IPreferenced
         StopTunnelAction()
         {
             super("Stop", ImageCache.getIcon(ImageCache.IMAGE_STOP));
+            putValue(SHORT_DESCRIPTION, "Stops the tunnel");
         }
 
 
@@ -614,6 +623,13 @@ public class TunnelPane extends JPanel implements IPreferenced
      */
     public class SupressBinaryAction extends AbstractAction
     {
+        public SupressBinaryAction()
+        {
+            super(null, ImageCache.getIcon(ImageCache.IMAGE_FUNNEL));
+            putValue(SHORT_DESCRIPTION, "Supresses Binary Data");
+        }
+        
+        
         /**
          * @see java.awt.event.ActionListener#actionPerformed(
          *      java.awt.event.ActionEvent)
