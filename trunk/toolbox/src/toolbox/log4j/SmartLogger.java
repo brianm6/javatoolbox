@@ -10,6 +10,8 @@ import toolbox.util.StringUtil;
  */
 public class SmartLogger
 {
+    private static final Logger logger_ = Logger.getLogger(SmartLogger.class);
+    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -56,12 +58,34 @@ public class SmartLogger
      * @param  logger  Logger to use
      * @param  msg     Multiline object to log
      * 
+     * TODO: fix this pile of mess!
      */
     public static void log(Logger logger, Priority priority, Object msg)
     {
-        String[] lines = StringUtil.tokenize(msg.toString(), "\n");
+        String[] lines = StringUtil.tokenize(msg.toString(), "\n", true);
+        logger_.debug("NumLines: " + lines.length);
         
-        for (int i=0; i<lines.length; i++)
-            logger.log(priority, lines[i]);
+        
+        if (msg.toString().trim().length() == 0)
+        {
+            logger.log(priority, "");
+            return;
+        }
+        
+        for (int i=0; i<lines.length; )
+        {
+            if ( i > 0 && 
+                      lines[i].equals("\n") && 
+                      lines[i-1].equals("\n"))
+            {
+                logger.log(priority, "");
+                i+=1;
+            }
+            else
+            {
+                logger.log(priority, lines[i]);
+                i+=2;
+            }
+        }
     }
 }
