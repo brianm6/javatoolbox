@@ -19,15 +19,15 @@ import org.apache.log4j.Logger;
 import toolbox.util.ThreadUtil;
 
 /**
- * Tail enables the following of a live stream/reader/file. APIs are 
- * exposed to facilitate start/stop/pause/wait functionality in 
- * addition to adding or removing multiple listeners that report on 
- * the lifecycle of the tail. One or more outputstreams/writers can 
- * also be specified as the destination for the output of the tail.
+ * Tail enables the following of a live stream/reader/file. APIs are exposed to 
+ * facilitate start/stop/pause/wait functionality in addition to adding or 
+ * removing multiple listeners that report on the lifecycle of the tail. One or 
+ * more outputstreams/writers can also be specified as the destination for the 
+ * output of the tail.
  */
 public class Tail implements Runnable
 {
-    /** Logger **/
+    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(Tail.class);
     
@@ -99,8 +99,8 @@ public class Tail implements Runnable
     /**
      * Tails the given file
      * 
-     * @param  filename  File to tail
-     * @throws FileNotFoundException if file not found
+     * @param   filename  File to tail
+     * @throws  FileNotFoundException if file not found
      */
     public void setTailFile(String filename) 
         throws FileNotFoundException
@@ -112,8 +112,8 @@ public class Tail implements Runnable
     /**
      * Tails the given file
      * 
-     * @param  f  File to tail
-     * @throws FileNotFoundException if file not found
+     * @param   f  File to tail
+     * @throws  FileNotFoundException if file not found
      */
     public void setTailFile(File f) throws FileNotFoundException
     {
@@ -144,8 +144,8 @@ public class Tail implements Runnable
 
     
     /**
-     * @return  True if the tail is running, false otherwise. 
-     *           This has no bearing on whether the tail is paused or not
+     * @return  True if the tail is running, false otherwise. This has no 
+     *          bearing on whether the tail is paused or not
      */
     public boolean isAlive()
     {
@@ -154,9 +154,9 @@ public class Tail implements Runnable
     
     
     /**
-     * Starts tail
+     * Starts the tail
      * 
-     * @throws FileNotFoundException on file error
+     * @throws  FileNotFoundException on file error
      */
     public void start() throws FileNotFoundException
     {
@@ -173,7 +173,7 @@ public class Tail implements Runnable
 
 
     /**
-     * Stops tail
+     * Stops the tail
      */
     public void stop()
     {
@@ -245,15 +245,6 @@ public class Tail implements Runnable
 
 
     /**
-     * @param  listener   Listener to add
-     */
-    public void addTailListener(ITailListener listener)
-    {
-        listeners_.add(listener);
-    }
-
-
-    /**
      * @param  writer  Writer to add
      */
     public void addWriter(Writer writer)
@@ -262,15 +253,6 @@ public class Tail implements Runnable
     }
 
     
-    /**
-     * @param  listener  Listener to remove
-     */
-    public void removeTailListener(ITailListener listener)
-    {
-        listeners_.remove(listener);
-    }
-
-
     /**
      * @param  os  OutputStream to add
      */
@@ -286,17 +268,6 @@ public class Tail implements Runnable
     public void removeOutputStream(OutputStream os)
     {
         streams_.remove(os);
-    }
-
-    
-    /**
-     * @return Number of listeners of each type
-     */
-    public String toString()
-    {
-        return "Listeners = " + listeners_.size() + "\n" + 
-               "Streams   = " + streams_.size() + "\n" + 
-               "Writers   = " + writers_.size() + "\n";
     }
     
     
@@ -320,6 +291,20 @@ public class Tail implements Runnable
     }
 
     //--------------------------------------------------------------------------
+    // Overridden from java.lang.Object
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @return Number of listeners of each type
+     */
+    public String toString()
+    {
+        return "Listeners = " + listeners_.size() + "\n" + 
+               "Streams   = " + streams_.size() + "\n" + 
+               "Writers   = " + writers_.size() + "\n";
+    }
+
+    //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
 
@@ -328,7 +313,7 @@ public class Tail implements Runnable
      */
     protected void checkPaused()
     {
-        /* loop de loop while paused */
+        // Loop de loop while paused
         while (paused_)
         {
             fireTailPaused();
@@ -340,10 +325,11 @@ public class Tail implements Runnable
         }
     }
 
+
     /**
-     * Sets the file.
+     * Sets the tail file
      * 
-     * @param file The file to set
+     * @param  file  File to tail
      */
     protected void setFile(File file)
     {
@@ -376,7 +362,7 @@ public class Tail implements Runnable
     /**
      * Connects to the provided stream source
      * 
-     * @throws FileNotFoundException
+     * @throws  FileNotFoundException if file not found
      */
     protected void connect() throws FileNotFoundException
     {
@@ -394,6 +380,24 @@ public class Tail implements Runnable
     //--------------------------------------------------------------------------
     // Event Listener Support
     //--------------------------------------------------------------------------
+
+    /**
+     * @param  listener   Listener to add
+     */
+    public void addTailListener(ITailListener listener)
+    {
+        listeners_.add(listener);
+    }
+
+
+    /**
+     * @param  listener  Listener to remove
+     */
+    public void removeTailListener(ITailListener listener)
+    {
+        listeners_.remove(listener);
+    }
+
     
     /**
      * Fires event for availability of the next line of the tail

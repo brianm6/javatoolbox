@@ -19,6 +19,10 @@ public class JTcpTunnelPlugin implements IPlugin
      */
     private JTcpTunnelPane jtcpTunnelPane_;
     
+    //--------------------------------------------------------------------------
+    // Interface IPlugin
+    //--------------------------------------------------------------------------
+    
     /**
      * @see toolbox.util.ui.plugin.IPlugin#getName()
      */

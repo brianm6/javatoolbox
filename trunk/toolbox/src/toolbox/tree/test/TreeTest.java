@@ -17,7 +17,7 @@ import toolbox.util.StringUtil;
  */
 public class TreeTest extends TestCase
 {
-    /** Logger **/
+    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(TreeTest.class);
     
@@ -29,7 +29,7 @@ public class TreeTest extends TestCase
     /**
      * Entrypoint
      * 
-     * @param  args  Args
+     * @param  args  None recognized
      */
     public static void main(String[] args)
     {

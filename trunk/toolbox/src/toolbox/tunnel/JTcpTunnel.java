@@ -59,7 +59,7 @@ public class JTcpTunnel extends JFrame
     /**
      * Entry point
      * 
-     * @param   args   Args
+     * @param   args   [listen port, tunnel host, tunnel port]
      * @throws  Exception on error
      */
     public static void main(String[] args) throws Exception
@@ -98,9 +98,9 @@ public class JTcpTunnel extends JFrame
     /**
      * Creates a JTCPTunnel with the given parameters
      * 
-     * @param listenPort  Port to listen on
-     * @param tunnelHost  Host to tunnel to
-     * @param tunnelPort  Port to tunnel to
+     * @param  listenPort  Port to listen on
+     * @param  tunnelHost  Host to tunnel to
+     * @param  tunnelPort  Port to tunnel to
      */
     public JTcpTunnel(int listenPort, String tunnelHost, int tunnelPort)
     {

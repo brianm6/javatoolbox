@@ -11,7 +11,7 @@ import toolbox.util.ElapsedTime;
  */
 public class BlockingQueue
 {
-    /** Logger **/
+    /** Logger */
     private static final Logger logger_ =
         Logger.getLogger(BlockingQueue.class);
         

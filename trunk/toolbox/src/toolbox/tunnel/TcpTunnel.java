@@ -7,9 +7,8 @@ import java.net.Socket;
 import org.apache.log4j.Logger;
 
 /**
- * A TcpTunnel object listens on the given port,
- * and once Start is pressed, will forward all bytes
- * to the given host and port.
+ * A TcpTunnel object listens on the given port, and once Start is pressed, 
+ * will forward all bytes to the given host and port.
  */
 public class TcpTunnel
 {

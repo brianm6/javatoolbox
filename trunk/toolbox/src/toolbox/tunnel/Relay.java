@@ -26,8 +26,8 @@ public class Relay extends Thread
     /**
      * Creates a new relay
      * 
-     * @param  in  Input stream
-     * @param  out Output stream
+     * @param  in   Input stream
+     * @param  out  Output stream
      */
     public Relay(InputStream in, OutputStream out)
     {
@@ -38,9 +38,9 @@ public class Relay extends Thread
     /**
      * Creates a new relay
      * 
-     * @param  in       Input stream
-     * @param  out      Output stream
-     * @param  ta       Textarea
+     * @param  in   Input stream
+     * @param  out  Output stream
+     * @param  ta   Textarea
      */
     public Relay(InputStream in, OutputStream out, JTextArea ta)
     {

@@ -21,14 +21,14 @@ import toolbox.util.io.StringOutputStream;
 public class TailTest extends TestCase
 {
     
-    /** Logger **/
+    /** Logger */
     public static final Logger logger_ =
         Logger.getLogger(TailTest.class);
 
     /**
      * Entrypoint
      * 
-     * @param  args  Args
+     * @param  args  None recognized
      */
     public static void main(String[] args)
     {
@@ -49,6 +49,9 @@ public class TailTest extends TestCase
         super(name);
     }
     
+    //--------------------------------------------------------------------------
+    // Unit Tests
+    //--------------------------------------------------------------------------
     
     /**
      * Tests tail using a reader
@@ -85,6 +88,9 @@ public class TailTest extends TestCase
         ThreadUtil.sleep(2000);
     }
     
+    //--------------------------------------------------------------------------
+    // Helpers
+    //--------------------------------------------------------------------------
     
     /**
      * Writes output to a writer in a delayed fashion
@@ -121,9 +127,8 @@ public class TailTest extends TestCase
  */
 class TestTailListener implements ITailListener
 {
-    /** Logger **/
+    /** Logger */
     private static final Logger logger_ = TailTest.logger_;
-        //Logger.getLogger(TestTailListener.class);
         
     /**
      * Next line is available

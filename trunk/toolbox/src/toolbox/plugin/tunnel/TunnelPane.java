@@ -66,9 +66,9 @@ public class JTcpTunnelPane extends JPanel
     /**
      * Creates a JTCPTunnel with the given parameters
      * 
-     * @param listenPort  Port to listen on
-     * @param tunnelHost  Host to tunnel to
-     * @param tunnelPort  Port to tunnel to
+     * @param  listenPort  Port to listen on
+     * @param  tunnelHost  Host to tunnel to
+     * @param  tunnelPort  Port to tunnel to
      */
     public JTcpTunnelPane(int listenPort, String tunnelHost, int tunnelPort)
     {
@@ -322,8 +322,6 @@ public class JTcpTunnelPane extends JPanel
             {
                 JSmartOptionPane.showExceptionMessageDialog(
                     JTcpTunnelPane.this, ioe);
-                    
-                //System.exit(1);
             }
 
             while (true)
