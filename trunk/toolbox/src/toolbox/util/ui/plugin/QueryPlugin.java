@@ -44,13 +44,15 @@ public class QueryPlugin extends JPanel implements IPlugin
     public static final Logger logger_ =
         Logger.getLogger(QueryPlugin.class);   
 
-    /** 
-     * Key to the history of SQL statements
-     */
+    /** Property key for history */
     public static final String KEY_HISTORY  = "query.plugin.history";
+    /** Property key for driver name */
     public static final String KEY_DRIVER   = "query.plugin.driver";
+    /** Property key for driver URL */
     public static final String KEY_URL      = "query.plugin.url";
+    /** Property key for user */
     public static final String KEY_USER     = "query.plugin.user";
+    /** Property key for password */
     public static final String KEY_PASSWORD = "query.plugin.password";
     
     /**
