@@ -34,12 +34,16 @@ import org.apache.log4j.Logger;
 public final class SwingUtil
 {
     private static final Logger logger_ = 
-    	Logger.getLogger(SwingUtil.class);
+        Logger.getLogger(SwingUtil.class);
 
-    /** Preferred monospaced font */
+    /** 
+     * Preferred monospaced font 
+     */
     private static Font monofont_;
     
-    /** Preferred serif font */
+    /** 
+     * Preferred serif font 
+     */
     private static Font serifFont_;
 
     //--------------------------------------------------------------------------
@@ -76,6 +80,15 @@ public final class SwingUtil
             
         UIManager.installLookAndFeel("TinyLookAndFeel", 
             "de.muntjak.tinylookandfeel.TinyLookAndFeel");
+        
+        //UIManager.installLookAndFeel("Oyoaha",    
+        //    "com.oyoaha.swing.plaf.oyoaha.OyoahaLookAndFeel");
+
+
+        //SlafLookAndFeel.setCurrentTheme("Edbgruppen");
+        
+        //UIManager.installLookAndFeel("Slaf",    
+        //    "com.memoire.slaf.SlafLookAndFeel");                        
     }
 
     //--------------------------------------------------------------------------
@@ -96,9 +109,9 @@ public final class SwingUtil
     /**
      * Sets the size of a window to a given percentage of the users desktop
      *
-     * @param  w               Window to size
-     * @param  percentWidth    Percent width from 1 to 100
-     * @param  percentHeight   Percent height from 1 to 100
+     * @param w Window to size
+     * @param percentWidth Percent width from 1 to 100
+     * @param percentHeight Percent height from 1 to 100
      */
     public static void setWindowSizeAsPercentage(Window w, int percentWidth,
         int percentHeight)
@@ -116,7 +129,7 @@ public final class SwingUtil
     /**
      * Moves the window to the center of the screen
      * 
-     * @param  w  Window to move
+     * @param w Window to move
      */
     public static void centerWindow(Window w)
     {
@@ -132,8 +145,8 @@ public final class SwingUtil
     /**
      * Centers a child window relative to its parent window
      * 
-     * @param  parent  Parent window
-     * @param  child   Child window
+     * @param parent Parent window
+     * @param child Child window
      */
     public static void centerWindow(Window parent, Window child)
     {
@@ -149,11 +162,11 @@ public final class SwingUtil
     /**
      * Finds the frame for a given component. 
      * 
-     * @param   component  Component to find parent frame for
-     * @return  Frame that component is a child of or null if the component
-     *          does not have a parent frame or if the parent frame is not
-     *          a Frame (could be a Dialog).
-     * @see     javax.swing.SwingUtilities#getWindowAncestor(Component)
+     * @param component  Component to find parent frame for
+     * @return Frame that component is a child of or null if the component
+     * does not have a parent frame or if the parent frame is not
+     * a Frame (could be a Dialog).
+     * @see javax.swing.SwingUtilities#getWindowAncestor(Component)
      */
     public static Frame getFrameAncestor(Component component)
     {
@@ -171,7 +184,7 @@ public final class SwingUtil
     /**
      * Sets the cursor to the default cursor on the given component
      * 
-     * @param  c  Component
+     * @param c Component
      */
     public static void setDefaultCursor(Component c)
     {
@@ -188,7 +201,7 @@ public final class SwingUtil
     /**
      * Sets the cursor to the wait cursor on the given component
      * 
-     * @param  c  Component
+     * @param c Component
      */
     public static int setWaitCursor(Component c)
     {
@@ -210,7 +223,9 @@ public final class SwingUtil
     //--------------------------------------------------------------------------
         
     /**
-     * @return Monospaced font
+     * Returns the preferred monospaced font available on the system.
+     * 
+     * @return Font
      */
     public static Font getPreferredMonoFont()
     {
@@ -255,7 +270,9 @@ public final class SwingUtil
     }
 
     /**
-     * @return Preferred variable text font
+     * Returns the preferred variable text font available on the system.
+     * 
+     * @return Font
      */
     public static Font getPreferredSerifFont()
     {
@@ -379,7 +396,7 @@ public final class SwingUtil
     /** 
      * Tiles internal frames upon the desktop. 
      * 
-     * @param  desktop  Desktop on which to tile windows
+     * @param desktop Desktop on which to tile windows
      * 
      * <pre>
      * 
@@ -477,7 +494,7 @@ public final class SwingUtil
     /**
      * Cascades all internal frames on a desktop
      * 
-     * @param  desktop  Desktop on with to cascade all internal frames
+     * @param desktop Desktop on with to cascade all internal frames
      */
     public static void cascade(JDesktopPane desktop)
     {
@@ -505,10 +522,10 @@ public final class SwingUtil
      * Cascades the given internal frame based upon the current number 
      * of internal frames
      *
-     * @param  desktop      Desktop
-     * @param  frame        Internal frame to cascade
+     * @param desktop Desktop
+     * @param frame Internal frame to cascade
      * @return Point object representing the location assigned to the 
-     *         internal frame upon the virtual desktop
+     * internal frame upon the virtual desktop
      */
     public static Point cascade(JDesktopPane desktop,JInternalFrame frame)
     {
@@ -518,12 +535,11 @@ public final class SwingUtil
     /**
      * Cascades the given internal frame based upon supplied count
      *
-     * @param   desktop     Desktop upon which frame is visible
-     * @param   f           Internal frame to cascade
-     * @param   count       Count to use in cascading the internal frame
-     * 
-     * @return  Point object representing the location assigned to the internal 
-     *          frame upon the virtual desktop
+     * @param desktop Desktop upon which frame is visible
+     * @param f Internal frame to cascade
+     * @param count Count to use in cascading the internal frame
+     * @return Point object representing the location assigned to the internal 
+     * frame upon the virtual desktop
      */
     private static Point cascade(JDesktopPane desktop, JInternalFrame f, 
         int count)
@@ -576,7 +592,7 @@ public final class SwingUtil
     /**
      * Wraps a component in a JPanel using a flowlayout
      *
-     * @param  component  Component to wrap
+     * @param component Component to wrap
      * @return JPanel 
      */    
     public static JPanel wrap(JComponent component)
@@ -589,7 +605,7 @@ public final class SwingUtil
     /**
      * Wraps a component tightly in a JPanel using BorderLayout
      *
-     * @param  component  Component to wrap
+     * @param component Component to wrap
      * @return JPanel 
      */    
     public static JPanel wrapTight(JComponent component)
@@ -602,9 +618,9 @@ public final class SwingUtil
     /**
      * Turns on antialiasing for a graphics context
      * 
-     * @param  graphics  Graphics context
-     * @param  antiAlias Set to true to turn antialiasing on for the graphics
-     *                   context; false to turn it off.
+     * @param graphics Graphics context
+     * @param antiAlias Set to true to turn antialiasing on for the graphics
+     * context; false to turn it off.
      */
     public static final void setAntiAlias(Graphics graphics, boolean antiAlias)
     {    
