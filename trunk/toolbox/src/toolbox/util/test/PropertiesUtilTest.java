@@ -119,6 +119,29 @@ public class PropertiesUtilTest extends TestCase
         assertEquals(-1, PropertiesUtil.getInteger(props, "5", -1));
         assertEquals(-1, PropertiesUtil.getInteger(props, "doesnt exist", -1));
     }   
+
+    /**
+     * Tests getLong()
+     */
+    public void testGetLong()
+    {
+        logger_.info("Running testGetLong...");
+        
+        Properties props = new Properties();
+        
+        props.setProperty("1", "1234567890");
+        props.setProperty("2", "-1234567890");
+        props.setProperty("3", "0");
+        props.setProperty("4", "56.34");
+        props.setProperty("5", "");
+        
+        assertEquals(1234567890, PropertiesUtil.getLong(props, "1", -1));
+        assertEquals(-1234567890, PropertiesUtil.getLong(props, "2", -1));
+        assertEquals(0   , PropertiesUtil.getLong(props, "3", -1));
+        assertEquals(-1  , PropertiesUtil.getLong(props, "4", -1));
+        assertEquals(-1  , PropertiesUtil.getLong(props, "5", -1));
+        assertEquals(-1  , PropertiesUtil.getLong(props, "doesnt exist", -1));
+    }   
     
     /**
      * Tests setInteger()
