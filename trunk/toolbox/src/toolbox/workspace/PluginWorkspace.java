@@ -2,6 +2,7 @@ package toolbox.util.ui.plugin;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -17,6 +18,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
@@ -24,15 +27,19 @@ import java.util.Properties;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 import org.apache.commons.collections.SequencedHashMap;
 import org.apache.log4j.Logger;
@@ -56,11 +63,12 @@ public class PluginWorkspace extends JFrame implements IStatusBar
         Logger.getLogger(PluginWorkspace.class);
 
     private static final String FILE_PREFS  = ".toolbox.properties";
-    private static final String KEY_WIDTH   = "pluginframe.width";
-    private static final String KEY_HEIGHT  = "pluginframe.height";
-    private static final String KEY_XCOORD  = "pluginframe.xcoord";
-    private static final String KEY_YCOORD  = "pluginframe.ycoord";
-    private static final String KEY_PLUGINS = "pluginframe.plugins";
+    private static final String KEY_WIDTH   = "workspace.width";
+    private static final String KEY_HEIGHT  = "workspace.height";
+    private static final String KEY_XCOORD  = "workspace.xcoord";
+    private static final String KEY_YCOORD  = "workspace.ycoord";
+    private static final String KEY_PLUGINS = "workspace.plugins";
+    private static final String KEY_LAF     = "workspace.lookandfeel";
     
     /**
      * Plugins are added to this tab panel in order or registration
@@ -71,6 +79,11 @@ public class PluginWorkspace extends JFrame implements IStatusBar
      *  Status bar at bottom of screen
      */
     private JLabel statusLabel_;
+    
+    /**
+     * Look and Feel Menu Items
+     */
+    private JMenu lafMenu_;
     
     /**
      *  Preferences stores as NV pairs
@@ -150,8 +163,10 @@ public class PluginWorkspace extends JFrame implements IStatusBar
         
         // Create tab
         JPanel pluginPanel = new JPanel(new BorderLayout());
+        
         if (plugin.getMenuBar() != null)
             pluginPanel.add(BorderLayout.NORTH, plugin.getMenuBar());
+            
         pluginPanel.add(BorderLayout.CENTER, plugin.getComponent());
         tabbedPane_.insertTab(plugin.getName(), null, pluginPanel, null, 0);
         tabbedPane_.setSelectedIndex(0);
@@ -211,15 +226,6 @@ public class PluginWorkspace extends JFrame implements IStatusBar
      */
     protected void buildView()
     {
-        try
-        {
-            SwingUtil.setPreferredLAF();
-        }
-        catch (Exception e)
-        {
-            ExceptionUtil.handleUI(e, logger_);
-        }
-        
         Container contentPane = getContentPane();
         contentPane.setLayout(new BorderLayout());
 
@@ -263,7 +269,77 @@ public class PluginWorkspace extends JFrame implements IStatusBar
     }
 
     /**
-     * Loads preferences from $HOME/.pluginframe.properties
+     * Creates and configures the menu bar
+     * 
+     * @return  JMenuBar
+     */
+    protected JMenuBar createMenuBar()
+    {
+        JMenu fileMenu = new JMenu("File");
+        fileMenu.setMnemonic('F');        
+        fileMenu.add(new PluginsAction());
+        fileMenu.add(new ExitAction());
+
+        lafMenu_ = new JMenu("Look and Feel");
+        
+        UIManager.LookAndFeelInfo[] lafs = SwingUtil.getLAFs();
+        ButtonGroup group = new ButtonGroup();
+        
+        for (int i=0; i<lafs.length; i++)
+        {
+            JCheckBoxMenuItem lafItem = 
+                new JCheckBoxMenuItem(new SetLAFAction(lafs[i]));
+            
+            group.add(lafItem);
+            lafMenu_.add(lafItem);
+        }
+        
+        fileMenu.add(lafMenu_);
+        
+        JMenuBar menubar = new JMenuBar();
+        menubar.add(fileMenu);
+        
+        return menubar;
+    }
+
+    /**
+     * Determines if a plugin is active given its FQN
+     * 
+     * @param  pluginClass  FQN of plugin class
+     * @return True if plugin is registered, false otherwise
+     */
+    protected boolean hasPlugin(String pluginClass) 
+    {
+        for (Iterator i = plugins_.values().iterator(); i.hasNext();)
+        {
+            if (i.next().getClass().getName().equals(pluginClass))
+                return true;
+        }
+        
+        return false;
+    }
+    
+    /**
+     * @return Plugin for a given class
+     */
+    protected IPlugin getPluginByClass(String pluginClass)
+    {
+        for (Iterator i = plugins_.values().iterator(); i.hasNext(); )
+        {
+            IPlugin plugin = (IPlugin) i.next();
+            if (plugin.getClass().getName().equals(pluginClass))
+                return plugin;
+        }        
+        
+        return null;
+    }
+
+    //--------------------------------------------------------------------------
+    // Preferences
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Loads preferences from $HOME/.toolbox.properties
      */
     protected void loadPrefs()
     {
@@ -281,6 +357,11 @@ public class PluginWorkspace extends JFrame implements IStatusBar
             try
             {
                 prefs_.load(new FileInputStream(f));
+                
+                StringWriter sw = new StringWriter();
+                prefs_.list(new PrintWriter(sw));
+                logger_.debug("Prefs:\n" + sw.toString());
+                
             }
             catch (IOException ioe)
             {
@@ -305,16 +386,21 @@ public class PluginWorkspace extends JFrame implements IStatusBar
         // Save window size
         PropertiesUtil.setInteger(prefs_, KEY_WIDTH, getSize().width);
         PropertiesUtil.setInteger(prefs_, KEY_HEIGHT, getSize().height); 
-        
+
+        // Save look and feel
+        prefs_.setProperty(KEY_LAF, 
+            UIManager.getLookAndFeel().getClass().getName());
+                
         // Save plugin prefs too
         String pluginLine = "";
-        for (Iterator i = plugins_.values().iterator(); i.hasNext(); )
+        
+        for (Iterator i = plugins_.values().iterator(); i.hasNext();)
         {
             IPlugin plugin = (IPlugin) i.next();
             plugin.savePrefs(prefs_);
             pluginLine += plugin.getClass().getName() + ",";
         }
-    
+        
         prefs_.setProperty(KEY_PLUGINS, pluginLine);
     
         // Save to file
@@ -358,6 +444,40 @@ public class PluginWorkspace extends JFrame implements IStatusBar
         // Reload Plugins that were saved
         String pluginLine = prefs_.getProperty(KEY_PLUGINS,"");
         String[] plugins = StringUtil.tokenize(pluginLine, ",");
+
+        // Restore look and feel
+        String lafName = prefs_.getProperty(KEY_LAF);
+        
+        if (lafName != null)
+        {
+            try
+            {
+                UIManager.setLookAndFeel(lafName);
+                SwingUtilities.updateComponentTreeUI(this);
+            }
+            catch (Exception e)
+            {
+                ExceptionUtil.handleUI(e, logger_);
+            }   
+        }
+
+        // Activate the currently loaded look and feel in the menu
+        String laf = UIManager.getLookAndFeel().getName();        
+        
+        logger_.debug("LAF=" + laf);
+        
+        for (int i=0; i<lafMenu_.getItemCount(); i++)
+        {
+            JMenuItem item = lafMenu_.getItem(i);
+            
+            if (item instanceof JCheckBoxMenuItem)
+            {
+                logger_.debug("cb:" + item);      
+                          
+                if (item.getText().equals(laf))
+                    item.setSelected(true);
+            }
+        }
         
         // Register plugins. Don't let failures stop process
         for (int i=0; i<plugins.length; i++) 
@@ -372,55 +492,6 @@ public class PluginWorkspace extends JFrame implements IStatusBar
             }
         }
     }       
-
-    /**
-     * Creates and configures the menu bar
-     * 
-     * @return  JMenuBar
-     */
-    protected JMenuBar createMenuBar()
-    {
-        JMenu fileMenu = new JMenu("File");
-        fileMenu.setMnemonic('F');        
-        fileMenu.add(new PluginsAction());
-        fileMenu.add(new ExitAction());
-        
-        JMenuBar menubar = new JMenuBar();
-        menubar.add(fileMenu);
-        return menubar;
-    }
-
-    /**
-     * Determines if a plugin is active given its FQN
-     * 
-     * @param  pluginClass  FQN of plugin class
-     * @return True if plugin is registered, false otherwise
-     */
-    protected boolean hasPlugin(String pluginClass) 
-    {
-        for (Iterator i = plugins_.values().iterator(); i.hasNext();)
-        {
-            if (i.next().getClass().getName().equals(pluginClass))
-                return true;
-        }
-        
-        return false;
-    }
-    
-    /**
-     * @return Plugin for a given class
-     */
-    protected IPlugin getPluginByClass(String pluginClass)
-    {
-        for (Iterator i = plugins_.values().iterator(); i.hasNext(); )
-        {
-            IPlugin plugin = (IPlugin) i.next();
-            if (plugin.getClass().getName().equals(pluginClass))
-                return plugin;
-        }        
-        
-        return null;
-    }
 
     //--------------------------------------------------------------------------
     //  Package Protected
@@ -463,7 +534,6 @@ public class PluginWorkspace extends JFrame implements IStatusBar
     {
         return statusLabel_.getText();
     }
-    
     
     //--------------------------------------------------------------------------
     //  Inner Classes
@@ -612,6 +682,34 @@ public class PluginWorkspace extends JFrame implements IStatusBar
         {
             JDialog dialog = new ManagePluginsDialog(PluginWorkspace.this);
             dialog.setVisible(true);    
+        }
+    }
+
+    /**
+     * Action that sets and look and feel
+     */    
+    class SetLAFAction extends AbstractAction
+    {
+        private UIManager.LookAndFeelInfo lafInfo_;
+        
+        public SetLAFAction(UIManager.LookAndFeelInfo lafInfo)
+        {
+            super(lafInfo.getName());
+            lafInfo_ = lafInfo;
+        }
+        
+        public void actionPerformed(ActionEvent e)
+        {
+            try
+            {
+                logger_.debug("Setting LAF to " + lafInfo_.getName());
+                UIManager.setLookAndFeel(lafInfo_.getClassName());
+                SwingUtilities.updateComponentTreeUI(PluginWorkspace.this);
+            }
+            catch (Exception ex)
+            {
+                ExceptionUtil.handleUI(ex, logger_);
+            }
         }
     }
 }
