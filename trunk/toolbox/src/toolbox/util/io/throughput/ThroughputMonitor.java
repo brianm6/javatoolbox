@@ -10,8 +10,8 @@ import toolbox.util.io.MonitoredChannel;
  * @see toolbox.util.io.throughput.ThroughputListener
  * @see toolbox.util.io.throughput.ThroughputEvent
  */
-public interface ThroughputMonitor extends MonitoredChannel {
-
+public interface ThroughputMonitor extends MonitoredChannel 
+{
     /**
      * Adds a listener to the list of throughput listeners.
      * 
@@ -21,7 +21,7 @@ public interface ThroughputMonitor extends MonitoredChannel {
     
     
     /**
-     * Removes a listener from the lsit of throughput listeners.
+     * Removes a listener from the list of throughput listeners.
      * 
      * @param listener Throughput listener to remove.
      */

@@ -13,8 +13,8 @@ import toolbox.util.ArrayUtil;
  * @see toolbox.util.io.throughput.ThroughputListener
  * @see toolbox.util.io.throughput.ThroughputEvent
  */
-public class DefaultThroughputMonitor implements ThroughputMonitor {
-
+public class DefaultThroughputMonitor implements ThroughputMonitor 
+{
     private static final Logger logger_ = 
         Logger.getLogger(DefaultThroughputMonitor.class);
     
@@ -55,6 +55,9 @@ public class DefaultThroughputMonitor implements ThroughputMonitor {
     // Constructors
     //--------------------------------------------------------------------------
     
+    /**
+     * Creates a DefaultThroughputMonitor.
+     */
     public DefaultThroughputMonitor() 
     {
         interval_ = DEFAULT_SAMPLE_INTERVAL;
