@@ -7,6 +7,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import org.apache.log4j.Logger;
+
 /**
  * BrowserLauncher is a class that provides one static method, openURL, which
  * opens the default web browser for the current user of the system to the given
@@ -61,6 +63,9 @@ import java.lang.reflect.Method;
  */
 public class BrowserLauncher 
 {
+    private static final Logger logger_ = 
+        Logger.getLogger(BrowserLauncher.class);
+    
     //--------------------------------------------------------------------------
     // Static Fields
     //--------------------------------------------------------------------------
@@ -947,32 +952,69 @@ public class BrowserLauncher
 
                 // First, attempt to open the URL in a currently running session
                 // of Netscape
-                process = 
-                    Runtime.getRuntime().exec(
-                        new String[]{
-                            (String) browser,
-                            NETSCAPE_REMOTE_PARAMETER,
-                            NETSCAPE_OPEN_PARAMETER_START 
-                            + url 
-                            + NETSCAPE_OPEN_PARAMETER_END});
+
+                logger_.debug(
+                    "System path = " 
+                    + System.getProperty("java.library.path"));
                 
-                try
+                String [] browsers = new String[] {
+                    "netscape",
+                    "mozilla",
+                    "firefox",
+                    "mozilla-firefox",
+                    "opera",
+                };
+
+                boolean found = false;
+                
+                for (int i = 0; i < browsers.length; i++)
                 {
-                    int exitCode = process.waitFor();
-                    
-                    if (exitCode != 0)
-                    { 
-                        // if Netscape was not open
-                        Runtime.getRuntime().exec(
-                            new String[]{(String) browser, url});
+                    File exe = ClassUtil.findInPath(browsers[i]);
+                    if (exe != null)
+                    {
+                        logger_.debug(
+                            "Found browser " 
+                            + browsers[i] 
+                            + " in the SYSTEM path at "
+                            + exe.getAbsolutePath());
+                        
+                        browser = browsers[i];
+                        found = true;
+                        break;
                     }
                 }
-                catch (InterruptedException ie)
+                    
+                if (found)
                 {
-                    throw new IOException(
-                        "InterruptedException while launching browser: "
-                        + ie.getMessage());
+                    process = 
+                        Runtime.getRuntime().exec(
+                            new String[]{
+                                (String) browser,
+                                NETSCAPE_REMOTE_PARAMETER,
+                                NETSCAPE_OPEN_PARAMETER_START 
+                                + url 
+                                + NETSCAPE_OPEN_PARAMETER_END});
+                
+                    try
+                    {
+                        int exitCode = process.waitFor();
+                        
+                        if (exitCode != 0)
+                        { 
+                            // if Netscape was not open
+                            Runtime.getRuntime().exec(
+                                new String[]{(String) browser, url});
+                        }
+                    }
+                    catch (InterruptedException ie)
+                    {
+                        throw new IOException(
+                            "InterruptedException while launching browser: "
+                            + ie.getMessage());
+                    }
                 }
+                else
+                    logger_.warn("No web browsers found in the system path.");
                 break;
                 
             default:
