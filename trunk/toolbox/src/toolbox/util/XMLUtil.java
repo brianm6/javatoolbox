@@ -6,6 +6,7 @@ import java.io.StringWriter;
 
 import org.apache.log4j.Logger;
 import org.apache.xerces.parsers.DOMParser;
+import org.apache.xml.serialize.Method;
 import org.apache.xml.serialize.OutputFormat;
 import org.apache.xml.serialize.XMLSerializer;
 import org.w3c.dom.Document;
@@ -35,10 +36,14 @@ public class XMLUtil
         parser.parse(new InputSource(new StringReader(xml)));
         Document doc = parser.getDocument();
         StringWriter writer = new StringWriter();
-        OutputFormat format = new OutputFormat(doc);
+        OutputFormat format = new OutputFormat();
+        format.setMethod(Method.FOP);
         format.setIndenting(true);
+        format.setLineWidth(80);
         format.setOmitXMLDeclaration(true);
-        format.setIndent(2);
+        format.setIndent(4);
+        //format.setLineSeparator("\n");
+        //format.setPreserveSpace(true);
 
         XMLSerializer serializer = new XMLSerializer(writer, format);
         serializer.serialize(doc);
