@@ -27,6 +27,7 @@ public class DebugComponentListener implements ComponentListener
         logger_.debug("Hidden: " + e.getComponent().getName());    
     }
 
+    
     /**
      * @see java.awt.event.ComponentListener#componentMoved(
      *      java.awt.event.ComponentEvent)
@@ -37,6 +38,7 @@ public class DebugComponentListener implements ComponentListener
             e.paramString());
     }
 
+    
     /**
      * @see java.awt.event.ComponentListener#componentResized(
      *      java.awt.event.ComponentEvent)
@@ -47,6 +49,7 @@ public class DebugComponentListener implements ComponentListener
             e.paramString());
     }
 
+    
     /**
      * @see java.awt.event.ComponentListener#componentShown(
      *      java.awt.event.ComponentEvent)

@@ -27,6 +27,7 @@ public class DebugContainerListener implements ContainerListener
         logger_.debug("Added: " + e.paramString());
     }
 
+    
     /**
      * @see java.awt.event.ContainerListener#componentRemoved(
      *      java.awt.event.ContainerEvent)
