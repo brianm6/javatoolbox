@@ -63,11 +63,20 @@ public class ThrottledOutputStream extends FilterOutputStream
      * 
      * @param bandwidth Available bandwidth for this stream.
      */
-    public void setThrottle(Bandwidth bandwidth)
+    public void setBandwidth(Bandwidth bandwidth)
     {
         bandwidth_ = bandwidth;
     }
 
+    /**
+     * Returns the bandwidth.
+     * 
+     * @return Bandwidth
+     */
+    public Bandwidth getBandwidth()
+    {
+        return bandwidth_;
+    }
 
     //--------------------------------------------------------------------------
     // Overrides FilterOutputStream
