@@ -1,16 +1,20 @@
 package toolbox.util.io.transferred;
 
-import toolbox.util.io.MonitoredChannel;
-
-
+/**
+ * TransferredListener provides a notification mechanism from a 
+ * TransferredMonitor to an interested client. The details of the number of 
+ * bytes transferred are encapsulated in a TransferredEvent.
+ * 
+ * @see toolbox.util.io.transferred.TransferredEvent
+ * @see toolbox.util.io.transferred.TransferredMonitor 
+ */
 public interface TransferredListener 
 {
     /**
      * Notification that a given number of bytes have been transferred across
      * a channel.
-     * 
-     * @param stream Stream data was written to.
-     * @param b Byte written to the stream.
+     *
+     * @param event Event contains the bytes transferred details. 
      */
-    void bytesTransferred(MonitoredChannel channel, TransferredEvent event);
+    void bytesTransferred(TransferredEvent event);
 }
