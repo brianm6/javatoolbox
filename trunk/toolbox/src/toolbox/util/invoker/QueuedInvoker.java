@@ -16,6 +16,10 @@ public class QueuedInvoker implements Invoker
 {
     private static final Logger logger_ = Logger.getLogger(QueuedInvoker.class);
     
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /** 
      * Queue of Runnables waiting to be invoked. 
      */
@@ -52,7 +56,7 @@ public class QueuedInvoker implements Invoker
     /**
      * Creates a queued invoker that start consumption immediately.
      * 
-     * @param  millis  Delay in milliseconds between invocations
+     * @param millis Delay in milliseconds between invocations.
      */
     public QueuedInvoker(final long millis)
     {
@@ -77,10 +81,10 @@ public class QueuedInvoker implements Invoker
      * 
      * @return boolean
      */
-    public boolean isIdle()
-    {
-        return isEmpty() && !invokable_.isRunning();
-    }
+    //public boolean isIdle()
+    //{
+    //    return isEmpty() && !invokable_.isRunning();
+    //}
 
     
     /**
@@ -154,14 +158,9 @@ public class QueuedInvoker implements Invoker
         if (!isEmpty())
         {    
             logger_.warn("Shutting down queued invoker even though there are " +
-                getSize() + " items remaining in the invocation queue.");
+                getSize() + " items remaining in the invocation queue"); 
         }
-        else if (!isIdle())
-        {    
-            logger_.warn("Shutting down queue even though there is still an " +
-                "invocation pending execution.");
-        }
-
+        
         ThreadUtil.stop(consumer_);
     }
 
@@ -208,9 +207,9 @@ public class QueuedInvoker implements Invoker
          * 
          * @return boolean.
          */
-        public boolean isRunning()
-        {
-            return running_;
-        }
+        //public boolean isRunning()
+        //{
+        //    return running_;
+        //}
     }
 }
