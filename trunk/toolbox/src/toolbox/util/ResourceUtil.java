@@ -18,7 +18,6 @@ import org.apache.log4j.Logger;
  */
 public final class ResourceUtil
 {
-    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(ResourceUtil.class);
 
@@ -41,8 +40,10 @@ public final class ResourceUtil
     //--------------------------------------------------------------------------
 
     /**
-     * Locates a resource with the given name using an exhaustive variety of 
-     * methods. 
+     * Locates a resource with the given name using a variety of strategies.
+     * Attempts to locate and load resource in the following order:
+     * <p>
+     * File Resource -> Class Resource -> PackageResource -> URL Resource
      * 
      * @param   name   Name of the resource
      * @return  InputStream or null if resource not found.
@@ -79,8 +80,19 @@ public final class ResourceUtil
                 }
                 catch(IOException eee)
                 {
-                    logger_.debug("Resource " + name + " not found");
-                    is = null;
+                    try
+                    {
+                        is = getURLResource(name);
+                        if (is == null)
+                            throw new IOException(
+                                "Resource " + name + 
+                                " not found as a URL resource");
+                    }
+                    catch(IOException eeee)
+                    {
+                        logger_.debug("Resource " + name + " not found");
+                        is = null;
+                    }
                 }
             }
         }
