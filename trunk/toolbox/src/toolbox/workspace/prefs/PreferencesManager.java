@@ -11,7 +11,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
-import toolbox.util.ui.plaf.LookAndFeelPrefsView;
+import toolbox.util.ui.plaf.LookAndFeelConfigurator;
 import toolbox.workspace.IPreferenced;
 
 /**
@@ -49,13 +49,13 @@ public class PreferencesManager implements IPreferenced
     {
         nodeMap_ = new HashMap();
         
-        Preferences proxyView = new ProxyView();
-        nodeMap_.put(ProxyView.NODE_HTTP_PROXY, proxyView);
-        SwingUtil.attachPhantom(proxyView.getView());
+        IConfigurator proxy = new HttpProxyConfigurator();
+        nodeMap_.put(HttpProxyConfigurator.NODE_HTTP_PROXY, proxy);
+        SwingUtil.attachPhantom(proxy.getView());
         
-        Preferences lafView = new LookAndFeelPrefsView();
-        nodeMap_.put(LookAndFeelPrefsView.NODE_LOOK_AND_FEEL, lafView);
-        SwingUtil.attachPhantom(lafView.getView());
+        IConfigurator lookAndFeel = new LookAndFeelConfigurator();
+        nodeMap_.put(LookAndFeelConfigurator.NODE_LOOK_AND_FEEL, lookAndFeel);
+        SwingUtil.attachPhantom(lookAndFeel.getView());
     }
 
     //--------------------------------------------------------------------------
@@ -63,14 +63,14 @@ public class PreferencesManager implements IPreferenced
     //--------------------------------------------------------------------------
     
     /**
-     * Returns an array of the preferences views.
+     * Returns an array of the configurators registered with this manager.
      * 
-     * @return Preferences[]
+     * @return IConfigurator[]
      */
-    public Preferences[] getPreferences()
+    public IConfigurator[] getConfigurators()
     {
-        return (Preferences[]) 
-            nodeMap_.values().toArray(new Preferences[0]);
+        return (IConfigurator[]) 
+            nodeMap_.values().toArray(new IConfigurator[0]);
     }
     
     //--------------------------------------------------------------------------
@@ -97,11 +97,11 @@ public class PreferencesManager implements IPreferenced
         for (Iterator i = nodeMap_.keySet().iterator(); i.hasNext();)
         {
             String node = (String) i.next();
-            Preferences view = (Preferences) nodeMap_.get(node);
+            IConfigurator config = (IConfigurator) nodeMap_.get(node);
             
-            if (view != null)
+            if (config != null)
             {
-                view.applyPrefs(root);
+                config.applyPrefs(root);
             }
             else
             {
@@ -120,8 +120,8 @@ public class PreferencesManager implements IPreferenced
         
         for (Iterator i = nodeMap_.values().iterator(); i.hasNext();)
         {
-            Preferences view = (Preferences) i.next();
-            view.savePrefs(root);
+            IConfigurator config = (IConfigurator) i.next();
+            config.savePrefs(root);
         }
         
         XOMUtil.insertOrReplace(prefs, root);

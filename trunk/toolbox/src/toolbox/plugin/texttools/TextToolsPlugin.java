@@ -40,7 +40,7 @@ import toolbox.util.ui.textarea.action.ClearAction;
 import toolbox.workspace.AbstractPlugin;
 import toolbox.workspace.IStatusBar;
 import toolbox.workspace.PluginWorkspace;
-import toolbox.workspace.prefs.Preferences;
+import toolbox.workspace.prefs.IConfigurator;
 
 /**
  * Plugin for simple text manipulation.
@@ -116,7 +116,7 @@ public class TextToolsPlugin extends AbstractPlugin
      */
     private FormatterView formatterView_;
     
-    private TextToolsPreferences preferences_;
+    private TextToolsConfigurator preferences_;
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -303,12 +303,12 @@ public class TextToolsPlugin extends AbstractPlugin
 
     
     /**
-     * @see toolbox.workspace.AbstractPlugin#getPreferences()
+     * @see toolbox.workspace.AbstractPlugin#getConfigurator()
      */
-    public Preferences getPreferences()
+    public IConfigurator getConfigurator()
     {
         if (preferences_ == null)
-            preferences_ = new TextToolsPreferences(this);
+            preferences_ = new TextToolsConfigurator(this);
         
         return preferences_;
     }
