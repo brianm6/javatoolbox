@@ -291,7 +291,7 @@ public final class FileUtil
     {
         // Create temp file, delete it, and return the name 
         File tmpFile = File.createTempFile("temp", "", forDir);
-        String filename = tmpFile.getAbsolutePath();
+        String filename = tmpFile.getCanonicalPath();
         tmpFile.delete();
         return filename;
     }
@@ -311,13 +311,18 @@ public final class FileUtil
          *       complicated scenarios involving permissions, attributes, 
          *       existence that need to be accounted for. 
          */
-        logger_.debug("Moving " + srcFile + " => " + destDir);
 
         InputStream is = null;
         OutputStream os = null;
 
         try
         {
+            logger_.debug(
+                    "Moving " 
+                    + srcFile.getCanonicalPath() 
+                    + " => " 
+                    + destDir.getCanonicalPath());
+            
             File destFile = new File(destDir, srcFile.getName());
 
             is = new BufferedInputStream(new FileInputStream(srcFile));
@@ -536,5 +541,40 @@ public final class FileUtil
         }
         
         return largest;
+    }
+    
+
+    /**
+     * Returns the extension of the given file. 
+     * 
+     * @param f File from which to extract the extension.
+     * @return If an extension exists, then the extension not including the
+     *         period, otherwise an empty string.
+     */
+    public static String getExtension(File f)
+    {
+        return getExtension(f.getName());
+    }
+    
+    
+    /**
+     * Returns the extension of the given filename.
+     * 
+     * @param s Name of file from which to extract the extension.
+     * @return If an extension exists, then the extension not including the
+     *         period, otherwise an empty string.
+     */
+    public static String getExtension(String s)
+    {
+        s = s.trim();
+        
+        int i = s.lastIndexOf(".");
+        
+        String ext = "";
+        
+        if (i >= 0)
+            ext = s.substring(i+1);
+        
+        return ext;
     }
 }
