@@ -7,19 +7,20 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.net.URL;
+import java.util.Iterator;
 import java.util.StringTokenizer;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.PosixParser;
 import org.apache.log4j.Logger;
 
 /**
- * Banner
- * 
- * @author Benoit Rigaut CERN July 96
- * www.rigaut.com benoit@rigaut.com
- * released with GPL the 13th of november 2000 (my birthday!)
- * 
- * 12/2002 Modifications made to remove resource dependency
- */
+ * Banner converts a text string into a banner using ASCII characters to form
+ * larger versions of the letters.
+ */ 
 public class Banner
 {
     private static final String FONT_STANDARD_DATA = 
@@ -2266,6 +2267,118 @@ public class Banner
     private static final BannerFont FONT_STANDARD = 
         new BannerFont(FONT_STANDARD_DATA);
 
+    /**
+     * Executes banner via Command line args
+     * 
+     * @param args  String to turn into a banner
+     */
+    public static void main(String args[])
+    {
+        // Default options
+        boolean splitWords  = false;
+        boolean leftJustify = false;
+        int     lineWidth   = 80;
+         
+        try
+        {
+            CommandLineParser parser = new PosixParser();
+            Options options = new Options();
+
+            // Valid options
+            Option splitWordsOption =
+                new Option("s","splitwords", false, "One word per line");
+
+            Option leftJustifyOption =
+                new Option("l", "leftJustify", false, "Left justifies banner");
+
+            Option lineWidthOption = 
+                new Option("w", "lineWidth", true, "Maximum line width");
+                            
+            Option helpOption = 
+                new Option("h", "help", false, "Print usage");
+                
+            Option helpOption2 = 
+                new Option("?", "/?", false, "Print Usage");
+
+            options.addOption(helpOption2);
+            options.addOption(helpOption);
+            options.addOption(splitWordsOption);
+            options.addOption(leftJustifyOption);
+            options.addOption(lineWidthOption);
+
+            // Parse options
+            CommandLine cmdLine = parser.parse(options, args, true);
+            
+            // Handle options
+            for (Iterator i = cmdLine.iterator(); i.hasNext(); )
+            {
+                Option option = (Option) i.next();
+                String opt = option.getOpt();
+
+                if (opt.equals(splitWordsOption.getOpt()))
+                {
+                    splitWords = true;
+                }
+                else if (opt.equals(leftJustifyOption.getOpt()))
+                {
+                    leftJustify = true;
+                }
+                else if (opt.equals(lineWidthOption.getOpt()))
+                {
+                    try
+                    {
+                        lineWidth = Integer.parseInt(option.getValue());
+                    }
+                    catch (NumberFormatException nfe)
+                    {
+                        printUsage();
+                        System.out.println("\nError: '" + option.getValue() + 
+                            "' is not a valid line width.");
+                        System.exit(0);
+                    }
+                }
+                else if (opt.equals(helpOption.getOpt())  ||
+                         opt.equals(helpOption2.getOpt()))
+                {
+                    printUsage();
+                    System.exit(0);
+                }
+            }
+
+            // Text to convert to a banner
+            switch (cmdLine.getArgs().length)
+            {
+                case  0: 
+                
+                    printUsage(); 
+                    System.exit(0);
+                    break;
+                
+                default:
+                 
+                    StringBuffer sb = new StringBuffer();
+    
+                    for (Iterator i=cmdLine.getArgList().iterator(); i.hasNext();)
+                    {
+                        sb.append(i.next());
+                        
+                        if (i.hasNext())
+                            sb.append(" ");
+                    }
+                    
+                    String banner = convert(
+                        sb.toString(), splitWords, leftJustify, lineWidth);
+                    
+                    System.out.println(banner);
+                    break;
+            }
+        }
+        catch (Throwable t)
+        {
+            logger_.error("main", t);
+        }
+    }
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -2280,6 +2393,34 @@ public class Banner
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
+
+    /**
+     * Converts from ASCII to a banner
+     *
+     * @param   message         Message
+     * @return  Banner as a string
+     */
+    public static String convert(String message)
+    {
+        return convert(message, false, true, Integer.MAX_VALUE);
+    }
+
+    /**
+     * Converts from ASCII to a banner, eventually centering each line,
+     * folding after each word, or when the width limit is reached
+     *
+     * @param   message         Message
+     * @param   splitAtWord     True if split at word
+     * @param   leftJustify     True to left justify text
+     * @param   splitWidth      Width of split
+     * @return  Banner as a string
+     */
+    public static String convert(String message, boolean splitAtWord,
+        boolean leftJustify, int splitWidth)
+    {
+        return convert(message, FONT_STANDARD, splitAtWord, leftJustify,
+                    splitWidth);
+    }
     
     /**
      * Converts from ASCII to a banner, eventually centering each line,
@@ -2346,18 +2487,6 @@ public class Banner
     }
     
     /**
-     * Converts from ASCII to a banner
-     * 
-     * @param   message         Message
-     * @return  Banner as a string
-     */
-    public static String convert(String message)
-    {
-        return convert(message, FONT_STANDARD, false, true, Integer.MAX_VALUE);
-    }    
-    
-    
-    /**
      * Gimme the maximum width of a converted text
      * 
      * @param   message  Message
@@ -2374,7 +2503,6 @@ public class Banner
             
         return w;
     }
-    
     
     //--------------------------------------------------------------------------
     // Private
@@ -2483,6 +2611,25 @@ public class Banner
         }
         
         return result;
+    }
+
+    /**
+     * Prints program usage and help information
+	 */
+    private static void printUsage()
+    {
+        StringBuffer sb = new StringBuffer();
+        
+        sb.append("Banner converts a string of text to a banner using ");
+        sb.append("ASCII characters.\n\n");
+        sb.append("Usage  : java toolbox.util.Banner [options] text\n");
+        sb.append("Options: -h, --help        => Prints this help\n");
+        sb.append("         -s, --splitWords  => One word per line\n");
+        sb.append("         -l, --leftJustify => Left justify text (default is centered)\n");
+        sb.append("         -w  --lineWidth   => Max line width\n");
+        sb.append("Args   : text              => Text to convert to a banner\n");
+        
+        System.out.println(sb.toString());
     }
 
     //--------------------------------------------------------------------------
@@ -2674,3 +2821,14 @@ public class Banner
 
     }        
 }
+
+/**
+ * Banner
+ *
+ * @author Benoit Rigaut CERN July 96
+ * www.rigaut.com benoit@rigaut.com
+ * released with GPL the 13th of november 2000 (my birthday!)
+ *
+ * 12/2002 Modifications made to remove resource dependency
+ */
+
