@@ -17,10 +17,11 @@ public interface XMLConstants
     public static final String ELEMENT_DEFAULTS = "Defaults";
 
     // Tail XML element
-    public  static final String ELEMENT_TAIL     = "Tail";
+    public static final String ELEMENT_TAIL     = "Tail";
     public static final String ATTR_FILE        = "file";
     public static final String ATTR_AUTOSCROLL  = "autoScroll";
     public static final String ATTR_LINENUMBERS = "showLineNumbers";
+    public static final String ATTR_ANTIALIAS   = "antiAlias";
     
     // Font XML element
     public static final String ELEMENT_FONT     = "Font";
