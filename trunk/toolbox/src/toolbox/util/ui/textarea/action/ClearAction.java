@@ -7,7 +7,9 @@ import javax.swing.text.JTextComponent;
 import toolbox.util.ui.ImageCache;
 
 /**
- * Clears the contents of a text component.
+ * Action that clears the contents of a text component.
+ * 
+ * @see javax.swing.text.JTextComponent
  */
 public class ClearAction extends AbstractTextComponentAction
 {
@@ -36,7 +38,7 @@ public class ClearAction extends AbstractTextComponentAction
     {
         super(textComponent, name, ImageCache.getIcon(ImageCache.IMAGE_CLEAR)); 
         putValue(MNEMONIC_KEY, new Integer('C'));
-        putValue(SHORT_DESCRIPTION, "Clear");
+        putValue(SHORT_DESCRIPTION, "Clears the contents");
     }
     
     //--------------------------------------------------------------------------
