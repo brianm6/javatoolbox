@@ -1,22 +1,33 @@
 package toolbox.clearcase.adapter;
 
+import toolbox.clearcase.IClearCaseAdapter;
 
 /**
- * ClearCaseAdapterFactory is responsible for ___.
+ * Factory class for creating {@link toolbox.clearcase.IClearCaseAdapter}s.
  */
 public class ClearCaseAdapterFactory
 {
-
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Creates a ClearCaseAdapterFactory.
-     * 
      */
     private ClearCaseAdapterFactory()
     {
     }
 
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
     
-    public static final ClearToolAdapter create() 
+    /**
+     * Creates a default implementation of a IClearCaseAdapter.
+     * 
+     * @return ClearToolAdapter
+     */
+    public static final IClearCaseAdapter create() 
     {
         return new ClearToolAdapter();
     }

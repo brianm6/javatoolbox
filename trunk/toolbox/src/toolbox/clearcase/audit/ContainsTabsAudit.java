@@ -19,10 +19,17 @@ import toolbox.clearcase.domain.VersionedFile;
 import toolbox.util.FileUtil;
 
 /**
- * ContainsTabsAudit is responsible for ___.
+ * Audits a collection of VersionedFiles to determine if they contain one or 
+ * more tab characters.
+ * 
+ * @see toolbox.clearcase.RepositoryAuditor
  */
 public class ContainsTabsAudit implements IAudit
 {
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Creates a ContainsTabsAudit.
      */
@@ -30,6 +37,9 @@ public class ContainsTabsAudit implements IAudit
     {
     }
 
+    //--------------------------------------------------------------------------
+    // IAudit Interface
+    //--------------------------------------------------------------------------
     
     /**
      * @see toolbox.clearcase.IAudit#audit(java.util.List)
@@ -79,6 +89,10 @@ public class ContainsTabsAudit implements IAudit
     // SuffixFilter
     //--------------------------------------------------------------------------
 
+    /**
+     * SuffixFilter allows use to filter the list of files down to only those
+     * with a particular suffix.
+     */
     class SuffixFilter implements Predicate
     {
         /**
@@ -96,6 +110,9 @@ public class ContainsTabsAudit implements IAudit
     // ContainsTabsFilter
     //--------------------------------------------------------------------------
     
+    /**
+     * Filters out files which contain a tab.
+     */
     class ContainsTabsFilter implements Predicate
     {
         /**
@@ -123,5 +140,4 @@ public class ContainsTabsAudit implements IAudit
             return StringUtils.isBlank(rev.getComment());
         }
     }
-    
 }

@@ -25,25 +25,34 @@ import toolbox.util.StringUtil;
 import toolbox.util.XOMUtil;
 
 /**
- * ClearToolAdapter.
+ * ClearToolAdapter is an implemenation of 
+ * {@link toolbox.clearcase.IClearCaseAdapter} this uses the cleartool command
+ * to communicate with a clearcase repository.
  */
 public class ClearToolAdapter implements IClearCaseAdapter
 {
     private static final Logger logger_ = 
         Logger.getLogger(ClearToolAdapter.class);
+
+    //--------------------------------------------------------------------------
+    // ClearTool Output XML Constants
+    //--------------------------------------------------------------------------
     
+    private static final String NODE_HISTORY = "History";
+    private static final String NODE_USER    = "User";
+    private static final String NODE_FILE    = "File";
+    private static final String NODE_COMMENT = "Comment";
+    private static final String NODE_ACTION  = "Operation";
+    private static final String NODE_DATE    = "TimeStamp";
+
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
-    
-    private File viewPath_;
 
-    private static final String NODE_HISTORY    = "History";
-    private static final String NODE_USER       = "User";
-    private static final String NODE_FILE       = "File";
-    private static final String NODE_COMMENT    = "Comment";
-    private static final String NODE_ACTION     = "Operation";
-    private static final String NODE_DATE       = "TimeStamp";
+    /**
+     * Path to the clearcase view.
+     */
+    private File viewPath_;
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -51,7 +60,6 @@ public class ClearToolAdapter implements IClearCaseAdapter
     
     /**
      * Creates a ClearToolAdapter.
-     * 
      */
     public ClearToolAdapter()
     {

@@ -16,7 +16,7 @@ import toolbox.clearcase.domain.Revision;
 import toolbox.clearcase.domain.VersionedFile;
 
 /**
- * ClearToolAdapterTest is responsible for ___.
+ * Unit test for {@link toolbox.clearcase.adapter.ClearToolAdapter}. 
  */
 public class ClearToolAdapterTest extends TestCase
 {
@@ -52,17 +52,17 @@ public class ClearToolAdapterTest extends TestCase
         for (Iterator iter = changed.iterator(); iter.hasNext();)
         {
             VersionedFile file = (VersionedFile) iter.next();
-
-            System.out.println("File   : " + file.getName());
-            for (Iterator iterator = file.getRevisions().iterator(); iterator.hasNext();)
+            logger_.debug("File   : " + file.getName());
+            
+            for (Iterator iterator = file.getRevisions().iterator(); 
+                 iterator.hasNext();)
             {
                 Revision revision = (Revision) iterator.next();
-                System.out.println("Action : " + revision.getAction());
-                System.out.println("User   : " + revision.getUser());
-                System.out.println("Comment: " + revision.getComment());
-                System.out.println();
+                logger_.debug("Action : " + revision.getAction());
+                logger_.debug("User   : " + revision.getUser());
+                logger_.debug("Comment: " + revision.getComment());
+                logger_.debug("");
             }
         }
-        
     }
 }

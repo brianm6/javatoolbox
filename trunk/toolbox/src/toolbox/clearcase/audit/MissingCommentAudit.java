@@ -15,10 +15,17 @@ import toolbox.clearcase.domain.Revision;
 import toolbox.clearcase.domain.VersionedFile;
 
 /**
- * MissingCommentAudit is responsible for ___.
+ * Audit for clearcase VersionedFiles that identifies files that were checked in
+ * without a comment.
+ * 
+ * @see toolbox.clearcase.RepositoryAuditor
  */
 public class MissingCommentAudit implements IAudit
 {
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Creates a MissingCommentAudit.
      */
@@ -74,6 +81,9 @@ public class MissingCommentAudit implements IAudit
     // NoCommentFilter
     //--------------------------------------------------------------------------
     
+    /**
+     * Filters out VersionedFiles that did not contain a checkin comment. 
+     */
     class NoCommentFilter implements Predicate
     {
         /**

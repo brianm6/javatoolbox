@@ -7,22 +7,36 @@ import toolbox.clearcase.IVersionable;
 import toolbox.util.service.Nameable;
 
 /**
- * VersionedFile is responsible for ___.
+ * VersionedFile represents a file stored in a clearcase repository.
+ * 
+ * @see toolbox.clearcase.IRevision
  */
 public class VersionedFile implements IVersionable, Nameable
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Absolute name of this file.
+     */
     private String name_;
+    
+    /**
+     * Revisions associated with this file.
+     */
     private List revisions_;
-    private String version_;
+
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
     
     /**
      * Creates a VersionedFile.
-     * 
      */
     public VersionedFile()
     {
         setName("");
-        setVersion("");
         revisions_ = new ArrayList(1);
     }
     
@@ -31,16 +45,11 @@ public class VersionedFile implements IVersionable, Nameable
     //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.clearcase.IVersionable#getVersion()
+     * @see toolbox.clearcase.IVersionable#getRevisions()
      */
-    public String getVersion()
+    public List getRevisions()
     {
-        return version_;
-    }
-
-    public void setVersion(String version)
-    {
-        version_ = version;
+        return revisions_;
     }
     
     //--------------------------------------------------------------------------
@@ -68,18 +77,23 @@ public class VersionedFile implements IVersionable, Nameable
     // Public
     //--------------------------------------------------------------------------
     
+    /**
+     * Adds a revision to the end of this files list of revisions.
+     * 
+     * @param r Revision to add.
+     */
     public void addRevision(Revision r)
     {
         revisions_.add(r);
     }
+
     
-    
-    public List getRevisions()
-    {
-        return revisions_;
-    }
-    
-    public Revision getLastRevision()
+    /**
+     * Returns the latest revision of this file.
+     * 
+     * @return Revision
+     */
+    public Revision getCurrentRevision()
     {
         return revisions_.size() == 0 
             ? null 

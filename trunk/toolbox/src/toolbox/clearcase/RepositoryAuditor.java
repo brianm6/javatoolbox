@@ -26,6 +26,8 @@ import toolbox.util.collections.ObjectComparator;
 
 /**
  * RepositoryAuditor for a clearcase repository.
+ * 
+ * @see toolbox.clearcase.IAudit
  */
 public class RepositoryAuditor
 {
@@ -131,30 +133,6 @@ public class RepositoryAuditor
             
             System.out.println(sb);
         }
-        
-        //CollectionUtils.filter(changedFiles, new NoCommentFilter());
-        
-        
-//        for (Iterator iter = changedFiles.iterator(); iter.hasNext();)
-//        {
-//            VersionedFile file = (VersionedFile) iter.next();
-//
-//            System.out.println("File   : " + file.getName());
-//            for (Iterator iterator = file.getRevisions().iterator(); iterator.hasNext();)
-//            {
-//                Revision revision = (Revision) iterator.next();
-//                
-//                String user = revision.getUser();
-//                
-//                if (userMap_.containsKey(user))
-//                    user = userMap_.get(user).toString();
-//                
-//                System.out.println("Action : " + revision.getAction());
-//                System.out.println("User   : " + user);
-//                System.out.println("Comment: " + revision.getComment());
-//                System.out.println();
-//            }
-//        }
     }
 
     /**

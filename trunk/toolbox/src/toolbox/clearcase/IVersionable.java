@@ -1,9 +1,18 @@
 package toolbox.clearcase;
 
+import java.util.List;
+
 /**
- * IVersionable is responsible for ___.
+ * IVersionable represents a versionable clearcase artifact.
+ * 
+ * @see toolbox.clearcase.IRevision
  */
 public interface IVersionable
 {
-    String getVersion();
+    /**
+     * Returns the list of revisions for this versionable clearcase artifact.
+     * 
+     * @return List<IRevision>
+     */
+    List getRevisions();
 }
