@@ -80,7 +80,7 @@ public class DBBenchmark implements Startable, IPreferenced
     };
     
     //--------------------------------------------------------------------------
-    // Static
+    // Fields
     //--------------------------------------------------------------------------
     
     // tpc bm b scaling rules
@@ -88,49 +88,45 @@ public class DBBenchmark implements Startable, IPreferenced
     /**
      * The tps scaling factor: here it is 1. 
      */
-    private static int tps_ = 1;      
+    private int tps_ = 1;      
     
     /**
      * Number of branches in 1 tps db.       
      */
-    private static int numBranches_ = 1;
+    private int numBranches_ = 1;
     
     /** 
      * Number of tellers in  1 tps db.       
      */
-    private static int numTellers_ = 10;
+    private int numTellers_ = 10;
     
     /**
      * Number of accounts in 1 tps db.       
      */
-    private static int numAccounts_ = 100000;
+    private int numAccounts_ = 100000;
     
     /**
      * Table extension.
      */
-    private static String tableExtension_ = "";
+    private String tableExtension_ = "";
     
     /**
      * Create extension.
      */
-    private static String createExtension_ = "";
+    private String createExtension_ = "";
     
     /**
      * Shutdown command.
      */
-    private static String shutdownCommand_ = "";
+    private String shutdownCommand_ = "";
     
-    //--------------------------------------------------------------------------
-    // Fields
-    //--------------------------------------------------------------------------
-
     /**
-     * Use transactions.
+     * Use transactions flag.
      */
     private boolean transactions_ = true;
 
     /**
-     * Use prepared statements.
+     * Use prepared statements flag.
      */
     private boolean preparedStmt_ = false;
 
@@ -190,7 +186,7 @@ public class DBBenchmark implements Startable, IPreferenced
     private boolean shutdownDB_;
 
     /**
-     * State machine for this benchmarks lifecycle.
+     * State machine for this benchmark's lifecycle.
      */
     private StateMachine machine_;
     
