@@ -500,7 +500,7 @@ public class XMLNode
 
             if (!isInvisible())
             {
-                tmp.append("</" + name_ + ">\n");
+                tmp.append("</" + name_ + ">");
             }
         }
         
