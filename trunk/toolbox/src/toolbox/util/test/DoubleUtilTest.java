@@ -184,6 +184,21 @@ public class DoubleUtilTest extends TestCase
 
     
     /**
+     * Tests round() for a NaN.
+     * 
+     * @throws Exception on error
+     */
+    public void testRoundNaN() throws Exception
+    {
+        logger_.info("Running testRoundNaN...");
+        
+        double d = Double.NaN;
+        String s = DoubleUtil.round(d, TWO_DIGIT_FORMAT);
+        assertEquals("Rounding NaN failed.", "0", s);
+    }
+
+    
+    /**
      * Tests round() for a big ugly number.
      * 
      * @throws Exception on error
