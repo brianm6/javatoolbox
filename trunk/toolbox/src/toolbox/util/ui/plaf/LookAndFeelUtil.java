@@ -15,6 +15,7 @@ import java.util.TreeSet;
 import javax.swing.AbstractButton;
 import javax.swing.Action;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JScrollPane;
@@ -37,6 +38,7 @@ import toolbox.util.StringUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.ui.JButtonGroup;
 import toolbox.util.ui.JSmartCheckBoxMenuItem;
+import toolbox.util.ui.JSmartDialog;
 import toolbox.util.ui.JSmartMenu;
 
 /**
@@ -304,15 +306,19 @@ public final class LookAndFeelUtil
 
     
     /**
-     * Propagates the change in LookAndFeel selection to all known windows.
-     * Appropriate to be called immediately after UIManager.setLookAndFeel().
+     * Propagates the change in LookAndFeel selection to all known frames and
+     * dialogs. Appropriate to be called immediately after 
+     * UIManager.setLookAndFeel().
      */
     public static void propagateChangeInLAF()
     {
         Frame[] frames = Frame.getFrames();
-        
         for (int i = 0; i < frames.length; i++)
-            SwingUtilities.updateComponentTreeUI(frames[i]);    
+            SwingUtilities.updateComponentTreeUI(frames[i]);
+        
+        JDialog[] dialogs = JSmartDialog.getDialogs();
+        for (int i = 0; i < dialogs.length; i++)
+            SwingUtilities.updateComponentTreeUI(dialogs[i]);
     }
 
     
