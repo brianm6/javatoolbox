@@ -673,7 +673,7 @@ public class ArrayUtilTest extends TestCase
                 
         double[] d = new double[10];
         ArrayUtil.init(d, 99.9);
-        
+            
         for (int i=0; i<d.length; assertEquals(99.9d, d[i++], 0.0));
     }
 
@@ -835,7 +835,7 @@ public class ArrayUtilTest extends TestCase
         String[] expected = new String[] {"one", "two", "three", "four"};
 
         String[] result = (String[]) ArrayUtil.insertAt(arr, four, 3);
-            
+
         assertEquals(arr.length + 1, result.length);
         assertTrue(ArrayUtil.equals(expected, result));    
     }
