@@ -16,8 +16,6 @@ import toolbox.util.RandomUtil;
 
 /**
  * Unit test for JDBCUtil
- * 
- * TODO: Unit tests for executeUpdate()
  */
 public class JDBCUtilTest extends TestCase
 {
@@ -46,17 +44,9 @@ public class JDBCUtilTest extends TestCase
     }
 
     //--------------------------------------------------------------------------
-    // Unit Tests
+    // Unit Tests 
     //--------------------------------------------------------------------------
     
-    //  public void testFormat()
-    //  {
-    //  }
-    
-    //  public void testExecuteUpdate()
-    //  {
-    //  }
-
     /**
      * Tests getConnection()
      */
@@ -82,6 +72,46 @@ public class JDBCUtilTest extends TestCase
             cleanup(prefix);
         }
         
+    }
+
+    /**
+     * Tests executeUpdate() for INSERT, UPDATE, and DELETE
+     */
+    public void testExecuteUpdate() throws Exception
+    {
+        logger_.info("Running testExecuteUpdate...");
+        
+        String prefix = "JDBCUtilTest_testExecuteUpdate_" + 
+            RandomUtil.nextInt(1000);
+            
+        JDBCUtil.init(DRIVER, URL + prefix, USER, PASSWORD);
+        String table = "table_execute_update";
+        
+        try
+        {
+            JDBCUtil.executeUpdate("create table " + table + "(id integer)");
+            
+            assertEquals(1, 
+                JDBCUtil.executeUpdate(
+                    "insert into " + table + " (id) values(100)"));
+
+            assertEquals(1, 
+                JDBCUtil.executeUpdate(
+                    "update " + table + " set id=999 where id=100"));
+                    
+            assertEquals(1,
+                JDBCUtil.executeUpdate(
+                    "delete from " + table + " where id=999"));
+                            
+            String results = JDBCUtil.executeQuery("select * from " + table);            
+            assertTrue(results.indexOf("0 rows") >= 0);
+            logger_.info("\n" + results);
+        }
+        finally
+        {
+            JDBCUtil.dropTable(table);
+            cleanup(prefix);
+        }  
     }
 
     /**
@@ -333,65 +363,3 @@ public class JDBCUtilTest extends TestCase
         (new File(FileUtil.getTempDir() + FS + prefix +".script")).delete();
     }
 }
-
-
-
-
-//public void testExecuteQueryZero() throws Exception
-//{
-//    logger_.info("Running testExecuteQueryZero...");
-//        
-//        
-//    String prefix = "JDBCUtilTest_testQueryExecuteZero_" + 
-//        RandomUtil.nextInt(1000);
-//            
-//    JDBCUtil.init(DRIVER, URL + prefix, USER, PASSWORD);
-//        
-//    logger_.info("URL: " + URL + prefix);
-//        
-//    String table = "table_zero";
-//        
-//    try
-//    {
-//        int rows = JDBCUtil.executeUpdate(
-//            "create table " + table + "(id integer)");
-//            
-//        //logger_.info("Create table rows: " + rows);
-//    
-//        String results = JDBCUtil.executeQuery("select * from " + table);            
-//    
-////        JDBCUtil.executeUpdate(
-////            "CREATE TABLE sample_table  " +
-////            "   ( id INTEGER IDENTITY, str_col VARCHAR(256), num_col INTEGER)");
-//    
-////          db.update(
-////              "INSERT INTO sample_table(str_col,num_col) VALUES('Ford', 100)");
-////          db.update(
-////              "INSERT INTO sample_table(str_col,num_col) VALUES('Toyota', 200)");
-////          db.update(
-////              "INSERT INTO sample_table(str_col,num_col) VALUES('Honda', 300)");
-////          db.update(
-////              "INSERT INTO sample_table(str_col,num_col) VALUES('GM', 400)");
-//    
-////        String results = JDBCUtil.executeQuery("SELECT * FROM sample_table");    
-//                
-////        CREATE [TEMP] [CACHED|MEMORY|TEXT] TABLE name 
-////        ( columnDefinition [, ...] ) 
-////
-////        columnDefinition: 
-////        column DataType [ [NOT] NULL] [PRIMARY KEY] 
-////        DataType: 
-////        { INTEGER | DOUBLE | VARCHAR | DATE | TIME |... }            
-//            
-//        assertNotNull(results);
-//        assertTrue(results.indexOf("0 rows") >= 0);
-//            
-//        logger_.info("\n" + results);
-//    }
-//    finally
-//    {
-//        JDBCUtil.dropTable(table);
-//        cleanup(prefix);
-//    }  
-//}
-
