@@ -6,8 +6,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,10 +35,11 @@ public class JSmartTextArea extends JTextArea
     private JCheckBoxMenuItem   antiAliasItem_;
     
     private Map           renderMap_;
-    private Color         darkblue   = new Color(63, 64, 124);
-    private Color         darkrose   = new Color(159, 61, 100);
-    private GradientPaint myGradient = new GradientPaint(0, 0, darkblue, 0, 50,
-                                       darkrose);
+    private Color         darkblue_   = new Color(63, 64, 124);
+    private Color         darkrose_   = new Color(159, 61, 100);
+    
+    private GradientPaint myGradient_ = 
+        new GradientPaint(0, 0, darkblue_, 0, 50, darkrose_);
 
     //--------------------------------------------------------------------------
     //  Constructors
@@ -69,7 +68,7 @@ public class JSmartTextArea extends JTextArea
      * Constructor for JSmartTextArea.
      * 
      * @param  autoScroll  Turns on autoscroll of output
-     * @param  antialias   Turns on antialiasing of the font
+     * @param  antiAlias   Turns on antialiasing of the font
      */
     public JSmartTextArea(boolean autoScroll, boolean antiAlias)
     {
@@ -82,7 +81,7 @@ public class JSmartTextArea extends JTextArea
      * 
      * @param  text        Initial text
      * @param  autoScroll  Turns on autoscroll of output
-     * @param  antialias   Turns on antialiasing of the font
+     * @param  antiAlias   Turns on antialiasing of the font
      */
     public JSmartTextArea(String text, boolean autoScroll, boolean antiAlias)
     {
@@ -98,6 +97,8 @@ public class JSmartTextArea extends JTextArea
     
     /**
      * Override paint to enable antialiasing
+     * 
+     * @param  g  Graphics context
      */    
     public void paint(Graphics g) 
     {
@@ -119,7 +120,7 @@ public class JSmartTextArea extends JTextArea
             }
                 
             g2.setRenderingHints(renderMap_);
-            g2.setPaint(myGradient);
+            g2.setPaint(myGradient_);
             super.paint(g2);
         }
         else
@@ -146,7 +147,7 @@ public class JSmartTextArea extends JTextArea
     
     //--------------------------------------------------------------------------
     // Protected
-    //--------------------------------------------------------------------------    
+    //--------------------------------------------------------------------------
     
     /**
      * Adds the popupmenu to the textarea
