@@ -9,6 +9,10 @@ public abstract class BlockingQueueReader implements Runnable
     
     private boolean continueProcessing_ = true;
 
+    //--------------------------------------------------------------------------
+    // Abstrct Methods
+    //--------------------------------------------------------------------------
+    
     /**
      * Execute for each object in queue
      * 
@@ -16,6 +20,10 @@ public abstract class BlockingQueueReader implements Runnable
      */    
     public abstract void execute(Object obj);
 
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
     /**
      * Init
      * 
@@ -34,6 +42,10 @@ public abstract class BlockingQueueReader implements Runnable
         continueProcessing_ = false;
     }
 
+    //--------------------------------------------------------------------------
+    // Runnable Interface
+    //--------------------------------------------------------------------------
+    
     /**
      * Runs the reader
      */
