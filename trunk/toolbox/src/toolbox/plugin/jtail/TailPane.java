@@ -1,6 +1,7 @@
 package toolbox.plugin.jtail;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,6 +12,9 @@ import java.io.InputStreamReader;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
@@ -19,6 +23,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
+import javax.swing.text.StyleConstants;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.LogManager;
@@ -32,6 +37,7 @@ import toolbox.plugin.jtail.filter.CutLineFilter;
 import toolbox.plugin.jtail.filter.ILineFilter;
 import toolbox.plugin.jtail.filter.LineNumberDecorator;
 import toolbox.plugin.jtail.filter.RegexLineFilter;
+import toolbox.plugin.jtail.filter.StyledSegment;
 import toolbox.tail.Tail;
 import toolbox.tail.TailAdapter;
 import toolbox.util.ArrayUtil;
@@ -781,6 +787,47 @@ public class TailPane extends JHeaderPanel
          * @see toolbox.util.concurrent.IBatchingQueueListener#nextBatch(
          *      java.lang.Object[])
          */
+//        public void nextBatch(Object[] objs)
+//        {
+//            StringBuffer sb = new StringBuffer();
+//
+////            if (objs.length > 1)
+////                logger_.debug("Batch size = " + objs.length);
+////            else
+////            {
+////                if (cnt++ % 100 == 0)
+////                    logger_.debug("[Batch size] = " + objs.length);
+////            }
+//            
+//            // Iterate over each line delivered
+//            for (int i = 0; i < objs.length; i++)
+//            {
+//                StringBuffer line = new StringBuffer((String) objs[i]);
+//
+//                // Apply filters
+//                boolean discard = false;
+//                
+//                for (int j = 0; j < filters_.length; j++)
+//                {
+//                    discard = !filters_[j].filter(line);
+//                    if (discard)
+//                        break;
+//                }
+//
+//                //if (line != null)
+//                if (!discard)
+//                    sb.append(line + "\n");
+//            }
+//
+//            tailArea_.append(sb.toString());
+//            fireNewDataAvailable(TailPane.this);
+//        }
+        
+        
+        /**
+         * @see toolbox.util.concurrent.IBatchingQueueListener#nextBatch(
+         *      java.lang.Object[])
+         */
         public void nextBatch(Object[] objs)
         {
             StringBuffer sb = new StringBuffer();
@@ -793,9 +840,12 @@ public class TailPane extends JHeaderPanel
 //                    logger_.debug("[Batch size] = " + objs.length);
 //            }
             
+            List segments = new ArrayList();
+            
             // Iterate over each line delivered
             for (int i = 0; i < objs.length; i++)
             {
+                segments.clear();
                 StringBuffer line = new StringBuffer((String) objs[i]);
 
                 // Apply filters
@@ -803,19 +853,70 @@ public class TailPane extends JHeaderPanel
                 
                 for (int j = 0; j < filters_.length; j++)
                 {
-                    discard = !filters_[j].filter(line);
+                    discard = !filters_[j].filter(line, segments);
                     if (discard)
                         break;
                 }
 
-                //if (line != null)
+                
                 if (!discard)
-                    sb.append(line + "\n");
+                {
+                    if (segments.isEmpty())
+                        tailArea_.append(line + "\n");
+                    else
+                    {
+                        //logger_.debug("at least one segment exists!");
+                        int pos = 0;
+
+                        for (Iterator it = segments.iterator(); it.hasNext();)
+                        {
+                            StyledSegment segment = (StyledSegment) it.next();
+
+                            //logger_.debug("segment size: " + segment.getBegin() + " " + segment.getEnd());
+                            
+                            // Current to segment begin
+                            if (pos < segment.getBegin())
+                            {
+                                tailArea_.setActiveBackground(Color.white);
+                                tailArea_.setActiveForeground(Color.blue);
+                                
+                                String s = line.substring(pos, segment.getBegin());
+                                //logger_.debug("Non-segment: " + s);
+                                tailArea_.append(s);
+                            }
+                            
+                            // Segment begin to segment end
+                            tailArea_.setActiveBackground(StyleConstants.getBackground(segment.getStyle()));
+                            tailArea_.setActiveForeground(StyleConstants.getForeground(segment.getStyle()));
+                            
+                            String s2 = line.substring(segment.getBegin(), segment.getEnd() + 1);
+                            //logger_.debug("segment: " + s2);
+                            tailArea_.append(s2);
+
+                            pos = segment.getEnd();
+                            
+                            if (!it.hasNext() && pos < line.length())
+                            {
+                                tailArea_.setActiveBackground(Color.white);
+                                tailArea_.setActiveForeground(Color.blue);
+                                
+                                String s = line.substring(pos);
+                                //logger_.debug("Non-segment: " + s);
+                                tailArea_.append(s);
+                            }
+                        }
+                        
+                        tailArea_.append("\n");
+                    }
+                }
+                
+                //    sb.append(line + "\n");
             }
 
-            tailArea_.append(sb.toString());
+            //tailArea_.append(sb.toString());
             fireNewDataAvailable(TailPane.this);
         }
+        
     }
 
     //--------------------------------------------------------------------------

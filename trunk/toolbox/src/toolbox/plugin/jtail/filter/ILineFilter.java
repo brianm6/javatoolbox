@@ -1,5 +1,7 @@
 package toolbox.plugin.jtail.filter;
 
+import java.util.List;
+
 import toolbox.util.service.Enableable;
 
 /**
@@ -14,4 +16,6 @@ public interface ILineFilter extends Enableable
      * @return True if line is valid, false otherwise.
      */
     boolean filter(StringBuffer line);
+    
+    boolean filter(StringBuffer line, List segments);
 }

@@ -1,5 +1,6 @@
 package toolbox.plugin.jtail.filter;
 
+import java.util.List;
 import java.util.StringTokenizer;
 
 import org.apache.commons.lang.StringUtils;
@@ -78,6 +79,14 @@ public class CutLineFilter extends AbstractLineFilter
         
         line.delete(localBegin, localEnd);
         return true;
+    }
+    
+    /**
+     * @see toolbox.plugin.jtail.filter.ILineFilter#filter(java.lang.StringBuffer, java.util.List)
+     */
+    public boolean filter(StringBuffer line, List segments)
+    {
+        return filter(line);
     }
     
     //--------------------------------------------------------------------------

@@ -1,5 +1,7 @@
 package toolbox.plugin.jtail.filter;
 
+import java.util.List;
+
 import org.apache.regexp.RE;
 import org.apache.regexp.RESyntaxException;
 
@@ -87,6 +89,14 @@ public class RegexLineFilter extends AbstractLineFilter
             return regExp_.match(line.toString()) ? true : false;    
         else
             return true;
+    }
+    
+    /**
+     * @see toolbox.plugin.jtail.filter.ILineFilter#filter(java.lang.StringBuffer, java.util.List)
+     */
+    public boolean filter(StringBuffer line, List segments)
+    {
+        return filter(line);
     }
     
     //--------------------------------------------------------------------------
