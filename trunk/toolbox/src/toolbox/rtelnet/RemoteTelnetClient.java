@@ -19,10 +19,22 @@ public class RemoteTelnetClient extends TelnetClient implements Runnable
     //--------------------------------------------------------------------------
     
     /** 
-     * Telnet respones are buffered here so that they can be searched. 
+     * Telnet responses are dumped here so that they can be searched. 
      */
-    private StringBuffer outputBuffer_ = new StringBuffer();
+    private StringBuffer outputBuffer_;
 
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Creates a RemoteTelnetClient. 
+     */
+    public RemoteTelnetClient()
+    {
+        outputBuffer_ = new StringBuffer();
+    }
+    
     //--------------------------------------------------------------------------
     // Public 
     //--------------------------------------------------------------------------
