@@ -253,7 +253,7 @@ public class MonitoredOutputStream extends FilterOutputStream
          * 
          * @param stream Stream that was closed.
          */
-        void streamClosed(OutputStream stream);
+        void streamClosed(MonitoredOutputStream stream);
         
         
         /**
@@ -261,7 +261,7 @@ public class MonitoredOutputStream extends FilterOutputStream
          * 
          * @param stream Stream that was flushed.
          */
-        void streamFlushed(OutputStream stream);
+        void streamFlushed(MonitoredOutputStream stream);
     }
 }
 
