@@ -2,7 +2,11 @@ package toolbox.util.service;
 
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
+import java.util.HashMap;
+import java.util.Map;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JPanel;
 
 import toolbox.util.ui.JSmartButton;
@@ -14,11 +18,23 @@ import toolbox.util.ui.SmartAction;
  */
 public class ServiceView extends JPanel
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
-     * Service attached to the view.
+     * Service attached to this view.
      */
     private Service service_;
 
+    /**
+     * Maps action name to action.
+     */
+    private Map actions_;
+    
+    
+    private ServiceListener myServiceListener_;
+    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -30,10 +46,41 @@ public class ServiceView extends JPanel
      */
     public ServiceView(Service service)
     {
-        service_ = service;
+        myServiceListener_ = new MyServiceListener();
+        setService(service);
+        actions_ = new HashMap(4);
         buildView();
     }
 
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Returns the service.
+     * 
+     * @return Service
+     */
+    public Service getService()
+    {
+        return service_;
+    }
+    
+    
+    /**
+     * Sets the value of service.
+     * 
+     * @param service The service to set.
+     */
+    public void setService(Service service)
+    {
+        if (service_ != null)
+            service_.removeServiceListener(myServiceListener_);
+        
+        service_ = service;
+        service.addServiceListener(myServiceListener_);
+    }
+    
     //--------------------------------------------------------------------------
     // Protected
     //--------------------------------------------------------------------------
@@ -44,12 +91,57 @@ public class ServiceView extends JPanel
     protected void buildView()
     {
         setLayout(new FlowLayout());
-        add(new JSmartButton(new StartAction()));
-        add(new JSmartButton(new PauseAction()));
-        add(new JSmartButton(new ResumeAction()));
-        add(new JSmartButton(new StopAction()));
+        actions_.put("start", new StartAction());
+        actions_.put("pause", new PauseAction());
+        actions_.put("resume", new ResumeAction());
+        actions_.put("stop", new StopAction());
+        add(new JSmartButton((Action) actions_.get("start")));
+        add(new JSmartButton((Action) actions_.get("pause")));
+        add(new JSmartButton((Action) actions_.get("resume")));
+        add(new JSmartButton((Action) actions_.get("stop")));
     }
-
+    
+    
+    class MyServiceListener implements ServiceListener {
+        
+        /**
+         * @see toolbox.util.service.ServiceListener#serviceInitialized(toolbox.util.service.Service)
+         */
+        public void serviceInitialized(Service service) throws ServiceException
+        {
+            ((AbstractAction) actions_.get("start")).setEnabled(true);
+            ((AbstractAction) actions_.get("stop")).setEnabled(false);
+            ((AbstractAction) actions_.get("pause")).setEnabled(false);
+            ((AbstractAction) actions_.get("resume")).setEnabled(false);
+        }
+        
+        
+        /**
+         * @see toolbox.util.service.ServiceListener#servicePaused(toolbox.util.service.Service)
+         */
+        public void servicePaused(Service service) throws ServiceException
+        {
+        }
+        /**
+         * @see toolbox.util.service.ServiceListener#serviceResumed(toolbox.util.service.Service)
+         */
+        public void serviceResumed(Service service) throws ServiceException
+        {
+        }
+        /**
+         * @see toolbox.util.service.ServiceListener#serviceStarted(toolbox.util.service.Service)
+         */
+        public void serviceStarted(Service service) throws ServiceException
+        {
+        }
+        /**
+         * @see toolbox.util.service.ServiceListener#serviceStopped(toolbox.util.service.Service)
+         */
+        public void serviceStopped(Service service) throws ServiceException
+        {
+        }
+    }
+    
     //--------------------------------------------------------------------------
     // StartAction
     //--------------------------------------------------------------------------
@@ -75,6 +167,10 @@ public class ServiceView extends JPanel
         public void runAction(ActionEvent e) throws Exception
         {
             service_.start();
+            ((AbstractAction) actions_.get("start")).setEnabled(false);
+            ((AbstractAction) actions_.get("stop")).setEnabled(true);
+            ((AbstractAction) actions_.get("pause")).setEnabled(true);
+            ((AbstractAction) actions_.get("resume")).setEnabled(false);
         }
     }
 
@@ -103,6 +199,10 @@ public class ServiceView extends JPanel
         public void runAction(ActionEvent e) throws Exception
         {
             service_.stop();
+            ((AbstractAction) actions_.get("start")).setEnabled(true);
+            ((AbstractAction) actions_.get("stop")).setEnabled(false);
+            ((AbstractAction) actions_.get("pause")).setEnabled(false);
+            ((AbstractAction) actions_.get("resume")).setEnabled(false);
         }
     }
 
@@ -132,6 +232,10 @@ public class ServiceView extends JPanel
         public void runAction(ActionEvent e) throws Exception
         {
             service_.pause();
+            ((AbstractAction) actions_.get("start")).setEnabled(false);
+            ((AbstractAction) actions_.get("stop")).setEnabled(false);
+            ((AbstractAction) actions_.get("pause")).setEnabled(false);
+            ((AbstractAction) actions_.get("resume")).setEnabled(true);
         }
     }
 
@@ -160,6 +264,10 @@ public class ServiceView extends JPanel
         public void runAction(ActionEvent e) throws Exception
         {
             service_.resume();
+            ((AbstractAction) actions_.get("start")).setEnabled(false);
+            ((AbstractAction) actions_.get("stop")).setEnabled(true);
+            ((AbstractAction) actions_.get("pause")).setEnabled(true);
+            ((AbstractAction) actions_.get("resume")).setEnabled(false);
         }
     }
 }
