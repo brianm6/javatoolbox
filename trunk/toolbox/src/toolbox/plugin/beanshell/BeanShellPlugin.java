@@ -1,4 +1,4 @@
-package toolbox.util.ui.plugin;
+package toolbox.plugin.beanshell;
 
 import java.awt.BorderLayout;
 import java.io.IOException;
@@ -15,6 +15,7 @@ import org.apache.log4j.Logger;
 
 import toolbox.util.io.JTextAreaOutputStream;
 import toolbox.util.ui.JSmartTextArea;
+import toolbox.util.ui.plugin.IPlugin;
 
 /**
  * Beanshell Plugin
