@@ -85,7 +85,7 @@ public class JMemoryMonitorTest extends TestCase
         {
             for (int i=0; i<2000000; i++)
             {
-                String s = RandomUtil.nextInt() + "";
+                RandomUtil.nextInt();
             }
         }
     }
