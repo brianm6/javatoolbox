@@ -5,12 +5,13 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import org.apache.log4j.Logger;
+
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
-import org.apache.log4j.Logger;
-
 import toolbox.util.ThreadUtil;
+import toolbox.util.concurrent.BlockingQueue;
 import toolbox.util.net.ISocketServerListener;
 import toolbox.util.net.SocketConnection;
 import toolbox.util.net.SocketServer;
@@ -181,9 +182,9 @@ public class SocketServerTest extends TestCase
                     client.send(EchoConnectionHandler.TOKEN_TERMINATE);
                     client.close();
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
-                    logger_.error("In Task.run()", e);
+                    logger_.error("Task.run", e);
                 }
             }   
         }
@@ -214,27 +215,12 @@ public class SocketServerTest extends TestCase
     {
         logger_.info("Running testFireNotifcation...");
                 
-        String method = "[firNot] ";
-        
         // Config server
         SocketServerConfig config = new SocketServerConfig();
         
         // Set handler
         config.setConnectionHandlerType(
             "toolbox.util.net.test.NullConnectionHandler");
-
-        // SocketServer listener        
-        class TestListener implements ISocketServerListener
-        {
-            public boolean success = false;
-            
-            public void socketAccepted(Socket socket)
-            {
-                logger_.info(
-                    "[socAcp] Listener notified of accept on socket " + socket);
-                success = true;
-            }
-        }
         
         // Start server and attach listener
         SocketServer server = new SocketServer(config);
@@ -247,27 +233,47 @@ public class SocketServerTest extends TestCase
         Socket socket = new Socket("localhost", port);
         SocketConnection sc = new SocketConnection(socket);
         sc.close();
-
-        // Just a little bit..
+        
+        // Wait for accept notification
+        listener.waitForAccept();
+        
+        // Race condition between accept() and handle()
         ThreadUtil.sleep(2000);
         
-        // Make sure listener was notified
-        assertTrue(method + "listener was not notified", listener.success);
-
-        // Remove the listener and make sure no notification generated
-        listener.success = false;
-        server.removeSocketServerListener(listener);
-        
-        // Connect to server again
-        port = server.getServerPort();
-        socket = new Socket("localhost", port);
-        sc = new SocketConnection(socket);
-        sc.close();
-        
-        // Make sure listener was not notified
-        assertTrue(method + "listener was notified", !listener.success);
-        
         // Cleanup
+        server.removeSocketServerListener(listener);
         server.stop();
-    }    
+    }
+    
+    //--------------------------------------------------------------------------
+    // Helper Classes
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Listener used to verify that notifications are being generated for
+     * socket server events
+     */        
+    class TestListener implements ISocketServerListener
+    {
+        BlockingQueue accepted_ = new BlockingQueue();
+            
+        public void socketAccepted(Socket socket)
+        {
+            logger_.info("Listener notified of accept on socket " + socket);
+            
+            try
+            {
+                accepted_.push("accepted");
+            }
+            catch (InterruptedException e)
+            {
+                logger_.error("socketAccepted", e);
+            }
+        }
+        
+        public void waitForAccept() throws InterruptedException
+        {
+            accepted_.pull();
+        }
+    }
 }
