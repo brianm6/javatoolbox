@@ -342,7 +342,7 @@ public class SwingConsole extends AbstractConsole
     //--------------------------------------------------------------------------
     
     /**
-     * Handle key actions
+     * Handle key actions.
      */
     private class keyHandler extends KeyAdapter
     {
@@ -393,13 +393,19 @@ public class SwingConsole extends AbstractConsole
             }
             catch (Throwable ohno)
             {
-                logger_.error("Failure : TextLength=" + textLength_
-                    + " promptLength=" + promptLength_ + " lineLength="
-                    + lineLength_ + " text=" + text_.getText().length(), ohno);
+                logger_.error(
+                    "Failure : TextLength=" 
+                    + textLength_
+                    + " promptLength=" 
+                    + promptLength_ 
+                    + " lineLength="
+                    + lineLength_ 
+                    + " text=" 
+                    + text_.getText().length(), 
+                    ohno);
             }
         }
     }
-
 
     //--------------------------------------------------------------------------
     // Private
@@ -407,24 +413,23 @@ public class SwingConsole extends AbstractConsole
     
     /**
      * Handles non-character editing of the command line. Handling is as
-     * follows: <p/>
+     * follows: <p>
      * <ul>
-     * <li>Ctrl-C - copys the current selection to the Clipboard.</li>
-     * <li>Ctrl-V - Inserts text from the ClipBoard into the current line.
-     * </li>
-     * <li>Ctrl-D - Sends an EOT command.</li>
-     * <li>Ctrl-L - Clear the text area.</li>
-     * <li>Ctrl-U - Clear the command line</li>
-     * <li>Ctrl-bksp - Clear the command line</li>
+     *  <li>Ctrl-C - copys the current selection to the Clipboard.
+     *  <li>Ctrl-V - Inserts text from the ClipBoard into the current line.
+     *  <li>Ctrl-D - Sends an EOT command.
+     *  <li>Ctrl-L - Clear the text area.
+     *  <li>Ctrl-U - Clear the command line.
+     *  <li>Ctrl-bksp - Clear the command line.
      * </ul>
-     * <p/>There may be user confusion about Ctrl-C: since this is a shell,
+     * <p>There may be user confusion about Ctrl-C: since this is a shell,
      * users might expect Ctrl-C to terminate the currently running command. At
      * this writing, we don't have command termination, so we'll go ahead and
      * grab Ctrl-C for copy. (Suggest Esc for termination...)
      * 
-     * @param val the KeyCode value of the key pressed
-     * @param ch the character associated with the key pressed
-     * @param modifiers any modifiers that might have been pressed
+     * @param val KeyCode value of the key pressed.
+     * @param ch Character associated with the key pressed.
+     * @param modifiers Any modifiers that might have been pressed.
      */
     private boolean control(int val, char ch, int modifiers)
     {
@@ -438,6 +443,7 @@ public class SwingConsole extends AbstractConsole
                 copy();
                 return true;
 
+                
             case KeyEvent.VK_V:
                 if (logger_.isEnabledFor(Level.INFO))
                 {
@@ -446,6 +452,7 @@ public class SwingConsole extends AbstractConsole
                 paste();
                 return true;
 
+                
             // Let's try a ^D quit...
             case KeyEvent.VK_D:
                 if (logger_.isEnabledFor(Level.INFO))
@@ -457,6 +464,7 @@ public class SwingConsole extends AbstractConsole
                 setCommandLine("");
                 return true;
 
+                
             case KeyEvent.VK_L:
                 if (logger_.isEnabledFor(Level.INFO))
                 {
@@ -466,11 +474,13 @@ public class SwingConsole extends AbstractConsole
                 submit(true);
                 return true;
 
+                
             case KeyEvent.VK_U:
             case KeyEvent.VK_BACK_SPACE:
                 setCommandLine("");
                 return true;
 
+                
             default:
                 return false;
         }
@@ -481,15 +491,15 @@ public class SwingConsole extends AbstractConsole
      * Handles non-character editing of the command line. Handling is as
      * follows: <p/>
      * <ul>
-     * <li>Cursor keys left and right - move the caret and update the current
-     * insertLine value
-     * <li><Home>- Move cursor to the begining of the current line.
-     * <li><End>- Move cursor to the end of the current line.
+     *  <li>Cursor keys left and right - move the caret and update the current
+     *      insertLine value.
+     *  <li><Home> - Move cursor to the begining of the current line.
+     *  <li><End> - Move cursor to the end of the current line.
      * </ul>
      * 
-     * @param val the KeyCode value of the key pressed
-     * @param ch the character associated with the key pressed
-     * @param modifiers any modifiers that might have been pressed
+     * @param val KeyCode value of the key pressed.
+     * @param ch Character associated with the key pressed.
+     * @param modifiers Any modifiers that might have been pressed.
      */
     private boolean handling(int val, char ch, int modifiers)
     {
@@ -542,52 +552,55 @@ public class SwingConsole extends AbstractConsole
     /**
      * Handles the editing of the command line. Handling is as follows: <p/>
      * <ul>
-     * <li>backspace - Delete the character ahead of lineInsert from input
-     * line.</li>
-     * <li>delete - Delete the character after lineInsert from input line.
-     * </li>
-     * <li>enter - Finish the input line by calling <code>submit()</code>.
-     * </li>
-     * <li>otherwise insert the character.</li>
+     *  <li>backspace - Delete the character ahead of lineInsert from input ln.
+     *  <li>delete - Delete the character after lineInsert from input line.
+     *  <li>enter - Finish the input line by calling <code>submit()</code>.
+     *  <li>otherwise insert the character.
      * </ul>
      * 
-     * @param val the KeyCode value of the key pressed
-     * @param ch the character associated with the key pressed
-     * @param modifiers any modifiers that might have been pressed
+     * @param val KeyCode value of the key pressed.
+     * @param ch Character associated with the key pressed.
+     * @param modifiers Any modifiers that might have been pressed.
      */
     private boolean typing(int val, char ch, int modifiers)
     {
-
         switch (ch)
         {
             case KeyEvent.VK_BACK_SPACE:
                 if (insertionPoint_ >= 1 && insertionPoint_ <= lineLength_)
                 {
-                    text_.replaceRange("", textLength_ + promptLength_
-                        + insertionPoint_ - 1, textLength_ + promptLength_
-                        + insertionPoint_);
+                    text_.replaceRange("", 
+                        textLength_ + promptLength_ + insertionPoint_ - 1, 
+                        textLength_ + promptLength_ + insertionPoint_);
+                    
                     insertionPoint_--;
                     lineLength_--;
                 }
                 return true;
 
+                
             case KeyEvent.VK_DELETE:
                 if (insertionPoint_ < lineLength_)
                 {
-                    text_.replaceRange("", textLength_ + promptLength_
-                        + insertionPoint_, textLength_ + promptLength_ + insertionPoint_
-                        + 1);
+                    text_.replaceRange("", 
+                        textLength_ + promptLength_ + insertionPoint_, 
+                        textLength_ + promptLength_ + insertionPoint_ + 1);
+                    
                     lineLength_--;
                 }
                 return true;
 
+                
             case KeyEvent.VK_ENTER:
                 submit(true);
                 return true;
 
+                
             default:
-                text_.insert(Character.toString(ch), textLength_ + promptLength_
-                    + insertionPoint_++);
+                text_.insert(
+                    Character.toString(ch), 
+                    textLength_ + promptLength_ + insertionPoint_++);
+            
                 lineLength_++;
                 return true;
         }
@@ -599,10 +612,9 @@ public class SwingConsole extends AbstractConsole
      */
     private void copy()
     {
-
         String selection = text_.getSelectedText();
 
-        if ((null != selection) && (selection.length() > 0))
+        if ((selection != null) && (selection.length() > 0))
         {
             StringSelection select = new StringSelection(selection);
             Clipboard clip = text_.getToolkit().getSystemClipboard();
@@ -618,38 +630,37 @@ public class SwingConsole extends AbstractConsole
      */
     private void paste()
     {
-
         Clipboard cb = text_.getToolkit().getSystemClipboard();
         Transferable trans = cb.getContents(this);
+        
         if (trans == null)
-        {
             return;
-        }
 
         String cbText = null;
+        
         try
         {
             cbText = (String) trans.getTransferData(DataFlavor.stringFlavor);
         }
-        catch (UnsupportedFlavorException e)
+        catch (UnsupportedFlavorException ufe)
         {
             return;
         }
-        catch (IOException e)
+        catch (IOException ioe)
         {
             return;
         }
 
         if (cbText == null)
-        {
             return;
-        }
 
         // Add the clipboard text to the end of the current command line.
         // If there are multiple lines in the clipboard, we paste and
         // execute each line as if the user entered it and and hit return.
+        
         int current = 0;
         boolean fullLine = true;
+        
         do
         {
             int lineEnd = cbText.indexOf('\n', current);
@@ -661,15 +672,14 @@ public class SwingConsole extends AbstractConsole
             }
 
             // Append text to the current line.
-            String aLine = cbText.substring(current, lineEnd);
-            text_.insert(aLine, textLength_ + promptLength_ + insertionPoint_);
-            insertionPoint_ += aLine.length();
-            lineLength_ += aLine.length();
+            String line = cbText.substring(current, lineEnd);
+            text_.insert(line, textLength_ + promptLength_ + insertionPoint_);
+            insertionPoint_ += line.length();
+            lineLength_ += line.length();
 
             if (fullLine)
-            {
                 submit(true);
-            }
+            
             current = lineEnd + 1;
         }
         while (current < cbText.length());
@@ -679,22 +689,23 @@ public class SwingConsole extends AbstractConsole
     /**
      * Finishes an input line and provides it as input to the console reader.
      * 
-     * @param appendNewLine Clear the line and append a newline
+     * @param appendNewLine Clear the line and append a newline.
      */
     private void submit(boolean appendNewLine)
     {
-
         synchronized (lines_)
         {
             try
             {
-                lines_.add(text_.getText(textLength_ + promptLength_, lineLength_)
-                    + "\n");
+                lines_.add(
+                    text_.getText(
+                        textLength_ + promptLength_, lineLength_) + "\n");
             }
             catch (BadLocationException ble)
             {
-                IllegalArgumentException badLoc = new IllegalArgumentException(
-                    "bad location");
+                IllegalArgumentException badLoc = 
+                    new IllegalArgumentException("bad location");
+                
                 badLoc.initCause(ble);
                 throw badLoc;
             }
