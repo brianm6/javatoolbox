@@ -2,9 +2,7 @@ package toolbox.plugin.jdbc;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -32,6 +30,7 @@ import org.apache.log4j.Logger;
 import org.jedit.syntax.TSQLTokenMarker;
 import org.jedit.syntax.TextAreaDefaults;
 
+import toolbox.jedit.JEditActions;
 import toolbox.jedit.JEditPopupMenu;
 import toolbox.jedit.JEditTextArea;
 import toolbox.jedit.SQLDefaults;
@@ -160,16 +159,6 @@ public class QueryPlugin extends JPanel implements IPlugin
     private JSmartTextArea resultsArea_;
     
     /** 
-     * Invokes execution of sql command. 
-     */
-    private JButton queryButton_;
-    
-    /** 
-     * Clears the contents of the sql results area. 
-     */
-    private JButton clearButton_;
-    
-    /** 
      * Flippane which houses the jdbc configuration panel. 
      */
     private JFlipPane leftFlipPane_;
@@ -223,7 +212,36 @@ public class QueryPlugin extends JPanel implements IPlugin
      */
     protected void buildView()
     {
-        sqlHistory_ = new HashMap();
+        // Split SQL editor and results panel
+        areaSplitPane_ = 
+            new JSmartSplitPane(
+                JSplitPane.VERTICAL_SPLIT,
+                buildSQLEditor(),
+                buildResultsArea());
+
+        // Buttons 
+        JPanel buttonPanel = new JPanel(new FlowLayout());
+        buttonPanel.add(new JSmartButton(new ExecuteAction()));
+
+        // Root 
+        setLayout(new BorderLayout());
+        
+        dbConfigPane_ = new DBConfig(this);
+        leftFlipPane_ = new JFlipPane(JFlipPane.LEFT);
+        leftFlipPane_.addFlipper("Databases", dbConfigPane_);
+
+        add(leftFlipPane_, BorderLayout.WEST);
+        add(areaSplitPane_, BorderLayout.CENTER);                
+        add(buttonPanel, BorderLayout.SOUTH);
+    }
+  
+    
+	/**
+	 * Constructs the SQL editor text area.
+	 */
+	protected JHeaderPanel buildSQLEditor() 
+    {
+		sqlHistory_ = new HashMap();
         
         sqlMenu_ = new JConveyorMenu("SQL History", 10);
         JEditPopupMenu editMenu = new JEditPopupMenu();
@@ -255,9 +273,6 @@ public class QueryPlugin extends JPanel implements IPlugin
                          
         sqlEditor_.getInputHandler().addKeyBinding(
             "CS+F", new FormatSQLAction());
-        
-        resultsArea_ = new JSmartTextArea();
-        resultsArea_.setFont(FontUtil.getPreferredMonoFont());
 
         // Build toolbar for SQL editor
         JButton help = JHeaderPanel.createButton(
@@ -265,51 +280,56 @@ public class QueryPlugin extends JPanel implements IPlugin
             "SQL Reference",
             new SQLReferenceAction());
 
-        JToolBar tb = JHeaderPanel.createToolBar();
-        tb.add(help);
-        
-        // Build toolbar for Results panel
         JButton clear = JHeaderPanel.createButton(
             ImageCache.getIcon(ImageCache.IMAGE_CLEAR),
-            "Clear results",
-            resultsArea_.new ClearAction());
+            "Clear",
+            new JEditActions.ClearAction(sqlEditor_)); 
         
-        JToolBar rb = JHeaderPanel.createToolBar();
-        rb.add(clear);
-
-        // Split SQL editor and results panel
-        areaSplitPane_ = 
-            new JSmartSplitPane(
-                JSplitPane.VERTICAL_SPLIT,
-                new JHeaderPanel("SQL Editor", tb, sqlEditor_),
-                new JHeaderPanel("Results", rb, new JScrollPane(resultsArea_)));
-
-        // Buttons 
-        JPanel buttonPanel = new JPanel(new FlowLayout());
-            
-        queryButton_ = new JSmartButton(new ExecuteAction());
-        buttonPanel.add(queryButton_);
-
-        //clearButton_ = new JSmartButton(resultsArea_.new ClearAction());
-        //buttonPanel.add(clearButton_);
+        JToolBar toolbar = JHeaderPanel.createToolBar();
+        toolbar.add(clear);
+        toolbar.add(help);
         
-        buttonPanel.add(new JSmartButton(new ListTablesAction()));
-        buttonPanel.add(new JSmartButton(new ListColumnsAction()));
+        return new JHeaderPanel("SQL Editor", toolbar, sqlEditor_);        
+	}
 
-        // Root 
-        setLayout(new BorderLayout());
+
+    /**
+     * Constructs the results area.
+     * 
+     * @return JHeaderPanel
+     */
+    protected JHeaderPanel buildResultsArea() 
+    {
+        resultsArea_ = new JSmartTextArea();
+        resultsArea_.setFont(FontUtil.getPreferredMonoFont());
+
+        // Build toolbar for Results panel
+        JButton clear = JHeaderPanel.createButton(
+                ImageCache.getIcon(ImageCache.IMAGE_CLEAR),
+                "Clear results",
+                resultsArea_.new ClearAction());
         
-        dbConfigPane_ = new DBConfig(this);
-        leftFlipPane_ = new JFlipPane(JFlipPane.LEFT);
-        leftFlipPane_.addFlipper("Databases", dbConfigPane_);
+        JButton listTables = JHeaderPanel.createButton(
+                ImageCache.getIcon(ImageCache.IMAGE_HARD_DRIVE),
+                "List tables",
+                new ListTablesAction());
 
-        add(leftFlipPane_, BorderLayout.WEST);
-        add(areaSplitPane_, BorderLayout.CENTER);                
-        add(buttonPanel, BorderLayout.SOUTH);
+        JButton listColumns = JHeaderPanel.createButton(
+                ImageCache.getIcon(ImageCache.IMAGE_COPY),
+                "List columns",
+                new ListColumnsAction());
+        
+        JToolBar toolbar = JHeaderPanel.createToolBar();
+        toolbar.add(listTables);
+        toolbar.add(listColumns);
+        toolbar.add(clear);
+        
+        return new JHeaderPanel(
+                "Results", toolbar, new JScrollPane(resultsArea_));        
     }
     
     
-    /**
+	/**
      * Runs a query against the database and returns the results as a nicely 
      * formatted string.
      * 
@@ -589,13 +609,13 @@ public class QueryPlugin extends JPanel implements IPlugin
         XOMUtil.insertOrReplace(prefs, root);
     }
     
-    /**
-     * ExecuteAction
-     */
     //--------------------------------------------------------------------------
-    // ExecuteAction
+    // SQLReferenceAction
     //--------------------------------------------------------------------------
     
+    /**
+     * Dumps a short SQL reference text to the SQL editor.
+     */
     class SQLReferenceAction extends AbstractAction
     {
         public void actionPerformed(ActionEvent e)
@@ -614,6 +634,10 @@ public class QueryPlugin extends JPanel implements IPlugin
         }
     }
 
+    //--------------------------------------------------------------------------
+    // ExecuteAction
+    //--------------------------------------------------------------------------
+    
     /**
      * Runs the query and appends the results to the output text area.
      */
