@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
@@ -40,6 +39,7 @@ import toolbox.util.XMLUtil;
 import toolbox.util.io.StringInputStream;
 import toolbox.util.ui.JFileExplorer;
 import toolbox.util.ui.JFileExplorerAdapter;
+import toolbox.util.ui.TryCatchAction;
 import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.util.ui.plugin.IPlugin;
 import toolbox.util.ui.plugin.IStatusBar;
@@ -417,110 +417,78 @@ public class XSLFOPlugin extends JPanel implements IPlugin
     /**
      * Formats the XML with correct indentation and spacing
      */
-    private class FormatAction extends AbstractAction 
+    private class FormatAction extends TryCatchAction 
     {
         public FormatAction()
         {
             super("Format");
         }
     
-        public void actionPerformed(ActionEvent e)
+        public void tryActionPerformed(ActionEvent e) throws Exception
         {
-            try
-            {
-                xmlArea_.setText(XMLUtil.format(xmlArea_.getText()));
-            }
-            catch (Exception ee)
-            {
-                ExceptionUtil.handleUI(ee, logger_);
-            }
+            xmlArea_.setText(XMLUtil.format(xmlArea_.getText()));
         }
     }
     
     /**
      * Launches FOP AWT viewer
      */
-    private class FOPAWTAction extends AbstractAction
+    private class FOPAWTAction extends TryCatchAction
     {
         public FOPAWTAction()
         {
             super("Launch with FOP AWT");
         }
         
-        public void actionPerformed(ActionEvent e)
+        public void tryActionPerformed(ActionEvent e) throws Exception
         {
-            try
-            {
-                String xml = xmlArea_.getText();
-                String foFile  = FileUtil.getTempFilename() + ".xml";
-                FileUtil.setFileContents(foFile, xml, false);
-                Fop.main(new String[] { foFile, "-awt"});
-            }
-            catch (FileNotFoundException fnfe)
-            {
-                ExceptionUtil.handleUI(fnfe, logger_);
-            }
-            catch (IOException ioe)
-            {
-                ExceptionUtil.handleUI(ioe, logger_);
-            }
+            String xml = xmlArea_.getText();
+            String foFile  = FileUtil.getTempFilename() + ".xml";
+            FileUtil.setFileContents(foFile, xml, false);
+            Fop.main(new String[] { foFile, "-awt"});
         }
     }
     
     /**
      * Renders the XSLFO and views using the internal PDF viewer
      */
-    private class FOPRenderAction extends AbstractAction
+    private class FOPRenderAction extends TryCatchAction
     {
         public FOPRenderAction()
         {
             super("Render with FOP");
         }
         
-        public void actionPerformed(ActionEvent e)
+        public void tryActionPerformed(ActionEvent e) throws Exception
         {
-            try
-            {
-                byte[] pdfBytes = getFOP().renderPDF(xmlArea_.getText());
-                viewPDFEmbedded(new ByteArrayInputStream(pdfBytes));
-            }
-            catch (Exception ioe)
-            {
-                ExceptionUtil.handleUI(ioe, logger_);
-            }
+            byte[] pdfBytes = getFOP().renderPDF(xmlArea_.getText());
+            viewPDFEmbedded(new ByteArrayInputStream(pdfBytes));
         }
     }
 
     /**
      * Uses FOP formatter and views externally as a PDF
      */
-    private class FOPLaunchAction extends AbstractAction
+    private class FOPLaunchAction extends TryCatchAction
     {
         public FOPLaunchAction()
         {
             super("Launch with FOP");
         }
         
-        public void actionPerformed(ActionEvent e)
+        public void tryActionPerformed(ActionEvent e) throws Exception
         {
-            try
-            {
-                byte[] pdfBytes = getFOP().renderPDF(xmlArea_.getText());
-                String pdfFile = FileUtil.getTempFilename() + ".pdf";
-                FileUtil.setFileContents(pdfFile, pdfBytes, false);
-                viewPDFExternal(pdfFile);
-            }
-            catch (Exception ioe)
-            {
-                ExceptionUtil.handleUI(ioe, logger_);
-            }
+            byte[] pdfBytes = getFOP().renderPDF(xmlArea_.getText());
+            String pdfFile = FileUtil.getTempFilename() + ".pdf";
+            FileUtil.setFileContents(pdfFile, pdfBytes, false);
+            viewPDFExternal(pdfFile);
         }
     }    
     
     /**
      * Launches FOP PDF viewer
      */
-    private class FOPExportToPDFAction extends AbstractAction
+    private class FOPExportToPDFAction extends TryCatchAction
     {
         private File lastDir_;
         
@@ -529,93 +497,72 @@ public class XSLFOPlugin extends JPanel implements IPlugin
             super("Export to PDF..");
         }
         
-        public void actionPerformed(ActionEvent e)
+        public void tryActionPerformed(ActionEvent e) throws Exception
         {
-            try
-            {
-                JFileChooser chooser = null;
-                
-                if (lastDir_ == null)
-                    chooser = new JFileChooser();
-                else
-                    chooser = new JFileChooser(lastDir_);
+            JFileChooser chooser = null;
+            
+            if (lastDir_ == null)
+                chooser = new JFileChooser();
+            else
+                chooser = new JFileChooser(lastDir_);
 
-                if (chooser.showSaveDialog(null) == 
-                    JFileChooser.APPROVE_OPTION) 
-                {
-                    String saveFile = 
-                        chooser.getSelectedFile().getCanonicalPath();
-                    
-                    logger_.debug("Save file=" + saveFile);
-                    
-                    FileOutputStream bos = new FileOutputStream(saveFile);
-                    bos.write(getFOP().renderPDF(xmlArea_.getText()));
-                    bos.close();
-                }
-                
-                lastDir_ = chooser.getCurrentDirectory();
-            }
-            catch (Exception ioe)
+            if (chooser.showSaveDialog(null) == 
+                JFileChooser.APPROVE_OPTION) 
             {
-                ExceptionUtil.handleUI(ioe, logger_);
+                String saveFile = 
+                    chooser.getSelectedFile().getCanonicalPath();
+                
+                logger_.debug("Save file=" + saveFile);
+                
+                FileOutputStream bos = new FileOutputStream(saveFile);
+                bos.write(getFOP().renderPDF(xmlArea_.getText()));
+                bos.close();
             }
+            
+            lastDir_ = chooser.getCurrentDirectory();
         }
     }
     
     /**
      * Uses XEP formatter and views as PDF
      */
-    private class XEPRenderAction extends AbstractAction
+    private class XEPRenderAction extends TryCatchAction
     {
         public XEPRenderAction()
         {
             super("Render with XEP");
         }
         
-        public void actionPerformed(ActionEvent e)
+        public void tryActionPerformed(ActionEvent e) throws Exception
         {
-            try
-            {
-                byte[] pdfBytes = getXEP().renderPDF(xmlArea_.getText());
-                viewPDFEmbedded(new ByteArrayInputStream(pdfBytes));
-            }
-            catch (Exception ioe)
-            {
-                ExceptionUtil.handleUI(ioe, logger_);
-            }
+            byte[] pdfBytes = getXEP().renderPDF(xmlArea_.getText());
+            viewPDFEmbedded(new ByteArrayInputStream(pdfBytes));
         }
     }
     
     /**
      * Uses XEP formatter and views externally as a PDF
      */
-    private class XEPLaunchAction extends AbstractAction
+    private class XEPLaunchAction extends TryCatchAction
     {
         public XEPLaunchAction()
         {
             super("Launch with XEP");
         }
         
-        public void actionPerformed(ActionEvent e)
+        public void tryActionPerformed(ActionEvent e) throws Exception
         {
-            try
-            {
-                byte[] pdfBytes = getXEP().renderPDF(xmlArea_.getText());
-                String pdfFile = FileUtil.getTempFilename() + ".pdf";
-                FileUtil.setFileContents(pdfFile, pdfBytes, false);
-                viewPDFExternal(pdfFile);
-            }
-            catch (Exception ioe)
-            {
-                ExceptionUtil.handleUI(ioe, logger_);
-            }
+            byte[] pdfBytes = getXEP().renderPDF(xmlArea_.getText());
+            String pdfFile = FileUtil.getTempFilename() + ".pdf";
+            FileUtil.setFileContents(pdfFile, pdfBytes, false);
+            viewPDFExternal(pdfFile);
         }
     }    
     
     /**
      * Exports XSL-FO to a Postscript file
      */
-    private class FOPExportToPostscriptAction extends AbstractAction
+    private class FOPExportToPostscriptAction extends TryCatchAction
     {
         private File lastDir_;
         
@@ -624,38 +571,29 @@ public class XSLFOPlugin extends JPanel implements IPlugin
             super("Export to Postscript..");
         }
         
-        public void actionPerformed(ActionEvent e)
+        public void tryActionPerformed(ActionEvent e) throws Exception
         {
-            try
-            {
-                JFileChooser chooser = null;
-                
-                if (lastDir_ == null)
-                    chooser = new JFileChooser();
-                else
-                    chooser = new JFileChooser(lastDir_);
+            JFileChooser chooser = null;
+            
+            if (lastDir_ == null)
+                chooser = new JFileChooser();
+            else
+                chooser = new JFileChooser(lastDir_);
 
-                if (chooser.showSaveDialog(null) == 
-                    JFileChooser.APPROVE_OPTION) 
-                {
-                    String saveFile = 
-                        chooser.getSelectedFile().getCanonicalPath();
-                    
-                    logger_.debug("Save file=" + saveFile);
-                    
-                    FileOutputStream fos = new FileOutputStream(saveFile);
-                    
-                    getFOP().renderPostscript(
-                        new StringInputStream(xmlArea_.getText()), fos);
-                }
-                
-                lastDir_ = chooser.getCurrentDirectory();
-            }
-            catch (Exception ioe)
+            if (chooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) 
             {
-                ExceptionUtil.handleUI(ioe, logger_);
+                String saveFile = 
+                    chooser.getSelectedFile().getCanonicalPath();
+                
+                logger_.debug("Save file=" + saveFile);
+                
+                FileOutputStream fos = new FileOutputStream(saveFile);
+                
+                getFOP().renderPostscript(
+                    new StringInputStream(xmlArea_.getText()), fos);
             }
+            
+            lastDir_ = chooser.getCurrentDirectory();
         }
     }
-
 }
