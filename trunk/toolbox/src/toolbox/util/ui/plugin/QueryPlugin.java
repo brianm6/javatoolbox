@@ -6,8 +6,6 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -31,47 +29,39 @@ import toolbox.util.ExceptionUtil;
 import toolbox.util.JDBCUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
+import toolbox.util.ui.JPopupListener;
 import toolbox.util.ui.JTextComponentPopupMenu;
 import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.util.ui.layout.ParagraphLayout;
 
 /**
  * Simple SQL query panel
+ * 
+ * <pre>
+ * TODO: Replace sqlArea_ with JEditTextArea setup to hilite SQL
+ * </pre>
  */ 
 public class QueryPlugin extends JPanel implements IPlugin
 { 
-    /** Logger */ 
     public static final Logger logger_ =
         Logger.getLogger(QueryPlugin.class);   
 
-    /**
-     * Prefix for children that support preferences
-     */
+    /** Prefix for embedded configurable components */
     public static final String PROP_PREFIX = "query";
     
-    /** 
-     * Property key for SQL history 
-     */
+    /** Property key for SQL history */
     public static final String PROP_HISTORY = "query.plugin.history";
     
-    /** 
-     * Property key for JDBC driver name 
-     */
+    /** Property key for JDBC driver name */
     public static final String PROP_DRIVER = "query.plugin.driver";
     
-    /** 
-     * Property key for JDBC driver URL 
-     */
+    /** Property key for JDBC driver URL */
     public static final String PROP_URL = "query.plugin.url";
     
-    /** 
-     * Property key for JDBC user 
-     */
+    /** Property key for JDBC user */
     public static final String PROP_USER = "query.plugin.user";
     
-    /** 
-     * Property key for JDBC password 
-     */
+    /** Property key for JDBC password */
     public static final String PROP_PASSWORD = "query.plugin.password";
     
     // SQL query & results stuff
@@ -115,7 +105,7 @@ public class QueryPlugin extends JPanel implements IPlugin
                 
         sqlArea_ = new JTextArea();
         sqlArea_.setFont(SwingUtil.getPreferredMonoFont());
-        sqlArea_.addMouseListener(new PopupListener());
+        sqlArea_.addMouseListener(new JPopupListener(sqlPopup_));
         
         // Wire CTRL-Enter to execute the query
         sqlArea_.addKeyListener( new KeyAdapter()
@@ -238,16 +228,6 @@ public class QueryPlugin extends JPanel implements IPlugin
         }
     }
 
-    /**
-     * Set status
-     * 
-     * @param  status  Status text
-     */    
-    protected void setStatus(String status)
-    {
-        statusBar_.setStatus(status);
-    }
-
     //--------------------------------------------------------------------------
     //  IPlugin Interface
     //--------------------------------------------------------------------------
@@ -265,7 +245,7 @@ public class QueryPlugin extends JPanel implements IPlugin
      */
     public String getName()
     {
-        return "Query";
+        return "JDBC Query";
     }
 
     /**
@@ -355,34 +335,6 @@ public class QueryPlugin extends JPanel implements IPlugin
     }
     
     //--------------------------------------------------------------------------
-    //  Inner Classes
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Listener for the popup menu with the sql history
-     */
-    class PopupListener extends MouseAdapter
-    {
-        public void mousePressed(MouseEvent e)
-        {
-            maybeShowPopup(e);
-        }
-
-        public void mouseReleased(MouseEvent e)
-        {
-            maybeShowPopup(e);
-        }
-
-        private void maybeShowPopup(MouseEvent e)
-        {
-            if (e.isPopupTrigger())
-            {
-                sqlPopup_.show(e.getComponent(), e.getX(), e.getY());
-            }
-        }
-    }
-    
-    //--------------------------------------------------------------------------
     //  Actions
     //--------------------------------------------------------------------------
     
@@ -404,7 +356,7 @@ public class QueryPlugin extends JPanel implements IPlugin
             
             if (StringUtil.isNullOrEmpty(sql))
             {
-                setStatus("Nothing to execute.");
+                statusBar_.setStatus("Nothing to execute.");
             }
             else
             {
