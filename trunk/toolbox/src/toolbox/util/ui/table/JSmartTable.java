@@ -54,12 +54,12 @@ public class JSmartTable extends JTable implements AntiAliased, IPreferenced
     /** 
      * Preference that stores automatic tailing of the table flag as a boolean.
      */
-    private static final String ATTR_AUTOTAIL = null;
+    private static final String ATTR_AUTOTAIL = "autotail";
 
     /**
      * Preference that stores antialiasing of the text flag as a boolean.
      */
-    private static final String ATTR_ANTIALIAS = null;
+    private static final String ATTR_ANTIALIAS = "antialias";
     
     //--------------------------------------------------------------------------
     // Fields 
@@ -193,7 +193,6 @@ public class JSmartTable extends JTable implements AntiAliased, IPreferenced
     {
         setTableHeader(new JSmartTableHeader(getColumnModel()));
         followTracker_ = new FollowTracker();
-        setAutoTail(false);
 
         addPropertyChangeListener(
             "model", 
@@ -205,7 +204,7 @@ public class JSmartTable extends JTable implements AntiAliased, IPreferenced
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
-    
+
     /**
      * Returns true if automatic tailing is active, false otherwise.
      * 
@@ -224,7 +223,11 @@ public class JSmartTable extends JTable implements AntiAliased, IPreferenced
      */
     public void setAutoTail(boolean autoTail)
     {
+        if (autoTail == isAutoTail())
+            return;
+        
         autoTail_ = autoTail;
+        firePropertyChange("autotail", !autoTail, autoTail);
     }
     
     //--------------------------------------------------------------------------
