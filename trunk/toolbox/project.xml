@@ -286,12 +286,29 @@
     </dependency>
 
     <dependency>
+      <id>jcommon</id>
+      <version/>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+      </properties>
+    </dependency>
+
+    <dependency>
       <id>jedit-syntax</id>
       <version/>
       <properties>
         <jnlp.jar>true</jnlp.jar>
       </properties>
     </dependency>
+
+    <dependency>
+      <id>jfreechart</id>
+      <version/>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+      </properties>
+    </dependency>
+
 
     <dependency>
       <id>jode</id>
