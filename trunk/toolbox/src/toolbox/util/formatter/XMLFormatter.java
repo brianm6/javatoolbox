@@ -3,27 +3,41 @@ package toolbox.util.formatter;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import nu.xom.Element;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
+import toolbox.util.PreferencedUtil;
 import toolbox.util.XMLUtil;
+import toolbox.util.XOMUtil;
 
 /**
  * XML formatter that uses Xerces internally.
  * <p>
  * <b>Example:</b>
  * <pre class="snippet">
- * Formatter f = new XMLFormatter();
- * String xml = getSomeXML();
- * String formattedXML = f.format(xml);
+ *   Formatter f = new XMLFormatter();
+ *   String xml = getSomeXML();
+ *   String formattedXML = f.format(xml);
  * </pre>
  */
 public class XMLFormatter extends AbstractFormatter
 {
-    // TODO: Implement IPreferenced
-    
     private static final Logger logger_ = Logger.getLogger(XMLFormatter.class);
 
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
+    public static final String NODE_XMLFORMATTER = "XMLFormatter";
+    
+    public static final String[] SAVED_PROPS = {
+        "indent",
+        "lineWidth",
+        "omitDeclaration"
+    };
+    
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
@@ -146,5 +160,31 @@ public class XMLFormatter extends AbstractFormatter
     public void setOmitDeclaration(boolean omitDeclaration)
     {
         omitDeclaration_ = omitDeclaration;
+    }
+    
+    //--------------------------------------------------------------------------
+    // IPreferenced Interface
+    //--------------------------------------------------------------------------
+
+    /**
+     * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
+     */
+    public void applyPrefs(Element prefs) throws Exception
+    {
+        Element root = XOMUtil.getFirstChildElement(
+            prefs, NODE_XMLFORMATTER, new Element(NODE_XMLFORMATTER));
+        
+        PreferencedUtil.readPreferences(this, root, SAVED_PROPS);
+    }
+
+
+    /**
+     * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
+     */
+    public void savePrefs(Element prefs) throws Exception
+    {
+        Element root = new Element(NODE_XMLFORMATTER);
+        PreferencedUtil.writePreferences(this, root, SAVED_PROPS);
+        XOMUtil.insertOrReplace(prefs, root);
     }
 }
