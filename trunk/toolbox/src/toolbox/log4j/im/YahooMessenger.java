@@ -4,6 +4,7 @@ import hamsam.api.Buddy;
 import hamsam.api.IMAdapter;
 import hamsam.api.Message;
 import hamsam.api.TextComponent;
+import hamsam.exception.IllegalStateException;
 import hamsam.net.ProxyInfo;
 import hamsam.protocol.Protocol;
 import hamsam.protocol.ProtocolManager;
@@ -12,6 +13,7 @@ import java.util.Properties;
 
 import org.apache.log4j.helpers.LogLog;
 
+import toolbox.util.PropertiesUtil;
 import toolbox.util.ThreadUtil;
 import toolbox.util.concurrent.BlockingQueue;
 import toolbox.util.invoker.Invoker;
@@ -60,6 +62,12 @@ public class YahooMessenger implements InstantMessenger
      */
     private Invoker invoker_;
     
+    /**
+     * Throttle delay for consecutive messages so the messenger server does 
+     * not get overwhelmed.
+     */
+    private int throttle_;
+    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -84,6 +92,9 @@ public class YahooMessenger implements InstantMessenger
         protocols = ProtocolManager.getAvailableProtocols();
         yahoo_ = protocols[0];
         yahoo_.setListener(listener_ = new YahooListener());
+        
+        throttle_ = PropertiesUtil.getInteger(
+            props, PROP_THROTTLE, InstantMessengerAppender.DEFAULT_THROTTLE);
     }
 
     /**
@@ -133,6 +144,16 @@ public class YahooMessenger implements InstantMessenger
     {
         try
         {
+            QueuedInvoker qi = (QueuedInvoker) invoker_;
+            
+            while (!qi.isEmpty())
+            {
+                LogLog.debug("Messages waiting to be sent before logout: " + 
+                    qi.getSize());
+                    
+                ThreadUtil.sleep(throttle_);
+            }        
+            
             yahoo_.disconnect();
             LogLog.debug("Waiting for disconnect ack...");
             listener_.waitForDisconnect();
@@ -161,8 +182,18 @@ public class YahooMessenger implements InstantMessenger
             {
                 public void run()
                 {
-                    yahoo_.sendInstantMessage(buddy, msg);
-                    ThreadUtil.sleep(100);
+                    try
+                    {
+                        yahoo_.sendInstantMessage(buddy, msg);
+                    }
+                    catch (IllegalStateException e)
+                    {
+                        LogLog.error("send", e);
+                    }
+                    finally
+                    {
+                        ThreadUtil.sleep(throttle_);
+                    }
                 }
             });
         }
