@@ -7,6 +7,7 @@ import javax.swing.ComboBoxModel;
 import javax.swing.JComboBox;
 
 import toolbox.util.SwingUtil;
+import toolbox.util.ui.list.SmartListCellRenderer;
 
 /**
  * JSmartComboBox adds the following behavior.

@@ -1,10 +1,11 @@
-package toolbox.util.ui;
+package toolbox.util.ui.list;
 
 import java.awt.Graphics;
 
 import javax.swing.DefaultListCellRenderer;
 
 import toolbox.util.SwingUtil;
+import toolbox.util.ui.AntiAliased;
 
 /**
  * SmartListCellRenderer adds the following behavior.
