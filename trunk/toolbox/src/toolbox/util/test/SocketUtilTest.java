@@ -191,5 +191,8 @@ public class SocketUtilTest extends TestCase
 //        SocketUtil.close(socket);
         
         //serverThread.join();
+        
+        Socket nullSocket = null;
+        SocketUtil.close(nullSocket);
     }
 }
