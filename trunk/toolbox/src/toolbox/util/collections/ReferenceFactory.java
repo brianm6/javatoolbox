@@ -7,8 +7,8 @@ import java.lang.ref.ReferenceQueue;
  * A factory for creating a key used within a ReferenceHashMap. Returning a
  * WeakReference would give the same functionality as a WeakHashMap.
  * 
- * @see ReferenceHashMap
- * @see IdentityWeakReference
+ * @see toolbox.util.collections.ReferenceHashMap
+ * @see toolbox.util.collections.IdentityWeakReference
  */
 public interface ReferenceFactory
 {
@@ -17,7 +17,7 @@ public interface ReferenceFactory
      * not stored within the ReferenceHashMap.
      * 
      * @param key Key.
-     * @return Reference.
+     * @return Reference
      */
     Reference create(Object key);
 
@@ -28,7 +28,7 @@ public interface ReferenceFactory
      * 
      * @param key Key.
      * @param q Reference queue.
-     * @return Reference.
+     * @return Reference
      */
     Reference create(Object key, ReferenceQueue q);
 }

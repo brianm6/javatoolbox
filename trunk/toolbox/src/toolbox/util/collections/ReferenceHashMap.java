@@ -15,7 +15,7 @@ import java.util.Set;
  * created by the ReferenceFactory. A ReferenceFactory that returned a
  * WeakReference would be the equivalent of a WeakHashMap.
  * 
- * @see ReferenceFactory
+ * @see toolbox.util.collections.ReferenceFactory
  */
 public class ReferenceHashMap extends AbstractMap implements Map
 {
