@@ -29,8 +29,8 @@ public final class DoubleUtil
     /**
      * Determines if the contents of a string can be expressed as a double
      * 
-     * @param   s   String to inspect
-     * @return  True if string contains a double, false otherwise
+     * @param s String to inspect
+     * @return True if string contains a double, false otherwise
      */
     public static boolean isDouble(String s)
     {
@@ -57,8 +57,8 @@ public final class DoubleUtil
     /**
      * Computes the average of a double array
      * 
-     * @param   d   Array of doubles
-     * @return  Average of the array
+     * @param d Array of doubles
+     * @return Average of the array
      */
     public static double average(double[] d) 
     {
@@ -77,8 +77,8 @@ public final class DoubleUtil
     /**
      * Calculates difference of two arrays of doubles
      * 
-     * @param  subtractFrom  Array to subtract from
-     * @param  subtract      Array to subtract
+     * @param subtractFrom Array to subtract from
+     * @param subtract Array to subtract
      * @return Array of the difference
      */
     public static double[] difference(double[] subtractFrom, double[] subtract) 
@@ -97,8 +97,8 @@ public final class DoubleUtil
     /**
      * Determines the number of occurrences of a given value in an array
      *
-     * @param  value   Value to match
-     * @param  arr     Array of doubles
+     * @param value Value to match
+     * @param arr Array of doubles
      * @return Number of times that value occurs in array
      */
     public static int occurs(double value, double[] arr) 
@@ -115,8 +115,8 @@ public final class DoubleUtil
     /**
      * Calculates the median value
      * 
-     * @param   array   Array of values
-     * @return  Median value
+     * @param array Array of values
+     * @return Median value
      */
     public static double median(double[] array) 
     {
@@ -152,8 +152,8 @@ public final class DoubleUtil
     /**
      * Calculates the sum of an array of doubles
      *
-     * @param   d   Array of doubles
-     * @return  Sum of elements in d
+     * @param d Array of doubles
+     * @return Sum of elements in d
      */
     public static double sum(double[] d) 
     {
@@ -172,9 +172,9 @@ public final class DoubleUtil
     /**
      * Rounds a double using the given Decimal format
      * 
-     * @param   d       Double to round
-     * @param   format  Format to use for rounding
-     * @return  Rounded value as a string
+     * @param d Double to round
+     * @param format Format to use for rounding
+     * @return Rounded value as a string
      */
     public static String round(double d, DecimalFormat format)
     {
@@ -197,9 +197,9 @@ public final class DoubleUtil
     /**
      * Rounds a string that contains a double value 
      * 
-     * @param   s       Double value as a string
-     * @param   format  Format to use for rounding
-     * @return  Rounded value as a string
+     * @param s Double value as a string
+     * @param format Format to use for rounding
+     * @return Rounded value as a string
      */
     public static String round(String s, DecimalFormat format) 
     {
@@ -210,10 +210,10 @@ public final class DoubleUtil
      * Determines if a double is in a range [a..b]
      * (inclusive of the start and end)
      * 
-     * @param   number      Double to check
-     * @param   rangeBegin  Start of the range 
-     * @param   rangeEnd    End of the range   
-     * @return  True if the given double is in the range, false otherwise 
+     * @param number Double to check
+     * @param rangeBegin Start of the range 
+     * @param rangeEnd End of the range   
+     * @return True if the given double is in the range, false otherwise 
      */
     public static boolean isBetween(double number, double rangeBegin, 
         double rangeEnd) 

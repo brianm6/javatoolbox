@@ -29,9 +29,9 @@ public final class CollectionUtil
     /**
      * Assembles the union of a pair of collections
      * 
-     * @param   set1  First set
-     * @param   set2  Second set
-     * @return  Collection containing the Union of set1 and set2
+     * @param set1 First set
+     * @param set2 Second set
+     * @return Collection containing the Union of set1 and set2
      */    
     public static final Collection union(Collection set1, Collection set2)
     {
@@ -43,9 +43,9 @@ public final class CollectionUtil
     /**
      * Assembles the intersection of a pair of collections
      * 
-     * @param   set1  First set
-     * @param   set2  Second set
-     * @return  Collection containing the intersection of set1 and set2
+     * @param set1 First set
+     * @param set2 Second set
+     * @return Collection containing the intersection of set1 and set2
      */    
     public static final Collection 
         intersection(Collection set1, Collection set2)
@@ -58,9 +58,9 @@ public final class CollectionUtil
     /**
      * Assembles the set difference of a pair of collections
      * 
-     * @param   set1  First set
-     * @param   set2  Second set
-     * @return  Collection containing the difference of set1 and set2
+     * @param set1 First set
+     * @param set2 Second set
+     * @return Collection containing the difference of set1 and set2
      */    
     public static final Collection difference(Collection set1, Collection set2)
     {
@@ -72,9 +72,9 @@ public final class CollectionUtil
     /**
      * Determines if set2 is a subset of set1
      * 
-     * @param   set1  First set
-     * @param   set2  Second set
-     * @return  True if set2 is a subset of set1, false otherwise
+     * @param set1 First set
+     * @param set2 Second set
+     * @return True if set2 is a subset of set1, false otherwise
      */    
     public static final boolean isSubset(Collection set1, Collection set2)
     {

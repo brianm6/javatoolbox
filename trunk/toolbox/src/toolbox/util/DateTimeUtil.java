@@ -32,8 +32,10 @@ public final class DateTimeUtil
     //--------------------------------------------------------------------------
     
     /**
-     * @param   d  Date to format
-     * @return  Date/time in dashed MM-dd-yyyy hh:mm a format
+     * Formats a timestamp
+     *  
+     * @param d Date to format
+     * @return Date/time in dashed MM-dd-yyyy hh:mm a format
      */
     public static String format(Date d)
     {
@@ -45,14 +47,14 @@ public final class DateTimeUtil
      * Adds individual time components to a date. The original date is returned 
      * for chaining.
      * 
-     * @param   date     Date to modify
-     * @param   years    Number of years to add
-     * @param   months   Number of months to add
-     * @param   days     Number of days to add
-     * @param   hours    Number of hours to add
-     * @param   minutes  Number of minutes to add
-     * @param   seconds  Number of seconds to add
-     * @return  Reference to modified passed in date
+     * @param date Date to modify
+     * @param years Number of years to add
+     * @param months Number of months to add
+     * @param days Number of days to add
+     * @param hours Number of hours to add
+     * @param minutes Number of minutes to add
+     * @param seconds Number of seconds to add
+     * @return Reference to modified passed in date
      */
     public static Date add(Date date, int years, int months, int days,
         int hours, int minutes, int seconds)
@@ -72,7 +74,7 @@ public final class DateTimeUtil
     /**
      * Gets the date/time of the beginning of the current day
      * 
-     * @return  Date
+     * @return Date
      */
     public static Date getBeginningOfDay()
     {
@@ -83,7 +85,7 @@ public final class DateTimeUtil
      * Convenience method to get the time of day immediately after is rolled 
      * from the previous day.  Time will be 00:00:00 0ms
      * 
-     * @param  d  Date to get beginning of
+     * @param d Date to get beginning of
      * @return Date set to the beginning of the day
      */
     public static Date getBeginningOfDay(final Date d)
@@ -123,8 +125,8 @@ public final class DateTimeUtil
      * Convenience method to get the time of the given day immediately 
      * before it rolls over to the next day.
      * 
-     * @param   d  Date to modify
-     * @return  Modified date for chaining
+     * @param d Date to modify
+     * @return Modified date for chaining
      */
     public static Date getEndOfDay(final Date d)
     {
@@ -141,7 +143,7 @@ public final class DateTimeUtil
     /**
      * Gets a date far out in the future
      * 
-     * @return  Date representing end of time
+     * @return Date representing end of time
      */
     public static Date getEndOfTime()
     {

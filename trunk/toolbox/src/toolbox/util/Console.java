@@ -39,43 +39,77 @@ import java.util.StringTokenizer;
  */
 public abstract class Console
 {
-    /** Command to show help */
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Command to show help 
+     */
     public static final String CMD_HELP = "help";
     
-    /** Commands to exit the jvm */
+    /** 
+     * Commands to exit the jvm 
+     */
     public static final String CMD_QUIT = "quit";
     
-    /** Command to exit the jvm */
+    /** 
+     * Command to exit the jvm 
+     */
     public static final String CMD_EXIT = "exit";
     
-    /** Command to show the classpath */
+    /** 
+     * Command to show the classpath 
+     */
     public static final String CMD_CLASSPATH = "classpath";
     
-    /** Command to show the system properties */
+    /** 
+     * Command to show the system properties 
+     */
     public static final String CMD_PROPS = "props";
     
-    /** Command to show memory consumption */
+    /** 
+     * Command to show memory consumption 
+     */
     public static final String CMD_MEM = "mem";
     
-    /** Command to detach the console from the input stream */
+    /** 
+     * Command to detach the console from the input stream 
+     */
     public static final String CMD_DETACH = "detach";
     
-    /** Command to add a property to System.properties */
+    /** 
+     * Command to add a property to System.properties 
+     */
     public static final String CMD_SETPROP = "setprop";
     
-    /** Command to remove a property from System.properties */
+    /** 
+     * Command to remove a property from System.properties 
+     */
     public static final String CMD_DELPROP = "delprop";
 
-    /** Command to show how long the console has been active */
+    /** 
+     * Command to show how long the console has been active 
+     */
     public static final String CMD_UPTIME = "uptime";
     
-    /** Source of commands */    
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
+    /** 
+     * Source of commands 
+     */    
     private LineNumberReader lnr_;
     
-    /** Output of command results */
+    /** 
+     * Output of command results 
+     */
     private PrintStream ps_;
 
-    /** Time console was created */
+    /** 
+     * Time console was created 
+     */
     private long startTime_;
     
     //--------------------------------------------------------------------------
@@ -94,8 +128,8 @@ public abstract class Console
     /**
      * Create an InteractiveConsole with the given streams
      * 
-     * @param  is  Input stream to read commands from
-     * @param  os  Output stream to write command results to
+     * @param is Input stream to read commands from
+     * @param os Output stream to write command results to
      */
     public Console(InputStream is, PrintStream os)
     {
@@ -169,7 +203,7 @@ public abstract class Console
     /**
      * Handles the command 
      * 
-     * @param  cmd  Command to handle
+     * @param cmd Command to handle
      */
     public void handleCommand(String cmd)
     {
@@ -202,7 +236,7 @@ public abstract class Console
     /**
      * Adds/sets a property to system properties 
      * 
-     * @param  cmd  Original command so we can extract prop name/value
+     * @param cmd Original command so we can extract prop name/value
      */
     protected void commandSetProp(String cmd)
     {
@@ -220,7 +254,7 @@ public abstract class Console
     /**
      * Removes a system property
      * 
-     * @param  cmd  Original command so we can extract prop name
+     * @param cmd Original command so we can extract prop name
      */
     protected void commandDelProp(String cmd)
     {
