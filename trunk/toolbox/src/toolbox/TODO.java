@@ -5,7 +5,6 @@ package toolbox;
  * <pre>
  * TODO: SSH on CVS
  * TODO: Move Tomcat server to booger2
- * TODO: Figure out how to launch web browser consistently for build.xml
  * TODO: Add vizant for visualization of build dependencies
  * TODO: Add support to minimize to system tray - systray4j
  * TODO: Integrate automatic build number generation into the build process.
@@ -26,7 +25,6 @@ package toolbox;
  * TODO: FindClass: Add option to have decompiler dump to one textarea or 
  *                  multiple tabs
  * TODO: FindClass: Update JSMartList so that scroll on demand is an option
- * TODO:            Update JSmartTable so that scroll on deman is an option
  * TODO: FindClass: Have decompiler text area rembember font setting if dump 
  *                  to tabs
  * TODO: FindClass: Add a way to close all tabs in the decompiler 
@@ -35,6 +33,10 @@ package toolbox;
  * TODO: FindClass: Add decompile on select
  * TODO: FindClass: Add additional search criteria: A extends B, A implements C
  * TODO: FindClass: Add timer to see perf.
+ * =============================================================================
+ * TODO: TCPTunnel: Add toggle button for wrap lines on toolbar
+ * TODO: TCPTunnel: Add toggle button for binary char filter on toolbar
+ * TODO: TCPTunnel: Fix total connection byte count on the text area title
  * =============================================================================
  * </pre>
  */
