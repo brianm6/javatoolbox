@@ -2,6 +2,7 @@ package toolbox.clearcase;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -12,11 +13,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.Properties;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.collections.Closure;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -25,6 +28,7 @@ import toolbox.clearcase.adapter.ClearCaseAdapterFactory;
 import toolbox.clearcase.audit.ContainsTabsAudit;
 import toolbox.clearcase.audit.MissingCommentAudit;
 import toolbox.util.DateUtil;
+import toolbox.util.ResourceUtil;
 import toolbox.util.collections.ObjectComparator;
 
 /**
@@ -38,12 +42,33 @@ public class RepositoryAuditor
         Logger.getLogger(RepositoryAuditor.class);
     
     //--------------------------------------------------------------------------
-    // Constants
+    // Properties Constants
     //--------------------------------------------------------------------------
-    
-    private static final String PROPS_FILE_CLEARCASE = "clearcase.properties";
 
+    /** 
+     * Properties file to read configuration from.
+     */
+    private static final String FILENAME_CLEARCASE_PROPS = 
+        "clearcase.properties";
+    
+    /**
+     * Property for the path to the clearcase view.
+     */
+    private static final String PROP_VIEW_PATH = "clearcase.view.path";
+    
+    /**
+     * Property for the number of days of history to include in the audit.
+     */
+    private static final String PROP_HISTORY_DAYS = "clearcase.history.days";
+    
+    /**
+     * Maps usernames to real names.
+     */
     private static Map userMap_;
+
+    //--------------------------------------------------------------------------
+    // Static Blocks
+    //--------------------------------------------------------------------------
     
     static
     {
@@ -53,7 +78,17 @@ public class RepositoryAuditor
         userMap_.put("e68041", "Bob");
         userMap_.put("e47457", "Rama");
         userMap_.put("e63591", "Alan");
+        userMap_.put("e68202", "BuildGuy");
     }
+    
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Configuration properties for the audit.
+     */
+    private Properties props_;
     
     //--------------------------------------------------------------------------
     // Main
@@ -61,10 +96,23 @@ public class RepositoryAuditor
     
     public static void main(String[] args)
     {
-        RepositoryAuditor auditor = new RepositoryAuditor();
+        // Hardcode config defaults
+        Properties props = new Properties();
+        props.setProperty(PROP_VIEW_PATH, "m:\\x1700_sandbox\\staffplanning");
+        props.setProperty(PROP_HISTORY_DAYS, "15");
         
         try
         {
+            // Override with settings from props file if available
+            InputStream is = ResourceUtil.getResource(FILENAME_CLEARCASE_PROPS);
+
+            if (is != null)
+            {
+                props.load(is);
+                IOUtils.closeQuietly(is);
+            }
+
+            RepositoryAuditor auditor = new RepositoryAuditor(props);
             auditor.run();
         }
         catch (IOException e)
@@ -80,8 +128,9 @@ public class RepositoryAuditor
     /**
      * Creates a RepositoryAuditor.
      */
-    public RepositoryAuditor()
+    public RepositoryAuditor(Properties props)
     {
+        props_ = props;
     }
     
     //--------------------------------------------------------------------------
@@ -91,34 +140,40 @@ public class RepositoryAuditor
     public void run() throws IOException 
     {
         IClearCaseAdapter cc = ClearCaseAdapterFactory.create();
-        cc.setViewPath(new File("m:\\x1700_sandbox\\staffplanning"));
+        cc.setViewPath(new File(getViewPath()));
         
+        // Find changed files between now and 'history days' back.
         List changedFiles = 
             cc.findChangedFiles(
-                DateUtil.addDays(new Date(), -30), 
+                DateUtil.addDays(new Date(), -getHistoryDays()), 
                 new Date(), 
-                new SuffixFileFilter(".java"));
+                new SuffixFileFilter("*"));
 
-        
+        // Build up the list of audits to run...
         List audits = new ArrayList();
         audits.add(new MissingCommentAudit());
         audits.add(new ContainsTabsAudit());
         List finalResults = new ArrayList();
         
+        // Run the audits
         for (Iterator iter = audits.iterator(); iter.hasNext();)
         {
             IAudit audit = (IAudit) iter.next();
             finalResults.addAll(audit.audit(changedFiles));
         }
 
+        // Sort the audit results
         Comparator sortByUser = new ObjectComparator("username", "filename");
         Collections.sort(finalResults, sortByUser);
         
+        // Find the max length of the data in the results so the output looks
+        // nice and lined up
         int maxUsername = getMaxLength(finalResults, "username");
         int maxFilename = getMaxLength(finalResults, "fileOnly");
         int maxReason   = getMaxLength(finalResults, "reason");
         int maxDate     = getMaxLength(finalResults, "date");
 
+        // Create header row
         StringBuffer sb = new StringBuffer();
         sb.append(StringUtils.repeat("=", 80));
         sb.append("\n");
@@ -129,8 +184,8 @@ public class RepositoryAuditor
         sb.append("Dir\n");
         sb.append(StringUtils.repeat("=", 80));
         sb.append("\n");
-        
-        
+
+        // Format the audit results
         for (ListIterator iter = finalResults.listIterator(); iter.hasNext();)
         {
             IAuditResult result = (IAuditResult) iter.next();
@@ -148,26 +203,58 @@ public class RepositoryAuditor
         System.out.println(sb);
     }
 
+    //--------------------------------------------------------------------------
+    // Protected
+    //--------------------------------------------------------------------------
     
     /**
+     * Returns the number of days of change control history to include in the
+     * audit starting from today.
      * 
-     * @param coll
-     * @param propName
-     * @return
+     * @return int
      */
-    private int getMaxLength(Collection coll, String propName)
+    protected int getHistoryDays()
+    {
+        return Integer.parseInt(props_.getProperty(PROP_HISTORY_DAYS));
+    }
+
+    
+    /**
+     * Returns the absolute path of the clearcase view.
+     * 
+     * @return String
+     */
+    protected String getViewPath()
+    {
+        return props_.getProperty(PROP_VIEW_PATH);
+    }
+
+    
+    /**
+     * Returns the maximum number of columns occupied by a given string java
+     * bean property on a collection of objects. Adds two to length to account
+     * for the gap between columns.
+     * 
+     * @param objects Collection of like objects.
+     * @param propName Name of javabean property containing a string.
+     * @return String
+     */
+    protected int getMaxLength(Collection objects, String propName)
     {
         MaxStringLengthFinder finder = new MaxStringLengthFinder(propName);
-        CollectionUtils.forAllDo(coll, finder);
+        CollectionUtils.forAllDo(objects, finder);
         return finder.getMaxLength() + 2;
     }
     
     
     /**
-     * @param username
-     * @return
+     * Maps a username to a real name. Returns the username if a mapping for the
+     * real name does not exist.
+     * 
+     * @param username Username to get the real name for.
+     * @return String
      */
-    private String getAlias(String username)
+    protected String getAlias(String username)
     {
         String result = (String) userMap_.get(username);
         if (result == null)
@@ -177,19 +264,48 @@ public class RepositoryAuditor
     }
     
     //--------------------------------------------------------------------------
-    // StringLengthClosure
+    // MaxStringLengthFinder
     //--------------------------------------------------------------------------
     
+    /**
+     * Finds the max length of a string bean property given the java bean
+     * property name.
+     */
     class MaxStringLengthFinder implements Closure
     {
-        String propName_;
-        int max_;
+        //----------------------------------------------------------------------
+        // Fields
+        //----------------------------------------------------------------------
         
+        /**
+         * Javabean property name.
+         */
+        private String propName_;
+        
+        /**
+         * Maximum string length found so far.
+         */
+        private int max_;
+        
+        //----------------------------------------------------------------------
+        // Constructors
+        //----------------------------------------------------------------------
+        
+        /**
+         * Creates a MaxStringLengthFinder.
+         * 
+         * @param propName Javabean property name of the field to find the
+         *        string length of.
+         */
         public MaxStringLengthFinder(String propName)
         {
             propName_ = propName;
             max_ = 0;
         }
+
+        //----------------------------------------------------------------------
+        // Closure Interface
+        //----------------------------------------------------------------------
         
         /**
          * @see org.apache.commons.collections.Closure#execute(java.lang.Object)
@@ -207,7 +323,16 @@ public class RepositoryAuditor
             }
         }
         
+        //----------------------------------------------------------------------
+        // Public
+        //----------------------------------------------------------------------
         
+        /**
+         * Returns the maximum string length across all invocations of
+         * execute().
+         * 
+         * @return int
+         */
         public int getMaxLength()
         {
             return max_;
