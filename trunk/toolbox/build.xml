@@ -4,7 +4,10 @@
 
 <project name="toolbox" default="all" basedir=".">
 
-
+	<description>
+        Java Toolbox
+	</description>
+	
     <!--=============================-->
     <!--            PREP             -->
     <!--=============================-->
@@ -260,23 +263,11 @@
             dest      ="${classes}" 
             overwrite ="false" />
 
-		<!--
-        <unjar 
-        	src       ="${lib}/skinlf.jar" 
-            dest      ="${classes}" 
-            overwrite ="false" />
-            
-        <unjar 
-        	src       ="${lib}/themepack.zip"
-            dest      ="${classes}" 
-            overwrite ="false" />
-		-->
-		
         <unjar 
         	src       ="${lib}/plastic.jar" 
             dest      ="${classes}" 
             overwrite ="false" />
-
+            
         <unjar 
         	src       ="${lib}/junit.jar" 
             dest      ="${classes}" 
@@ -291,18 +282,23 @@
         	src       ="${lib}/xplookandfeel.jar" 
             dest      ="${classes}" 
             overwrite ="false" />
+
+        <unjar 
+        	src       ="${lib}/xml-apis.jar" 
+            dest      ="${classes}" 
+            overwrite ="false" />
+
+        <unjar 
+        	src       ="${lib}/xercesImpl.jar" 
+            dest      ="${classes}" 
+            overwrite ="false" />
                              
         <jar 
         	jarfile ="${dist}/toolbox.jar" 
             manifest="${src}/META-INF/MANIFEST.MF">
 
-            <fileset dir="${classes}" excludes="**/MANIFEST.MF"/>
-            
-            <!-- fileset dir="${top}" includes="lib/*.jar"/-->
-            
-            <fileset 
-            	dir="${resources}"
-				excludes="**/test/**"/>
+            <fileset dir="${classes}"   excludes="**/MANIFEST.MF,**/test/**"/>
+            <fileset dir="${resources}" excludes="**/test/**"/>
         </jar>
 
     </target>
@@ -355,8 +351,6 @@
     	<delete>
             <fileset dir="${doc}" includes="**/**"/>
     	</delete>
-    	
-        
             	
         <javadoc 
             access="private" 
@@ -565,7 +559,8 @@
     <!--        CHECKSTYLE           -->
     <!--=============================-->
     <taskdef name="checkstyle" 
-             classname="com.puppycrawl.tools.checkstyle.CheckStyleTask"/>
+             classname="com.puppycrawl.tools.checkstyle.CheckStyleTask"
+             classpath="build/lib/checkstyle.jar"/>
              
     <target name="checkstyle" 
             depends="init" 
@@ -592,5 +587,78 @@
         </exec>            
                 
     </target>
-        
+
+    <!--=============================--> 
+    <!--       OBFUSCATE             -->
+    <!--=============================-->
+	<taskdef name="obfuscate"
+		     classname="com.yworks.yguard.ObfuscatorTask" 
+		     classpath="build/lib/yguard.jar"/>
+
+	<target name="obfuscate"
+            depends="init" 
+		    description="Creates obfuscated version of toolbox.jar">
+		    
+		<obfuscate mainclass="toolbox.launcher.Main" 
+			       conserveManifest="true">
+				
+				<!-- logfile="log.xml"-->
+					
+			<inoutpair in="${dist}/toolbox.jar" out="${dist}/toolbox_obf.jar"/>
+	
+			<expose>
+				<class classes="protected" methods="protected" fields="protected"/>
+				
+				<class name="toolbox.findclass.Main"/>
+				
+				<class name="toolbox.showclasspath.Main"/>
+				<class name="toolbox.showpath.Main"/>
+				<class name="toolbox.jsourceview.JSourceView"/>
+				<class name="toolbox.jtail.JTail"/>
+				<class name="toolbox.tail.Main"/>
+				<class name="toolbox.tunnel.JTcpTunnel"/>
+				<class name="toolbox.tunnel.TcpTunnel"/>
+				<class name="toolbox.tree.Tree"/>
+				<class name="toolbox.sqlviewer.SQLViewer"/>
+				<class name="toolbox.util.Banner"/>
+				<class name="toolbox.util.ui.plugin.PluginWorkspace"/>
+
+				<class name="toolbox.jtail.FileSelectionPane"/>
+				<class name="toolbox.jtail.config.tinyxml.ConfigManager"/>
+				<class name="toolbox.tail.Tail"/>				
+				<class name="toolbox.util.concurrent.BlockingQueue"/>
+				<class name="toolbox.util.concurrent.BatchingQueueReader"/>				
+				<class name="toolbox.util.io.filter.ExtensionFilter"/>
+				<class name="toolbox.util.ui.ThreadSafeTableModel"/>
+				<class name="toolbox.util.ui.JFileExplorer"/>
+				<class name="toolbox.util.ClassUtil"/>
+				<class name="toolbox.util.StringUtil"/>
+				<class name="toolbox.util.SwingUtil"/>
+				<class name="toolbox.util.ThreadUtil"/>
+				<class name="toolbox.util.ui.plugin.ManagePluginsDialog"/>
+				
+				<class>
+					<patternset>
+						<include name="org."/>	
+						<include name="com."/>
+						<include name="net."/>
+						<include name="toolbox.util.ui.JFlipPane*$*"/>						
+						<include name="toolbox.findclass.JFindClass*$*"/>
+						<include name="toolbox.**.*Plugin"/>
+					</patternset>
+				</class>
+
+				<method name="void main(java.lang.String[])">
+			        <patternset>
+					    <include name="toolbox."/>
+				    </patternset>
+				</method>
+				
+			</expose>
+			
+			
+		</obfuscate>
+		
+	</target>
+	
 </project>
