@@ -68,7 +68,7 @@ public class FindClass
     /** 
      * Collection of listeners. 
      */ 
-    private IFindClassListener[] findListeners_;
+    private FindClassListener[] findListeners_;
     
     /** 
      * Default collector of search results. 
@@ -107,7 +107,7 @@ public class FindClass
                 new ExtensionFilter(".jar"), 
                 new ExtensionFilter(".zip"));
         
-        findListeners_ = new IFindClassListener[0];
+        findListeners_ = new FindClassListener[0];
         defaultCollector_ = new FindClassCollector();
         addSearchListener(defaultCollector_);
     }
@@ -501,10 +501,10 @@ public class FindClass
      * 
      * @param listener Listener to add
      */   
-    public void addSearchListener(IFindClassListener listener)
+    public void addSearchListener(FindClassListener listener)
     {
         findListeners_ = 
-            (IFindClassListener[]) ArrayUtil.add(findListeners_, listener);        
+            (FindClassListener[]) ArrayUtil.add(findListeners_, listener);        
     }
     
     
@@ -513,10 +513,10 @@ public class FindClass
      * 
      * @param listener Listener to remove
      */
-    public void removeSearchListener(IFindClassListener listener)
+    public void removeSearchListener(FindClassListener listener)
     {
         findListeners_ = 
-            (IFindClassListener[]) ArrayUtil.remove(findListeners_, listener);        
+            (FindClassListener[]) ArrayUtil.remove(findListeners_, listener);        
     }
     
     
@@ -525,6 +525,6 @@ public class FindClass
      */
     public void removeSearchListeners()
     {
-        findListeners_ = new IFindClassListener[0];
+        findListeners_ = new FindClassListener[0];
     }
 }

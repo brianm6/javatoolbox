@@ -261,7 +261,7 @@ public class Main extends FindClassAdapter
     //--------------------------------------------------------------------------
  
     /**
-     * Implementation of IFindClassListener.
+     * Implementation of FindClassListener.
      * 
      * @param searchResult Results of class that was found.
      */   

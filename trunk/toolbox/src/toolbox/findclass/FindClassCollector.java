@@ -31,7 +31,7 @@ public class FindClassCollector extends FindClassAdapter
     //--------------------------------------------------------------------------
         
     /**
-     * @see toolbox.findclass.IFindClassListener#classFound(
+     * @see toolbox.findclass.FindClassListener#classFound(
      *      toolbox.findclass.FindClassResult)
      */
     public void classFound(FindClassResult result)

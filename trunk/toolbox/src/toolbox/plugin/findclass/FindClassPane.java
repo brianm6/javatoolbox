@@ -526,7 +526,7 @@ public class JFindClass extends JFrame implements IPreferenced
          * When a class is found, add it to the result table.
          * 
          * @param searchResult Info on class that was found
-         * @see toolbox.findclass.IFindClassListener#classFound(
+         * @see toolbox.findclass.FindClassListener#classFound(
          *      toolbox.findclass.FindClassResult)
          */
         public void classFound(FindClassResult searchResult)
@@ -540,7 +540,7 @@ public class JFindClass extends JFrame implements IPreferenced
          * archive being search in the search list.
          * 
          * @param target Target that is being searched
-         * @see toolbox.findclass.IFindClassListener#searchingTarget(
+         * @see toolbox.findclass.FindClassListener#searchingTarget(
          *      java.lang.String)
          */
         public void searchingTarget(String target)
@@ -561,7 +561,7 @@ public class JFindClass extends JFrame implements IPreferenced
         /**
          * When a search is cancelled, update the status bar.
          * 
-         * @see toolbox.findclass.IFindClassListener#searchCancelled()
+         * @see toolbox.findclass.FindClassListener#searchCancelled()
          */
         public void searchCancelled()
         {
@@ -571,7 +571,7 @@ public class JFindClass extends JFrame implements IPreferenced
         
         
         /**
-         * @see toolbox.findclass.IFindClassListener#searchCompleted(
+         * @see toolbox.findclass.FindClassListener#searchCompleted(
          *      java.lang.String)
          */
         public void searchCompleted(String search)
@@ -691,7 +691,7 @@ public class JFindClass extends JFrame implements IPreferenced
         
         
         /**
-         * @see toolbox.findclass.IFindClassListener#searchCompleted(
+         * @see toolbox.findclass.FindClassListener#searchCompleted(
          *      java.lang.String)
          */
         public void searchCompleted(String search)

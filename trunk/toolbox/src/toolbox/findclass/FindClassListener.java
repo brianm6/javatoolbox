@@ -3,7 +3,7 @@ package toolbox.findclass;
 /**
  * Interface for classes interested in listening to Findclass events.
  */
-public interface IFindClassListener
+public interface FindClassListener
 {
     /**
      * Notification that a class matching the search criteria has been found.
