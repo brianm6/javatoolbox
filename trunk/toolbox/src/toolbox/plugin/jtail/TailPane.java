@@ -220,6 +220,11 @@ public class TailPane extends JPanel
      */
     private ITailPaneConfig config_;
     
+    /**
+     * List of interested listeners
+     */
+    private ITailPaneListener[] tailPaneListeners_;
+    
     //--------------------------------------------------------------------------
     //  Constructors
     //--------------------------------------------------------------------------
@@ -236,6 +241,7 @@ public class TailPane extends JPanel
         throws IOException, FileNotFoundException
     {
         statusBar_ = statusBar;
+        tailPaneListeners_ = new ITailPaneListener[0];
         buildView(config);
         buildFilters();        
         setConfiguration(config);                
@@ -488,10 +494,11 @@ public class TailPane extends JPanel
         tc.init();
         contexts_ = (TailContext[]) ArrayUtil.add(contexts_, tc);
         tc.getTail().start();
+        fireTailAggregated(this);
     }
 
     //--------------------------------------------------------------------------
-    //  Interfaces
+    //  Interfaces & Supporting Classes
     //--------------------------------------------------------------------------
     
     /**
@@ -505,8 +512,39 @@ public class TailPane extends JPanel
          * @param  tailPane  Tailpane
          */
         public void newDataAvailable(TailPane tailPane);
+        
+        /**
+         * Notification that an existing tail was aggregated with a new tail.
+         * 
+         * @param tailPane TailPane that houses the aggregate tails.
+         */
+        public void tailAggregated(TailPane tailPane);
     }
 
+    public void fireNewDataAvailable(TailPane tailPane)
+    {
+        for (int i=0; i<tailPaneListeners_.length; i++)
+            tailPaneListeners_[i].newDataAvailable(tailPane);        
+    }
+
+    public void fireTailAggregated(TailPane tailPane)
+    {
+        for (int i=0; i<tailPaneListeners_.length; i++)
+            tailPaneListeners_[i].tailAggregated(tailPane);        
+    }
+
+    public void addTailPaneListener(ITailPaneListener listener)
+    {
+        tailPaneListeners_ = 
+            (ITailPaneListener[]) ArrayUtil.add(tailPaneListeners_, listener);
+    }
+    
+    public void removeTailPaneListener(ITailPaneListener listener)
+    {
+        tailPaneListeners_ = 
+            (ITailPaneListener[]) ArrayUtil.remove(tailPaneListeners_,listener);
+    }
+    
     //--------------------------------------------------------------------------
     //  Inner Classes
     //--------------------------------------------------------------------------
