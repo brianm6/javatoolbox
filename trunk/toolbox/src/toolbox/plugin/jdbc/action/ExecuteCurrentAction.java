@@ -3,18 +3,29 @@ package toolbox.plugin.jdbc.action;
 import java.awt.event.ActionEvent;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 
 import toolbox.jedit.JEditTextArea;
 import toolbox.plugin.jdbc.QueryPlugin;
 import toolbox.util.StringUtil;
+import toolbox.workspace.IStatusBar;
 
 /**
- * Runs the query and appends the results to the output text area.
+ * Executes the current SQL statement. Current is defined as follows:
+ * 
+ * <ul> 
+ *  <li>Current selection if the selection is not empty. 
+ *  <li>SQL statement that begins on the current line and is terminated by a 
+ *      semicolon on the same or a subsequent line.
+ * </ul>
  * 
  * @see toolbox.plugin.jdbc.QueryPlugin
  */
 public class ExecuteCurrentAction extends BaseAction
 {
+    private static final Logger logger_ = 
+        Logger.getLogger(ExecuteCurrentAction.class);
+    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -44,34 +55,35 @@ public class ExecuteCurrentAction extends BaseAction
      */
     public void runAction(ActionEvent e) throws Exception
     {
-        //
-        // By default, execute the selected text
-        //
+        QueryPlugin plugin = getPlugin();
+        JEditTextArea sqlEditor = plugin.getSQLEditor();
+        IStatusBar statusBar = plugin.getStatusBar();
+        
+        // Check for a text selection first
+        String sql = sqlEditor.getSelectedText();
 
-        String sql = getPlugin().getSQLEditor().getSelectedText();
-
-        //
         // If no text is selected, then execute the current statement. This
         // assumes we are on the first line of the statement and that there
         // is a semicolon somewhere to tell us where the statement ends.
-        //
 
         if (StringUtils.isBlank(sql))
         {
-            JEditTextArea sqlEditor = getPlugin().getSQLEditor();
-            int max = sqlEditor.getLineCount();
-            int curr = sqlEditor.getCaretLine();
+            int max = sqlEditor.getLineCount();   // One based
+            int curr = sqlEditor.getCaretLine();  // Zero based
             boolean terminatorFound = false;
             StringBuffer stmt = new StringBuffer();
 
-            while (curr <= max && !terminatorFound)
+            // TODO: Identify sql statements that do on begin on the current
+            //       line but terminate on the current line.
+            
+            while (curr < max && !terminatorFound)
             {
-                String line = getPlugin().getSQLEditor().getLineText(curr++);
-                int pos = -1;
+                String line = sqlEditor.getLineText(curr++);
+                int termPos = line.indexOf(QueryPlugin.SQL_TERMINATOR);
                 
-                if ((pos = line.indexOf(QueryPlugin.SQL_TERMINATOR)) >= 0)
+                if (termPos >= 0)
                 {
-                    stmt.append(line.substring(0, pos + 1));
+                    stmt.append(line.substring(0, termPos + 1));
                     terminatorFound = true;
                 }
                 else
@@ -80,30 +92,28 @@ public class ExecuteCurrentAction extends BaseAction
                 }
             }
 
-            //
             // If no terminating semicolon for the statement is found, then
             // assume only the current line contains the entire sql
             // statement to execute.
-            //
-
             sql = stmt.toString();
         }
 
         if (StringUtils.isBlank(sql))
         {
-            getPlugin().getStatusBar().setInfo("Enter SQL to execute");
+            statusBar.setInfo("Enter SQL to execute");
         }
         else
         {
-            getPlugin().getStatusBar().setInfo("Executing...");
-            String results = getPlugin().executeSQL(sql);
-            getPlugin().getResultsArea().append(results + "\n");
+            statusBar.setInfo("Executing...");
+            String results = plugin.executeSQL(sql);
+            plugin.getResultsArea().append(results + "\n");
 
             if ((!StringUtils.isBlank(results)) &&
-                (StringUtil.tokenize(results, StringUtil.NL).length < 50))
-                getPlugin().getResultsArea().scrollToEnd();
+                (StringUtil.tokenize(results, StringUtil.NL).length < 
+                    QueryPlugin.AUTO_SCROLL_THRESHOLD))
+                plugin.getResultsArea().scrollToEnd();
 
-            getPlugin().getStatusBar().setInfo("Done");
+            statusBar.setInfo("Done");
         }
     }
 }
