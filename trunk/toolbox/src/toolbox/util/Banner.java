@@ -2554,8 +2554,7 @@ public class Banner
         if (leftJustify)
             result += line;
         else
-            result += scroll(line, (int) 
-                (splitWidth / 2 - getBannerWidth(line) / 2));
+            result += scroll(line, (splitWidth / 2 - getBannerWidth(line) / 2));
             
         return result;
     }

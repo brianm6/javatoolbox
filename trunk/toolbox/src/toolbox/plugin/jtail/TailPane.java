@@ -257,7 +257,7 @@ public class TailPane extends JPanel
      * @throws FileNotFoundException if the file to tail is non-existant
      * @throws IOException if problems occur tailed System.out
      */
-    protected void init() throws IOException, FileNotFoundException
+    protected void init() throws IOException
     {
         queue_          = new BlockingQueue();
         queueListener_  = new TailQueueListener();        

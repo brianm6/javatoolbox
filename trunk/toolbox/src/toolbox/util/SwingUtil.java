@@ -557,14 +557,14 @@ public final class SwingUtil
         int xLoc = viewP.x + 
                    xoffset * 
                    ((count + 1) - 
-                   (numFramesWide - 1) * 
-                   (int) (count / numFramesWide));
+                   (numFramesWide - 1) *
+                   (count / numFramesWide));
                    
         int yLoc = viewP.y + 
                    yoffset * 
                    ((count + 1) - 
-                   numFramesHigh * 
-                   (int) (count / numFramesHigh));
+                   numFramesHigh *
+                   (count / numFramesHigh));
 
         return new Point(xLoc, yLoc);
     }

@@ -61,7 +61,7 @@ public class AssertTest extends TestCase
     {
         logger_.info("Running testEqualsFloat...");
         
-        Assert.equals( (float) 1.0f, (float) 1.0f, (float) 0.0, "equal");
+        Assert.equals( 1.0f, 1.0f, (float) 0.0, "equal");
         
         try
         {

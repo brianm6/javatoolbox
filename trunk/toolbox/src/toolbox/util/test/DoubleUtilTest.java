@@ -289,7 +289,7 @@ public class DoubleUtilTest extends TestCase
         logger_.info("Running testAverage...");
         
         double[] d = new double[] { 1.0, 1.1, 1.2 };
-        assertEquals( (double) 1.1, (double) DoubleUtil.average(d), 
+        assertEquals( 1.1, (double) DoubleUtil.average(d),
             /* this should be 0.0 */ 0.01);
             
         assertEquals((double)0.0, DoubleUtil.average(new double[0]), 

@@ -390,7 +390,7 @@ public class JTail extends JFrame implements IPreferenced
         for (int i=0; i<items.length; i++)
         {
             JMenuItem menuItem = (JMenuItem) items[i];
-            Action action = (Action) menuItem.getAction();
+            Action action = menuItem.getAction();
             
             if (action instanceof TailRecentAction) 
             {

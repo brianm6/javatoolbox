@@ -151,7 +151,7 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
     {
         if (key != null)
         {
-            String str = (String) key.toString();
+            String str = key.toString();
             int index = str.indexOf('.');
             
             if (index > 0)
@@ -196,7 +196,7 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
     {
         if (key != null)
         {
-            String str = (String) key.toString();
+            String str = key.toString();
             int index = str.indexOf('.');
 
             if (index > 0)
@@ -234,7 +234,7 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
         UnsupportedOperationException, IllegalArgumentException,
         MapInvocationTargetException
     {
-        String str = (String) key.toString();
+        String str = key.toString();
         int index = str.lastIndexOf('.');
 
         if (index > 0)
@@ -647,7 +647,7 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
                 }
                 catch (RuntimeException e)
                 {
-                    throw (RuntimeException) e;
+                    throw e;
                 }
                 catch (InvocationTargetException e)
                 {
@@ -706,7 +706,7 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
                 }
                 catch (RuntimeException e)
                 {
-                    throw (RuntimeException) e;
+                    throw e;
                 }
                 catch (InvocationTargetException e)
                 {

@@ -70,7 +70,7 @@ public final class DoubleUtil
         for (int i=0; i<d.length; i++)
             sum+=d[i];
 
-        double avg = (double)sum/(double)d.length;
+        double avg = sum/(double)d.length;
         return avg;
     }
 

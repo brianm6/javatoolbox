@@ -129,15 +129,13 @@ public class Tail
     /**
      * Follows the given file sending the tail output to the writer.
      * 
-     * @param   readFrom  File to tail
-     * @param   writeTo   Writer to send tail output to
-     * @throws  FileNotFoundException if file not found
+     * @param readFrom File to tail
+     * @param writeTo Writer to send tail output to
      */
-    public void follow(File readFrom, Writer writeTo) 
-        throws FileNotFoundException
+    public void follow(File readFrom, Writer writeTo)
     {
-        file_    = readFrom;
-        sink_    = writeTo;
+        file_ = readFrom;
+        sink_ = writeTo;
     }
 
     /**

@@ -249,13 +249,13 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
                     rowData[i][2] = "";
 
                     if (o instanceof Font)
-                        rowData[i][2] = (Font) o;
+                        rowData[i][2] = o;
 
                     if (o instanceof Color)
-                        rowData[i][2] = (Color) o;
+                        rowData[i][2] = o;
 
                     if (o instanceof Icon)
-                        rowData[i][2] = (Icon) o;
+                        rowData[i][2] = o;
                 }
                 else
                 {

@@ -99,7 +99,7 @@ public class YahooMessenger implements InstantMessenger
         try
         {
             yahoo_.connect(username, password, info);
-            String returnCode = (String) listener_.waitForConnect();
+            String returnCode = listener_.waitForConnect();
             
             if (returnCode.equals(CONNECT_SUCCEEDED))
             {

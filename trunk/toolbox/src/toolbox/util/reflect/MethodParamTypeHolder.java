@@ -45,8 +45,7 @@ public class MethodParamTypeHolder implements IMethodHolder
         if (paramCount_ != method.getParameterTypes().length || 
             method.getParameterTypes().length == 0)
             
-            return (IMethodHolder) 
-                new MethodParamCountHolder(method, this, paramCount_);
+            return new MethodParamCountHolder(method, this, paramCount_);
 
         // Add the information
         patterns_.add(method.getParameterPatterns());

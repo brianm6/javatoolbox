@@ -43,7 +43,7 @@ public class Main
         // Find longest for formatting
         while (st.hasMoreElements())
         {
-            String path = (String)st.nextToken();
+            String path = st.nextToken();
             System.out.print(path);
 
             if (isDupe(path))

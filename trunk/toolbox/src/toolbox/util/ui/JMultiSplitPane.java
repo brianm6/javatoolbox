@@ -186,8 +186,8 @@ public class JMultiSplitPane extends JPanel
     /**
      * Gets divider locations
      * 
-     * @param  ivec       Vector of divider locations (populated on exit)
-     * @param  splitpane  JSplitPane
+     * @param ivec Vector of divider locations (populated on exit)
+     * @param splitpane JSplitPane
      */
     private void doGetDividerLocations(IntVector ivec, Component splitpane)
     {
@@ -203,9 +203,9 @@ public class JMultiSplitPane extends JPanel
     /**
      * Sets divider locations
      * 
-     * @param  locs       Divider locations to set
-     * @param  index      Index
-     * @param  splitPane  JSplitPane
+     * @param locs Divider locations to set
+     * @param index Index
+     * @param splitpane JSplitPane
      * @return Index
      */
     private int doSetDividerLocations(int[] locs, int index, 
@@ -559,10 +559,9 @@ public class JMultiSplitPane extends JPanel
     /**
      * Entrypoint
      * 
-     * @param   args  None recognized
-     * @throws  IOException on error
+     * @param args None recognized
      */
-    public static void main(String[] args) throws IOException
+    public static void main(String[] args)
     {
         JFrame f = new JFrame("MultiSplitPane Test");
         f.getContentPane().setLayout(new GridLayout());

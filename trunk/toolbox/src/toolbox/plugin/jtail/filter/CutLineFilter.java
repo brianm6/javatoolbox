@@ -122,8 +122,8 @@ public class CutLineFilter extends AbstractLineFilter
         Assert.equals(st.countTokens(), 2, 
             "Cut expression should be of form x-y. " + cut_);
         
-        begin_ = Integer.parseInt((String)st.nextToken()) - 1;
-        end_   = Integer.parseInt((String)st.nextToken());
+        begin_ = Integer.parseInt(st.nextToken()) - 1;
+        end_   = Integer.parseInt(st.nextToken());
 
         if (begin_ == end_) 
             throw new IllegalArgumentException(

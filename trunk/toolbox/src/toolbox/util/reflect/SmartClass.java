@@ -64,7 +64,7 @@ public class SmartClass
         throws NoSuchMethodException
     {
         if (parameters == null)
-            return getMethod(selector, (Class[]) null);
+            return getMethod(selector, null);
 
         Class[] types = new Class[parameters.length];
 

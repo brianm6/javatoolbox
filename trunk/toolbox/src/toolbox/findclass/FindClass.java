@@ -391,7 +391,7 @@ public class FindClass
     /**
      * Finds a class in a given directory including child directories.
      * 
-     * @param  pathName  Absolute name of the directory to start searching from
+     * @param dirPath Absolute name of the directory to start searching from
      */    
     protected void findInPath(String dirPath) 
     { 

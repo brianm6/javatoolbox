@@ -19,7 +19,7 @@ public class SmartConstructor extends SmartMethod
      */
     public SmartConstructor(Constructor constructor)
     {
-        super((Member) constructor);
+        super(constructor);
     }
 
     // ACCESSING

@@ -154,9 +154,8 @@ public class TcpTunnel implements TcpTunnelListener
      * @param  args  [0] = listenport
      *               [1] = host to tunnel to
      *               [2] = port to tunnel to
-     * @throws IOException on IO error
      */
-    public static void main(String args[]) throws IOException
+    public static void main(String args[])
     {
         if (args.length != 3)
         {

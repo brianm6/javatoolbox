@@ -872,7 +872,7 @@ public class ArrayUtilTest extends TestCase
         while (!keys.isEmpty())
         {
             int i = RandomUtil.nextInt(0, keys.size() - 1);
-            data = (String[]) ArrayUtil.remove(data, (String) keys.get(i));
+            data = (String[]) ArrayUtil.remove(data, keys.get(i));
             keys.remove(i);            
         }
         

@@ -261,9 +261,8 @@ public class XSLFOPlugin extends JPanel implements IPlugin
      * Launches Adobe Acrobat Reader on the given file
      * 
      * @param outfile File to open in PDF viewer
-     * @throws IOException on I/O error
      */
-    protected void viewPDFExternal(String outfile) throws IOException
+    protected void viewPDFExternal(String outfile)
     {
         if (StringUtil.isNullOrEmpty(pdfViewerPath_))
         {

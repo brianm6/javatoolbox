@@ -126,9 +126,8 @@ public class BlockingQueue
      * Pushes an element onto the queue.
      * 
      * @param  obj  Object to push onto the queue
-     * @throws InterruptedException on error
      */
-    public void push(Object obj) throws InterruptedException
+    public void push(Object obj)
     {
         try
         {

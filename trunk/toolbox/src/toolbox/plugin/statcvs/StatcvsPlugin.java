@@ -297,10 +297,8 @@ public class StatcvsPlugin extends JPanel implements IPlugin
 
     /**
      * Verifies that all the fields pass simple verification checks.
-     * 
-     * @throws Exception if one or more of the fields did not pass verification.
      */
-    protected void verify() throws Exception
+    protected void verify()
     {
         checkEmpty(cvsModuleField_, "CVS module");
         checkEmpty(cvsRootField_, "CVS root");

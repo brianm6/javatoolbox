@@ -67,7 +67,7 @@ public class JarTestCollector implements TestCollector
         
         while (tokenizer.hasMoreTokens()) 
         {   
-            String entry = (String)tokenizer.nextToken();
+            String entry = tokenizer.nextToken();
             if (ClassUtil.isArchive(entry))
                 result.add(entry);
         }

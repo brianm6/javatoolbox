@@ -53,10 +53,8 @@ public class StatsCollector
      * @param   filename  Name of the file
      * @return  File statistics
      * @throws  IOException on I/O error
-     * @throws  FileNotFoundException on non-existant source file
      */
-    public FileStats getStats(String filename) throws IOException, 
-        FileNotFoundException
+    public FileStats getStats(String filename) throws IOException
     {
         Reader reader = 
             new InputStreamReader(ResourceUtil.getResource(filename));

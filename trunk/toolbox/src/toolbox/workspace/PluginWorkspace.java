@@ -93,14 +93,6 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      * arbitrary element and not the document root.
      */
     private static final String NODE_ROOT = "Root";
-    
-    /**
-     * Maintains a DOM of the plugins which have been instantiated at one
-     * point in time but have been unloaded. Unloaded plugin prefs are 
-     * maintained so that on re-synthesis of the plugin, its preferences will
-     * be restored.
-     */
-    private static final String NODE_UNLOADED = "Unloaded";
 
     /**
      * Name of file that application and plugin preferences are stored in
