@@ -25,18 +25,37 @@ public class LineScanner implements MachineConstants
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a LineScanner for the given line of source code
+     * Default constructor
+     */
+    public LineScanner()
+    {
+    }
+    
+    /**
+     * Creates a LineScanner for the given line of source code. Assumes tabs
+     * have already been removed from the line of source code.
      * 
      * @param  line   Line of source code
      */
     public LineScanner(String line)
     {
-        line_ = line.trim().replace('\t', ' ');
+        setLine(line);
     }
 
     //--------------------------------------------------------------------------
     //  Public
     //--------------------------------------------------------------------------
+
+    /**
+     * Sets the current line
+     * 
+     * @param  line  Line of source code
+     */
+    public void setLine(String line)
+    {
+        line_ = line;
+        position_ = 0;
+    }
 
     /**
      * Peeks to next token in the line
