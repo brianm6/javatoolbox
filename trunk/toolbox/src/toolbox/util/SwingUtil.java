@@ -15,6 +15,7 @@ import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 import javax.swing.UIManager;
 
+import net.sourceforge.mlf.metouia.MetouiaLookAndFeel;
 import org.apache.log4j.Category;
 
 /**
@@ -39,6 +40,7 @@ public class SwingUtil
     private SwingUtil()
     {
     }
+
 
     /**
      * Sets the size of a window to a given percentage of the users desktop
@@ -100,6 +102,7 @@ public class SwingUtil
         c.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
     }
     
+    
     /**
      * Returns preferred monospaced font
      * 
@@ -107,17 +110,27 @@ public class SwingUtil
      */
     public static Font getPreferredMonoFont()
     {
-        String favoredFont = "Lucida Console";
+        String method = "[mono  ] ";
+        
+        String favoredFont;
+        
+        if (Platform.isUnix())
+            favoredFont = "LucidaSansTypewriter";
+        else
+            favoredFont = "Lucida Console";
+            
         String backupFont  = "monospaced";
         
         if (monofont_ == null)
         {
+            logger_.debug(method + "Favored Font = " + favoredFont);
+            
             GraphicsEnvironment ge = 
                 GraphicsEnvironment.getLocalGraphicsEnvironment();
                 
             String[] familyNames = ge.getAvailableFontFamilyNames();
             Map attribMap = new HashMap();
-            
+             
             if (ArrayUtil.contains(familyNames, favoredFont))
             {
                 attribMap.put(TextAttribute.FAMILY, favoredFont);
@@ -129,7 +142,8 @@ public class SwingUtil
                 attribMap.put(TextAttribute.FONT, backupFont);        
             }
 
-            monofont_ = new Font(attribMap);            
+            attribMap.put(TextAttribute.SIZE, new Float(12));
+            monofont_ = new Font(attribMap);
         }
         
         return monofont_;               
@@ -202,6 +216,25 @@ public class SwingUtil
         UIManager.setLookAndFeel(
             "com.sun.java.swing.plaf.motif.MotifLookAndFeel");
     }
+ 
+ 
+    /**
+     * Sets the Look and Feel to Metouia
+     */
+    public static void setMetouiaLAF() throws Exception
+    { 
+        UIManager.setLookAndFeel(new MetouiaLookAndFeel());
+    }
+
+
+    /**
+     * Sets the preferred Look and Feel
+     */
+    public static void setPreferredLAF() throws Exception
+    { 
+        setMetouiaLAF();
+    }
+    
     
     /**
      * Tiles windows on a desktop
@@ -210,6 +243,8 @@ public class SwingUtil
      */
     public static void tile(JDesktopPane desktop)
     {
+        String method = "[tile  ] ";
+        
         // How many frames do we have?
         JInternalFrame[] allframes = desktop.getAllFrames();
         int count = allframes.length;
@@ -232,7 +267,7 @@ public class SwingUtil
 
         // Define some initial values for size & location
         Dimension size = desktop.getSize();
-        logger_.debug("Desktop size: " + size);
+        logger_.debug(method + "Desktop size: " + size);
         
         int w = size.width / cols;
         int h = size.height / rows;
