@@ -111,7 +111,7 @@ class TestTailListener implements ITailListener
     /**
      * Next line is available
      * 
-     * @param  line  Line
+     * @param  line  LineScanner
      */    
     public void nextLine(String line)
     {
