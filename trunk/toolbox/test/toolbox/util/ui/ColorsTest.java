@@ -40,7 +40,6 @@ public class ColorsTest extends UITestCase
     public void testColors()
     {
         logger_.info("Running testColors...");
-
         
         Iterator i = Colors.iterator();
         Vector colors = new Vector();
