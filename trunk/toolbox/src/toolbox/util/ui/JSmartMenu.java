@@ -17,7 +17,7 @@ import toolbox.util.SwingUtil;
 public class JSmartMenu extends JMenu implements AntiAliased
 {
     /**
-     * Antialiased flag
+     * Antialiased flag.
      */
     private boolean antiAliased_ = SwingUtil.getDefaultAntiAlias();
 

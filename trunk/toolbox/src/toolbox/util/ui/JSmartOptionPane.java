@@ -48,74 +48,82 @@ import toolbox.util.SwingUtil;
 public class JSmartOptionPane extends JOptionPane implements ActionListener,
     AntiAliased
 {
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
     private static final Logger logger_ = 
         Logger.getLogger(JSmartOptionPane.class);
 
     private static final String BUTTON_COLLAPSED = "Details";
     private static final String BUTTON_EXPANDED  = "No Details";
     
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
-     * Button to dismiss the detailed message dialog box
+     * Button to dismiss the detailed message dialog box.
      */    
     private JButton okButton_;
     
     /**
-     * Button that toggles display of detailed message
+     * Button that toggles display of detailed message.
      */
     private JButton detailsButton_;
     
     /**
-     * Current expanded state of the detailed message area
+     * Current expanded state of the detailed message area.
      */
     private boolean expanded_;
 
     /**
-     * Contains the detailed message text 
+     * Contains the detailed message text. 
      */
     private JTextArea detailArea_;
     
     /** 
-     * Encapsulating scrollpane for the detailed message area 
+     * Encapsulating scrollpane for the detailed message area. 
      */
     private JScrollPane detailScroller_;
 
     /**
-     * Array of options buttons
+     * Array of options buttons.
      */
     private JButton[] buttons_;
 
     /** 
-     * Icon used in pane 
+     * Icon used in pane. 
      */
     private transient Icon icon_;
     
     /** 
-     * Message to display 
+     * Message to display. 
      */
     private transient Object message_;
 
     /** 
-     * Message details 
+     * Message details. 
      */
     private Object details_;
 
     /** 
-     * Parent window 
+     * Parent window. 
      */
     private Window parent_;
 
     /** 
-     * Options to display to the user 
+     * Options to display to the user. 
      */
     private transient Object[] options_;
 
     /** 
-     * Value that should be initially selected in <code>options</code> 
+     * Value that should be initially selected in <code>options</code>. 
      */
     private transient Object initialValue_;
 
     /** 
-     * Message type 
+     * Message type. 
      */
     private int messageType_;
 
@@ -140,35 +148,34 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener,
     private Object[] selectionValues_;
 
     /** 
-     * Value the user has input 
+     * Value the user has input. 
      */
     private Object inputValue_;
     
     /** 
-     * Initial value to select in <code>selectionValues</code> 
+     * Initial value to select in <code>selectionValues</code>. 
      */
     private Object initialSelectionValue_;
 
     /** 
-     * If true, a UI widget will be provided to the user to get input 
+     * If true, a UI widget will be provided to the user to get input. 
      */
     private boolean wantsInput_;
 
     /** 
-     * Expand icon on details button when collapsed 
+     * Expand icon on details button when collapsed.
      */
     private Icon forwardIcon_;
     
     /** 
-     * Collapse icon on details button when expanded 
+     * Collapse icon on details button when expanded. 
      */
     private Icon reverseIcon_;
 
     /**
-     * Antialiased flag
+     * Antialiased flag.
      */
     private boolean antiAliased_ = SwingUtil.getDefaultAntiAlias();
-
 
     //--------------------------------------------------------------------------
     //  Constructors

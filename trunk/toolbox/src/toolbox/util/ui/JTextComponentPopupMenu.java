@@ -82,7 +82,7 @@ public class JTextComponentPopupMenu extends JSmartPopupMenu
     }
     
     //--------------------------------------------------------------------------
-    // Actions
+    // CopyAction
     //--------------------------------------------------------------------------
 
     /**
@@ -105,6 +105,9 @@ public class JTextComponentPopupMenu extends JSmartPopupMenu
         }
     }
 
+    //--------------------------------------------------------------------------
+    // PasteAction
+    //--------------------------------------------------------------------------
 
     /**
      * Pastes the contents of the clipboard into the text component.
@@ -126,6 +129,9 @@ public class JTextComponentPopupMenu extends JSmartPopupMenu
         }
     }
     
+    //--------------------------------------------------------------------------
+    // SelectAllAction
+    //--------------------------------------------------------------------------
     
     /**
      * Selects all items in the list box.
@@ -144,6 +150,9 @@ public class JTextComponentPopupMenu extends JSmartPopupMenu
         }
     }
     
+    //--------------------------------------------------------------------------
+    // SetFontAction
+    //--------------------------------------------------------------------------
     
     /**
      * Sets the font in the text component.
@@ -216,6 +225,9 @@ public class JTextComponentPopupMenu extends JSmartPopupMenu
         }
     }
     
+    //--------------------------------------------------------------------------
+    // FindAction
+    //--------------------------------------------------------------------------
     
     /**
      * Triggers activation of the Find Dialog box.
@@ -255,7 +267,10 @@ public class JTextComponentPopupMenu extends JSmartPopupMenu
         }
     }
     
-    
+    //--------------------------------------------------------------------------
+    // InsertFileAction
+    //--------------------------------------------------------------------------
+
     /**
      * Inserts the text of a file at the currnet cursor location.
      */
@@ -296,7 +311,10 @@ public class JTextComponentPopupMenu extends JSmartPopupMenu
         }
     }
     
-    
+    //--------------------------------------------------------------------------
+    // SaveAsAction
+    //--------------------------------------------------------------------------
+
     /**
      * Inserts the text of a file at the currnet cursor location.
      */
@@ -340,7 +358,7 @@ public class JTextComponentPopupMenu extends JSmartPopupMenu
     }
 
     //--------------------------------------------------------------------------
-    // Inner Classes
+    // SearchInitiator
     //--------------------------------------------------------------------------
     
     /**

@@ -29,6 +29,7 @@ public class JConveyorPopupMenu extends JSmartPopupMenu
         this(10);
     }
     
+    
     /**
      * Creates a JConveyorPopupMenu.
      * 
@@ -40,6 +41,7 @@ public class JConveyorPopupMenu extends JSmartPopupMenu
         this("", capacity);
     }
 
+    
     /**
      * Creates a JConveyorPopupMenu.
      * 
@@ -79,6 +81,7 @@ public class JConveyorPopupMenu extends JSmartPopupMenu
     {
         return add(createActionComponent(action));
     }
+    
     
     /**
      * @see javax.swing.JPopupMenu#add(javax.swing.JMenuItem)

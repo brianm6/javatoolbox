@@ -10,26 +10,29 @@ public interface JFileExplorerListener
      * 
      * @param file Name of the file selected
      */
-    public void fileSelected(String file);    
+    void fileSelected(String file);    
+    
     
     /**
      * Called when a file is double clicked in the details view.
      *
-     * @param file  Name of the file that was clicked
+     * @param file Name of the file that was clicked
      */
-    public void fileDoubleClicked(String file);
+    void fileDoubleClicked(String file);
+    
     
     /**
      * Called when a directory folder is selected in the tree view.
      * 
      * @param folder Name of the directory selected
      */
-    public void folderSelected(String folder);    
+    void folderSelected(String folder);    
+    
     
     /**
      * Called when a folder is doubleclicked in the tree view.
      * 
      * @param folder Name of directory double clicked
      */
-    public void folderDoubleClicked(String folder);    
+    void folderDoubleClicked(String folder);    
 }

@@ -34,6 +34,10 @@ import toolbox.workspace.IPreferenced;
 public class JSmartTextArea extends JTextArea implements AntiAliased, 
     IPreferenced
 {
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
     private static final Logger logger_ =
         Logger.getLogger(JSmartTextArea.class);
 
@@ -44,6 +48,10 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
     private static final String   ATTR_PRUNING_FACTOR = "pruningFactor";
     private static final String   ATTR_WRAPLINES      = "wrapLines";
     private static final String NODE_FONT             = "Font";
+    
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
     
     /** 
      * Popup menu for this component. 
@@ -174,6 +182,7 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
         if (XOMUtil.getFirstChildElement(root, NODE_FONT, null) != null)        
             setFont(FontUtil.toFont(root.getFirstChildElement(NODE_FONT)));
     }
+
     
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
@@ -390,7 +399,7 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
     }    
 
     //--------------------------------------------------------------------------
-    //  Actions
+    // AutoScrollAction
     //--------------------------------------------------------------------------
     
     /**
@@ -411,6 +420,10 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
         }
     }    
 
+    //--------------------------------------------------------------------------
+    // AntiAliasAction
+    //--------------------------------------------------------------------------
+
     /**
      * Toggles antialiasing.
      */
@@ -428,6 +441,10 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
         }
     }
 
+    //--------------------------------------------------------------------------
+    // WrapLinesAction
+    //--------------------------------------------------------------------------
+    
     /**
      * Toggles line wrapping.
      */
@@ -445,6 +462,10 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
         }
     }
 
+    //--------------------------------------------------------------------------
+    // ClearAction
+    //--------------------------------------------------------------------------
+    
     /**
      * Clears the text area.
      */

@@ -18,7 +18,7 @@ import toolbox.util.SwingUtil;
 public class JSmartButton extends JButton implements AntiAliased
 {
     /**
-     * Antialiased flag
+     * Antialiased flag.
      */
     private boolean antiAliased_ = SwingUtil.getDefaultAntiAlias();
 
@@ -90,6 +90,7 @@ public class JSmartButton extends JButton implements AntiAliased
         return antiAliased_;
     }
 
+    
     /**
      * @see toolbox.util.ui.AntiAliased#setAntiAlias(boolean)
      */

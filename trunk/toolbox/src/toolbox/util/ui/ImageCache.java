@@ -9,12 +9,17 @@ import javax.swing.Icon;
 import toolbox.util.ResourceUtil;
 
 /**
- * Caches images!
+ * ImageCache is a convenience class to load graphics resources as icons or
+ * images.
  */
 public class ImageCache
 {
+    /**
+     * Directory where all the "known" images are located.
+     */
     private static final String ROOT = "/toolbox/util/ui/images/";
     
+    // Images
     public static final String IMAGE_TOOLBOX = ROOT + "Toolbox.gif";
     public static final String IMAGE_COPY    = ROOT + "Copy.gif";
     public static final String IMAGE_PASTE   = ROOT + "Paste.gif";
@@ -35,21 +40,21 @@ public class ImageCache
     public static final String IMAGE_HARD_DRIVE  = ROOT + "HardDrive.gif";
     
     /**
-     * Hashmap for cached icons
+     * Map for cached icons.
      */
     private static final Map iconCache_ = new HashMap();
     
     /**
-     * Hashmap for cached images
+     * Map for cached images.
      */
     private static final Map imageCache_ = new HashMap();
     
     //--------------------------------------------------------------------------
-    // Public Static
+    // Public
     //--------------------------------------------------------------------------
     
     /**
-     * Retrieve icon at the specified URL
+     * Retrieves the icon at the given URL.
      * 
      * @param url URL to load icon from
      * @return Icon if a valid url, null otherwise
@@ -71,7 +76,7 @@ public class ImageCache
 
 
     /**
-     * Retrieve image at the specified URL
+     * Retrieve the image at the given URL.
      * 
      * @param url URL to load image from
      * @return Image if a valid url, null otherwise
@@ -93,7 +98,7 @@ public class ImageCache
     
     
     /**
-     * Flushes the cache
+     * Flushes the cache.
      */
     public static void flush()
     {

@@ -19,7 +19,7 @@ public class JSmartCheckBoxMenuItem extends JCheckBoxMenuItem
     implements AntiAliased
 {
     /**
-     * Antialiased flag
+     * Antialiased flag.
      */
     private boolean antiAliased_ = SwingUtil.getDefaultAntiAlias();
 
@@ -116,6 +116,7 @@ public class JSmartCheckBoxMenuItem extends JCheckBoxMenuItem
         return antiAliased_;
     }
 
+    
     /**
      * @see toolbox.util.ui.AntiAliased#setAntiAlias(boolean)
      */

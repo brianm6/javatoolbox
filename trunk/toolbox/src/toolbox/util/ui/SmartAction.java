@@ -246,7 +246,7 @@ public abstract class SmartAction extends AbstractAction
     }
     
     //--------------------------------------------------------------------------
-    // Inner Classes
+    // BusyCursorAction
     //--------------------------------------------------------------------------
     
     /**
@@ -260,6 +260,9 @@ public abstract class SmartAction extends AbstractAction
         }
     }
 
+    //--------------------------------------------------------------------------
+    // DefaultCursorAction
+    //--------------------------------------------------------------------------
 
     /**
      * Sets the default cursor on the passed in JComponent.
@@ -272,6 +275,9 @@ public abstract class SmartAction extends AbstractAction
         }
     }
 
+    //--------------------------------------------------------------------------
+    // HandleErrorAction
+    //--------------------------------------------------------------------------
 
     /**
      * Logs the exception and displays on the GUI.

@@ -18,7 +18,7 @@ import toolbox.util.SwingUtil;
 public class JSmartCheckBox extends JCheckBox implements AntiAliased
 {
     /**
-     * Antialiased flag
+     * Antialiased flag.
      */
     private boolean antiAliased_ = SwingUtil.getDefaultAntiAlias();
 

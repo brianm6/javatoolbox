@@ -8,7 +8,7 @@ import toolbox.util.ExceptionUtil;
 import toolbox.util.Platform;
 
 /**
- * Native web browser launcher
+ * Native web browser launcher.
  */
 public class NativeBrowser
 {

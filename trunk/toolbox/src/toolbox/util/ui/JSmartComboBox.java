@@ -21,7 +21,7 @@ import toolbox.util.ui.list.SmartListCellRenderer;
 public class JSmartComboBox extends JComboBox implements AntiAliased
 {
     /**
-     * Antialiased flag
+     * Antialiased flag.
      */
     private boolean antiAliased_ = SwingUtil.getDefaultAntiAlias();
 
