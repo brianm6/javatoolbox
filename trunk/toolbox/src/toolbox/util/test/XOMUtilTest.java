@@ -1,12 +1,14 @@
 package toolbox.util.test;
 
+import java.io.IOException;
+
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
-import org.apache.log4j.Logger;
-
 import nu.xom.Attribute;
 import nu.xom.Element;
+
+import org.apache.log4j.Logger;
 
 import toolbox.util.XOMUtil;
 
@@ -62,6 +64,9 @@ public class XOMUtilTest extends TestCase
         assertEquals(-1, XOMUtil.getInteger(node, -1));
     }
 
+    /**
+     * Tests getString()
+     */
     public void testGetString()
     {
         logger_.info("Running testGetString...");
@@ -80,6 +85,9 @@ public class XOMUtilTest extends TestCase
         assertEquals("default", XOMUtil.getString(null, "default"));
     }
 
+    /**
+     * Tests getBoolean()
+     */
     public void testGetBoolean()
     {
         logger_.info("Running testGetBoolean...");
@@ -98,6 +106,9 @@ public class XOMUtilTest extends TestCase
         assertEquals(false, XOMUtil.getBoolean(null, false));
     }
 
+    /**
+     * Tests getIntegerAttribute()
+     */
     public void testGetIntegerAttribute()
     {
         logger_.info("Running testGetIntegerAttribute...");
@@ -110,10 +121,11 @@ public class XOMUtilTest extends TestCase
         assertEquals(-1, XOMUtil.getIntegerAttribute(node, "blah", -1));
         assertEquals(-1, XOMUtil.getIntegerAttribute(null, null, -1));
         assertEquals(-1, XOMUtil.getIntegerAttribute(node, "badInt", -1));
-        
-        
     }
 
+    /**
+     * Tests getBooleanAttribute()
+     */
     public void testGetBooleanAttribute()
     {
         logger_.info("Running testGetBooleanAttribute...");
@@ -127,6 +139,9 @@ public class XOMUtilTest extends TestCase
         assertFalse(XOMUtil.getBooleanAttribute(null, null, false));
     }
 
+    /**
+     * Tests getStringAttribute()
+     */
     public void testGetStringAttribute()
     {
         logger_.info("Running testGetStringAttribute...");
@@ -140,13 +155,52 @@ public class XOMUtilTest extends TestCase
         assertEquals("abc", XOMUtil.getStringAttribute(null, null, "abc"));
     }
 
-    public void testInsertOrReplace()
+    /**
+     * Tests insertOrReplace() for the insert scenario
+     * 
+     * @throws IOException
+     */
+    public void testInsertOrReplaceAsInsert() throws IOException
     {
-        logger_.info("Running testInsertOrReplace...");
+        logger_.info("Running testInsertOrReplaceAsInsert...");
         
-        // TODO: testInsertOrReplace
+        Element parent = new Element("parent");
+        Element child = new Element("child");
+        XOMUtil.insertOrReplace(parent, child);
+        assertEquals(1, parent.getChildCount());
+        assertEquals(child, parent.getFirstChildElement("child"));
+        assertEquals(parent, child.getParent());
+        //logger_.info(XOMUtil.toXML(parent));
     }
 
+    /**
+     * Tests insertOrReplace() for the replace scenario
+     * 
+     * @throws IOException
+     */
+    public void testInsertOrReplaceAsReplace() throws IOException
+    {
+        logger_.info("Running testInsertOrReplaceAsReplace...");
+        
+        Element parent = new Element("parent");
+        Element origChild = new Element("child");
+        origChild.addAttribute(new Attribute("id", "old"));
+        parent.appendChild(origChild);
+        // logger_.info("\n" + XOMUtil.toXML(parent));
+                
+        Element newChild = new Element("child");
+        newChild.addAttribute(new Attribute("id","new"));
+        
+        XOMUtil.insertOrReplace(parent, newChild);
+        assertEquals(1, parent.getChildCount());
+        assertEquals(newChild, parent.getFirstChildElement("child"));
+        assertEquals(parent, newChild.getParent());
+        // logger_.info("\n" + XOMUtil.toXML(parent));
+    }
+
+    /**
+     * Tests getFirstChild()
+     */
     public void testGetFirstChild()
     {
         logger_.info("Running testGetFirstChild...");
@@ -177,6 +231,5 @@ public class XOMUtilTest extends TestCase
 
         assertEquals("default", XOMUtil.getFirstChildElement(
             parent, null, new Element("default")).getLocalName());
-            
     }
 }
