@@ -5,6 +5,7 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
+import java.awt.Point;
 import java.awt.Window;
 import java.awt.font.TextAttribute;
 import java.beans.PropertyVetoException;
@@ -41,7 +42,10 @@ public class SwingUtil
     {
     }
 
-
+    //--------------------------------------------------------------------------
+    // Window Stuff
+    //--------------------------------------------------------------------------
+    
     /**
      * Sets the size of a window to a given percentage of the users desktop
      *
@@ -82,6 +86,27 @@ public class SwingUtil
 
 
     /**
+     * Centers a child window relative to its parent window
+     * 
+     * @param  parent  Parent window
+     * @param  child   Child window
+     */
+    public static void centerWindow(Window parent, Window child)
+    {
+        Dimension parentSize = parent.getSize();
+        Dimension childSize = child.getSize();
+    
+        Point loc = parent.getLocation();
+        child.setLocation(
+            (parentSize.width - childSize.width) / 2 + loc.x,
+            (parentSize.height - childSize.height) / 2 + loc.y);
+    }
+   
+    //--------------------------------------------------------------------------
+    // Cursor Stuff
+    //--------------------------------------------------------------------------
+       
+    /**
      * Sets the cursor to the default cursor on the given component
      * 
      * @param  c  Component
@@ -102,7 +127,10 @@ public class SwingUtil
         c.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
     }
     
-    
+    //--------------------------------------------------------------------------
+    // Font Stuff
+    //--------------------------------------------------------------------------
+        
     /**
      * Returns preferred monospaced font
      * 
@@ -185,6 +213,9 @@ public class SwingUtil
         return serifFont_;               
     }
     
+    //--------------------------------------------------------------------------
+    // Look and Feel Stuff
+    //--------------------------------------------------------------------------
     
     /**
      * Sets the Look and Feel to Metal
@@ -235,6 +266,9 @@ public class SwingUtil
         setMetouiaLAF();
     }
     
+    //--------------------------------------------------------------------------
+    // Internal Frame Stuff
+    //--------------------------------------------------------------------------
     
     /**
      * Tiles windows on a desktop
