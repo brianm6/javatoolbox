@@ -384,7 +384,7 @@ public final class JDBCUtil
         {
             conn = getConnection();    
             Statement stmt = conn.createStatement();
-            rows = stmt.executeUpdate(sql);
+            rows = stmt.executeUpdate(prepSQL(sql));
         } 
         finally 
         {
@@ -412,7 +412,7 @@ public final class JDBCUtil
         Validate.isTrue(tokens[0].equalsIgnoreCase("select"));
         Validate.isTrue(tokens[1].toLowerCase().startsWith("count"));
         
-        Object[][] results = executeQueryArray(sqlCountStmt);
+        Object[][] results = executeQueryArray(prepSQL(sqlCountStmt));
         return Integer.parseInt(results[0][0].toString());
     }
     
@@ -429,14 +429,11 @@ public final class JDBCUtil
     {
         String formattedResults = null;
         Connection conn = null;
-     
-        // Trim whitespace and remove trailing semicolon if any
-        sql = StringUtils.chomp(sql.trim(), ";");
             
         try
         {
             conn = getConnection();
-            PreparedStatement stmt = conn.prepareStatement(sql);
+            PreparedStatement stmt = conn.prepareStatement(prepSQL(sql));
             ResultSet results = stmt.executeQuery();
             formattedResults = format(results);
         }
@@ -466,7 +463,7 @@ public final class JDBCUtil
         try
         {
             conn = getConnection();
-            stmt = conn.prepareStatement(sql);
+            stmt = conn.prepareStatement(prepSQL(sql));
             ResultSet results = stmt.executeQuery();
             data = toArray(results);
         }
@@ -790,7 +787,23 @@ public final class JDBCUtil
         else
             DriverManager.setLogWriter(null);
     }
+
+    //--------------------------------------------------------------------------
+    // Private
+    //--------------------------------------------------------------------------
     
+    /**
+     * Trims whitespace and remove trailing semicolon if any from the given
+     * sql statement.
+     * 
+     * @param sql SQL statement to prepare for execution.
+     * @return String
+     */
+    private static final String prepSQL(String sql) 
+    {
+        return sql = StringUtils.chomp(sql.trim(), ";");
+    }
+
     //--------------------------------------------------------------------------
     // Driver Proxy
     //--------------------------------------------------------------------------
