@@ -271,6 +271,7 @@
                 <include name="liquidlf.jar"/>
                 <include name="hippolf.jar"/>
                 <include name="alloy.jar"/>
+                <include name="oyoahalf.jar"/>
                 
             </fileset>
         </unjar>    
