@@ -152,7 +152,7 @@ public class PluginHostManager
         }
         else
         {
-            transfer(previous, current_);
+            transferAssets(previous, current_);
             recepticle_.remove(previous.getComponent());
         }
 
@@ -201,7 +201,7 @@ public class PluginHostManager
      * @param source Plugin host to transfer assets from.
      * @param dest Plugin host to transfer assets to.
      */
-    protected void transfer(PluginHost source, PluginHost dest)
+    protected void transferAssets(PluginHost source, PluginHost dest)
     {
         logger_.debug(
             "Transferring " + 
@@ -211,6 +211,9 @@ public class PluginHostManager
         
         dest.startup(source.getStartupConfig());
         
+        //
+        // Transfer over the plugins
+        //
         IPlugin[] sourcePlugins = source.getPlugins();
         
         for (int i = 0; i < sourcePlugins.length; i++)
@@ -218,6 +221,17 @@ public class PluginHostManager
             IPlugin plugin = sourcePlugins[i];
             source.exportPlugin(plugin);
             dest.importPlugin(plugin);
+        }
+
+        //
+        // Transfer over the plugin host listeners
+        //
+        PluginHostListener[] listeners = source.getPluginHostListeners();
+        
+        for (int i = 0; i < listeners.length; i++)
+        {
+            source.removePluginHostListener(listeners[i]);
+            dest.addPluginHostListener(listeners[i]);
         }
         
         source.shutdown();
@@ -265,7 +279,7 @@ public class PluginHostManager
             }
             
             recepticle_.remove(current_.getComponent());
-            transfer(current_, newPluginHost_);
+            transferAssets(current_, newPluginHost_);
             recepticle_.add(newPluginHost_.getComponent());
             current_ = newPluginHost_;
             recepticle_.validate();
