@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Hard coded list of plugins for use under WebStart -->
+<Plugins>
+  <Plugin class="toolbox.jsourceview.JSourceViewPlugin"/>
+  <Plugin class="toolbox.jtail.JTailPlugin"/>
+  <Plugin class="toolbox.junit.JUnitPlugin"/>
+  <Plugin class="toolbox.plugin.beanshell.BeanShellPlugin"/>
+  <Plugin class="toolbox.plugin.docviewer.DocumentViewerPlugin"/>
+  <Plugin class="toolbox.plugin.findclass.FindClassPlugin"/>
+  <Plugin class="toolbox.plugin.jdbc.QueryPlugin"/>
+  <Plugin class="toolbox.plugin.netmeter.NetMeterPlugin"/>
+  <Plugin class="toolbox.plugin.statcvs.StatcvsPlugin"/>
+  <Plugin class="toolbox.plugin.texttools.TextToolsPlugin"/>
+  <Plugin class="toolbox.plugin.tunnel.TunnelPlugin"/>
+  <Plugin class="toolbox.plugin.uidefaults.UIDefaultsPlugin"/>
+  <Plugin class="toolbox.util.xslfo.XSLFOPlugin"/>
+</Plugins>
