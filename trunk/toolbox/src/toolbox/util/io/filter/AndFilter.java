@@ -15,14 +15,14 @@ public class AndFilter extends CompoundFilter implements FilenameFilter
     //--------------------------------------------------------------------------
     
     /**
-     * Cretes an AndFilter
+     * Creates an AndFilter
      */
     public AndFilter()
     {
     }
     
     /**
-     * Creates a filter that logically ANDs two filters
+     * Creates an AndFilter with the two given filters
      * 
      * @param  filterOne  First filter
      * @param  filterTwo  Second filter
