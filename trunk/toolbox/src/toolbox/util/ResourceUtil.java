@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+
 import org.apache.log4j.Logger;
 
 /**
@@ -78,6 +81,46 @@ public final class ResourceUtil
         }
         
         return is;
+    }
+
+
+    /**
+     * Locates a resource with the given name using an exhaustive variety of 
+     * methods. This is just a convenience method to return the resource in the
+     * form of a byte array instead of a stream. 
+     * 
+     * @param   name   Name of the resource
+     * @return  Byte array representing the resource of null if the resource
+     *          could not be found.
+     */
+    public static byte[] getResourceAsBytes(String name)
+    {
+        byte[] resource = null;
+        
+        try
+        {
+            InputStream stream = getResource(name);
+            resource = (stream != null ? StreamUtil.toBytes(stream) : null);
+        }
+        catch (IOException e)
+        {
+            logger_.error(name, e);
+        }
+        
+        return resource;
+    }
+
+
+    /**
+     * This is just a convenience method to return a resource in the form of 
+     * of an Icon. The name should refer to a valid GIF or JPG image. 
+     * 
+     * @param   name   Name of the resource
+     * @return  Icon representing the named resource
+     */
+    public static Icon getResourceAsIcon(String name)
+    {
+        return new ImageIcon(getResourceAsBytes(name));
     }
 
 
