@@ -17,12 +17,14 @@
 	<classpathentry sourcepath="lib/src/classworlds-src.zip" kind="lib" path="lib/classworlds.jar"/>
 	<classpathentry sourcepath="lib/src/commons-beanutils-src.zip" kind="lib" path="lib/commons-beanutils.jar"/>
 	<classpathentry sourcepath="lib/src/commons-cli-src.zip" kind="lib" path="lib/commons-cli.jar"/>
+	<classpathentry sourcepath="lib/src/commons-dbcp-src.zip" kind="lib" path="lib/commons-dbcp.jar"/>
 	<classpathentry sourcepath="lib/src/commons-io-src.zip" kind="lib" path="lib/commons-io.jar"/>
 	<classpathentry sourcepath="lib/src/commons-codec-src.zip" kind="lib" path="lib/commons-codec.jar"/>
 	<classpathentry sourcepath="lib/src/commons-collections-src.zip" kind="lib" path="lib/commons-collections.jar"/>
 	<classpathentry sourcepath="lib/src/commons-lang-src.zip" kind="lib" path="lib/commons-lang.jar"/>
 	<classpathentry sourcepath="lib/src/commons-logging-src.zip" kind="lib" path="lib/commons-logging.jar"/>
 	<classpathentry sourcepath="lib/src/commons-net-src.zip" kind="lib" path="lib/commons-net.jar"/>
+	<classpathentry sourcepath="lib/src/commons-pool-src.zip" kind="lib" path="lib/commons-pool.jar"/>
 	<classpathentry kind="lib" path="lib/cryptix32.jar"/>
 	<classpathentry kind="lib" path="lib/cryptix32-pgp.jar"/>
 	<classpathentry sourcepath="lib/cvslib.jar" kind="lib" path="lib/cvslib.jar"/>

@@ -162,7 +162,23 @@
     </dependency>
 
     <dependency>
+      <id>commons-beanutils</id>
+      <version/>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+      </properties>
+    </dependency>
+            
+    <dependency>
       <id>commons-cli</id>
+      <version/>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>commons-codec</id>
       <version/>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -178,7 +194,7 @@
     </dependency>
 
     <dependency>
-      <id>commons-lang</id>
+      <id>commons-dbcp</id>
       <version/>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -186,7 +202,15 @@
     </dependency>
 
     <dependency>
-      <id>commons-beanutils</id>
+      <id>commons-io</id>
+      <version/>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+      </properties>
+    </dependency>
+                          
+    <dependency>
+      <id>commons-lang</id>
       <version/>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -210,21 +234,13 @@
     </dependency>
 
     <dependency>
-      <id>commons-io</id>
+      <id>commons-pool</id>
       <version/>
       <properties>
         <jnlp.jar>true</jnlp.jar>
       </properties>
     </dependency>
-
-    <dependency>
-      <id>commons-codec</id>
-      <version/>
-      <properties>
-        <jnlp.jar>true</jnlp.jar>
-      </properties>
-    </dependency>
-
+            
     <dependency>
       <id>cryptix32</id>
       <version/>
