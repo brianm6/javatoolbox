@@ -21,10 +21,9 @@ import toolbox.workspace.host.PluginHostListener;
 
 /**
  * PluginMenu is an extension of JSmartMenu that houses the currently known
- * list of plugins. By selecting items on the menu, a plugin can be launched.
- * By selecting the item of an already active plugin on the menu, the plugin
- * is selected according to the implementation of the currently active
- * PluginHostManager.
+ * list of plugins. By selecting items on the menu, a plugin can be activated.
+ * By selecting an already active plugin on the menu, the plugin is selected 
+ * according to the implementation of the currently active PluginHostManager.
  */
 public class PluginMenu extends JSmartMenu
 {
@@ -33,17 +32,23 @@ public class PluginMenu extends JSmartMenu
     //--------------------------------------------------------------------------
     // Constants
     //--------------------------------------------------------------------------
-    
+
+    /**
+     * Label of this menu as referenced by unit tests.
+     */
     public static final String LABEL = "Plugins";
 
-    private static final String PROP_PLUGINMETA = "pluginmeta";
+    /**
+     * Key used to attach a PluginMeta instance to a checkbox menu item.
+     */
+    private static final String KEY_PLUGINMETA = "pluginmeta";
     
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
    
     /**
-     * Maps a plugin's name to its corresponding MenuItem.
+     * Maps a plugin's name to its corresponding menu item.
      */
     private Map nameMap_;
     
@@ -97,9 +102,9 @@ public class PluginMenu extends JSmartMenu
 
             JSmartCheckBoxMenuItem mi = 
                 new JSmartCheckBoxMenuItem(
-                    new LaunchPluginAction(meta.getName()));            
+                    new ActivatePluginAction(meta.getName()));            
 
-            mi.putClientProperty(PROP_PLUGINMETA, meta);
+            mi.putClientProperty(KEY_PLUGINMETA, meta);
             mi.setToolTipText(meta.getPlugin().getDescription());
             nameMap_.put(meta.getName(), mi);
             add(mi);
@@ -116,21 +121,21 @@ public class PluginMenu extends JSmartMenu
     }
     
     //--------------------------------------------------------------------------
-    // LaunchPluginAction
+    // ActivatePluginAction
     //--------------------------------------------------------------------------
     
     /**
-     * LaunchPluginAction is responsible for launching the currently selected
+     * ActivatePluginAction is responsible for launching the currently selected
      * plugin and loading it into the workspace.
      */
-    class LaunchPluginAction extends AbstractAction 
+    class ActivatePluginAction extends AbstractAction 
     {
         /**
          * Creates a LaunchPluginAction.
          * 
          * @param name Name of the action.
          */
-        LaunchPluginAction(String name)
+        ActivatePluginAction(String name)
         {
             super(name);
         }
@@ -145,7 +150,7 @@ public class PluginMenu extends JSmartMenu
             JCheckBoxMenuItem cbmi = (JCheckBoxMenuItem) e.getSource();
             
             PluginMeta meta = (PluginMeta) 
-                cbmi.getClientProperty(PROP_PLUGINMETA);
+                cbmi.getClientProperty(KEY_PLUGINMETA);
 
             if (cbmi.isSelected())
             {
@@ -184,7 +189,7 @@ public class PluginMenu extends JSmartMenu
     
     /**
      * PluginActivityListener is responsible for keeping the state of the
-     * plugins in the menu in sync with their loaded state. A check appears 
+     * plugins in the menu in sync with their loaded state. A checkmark appears 
      * next to loaded plugins and is removed when/if the plugin is unloaded.
      */
     class PluginActivityListener implements PluginHostListener
