@@ -6,7 +6,7 @@ import toolbox.util.concurrent.BlockingQueue;
 
 /**
  * Default implementation of an IConnectionListener that enables synchronous 
- * "waiting" on events vs. asynchronous callback listening. 
+ * "waiting" on events vs asynchronous callback listening. 
  */
 public class DefaultConnectionListener implements IConnectionListener
 {
