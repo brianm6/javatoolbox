@@ -20,6 +20,7 @@ import java.awt.Window;
 import java.util.Enumeration;
 import java.util.List;
 
+import javax.swing.Action;
 import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
@@ -28,6 +29,7 @@ import javax.swing.JMenu;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTree;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
@@ -665,7 +667,10 @@ public final class SwingUtil
         }
     }
 
-
+    //--------------------------------------------------------------------------
+    // Graphics
+    //--------------------------------------------------------------------------
+    
     /**
      * Rotates an image a given number of degrees.
      * 
@@ -690,5 +695,35 @@ public final class SwingUtil
         g.rotate(Math.toRadians(degrees));
         g.drawImage(source, -w / 2, -h / 2, w, h, null);
         return img;
+    }
+    
+    //--------------------------------------------------------------------------
+    // Keys
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Binds a keystroke to an action fro the given component when in focus.
+     * <p>
+     * <b>Example</b>
+     * <pre class="snippet">
+     *   // Binds the F5 key to the refresh action
+     *   JPanel panel = new JPanel();
+     *   SwingUtil.bindKey(
+     *       panel, 
+     *       new RefreshAction(), 
+     *       KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));  // Use zero for no input mask
+     * </pre>
+     * @param comp Component to bind the keystroke to.
+     * @param action Action to execute once the keystroke is entered.
+     * @param keyStroke Keystroke to bind to the component.
+     */
+    public static void bindKey(
+        JComponent comp, 
+        Action action, 
+        KeyStroke keyStroke) 
+    {
+        // TODO: Test me
+        comp.getInputMap().put(keyStroke, action.getValue(Action.NAME));
+        comp.getActionMap().put(action.getValue(Action.NAME), action);
     }
 }
