@@ -154,6 +154,8 @@ public class FindClass
      */
     protected void buildSearchTargets()
     {
+        String method = "[build ] ";
+        
         // build list of archives and dirs to search
         searchTargets_ = new ArrayList();
         searchTargets_.addAll(getClassPathTargets());
@@ -162,15 +164,14 @@ public class FindClass
         // print out search targets if debub is on
         if (logger_.isDebugEnabled())
         {
-            logger_.debug("Search targets");
-            logger_.debug("==============================");
+            logger_.debug(method + "Search targets");
+            logger_.debug(method + "==============================");
             
             for(Iterator i = searchTargets_.iterator(); 
-                i.hasNext(); logger_.debug(i.next()));
+                i.hasNext(); logger_.debug(method + i.next()));
                 
-            logger_.debug("==============================");                
+            logger_.debug(method + "==============================");                
         }
-        
     }
 
     
@@ -210,7 +211,18 @@ public class FindClass
         return findFilesRecursively(".", archiveFilter_);        
     }
 
-
+    /**
+     * Returns a list of archives that exist in a given directory. The 
+     * directory is searched recursively
+     * 
+     * @param   dir  Directory to find targets in
+     * @return  List of String filenames
+     */
+    public List getArchivesInDir(File dir)
+    {
+        return findFilesRecursively(dir.getAbsolutePath(), archiveFilter_);    
+    }
+    
     /**
      * Finds files recursively from a given starting directory using the
      * passed in filter as selection criteria.
@@ -309,6 +321,8 @@ public class FindClass
      */    
     protected void findInPath(String pathName) 
     { 
+        String method = "[findIn] ";
+        
         // tack a slash on the end
         if (!pathName.endsWith( File.separator ))
             pathName += File.separator;
@@ -327,7 +341,7 @@ public class FindClass
                 
             dotted = searchTarget.substring(pathName.length());
             
-            logger_.debug("file=" + dotted);
+            logger_.debug(method + "file = " + dotted);
             
             if (regExp_.match(dotted))
             {
@@ -465,7 +479,7 @@ public class FindClass
      */
     public void addSearchTarget(String searchTarget)
     {
-        searchTargets_.add(0, searchTarget);
+        searchTargets_.add(searchTarget);
     }
     
     
@@ -481,12 +495,12 @@ public class FindClass
     {
         if (target.isDirectory())
         {
-            searchTargets_.addAll(0,
-                findFilesRecursively(target.getAbsolutePath(), archiveFilter_));
+            searchTargets_.addAll(findFilesRecursively(
+                target.getAbsolutePath(), archiveFilter_));
         }
         else
         {
-            searchTargets_.add(0, target.getAbsolutePath());            
+            searchTargets_.add(target.getAbsolutePath());            
         }
     }
 
@@ -499,5 +513,14 @@ public class FindClass
     public void removeSearchTarget(String searchTarget)
     {
         searchTargets_.remove(searchTarget);
+    }
+    
+    
+    /**
+     * Removes all search targets
+     */
+    public void removeAllSearchTargets()
+    {
+        searchTargets_.clear();
     }
 }     
