@@ -5,10 +5,10 @@ import java.io.OutputStream;
 import java.text.DecimalFormat;
 import java.util.Date;
 
+import org.apache.log4j.Logger;
+
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
-
-import org.apache.log4j.Logger;
 
 import toolbox.util.DateTimeUtil;
 import toolbox.util.RandomUtil;
@@ -161,29 +161,31 @@ public class EventOutputStreamTest extends TestCase
         eos.addListener(new ThroughputListener());
         eos.startThroughputMonitor();
         
+        int seconds = 2;
+        
         logger_.info("");
         logger_.info("[1 byte packet]");
-        stuffStream(eos, 1, 5);
+        stuffStream(eos, 1, 2);
         
         logger_.info("");
         logger_.info("[10 byte packet]");
-        stuffStream(eos, 10, 5);
+        stuffStream(eos, 10, 2);
         
         logger_.info("");
         logger_.info("[100 byte packet]");
-        stuffStream(eos, 100, 5);
+        stuffStream(eos, 100, 2);
         
         logger_.info("");
         logger_.info("[1000 byte packet]");
-        stuffStream(eos, 1000, 5);
+        stuffStream(eos, 1000, 2);
         
         logger_.info("");
         logger_.info("[10000 byte packet]");
-        stuffStream(eos, 10000, 5);
+        stuffStream(eos, 10000, 2);
         
         logger_.info("");
         logger_.info("[100000 byte packet]");
-        stuffStream(eos, 100000, 5); 
+        stuffStream(eos, 100000, 2); 
                
         eos.stopThroughputMonitor();
     }
