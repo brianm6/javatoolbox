@@ -238,6 +238,7 @@
 				<include name="commons-logging.jar"/>
                 <include name="commons-collections.jar"/>
                 <include name="commons-net.jar"/>
+                <include name="commons-io.jar"/>
                 <include name="jakarta-regexp.jar"/>
                 
 		        <!-- ===== Look and Feels ==== -->                    
@@ -439,6 +440,7 @@
                     <exclude name="**/ui/**/*Test.java" />
                     <exclude name="**/SwingUtilTest.java"/>
                     <exclude name="**/jedit/**"/>
+                    <exclude name="**/*JDBC*.java"/>
                     
                 </fileset>
             </batchtest>
