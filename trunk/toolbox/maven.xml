@@ -27,11 +27,11 @@
   xmlns:maven="jelly:maven"
   xmlns:j="jelly:core"
   xmlns:u="jelly:util"
-  xmlns:ant="jelly:ant">
-
+  xmlns:ant="jelly:ant"
+  xmlns:bsf="jelly:bsf">
 
     <!-- =================================================================== -->
-    <!-- UPDATE PROPS                                                        -->
+    <!-- GOAL : UPDATE-PROPS                                                 -->
     <!-- =================================================================== -->
     <goal name="update-props" description="Copy build.properties to $HOME">
         <property environment="sysenv"/>
@@ -42,9 +42,10 @@
   
   
     <!-- =================================================================== -->
-    <!-- PRE:COMPILE                                                         -->
+    <!-- PRE : JAVA : COMPILE                                                -->
     <!-- =================================================================== -->
     <preGoal name="java:compile"> 
+       <!-- Piggybacks the debug source tree onto the compile goal -->
        <path id="debug.src" location="${basedir}/debug"/> 
        <maven:addPath id="maven.compile.src.set" refid="debug.src"/> 
     </preGoal> 
@@ -83,16 +84,13 @@
 
 
     <!-- =================================================================== -->
-    <!-- D E R E G I S T E R   R E P O R T S                                 -->
+    <!-- POST : XDOC : REGISTER-REPORTS                                      -->
     <!-- =================================================================== -->
     <postGoal name="xdoc:register-reports"> 
         <attainGoal name="maven-linkcheck-plugin:deregister"/> 
-    </postGoal>
-      
-    <postGoal name="xdoc:register-reports"> 
         <attainGoal name="maven-checkstyle-plugin:deregister"/> 
     </postGoal>
-
+      
     
     <!-- =================================================================== -->
     <!-- C V S - U P D A T E                                                 -->
@@ -126,6 +124,30 @@
         <fileset dir="${basedir}/target/jnlp" includes="*.*"/>
       </copy>
     </goal> 
+
+
+    <!-- =================================================================== -->
+    <!-- POST : XDOC : REGISTER-REPORTS    jnlp:generate-jnlp"                                  -->
+    <!-- =================================================================== -->
+    <goal name="script"> 
+    
+        <echo>jnlp post goal</echo>
+        
+        <!-- Prints out the classpath -->        
+        <bsf:script language="beanshell"> <![CDATA[
+            print("[CLASSPATH]");
+            /*
+            sb = new StringBuffer();
+            cp = toolbox.getProperty("cp");
+            for (t = new StringTokenizer(cp, File.pathSeparator); t.hasMoreTokens(); )
+                sb.append(t.nextToken() + System.getProperty("line.separator"));
+            print(sb.toString());
+            */
+        ]]>
+        </bsf:script>
+       
+    </goal>
+
 
 
     <!-- =================================================================== -->
