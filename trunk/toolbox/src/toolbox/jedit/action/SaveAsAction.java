@@ -53,10 +53,7 @@ public class SaveAsAction extends AbstractJEditAction implements IPreferenced
      */
     public SaveAsAction(JEditTextArea area)
     {
-        super(
-            "Save As..", 
-            ImageCache.getIcon(ImageCache.IMAGE_SAVEAS), 
-            area);
+        super("Save As..", ImageCache.getIcon(ImageCache.IMAGE_SAVEAS), area);
     }
     
     //--------------------------------------------------------------------------
@@ -78,12 +75,9 @@ public class SaveAsAction extends AbstractJEditAction implements IPreferenced
             else
                 chooser = new JFileChooser(getLastDir());
 
-            if (chooser.showSaveDialog(area_)
-                == JFileChooser.APPROVE_OPTION) 
+            if (chooser.showSaveDialog(area_) == JFileChooser.APPROVE_OPTION) 
             {
-                String saveFile = 
-                    chooser.getSelectedFile().getCanonicalPath();
-                    
+                String saveFile = chooser.getSelectedFile().getCanonicalPath();
                 FileUtil.setFileContents(saveFile, area_.getText(), false);
             }
             
@@ -130,7 +124,7 @@ public class SaveAsAction extends AbstractJEditAction implements IPreferenced
     //--------------------------------------------------------------------------
     
     /**
-     * Returns the last directory navigated to using the file chooser.
+     * Returns the last directory navigated to in the file chooser.
      * 
      * @return String
      */
@@ -143,7 +137,7 @@ public class SaveAsAction extends AbstractJEditAction implements IPreferenced
     /**
      * Sets the last directory navigated to using the file chooser.
      * 
-     * @param lastDir Last directory in absolute form.
+     * @param lastDir Last selected directory in absolute form.
      */
     public void setLastDir(String lastDir)
     {
