@@ -37,6 +37,7 @@
  * TODO: Get jode decompiler to work on File input.
  * TODO: Fix broken stop on JTail
  * TODO: Find out why Tiny LAFs are not working
+ * TODO: Add a way to search the system path to see if an executable exists.
  * =============================================================================
  *                              Build
  * =============================================================================
@@ -102,17 +103,41 @@
 
   <properties>
     <title>Changes</title>
-    <author email="analogue@yahoo.com">Semir Patel</author>
+    <author email="analogue@yahoo.com">analogue</author>
   </properties>
 
   <body>
 
+    <!-- =================================================================== -->
+    <!-- October 2004                                                        -->    
+    <!-- =================================================================== -->    
+
+	<release version="2.0" date="October 2004">
+	
+      <action type="add">
+        <table>
+          <tr>
+            <td width="100">Util</td>
+            <td>Added ClassUtils.findInPath() to find executables on the system path</td>
+          </tr>
+        </table>
+      </action>
+
+	  <action type="add"   ><code>XYZ            : </code>Nother</action>              
+	  <action type="fix"   ></action>              
+	  <action type="remove"></action>
+	</release>
+
+    <!-- =================================================================== -->
+    <!-- September 2004                                                      -->    
+    <!-- =================================================================== -->    
+    
     <release version="2.0" date="September 2004">
 
       <action type="update">
-        <table>
+        <table style="color:red">
           <tr>
-            <td width="20%">All</td>
+            <td width="100">All</td>
             <td>Made sure all passwords are not saved as clear text</td>
           </tr>
         </table>
@@ -121,7 +146,7 @@
       <action type="update">
         <table>
           <tr>
-            <td width="20%">Workspace</td>
+            <td width="100">Workspace</td>
             <td>Added color as a visual cue to the workspace status bar for errors and warnings</td>
           </tr>
         </table>
@@ -130,7 +155,7 @@
       <action type="update">
         <table>
           <tr>
-            <td width="20%">TextToolsPlugin</td>
+            <td width="100">TextToolsPlugin</td>
             <td>Added property sheets to configure the XML, Java, and HTML formatters to the preferences dialog</td>
           </tr>
         </table>
@@ -139,7 +164,7 @@
       <action type="update">
         <table>
           <tr>
-            <td width="20%">Util</td>
+            <td width="100">Util</td>
             <td>JEditTextArea updated to save the last directory of the JFileChooser on Insert Fiel and Save As operations</td>
           </tr>
         </table>
@@ -148,7 +173,7 @@
       <action type="update">
         <table>
           <tr>
-            <td width="20%">Util</td>
+            <td width="100">Util</td>
             <td>Updated toolbox.util.Colors to include constant definitions of all the rgb.txt colors</td>
           </tr>
         </table>
@@ -157,7 +182,7 @@
       <action type="update">
         <table>
           <tr>
-            <td width="20%">Util</td>
+            <td width="100">Util</td>
             <td>Added rtelnet to the main program launcher</td>
           </tr>
         </table>
@@ -166,7 +191,7 @@
       <action type="update">
         <table>
           <tr>
-            <td width="20%">Workspace</td>
+            <td width="100">Workspace</td>
             <td>Added Help->About to show version, build number and date</td>
           </tr>
         </table>
@@ -175,7 +200,7 @@
       <action type="update">
         <table>
           <tr>
-            <td width="20%">QueryPlugin</td>
+            <td width="100">QueryPlugin</td>
             <td>SQL statements are now displayed along with a SQLException's error message and stacktrace</td>
           </tr>
         </table>
@@ -184,7 +209,7 @@
       <action type="update">
         <table>
           <tr>
-            <td width="20%">QueryPlugin</td>
+            <td width="100">QueryPlugin</td>
             <td>Query execution times now shown on the status bar after</td>
           </tr>
         </table>
@@ -193,7 +218,7 @@
       <action type="update">
         <table>
           <tr>
-            <td width="20%">Util</td>
+            <td width="100">Util</td>
             <td>Renamed toolbox.util.Banner and all related classes to toolbox.util.Figlet</td>
           </tr>
         </table>
@@ -202,7 +227,7 @@
       <action type="update">
         <table>
           <tr>
-            <td width="20%">Util</td>
+            <td width="100">Util</td>
             <td>Added replaceIgnoreCase() to StringUtil</td>
           </tr>
         </table>
@@ -211,7 +236,7 @@
       <action type="add">
         <table>
           <tr>
-            <td width="20%">Util</td>
+            <td width="100">Util</td>
             <td>Added toolbox.util.clock.SystemClock and associated classes to simulate the System time in the past or the future for testing purposes</td>
           </tr>
         </table>
@@ -220,7 +245,7 @@
       <action type="Update">
         <table>
           <tr>
-            <td width="20%">JTailPlugin</td>
+            <td width="100">JTailPlugin</td>
             <td>Changed filters to work on a StringBuffer instead of a String to streamline chained filters</td>
           </tr>
         </table>
@@ -229,7 +254,7 @@
       <action type="Add">
         <table>
           <tr>
-            <td width="20%">Lib</td>
+            <td width="100">Lib</td>
             <td>Added backported version of JDK1.5 java.util.concurrent to JDK1.4. Replaced all instances of               BlockingQueue and Mutex with the backported equivalents</td>
           </tr>
         </table>
@@ -238,7 +263,7 @@
       <action type="Add">
         <table>
           <tr>
-            <td width="20%">Util</td>
+            <td width="100">Util</td>
             <td>Added InfoNode Look and Feel</td>
           </tr>
         </table>
@@ -247,7 +272,7 @@
       <action type="Update">
         <table>
           <tr>
-            <td width="20%">Util</td>
+            <td width="100">Util</td>
             <td>Remove dependency on concurrent.jar</td>
           </tr>
         </table>
@@ -256,7 +281,7 @@
       <action type="Update">
         <table>
           <tr>
-            <td width="20%">Util</td>
+            <td width="100">Util</td>
             <td>Refactored listeners and actions in JFileExplorer.java to top 
                 level classes their respective subpackages</td>
           </tr>
@@ -264,36 +289,40 @@
       </action>
 
     </release>
+
+    <!-- =================================================================== -->
+    <!-- August 2004                                                         -->
+    <!-- =================================================================== -->    
     
     <release version="2.0" date="August 2004">
-      <action type="Util">Added FontUtil.isMonospaced()</action>
-      <action type="Util">JSmartTableHeader updated to support auto-resize by clicking on the column divider</action>
-      <action type="Util">Added emphasis of monospaced fonts to JFontChooser</action>
-      <action type="Util">Added ability to render font names in the listbox using the font itself in JFontChooser</action>
-      <action type="Util">Added JSmartDialog. Persists size, location, and esc key is bound to dispose.</action>
-      <action type="Util">Added convenience methods to PreferenceUtil to save/restore bounds for a component</action>
-      <action type="Lib">Added jemmy.jar to unit test UI components</action>
-      <action type="Test">Jemmified JFontChooserDialog test and createed JemmyUtil in the process</action>
-      <action type="Workspace">Updated PluginWorkspace to extend JSmartFrame and delegated save/apply of prefs to superclass</action>
-      <action type="Util">Updated TableSorter so that auto-resize and sort don't conflict when mouse is clicked near the column dividers</action>
-      <action type="Workspace">Updated to accept a preferences filename on the command line which overrides the default</action>
-      <action type="FindClassPlugin">Reduced startup time by limited default search targets to those on the classpath only</action>
-      <action type="Misc">Converting all implementors of IPreferenced to use the javabean method for passivation/hydration</action>
-      <action type="Lib">Added janino.jar to use inside JTailPlugin for creating dynamic filters coded in java on the fly</action>
-      <action type="Lib">Added jalopy.jar, jakarta-oro.jar, and jdom.jar to support toolbox.util.formatter.JavaFormatter</action>
-      <action type="Util">Created concrete instances of toolbox.util.formatter.Formatter to handle Java, XML, and HTML</action>
-      <action type="Util">Renamed StringUtil.addBars() to banner()</action>
-      <action type="Util">Replaced StringUtil.left() and right() with StringUtils.rightPad() and leftPad()</action>
-      <action type="Util">Upated code snippets in javadocs to use class=snippet</action>
-      <action type="Util">Fixed QueryPlugin to remove the session from the session map if Connect fails</action>
-      <action type="Build">Updated fatjar maven goals to pull the list of jars directly from the Maven POM instead of the hardcoded list used previously</action>
-      <action type="Util">Added javabean property to JSmartTextArea to control updates on the event dispatch thread</action>
-      <action type="Build">Added custom stylesheet for jxr plugin (decrease code font size and made Verdana the default font)</action>
+      <action type="add"><table><tr><td width="100">Util</td><td>Added FontUtil.isMonospaced()</td></tr></table></action>
+      <action type="add"><table><tr><td width="100">Util</td><td>JSmartTableHeader updated to support auto-resize by clicking on the column divider</td></tr></table></action>
+      <action type="add"><table><tr><td width="100">Util</td><td>Added emphasis of monospaced fonts to JFontChooser</td></tr></table></action>
+      <action type="add"><table><tr><td width="100">Util</td><td>Added ability to render font names in the listbox using the font itself in JFontChooser</td></tr></table></action>
+      <action type="add"><table><tr><td width="100">Util</td><td>Added JSmartDialog. Persists size, location, and esc key is bound to dispose.</td></tr></table></action>
+      <action type="add"><table><tr><td width="100">Util</td><td>Added convenience methods to PreferenceUtil to save/restore bounds for a component</td></tr></table></action>
+      <action type="add"><table><tr><td width="100">Lib</td><td>Added jemmy.jar to unit test UI components</td></tr></table></action>
+      <action type="add"><table><tr><td width="100">Test</td><td>Jemmified JFontChooserDialog test and createed JemmyUtil in the process</td></tr></table></action>
+      <action type="add"><table><tr><td width="100">Workspace</td><td>Updated PluginWorkspace to extend JSmartFrame and delegated save/apply of prefs to superclass</td></tr></table></action>
+      <action type="add"><table><tr><td width="100">Util</td><td>Updated TableSorter so that auto-resize and sort don't conflict when mouse is clicked near the column dividers</td></tr></table></action>
+      <action type="add"><table><tr><td width="100">Workspace</td><td>Updated to accept a preferences filename on the command line which overrides the default</td></tr></table></action>
+      <action type="add"><table><tr><td width="100">FindClassPlugin</td><td>Reduced startup time by limited default search targets to those on the classpath only</td></tr></table></action>
+      <action type="add"><table><tr><td width="100">Misc</td><td>Converting all implementors of IPreferenced to use the javabean method for passivation/hydration</td></tr></table></action>
+      <action type="add"><table><tr><td width="100">Lib</td><td>Added janino.jar to use inside JTailPlugin for creating dynamic filters coded in java on the fly</td></tr></table></action>
+      <action type="add"><table><tr><td width="100">Lib</td><td>Added jalopy.jar, jakarta-oro.jar, and jdom.jar to support toolbox.util.formatter.JavaFormatter</td></tr></table></action>
+      <action type="add"><table><tr><td width="100">Util</td><td>Created concrete instances of toolbox.util.formatter.Formatter to handle Java, XML, and HTML</td></tr></table></action>
+      <action type="add"><table><tr><td width="100">Util</td><td>Renamed StringUtil.addBars() to banner()</td></tr></table></action>
+      <action type="add"><table><tr><td width="100">Util</td><td>Replaced StringUtil.left() and right() with StringUtils.rightPad() and leftPad()</td></tr></table></action>
+      <action type="add"><table><tr><td width="100">Util</td><td>Upated code snippets in javadocs to use class=snippet</td></tr></table></action>
+      <action type="add"><table><tr><td width="100">Util</td><td>Fixed QueryPlugin to remove the session from the session map if Connect fails</td></tr></table></action>
+      <action type="add"><table><tr><td width="100">Build</td><td>Updated fatjar maven goals to pull the list of jars directly from the Maven POM instead of the hardcoded list used previously</td></tr></table></action>
+      <action type="add"><table><tr><td width="100">Util</td><td>Added javabean property to JSmartTextArea to control updates on the event dispatch thread</td></tr></table></action>
+      <action type="add"><table><tr><td width="100">Build</td><td>Added custom stylesheet for jxr plugin (decrease code font size and made Verdana the default font)</td></tr></table></action>
 
       <action type="add">
         <table>
           <tr>
-            <td width="20%">Util</td>
+            <td width="100">Util</td>
             <td>Added simple implemenation of a finite state machine to toolbox.util.statemachine</td>
           </tr>
         </table>
@@ -302,7 +331,7 @@
       <action type="update">
         <table>
           <tr>
-            <td width="20%">QueryPlugin</td>
+            <td width="100">QueryPlugin</td>
             <td>Updated to execute multiple sql statements within a selection on ExecuteAll</td>
           </tr>
         </table>
@@ -311,7 +340,7 @@
       <action type="update">
         <table>
           <tr>
-            <td width="20%">QueryPlugin</td>
+            <td width="100">QueryPlugin</td>
             <td>Added file explorer to access sql scripts quickly</td>
           </tr>
         </table>
@@ -320,7 +349,7 @@
       <action type="update">
         <table>
           <tr>
-            <td width="20%">DocViewerPlugin</td>
+            <td width="100">DocViewerPlugin</td>
             <td>JavaViewer now support quick nav to methods via a method list</td>
           </tr>
         </table>
@@ -329,7 +358,7 @@
       <action type="update">
         <table>
           <tr>
-            <td width="20%">Util</td>
+            <td width="100">Util</td>
             <td>Refactored Service interface and applied StateMachine to service transitions</td>
           </tr>
         </table>
@@ -338,7 +367,7 @@
       <action type="update">
         <table>
           <tr>
-            <td width="20%">QueryPlugin</td>
+            <td width="100">QueryPlugin</td>
             <td>Added popup menu to the file explorer's file list which now contains a menuitem to load all selected files into the sql editor.</td>
           </tr>
         </table>
@@ -347,7 +376,7 @@
       <action type="update">
         <table>
           <tr>
-            <td width="20%">XSLFOPlugin</td>
+            <td width="100">XSLFOPlugin</td>
             <td>Externalized JEdit settings for hilighting XML to toolbox.jedit.XMLDefaults</td>
           </tr>
         </table>
@@ -356,12 +385,16 @@
       <action type="update">
         <table>
           <tr>
-            <td width="20%">XSLFOPlugin</td>
+            <td width="100">XSLFOPlugin</td>
             <td>Simplified applyPrefs() and savePrefs() by collecting IPreferenced subcomponents in a list</td>
           </tr>
         </table>
       </action>
     </release>
+
+    <!-- =================================================================== -->
+    <!-- July 2004                                                           -->    
+    <!-- =================================================================== -->    
     
     <release version="2.0" date="July 2004">
       <action type="update">Lib - Upgraded to commons-collections-3.1</action>              
@@ -396,6 +429,10 @@
       <action type="remove">Util - Removed unused layouts</action>
     </release>
 
+    <!-- =================================================================== -->
+    <!-- June 2004                                                           -->    
+    <!-- =================================================================== -->    
+
     <release version="2.0" date="June 2004">
       <action type="update">Util - Updated Jode to 1.1.2-pre1</action>
       <action type="add"   >Util - Added StringUtil.indent()</action>
@@ -416,6 +453,10 @@
       <action type="add"   >Util - Added AssertUtil which contains assertions for serialization</action>
     </release>
 
+    <!-- =================================================================== -->
+    <!-- May 2004                                                            -->    
+    <!-- =================================================================== -->    
+
     <release version="2.0" date="May 2004">
       <action type="add"   >QueryPlugin - Added JDBC benchmark</action>
       <action type="add"   >LookAndFeel - Added NapkinLookAndFeel to the Look and Feel menu</action>
@@ -432,6 +473,10 @@
       <action type="remove">Util - Removed toolbox.util.Assert and replaced with Validate from commons-lang</action>
       <action type="update">Util - Added maxdepth (-l) and show fullpath (-p) flags to Tree</action>
     </release>
+
+    <!-- =================================================================== -->
+    <!-- April 2004                                                          -->    
+    <!-- =================================================================== -->    
 
     <release version="2.0" date="April 2004">
       <action type="update">Util - Scan source for refactorings to use DisposeAction </action>
@@ -452,6 +497,10 @@
       <action type="update">FindClassPlugin - SearchTargetPanel extracted from FindClassPane as top level class</action>
       <action type="add"   >Workspace - Added tooltips to the plugin menu items</action>
     </release>
+
+    <!-- =================================================================== -->
+    <!-- March 2004                                                          -->    
+    <!-- =================================================================== -->    
 
     <release version="2.0" date="March 2004">
       <action type="add"   >Workspace - Added Plugin menu</action>
