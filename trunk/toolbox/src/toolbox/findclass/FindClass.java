@@ -4,11 +4,11 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
-import java.util.StringTokenizer;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -201,25 +201,6 @@ public class FindClass
 
     
     /**
-     * Returns a list of all search targets (archives and directories) on the 
-     * classpath.
-     * 
-     * @return List of strings.
-     */
-    public List getClassPathTargets()
-    {
-        List targets = new ArrayList();
-        String cp = ClassUtil.getClasspath();
-        StringTokenizer t = new StringTokenizer(cp, File.pathSeparator, false);
-        
-        while (t.hasMoreTokens())
-            targets.add(t.nextToken());
-        
-        return targets;
-    }
-        
-    
-    /**
      * Cancels a pending search. The search will stop after processing the
      * current search target. 
      */
@@ -306,7 +287,7 @@ public class FindClass
     {
         // build list of archives and dirs to search
         searchTargets_ = new ArrayList();
-        searchTargets_.addAll(getClassPathTargets());
+        searchTargets_.addAll(Arrays.asList(ClassUtil.getClassPathElements()));
         searchTargets_.addAll(getArchiveTargets());
         
         // print out search targets if debub is on
