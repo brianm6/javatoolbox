@@ -50,6 +50,7 @@ import toolbox.util.SwingUtil;
  * TODO: Plugin to configure log4j
  * TODO: Make plugins detachable
  * TODO: Make webstart enabled
+ * TODO: Added close icon to plugin tabs
  * 
  * </pre>
  */
