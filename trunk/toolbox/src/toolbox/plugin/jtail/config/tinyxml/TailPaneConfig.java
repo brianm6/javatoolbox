@@ -12,11 +12,14 @@ import toolbox.util.xml.XMLNode;
 
 /**
  * TailConfig is a data object that captures the configuration of a given tail 
- * instance with the ability to marshal itself to and from XML format. 
+ * instance with the ability to marshal itself to and from XML format.
+ * 
+ * <p>
+ * 
+ * TODO: Make sure autostart is working as designed 
  */
 public class TailPaneConfig implements ITailPaneConfig, XMLConstants
 {
-    /** Logger */
     private static final Logger logger_ =
         Logger.getLogger(TailPaneConfig.class);
     
@@ -40,7 +43,6 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
     {
     }
 
-
     /**
      * Creates TailConfig with given parameters
      * 
@@ -49,14 +51,20 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
      * @param  showLineNumbers    Shows line numbers in output
      * @param  antiAlias          Antialias text in output area
      * @param  font               Font of display text area
-     * @param  regularExpression  Optional filter (regular expression) 
-     *                            for weeding out junk
+     * @param  regularExpression  Optional filter (regular expression) for 
+     *                            weeding out junk
      * @param  cutExpression      Optional expression for removing columns
      * @param  autoStart          Autostarts tailing (starts it)
      */
-    public TailPaneConfig(String file, boolean autoScroll, 
-        boolean showLineNumbers, boolean antiAlias, Font font,
-        String regularExpression, String cutExpression, boolean autoStart)
+    public TailPaneConfig(
+        String file, 
+        boolean autoScroll, 
+        boolean showLineNumbers, 
+        boolean antiAlias, 
+        Font font,
+        String regularExpression, 
+        String cutExpression, 
+        boolean autoStart)
     {
         setFilename(file);
         setAutoScroll(autoScroll);
@@ -153,7 +161,6 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
             
         return config;
     }
-
 
     /**
      * TailConfig -> XML
@@ -297,7 +304,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
 
     /**
      * @see toolbox.jtail.config.ITailPaneConfig#
-     *          setRegularExpression(java.lang.String)
+     *      setRegularExpression(java.lang.String)
      */
     public void setRegularExpression(String filter)
     {
