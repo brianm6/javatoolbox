@@ -357,6 +357,14 @@
 	      <jnlp.jar>true</jnlp.jar>
 	    </properties>
 	  </dependency>
+
+	  <dependency>
+	    <id>multivalent</id>
+	    <version/>
+	    <properties>
+	      <jnlp.jar>true</jnlp.jar>
+	    </properties>
+	  </dependency>
 	
 	  <dependency>
 	    <id>plastic</id>
