@@ -17,7 +17,12 @@ import toolbox.util.DateUtil;
  */
 public class DateUtilTest extends TestCase
 {
-    private static final Logger logger_ = Logger.getLogger(DateUtilTest.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(DateUtilTest.class);
+    
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
     
     /**
      * Entrypoint
