@@ -36,11 +36,6 @@ public class TabbedPluginHost extends AbstractPluginHost
     private JSmartTabbedPane tabPanel_;
     
     /**
-     * Reference to the workspace. Big no no..
-     */
-    private PluginWorkspace workspace_;
-    
-    /**
      * Maps the UI component of a plugin to its associated IPlugin. The UI 
      * component is the actual component that is added to the tab panel.
      */
@@ -73,9 +68,7 @@ public class TabbedPluginHost extends AbstractPluginHost
     public void initialize(Map props)
     {
         super.initialize(props);
-        
-        workspace_ = 
-            (PluginWorkspace) props.get(PluginWorkspace.KEY_WORKSPACE);
+        setWorkspace((PluginWorkspace)props.get(PluginWorkspace.KEY_WORKSPACE));
         
         // Bidirectional hash maps
         uiComponentMap_ = new DualHashBidiMap();
@@ -225,7 +218,8 @@ public class TabbedPluginHost extends AbstractPluginHost
              
             try
             {
-                workspace_.deregisterPlugin(plugin.getClass().getName(), false);
+                getWorkspace().deregisterPlugin(
+                    plugin.getClass().getName(), false);
             }
             catch (Exception e)
             {

@@ -17,6 +17,7 @@ import toolbox.util.service.ServiceTransition;
 import toolbox.util.statemachine.StateMachine;
 import toolbox.workspace.IPlugin;
 import toolbox.workspace.IPreferenced;
+import toolbox.workspace.PluginWorkspace;
 
 /**
  * Abstract implementation of an PluginHost that captures behavior common to 
@@ -55,6 +56,11 @@ public abstract class AbstractPluginHost implements PluginHost, IPreferenced
      * State machine for this plugin hosts lifecycle.
      */
     private StateMachine machine_;
+
+    /**
+     * Parent workspace.
+     */
+    private PluginWorkspace workspace_;   
     
     //--------------------------------------------------------------------------
     // Constructors
@@ -223,6 +229,31 @@ public abstract class AbstractPluginHost implements PluginHost, IPreferenced
     public Map getStartupConfig()
     {
         return init_;
+    }
+    
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Sets the value of workspace.
+     * 
+     * @param workspace The workspace to set.
+     */
+    public void setWorkspace(PluginWorkspace workspace)
+    {
+        workspace_ = workspace;
+    }
+    
+    
+    /**
+     * Returns the workspace.
+     * 
+     * @return PluginWorkspace
+     */
+    public PluginWorkspace getWorkspace()
+    {
+        return workspace_;
     }
     
     //--------------------------------------------------------------------------

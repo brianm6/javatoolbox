@@ -70,11 +70,6 @@ public class DesktopPluginHost extends AbstractPluginHost implements PluginHost,
      */
     private BidiMap frameMap_;
 
-    /**
-     * Parent workspace.
-     */
-    private PluginWorkspace workspace_;
-    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -97,39 +92,11 @@ public class DesktopPluginHost extends AbstractPluginHost implements PluginHost,
     public void initialize(Map props)
     {
         super.initialize(props);
-        workspace_ = (PluginWorkspace) props.get(PluginWorkspace.KEY_WORKSPACE);
+        setWorkspace((PluginWorkspace)props.get(PluginWorkspace.KEY_WORKSPACE));
         desktop_ = new JDesktopPane();
         pluginMap_ = new DualHashBidiMap();
         frameMap_ = pluginMap_.inverseBidiMap();
-        
         addWindowMenu();
-        
-        
-        /*
-        SwingUtilities.invokeLater(new Runnable() 
-        {
-            public void run() 
-            {
-                SwingUtil.cascade(desktop_);
-                JInternalFrame[] jifs = desktop_.getAllFrames();
-                
-                for (int i = 0; i < jifs.length; i++)
-                {
-                    jifs[i].pack();
-                    
-                    Dimension d = jifs[i].getSize();
-                    
-                    if (d.width > desktop_.getWidth())
-                        d.width = ((int) (desktop_.getWidth() * 0.9));
-                                
-                    if (d.height > desktop_.getHeight())
-                        d.height = ((int) (desktop_.getHeight() * 0.9));
-
-                    jifs[i].setSize(d);
-                }
-            }
-        });
-        */
     }
 
     //--------------------------------------------------------------------------
@@ -210,7 +177,7 @@ public class DesktopPluginHost extends AbstractPluginHost implements PluginHost,
                 
                 try
                 {
-                    workspace_.deregisterPlugin(
+                    getWorkspace().deregisterPlugin(
                         plugin.getClass().getName(), true);
                 }
                 catch (Exception e1)
@@ -391,7 +358,7 @@ public class DesktopPluginHost extends AbstractPluginHost implements PluginHost,
      */
     protected void addWindowMenu()
     {
-        JMenuBar menuBar = workspace_.getJMenuBar();
+        JMenuBar menuBar = getWorkspace().getJMenuBar();
         JSmartMenu windowMenu = new JSmartMenu("Window");
         windowMenu.setName("Window");
         
@@ -429,7 +396,7 @@ public class DesktopPluginHost extends AbstractPluginHost implements PluginHost,
      */
     protected void removeWindowMenu()
     {
-        JMenuBar menuBar = workspace_.getJMenuBar();
+        JMenuBar menuBar = getWorkspace().getJMenuBar();
         List results = new ArrayList();
         SwingUtil.findInstancesOf(JSmartMenu.class, menuBar, results);
         
