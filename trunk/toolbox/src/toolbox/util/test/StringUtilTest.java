@@ -12,11 +12,11 @@ import org.apache.log4j.Logger;
 import toolbox.util.StringUtil;
 
 /**
- * StringUtil Unit Test
+ * Unit test for StringUtil
  */
 public class StringUtilTest extends TestCase
 {
-    /** Logger **/
+    /** Logger */
     private static Logger logger_ = 
         Logger.getLogger(StringUtilTest.class);
 
@@ -35,9 +35,9 @@ public class StringUtilTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * StringUtilTest constructor comment.
+     * StringUtilTest constructor
      * 
-     * @param name java.lang.String
+     * @param  name  Test name
      */
     public StringUtilTest(String name)
     {
@@ -88,6 +88,31 @@ public class StringUtilTest extends TestCase
     }
 
     /**
+     * Tests right(int, width)
+     */
+    public void testRightForInt()
+    {
+        logger_.info("Running testRightForInt...");
+        
+        assertEquals("  345", StringUtil.right(345, 5));
+        assertEquals("345", StringUtil.right(345, 3));
+        assertEquals("345", StringUtil.right(345, 2));        
+    }
+
+    /**
+     * Tests right(String, width)
+     */
+    public void testRightForString()
+    {
+        logger_.info("Running testRightForString...");
+        
+        assertEquals("  345", StringUtil.right("345", 5));
+        assertEquals("345", StringUtil.right("345", 3));
+        assertEquals("345", StringUtil.right("345", 2));        
+    }
+
+
+    /**
      * Tests left() for proper truncation behavior
      */
     public void testLeftForTruncation()
@@ -124,6 +149,18 @@ public class StringUtilTest extends TestCase
         {
             fail( "ERROR LEFT 4" );
         }
+    }
+
+    /**
+     * Tests left(int, width)
+     */
+    public void testLeftForInt()
+    {
+        logger_.info("Running testLeftForInt...");
+        
+        assertEquals("345  ", StringUtil.left(345, 5));
+        assertEquals("345", StringUtil.left(345, 3));
+        assertEquals("345", StringUtil.left(345, 2));        
     }
 
     /**
@@ -370,5 +407,57 @@ public class StringUtilTest extends TestCase
         
         String s = "aaaaaa........";
         assertEquals("trim incorrect", "aaaaaa", StringUtil.trim(s, '.'));
+    }
+    
+    /**
+     * Tests wrap()
+     */
+    public void testWrap()
+    {
+        logger_.info("Running testWrap...");
+        
+        String s = "0123456789";
+        
+        logger_.info("\n" + StringUtil.wrap(s));
+        logger_.info("\n" + StringUtil.wrap(s, 5));
+    }
+
+    /**
+     * Tests replace() for zero replacements
+     */
+    public void testReplaceNone()
+    {
+        logger_.info("Running testReplaceNone...");
+        
+        String a = "howdy";
+        String b = StringUtil.replace(a, "whatever", "blah");
+        
+        assertEquals(a, b);
+    }
+    
+    /**
+     * Tests replace() for a single replacement
+     */
+    public void testReplaceOne()
+    {
+        logger_.info("Running testReplaceOne...");
+        
+        String a = "howdy";
+        String b = StringUtil.replace(a, "howdy", "mister");
+        
+        assertEquals("mister", b);
+    }
+    
+    /**
+     * Tests replace() with max number of replacements
+     */
+    public void testReplaceMax()
+    {
+        logger_.info("Running testReplaceMax...");
+        
+        String a = "me me me";
+        String b = StringUtil.replace(a, "me", "ho", 2);
+        
+        assertEquals("ho ho me", b);
     }
 }
