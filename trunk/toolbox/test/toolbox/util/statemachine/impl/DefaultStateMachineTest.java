@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 
 import toolbox.util.statemachine.State;
 import toolbox.util.statemachine.StateMachine;
+import toolbox.util.statemachine.StateMachineFactory;
 import toolbox.util.statemachine.StateMachineListener;
 import toolbox.util.statemachine.Transition;
 
@@ -48,6 +49,7 @@ public class DefaultStateMachineTest extends TestCase
         machine.addState(state1);
         machine.addTransition(tran1, state1, state1);
         machine.setBeginState(state1);
+        machine.reset();
         machine.transition(tran1);
         
         assertEquals(state1, machine.getState());
@@ -77,6 +79,7 @@ public class DefaultStateMachineTest extends TestCase
         machine.addTransition(tba, sb, sa);
         
         machine.setBeginState(sa);
+        machine.reset();
 
         // sa -----tab-----> sb
         machine.transition(tab);
@@ -143,6 +146,7 @@ public class DefaultStateMachineTest extends TestCase
         machine.addTransition(tba, sb, sa);
         
         machine.setBeginState(sa);
+        machine.reset();
         
         int iterations = 10;
         int expectedTicks = iterations * 2;
@@ -206,5 +210,87 @@ public class DefaultStateMachineTest extends TestCase
         {
             logger_.debug("SUCCESS --> " + iae.getMessage() + " <--- SUCCESS");
         }
+    }
+
+    
+    /**
+     * Tests for failure when trying to create a duplicate transition between
+     * two states.
+     */
+    public void testFailureDuplicateTransition()
+    {
+        logger_.info("Running testFailureDuplicateTransition...");
+
+        StateMachine machine = new DefaultStateMachine("machine6");
+        State state1 = StateMachineFactory.createState("state1");
+        State state2 = StateMachineFactory.createState("state2");
+        Transition tran = StateMachineFactory.createTransition("tran1");
+        
+        machine.addState(state1);
+        machine.addState(state2);
+        machine.addTransition(tran, state1, state2);
+        
+        try
+        {
+            machine.addTransition(tran, state1, state2);
+            fail("Duplicate tuple(tran, state1, state2) should fail.");
+        }
+        catch (IllegalArgumentException iae)
+        {
+            logger_.debug("SUCCESS --> " + iae.getMessage() + " <--- SUCCESS");
+        }
+    }
+    
+    
+    /**
+     * Tests for multiple unique transitions between two states.
+     */
+    public void testMultipleTransitions()
+    {
+        logger_.info("Running testMultipleTransitions..."); 
+
+        StateMachine machine = new DefaultStateMachine("machine7");
+        State state1 = StateMachineFactory.createState("state1");
+        State state2 = StateMachineFactory.createState("state2");
+        Transition tran1 = StateMachineFactory.createTransition("tran1");
+        Transition tran2 = StateMachineFactory.createTransition("tran2");
+        
+        machine.addState(state1);
+        machine.addState(state2);
+        machine.addTransition(tran1, state1, state2);
+        machine.addTransition(tran2, state1, state2);
+        machine.setBeginState(state1);
+        machine.reset();
+        
+        machine.transition(tran1);
+        machine.reset();
+        machine.transition(tran2);
+        
+        assertEquals(state2, machine.getState());
+        assertEquals(tran2, machine.getLastTransition());
+    }
+    
+    
+    /**
+     * Tests canTransition()
+     */
+    public void testCanTransition()
+    {
+        logger_.info("Running testCanTransition..."); 
+
+        StateMachine machine = new DefaultStateMachine("machine8");
+        State state1 = StateMachineFactory.createState("state1");
+        State state2 = StateMachineFactory.createState("state2");
+        Transition tran1 = StateMachineFactory.createTransition("tran1");
+        
+        machine.addState(state1);
+        machine.addState(state2);
+        machine.addTransition(tran1, state1, state2);
+        machine.setBeginState(state1);
+        machine.reset();
+
+        assertTrue(machine.canTransition(tran1));
+        machine.transition(tran1);
+        assertFalse(machine.canTransition(tran1));
     }
 }
