@@ -6,16 +6,27 @@ import java.util.Properties;
 import javax.swing.JMenuBar;
 
 /**
- * GUI component plugin interface for the PluginWorkspace
+ * IPlugin defines the interface for any plugins that can hosted by the 
+ * PluginWorkspace.
+ * <p>
+ * Plugin writing guidelines:
+ * <ul>
+ * <li>Make sure your plugins default constructor does absolutely nothing; 
+ *     Instead, move that functionality to the init() method. This is 
+ *     necessary so that plugins can be found and identified via 
+ *     Class.forname().newInstance() but not necessary loaded into the 
+ *     host environment.
+ * </ul>
  * 
  * @see PluginWorkspace
- * 
- * <pre>
- * TODO: Add getDescription()
- * </pre>
  */
 public interface IPlugin
 {
+    /*
+     * TODO: Add getDescription()
+     * TODO: Remove getMenuBar()
+     */
+    
     /**
      * Friendly name of the plugin used for identification in workspace.
      * 
