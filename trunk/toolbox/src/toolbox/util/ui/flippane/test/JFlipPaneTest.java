@@ -25,8 +25,7 @@ import toolbox.util.ui.flippane.JFlipPane;
  */
 public class JFlipPaneTest extends UITestCase
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(JFlipPaneTest.class);
+    private static final Logger logger_ = Logger.getLogger(JFlipPaneTest.class);
 
     //--------------------------------------------------------------------------
     // Main
@@ -35,8 +34,8 @@ public class JFlipPaneTest extends UITestCase
     /**
      * Entry point.
      * 
-     * @param args None recognized
-     * @throws Exception on error
+     * @param args None recognized.
+     * @throws Exception on error.
      */    
     public static void main(String[] args) throws Exception
     {
