@@ -213,6 +213,15 @@
         </table>
       </action>
 
+      <action type="Update">
+        <table>
+          <tr>
+            <td width="20%">JTailPlugin</td>
+            <td>Changed filters to work on a StringBuffer instead of a String to streamline chained filters</td>
+          </tr>
+        </table>
+      </action>
+      
     </release>
 
     
