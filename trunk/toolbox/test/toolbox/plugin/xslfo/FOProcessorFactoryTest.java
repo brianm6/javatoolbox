@@ -36,12 +36,12 @@ public class FOProcessorFactoryTest extends TestCase
      *
      * @throws Exception on error.
      */
-    public void testCreateProcessorFOP() throws Exception
+    public void testCreateFOP() throws Exception
     {
-        logger_.info("Running testCreateProcessorFOP...");
+        logger_.info("Running testCreateFOP...");
 
         FOProcessor fop =
-            FOProcessorFactory.createProcessor(
+            FOProcessorFactory.create(
                 FOProcessorFactory.FO_IMPL_APACHE);
 
         assertNotNull(fop);
@@ -53,12 +53,12 @@ public class FOProcessorFactoryTest extends TestCase
      *
      * @throws Exception on error.
      */
-    public void testCreateProcessorXEP() throws Exception
+    public void testCreateXEP() throws Exception
     {
-        logger_.info("Running testCreateProcessorXEP...");
+        logger_.info("Running testCreateXEP...");
 
         FOProcessor fop =
-            FOProcessorFactory.createProcessor(
+            FOProcessorFactory.create(
                 FOProcessorFactory.FO_IMPL_RENDERX);
 
         assertNotNull(fop);
@@ -70,13 +70,13 @@ public class FOProcessorFactoryTest extends TestCase
      *
      * @throws Exception on error.
      */
-    public void testCreateProcessorBogus() throws Exception
+    public void testCreateBogus() throws Exception
     {
-        logger_.info("Running testCreateProcessorBogus...");
+        logger_.info("Running testCreateBogus...");
 
         try
         {
-            FOProcessorFactory.createProcessor("FO_IMPL_BOGUS");
+            FOProcessorFactory.create("FO_IMPL_BOGUS");
             fail("Exception should have thrown for unknown FO impl");
         }
         catch (IllegalArgumentException iae)

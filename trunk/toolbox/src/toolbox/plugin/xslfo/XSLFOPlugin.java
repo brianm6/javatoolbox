@@ -285,7 +285,7 @@ public class XSLFOPlugin extends AbstractPlugin
         if (fopProcessor_ == null)
         {
             fopProcessor_ = 
-                FOProcessorFactory.createProcessor(
+                FOProcessorFactory.create(
                     FOProcessorFactory.FO_IMPL_APACHE);
               
             fopProcessor_.initialize(new Properties());
@@ -305,7 +305,7 @@ public class XSLFOPlugin extends AbstractPlugin
         if (xepProcessor_ == null)
         {
             xepProcessor_ = 
-                FOProcessorFactory.createProcessor(
+                FOProcessorFactory.create(
                     FOProcessorFactory.FO_IMPL_RENDERX);
               
             xepProcessor_.initialize(new Properties());

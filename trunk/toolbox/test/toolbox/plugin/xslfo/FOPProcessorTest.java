@@ -108,7 +108,7 @@ public class FOPProcessorTest extends TestCase
         logger_.info("Rendering...");
          
         FOProcessor fop = 
-            FOProcessorFactory.createProcessor(
+            FOProcessorFactory.create(
                 FOProcessorFactory.FO_IMPL_APACHE);
                 
         fop.initialize(MapUtils.EMPTY_MAP);
@@ -165,7 +165,7 @@ public class FOPProcessorTest extends TestCase
                 logger_.info("Request " + cnt_ + " processing...");
                      
                 FOProcessor fop = 
-                    FOProcessorFactory.createProcessor(
+                    FOProcessorFactory.create(
                         FOProcessorFactory.FO_IMPL_APACHE);
                             
                 fop.initialize(MapUtils.EMPTY_MAP);

@@ -40,7 +40,7 @@ public final class FOProcessorFactory
      * @param foImpl Implementation to create. See FO_* constants.
      * @return FOProcessor
      */
-    public static FOProcessor createProcessor(String foImpl)
+    public static FOProcessor create(String foImpl)
     {
         FOProcessor processor = null;
         
