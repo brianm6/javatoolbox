@@ -9,7 +9,14 @@ import toolbox.util.thread.strategy.AbstractDispatcherStrategy;
  */
 public abstract class AbstractDispatcher
 {
+    /**
+     * Flag for the current run state of the dispatcher.
+     */
     private boolean running_;
+    
+    /**
+     * Dispatching strategy.
+     */
     private AbstractDispatcherStrategy strategy_;
 
     //--------------------------------------------------------------------------
@@ -19,8 +26,8 @@ public abstract class AbstractDispatcher
     /**
      * Constructs a new request publisher using the specified strategy.
      *
-     * @param  strategy  Strategy that encapsualtes request delivery and 
-     *                   processing.
+     * @param strategy Strategy that encapsualtes request delivery and 
+     *        processing.
      */
     public AbstractDispatcher(AbstractDispatcherStrategy strategy)
     {
@@ -35,7 +42,7 @@ public abstract class AbstractDispatcher
     /**
      * Returns the associated strategy.
      *
-     * @return  Associated strategy.
+     * @return Associated strategy.
      */
     public AbstractDispatcherStrategy strategy()
     {
@@ -46,8 +53,8 @@ public abstract class AbstractDispatcher
     /**
      * Passes the request to the associated strategy for processing.
      *
-     * @param   request  Request to publish.
-     * @return  ReturnValue encapsualting the request result.
+     * @param request Request to publish.
+     * @return ReturnValue encapsualting the request result.
      */
     public ReturnValue dispatch(IThreadable request)
     {
@@ -62,8 +69,8 @@ public abstract class AbstractDispatcher
      * Passes the request to the associated strategy for processing and waits 
      * for result.
      *
-     * @param   request  Request to publish.
-     * @return  Request result.
+     * @param request Request to publish.
+     * @return Request result.
      */
     public Object dispatchAndWait(IThreadable request)
     {

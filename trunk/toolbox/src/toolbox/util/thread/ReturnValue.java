@@ -48,7 +48,7 @@ public final class ReturnValue
     /**
      * Constructs a new return value with value. 
      *
-     * @param  value  Return value of the request.
+     * @param value Return value of the request.
      */
     public ReturnValue(Object value)
     {
@@ -61,8 +61,8 @@ public final class ReturnValue
     /**
      * Constructs a new return value with the listneer. 
      *
-     * @param  request   Corresponding request.
-     * @param  listener  Listener to notify when done.
+     * @param request Corresponding request.
+     * @param listener Listener to notify when done.
      */
     public ReturnValue(IThreadable request, Listener listener)
     {
@@ -79,7 +79,7 @@ public final class ReturnValue
     /**
      * Returns true if the result value is available for reading.
      *
-     * @return  True if the result value is available for reading.
+     * @return True if the result value is available for reading.
      */
     public boolean isAvailable()
     {
@@ -92,7 +92,7 @@ public final class ReturnValue
     /**
      * Returns the return value, blocking until it is available.
      *
-     * @return  Returns the return value, blocking until it is available.
+     * @return Returns the return value, blocking until it is available.
      */
     public Object getValue()
     {
@@ -129,8 +129,8 @@ public final class ReturnValue
     /**
      * Assigns the return value.  This operation can only be called once.
      *
-     * @param   value  Return value for the request.
-     * @throws  ValueAlreadyAssignedException if value was already assigned.
+     * @param value Return value for the request.
+     * @throws ValueAlreadyAssignedException if value was already assigned.
      */
     public void setValue(Object value) throws ValueAlreadyAssignedException
     {
@@ -160,7 +160,7 @@ public final class ReturnValue
     /**
      * Gets the current state of the corresponding request.
      *
-     * @return  Current state of the corresponding request.
+     * @return Current state of the corresponding request.
      */
     int getState()
     {
@@ -179,7 +179,7 @@ public final class ReturnValue
         /**
          * Signals reception of request.
          *
-         * @param  request  Pending request.
+         * @param request Pending request.
          */
         void pending(IThreadable request);
 
@@ -187,7 +187,7 @@ public final class ReturnValue
         /** 
          * Signals initiation of request.
          *
-         * @param  request  Initiated request.
+         * @param request Initiated request.
          */
         void started(IThreadable request);
 
@@ -195,8 +195,8 @@ public final class ReturnValue
         /**
          * Signals completion of request.
          *
-         * @param  request  Finished request.
-         * @param  result   Request result.
+         * @param request Finished request.
+         * @param result Request result.
          */
         void finished(IThreadable request, Object result);
     }

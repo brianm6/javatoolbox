@@ -26,8 +26,8 @@ public class ThreadContainer extends ThreadGroup
     /**
      * Creates a new thread encapsualting the behavior in runnable.
      *
-     * @param   runnable  Runnable to run in the thread.
-     * @return  Newly created thread
+     * @param runnable Runnable to run in the thread.
+     * @return Newly created thread
      */
     public Thread createThread(Runnable runnable)
     {
