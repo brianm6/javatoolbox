@@ -4,9 +4,13 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Properties;
 
 import javax.swing.AbstractAction;
@@ -18,20 +22,33 @@ import javax.swing.JSplitPane;
 
 import com.adobe.acrobat.Viewer;
 
+import org.apache.avalon.framework.logger.ConsoleLogger;
+import org.apache.fop.apps.Driver;
 import org.apache.fop.apps.Fop;
+import org.apache.fop.messaging.MessageHandler;
 import org.apache.log4j.Logger;
+import org.xml.sax.InputSource;
 
 import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.XMLUtil;
+import toolbox.util.io.StringInputStream;
 import toolbox.util.ui.JFileExplorer;
 import toolbox.util.ui.JFileExplorerAdapter;
 import toolbox.util.ui.JFlipPane;
 import toolbox.util.ui.JSmartTextArea;
 
 /**
- * Simple SQL query panel
+ * XML Plugin 
+ * 
+ * <pre>
+ * 
+ * - formats XML
+ * - transforms XSL-FO to PDF and views with embedded PDF viewer
+ * - transforms XSL-FO and renders output directly to a GUI
+ * 
+ * </pre>
  */ 
 public class XMLPlugin extends JPanel implements IPlugin
 {
@@ -44,12 +61,24 @@ public class XMLPlugin extends JPanel implements IPlugin
      */
     private JFlipPane flipPane_;    
     
+    /**
+     * Shared status bar with plugin host
+     */
     private IStatusBar statusBar_;
     
+    /**
+     * XML text work area
+     */
     private JSmartTextArea xmlArea_;
     
+    /**
+     * XML output pane
+     */
     private JPanel outputPanel_;
     
+    /**
+     * Embedded PDF viewer component
+     */
     private Viewer viewer_;    
 
     //--------------------------------------------------------------------------
@@ -57,7 +86,7 @@ public class XMLPlugin extends JPanel implements IPlugin
     //--------------------------------------------------------------------------
     
     /**
-     * Constructor for XMLPlugin.
+     * Default Constructor
      */
     public XMLPlugin()
     {
@@ -208,14 +237,12 @@ public class XMLPlugin extends JPanel implements IPlugin
         }
     }
     
-    
     //--------------------------------------------------------------------------
     //  Actions
     //--------------------------------------------------------------------------
     
-    
     /**
-     * Preferences action
+     * Formats the XML with correct indentation and spacing
      */
     private class FormatAction extends AbstractAction 
     {
@@ -224,16 +251,11 @@ public class XMLPlugin extends JPanel implements IPlugin
             super("Format");
         }
     
-        /**
-         * Pops up the Font selection dialog
-         */
         public void actionPerformed(ActionEvent e)
         {
             try
             {
-                String xml = xmlArea_.getText();
-                String formatted = XMLUtil.format(xml);
-                xmlArea_.setText(formatted);
+                xmlArea_.setText(XMLUtil.format(xmlArea_.getText()));
             }
             catch (Exception ee)
             {
@@ -257,8 +279,9 @@ public class XMLPlugin extends JPanel implements IPlugin
             try
             {
                 String xml = xmlArea_.getText();
-                FileUtil.setFileContents("tmp_fop.xml", xml, false);
-                Fop.main(new String[] { "tmp_fop.xml", "-awt"});
+                String foFile  = FileUtil.getTempFilename() + ".xml";
+                FileUtil.setFileContents(foFile, xml, false);
+                Fop.main(new String[] { foFile, "-awt"});
             }
             catch (FileNotFoundException fnfe)
             {
@@ -276,8 +299,6 @@ public class XMLPlugin extends JPanel implements IPlugin
      */
     private class FOPPDFAction extends AbstractAction
     {
-
-
         public FOPPDFAction()
         {
             super("FOP PDF");
@@ -287,23 +308,49 @@ public class XMLPlugin extends JPanel implements IPlugin
         {
             try
             {
-                String xml = xmlArea_.getText();
-                FileUtil.setFileContents("tmp_fop.xml", xml, false);
-                Fop.main(new String[] { "tmp_fop.xml", "tmp_fop.pdf"});
+                Driver driver = new Driver();
+
+                org.apache.avalon.framework.logger.Logger logger = 
+                    new ConsoleLogger(ConsoleLogger.LEVEL_INFO);
+                    
+                driver.setLogger(logger);
+                MessageHandler.setScreenLogger(logger);
+                driver.setRenderer(Driver.RENDER_PDF);
                 
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                
+                try
+                {
+                    driver.setOutputStream(out);
+
+                    InputStream in = new StringInputStream(xmlArea_.getText());
+                    
+                    try
+                    {
+                        driver.setInputSource(new InputSource(in));
+                        driver.run();
+                    }
+                    finally
+                    {
+                        in.close();
+                    }
+                }
+                finally
+                {
+                    out.close();
+                }
+               
                 if (viewer_ == null)
                 {
                     viewer_ = new Viewer();
                     outputPanel_.add(BorderLayout.CENTER, viewer_);
                     viewer_.activate();
-                    
                 }
                 
-                viewer_.setDocumentInputStream(new FileInputStream("tmp_fop.pdf"));
-                
-                //Runtime.getRuntime().exec(
-                //    "C:\\Program Files\\Adobe\\Acrobat 4.0\\Reader\\AcroRd32.exe tmp_fop.pdf");
-
+                viewer_.setDocumentInputStream(
+                    new ByteArrayInputStream(out.toByteArray()));
+                    
+                // TODO: max width the doc
             }
             catch (Exception ioe)
             {
