@@ -182,4 +182,24 @@ public class Main
         JarProcessor proc = new MainProcessor(patterns, verbose);
         StandaloneJarProcessor.run(new File(from), new File(to), proc);
     }
+    
+    //==========================================================================
+    //
+    // ADDED TO SUPPORT OUTPUT TO A WRITER
+    
+    public void find(String from, String to, Writer output) throws IOException {
+        
+        if (from == null || to == null)
+            throw new IllegalArgumentException("arguments cannot be null");
+        
+        if (patterns != null)
+            throw new IllegalArgumentException("rules cannot be used with find");
+        
+        PrintWriter w = new PrintWriter(output);
+        DepHandler handler = new TextDepHandler(w, level);
+        new DepFind().run(from, to, handler);
+        w.flush();
+    }
+    
+    //==========================================================================
 }
