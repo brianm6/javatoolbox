@@ -5,6 +5,7 @@ import javax.swing.JComponent;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.visualization.GraphDraw;
 import edu.uci.ics.jung.visualization.Layout;
+import edu.uci.ics.jung.visualization.SpringLayout;
 import edu.uci.ics.jung.visualization.graphdraw.SettableRenderer;
 import scratch.scott.AestheticSpringVisualizer;
 
@@ -48,11 +49,13 @@ public class JungGraphView implements GraphView
         //Layout layout = new ISOMLayout(graph_);
         //Layout layout = new KKLayout(graph_);
         //Layout layout = new KKLayoutInt(graph_);
-        Layout layout = new AestheticSpringVisualizer(g);
+        //Layout layout = new AestheticSpringVisualizer(g);
+        
+        SpringLayout layout = new SpringLayout(g);
+        layout.setRepulsionRange(200);
         
         //layout.initialize(new Dimension(400,400));
         delegate_.setGraphLayout(layout);
-        
         
         //delegate_.setVertexBGColor(Color.gray);
         //delegate_.setVertexForegroundColor(Color.white);
@@ -77,6 +80,7 @@ public class JungGraphView implements GraphView
         //delegate_.setBackground(Colors.light_steel_blue);
         //sr.setLightDrawing(false);
         renderer.setEdgeColor(Colors.black);
+        
         
     }
 
