@@ -75,6 +75,14 @@ public class JTcpTunnel extends JFrame
     //--------------------------------------------------------------------------
     
     /**
+     * Default constructor
+     */
+    public JTcpTunnel()
+    {
+        buildView();
+    }
+    
+    /**
      * Creates a JTCPTunnel with the given parameters
      * 
      * @param listenPort  Port to listen on
