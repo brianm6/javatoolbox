@@ -253,6 +253,16 @@
         </table>
       </action>
 
+      <action type="Update">
+        <table>
+          <tr>
+            <td width="20%">Util</td>
+            <td>Refactored listeners and actions in JFileExplorer.java to top 
+                level classes their respective subpackages</td>
+          </tr>
+        </table>
+      </action>
+
     </release>
     
     <release version="2.0" date="August 2004">
