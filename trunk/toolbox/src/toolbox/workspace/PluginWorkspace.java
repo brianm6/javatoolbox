@@ -43,6 +43,9 @@ import toolbox.util.SwingUtil;
  * Generic Frame that accepts pluggable GUI components that are displayed on
  * a tab panel. All pluggable GUI components must implements the IPlugin 
  * interface as a base set of functionality to be hosted by PluginWorkspace.
+ * 
+ * TODO: Plugin to tail System.out and System.err
+ * TODO: Plugin to configure log4j
  */
 public class PluginWorkspace extends JFrame implements IStatusBar
 {
