@@ -45,6 +45,8 @@
  * TODO: Integrate automatic build number generation into the build process. 
  * TODO: Add a way to change the lookand feel font globally
  * TODO: Upate code snippets to use <pre class="snippet">
+ * TODO: http://pdfdoclet.sourceforge.net/examples.html
+ * TODO: http://www.infonode.net/index.html?idwdownload
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
