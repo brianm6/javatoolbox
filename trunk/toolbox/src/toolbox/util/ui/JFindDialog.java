@@ -3,6 +3,7 @@ package toolbox.util.ui;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.FlowLayout;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
@@ -11,7 +12,6 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.text.JTextComponent;
 
 import org.apache.log4j.Logger;
 
@@ -21,44 +21,48 @@ import toolbox.util.SwingUtil;
 /**
  * Simple text search find dialog that is tied to a TextComponent
  */
-class JFindDialog extends JDialog
+public class JFindDialog extends JDialog
 {
     private static final Logger logger_ =
         Logger.getLogger(JFindDialog.class);
-        
-    private JTextField     findField_;
-    private JTextComponent textComp_;
-    private JStatusPane    status_;
+   
+    /** Textfield for the user to change/updatee the search string */     
+    private JTextField findField_;
+    
+    /** Search client */
+    private SearchInitiator initiator_;
+    
+    /** Used to display informative information regarding the search */
+    private JStatusPane status_;
+
+    /** Most recently used search string */
+    private String lastSearched_;
     
     /** 
      * Index of string when last found, used to determine if conducting a new 
      * search of continuing an existing search 
      */
     private int lastFound_;
-    
-    /** 
-     * Last used search string 
-     */
-    private String lastSearched_;
 
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a find dialog attached to the given text component
+     * Creates a find dialog for the given search initiator
      * 
-     * @param textComponent  Contains text to search
+     * @param initiator  Initiator of the searchs
      */
-    public JFindDialog(JTextComponent textComponent)
+    public JFindDialog(SearchInitiator initiator)
     {
-        super(SwingUtil.getFrameAncestor(textComponent), "Find", false);
-        textComp_ = textComponent;
+        super(initiator.getFrame(), "Find", false);
+        
+        initiator_ = initiator;
+        
         buildView();
         pack();
-        
-        SwingUtil.centerWindow(
-            SwingUtil.getFrameAncestor(textComponent), this);
+       
+        SwingUtil.centerWindow(initiator.getFrame(), this);
         
         lastFound_ = 0;
         lastSearched_ = "";
@@ -112,7 +116,7 @@ class JFindDialog extends JDialog
             
             if (!StringUtil.isNullOrEmpty(searchFor))
             {
-                String text = textComp_.getText();
+                String text = initiator_.getText();
                 
                 int start = 0;
                 
@@ -125,7 +129,7 @@ class JFindDialog extends JDialog
                 
                 if (found >= 0)
                 {
-                    textComp_.select(found, found + searchFor.length());
+                    initiator_.selectText(found, found + searchFor.length());
                     lastFound_ = found;
                     status_.setStatus("Found at position " + found);
                 }
@@ -142,7 +146,7 @@ class JFindDialog extends JDialog
     }
     
     /**
-     * Disposes of the find dialog
+     * Disposes of the find dialog when dismissed
      */
     class CancelAction extends AbstractAction
     {
@@ -155,5 +159,38 @@ class JFindDialog extends JDialog
         {
             dispose();
         }
+    }
+    
+    //--------------------------------------------------------------------------
+    // Interfaces
+    //--------------------------------------------------------------------------
+
+    /**
+     * Search client must implement this interface
+     */    
+    public interface SearchInitiator
+    {
+        /**
+         * @return Text to search for
+         */
+        public String getSearchString();
+        
+        /**
+         * @return Text to search within
+         */
+        public String getText();
+        
+        /**
+         * Selects the text after it has been found
+         * 
+         * @param start Starting index of selection
+         * @param end   Ending index of selection
+         */
+        public void selectText(int start, int end);
+        
+        /**
+         * @return  Frame that the search initiator is located in.
+         */
+        public Frame getFrame();
     }
 }
