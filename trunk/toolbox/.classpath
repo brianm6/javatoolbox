@@ -57,5 +57,6 @@
 	<classpathentry kind="lib" path="lib/calphahtml.jar"/>
 	<classpathentry kind="lib" path="lib/looks.jar"/>
 	<classpathentry kind="lib" path="lib/hippolf.jar"/>
+	<classpathentry kind="lib" path="lib/webwindow.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>
