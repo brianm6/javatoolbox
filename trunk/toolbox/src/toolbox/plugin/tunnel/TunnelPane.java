@@ -50,7 +50,6 @@ public class JTcpTunnelPane extends JPanel
     private JTextField  remotePortField_;
     
     private TcpTunnel tunnel_;    
-	private Thread server_;    
 
     //--------------------------------------------------------------------------
     //  Constructors
@@ -68,7 +67,7 @@ public class JTcpTunnelPane extends JPanel
      * Creates a JTCPTunnel with the given parameters
      * 
      * @param  listenPort   Port to listen on
-     * @param  remotelHost  Host to tunnel to
+     * @param  remoteHost   Host to tunnel to
      * @param  remotePort   Port to tunnel to
      */
     public JTcpTunnelPane(int listenPort, String remoteHost, int remotePort)
@@ -83,6 +82,38 @@ public class JTcpTunnelPane extends JPanel
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
+
+    /**
+     * Saves connection propreties to a Properties object
+     * 
+     * @param  prefs  Properties to save preferences to
+     */
+    public void savePrefs(Properties prefs)
+    {
+        if (!StringUtil.isNullOrEmpty(listenPortField_.getText()))
+            prefs.setProperty(
+                "tcptunnel.listenport",listenPortField_.getText());
+            
+        if (!StringUtil.isNullOrEmpty(remotePortField_.getText()))    
+            prefs.setProperty(
+                "tcptunnel.remoteport", remotePortField_.getText());
+        
+        if (!StringUtil.isNullOrEmpty(remoteHostField_.getText()))    
+            prefs.setProperty(
+                "tcptunnel.remotehost", remoteHostField_.getText());
+    }
+
+    /**
+     * Applies the preferences
+     * 
+     * @param  prefs  Properties to read the preferences from
+     */
+    public void applyPrefs(Properties prefs)
+    {
+        remotePortField_.setText(prefs.getProperty("tcptunnel.remoteport",""));
+        remoteHostField_.setText(prefs.getProperty("tcptunnel.remotehost",""));
+        listenPortField_.setText(prefs.getProperty("tcptunnel.listenport",""));
+    }
     
     /**
      * @return  Port to listen
@@ -145,12 +176,10 @@ public class JTcpTunnelPane extends JPanel
     {
         setLayout(new BorderLayout());
         
-        //===================== CENTER =========================================
-    
+        // Center
         JPanel outputPane = new JPanel(new BorderLayout());
         
-            //===================== NORTH ======================================
-
+            // North
             JPanel labelPanel = new JPanel(new GridLayout(1,2));
     
             localLabel_ = 
@@ -164,8 +193,7 @@ public class JTcpTunnelPane extends JPanel
     
             outputPane.add(BorderLayout.NORTH, labelPanel);
         
-            //===================== CENTER =====================================
-            
+            // Center
             incomingTextArea_ = new JSmartTextArea(true, false);
             incomingTextArea_.setFont(SwingUtil.getPreferredMonoFont());
             incomingTextArea_.setRows(40);
@@ -186,9 +214,7 @@ public class JTcpTunnelPane extends JPanel
               
         add(BorderLayout.CENTER, outputPane);
 
-        //===================== SOUTH ==========================================
-        
-        // clear and status
+        // South
         JPanel actionPanel = new JPanel(new BorderLayout());
         JPanel buttonPanel = new JPanel();
 
@@ -199,8 +225,7 @@ public class JTcpTunnelPane extends JPanel
         actionPanel.add(BorderLayout.CENTER, buttonPanel);
         add(BorderLayout.SOUTH, actionPanel);
         
-        //===================== WEST ==========================================
-        
+        // West
         JPanel configPanel = new JPanel(new ParagraphLayout());
         
         configPanel.add(new JLabel("Local Tunnel Port"), 
@@ -224,7 +249,7 @@ public class JTcpTunnelPane extends JPanel
         
         add(BorderLayout.WEST, configFlipPane);
         
-        //======================================================================
+        // Done
         
         // Keep divider location in the middle if the window is resized
         addComponentListener(new ComponentAdapter()
@@ -234,38 +259,6 @@ public class JTcpTunnelPane extends JPanel
                 splitter_.setDividerLocation(0.5f);
             }
         });
-    }
-    
-    /**
-     * Saves connection propreties to a Properties object
-     * 
-     * @param  prefs  Properties to save preferences to
-     */
-    public void savePrefs(Properties prefs)
-    {
-        if (!StringUtil.isNullOrEmpty(listenPortField_.getText()))
-            prefs.setProperty(
-                "tcptunnel.listenport",listenPortField_.getText());
-            
-        if (!StringUtil.isNullOrEmpty(remotePortField_.getText()))    
-            prefs.setProperty(
-                "tcptunnel.remoteport", remotePortField_.getText());
-        
-        if (!StringUtil.isNullOrEmpty(remoteHostField_.getText()))    
-            prefs.setProperty(
-                "tcptunnel.remotehost", remoteHostField_.getText());
-    }
-
-    /**
-     * Applies the preferences
-     * 
-     * @param  prefs  Properties to read the preferences from
-     */
-    public void applyPrefs(Properties prefs)
-    {
-        remotePortField_.setText(prefs.getProperty("tcptunnel.remoteport",""));
-        remoteHostField_.setText(prefs.getProperty("tcptunnel.remotehost",""));
-        listenPortField_.setText(prefs.getProperty("tcptunnel.listenport",""));
     }
     
     //--------------------------------------------------------------------------

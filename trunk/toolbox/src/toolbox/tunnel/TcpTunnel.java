@@ -83,8 +83,8 @@ public class TcpTunnel implements TcpTunnelListener
         String tunnelhost = args[1];
         int tunnelport = Integer.parseInt(args[2]);
 
-        System.out.println("TcpTunnel: ready to rock and roll on port " + 
-            listenport);
+        System.out.println(
+            "TcpTunnel: Ready to service connections on port " + listenport);
 
         TcpTunnel tunnel = new TcpTunnel(listenport, tunnelhost, tunnelport);
         tunnel.addOutgoingStream(System.out);
@@ -198,7 +198,7 @@ public class TcpTunnel implements TcpTunnelListener
                         
                         for (Iterator i = outgoingStreams_.iterator(); 
                             i.hasNext();)
-                                outStreams.addStream((OutputStream)i.next());    
+                                outStreams.addStream((OutputStream)i.next());
                         
                         MulticastOutputStream inStreams = 
                             new MulticastOutputStream();
@@ -270,7 +270,7 @@ public class TcpTunnel implements TcpTunnelListener
     }
     
     /**
-     * Fires notifcation that the status of the tunnel has changed to gtall 
+     * Fires notifcation that the status of the tunnel has changed to all
      * registered listeners.
      * 
      * @param  status  New status
@@ -280,20 +280,31 @@ public class TcpTunnel implements TcpTunnelListener
         for (Iterator i = listeners_.iterator(); i.hasNext(); )
             ((TcpTunnelListener) i.next()).statusChanged(this, status);    
     }
-    
+
+    /**
+     * Fires notifcation that the number of bytes read has changed to all
+     * registered listeners.
+     * 
+     * @param  connRead  Bytes read during the life of the last connection
+     */
     protected void fireBytesRead(int connRead)
     {
         for (Iterator i=listeners_.iterator(); i.hasNext(); )
             ((TcpTunnelListener) i.next()).bytesRead(this, connRead, inTotal_);
     }
 
+    /**
+     * Fires notifcation that the number of bytes written has changed to all
+     * registered listeners.
+     * 
+     * @param  connWritten  Bytes written during the life of the last connection
+     */
     protected void fireBytesWritten(int connWritten)
     {
         for (Iterator i=listeners_.iterator(); i.hasNext(); )
             ((TcpTunnelListener) i.next()).bytesWritten(
                 this, connWritten, outTotal_);
     }
-
     
     //--------------------------------------------------------------------------
     // Interface TcpTunnelListener
@@ -334,13 +345,11 @@ public class TcpTunnel implements TcpTunnelListener
     
     class OutputStreamListener implements EventOutputStream.Listener
     {
-        public void byteWritten(EventOutputStream stream, int b)
-        { 
-        }
-        
         /**
          * Tally up counts and generate bytesRead/Written events when
          * stream is closed
+         * 
+         * @param  stream  Stream that was closed
          */
         public void streamClosed(EventOutputStream stream)
         {
@@ -362,6 +371,10 @@ public class TcpTunnel implements TcpTunnelListener
                 throw new IllegalArgumentException(
                     "Invalid stream name:" + name);
             } 
+        }
+
+        public void byteWritten(EventOutputStream stream, int b)
+        { 
         }
         
         public void streamFlushed(EventOutputStream stream)
