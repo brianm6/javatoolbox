@@ -7,7 +7,7 @@ import java.util.List;
  * Use to gather up search results. Create instance and
  * add as listener FindClass
  */
-public class FindClassCollector implements IFindClassListener
+public class FindClassCollector extends FindClassAdapter
 {
     /** Storage for search results **/
     private List results_ = new ArrayList();
@@ -31,15 +31,7 @@ public class FindClassCollector implements IFindClassListener
     {
         results_.add(result);            
     }
-
-    /**
-     * Implemenation of IFindClassListener
-     *
-     * @param  target  Target being searched
-     */
-    public void searchingTarget(String target)
-    {
-    }    
+    
     
     /**
      * Returns array of find class results 
@@ -51,6 +43,7 @@ public class FindClassCollector implements IFindClassListener
         return (FindClassResult[]) 
             results_.toArray(new FindClassResult[results_.size()]);
     }
+    
     
     /**
      * Clears the contents of the colletor
