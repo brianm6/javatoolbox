@@ -142,13 +142,18 @@ public class Tail
                     if (line != null)
                     {
                         fireNextLine(line + "\n");
-                        ThreadUtil.sleep(1);
                     }
-                    else
+                    else    
                     {
-                        atEnd = true;
-                        fireTailEnded();
+                        //Thread.currentThread().yield();
+                        ThreadUtil.sleep(1000);
                     }
+                    
+//                    else
+//                    {
+//                        atEnd = true;
+//                        fireTailEnded();
+//                    }
                 }
             }
             catch (Exception e)
