@@ -22,6 +22,7 @@ import com.jgoodies.forms.layout.FormLayout;
 import nu.xom.Attribute;
 import nu.xom.Element;
 import nu.xom.Elements;
+import nu.xom.Node;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -321,7 +322,14 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
                 Elements dbProfiles = dbConfig.getChildElements(NODE_DBPROFILE);
                                 
                 for (int i = 0, n = dbProfiles.size(); i < n; i++)
-                    addProfile(new DBProfile(dbProfiles.get(i).toXML()));
+                {
+                    DBProfile profile = new DBProfile();
+                    Element wrapper = new Element("wrapper");
+                    dbProfiles.get(i).detach();
+                    wrapper.appendChild(dbProfiles.get(i));
+                    profile.applyPrefs(wrapper);
+                    addProfile(profile);
+                }
                     
                 profileCombo_.setSelectedIndex(
                     XOMUtil.getIntegerAttribute(dbConfig, ATTR_SELECTED, 0));
@@ -338,17 +346,25 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs)
+    public void savePrefs(Element prefs) throws Exception
     {
         Element dbConfig = new Element(NODE_DBCONFIG);
-        
             
         for (int i = 0, n = profileCombo_.getItemCount(); i < n; i++)
         {
-            
             DBProfile profile = (DBProfile) profileCombo_.getItemAt(i);
             if (!StringUtils.isBlank(profile.getProfileName()))
-                dbConfig.appendChild(profile.toDOM());
+            {
+                Element wrapper = new Element("wrapper");
+                profile.savePrefs(wrapper);
+                
+                if (wrapper.getChildCount() == 1)
+                {
+                    Node dbc = wrapper.getChild(0);
+                    dbc.detach();
+                    dbConfig.appendChild(dbc);
+                }
+            }
         }
 
         if (dbConfig.getChildCount() > 0)
