@@ -18,42 +18,40 @@ import toolbox.util.FileUtil;
 import toolbox.workspace.action.ExitAction;
 
 /**
- * Unit test for PluginWorkspace.
- * 
- * @see toolbox.workspace.PluginWorkspace
+ * Unit test for {@link toolbox.workspace.PluginWorkspace}.
  */
 public class PluginWorkspaceTest extends UITestCase
 {
-    private static final Logger logger_ = 
+    private static final Logger logger_ =
         Logger.getLogger(PluginWorkspaceTest.class);
-    
+
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
-    
+
     private JFrameOperator window_;
     private PluginWorkspace workspace_;
 
     //--------------------------------------------------------------------------
     // Main
     //--------------------------------------------------------------------------
-            
+
     /**
      * Entry point.
-     * 
+     *
      * @param args None recognized.
      * @throws Exception on LAF error.
      */
     public static void main(String[] args) throws Exception
     {
         TestRunner.run(PluginWorkspaceTest.class);
-        //System.exit(0); 
+        //System.exit(0);
     }
 
     //--------------------------------------------------------------------------
     // Overrides TestCase
     //--------------------------------------------------------------------------
-    
+
     /**
      * @see junit.framework.TestCase#setUp()
      */
@@ -63,13 +61,13 @@ public class PluginWorkspaceTest extends UITestCase
             JemmyProperties.ROBOT_MODEL_MASK);
 
         JemmyProperties.setCurrentOutput(TestOut.getNullOutput());
-        
+
         String prefsFile = FileUtil.createTempFilename() + "-toolbox.xml";
         workspace_ = new PluginWorkspace(prefsFile);
         window_ = new JFrameOperator(workspace_);
     }
-   
-    
+
+
     /**
      * @see junit.framework.TestCase#tearDown()
      */
@@ -78,22 +76,22 @@ public class PluginWorkspaceTest extends UITestCase
         new ExitAction(workspace_).actionPerformed(
             new ActionEvent(this, 10, "exit"));
     }
-    
+
     //--------------------------------------------------------------------------
     // Unit Tests
     //--------------------------------------------------------------------------
-    
+
     public void testPluginWorkspace()
     {
         logger_.info("Running testPluginWorkspace...");
-        
+
         JMenuBarOperator mbo = new JMenuBarOperator(window_);
-        
+
         // Push menu so menu items are accessible
         mbo.pushMenu("Plugins");
-        
+
         JPopupMenuOperator pmo = new JPopupMenuOperator(window_);
-        
+
         for (int i = 0; i < pmo.getComponentCount(); i++)
         {
             mbo.pushMenu("Plugins");

@@ -17,7 +17,7 @@ import org.apache.log4j.Logger;
 import toolbox.junit.testcase.UITestCase;
 
 /**
- * Unit test for TableSorter.
+ * Unit test for {@link toolbox.util.ui.table.TableSorter}.
  */
 public class TableSorterTest extends UITestCase
 {
