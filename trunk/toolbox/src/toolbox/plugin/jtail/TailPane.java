@@ -3,7 +3,11 @@ package toolbox.jtail;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -15,9 +19,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
-import org.apache.regexp.RE;
 import org.apache.regexp.RESyntaxException;
+
 import toolbox.jtail.config.ITailPaneConfig;
+import toolbox.jtail.filter.CutLineFilter;
+import toolbox.jtail.filter.ILineFilter;
+import toolbox.jtail.filter.LineNumberDecorator;
+import toolbox.jtail.filter.RegexLineFilter;
 import toolbox.tail.Tail;
 import toolbox.tail.TailAdapter;
 import toolbox.util.StringUtil;
@@ -41,25 +49,39 @@ public class TailPane extends JPanel
 	private JButton        pauseButton_;
 	private JButton        startButton_;
     private JButton        closeButton_;
+    
     private JCheckBox      autoScrollBox_;
     private JCheckBox      lineNumbersBox_;
-    private JTextField     filterField_;
+    
+    private JTextField     regexField_;
+    private JTextField     cutField_;
 
     private BlockingQueue       queue_;
     private BatchingQueueReader queueReader_;
     private TailQueueListener   queueListener_;
     
-    /** Output for tail **/
+    private List filters_ = new ArrayList();
+    
+    // Decorators and filters 
+    private RegexLineFilter     regexFilter_;
+    private CutLineFilter       cutFilter_;
+    private LineNumberDecorator lineNumberDecorator_;
+    
+    /** 
+     * Output for tail 
+     */
 	private JSmartTextArea tailArea_;
 
-    /** The tailer **/    
+    /** 
+     * The tailer 
+     */    
     private Tail tail_;
 
-    /** Configuration **/
+    /** 
+     * Configuration 
+     */
     private ITailPaneConfig config_;
     
-    /** Dirty filter flag **/
-    private boolean filterDirty_;
     
     //--------------------------------------------------------------------------
     //  Constructors
@@ -69,11 +91,12 @@ public class TailPane extends JPanel
      * Creates a TAilPane with the given configuration
      * 
      * @param   config  TailConfig
-     * @throws  FileNotFoundException
+     * @throws  FileNotFoundException if file not found
      */
     public TailPane(ITailPaneConfig config) throws FileNotFoundException
     {
-        buildView();        
+        buildView();
+        buildFilters();        
         setConfiguration(config);                
         init();
     }
@@ -130,7 +153,7 @@ public class TailPane extends JPanel
 	{
 		tailArea_ = new JSmartTextArea("");
         tailArea_.setFont(SwingUtil.getPreferredMonoFont());
-        tailArea_.setDoubleBuffered(false);
+        //tailArea_.setDoubleBuffered(false);
         
 		clearButton_    = new JButton(new ClearAction());
 		pauseButton_    = new JButton(new PauseUnpauseAction());
@@ -138,7 +161,14 @@ public class TailPane extends JPanel
         closeButton_    = new JButton(new CloseAction());
         autoScrollBox_  = new JCheckBox(new AutoScrollAction());
         lineNumbersBox_ = new JCheckBox(new ShowLineNumbersAction());
-        filterField_    = new JTextField(10);
+        regexField_    = new JTextField(5);
+        cutField_       = new JTextField(5);
+
+        //regexField_.addKeyListener(new RegexKeyListener());
+        //cutField_.addKeyListener(new CutKeyListener());        
+        
+        regexField_.addActionListener(new RegexActionListener());
+        cutField_.addActionListener(new CutActionListener());
         
 		JPanel buttonPanel = new JPanel(new FlowLayout());
 		buttonPanel.add(startButton_);
@@ -148,13 +178,43 @@ public class TailPane extends JPanel
         buttonPanel.add(autoScrollBox_);
         buttonPanel.add(lineNumbersBox_);
         buttonPanel.add(new JLabel("Filter"));
-        buttonPanel.add(filterField_);
+        buttonPanel.add(regexField_);
+        buttonPanel.add(new JLabel("Cut"));
+        buttonPanel.add(cutField_);
 		
 		setLayout(new BorderLayout());
 		add(new JScrollPane(tailArea_), BorderLayout.CENTER);
 		add(buttonPanel, BorderLayout.SOUTH);
 	}
  
+    /**
+     * Sets up appropriate filters based on configuration
+     */
+    protected void buildFilters()
+    {
+        try
+        {
+            // Filter based on regular expression            
+            regexFilter_ = new RegexLineFilter();
+            regexFilter_.setEnabled(false);
+            filters_.add(regexFilter_);
+            
+        }
+        catch (RESyntaxException re)
+        {
+            logger_.error("buildFilters", re);
+        }
+        
+        // Cut filter
+        cutFilter_ = new CutLineFilter();
+        cutFilter_.setEnabled(false);
+        filters_.add(cutFilter_);
+        
+        // Show line numbers
+        lineNumberDecorator_ = new LineNumberDecorator();
+        lineNumberDecorator_.setEnabled(false);
+        filters_.add(lineNumberDecorator_);
+    }
 
     /**
      * Sets the configuration
@@ -167,10 +227,16 @@ public class TailPane extends JPanel
 
         autoScrollBox_.setSelected(config_.isAutoScroll());
         tailArea_.setAutoScroll(config_.isAutoScroll());
-        lineNumbersBox_.setSelected(config_.isShowLineNumbers());
+        
+        boolean lineNumbers = config_.isShowLineNumbers();
+        lineNumbersBox_.setSelected(lineNumbers);
+        lineNumberDecorator_.setEnabled(lineNumbers);
+        
         tailArea_.setFont(config_.getFont());
         tailArea_.setAntiAlias(config.isAntiAlias());
-        setFilter(config_.getFilter());
+        
+        setRegularExpression(config_.getRegularExpression());
+        setCutExpression(config_.getCutExpression());
     }
 
 
@@ -186,7 +252,8 @@ public class TailPane extends JPanel
         config_.setShowLineNumbers(lineNumbersBox_.isSelected());
         config_.setFont(tailArea_.getFont());
         config_.setAntiAlias(tailArea_.isAntiAlias());
-        config_.setFilter(getFilter());
+        config_.setRegularExpression(getRegularExpression());
+        config_.setCutExpression(getCutExpression());
         return config_;
     }    
 
@@ -206,9 +273,9 @@ public class TailPane extends JPanel
     /**
      * @return Filter text
      */
-    protected String getFilter()
+    protected String getRegularExpression()
     {
-        return filterField_.getText().trim();
+        return regexField_.getText().trim();
     }
     
     
@@ -217,10 +284,48 @@ public class TailPane extends JPanel
      * 
      * @param  filter  Filter text as a regular expression
      */
-    protected void setFilter(String filter)
+    protected void setRegularExpression(String filter)
     {
-        filterField_.setText(filter);
+        try
+        {  
+            regexFilter_.setEnabled(true);            
+            regexField_.setText(filter);
+            regexFilter_.setRegularExpression(filter);
+        }
+        catch (RESyntaxException res)
+        {
+            logger_.info("Invalid regular expression: " + filter);
+        }
     }
+
+    /**
+     * @return Cut text
+     */
+    protected String getCutExpression()
+    {
+        return cutField_.getText().trim();
+    }
+    
+    
+    /**
+     * Sets the cut text
+     * 
+     * @param  cit  Cut text. Example: 1-10 cuts columns one through ten.
+     */
+    protected void setCutExpression(String cut)
+    {
+        try
+        {
+            cutFilter_.setCut(cut);
+            cutFilter_.setEnabled(true);        
+            cutField_.setText(cut);            
+        }
+        catch (IllegalArgumentException e)
+        {
+            logger_.info("Invalid cut expression: " + cut);
+        }
+    }
+        
 
     //--------------------------------------------------------------------------
     //  Interfaces
@@ -265,21 +370,10 @@ public class TailPane extends JPanel
      */
     private class TailQueueListener implements IBatchingQueueListener
     {
-        private int     lineNumber_ = 0;
-        private String  oldFilter_ = "";
-        private RE      regExp_;
-                
-                
-        /**
-         * Creates a TailQueueListener
-         * 
-         * @param  queue  Queue to consume messages from
-         */        
-        public TailQueueListener()
-        {
-        }
-
-        
+        //----------------------------------------------------------------------
+        //  IBatchingQueueListener Interface
+        //----------------------------------------------------------------------
+       
         /**
          * Adds next batch of lines from the queue to the output area
          * in a one shot dilly-o
@@ -290,68 +384,102 @@ public class TailPane extends JPanel
         {
             String method = "[nxtBat] ";
             
-            if (objs.length > 50)
-                logger_.debug(method + "Lines popped: " + objs.length);
-            
-            StringBuffer sb = new StringBuffer();
-            String filter = filterField_.getText().trim();   
-            boolean byPassFilter = StringUtil.isNullOrEmpty(filter);
-            
-            if (!byPassFilter)
-            {
-                if(!filter.equals(oldFilter_))
-                {
-                    try
-                    {
-                        regExp_ = new RE(filter);
-                    }
-                    catch (RESyntaxException re)
-                    {
-                        JSmartOptionPane.showExceptionMessageDialog(null, re);
-                    }
-                
-                    oldFilter_ = filter;   
-                }
-            }
-
-
             // Iterate over each line delivered            
-            for(int i=0; i<objs.length; i++)
+            for (int i=0; i<objs.length; i++)
             {
                 String line = (String)objs[i];
 
-                // Filter was detected, apply to line and return (skip)
-                // if match found
-                if ((!byPassFilter) && regExp_.match(line))
+                // Apply filters
+                for (Iterator e = filters_.iterator(); e.hasNext(); )
                 {
-                    // skip
-                }    
-                else
-                {
-                    lineNumber_ += 1;
-                    
-                    // Decorate with line number if checked
-                    if (lineNumbersBox_.isSelected())
-                        sb.append("[" + lineNumber_ + "] ");
-                        
-                    sb.append(objs[i] + "\n");
+                    ILineFilter filter = (ILineFilter) e.next();
+                    line = filter.filter(line);
                 }
+
+                if (line != null)
+                    tailArea_.append(line + "\n");                 
             }
-            
-            tailArea_.append(sb.toString()); 
-        }
-        
-        
-        /**
-         * Resets line number back to zero. This is done with the tail is
-         * stopped and then restarted.
-         */
-        public void resetLines()
-        {
-            lineNumber_ = 0;
         }
     }
 
+
+//    /**
+//     * Enabled dynamic filtering based on regex as it is typed
+//     */    
+//    public class RegexKeyListener extends KeyAdapter
+//    {
+//        String oldValue = "";
+//        
+//        public void keyReleased(KeyEvent e)
+//        {
+//            super.keyReleased(e);
+//            
+//            String newValue = getFilter() + e.getKeyChar();
+// 
+//            // Only refresh if the field has changed           
+//            if (!newValue.equals(oldValue))
+//            {                
+//                oldValue = newValue;
+//                setFilter(getFilter());
+//            }
+//        }
+//    }
+//
+//    /**
+//     * Listens to the cut filter
+//     */    
+//    public class CutKeyListener extends KeyAdapter
+//    {
+//        String oldValue = "";
+//        
+//        public void keyReleased(KeyEvent e)
+//        {
+//            super.keyReleased(e);
+//            
+//            String newValue = getFilter() + e.getKeyChar();
+// 
+//            // Only refresh if the field has changed           
+//            if (!newValue.equals(oldValue))
+//            {                
+//                oldValue = newValue;
+//                setCut(getCut());
+//            }
+//        }
+//    }
+
+
+    /**
+     * Enabled dynamic filtering based on regex as it is typed
+     */    
+    public class RegexActionListener implements ActionListener
+    {
+        public void actionPerformed(ActionEvent e)
+        {
+            String s = getRegularExpression();
+            
+            if (StringUtil.isNullOrEmpty(s))
+                regexFilter_.setEnabled(false);
+            else
+                setRegularExpression(getRegularExpression());
+        }
+    }
+
+
+    /**
+     * Enabled dynamic filtering based on regex as it is typed
+     */    
+    public class CutActionListener implements ActionListener
+    {
+        public void actionPerformed(ActionEvent e)
+        {
+            String s = getCutExpression();
+            
+            if (StringUtil.isNullOrEmpty(s))
+                cutFilter_.setEnabled(false);
+            else
+                setCutExpression(getCutExpression());
+        }
+    }
 
     //--------------------------------------------------------------------------
     //  Actions
@@ -394,7 +522,7 @@ public class TailPane extends JPanel
                     mode = MODE_STOP;
                     putValue(Action.NAME, mode);
                     pauseButton_.setEnabled(true);
-                    queueListener_.resetLines();
+                    //queueListener_.resetLines();
                     logger_.debug(method + "Started tail: " + tail_.getFile());                                                     
                 }
                 catch(FileNotFoundException fnfe)
@@ -464,11 +592,9 @@ public class TailPane extends JPanel
          */
         public CloseAction()
         {
-            super("Closez");
-            putValue(MNEMONIC_KEY, new Integer('z'));
+            super("Close");
+            putValue(MNEMONIC_KEY, new Integer('e'));
             putValue(SHORT_DESCRIPTION, "Closes the tail pane");
-//            putValue(ACCELERATOR_KEY,
-//                 KeyStroke.getKeyStroke(KeyEvent.VK_Z, 0));            
         }
     
         /**
@@ -483,8 +609,6 @@ public class TailPane extends JPanel
                 
             if (tail_.isAlive())
                 tail_.stop();
-                
-
         }
     }
 
@@ -566,8 +690,7 @@ public class TailPane extends JPanel
          */
         public void actionPerformed(ActionEvent e)
         { 
-            // no op since the checkbox is queried directly 
-            // for its state            
+            lineNumberDecorator_.setEnabled(!lineNumberDecorator_.isEnabled());
         }
     }
 }
