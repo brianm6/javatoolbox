@@ -262,7 +262,8 @@ public class ManagePluginsDialog extends JDialog
                 }
                 catch (Throwable t)
                 {
-                    logger_.debug("Failed newInstance() : " + clazzName + " " + t);
+                    logger_.debug(
+                        "Failed newInstance() : " + clazzName + " " + t);
                     skip = true;
                 }
                 
