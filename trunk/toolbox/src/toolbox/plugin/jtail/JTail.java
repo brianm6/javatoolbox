@@ -51,6 +51,10 @@ import toolbox.util.xml.XMLParser;
 
 /**
  * JTail is a GUI front end for toolbox.tail.Tail
+ * 
+ * <pre>
+ * TODO: Add configurable "aggregator" for existing tails 
+ * </pre>
  */
 public class JTail extends JFrame
 {
