@@ -2,6 +2,7 @@ package toolbox.util;
 
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
 import java.awt.font.TextAttribute;
@@ -9,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JComponent;
+import javax.swing.text.StyleContext;
 
 import nu.xom.Attribute;
 import nu.xom.Element;
@@ -64,7 +66,7 @@ public final class FontUtil
     };
     
     //--------------------------------------------------------------------------
-    // Public 
+    // Public
     //--------------------------------------------------------------------------
     
     /**
@@ -189,6 +191,34 @@ public final class FontUtil
         return grow(font, size - font.getSize());
     }
     
+    
+    /**
+     * Returns true if the given font is a monospaced font, false otherwise.
+     * This method is not as exhaustive in its criteria as it could be.
+     * 
+     * @param font Font
+     * @return boolean
+     */
+    public static boolean isMonospaced(final Font font)
+    {
+        FontMetrics fm = 
+            StyleContext.getDefaultStyleContext().getFontMetrics(font);
+        
+        String lower = "abcdefghijklmnopqrstuvwxyz";
+        String upper = lower.toUpperCase();
+        
+        for (int i = 0, n = lower.length(); i < n; i++)
+        {
+            int widthLower = fm.charWidth(lower.charAt(i));
+            int widthUpper = fm.charWidth(upper.charAt(i));
+        
+            if (widthLower != widthUpper)
+                return false;
+        }
+        
+        return true;
+    }
+    
     //--------------------------------------------------------------------------
     // Private 
     //--------------------------------------------------------------------------
@@ -225,7 +255,6 @@ public final class FontUtil
             fontAttribs.put(TextAttribute.FAMILY, fontName);
             fontAttribs.put(TextAttribute.FONT, fontName);
             fontAttribs.put(TextAttribute.SIZE, new Float(12));
-
         }
 
         return new Font(fontAttribs);
