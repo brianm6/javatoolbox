@@ -19,6 +19,8 @@ import java.util.Set;
 import java.util.WeakHashMap;
 import java.util.Map.Entry;
 
+import toolbox.util.StringUtil;
+
 /**
  * Converts an Object into a Map.  The keys are the properties 
  * (get/set method names) and the values are the result of calling
@@ -257,24 +259,39 @@ public class ObjectMap
     {
         int max = size() - 1;
         StringBuffer buf = new StringBuffer();
-        Iterator i = entrySet().iterator();
 
-        buf.append("{");
+
+        int maxLen = 0;
+        
+        // Find max length of the keys so values can be lined up
+        for(Iterator i = entrySet().iterator(); i.hasNext(); )
+        {
+            Entry e = (Entry) i.next();
+            
+            int currentLen = e.getKey().toString().length();
+            if (currentLen > maxLen)
+                maxLen = currentLen;
+        }       
+
+        Iterator i = entrySet().iterator();
+        
         for (int j = 0; j <= max; j++)
         {
             Entry e = (Entry) (i.next());
             try
             {
-                buf.append(e.getKey() + "=" + e.getValue());
+                buf.append(StringUtil.left(e.getKey().toString(), maxLen) + 
+                    ": " + e.getValue());
+                    
                 if (j < max)
-                    buf.append(", ");
+                    buf.append("\n");
             }
             catch (UnsupportedOperationException ignore)
             {
                 // Get Method Not Present
             }
         }
-        buf.append("}");
+        
         return buf.toString();
     }
 
