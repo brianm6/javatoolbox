@@ -18,11 +18,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.collections.AsMap;
-import toolbox.util.io.filter.DirectoryFilter;
 
 /**
  * File Utility Class.
@@ -379,46 +379,6 @@ public final class FileUtil
 
     
     /**
-     * Finds files recursively from a given starting directory using the
-     * passed in filter as selection criteria.
-     * 
-     * @param startingDir Start directory for the search.
-     * @param filter Filename filter criteria.
-     * @return List of filesnames as strings that match the filter from the 
-     *         start dir.
-     */
-    public static List findFiles(String startingDir, FilenameFilter filter)
-    {
-        File f = new File(startingDir);
-        List basket = new ArrayList(20);
-
-        if (f.exists() && f.isDirectory())
-        {
-            // smack a trailing / on the start dir 
-            if (!startingDir.endsWith(File.separator))
-                startingDir += File.separator;
-
-            // process files
-            String[] files = f.list(filter);
-
-            for (int i = 0; i < files.length; i++)
-                basket.add(startingDir + files[i]);
-
-            // process directories
-            String[] dirs = f.list(new DirectoryFilter());
-
-            for (int i = 0; i < dirs.length; i++)
-            {
-                List subBasket = findFiles(startingDir + dirs[i], filter);
-                basket.addAll(subBasket);
-            }
-        }
-
-        return basket;
-    }
-
-    
-    /**
      * Appends the file separator char for the current system to the end of a 
      * path if it already doesn't exist.
      * <p>
@@ -635,5 +595,44 @@ public final class FileUtil
     public static String getInfo(File f)
     {
         return AsMap.of(f).toString();
+    }
+
+    
+    /**
+     * Finds files recursively from a given starting directory using the
+     * passed in filter as selection criteria. Returns a <code>List<code> of 
+     * filesnames in absolute form that match the filter.
+     * 
+     * @param startingDir Directory in which to start the search.
+     * @param filter Inclusion file search filter.
+     * @return List<String>
+     */    
+    public static List find(String startingDir, FilenameFilter filter)
+    {
+        File f = new File(startingDir);
+        List basket = new ArrayList(20);
+    
+        if (f.exists() && f.isDirectory()) 
+        { 
+            // Smack a trailing / on the start dir
+            startingDir = trailWithSeparator(startingDir);
+            
+            // Process files in the current dir and throw them is the basket
+            String[] files = f.list(filter);
+            
+            for (int i = 0; i < files.length; i++) 
+                basket.add(startingDir + files[i]);
+            
+            // Process immediate child directories
+            String[] dirs  = f.list(DirectoryFileFilter.INSTANCE);
+                        
+            for (int i = 0; i < dirs.length; i++)
+            {
+                List subBasket = find(startingDir + dirs[i], filter);
+                basket.addAll(subBasket);
+            }
+        }
+        
+        return basket;
     }
 }
