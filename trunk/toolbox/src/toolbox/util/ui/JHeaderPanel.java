@@ -22,7 +22,6 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
@@ -551,12 +550,12 @@ public class JHeaderPanel extends JPanel
      * @param action Action to execute.
      * @return JToggleButton
      */
-    public static JToggleButton createToggleButton(
+    public static JSmartToggleButton createToggleButton(
         Icon icon, 
         String tooltip, 
         Action action)
     {
-        JToggleButton jb = new JToggleButton(action);
+        JSmartToggleButton jb = new JSmartToggleButton(action);
         jb.setIcon(icon);
         jb.setFocusPainted(false);
         jb.setToolTipText(tooltip);
