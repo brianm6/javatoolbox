@@ -32,7 +32,7 @@ public class FindClassCollector extends FindClassAdapter
         
     /**
      * @see toolbox.findclass.IFindClassListener#classFound(
-     *          toolbox.findclass.FindClassResult)
+     *      toolbox.findclass.FindClassResult)
      */
     public void classFound(FindClassResult result)
     {
@@ -46,7 +46,7 @@ public class FindClassCollector extends FindClassAdapter
     /**
      * Returns array of find class results 
      * 
-     * @return  FindClassResult[]
+     * @return FindClassResult[]
      */
     public FindClassResult[] getResults()
     {
@@ -54,11 +54,10 @@ public class FindClassCollector extends FindClassAdapter
             results_.toArray(new FindClassResult[results_.size()]);
     }
     
-    
     /**
      * Clears the contents of the colletor
      * 
-     * @return  Number of elements cleared
+     * @return Number of elements cleared
      */
     public int clear() 
     {
