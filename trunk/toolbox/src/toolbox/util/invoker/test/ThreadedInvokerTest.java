@@ -6,6 +6,7 @@ import junit.textui.TestRunner;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ElapsedTime;
+import toolbox.util.ThreadUtil;
 import toolbox.util.invoker.Invoker;
 import toolbox.util.invoker.ThreadedInvoker;
 
@@ -39,7 +40,7 @@ public class ThreadedInvokerTest extends TestCase
      * Tests that a call to invoke(Runnable) method returns before the amount of
      * time that it takes to execute the method.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testInvokeRunnable() throws Exception
     {
@@ -51,7 +52,8 @@ public class ThreadedInvokerTest extends TestCase
         ElapsedTime time = new ElapsedTime();
         invoker.invoke(invokable);
         time.setEndTime();
-
+        invoker.shutdown();
+        
         assertTrue(
             "Method did not execute in expected amount of time",
             time.getTotalMillis() < delay);
@@ -66,7 +68,7 @@ public class ThreadedInvokerTest extends TestCase
      * Tests that a call to invoke(Object, Method, Object[]) returns before the 
      * amount of time that it takes to execute the method.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testInvokeReflectively() throws Exception
     {
@@ -78,7 +80,8 @@ public class ThreadedInvokerTest extends TestCase
         ElapsedTime time = new ElapsedTime();
         invoker.invoke(invokable, "run", null);
         time.setEndTime();
-
+        invoker.shutdown();
+        
         assertTrue(
             "Method did not execute in expected amount of time",
             time.getTotalMillis() < delay);
@@ -92,7 +95,7 @@ public class ThreadedInvokerTest extends TestCase
     /**
      * Stress tests invoke().
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testInvokeStressTest() throws Exception
     {
@@ -119,5 +122,28 @@ public class ThreadedInvokerTest extends TestCase
         for (int i = 0; i < numIterations; i++)
             assertTrue("Method was not invoked for iteration " + i,
                 invokables[i].wasInvoked());
+        
+        invoker.shutdown();
+    }
+    
+    
+    /**
+     * Test exception thrown during invocation.
+     * 
+     * @throws Exception on error.
+     */
+    public void testInvokeThrowsException() throws Exception
+    {
+        logger_.info("Running testInvokeThrowsException...");
+        
+        RuntimeException re = 
+            new IllegalArgumentException("This exception is OK!");
+        
+        re.setStackTrace(new StackTraceElement[0]);
+        ThrowsExceptionRunner ex = new ThrowsExceptionRunner(re, 1000);
+        Invoker invoker = new ThreadedInvoker();
+        invoker.invoke(ex, "run", null);
+        ThreadUtil.sleep(2000);
+        invoker.shutdown();
     }
 }
