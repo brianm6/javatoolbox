@@ -233,6 +233,7 @@ public class TailPane extends JPanel implements ActionListener
 	{
 		tailArea_ = new JSmartTextArea(autoScroll);
         tailArea_.setFont(SwingUtil.getPreferredMonoFont());
+        tailArea_.setDoubleBuffered(false);
         
 		clearButton_    = new JButton("Clear");
 		pauseButton_    = new JButton("Pause");
