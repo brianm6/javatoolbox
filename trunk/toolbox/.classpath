@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry exported="true" kind="var" path="CLOVER_RUNTIME"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="debug"/>
 	<classpathentry kind="lib" path="resources"/>
@@ -31,9 +30,11 @@
 	<classpathentry sourcepath="lib/src/hsqldb-src.zip" kind="lib" path="lib/hsqldb.jar"/>
 	<classpathentry kind="lib" path="lib/jaimlib.jar"/>
 	<classpathentry sourcepath="lib/src/jakarta-regexp-src.zip" kind="lib" path="lib/jakarta-regexp.jar"/>
-	<classpathentry sourcepath="lib/src/jaxen-src.zip" kind="lib" path="lib/jaxen.jar"/>
-	<classpathentry sourcepath="lib/src/jedit-syntax-src.zip" kind="lib" path="lib/jedit-syntax.jar"/>
 	<classpathentry sourcepath="lib/src/javassist-src.zip" kind="lib" path="lib/javassist.jar"/>
+	<classpathentry sourcepath="lib/src/jaxen-src.zip" kind="lib" path="lib/jaxen.jar"/>
+	<classpathentry kind="lib" path="lib/jcommon.jar"/>
+	<classpathentry sourcepath="lib/src/jedit-syntax-src.zip" kind="lib" path="lib/jedit-syntax.jar"/>
+	<classpathentry sourcepath="lib/src/jfreechart-src.zip" kind="lib" path="lib/jfreechart.jar"/>
 	<classpathentry sourcepath="lib/src/jode-src.zip" kind="lib" path="lib/jode.jar"/>
 	<classpathentry sourcepath="lib/src/jreversepro-src.zip" kind="lib" path="lib/jreversepro.jar"/>
 	<classpathentry sourcepath="lib/src/jtidy-src.zip" kind="lib" path="lib/jtidy.jar"/>
