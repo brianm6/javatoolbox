@@ -668,4 +668,9 @@ public final class StringUtil
         
         return sb.toString();
     }
+    
+    public static String banner(String s)
+    {
+        return addBars(s);
+    }
 }
