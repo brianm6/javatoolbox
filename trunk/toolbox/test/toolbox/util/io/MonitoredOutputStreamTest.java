@@ -275,9 +275,9 @@ public class MonitoredOutputStreamTest extends TestCase
     /** 
      * Listener used to make sure event notification is working correctly.
      */    
-    class OutputStreamListener implements MonitoredOutputStream.Listener
+    class OutputStreamListener implements 
+        MonitoredOutputStream.OutputStreamListener
     {
-        private BlockingQueue writeQueue_ = new BlockingQueue();
         private BlockingQueue flushQueue_ = new BlockingQueue();
         private BlockingQueue closeQueue_ = new BlockingQueue();
         
@@ -286,26 +286,14 @@ public class MonitoredOutputStreamTest extends TestCase
         //----------------------------------------------------------------------
         
         /**
-         * Waits for a write operation to occur.
-         * 
-         * @return Byte written.
-         * @throws InterruptedException on interruption.
-         */
-        public int waitForWrite() throws InterruptedException
-        {
-            return ((Integer) writeQueue_.pull()).intValue();
-        }
-
-        
-        /**
          * Waits for the stream to be flushed.
          * 
          * @return MonitoredOutputStream.
          * @throws InterruptedException on interruption.
          */
-        public MonitoredOutputStream waitForFlush() throws InterruptedException
+        public OutputStream waitForFlush() throws InterruptedException
         {
-            return (MonitoredOutputStream) flushQueue_.pull();
+            return (OutputStream) flushQueue_.pull();
         }
 
         
@@ -315,9 +303,9 @@ public class MonitoredOutputStreamTest extends TestCase
          * @return MonitoredOutputStream.
          * @throws InterruptedException on interruption.
          */
-        public MonitoredOutputStream waitForClose() throws InterruptedException
+        public OutputStream waitForClose() throws InterruptedException
         {
-            return (MonitoredOutputStream) closeQueue_.pull();
+            return (OutputStream) closeQueue_.pull();
         }
         
         //----------------------------------------------------------------------
@@ -325,20 +313,10 @@ public class MonitoredOutputStreamTest extends TestCase
         //----------------------------------------------------------------------
         
         /**
-         * @see toolbox.util.io.MonitoredOutputStream.Listener#byteWritten(
-         *      toolbox.util.io.MonitoredOutputStream, int)
-         */
-        public void byteWritten(MonitoredOutputStream stream, int b)
-        {
-            writeQueue_.push(new Integer(b));
-        }
-        
-        
-        /**
          * @see toolbox.util.io.MonitoredOutputStream.Listener#streamClosed(
-         *      toolbox.util.io.MonitoredOutputStream)
+         *      java.io.OutputStream)
          */
-        public void streamClosed(MonitoredOutputStream stream)
+        public void streamClosed(OutputStream stream)
         {
             closeQueue_.push(stream);
         }
@@ -346,21 +324,11 @@ public class MonitoredOutputStreamTest extends TestCase
         
         /**
          * @see toolbox.util.io.MonitoredOutputStream.Listener#streamFlushed(
-         *      toolbox.util.io.MonitoredOutputStream)
+         *      java.io.OutputStream)
          */
-        public void streamFlushed(MonitoredOutputStream stream)
+        public void streamFlushed(OutputStream stream)
         {
             flushQueue_.push(stream);
-        }
-        
-        
-        /**
-         * @see toolbox.util.io.MonitoredOutputStream.Listener#streamThroughput(
-         *      toolbox.util.io.MonitoredOutputStream, float)
-         */
-        public void streamThroughput(MonitoredOutputStream stream, 
-            float bytesPerPeriod)
-        {
         }
     }
 }
