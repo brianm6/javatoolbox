@@ -5,12 +5,10 @@ import java.io.InterruptedIOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import toolbox.util.ArrayUtil;
 import toolbox.util.SocketUtil;
 import toolbox.util.concurrent.Mutex;
 import toolbox.util.thread.ThreadDispatcher;
@@ -18,13 +16,13 @@ import toolbox.util.thread.strategy.ThreadPoolStrategy;
 import toolbox.util.thread.strategy.ThreadedDispatcherStrategy;
 
 /**
- * Generic SocketServer implementation. 
+ * Simple SocketServer implementation with conveniences built it.  
  * <p>
  * Features include:
  * <ul>
- * <li>pluggable connection handlers
- * <li>sync/async dispatch of incoming connections to handlers
- * <li>dispatching of handlers is done via a configurable thread pool
+ *   <li>Pluggable connection handlers
+ *   <li>Sync/async dispatch of incoming connections to handlers
+ *   <li>Handlers are pooled and configurable for efficiency and flexibility
  * </ul>
  */
 public class SocketServer implements Runnable
@@ -32,26 +30,40 @@ public class SocketServer implements Runnable
     private static final Logger logger_ = 
         Logger.getLogger(SocketServer.class);
 
-    /** Server configuration */
+    /** 
+     * Server configuration contains info such as server port, timeout, etc. 
+     */
     private SocketServerConfig config_;
 
-    /** Server socket */
+    /** 
+     * Lower level server socket delegate 
+     */
     private ServerSocket serverSocket_;
 
-    /** Thread of execution for the server socket accept() */
+    /** 
+     * Thread of execution that the server socket accept()'s on  
+     */
     private Thread serverThread_;
 
-    /** Thead pool used to service connection handlers */
+    /** 
+     * Thead pool used to service socket clients 
+     */
     private ThreadDispatcher dispatcher_;
 
-    /** Mutex used for coord between calling and server threads */
+    /** 
+     * Mutex used at startup to reduce likelyhood of a race condition 
+     */
     private Mutex startedMutex_;
 
-    /** Exit variant for loop accepting incoming connections */
+    /** 
+     * Shutdown flag 
+     */
     private boolean shutdown_ = false;
 
-    /** List of socket server listeners */
-    private List listeners_ = new ArrayList();
+    /** 
+     * List of socket server listeners 
+     */
+    private ISocketServerListener[] listeners_;
 
     //--------------------------------------------------------------------------
     //  Constructors
@@ -65,6 +77,7 @@ public class SocketServer implements Runnable
     public SocketServer(SocketServerConfig newConfig)
     {
         config_ = newConfig;
+        listeners_ = new ISocketServerListener[0];
     }
 
     //--------------------------------------------------------------------------
@@ -221,8 +234,8 @@ public class SocketServer implements Runnable
      */
     protected void fireSocketAccepted(Socket socket, IConnection conn)
     {
-        for (Iterator i = listeners_.iterator(); i.hasNext(); )
-            ((ISocketServerListener)i.next()).socketAccepted(socket, conn);
+        for (int i=0; i<listeners_.length; 
+            listeners_[i++].socketAccepted(socket, conn));
     }
 
     /**
@@ -231,8 +244,7 @@ public class SocketServer implements Runnable
      */
     protected void fireServerStarted()
     {
-        for (Iterator i = listeners_.iterator(); i.hasNext(); )
-            ((ISocketServerListener)i.next()).serverStarted(this);
+        for (int i=0; i<listeners_.length; listeners_[i++].serverStarted(this));
     }
 
     /**
@@ -242,7 +254,8 @@ public class SocketServer implements Runnable
      */
     public void addSocketServerListener(ISocketServerListener listener)
     {
-        listeners_.add(listener);
+        listeners_ = 
+            (ISocketServerListener[]) ArrayUtil.add(listeners_, listener);
     }
     
     /**
@@ -252,7 +265,8 @@ public class SocketServer implements Runnable
      */
     public void removeSocketServerListener(ISocketServerListener listener)
     {
-        listeners_.remove(listener);
+        listeners_ = 
+            (ISocketServerListener[]) ArrayUtil.remove(listeners_, listener);
     }
     
     //--------------------------------------------------------------------------
@@ -264,8 +278,9 @@ public class SocketServer implements Runnable
      */
     public void run()
     {
-        logger_.info(config_.getName() + " waiting for connection on " + 
-            serverSocket_.getLocalPort());
+        logger_.info(
+            config_.getName() + " waiting for connection on " + 
+                serverSocket_.getLocalPort());
 
         fireServerStarted();
         
@@ -279,8 +294,9 @@ public class SocketServer implements Runnable
                 // Wait for a connection
                 Socket socket = serverSocket_.accept();
 
-                logger_.debug(config_.getName() + " accepted connection from " + 
-                    socket.getInetAddress() + ":" + socket.getPort());
+                logger_.debug(
+                    config_.getName() + " accepted connection from " + 
+                        socket.getInetAddress() + ":" + socket.getPort());
                 
                 // Set timeout on newly acquired socket
                 socket.setSoTimeout(config_.getSocketTimeout());
