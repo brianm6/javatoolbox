@@ -5,10 +5,13 @@ import junit.textui.TestRunner;
 
 import org.apache.tools.ant.Main;
 
+import toolbox.junit.StandaloneTestCase;
+
 /**
- * Unit test for BannerTask.
+ * Unit test for BannerTask. This test is marked as standalone because the call
+ * into Ant results in call to System.exit() on completion.
  */
-public class BannerTaskTest extends TestCase
+public class BannerTaskTest extends TestCase implements StandaloneTestCase
 {
     //--------------------------------------------------------------------------
     // Main

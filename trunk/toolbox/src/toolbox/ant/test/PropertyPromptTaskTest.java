@@ -5,10 +5,14 @@ import junit.textui.TestRunner;
 
 import org.apache.tools.ant.Main;
 
+import toolbox.junit.StandaloneTestCase;
+
 /**
- * Unit test for PropertyPromptTask.
+ * Unit test for PropertyPromptTask. This test is marked as standalone 
+ * because the call into Ant results in call to System.exit() on completion.
  */
-public class PropertyPromptTaskTest extends TestCase
+public class PropertyPromptTaskTest extends TestCase 
+                                    implements StandaloneTestCase 
 {
     //--------------------------------------------------------------------------
     // Main
@@ -31,7 +35,7 @@ public class PropertyPromptTaskTest extends TestCase
     /**
      * Tests property prompt task.
      * 
-     * @throws Exception
+     * @throws Exception on error.
      */
     public void testPropertyPrompt() throws Exception
     {
