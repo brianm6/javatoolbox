@@ -9,7 +9,6 @@ import java.io.PrintWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +27,7 @@ import javax.swing.JToolBar;
 import nu.xom.Element;
 import nu.xom.Elements;
 
+import org.apache.commons.collections.iterators.ArrayIterator;
 import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
@@ -199,7 +199,7 @@ public class QueryPlugin extends JPanel implements IPlugin
     /**
      * Maps sqlpopup_ menu items to the actual sql text.
      */
-    private Map sqlHistory_;
+    //private Map sqlHistory_;
 
     /**
      * Database configuration panel.
@@ -452,7 +452,7 @@ public class QueryPlugin extends JPanel implements IPlugin
      */
     protected JHeaderPanel buildSQLEditor()
     {
-        sqlHistory_ = new HashMap();
+        //sqlHistory_ = new HashMap();
 
         sqlMenu_ = new JConveyorMenu("SQL History", 10);
         JEditPopupMenu editMenu = new JEditPopupMenu();
@@ -576,15 +576,12 @@ public class QueryPlugin extends JPanel implements IPlugin
      */
     protected void addToHistory(String sql)
     {
-        if (!sqlHistory_.containsValue(sql))
-        {
-            sqlHistory_.put(sql, sql);
-
-            JMenuItem menuItem =
-                new JSmartMenuItem(new ExecutePriorAction(sql));
-
-            sqlMenu_.add(menuItem);
-        }
+        //if (!sqlHistory_.containsValue(sql))
+        //{
+        //    sqlHistory_.put(sql, sql);
+        
+            sqlMenu_.add(new JSmartMenuItem(new ExecutePriorAction(sql)));
+        //}
     }
 
 
@@ -739,11 +736,18 @@ public class QueryPlugin extends JPanel implements IPlugin
     {
         Element root = new Element(NODE_QUERY_PLUGIN);
 
-        for (Iterator i = sqlHistory_.values().iterator(); i.hasNext();)
+        for (Iterator i = new ArrayIterator(sqlMenu_.getMenuComponents()); 
+            i.hasNext();)
         {
-            Element historyItem = new Element(NODE_HISTORY_ITEM);
-            historyItem.appendChild(i.next().toString());
-            root.appendChild(historyItem);
+            Object obj = i.next();
+            
+            if (obj instanceof JMenuItem)
+            {
+                JMenuItem item = (JMenuItem) obj;
+                Element historyItem = new Element(NODE_HISTORY_ITEM);
+                historyItem.appendChild(item.getText());
+                root.appendChild(historyItem);
+            }
         }
 
         leftFlipPane_.savePrefs(root);
