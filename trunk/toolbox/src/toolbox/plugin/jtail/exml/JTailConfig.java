@@ -30,6 +30,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants
     private String    defaultFilter_;
     private Point     location_;
     private Dimension size_;
+    private String    directory_;
     private ITailPaneConfig[] tailPaneConfigs_;
     
     /**
@@ -47,6 +48,8 @@ public class JTailConfig implements IJTailConfig, XMLConstants
      */
     public Element marshal()  throws IOException 
     {
+        String method = "[marshl] ";
+        
         // Root config node
         Element jtailNode = new Element(ELEMENT_JTAIL);
         
@@ -58,6 +61,8 @@ public class JTailConfig implements IJTailConfig, XMLConstants
         jtailNode.setAttribute(ATTR_X, getLocation().x + "");
         jtailNode.setAttribute(ATTR_Y, getLocation().y + "");
 
+        // Directory
+        jtailNode.setAttribute(ATTR_DIR, getDirectory());
 
         // Tail element
         Element tail = new Element(ELEMENT_TAIL);
@@ -87,7 +92,8 @@ public class JTailConfig implements IJTailConfig, XMLConstants
         jtailNode.addElement(defaultsNode);
         
         // Save child ITailPaneConfigs
-        logger_.debug("Saving "+ tailPaneConfigs_.length+" configurations");
+        logger_.debug(method + 
+            "Saving " + tailPaneConfigs_.length + " configurations");
 
         for (int i=0; i<tailPaneConfigs_.length;
             jtailNode.addElement((
@@ -145,6 +151,16 @@ public class JTailConfig implements IJTailConfig, XMLConstants
         else
         {
             // TODO: set default size
+        }
+        
+        // Read optional directory
+        if (jtailNode.getAttribute(ATTR_DIR) != null)   
+        {
+            jtailConfig.setDirectory(jtailNode.getAttribute(ATTR_DIR));
+        }
+        else
+        {
+            // TODO: set default directory
         }
         
         // Handle optional default font element    
@@ -316,4 +332,23 @@ public class JTailConfig implements IJTailConfig, XMLConstants
         defaultShowLineNumbers_ = defaultShowLineNumbers;
     }
 
+    /**
+     * Returns the last directory selecting in the file explorer pane
+     *
+     * @return  String
+     */
+    public String getDirectory()
+    {
+        return directory_;
+    }
+
+    /**
+     * Sets the last directory selected in the file explorer pane
+     * 
+     * @param directory  Directory selected
+     */
+    public void setDirectory(String directory)
+    {
+        directory_ = directory;
+    }
 }
