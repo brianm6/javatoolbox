@@ -161,6 +161,15 @@
         </table>
       </action>
 
+      <action type="update">
+        <table>
+          <tr>
+            <td width="20%">QueryPlugin</td>
+            <td>Added popup menu to the file explorer's file list which now contains a menuitem to load all selected files into the sql editor.</td>
+          </tr>
+        </table>
+      </action>
+
     </release>
     
     <release version="2.0" date="July 2004">
