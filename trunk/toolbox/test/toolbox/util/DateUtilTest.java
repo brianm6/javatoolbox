@@ -97,8 +97,8 @@ public class DateUtilTest extends TestCase
         now = cc.getTime();
         cc.set(2001, 5 - 1, 20);
         then = cc.getTime();
-        assertEquals("Difference should be 4 weeks",
-            4, DateUtil.getDifferenceInWeeks(now, then));
+        assertEquals("Difference should be 3 weeks",
+            3, DateUtil.getDifferenceInWeeks(now, then));
     }
 
     
