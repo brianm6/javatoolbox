@@ -29,7 +29,7 @@ import toolbox.util.collections.CaseInsensetiveSet;
 import toolbox.util.ui.JSmartButton;
 
 /**
- * A  Viewer is a wrapper for the multivalent pdf viewer component.
+ * MultivalentViewer is a wrapper for the multivalent pdf viewer component.
  */
 public class MultivalentViewer extends AbstractViewer
 {
