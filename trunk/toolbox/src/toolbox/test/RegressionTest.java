@@ -2,7 +2,10 @@ package toolbox.test;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
+import junit.swingui.TestRunner;
+
 import org.apache.log4j.BasicConfigurator;
+
 import toolbox.util.io.test.StringInputStreamTest;
 import toolbox.util.io.test.StringOutputStreamTest;
 import toolbox.util.test.ArrayUtilTest;
@@ -27,8 +30,8 @@ public class RegressionTest
      * @param  args  None recognized
      */
     public static void main(String[] args)
-    {
-        junit.swingui.TestRunner.run(RegressionTest.class);
+    { 
+        TestRunner.run(RegressionTest.class);
     }
     
     /**
@@ -38,8 +41,6 @@ public class RegressionTest
      */
     public static Test suite()
     {
-        BasicConfigurator.configure();
-        
         TestSuite suite = new TestSuite();
          
         // util
