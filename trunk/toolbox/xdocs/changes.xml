@@ -43,9 +43,7 @@
  * =============================================================================
  * TODO: Integrate JCoverage into the maven build - 
  *       pending new JCoverage plugin since current one gets line to lone error.
- 
  * TODO: Figure out how to use JGoodies data binding framework 
- 
  * TODO: Add a way to change the lookand feel font globally - partially working
  * TODO: http://pdfdoclet.sourceforge.net/examples.html
  * TODO: http://www.infonode.net/index.html?idwdownload
@@ -55,7 +53,6 @@
  * TODO: Add regular expression cheat sheet (TextToolsPlugin maybe)
  * TODO: Add search and replace to text editors
  * TODO: Ctrl-S in Save Dialog box should remember where it was last opened up
- * TODO: Fileexplorer: right click on a directory to create a new directory
  * TODO: Fileexplorer: F2 to rename a file or directory
  * TODO: Integrate JDiff Plugin/make Toolbox Plugin
  * TODO: Add shortcuts to fileexplorer
@@ -113,9 +110,8 @@
     <!-- =================================================================== -->    
 
 	<release version="2.0" date="October 2004">
-	
       <action type="add">Util - Added ClassUtils.findInPath() to find executables on the system path</action>
-      
+      <action type="add">Util - Added Create Directory to the JFileExplorer popup menu</action>
 	</release>
 
     <!-- =================================================================== -->
