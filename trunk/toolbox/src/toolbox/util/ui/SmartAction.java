@@ -1,5 +1,6 @@
 package toolbox.util.ui;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +67,7 @@ public abstract class SmartAction extends AbstractAction
     private boolean busyCursor_;
     
     /** Root component on which to set the busy cursor on */
-    private JComponent scope_;
+    private Component scope_;
 
     /** Caught exception if one was thrown */
     private Throwable caught_;
@@ -95,7 +96,7 @@ public abstract class SmartAction extends AbstractAction
      *                   want the busy cursor set). Pass in null to ignore.
      */
     public SmartAction(String name, boolean tryCatch, boolean async, 
-        JComponent scope)
+        Component scope)
     {
         super(name);
         tryCatch_   = tryCatch;
