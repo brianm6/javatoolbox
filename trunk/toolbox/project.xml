@@ -114,7 +114,15 @@
           <jnlp.jar>true</jnlp.jar>
         </properties>
       </dependency>
-    
+
+      <dependency>
+        <id>calphahtml</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
+      
       <dependency>
         <id>commons-cli</id>
         <version/>
@@ -244,6 +252,22 @@
       </dependency>
     
       <dependency>
+        <id>javassist</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
+    
+      <dependency>
+        <id>jaxen</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
+    
+      <dependency>
         <id>jedit-syntax</id>
         <version/>
         <properties>
@@ -269,6 +293,14 @@
     
       <dependency>
         <id>junit</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
+    
+      <dependency>
+        <id>junit-addons</id>
         <version/>
         <properties>
           <jnlp.jar>true</jnlp.jar>
@@ -317,6 +349,14 @@
     
       <dependency>
         <id>plastic</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
+    
+      <dependency>
+        <id>pollo</id>
         <version/>
         <properties>
           <jnlp.jar>true</jnlp.jar>
