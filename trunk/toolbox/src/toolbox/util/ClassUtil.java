@@ -47,7 +47,8 @@ public final class ClassUtil
     //--------------------------------------------------------------------------
     
     /**
-     * Retrieves the names of all classes in a given package.
+     * Retrieves the names of all classes in a given package. Doesn't work under
+     * WebStart.
      * 
      * @param packageName Name of package to search.
      * @return Array of fully qualified class names in the package. Empty array
@@ -63,8 +64,7 @@ public final class ClassUtil
         String packageDir      = packageName.replace('.', File.separatorChar);
 
         // Tokenize the classpath and iterate over
-        String[] classpathEntries = 
-            StringUtil.tokenize(getClasspath(), File.pathSeparator);
+        String[] classpathEntries = getClassPathElements();
        
         // logger_.info("Classpath: " + 
         //      ArrayUtil.toString(classpathEntries, false));
@@ -107,7 +107,7 @@ public final class ClassUtil
                 }
                 catch (IOException ex)
                 {
-                    logger_.info(
+                    logger_.warn(
                         "Problem with archive " + pathElement + 
                         " : " + ex.getMessage());
                 }
