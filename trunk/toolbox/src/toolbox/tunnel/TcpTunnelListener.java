@@ -8,8 +8,34 @@ public interface TcpTunnelListener
     /**
      * Notification that the internal status of the tunnel has changed
      * 
-     * @param  tunnel  Source tunnel
+     * @param  tunnel  TCP tunnel
      * @param  status  New status
      */
     public void statusChanged(TcpTunnel tunnel, String status);
+    
+    /**
+     * Notification of the number of bytes read over the last connection and
+     * the number of bytes read over the life of the tunnel.
+     * 
+     * @param  tunnel         TCP tunnel
+     * @param  connBytesRead  Number of bytes read through the duration of the     
+     *                        most recent connection.
+     * @param  bytesRead      Total number of bytes read over the life of the
+     *                        tunnel
+     */
+    public void bytesRead(TcpTunnel tunnel, int connBytesRead, 
+                          int totalBytesRead);
+
+    /**
+     * Notification of the number of bytes written over the last connection and
+     * the number of bytes written over the life of the tunnel.
+     * 
+     * @param  tunnel             TCP tunnel
+     * @param  connBytesWritten   Number of bytes written through the duration 
+     *                            of the most recent connection
+     * @param  totalBytesWritten  Total number of bytes written over the life of
+     *                            the tunnel
+     */
+    public void bytesWritten(TcpTunnel tunnel, int connBytesWritten, 
+                             int totalBytesWritten);
 }
