@@ -110,7 +110,7 @@ public class DefaultStateMachineTest extends TestCase
     {
         logger_.info("Running testStateMachineListener...");
         
-        StateMachine machine = new DefaultStateMachine("machine2");
+        StateMachine machine = new DefaultStateMachine("machine3");
 
         final StringBuffer ticks = new StringBuffer();
         
@@ -158,5 +158,53 @@ public class DefaultStateMachineTest extends TestCase
         assertEquals(sb, machine.getPreviousState());
         assertEquals(tba, machine.getLastTransition());
         assertEquals(expectedTicks, ticks.length());
+    }
+
+    
+    /**
+     * Tests for failure when adding the same state twice.
+     */
+    public void testFailureAddStateTwice()
+    {
+        logger_.info("Running testFailureAddStateTwice...");
+
+        StateMachine machine = new DefaultStateMachine("machine4");
+        State state1 = new DefaultState("state1");
+        machine.addState(state1);
+        
+        try
+        {
+            machine.addState(state1);
+            fail("State can only be added once");
+        }
+        catch (IllegalArgumentException iae)
+        {
+            logger_.debug("SUCCESS --> " + iae.getMessage() + " <--- SUCCESS");
+        }
+    }
+
+    
+    /**
+     * Tests for failure when setting a begin state that doesn't exist.
+     */
+    public void testFailureNonExistantBeginState()
+    {
+        logger_.info("Running testFailureNonExistantBeginState...");
+
+        StateMachine machine = new DefaultStateMachine("machine5");
+        State state1 = new DefaultState("state1");
+        machine.addState(state1);
+        
+        State state2 = new DefaultState("bogus");
+        
+        try
+        {
+            machine.setBeginState(state2);
+            fail("State must exist to set begin");
+        }
+        catch (IllegalArgumentException iae)
+        {
+            logger_.debug("SUCCESS --> " + iae.getMessage() + " <--- SUCCESS");
+        }
     }
 }
