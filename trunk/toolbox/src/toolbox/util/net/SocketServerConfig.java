@@ -165,15 +165,16 @@ public class SocketServerConfig
     public void load(String file) throws IOException
     {
         // Has to start with a slash to search from root of classpath
-        if (!file.startsWith("/"))
-            file = "/" + file;
+        //if (!file.startsWith("/"))
+        //    file = "/" + file;
 
         InputStream is = null;
 
         try
         {
-            is = ResourceUtil.getClassResource(file);
-
+            //is = ResourceUtil.getClassResource(file);
+            is = ResourceUtil.getResource(file);
+            
             Properties props = new Properties();
             props.load(is);
             load(props);
@@ -215,6 +216,10 @@ public class SocketServerConfig
         setConnectionHandlerType(
             props.getProperty(PROP_CONNECTION_HANDLER, 
             defaults_.getProperty(PROP_CONNECTION_HANDLER)));
+            
+        setName(
+            props.getProperty(PROP_SERVER_NAME,
+            defaults_.getProperty(PROP_SERVER_NAME)));
     }
 
     /**
@@ -369,8 +374,8 @@ public class SocketServerConfig
     /**
      * Sets connection handler type.
      * 
-     * @param  type  String containing FQN of class 
-     *               implementing IConnectionHandler
+     * @param  type  String containing FQN of class implementing 
+     *               IConnectionHandler
      */
     public void setConnectionHandlerType(String type)
     {
@@ -379,6 +384,7 @@ public class SocketServerConfig
 
     /**
      * Returns the name.
+     * 
      * @return String
      */
     public String getName()
@@ -388,12 +394,17 @@ public class SocketServerConfig
 
     /**
      * Sets the name.
+     * 
      * @param name The name to set
      */
     public void setName(String name)
     {
         name_ = name;
     }
+
+    //--------------------------------------------------------------------------
+    //  Overridden from java.lang.Object
+    //--------------------------------------------------------------------------
 
     /**
      * @return Dumped to string
