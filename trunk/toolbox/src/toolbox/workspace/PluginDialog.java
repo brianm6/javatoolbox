@@ -40,7 +40,6 @@ import toolbox.util.ui.JListPopupMenu;
  */
 public class ManagePluginsDialog extends JDialog
 {
-    /** Logger */
     public static final Logger logger_ =
         Logger.getLogger(ManagePluginsDialog.class);
     
@@ -195,6 +194,7 @@ public class ManagePluginsDialog extends JDialog
         
         removeButton_.setEnabled(activeModel_.size() > 0);
         addButton_.setEnabled(inactiveModel_.size() > 0);
+        activeList_.setSelectedIndex(0);
     }
     
     /**
@@ -291,7 +291,8 @@ public class ManagePluginsDialog extends JDialog
             }
         }
         
-        removeButton_.setEnabled(activeModel_.size() > 0);
+        int activeCnt = activeModel_.size();
+        removeButton_.setEnabled(activeCnt > 0);
         addButton_.setEnabled(inactiveModel_.size() > 0);
     }
     
@@ -374,24 +375,44 @@ public class ManagePluginsDialog extends JDialog
            
         public void actionPerformed(ActionEvent e)
         {
-            Object[] meta = inactiveList_.getSelectedValues();
+            int sizeBefore = inactiveModel_.size();
+            int[] selectedIdx = inactiveList_.getSelectedIndices();
+            Object[] selected = inactiveList_.getSelectedValues();
             
-            for (int i=0; i<meta.length; i++)
+            for (int i=0; i<selected.length; i++)
             {
                 try
                 {
                     parent_.registerPlugin(
-                        ((PluginMeta)meta[i]).getClassName());
+                        ((PluginMeta)selected[i]).getClassName());
+                        
+                    inactiveModel_.removeElement(selected[i]);                        
                 }
                 catch (Exception ex)
                 {
                     ExceptionUtil.handleUI(ex, logger_);
                 }
-                
-                inactiveModel_.removeElement(meta[i]);
             }
             
             populateActive();
+
+            // Inactive list selection
+            if (selectedIdx[selected.length-1] == sizeBefore - 1)
+                inactiveList_.setSelectedIndex(sizeBefore - selected.length -1);
+            else
+                inactiveList_.setSelectedIndex(selectedIdx[0]);
+            
+            // Active list selection
+            int[] selectedActive = new int[selected.length];
+            
+            for (int i=0, n = activeModel_.size() - selected.length; 
+                i<selected.length; 
+                    i++, n++)
+            {
+                selectedActive[i] = n;                
+            }
+            
+            activeList_.setSelectedIndices(selectedActive);
         }
     }
     
@@ -409,27 +430,45 @@ public class ManagePluginsDialog extends JDialog
            
         public void actionPerformed(ActionEvent e)
         {
+            int sizeBefore = activeModel_.size();
+            int[] selectedIdx = activeList_.getSelectedIndices();
+            Object[] selected = activeList_.getSelectedValues(); 
+            
             try
             {
-                Object meta[] = activeList_.getSelectedValues(); 
-                
-                for (int i=0; i<meta.length; i++)
+                // Deregister selected plugins
+                for (int i=0; i<selected.length; i++)
                 {
-                    // Get the class name for the selected plugin name
                     parent_.deregisterPlugin(
-                        ((PluginMeta)meta[i]).getClassName());
+                        ((PluginMeta)selected[i]).getClassName());
                         
-                    inactiveModel_.addElement(meta[i]);
+                    inactiveModel_.addElement(selected[i]);                        
                 }
             }
             catch (Exception ex)
             {
                 ExceptionUtil.handleUI(ex, logger_);
             }
-            finally
+            
+            populateActive();
+
+            // Active list selection
+            if (selectedIdx[selected.length-1] == sizeBefore-1)
+                activeList_.setSelectedIndex(sizeBefore - selected.length - 1);
+            else
+                activeList_.setSelectedIndex(selectedIdx[0]);
+                    
+            // Inactive list selection
+            int[] selectedInactive = new int[selected.length];
+            
+            for (int i=0, n = inactiveModel_.size() - selected.length; 
+                i<selected.length; 
+                    i++, n++)
             {
-                populateActive();
+                selectedInactive[i] = n;                
             }
+            
+            inactiveList_.setSelectedIndices(selectedInactive);
         }
     }
     
