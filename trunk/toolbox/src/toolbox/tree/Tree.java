@@ -10,8 +10,8 @@ import toolbox.util.ArrayUtil;
 import toolbox.util.args.ArgumentParser;
 import toolbox.util.args.Option;
 import toolbox.util.args.OptionException;
-import toolbox.util.io.DirectoryFilter;
-import toolbox.util.io.FileFilter; 
+import toolbox.util.io.filter.DirectoryFilter;
+import toolbox.util.io.filter.FileFilter; 
 
 /**
  * Generates a text representation of a directory tree with the option to

@@ -1,4 +1,4 @@
-package toolbox.util.io.test;
+package toolbox.util.io.filter.test;
 
 import java.io.File;
 
@@ -8,7 +8,7 @@ import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
 import toolbox.util.FileUtil;
-import toolbox.util.io.RegexFilter;
+import toolbox.util.io.filter.RegexFilter;
 
 /**
  * Unit test for RegexFilter

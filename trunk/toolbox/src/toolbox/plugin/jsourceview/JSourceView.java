@@ -29,10 +29,10 @@ import org.apache.log4j.Category;
 import toolbox.util.ArrayUtil;
 import toolbox.util.Queue;
 import toolbox.util.SwingUtil;
-import toolbox.util.io.CompoundFilter;
-import toolbox.util.io.DirectoryFilter;
-import toolbox.util.io.ExtensionFilter;
-import toolbox.util.io.OrFilter;
+import toolbox.util.io.filter.CompoundFilter;
+import toolbox.util.io.filter.DirectoryFilter;
+import toolbox.util.io.filter.ExtensionFilter;
+import toolbox.util.io.filter.OrFilter;
 import toolbox.util.ui.JSmartOptionPane;
 import toolbox.util.ui.ThreadSafeTableModel;
 

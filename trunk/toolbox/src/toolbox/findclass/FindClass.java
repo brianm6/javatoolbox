@@ -16,9 +16,9 @@ import org.apache.log4j.Category;
 import org.apache.regexp.RE;
 import org.apache.regexp.RESyntaxException;
 import toolbox.util.StringUtil;
-import toolbox.util.io.DirectoryFilter;
-import toolbox.util.io.ExtensionFilter;
-import toolbox.util.io.OrFilter;
+import toolbox.util.io.filter.DirectoryFilter;
+import toolbox.util.io.filter.ExtensionFilter;
+import toolbox.util.io.filter.OrFilter;
 
 /**
  * Utility that finds all occurences of a given class in the 

@@ -1,4 +1,4 @@
-package toolbox.util.io;
+package toolbox.util.io.filter;
 
 import java.io.File;
 import java.io.FilenameFilter;
