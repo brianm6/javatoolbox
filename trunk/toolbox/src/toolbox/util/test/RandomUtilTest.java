@@ -1,7 +1,9 @@
 package toolbox.util.test;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
@@ -417,5 +419,50 @@ public class RandomUtilTest extends TestCase
             assertTrue(rand <= ceil);
             assertTrue(rand >= 0.0);
         }
+    }
+    
+    
+    /**
+     * Tests nextByte()
+     */
+    public void testNextByte()
+    {
+        logger_.info("Running testNextByte...");
+        
+        Set byteSet = new HashSet();
+        
+        for (int i=0; i<255; i++)
+            byteSet.add(new Byte((byte) i));
+        
+        int cnt = 0;
+        
+        while (!byteSet.isEmpty())
+        {    
+            byteSet.remove(new Byte(RandomUtil.nextByte()));
+            cnt++;
+        }
+        
+        logger_.info("Generated all 255 bytes in " + cnt + " turns!!!!");
+    }
+    
+    
+    /**
+     * Test nextString()
+     */
+    public void testNextString()
+    {
+        logger_.info("Running testNextString...");
+        
+        StringBuffer sb = new StringBuffer();
+        StringBuffer sb2 = new StringBuffer();
+        
+        for (int i = 0; i < 30; i++) 
+        {    
+            sb.append(RandomUtil.nextString(RandomUtil.nextInt(20)) + " ");
+            sb2.append(RandomUtil.nextString() + " ");
+        }
+        
+        logger_.info(StringUtil.addBars(StringUtil.wrap(sb.toString(), true)));
+        logger_.info(StringUtil.addBars(StringUtil.wrap(sb2.toString(), true)));
     }
 }
