@@ -48,5 +48,7 @@
     <classpathentry kind="lib" path="lib/multivalent.jar"/>
     <classpathentry kind="lib" path="lib/jreversepro.jar"/>
     <classpathentry kind="lib" path="lib/hsqldb.jar"/>
+    <classpathentry kind="lib" path="lib/toniclf.jar"/>
+    <classpathentry kind="lib" path="lib/liquidlf.jar"/>
     <classpathentry kind="output" path="classes"/>
 </classpath>
