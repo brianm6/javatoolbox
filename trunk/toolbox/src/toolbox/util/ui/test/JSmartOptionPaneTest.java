@@ -16,7 +16,7 @@ import toolbox.util.ui.JSmartOptionPane;
  */
 public class JSmartOptionPaneTest extends TestCase
 {
-    /** Logger **/
+    /** Logger */
     private static final Logger logger_ =
         Logger.getLogger(JSmartOptionPaneTest.class);
         
