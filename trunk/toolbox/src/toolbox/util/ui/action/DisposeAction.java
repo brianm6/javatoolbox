@@ -1,13 +1,12 @@
 package toolbox.util.ui.action;
 
-import java.awt.Dialog;
-import java.awt.Frame;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
 /**
- * DisposeAction is responsible for disposing of a Frame or a Dialog.
+ * DisposeAction is responsible for disposing of a Window, Frame, or Dialog.
  */
 public class DisposeAction extends AbstractAction
 {
@@ -16,14 +15,9 @@ public class DisposeAction extends AbstractAction
     //--------------------------------------------------------------------------
 
     /**
-     * Frame to dispose.
+     * Window to dispose of.
      */
-    private Frame frame_;
-
-    /**
-     * Dialog to dispose.
-     */
-    private Dialog dialog_;
+    private Window window_;
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -32,50 +26,26 @@ public class DisposeAction extends AbstractAction
     /**
      * Creates a DisposeAction.
      *
-     * @param dialog Dialog to dispose of.
+     * @param window Window to dispose of.
      */
-    public DisposeAction(Dialog dialog)
+    public DisposeAction(Window window)
     {
-        this("", dialog);
+        this("", window);
     }
 
-    
+
     /**
      * Creates a DisposeAction.
      *
      * @param text Text label.
-     * @param dialog Dialog to dispose of.
+     * @param window Window to dispose of.
      */
-    public DisposeAction(String text, Dialog dialog)
+    public DisposeAction(String text, Window window)
     {
         super(text);
-        dialog_ = dialog;
+        window_ = window;
     }
 
-    
-    /**
-     * Creates a DisposeAction.
-     *
-     * @param frame Frame to dispose of.
-     */
-    public DisposeAction(Frame frame)
-    {
-        this("", frame);
-    }
-
-    
-    /**
-     * Creates a DisposeAction.
-     *
-     * @param text Text label.
-     * @param frame Frame to dispose of.
-     */
-    public DisposeAction(String text, Frame frame)
-    {
-        super(text);
-        frame_ = frame;
-    }
-    
     //--------------------------------------------------------------------------
     // Overrides ActionListener
     //--------------------------------------------------------------------------
@@ -86,9 +56,6 @@ public class DisposeAction extends AbstractAction
      */
     public void actionPerformed(ActionEvent e)
     {
-        if (dialog_ != null)
-            dialog_.dispose();
-        else if (frame_ != null)
-            frame_.dispose();
+        window_.dispose();
     }
 }
