@@ -370,7 +370,7 @@ public class TextAreaPainter extends JComponent implements TabExpander
        
        toolbox.jedit.JEditTextArea ta =  (toolbox.jedit.JEditTextArea) textArea;
        
-       if (ta.isAntiAlias())
+       if (ta.isAntiAliased())
            ((Graphics2D) gfx).setRenderingHint(
                RenderingHints.KEY_TEXT_ANTIALIASING,
                RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
