@@ -286,6 +286,19 @@ public class QueryPlugin extends JPanel implements IPlugin
         return "Simple SQL driven interface to a JDBC accessible database.";
     }
 
+	public void setStatusBar(IStatusBar statusBar)
+	{
+		statusBar_ = statusBar;
+	}
+    
+	public void shutdown()
+	{
+	}
+
+	//--------------------------------------------------------------------------
+	//  IPreferenced Interface
+	//--------------------------------------------------------------------------
+
     public void applyPrefs(Properties prefs)
     {
         // Restore sql history
@@ -327,15 +340,6 @@ public class QueryPlugin extends JPanel implements IPlugin
         prefs.setProperty(PROP_CONTENTS, sqlArea_.getText().trim());
            
         leftFlipPane_.savePrefs(prefs, PROP_PREFIX);
-    }
-
-    public void setStatusBar(IStatusBar statusBar)
-    {
-        statusBar_ = statusBar;
-    }
-    
-    public void shutdown()
-    {
     }
     
     //--------------------------------------------------------------------------
