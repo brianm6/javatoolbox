@@ -31,7 +31,9 @@ package toolbox;
  * TODO: Update banner with more external fonts.
  * TODO: Fix JTail recent menu
  * TODO: Update all command line tools using new help format in findclass
- * TODO: Tree - add inverse regex, case sensetive regex, and html output 
+ * TODO: Tree - add inverse regex, case sensetive regex, and html output
+ * TODO: Update EventInput/OutputStream to emit events every duration of time or
+ *       every x number of bytes read/written. 
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
@@ -71,7 +73,7 @@ package toolbox;
  * =============================== COMPLETED ===================================
  *
  * June 2004
- *  - 
+ *  - Updated Jode to 1.1.2-pre1
  * 
  * May 2004
  *  - Added JDBC benchmark to JDBC plugin
