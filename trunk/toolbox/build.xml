@@ -487,9 +487,10 @@
                 
                     <!-- if junit.class is defined, run only tests that match the class name -->
                     <include name="**/*Test.java" unless="junit.class"/>                
-                     <include name="**/test/*${junit.class}Test.java"/>
-                     
-                     <!-- exclude the GUI tests -->
+                    <!--include name="**/test/*${junit.class}Test.java"/-->
+                    <include name="${junit.class}"/> 
+                    
+                    <!-- exclude the GUI tests -->
                     <exclude name="**/ui/**/*Test.java" />
                     <exclude name="**/SwingUtilTest.java"/>
                     
@@ -527,100 +528,89 @@
 
 
     <!--=============================-->
-    <!--        CLOVER.INIT          -->
-    <!--=============================-->
-    <!--taskdef name="clover" 
-             classname="org.apache.tools.ant.taskdefs.CloverCompilerAdapter"
-             classpath="build/lib/clover.jar"/-->
-    
-    
-    <target name="clover.init" 
-            depends="init"
-            description="Initalizes clover environment">
-
-        <property name="clover.preserve" value="false"/>
-        <property name="clover.excludes" value="**/test/*"/>
-        
-        <mkdir dir="${clover}"/>
-            
-        <property name="clover.initstring" 
-                  value="${clover}/toolbox_coverage.db"/>
-                  
-        <path id="clover.classpath">
-            <pathelement path="${build.lib}/clover.jar"/>
-            <pathelement path="${build.lib}/velocity.jar"/>
-        </path>
-
-    </target>
-
-    
-    <!--=============================-->
     <!--        WITH.CLOVER          -->
     <!--=============================-->
-    <target name="with.clover" 
-            depends="clover.init"
-            description="Turns on use of clover">
+	<taskdef resource="clovertasks"/>
+
+	<target name="with.clover" 
+			depends="init"
+            description="Turns on usage of clover">
             
-        <property name="build.compiler"
-                  value="org.apache.tools.ant.taskdefs.CloverCompilerAdapter"/>
-    </target>
-
-
-    <!--=============================-->
-    <!--     CLOVER.REPORT.SWING     -->
-    <!--=============================-->
-    <target name="clover.report.swing" 
-            depends="clover.init"
-            description="Launches Swing based clover results viewer">
-            
-        <java classname="com.cortexeb.tools.clover.reporters.jfc.Viewer"
-              fork="yes">
-            <arg line="${clover.initstring}"/>
-            <classpath refid="clover.classpath"/>
-        </java>
-    </target>
-
-
-    <!--=============================-->
-    <!--     CLOVER.REPORT.HTML      -->
-    <!--=============================-->
-    <target name="clover.report.html" 
-            depends="clover.init"
-            description="Generates clover results HTML format">  
-            
-        <java classname="com.cortexeb.tools.clover.reporters.html.HtmlReporter">   
-            <arg line="--outputdir ${clover} --showSrc --initstring ${clover.initstring} --title 'Toolbox'"/>   
-            <classpath refid="clover.classpath"/>  
-        </java>
+        <mkdir dir="${clover}"/>
         
+	    <clover-setup initString="${clover}/coverage.db">
+            <files>
+                <exclude name="**/test/*.java"/>
+            </files>             
+	    </clover-setup>
+	</target>
+
+
+    <!--=============================-->
+    <!--        CLOVER.SWING         -->
+    <!--=============================-->
+	<target name="clover.swing" 
+			depends="with.clover" 
+			description="Launches Swing based GUI to view Clover coverage reports">
+	   <clover-view/>
+	</target>
+
+
+    <!--=============================-->
+    <!--        CLOVER.HTML          -->
+    <!--=============================-->
+	<target name="clover.html" 
+			depends="with.clover"
+			description="Generates Clover coverage report in HTML format">
+			
+	   <clover-report>
+	      <current outfile="${clover}">
+	         <format type="html"/>
+	      </current>
+	   </clover-report>
+	   
         <exec executable="cmd.exe">
             <arg line="/c start ${clover}/index.html"/>
         </exec>            
-       
-    </target>
+	   
+	</target>
+	
+	
+    <!--=============================-->
+    <!--        CLOVER.XML           -->
+    <!--=============================-->
+	<target name="clover.xml" 
+			depends="with.clover"
+			description="Generates Clover coverage data in XML">
+			
+	   <clover-report>
+	      <current outfile="${clover}/coverage.xml">
+	         <format type="xml"/>
+	      </current>
+	   </clover-report>
+	</target>
+	
+	
+    <!--=============================-->
+    <!--        CLOVER.PDF           -->
+    <!--=============================-->
+	<target name="clover.pdf" 
+			depends="with.clover"
+			description="Generates Clover summary report to a PDF file">
+			
+	   <clover-report>
+	      <current summary="yes" outfile="${clover}/coverage.pdf">
+	         <format type="pdf"/>
+	      </current>
+	   </clover-report>
+	</target>
 
 
-    <!--=============================-->
-    <!--    CLOVER.REPORT.CONSOLE    -->
-    <!--=============================-->
-    <target name="clover.report.console" 
-            depends="clover.init"
-            description="Outputs clover results to the console">  
-            
-        <java classname=
-            "com.cortexeb.tools.clover.reporters.emacs.EmacsCloverReporter">   
-            
-            <arg line="--level method --initstring ${clover.initstring} --title 'Toolbox'"/>   
-            <classpath refid="clover.classpath"/>
-        </java>
-    </target>
-    
-    
     <!--=============================-->
     <!--        CLOVER.CLEAN         -->
     <!--=============================-->
     <target name="clover.clean"
-            depends="clover.init"
+            depends="with.clover"
             description="Removes clover generated files">
                     
         <delete verbose="true" quiet="off">
@@ -628,7 +618,7 @@
         </delete>
         
     </target>
-    
+
     
     <!--=============================--> 
     <!--    BACKUP SRC               -->
@@ -722,6 +712,7 @@
     
     </target>
 
+
     <!--=============================--> 
     <!--          STATCVS            -->
     <!--=============================-->
@@ -742,82 +733,5 @@
             showCredits="no"/>
             
     </target>
-
-
-    <!--=============================--> 
-    <!--       OBFUSCATE             -->
-    <!--=============================-->
-    <!--
-    <taskdef name="obfuscate"
-             classname="com.yworks.yguard.ObfuscatorTask" 
-             classpath="build/lib/yguard.jar"/>
-
-    <target name="obfuscate"
-            depends="init" 
-            description="Creates obfuscated version of toolbox.jar">
-            
-        <obfuscate mainclass="toolbox.launcher.Main" 
-                   conserveManifest="true">
-                
-                
-                    
-            <inoutpair in="${dist}/toolbox.jar" out="${dist}/toolbox_obf.jar"/>
-    
-            <expose>
-                <class classes="protected" methods="protected" fields="protected"/>
-                
-                <class name="toolbox.findclass.Main"/>
-                
-                <class name="toolbox.showclasspath.Main"/>
-                <class name="toolbox.showpath.Main"/>
-                <class name="toolbox.jsourceview.JSourceView"/>
-                <class name="toolbox.jtail.JTail"/>
-                <class name="toolbox.tail.Main"/>
-                <class name="toolbox.tunnel.JTcpTunnel"/>
-                <class name="toolbox.tunnel.TcpTunnel"/>
-                <class name="toolbox.tree.Tree"/>
-                <class name="toolbox.sqlviewer.SQLViewer"/>
-                <class name="toolbox.util.Banner"/>
-                <class name="toolbox.util.ui.plugin.PluginWorkspace"/>
-
-                <class name="toolbox.jtail.FileSelectionPane"/>
-                <class name="toolbox.jtail.config.tinyxml.ConfigManager"/>
-                <class name="toolbox.tail.Tail"/>                
-                <class name="toolbox.util.concurrent.BlockingQueue"/>
-                <class name="toolbox.util.concurrent.BatchingQueueReader"/>                
-                <class name="toolbox.util.io.filter.ExtensionFilter"/>
-                <class name="toolbox.util.ui.ThreadSafeTableModel"/>
-                <class name="toolbox.util.ui.JFileExplorer"/>
-                <class name="toolbox.util.ClassUtil"/>
-                <class name="toolbox.util.StringUtil"/>
-                <class name="toolbox.util.SwingUtil"/>
-                <class name="toolbox.util.ThreadUtil"/>
-                <class name="toolbox.util.ui.plugin.ManagePluginsDialog"/>
-                
-                <class>
-                    <patternset>
-                        <include name="org."/>    
-                        <include name="com."/>
-                        <include name="net."/>
-                        <include name="toolbox.util.ui.JFlipPane*$*"/>                        
-                        <include name="toolbox.findclass.JFindClass*$*"/>
-                        <include name="toolbox.**.*Plugin"/>
-                    </patternset>
-                </class>
-
-                <method name="void main(java.lang.String[])">
-                    <patternset>
-                        <include name="toolbox."/>
-                    </patternset>
-                </method>
-                
-            </expose>
-            
-            
-        </obfuscate>
-        
-        
-    </target>
-    -->
     
 </project>
