@@ -15,7 +15,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
@@ -26,6 +25,7 @@ import org.jedit.syntax.XMLTokenMarker;
 import toolbox.jedit.JEditPopupMenu;
 import toolbox.jedit.JEditTextArea;
 import toolbox.jedit.JavaDefaults;
+import toolbox.junit.UITestCase;
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.JSmartComboBox;
 import toolbox.util.ui.JSmartLabel;
@@ -33,7 +33,7 @@ import toolbox.util.ui.JSmartLabel;
 /**
  * Unit test for JEditTextArea.
  */
-public class JEditTextAreaTest extends TestCase
+public class JEditTextAreaTest extends UITestCase
 {
     private static final Logger logger_ =
         Logger.getLogger(JEditTextAreaTest.class);
