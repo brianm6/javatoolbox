@@ -1,4 +1,4 @@
-package toolbox.util.ui.console;
+package toolbox.util.io;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FilterInputStream;

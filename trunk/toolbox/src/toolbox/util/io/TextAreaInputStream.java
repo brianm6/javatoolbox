@@ -1,4 +1,4 @@
-package toolbox.util.ui.console;
+package toolbox.util.io;
 
 import java.awt.Toolkit;
 import java.io.IOException;
