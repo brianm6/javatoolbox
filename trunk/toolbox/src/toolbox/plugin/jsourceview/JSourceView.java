@@ -1,16 +1,15 @@
 package toolbox.jsourceview;
 
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.LineNumberReader;
-
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -25,14 +24,12 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 
 import org.apache.log4j.Category;
-
 import toolbox.util.ArrayUtil;
 import toolbox.util.Queue;
 import toolbox.util.SwingUtil;
 import toolbox.util.io.CompoundFilter;
 import toolbox.util.io.DirectoryFilter;
 import toolbox.util.io.ExtensionFilter;
-import toolbox.util.io.OrFilter;
 import toolbox.util.ui.JSmartOptionPane;
 import toolbox.util.ui.ThreadSafeTableModel;
 
@@ -46,7 +43,7 @@ public class JSourceView extends JFrame implements ActionListener
         Category.getInstance(JSourceView.class);
         
     
-    private static OrFilter sourceFilter_;
+    private static FilenameFilter sourceFilter_;
 
     private static final String TEXT_GO     = "Go!";
     private static final String TEXT_CANCEL = "Cancel";
@@ -91,11 +88,14 @@ public class JSourceView extends JFrame implements ActionListener
     static
     {
         /* create filter to flesh out source files */
-        sourceFilter_ = new OrFilter();
-        sourceFilter_.addFilter(new ExtensionFilter("c"));
-        sourceFilter_.addFilter(new ExtensionFilter("cpp"));
-        sourceFilter_.addFilter(new ExtensionFilter("java"));
-        sourceFilter_.addFilter(new ExtensionFilter("h"));
+        sourceFilter_ = 
+            new CompoundFilter(
+                new CompoundFilter(
+                    new ExtensionFilter("c"),
+                    new ExtensionFilter("cpp")),
+                new CompoundFilter(
+                    new ExtensionFilter("java"),
+                    new ExtensionFilter("h")));
     }
 
 
