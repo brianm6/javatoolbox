@@ -54,6 +54,15 @@ public class SwingUtil
             
         UIManager.installLookAndFeel("SkinLF", 
             "com.l2fprod.gui.plaf.skin.SkinLookAndFeel");
+            
+        UIManager.installLookAndFeel("Plastic",
+            "com.jgoodies.plaf.plastic.PlasticLookAndFeel");
+            
+        UIManager.installLookAndFeel("Plastic3D",
+            "com.jgoodies.plaf.plastic.PlasticLookAndFeel");
+
+        UIManager.installLookAndFeel("PlasticXP",
+            "com.jgoodies.plaf.plastic.PlasticLookAndFeel");
     }
 
     //--------------------------------------------------------------------------
