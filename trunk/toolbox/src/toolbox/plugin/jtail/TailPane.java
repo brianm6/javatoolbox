@@ -335,18 +335,7 @@ public class TailPane extends JPanel implements ActionListener
             
         if (tail_.isAlive())
             tail_.stop();
-            
-        firePaneClosing();            
     }   
-
-
-    /** 
-     * Spread closing event
-     */
-    protected void firePaneClosing()
-    {
-        // TODO:                
-    }    
 
     
     /**
@@ -387,8 +376,8 @@ public class TailPane extends JPanel implements ActionListener
 
         autoScrollBox_.setSelected(config_.isAutoScroll());
         tailArea_.setAutoScroll(config_.isAutoScroll());
-            
         lineNumbersBox_.setSelected(config_.isShowLineNumbers());
+        tailArea_.setFont(config_.getFont());
     }
 
 
@@ -402,6 +391,7 @@ public class TailPane extends JPanel implements ActionListener
         // Make sure configuration up to date
         config_.setAutoScroll(autoScrollBox_.isSelected());
         config_.setShowLineNumbers(lineNumbersBox_.isSelected());
+        config_.setFont(tailArea_.getFont());
         return config_;
     }    
  
@@ -423,5 +413,6 @@ public class TailPane extends JPanel implements ActionListener
     public void setTailFont(Font font)
     {
         tailArea_.setFont(font);
+        config_.setFont(font);
     }
 }
