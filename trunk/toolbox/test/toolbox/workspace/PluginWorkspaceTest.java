@@ -58,12 +58,12 @@ public class PluginWorkspaceTest extends UITestCase
      */
     protected void setUp() throws Exception
     {
-        //JemmyProperties.setCurrentDispatchingModel(
-        //    JemmyProperties.ROBOT_MODEL_MASK);
+        JemmyProperties.setCurrentDispatchingModel(
+            JemmyProperties.ROBOT_MODEL_MASK);
 
         JemmyProperties.setCurrentOutput(TestOut.getNullOutput());
         
-        String prefsFile = "toolbox-" + FileUtil.createTempFilename() + ".xml";
+        String prefsFile = FileUtil.createTempFilename() + "-toolbox.xml";
         workspace_ = new PluginWorkspace(prefsFile);
         window_ = new JFrameOperator(workspace_);
     }
