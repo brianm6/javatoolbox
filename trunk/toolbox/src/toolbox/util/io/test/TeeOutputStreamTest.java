@@ -61,9 +61,10 @@ public class TeeOutputStreamTest extends TestCase
         TeeOutputStream tos = new TeeOutputStream(sos1, sos2);
         
         tos.write(testString.getBytes());
+        tos.write(100);
         
-        assertEquals(testString, sos1.getBuffer().toString());
-        assertEquals(testString, sos2.getBuffer().toString());
+        assertEquals(testString + (char)100, sos1.getBuffer().toString());
+        assertEquals(testString + (char)100, sos2.getBuffer().toString());
         
         tos.flush();
         tos.close();
