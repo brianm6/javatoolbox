@@ -15,6 +15,15 @@ public class ServiceException extends Exception
     
     /**
      * Creates a ServiceException.
+     */
+    public ServiceException(String message)
+    {
+        super(message);
+    }
+    
+    
+    /**
+     * Creates a ServiceException.
      * 
      * @param t Originating exception.
      */
