@@ -32,11 +32,9 @@ package toolbox;
  * =============================================================================
  * TODO: icons for execute all, execute selected, execute current
  * TODO: Ctrl-Up/Down should scroll through query history
- * TODO: Enable connect/disconnect buttons based on state
  * TODO: Build error pane because dialog boxes are annoying
  * TODO: Update ExecuteCurrentAction to execute multiple sql statements within
  *       a selection.
- * TODO: SQL stmts in editor popup menu are too long
  * =============================================================================
  * 								FindClassPlugin
  * =============================================================================
@@ -74,6 +72,9 @@ package toolbox;
  *  - Made the jar search activity an async operation in the FindClassPlugin  
  *  - JEditTextArea now has ability to save the contents between instances
  *  - JDBCPlugin sql editor now makes use of JEditTextArea saving contents  
+ *  - SQL stmts in editor popup menu are now formatted multiline
+ *  - Connect/Disconnect buttons in JDBCPlugin merged into a single button 
+ *  - SearchTargetPanel extracted from FindClassPane as top level class
  * 
  * February 2004
  * 	- Add Plugin menu
