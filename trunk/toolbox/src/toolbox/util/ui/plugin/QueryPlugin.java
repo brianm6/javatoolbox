@@ -98,18 +98,6 @@ public class QueryPlugin extends JPanel implements IPlugin
      */
     public QueryPlugin()
     {
-        buildView();
-    }
-    
-    /**
-     * Constructor for QueryPlugin.
-     * 
-     * @param  statusBar  IStatusBar interface
-     */
-    public QueryPlugin(IStatusBar statusBar)
-    {
-        setStatusBar(statusBar);
-        buildView(); 
     }
     
     //--------------------------------------------------------------------------
@@ -265,14 +253,15 @@ public class QueryPlugin extends JPanel implements IPlugin
     //--------------------------------------------------------------------------
 
     /**
-     * @see com.swa.turbo.util.ui.IPlugin#init()
+     * @see toolbox.util.ui.plugin.IPlugin#init()
      */
     public void init()
     {
+        buildView();
     }
 
     /**
-     * @return The plugin name
+     * @see toolbox.util.ui.plugin.IPlugin#getName()
      */
     public String getName()
     {
@@ -280,8 +269,7 @@ public class QueryPlugin extends JPanel implements IPlugin
     }
 
     /**
-     * @return  Visual representation of the plugin. In our case, the query
-     *          panel.
+     * @see toolbox.util.ui.plugin.IPlugin#getComponent()
      */
     public Component getComponent()
     {
@@ -289,7 +277,7 @@ public class QueryPlugin extends JPanel implements IPlugin
     }
 
     /**
-     * @see com.swa.turbo.pos.comm.proxy.ui.IPlugin#getMenuBar()
+     * @see toolbox.util.ui.plugin.IPlugin#getMenuBar()
      */
     public JMenuBar getMenuBar()
     {
@@ -300,6 +288,7 @@ public class QueryPlugin extends JPanel implements IPlugin
      * Saves contents of sqlPopupMenu to a Properties object 
      * 
      * @param  prefs  Preferences object
+     * @see    toolbox.util.ui.plugin.IPlugin#applyPrefs(Properties)
      */
     public void applyPrefs(Properties prefs)
     {
@@ -328,6 +317,7 @@ public class QueryPlugin extends JPanel implements IPlugin
      * Restores the of the sqlPopupMenu from a Properties object
      * 
      * @param  prefs  Preferences object
+     * @see    toolbox.util.ui.plugin.IPlugin#savePrefs(Properties)
      */
     public void savePrefs(Properties prefs)
     {
@@ -348,7 +338,7 @@ public class QueryPlugin extends JPanel implements IPlugin
     }
 
     /**
-     * @see com.swa.turbo.util.ui.IPlugin#setStatusBar(IStatusBar)
+     * @see toolbox.util.ui.plugin.IPlugin#setStatusBar(IStatusBar)
      */
     public void setStatusBar(IStatusBar statusBar)
     {
@@ -356,7 +346,7 @@ public class QueryPlugin extends JPanel implements IPlugin
     }
     
     /**
-     * @see com.swa.turbo.util.ui.IPlugin#shutdown()
+     * @see toolbox.util.ui.plugin.IPlugin#shutdown()
      */
     public void shutdown()
     {
@@ -366,6 +356,9 @@ public class QueryPlugin extends JPanel implements IPlugin
     //  Inner Classes
     //--------------------------------------------------------------------------
     
+    /**
+     * Listener for the popup menu with the sql history
+     */
     class PopupListener extends MouseAdapter
     {
         public void mousePressed(MouseEvent e)
@@ -440,7 +433,6 @@ public class QueryPlugin extends JPanel implements IPlugin
         }
     }
     
-    
     /**
      * Clears the output
      */
@@ -458,7 +450,6 @@ public class QueryPlugin extends JPanel implements IPlugin
             outputArea_.setText("");            
         }
     }
-    
     
     /**
      * Connects to the database
