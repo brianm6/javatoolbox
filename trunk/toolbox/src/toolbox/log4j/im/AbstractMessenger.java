@@ -12,15 +12,16 @@ import hamsam.protocol.ProtocolManager;
 import java.util.Map;
 
 import edu.emory.mathcs.util.concurrent.BlockingQueue;
+import edu.emory.mathcs.util.concurrent.ExecutorService;
+import edu.emory.mathcs.util.concurrent.Executors;
 import edu.emory.mathcs.util.concurrent.LinkedBlockingQueue;
 
 import org.apache.commons.collections.MapUtils;
 import org.apache.log4j.Logger;
 import org.apache.log4j.helpers.LogLog;
 
+import toolbox.util.ExceptionUtil;
 import toolbox.util.ThreadUtil;
-import toolbox.util.invoker.Invoker;
-import toolbox.util.invoker.QueuedInvoker;
 import toolbox.util.service.Destroyable;
 import toolbox.util.service.Initializable;
 import toolbox.util.service.ServiceException;
@@ -82,11 +83,11 @@ public abstract class AbstractMessenger
     /**
      * Invoker used to handle the sending of messages.
      */
-    private Invoker invoker_;
+    private ExecutorService invoker_;
 
     /**
      * Throttle delay for consecutive messages so the messenger server does
-     * not get overwhelmed.
+     * not get flooded with messages and terminate the connection.
      */
     private int throttle_;
     
@@ -145,7 +146,7 @@ public abstract class AbstractMessenger
     {
         machine_.checkTransition(ServiceTransition.INITIALIZE);
         
-        invoker_ = new QueuedInvoker();
+        invoker_ = Executors.newSingleThreadExecutor();
         protocols_ = ProtocolManager.getAvailableProtocols();
         messenger_ = protocols_[getProtocol()];
         messenger_.setListener(listener_ = new MessengerListener());
@@ -164,6 +165,8 @@ public abstract class AbstractMessenger
     //--------------------------------------------------------------------------
     
     /**
+     * Shuts down the invoker.
+     * 
      * @see toolbox.util.service.Destroyable#destroy()
      */
     public void destroy() throws ServiceException 
@@ -172,7 +175,7 @@ public abstract class AbstractMessenger
         
         try
         {
-            invoker_.destroy();
+            invoker_.shutdown();
         }
         catch (Exception e)
         {
@@ -237,16 +240,8 @@ public abstract class AbstractMessenger
     {
         try
         {
-            QueuedInvoker qi = (QueuedInvoker) invoker_;
-
-            while (!qi.isEmpty())
-            {
-                LogLog.debug("Messages waiting to be sent before logout: " +
-                    qi.getSize());
-
-                ThreadUtil.sleep(throttle_);
-            }
-
+            // Destroy waits until all messages on the invocation queue are
+            // transmitted so we don't need to clean up here.
             messenger_.disconnect();
             LogLog.debug("Waiting for disconnect ack...");
             listener_.waitForDisconnect();
@@ -273,7 +268,7 @@ public abstract class AbstractMessenger
 
         try
         {
-            invoker_.invoke(new Runnable()
+            invoker_.submit(new Runnable()
             {
                 public void run()
                 {
@@ -281,14 +276,14 @@ public abstract class AbstractMessenger
                     {
                         //getPrivateChatInstance(buddy).sendMessage(msg);
                         messenger_.sendInstantMessage(buddy, msg);
-
                     }
                     catch (IllegalStateException e)
                     {
-                        e.printStackTrace();
+                        LogLog.error(ExceptionUtil.getStackTrace(e));
                     }
                     finally
                     {
+                        // Delay after every message sent.
                         ThreadUtil.sleep(throttle_);
                     }
                 }
@@ -406,8 +401,10 @@ public abstract class AbstractMessenger
         {
 
             LogLog.debug(
-                "Connect to " + protocol.getProtocolName() +
-                " failed: " + reasonMessage);
+                "Connect to " 
+                + protocol.getProtocolName() 
+                + " failed: " 
+                + reasonMessage);
 
             try
             {
@@ -442,6 +439,7 @@ public abstract class AbstractMessenger
             {
                 logger_.error(e);
             }
+            
             LogLog.debug("Disconnected from " + protocol.getProtocolName());
         }
 
