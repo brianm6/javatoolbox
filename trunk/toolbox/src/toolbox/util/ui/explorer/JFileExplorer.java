@@ -59,7 +59,7 @@ import toolbox.util.ui.tree.SmartTreeCellRenderer;
 import toolbox.workspace.IPreferenced;
 
 /**
- * Explorer like tree based file browser component.
+ * File explorer UI component.
  */
 public class JFileExplorer extends JPanel implements IPreferenced
 {
@@ -84,10 +84,14 @@ public class JFileExplorer extends JPanel implements IPreferenced
     private JPopupMenu      folderPopup_;
 
     private String currentPath_;
-    private Icon   driveIcon_;
+    
+    /**
+     * Drive icon used in the root combo box.
+     */
+    private Icon driveIcon_;
 
     /** 
-     * List of interested listeners. 
+     * List of objects interested in file explorer generated events. 
      */ 
     private JFileExplorerListener[] fileExplorerListeners_;
 
