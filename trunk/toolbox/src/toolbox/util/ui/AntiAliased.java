@@ -7,6 +7,12 @@ package toolbox.util.ui;
 public interface AntiAliased
 {
     /**
+     * Javabean property name for the antialised property. 
+     */
+    String PROP_ANTIALIAS = "antiAliased";
+
+
+    /**
      * Returns true if antialiasing is turned on, false otherwise.
      * 
      * @return boolean
