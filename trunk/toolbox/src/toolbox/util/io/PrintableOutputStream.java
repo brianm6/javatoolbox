@@ -72,7 +72,7 @@ public class PrintableOutputStream extends FilterOutputStream
         
         if (!enabled_)
             super.write(b);
-        else if (b >=  32 && b <= 126) 
+        else if ((b >=  32 && b <= 126) || c == '\n' || c == '\t') 
             super.write(b);
         else if (!StringUtil.isNullOrEmpty(replacement_))
             out.write(replacement_.getBytes());  // Is this a NO NO?
