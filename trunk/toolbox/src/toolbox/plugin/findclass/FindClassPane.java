@@ -42,6 +42,7 @@ import net.sf.jode.decompiler.Decompiler;
 
 import org.apache.log4j.Logger;
 
+import toolbox.util.ClassUtil;
 import toolbox.util.DateTimeUtil;
 import toolbox.util.MathUtil;
 import toolbox.util.StringUtil;
@@ -494,7 +495,7 @@ public class JFindClass extends JFrame
          */       
         public void fileDoubleClicked(String file)
         {
-            if (FindClass.isArchive(file))
+            if (ClassUtil.isArchive(file))
                 searchListModel_.addElement(file);
             else
                 statusBar_.setStatus(file + " is not a valid archive.");
