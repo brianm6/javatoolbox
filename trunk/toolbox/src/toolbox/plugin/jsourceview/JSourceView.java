@@ -26,7 +26,6 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
@@ -45,10 +44,17 @@ import toolbox.util.XOMUtil;
 import toolbox.util.io.filter.DirectoryFilter;
 import toolbox.util.io.filter.ExtensionFilter;
 import toolbox.util.io.filter.OrFilter;
+import toolbox.util.ui.JSmartButton;
+import toolbox.util.ui.JSmartLabel;
+import toolbox.util.ui.JSmartMenu;
+import toolbox.util.ui.JSmartMenuItem;
+import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.SmartAction;
 import toolbox.util.ui.plugin.IPreferenced;
 import toolbox.util.ui.plugin.IStatusBar;
 import toolbox.util.ui.plugin.WorkspaceAction;
+import toolbox.util.ui.table.JSmartTableHeader;
+import toolbox.util.ui.table.SmartDefaultTableCellRenderer;
 import toolbox.util.ui.table.SmartTableModel;
 import toolbox.util.ui.table.TableSorter;
 
@@ -236,17 +242,17 @@ public class JSourceView extends JPanel implements IPreferenced
     {
         setLayout(new BorderLayout());
         
-        dirField_ = new JTextField(25);
-        goButton_ = new JButton();
-        pickDirButton_ = new JButton(new PickDirectoryAction());
+        dirField_ = new JSmartTextField(25);
+        goButton_ = new JSmartButton();
+        pickDirButton_ = new JSmartButton(new PickDirectoryAction());
         
         JPanel topPanel = new JPanel();
-        scanStatusLabel_ = new JLabel(" ");
-        parseStatusLabel_ = new JLabel(" ");
+        scanStatusLabel_ = new JSmartLabel(" ");
+        parseStatusLabel_ = new JSmartLabel(" ");
         menuBar_ = new JMenuBar();
         
         topPanel.setLayout(new FlowLayout());
-        topPanel.add(new JLabel("Directory"));
+        topPanel.add(new JSmartLabel("Directory"));
         
         GridBagLayout gbl = new GridBagLayout();
         GridBagConstraints gbc = new GridBagConstraints();
@@ -344,6 +350,8 @@ public class JSourceView extends JPanel implements IPreferenced
         column.setMinWidth(min);
         column.setPreferredWidth(pref);
         column.setMaxWidth(max);
+        
+        table_.setTableHeader(new JSmartTableHeader(columnModel));
     }
     
     /**
@@ -353,8 +361,8 @@ public class JSourceView extends JPanel implements IPreferenced
      */
     protected JMenuBar createMenuBar()
     {
-        JMenu jmenu = new JMenu("File");
-        saveMenuItem_ = new JMenuItem(new SaveResultsAction());
+        JMenu jmenu = new JSmartMenu("File");
+        saveMenuItem_ = new JSmartMenuItem(new SaveResultsAction());
         jmenu.add(saveMenuItem_);
         menuBar_.add(jmenu);
         
@@ -666,7 +674,7 @@ public class JSourceView extends JPanel implements IPreferenced
     /**
      * Renderer for the contents of the table
      */   
-    class TableCellRenderer extends DefaultTableCellRenderer
+    class TableCellRenderer extends SmartDefaultTableCellRenderer
     {
         private DecimalFormat decimalFormatter_;
         private NumberFormat percentFormatter_;

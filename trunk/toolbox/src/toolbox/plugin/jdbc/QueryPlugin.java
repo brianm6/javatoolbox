@@ -18,14 +18,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
-import nu.xom.Element;
-import nu.xom.Elements;
-
 import org.apache.log4j.Logger;
 
 import org.jedit.syntax.KeywordMap;
 import org.jedit.syntax.SQLTokenMarker;
 import org.jedit.syntax.TextAreaDefaults;
+import nu.xom.Element;
+import nu.xom.Elements;
 
 import toolbox.jedit.JEditTextArea;
 import toolbox.jedit.JavaDefaults;
@@ -36,6 +35,7 @@ import toolbox.util.Stringz;
 import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.ui.JConveyorPopupMenu;
+import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartSplitPane;
 import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.SmartAction;
@@ -217,14 +217,14 @@ public class QueryPlugin extends JPanel implements IPlugin
         // Buttons 
         JPanel buttonPanel = new JPanel(new FlowLayout());
             
-        queryButton_ = new JButton(new ExecuteAction());
+        queryButton_ = new JSmartButton(new ExecuteAction());
         buttonPanel.add(queryButton_);
 
-        clearButton_ = new JButton(resultsArea_.new ClearAction());
+        clearButton_ = new JSmartButton(resultsArea_.new ClearAction());
         buttonPanel.add(clearButton_);
         
-        buttonPanel.add(new JButton(new ListTablesAction()));
-        buttonPanel.add(new JButton(new ListColumnsAction()));
+        buttonPanel.add(new JSmartButton(new ListTablesAction()));
+        buttonPanel.add(new JSmartButton(new ListColumnsAction()));
 
         // Root 
         setLayout(new BorderLayout());

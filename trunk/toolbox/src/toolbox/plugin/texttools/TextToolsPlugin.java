@@ -13,9 +13,7 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import javax.swing.AbstractAction;
-import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -36,8 +34,11 @@ import toolbox.util.StringUtil;
 import toolbox.util.Stringz;
 import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
+import toolbox.util.ui.JSmartButton;
+import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartSplitPane;
 import toolbox.util.ui.JSmartTextArea;
+import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.SmartAction;
 import toolbox.util.ui.flippane.JFlipPane;
 
@@ -122,9 +123,9 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
         // Buttons 
         JPanel buttonPanel = new JPanel(new FlowLayout());
             
-        buttonPanel.add(new JButton(new SortAction()));
-        buttonPanel.add(new JButton(new BannerAction()));
-        buttonPanel.add(new JButton(outputArea_.new ClearAction()));
+        buttonPanel.add(new JSmartButton(new SortAction()));
+        buttonPanel.add(new JSmartButton(new BannerAction()));
+        buttonPanel.add(new JSmartButton(outputArea_.new ClearAction()));
         
         // Root 
         setLayout(new BorderLayout());
@@ -352,9 +353,9 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
         {
             setLayout(new FlowLayout());
             
-            add(new JLabel("Filter"));
-            add(filterField_ = new JTextField(20));
-            add(new JLabel("(regular expression)"));
+            add(new JSmartLabel("Filter"));
+            add(filterField_ = new JSmartTextField(20));
+            add(new JSmartLabel("(regular expression)"));
             filterField_.addKeyListener(new FilterKeyListener());
             
             docListener_ = new TextChangedListener();
@@ -478,10 +479,10 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
         {
             setLayout(new FlowLayout());
             
-            add(new JLabel("Token Delimiter"));
-            add(delimiterField_ = new JTextField(20));
-            add(new JButton(new TokenizeAction()));
-            add(new JButton(new SingleLineAction()));
+            add(new JSmartLabel("Token Delimiter"));
+            add(delimiterField_ = new JSmartTextField(20));
+            add(new JSmartButton(new TokenizeAction()));
+            add(new JSmartButton(new SingleLineAction()));
         }
         
         /** 
@@ -545,12 +546,12 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
         void buildView()
         {
             setLayout(new FlowLayout());
-            add(new JButton(new Base64EncodeAction()));
-            add(new JButton(new Base64DecodeAction()));
-            add(new JButton(new HTMLEncodeAction()));
-            add(new JButton(new HTMLDecodeAction()));
-            add(new JButton(new XMLEncodeAction()));
-            add(new JButton(new XMLDecodeAction()));
+            add(new JSmartButton(new Base64EncodeAction()));
+            add(new JSmartButton(new Base64DecodeAction()));
+            add(new JSmartButton(new HTMLEncodeAction()));
+            add(new JSmartButton(new HTMLDecodeAction()));
+            add(new JSmartButton(new XMLEncodeAction()));
+            add(new JSmartButton(new XMLDecodeAction()));
         }
         
         class Base64EncodeAction extends AbstractAction

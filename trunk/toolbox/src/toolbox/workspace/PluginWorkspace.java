@@ -51,6 +51,9 @@ import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.io.StringOutputStream;
 import toolbox.util.ui.ImageCache;
+import toolbox.util.ui.JSmartCheckBoxMenuItem;
+import toolbox.util.ui.JSmartMenu;
+import toolbox.util.ui.JSmartMenuItem;
 import toolbox.util.ui.tabbedpane.JSmartTabbedPane;
 import toolbox.util.ui.tabbedpane.SmartTabbedPaneListener;
 
@@ -390,13 +393,13 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      */
     protected JMenuBar createMenuBar()
     {
-        JMenu fileMenu = new JMenu("File");
+        JMenu fileMenu = new JSmartMenu("File");
         fileMenu.setMnemonic('F');        
-        fileMenu.add(new PluginsAction());
-        fileMenu.add(new SavePreferencesAction());
+        fileMenu.add(new JSmartMenuItem(new PluginsAction()));
+        fileMenu.add(new JSmartMenuItem(new SavePreferencesAction()));
         fileMenu.add(createLookAndFeelMenu());
-        fileMenu.add(new GarbageCollectAction());
-        fileMenu.add(new ExitAction());            
+        fileMenu.add(new JSmartMenuItem(new GarbageCollectAction()));
+        fileMenu.add(new JSmartMenuItem(new ExitAction()));            
         
         JMenuBar menubar = new JMenuBar();
         menubar.add(fileMenu);
@@ -411,7 +414,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      */
     protected JMenu createLookAndFeelMenu()
     {
-        lookAndFeelMenu_ = new JMenu("Look and Feel");
+        lookAndFeelMenu_ = new JSmartMenu("Look and Feel");
         
         UIManager.LookAndFeelInfo[] lookAndFeels_ = SwingUtil.getLAFs();
         ButtonGroup group = new ButtonGroup();
@@ -419,7 +422,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         for (int i=0; i<lookAndFeels_.length; i++)
         {
             JCheckBoxMenuItem lookAndFeelItem_ = 
-                new JCheckBoxMenuItem(new SetLAFAction(lookAndFeels_[i]));
+                new JSmartCheckBoxMenuItem(new SetLAFAction(lookAndFeels_[i]));
             
             group.add(lookAndFeelItem_);
             lookAndFeelMenu_.add(lookAndFeelItem_);
@@ -438,11 +441,12 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      */
     protected JMenu createThemesMenu()
     {
-        JMenu menu = new JMenu("Themes");
+        JMenu menu = new JSmartMenu("Themes");
         List themes = PlasticLookAndFeel.getInstalledThemes();
         
         for (int i=0, n=themes.size(); i<n; i++)
-            menu.add(new SetThemeAction((PlasticTheme) themes.get(i)));
+            menu.add(new JSmartMenuItem(
+                new SetThemeAction((PlasticTheme) themes.get(i))));
         
         return menu;
     }

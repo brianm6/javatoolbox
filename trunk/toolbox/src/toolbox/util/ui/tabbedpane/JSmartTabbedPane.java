@@ -1,6 +1,7 @@
 package toolbox.util.ui.tabbedpane;
 
 import java.awt.Component;
+import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -12,11 +13,13 @@ import javax.swing.SwingConstants;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
+import toolbox.util.SwingUtil;
+import toolbox.util.ui.AntiAliased;
 
 /**
  * A JTabbedPane which has an icon on each tab to close the tab.
  */
-public class JSmartTabbedPane extends JTabbedPane
+public class JSmartTabbedPane extends JTabbedPane implements AntiAliased
 {
     private static final Logger logger_ =
         Logger.getLogger(JSmartTabbedPane.class);
@@ -25,7 +28,7 @@ public class JSmartTabbedPane extends JTabbedPane
      * Listeners
      */
     private SmartTabbedPaneListener[] listeners_;
-        
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -40,6 +43,29 @@ public class JSmartTabbedPane extends JTabbedPane
         listeners_ = new SmartTabbedPaneListener[0];
         
         //addPropertyChangeListener(new DebugPropertyChangeListener());
+    }
+
+    /**
+     * @param tabPlacement
+     */
+    public JSmartTabbedPane(int tabPlacement)
+    {
+        super(tabPlacement);
+        setUI(new SmartTabbedPaneUI(SwingConstants.LEFT));
+        addMouseListener(new MouseListener());
+        listeners_ = new SmartTabbedPaneListener[0];
+    }
+
+    /**
+     * @param tabPlacement
+     * @param tabLayoutPolicy
+     */
+    public JSmartTabbedPane(int tabPlacement, int tabLayoutPolicy)
+    {
+        super(tabPlacement, tabLayoutPolicy);
+        setUI(new SmartTabbedPaneUI(SwingConstants.LEFT));
+        addMouseListener(new MouseListener());
+        listeners_ = new SmartTabbedPaneListener[0];
     }
 
     //--------------------------------------------------------------------------
@@ -107,6 +133,40 @@ public class JSmartTabbedPane extends JTabbedPane
         for (int i=0; 
              i<listeners_.length; 
              listeners_[i++].tabClosing(this, tabIndex));        
+    }
+    
+    //--------------------------------------------------------------------------
+    // AntiAliased Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see toolbox.util.ui.AntiAliased#isAntiAlias()
+     */
+    public boolean isAntiAliased()
+    {
+        // TODO: fix me
+        return false;
+        //return SwingUtil.isAntiAliased();
+    }
+
+    /**
+     * @see toolbox.util.ui.AntiAliased#setAntiAlias(boolean)
+     */
+    public void setAntiAliased(boolean b)
+    {
+    }
+    
+    //--------------------------------------------------------------------------
+    // Overrides JComponent
+    //--------------------------------------------------------------------------
+
+    /**
+     * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
+     */
+    public void paintComponent(Graphics gc)
+    {
+        SwingUtil.makeAntiAliased(gc, isAntiAliased());
+        super.paintComponent(gc);
     }
     
     //--------------------------------------------------------------------------

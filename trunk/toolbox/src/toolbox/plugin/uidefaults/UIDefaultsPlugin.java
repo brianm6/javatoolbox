@@ -19,7 +19,6 @@ import java.util.TreeMap;
 import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -37,6 +36,12 @@ import nu.xom.Element;
 
 import toolbox.util.ExceptionUtil;
 import toolbox.util.SwingUtil;
+import toolbox.util.ui.JSmartButton;
+
+
+
+import toolbox.util.ui.JSmartLabel;
+import toolbox.util.ui.tabbedpane.JSmartTabbedPane;
 
 /**
  * Shows UIDefaults for each widget in Swing's library for a given Look and Feel
@@ -155,7 +160,7 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
 
         for (int i=0; i<info.length; i++)
         {
-            JButton button = new JButton(info[i].getName());
+            JButton button = new JSmartButton(info[i].getName());
             button.addActionListener(this);    
             buttons.add(button);
             infoMap_.put(info[i].getName(), info[i]);
@@ -181,7 +186,7 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
                 componentMap.put(key, value);
         }
 
-        JTabbedPane pane = new JTabbedPane(SwingConstants.BOTTOM);
+        JTabbedPane pane = new JSmartTabbedPane(SwingConstants.BOTTOM);
         pane.setPreferredSize(new Dimension(800, 400));
         addComponentTabs(pane, components);
 
@@ -332,7 +337,7 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
         }
     }
 
-    class SampleRenderer extends JLabel implements TableCellRenderer
+    class SampleRenderer extends JSmartLabel implements TableCellRenderer
     {
         public SampleRenderer()
         {

@@ -4,9 +4,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
@@ -21,6 +19,10 @@ import toolbox.util.ExceptionUtil;
 import toolbox.util.JDBCUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.ui.ImageCache;
+import toolbox.util.ui.JSmartButton;
+import toolbox.util.ui.JSmartComboBox;
+import toolbox.util.ui.JSmartLabel;
+import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.layout.ParagraphLayout;
 import toolbox.util.ui.plugin.IPreferenced;
 import toolbox.util.ui.plugin.IStatusBar;
@@ -139,8 +141,8 @@ public class DBConfig extends JPanel implements IPreferenced
     {
         setLayout(new ParagraphLayout());
 
-        add(new JLabel("Profile"), ParagraphLayout.NEW_PARAGRAPH);
-        add(profileCombo_ = new JComboBox());
+        add(new JSmartLabel("Profile"), ParagraphLayout.NEW_PARAGRAPH);
+        add(profileCombo_ = new JSmartComboBox());
         profileCombo_.setEditable(true);
         profileCombo_.setAction(new ProfileChangedAction());
         
@@ -151,20 +153,20 @@ public class DBConfig extends JPanel implements IPreferenced
         tb.add(new DeleteAction());
         add(tb);
                 
-        add(new JLabel("Driver"), ParagraphLayout.NEW_PARAGRAPH);
-        add(driverField_ = new JTextField(20));
+        add(new JSmartLabel("Driver"), ParagraphLayout.NEW_PARAGRAPH);
+        add(driverField_ = new JSmartTextField(20));
 
-        add(new JLabel("URL"), ParagraphLayout.NEW_PARAGRAPH);
-        add(urlField_ = new JTextField(20));
+        add(new JSmartLabel("URL"), ParagraphLayout.NEW_PARAGRAPH);
+        add(urlField_ = new JSmartTextField(20));
     
-        add(new JLabel("User"), ParagraphLayout.NEW_PARAGRAPH);
-        add(userField_ = new JTextField(15));
+        add(new JSmartLabel("User"), ParagraphLayout.NEW_PARAGRAPH);
+        add(userField_ = new JSmartTextField(15));
      
-        add(new JLabel("Password"), ParagraphLayout.NEW_PARAGRAPH);
-        add(passwordField_ = new JTextField(15));
+        add(new JSmartLabel("Password"), ParagraphLayout.NEW_PARAGRAPH);
+        add(passwordField_ = new JSmartTextField(15));
 
-        add(new JLabel(""), ParagraphLayout.NEW_PARAGRAPH);
-        add(new JButton(new ConnectAction()));
+        add(new JSmartLabel(""), ParagraphLayout.NEW_PARAGRAPH);
+        add(new JSmartButton(new ConnectAction()));
     }
 
     //--------------------------------------------------------------------------
@@ -241,7 +243,6 @@ public class DBConfig extends JPanel implements IPreferenced
        
         prefs.appendChild(dbConfig);        
     }
-
     
     //--------------------------------------------------------------------------
     // Actions

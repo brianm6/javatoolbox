@@ -455,7 +455,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
     protected void buildView(boolean verticalSplitter)
     {
         // File system roots combobox
-        rootsComboBox_ = new JComboBox(File.listRoots());
+        rootsComboBox_ = new JSmartComboBox(File.listRoots());
         rootsComboBox_.setSelectedItem(new File(getDefaultRoot()));
         rootsComboBox_.addItemListener(new DriveComboListener());
         driveIcon_= ImageCache.getIcon(ImageCache.IMAGE_HARD_DRIVE);
@@ -743,7 +743,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
     /**
      * Inner class for rendering our own display for the Roots drop down menu.
      */
-    class DriveIconCellRenderer extends JLabel implements ListCellRenderer
+    class DriveIconCellRenderer extends JSmartLabel implements ListCellRenderer
     {
         DriveIconCellRenderer()
         {
@@ -894,16 +894,16 @@ public class JFileExplorer extends JPanel implements IPreferenced
         {
             df_ = new DecimalFormat();
             
-            sizeLabel_ = new JLabel();
+            sizeLabel_ = new JSmartLabel();
             sizeLabel_.setHorizontalAlignment(SwingConstants.CENTER);
             
-            modifiedLabel_ = new JLabel();
+            modifiedLabel_ = new JSmartLabel();
             modifiedLabel_.setHorizontalAlignment(SwingConstants.CENTER);
             
-            attribLabel_ = new JLabel();
+            attribLabel_ = new JSmartLabel();
 
             refreshLabel_ = 
-                new JLabel(ImageCache.getIcon(ImageCache.IMAGE_REFRESH));
+                new JSmartLabel(ImageCache.getIcon(ImageCache.IMAGE_REFRESH));
             
             refreshLabel_.addMouseListener(new MouseAdapter()
             {
