@@ -7,7 +7,6 @@ import java.util.Map;
 
 import edu.uci.ics.jung.visualization.FRLayout;
 import edu.uci.ics.jung.visualization.ISOMLayout;
-import edu.uci.ics.jung.visualization.Layout;
 import edu.uci.ics.jung.visualization.SpringLayout;
 import edu.uci.ics.jung.visualization.contrib.CircleLayout;
 import edu.uci.ics.jung.visualization.contrib.DAGLayout;
