@@ -1,22 +1,26 @@
 package toolbox.util.db;
 
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
 import nu.xom.Element;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.PreferencedUtil;
 import toolbox.util.XOMUtil;
+import toolbox.util.formatter.AbstractFormatter;
 import toolbox.workspace.IPreferenced;
 
 /**
  * SQLFormatter is a pretty printer for SQL statements.
  */
-public class SQLFormatter implements IPreferenced
+public class SQLFormatter extends AbstractFormatter implements IPreferenced
 {
     private static final Logger logger_ = Logger.getLogger(SQLFormatter.class);
     
@@ -212,6 +216,7 @@ public class SQLFormatter implements IPreferenced
      */
     public SQLFormatter()
     {
+        super("SQL Formatter");
         setNewLine("\n");
         setIndent(4);
         setMajorCapsMode(CapsMode.PRESERVE);
@@ -397,14 +402,13 @@ public class SQLFormatter implements IPreferenced
     //--------------------------------------------------------------------------
     
     /**
-     * Returns a formatted sql statement.
-     * 
-     * @param sql SQL statement to format.
-     * @return Formatted SQL statement.
+     * @see toolbox.util.formatter.Formatter#format(java.io.InputStream,
+     *      java.io.OutputStream)
      */
-    public String format(String sql)
+    public void format(InputStream input, OutputStream output) throws Exception
     {
         List escapeList = new ArrayList();
+        String sql = IOUtils.toString(input);
         sql = escape(sql, escapeList);
         
         List sqlTokens = tokenize(sql);
@@ -421,9 +425,11 @@ public class SQLFormatter implements IPreferenced
 
         if (debug_)
             dumpFlags(keywords, escapeList, breakFlags, indentFlags);
-        return sql;
+        
+        output.write(sql.getBytes());
+        output.flush();
     }
-
+    
     //--------------------------------------------------------------------------
     // Protected
     //--------------------------------------------------------------------------

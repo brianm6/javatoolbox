@@ -65,7 +65,7 @@ public class SQLFormatterTest extends TestCase
     /**
      * Tests major caps mode formatting.
      */
-    public void testFormatMajorCapsMode()
+    public void testFormatMajorCapsMode()  throws Exception
     {
         logger_.info("Running testFormatMajorCapsMode...");
         
@@ -112,7 +112,7 @@ public class SQLFormatterTest extends TestCase
     /**
      * Tests minor caps mode formatting.
      */
-    public void testFormatMinorCapsMode()
+    public void testFormatMinorCapsMode() throws Exception
     {
         logger_.info("Running testFormatMinorCapsMode...");
         
@@ -154,7 +154,7 @@ public class SQLFormatterTest extends TestCase
     /**
      * Tests names caps mode formatting.
      */
-    public void testFormatNamesCapsMode()
+    public void testFormatNamesCapsMode() throws Exception
     {
         logger_.info("Running testFormatNamesCapsMode...");
         
@@ -205,7 +205,7 @@ public class SQLFormatterTest extends TestCase
         String formatterMode,
         CapsMode capsMode, 
         String[] sqlStatements, 
-        String[] expectedKeywords)
+        String[] expectedKeywords) throws Exception
     {
         for (int i = 0; i < sqlStatements.length; i++)
         {
@@ -235,7 +235,7 @@ public class SQLFormatterTest extends TestCase
     /**
      * Tests formatting of a simple select stmt.
      */
-    public void testFormatSQL1()
+    public void testFormatSQL1() throws Exception
     {
         logger_.info("Running testFormatSQL1...");
         
@@ -247,7 +247,7 @@ public class SQLFormatterTest extends TestCase
     /**
      * Tests formatting of a simple select stmt.
      */
-    public void testFormatSQL1_1()
+    public void testFormatSQL1_1() throws Exception
     {
         logger_.info("Running testFormatSQL1_1...");
         String s = formatter_.format("SELECT * FROM USER");
@@ -258,7 +258,7 @@ public class SQLFormatterTest extends TestCase
     /**
      * Tests formatting of a simple sql statement with criteria.
      */
-    public void testFormatSQL2()
+    public void testFormatSQL2() throws Exception
     {
         logger_.info("Running testFormatSQL2...");
         
@@ -273,7 +273,7 @@ public class SQLFormatterTest extends TestCase
     /**
      * Tests formatting of a create table stmt.
      */
-    public void testFormatSQL3()
+    public void testFormatSQL3() throws Exception
     {
         logger_.info("Running testFormatSQL3...");
         
@@ -293,7 +293,7 @@ public class SQLFormatterTest extends TestCase
     /**
      * Tests formatting of a large create table stmt.
      */
-    public void testFormatSQL4()
+    public void testFormatSQL4() throws Exception
     {
         logger_.info("Running testFormatSQL_4...");
         
@@ -339,6 +339,9 @@ public class SQLFormatterTest extends TestCase
     // IPreferenced Unit Tests
     //--------------------------------------------------------------------------
     
+    /**
+     * Tests saving preferences.
+     */
     public void testSavePrefs() throws Exception
     {
         SQLFormatter sf = new SQLFormatter();
@@ -347,7 +350,11 @@ public class SQLFormatterTest extends TestCase
         sf.savePrefs(prefs);
         logger_.info(StringUtil.banner(prefs.toXML()));
     }
+
     
+    /**
+     * Tests restoring preferences.
+     */
     public void testApplyPrefs() throws Exception
     {
         SQLFormatter expected = new SQLFormatter();
@@ -373,5 +380,4 @@ public class SQLFormatterTest extends TestCase
         
         logger_.info(StringUtil.banner(prefs.toXML()));
     }
-
 }
