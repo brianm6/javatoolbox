@@ -176,7 +176,11 @@ public class BatchingQueueReaderTest extends TestCase
         catch (IllegalStateException ise)
         {
             assertTrue(true);
-        }        
+        }      
+        finally
+        {
+            r.stop();  
+        }
     }
 
     /**
