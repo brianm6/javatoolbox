@@ -9,6 +9,7 @@ import javax.swing.UIManager;
 
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JMemoryMonitor;
+import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.statusbar.JStatusBar;
 
 /**
@@ -32,7 +33,7 @@ public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
     /** 
      * Label for displaying status text 
      */
-    private JLabel status_;
+    private JSmartLabel status_;
     
     //--------------------------------------------------------------------------
     // Constructors
@@ -56,7 +57,7 @@ public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
     protected void buildView()
     {
         progressBar_ = new JProgressBar();
-        status_ = new JLabel("Howdy pardner!");
+        status_ = new JSmartLabel("Howdy pardner!");
 
         JLabel gc = new JLabel(ImageCache.getIcon(ImageCache.IMAGE_TRASHCAN));
         

@@ -4,7 +4,6 @@ import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
-import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
@@ -50,12 +49,12 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
     /**
      * Check box that toggles autoscroll
      */
-    private JCheckBoxMenuItem autoScrollCheckBox_;
+    private JSmartCheckBoxMenuItem autoScrollCheckBox_;
     
     /** 
      * Check box that toggles antialiasing of text
      */
-    private JCheckBoxMenuItem antiAliasCheckBox_;
+    private JSmartCheckBoxMenuItem antiAliasCheckBox_;
     
     /**
      * Maximum number of characters allowable in the text area before the text
@@ -171,10 +170,10 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
     //--------------------------------------------------------------------------
     
     /**
-     * Overrides paint to enable antialiasing
+     * Overriden to enable antialiasing
      * 
-     * @param g Graphics context
-     */    
+     * @see java.awt.Component#paint(java.awt.Graphics)
+     */
     public void paint(Graphics g) 
     {
         SwingUtil.setAntiAlias(g, isAntiAlias());
@@ -331,8 +330,8 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
     protected void buildView()
     {
         // Build popup menu and add register with textarea
-        autoScrollCheckBox_ = new JCheckBoxMenuItem(new AutoScrollAction());
-        antiAliasCheckBox_  = new JCheckBoxMenuItem(new AntiAliasAction());
+        autoScrollCheckBox_ = new JSmartCheckBoxMenuItem(new AutoScrollAction());
+        antiAliasCheckBox_  = new JSmartCheckBoxMenuItem(new AntiAliasAction());
         popupMenu_ = new JTextComponentPopupMenu(this);
         popupMenu_.addSeparator();
         popupMenu_.add(autoScrollCheckBox_);

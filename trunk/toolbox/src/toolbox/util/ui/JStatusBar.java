@@ -6,7 +6,6 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 
 import javax.swing.BorderFactory;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
@@ -21,7 +20,7 @@ public class JStatusBar extends JPanel implements IStatusBar
 {
     // TODO: Replace with toolbox.util.ui.statusbar.JStatusBar
     
-    private JLabel statusLabel_;
+    private JSmartLabel statusLabel_;
 
     //--------------------------------------------------------------------------
     //  Constructors
@@ -44,7 +43,7 @@ public class JStatusBar extends JPanel implements IStatusBar
      */
     protected void buildView()
     {
-        statusLabel_ = new JLabel("", SwingConstants.LEFT);
+        statusLabel_ = new JSmartLabel("", SwingConstants.LEFT);
         Font f = SwingUtil.getPreferredSerifFont();
         
         // TODO: remove once getPreferredSerifFont() gets size from LAF

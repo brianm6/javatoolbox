@@ -9,17 +9,14 @@ import java.util.Map;
 
 import javax.swing.AbstractAction;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 import javax.swing.JToolBar;
 
 import org.apache.log4j.Logger;
+
 import org.netbeans.lib.cvsclient.commandLine.CVSCommand;
 
 import net.sf.statcvs.Main;
@@ -37,7 +34,11 @@ import toolbox.util.XOMUtil;
 import toolbox.util.io.JTextAreaOutputStream;
 import toolbox.util.io.StringOutputStream;
 import toolbox.util.ui.ImageCache;
+import toolbox.util.ui.JSmartButton;
+import toolbox.util.ui.JSmartComboBox;
+import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartTextArea;
+import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.NativeBrowser;
 import toolbox.util.ui.layout.GridLayoutPlus;
 import toolbox.util.ui.layout.ParagraphLayout;
@@ -97,27 +98,27 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     /** 
      * Field for the project name (optional) 
      */
-    private JComboBox projectCombo_;
+    private JSmartComboBox projectCombo_;
     
     /** 
      * Field for the cvs module name (required) 
      */
-    private JTextField cvsModuleField_;
+    private JSmartTextField cvsModuleField_;
     
     /** 
      * Field for the cvs root (required) 
      */
-    private JTextField cvsRootField_;
+    private JSmartTextField cvsRootField_;
     
     /** 
      * Field for the cvs password (required by empty strings are OK) 
      */
-    private JTextField cvsPasswordField_;
+    private JSmartTextField cvsPasswordField_;
     
     /** 
      * Field for the checkout directory (must already exist) 
      */
-    private JTextField checkoutDirField_;
+    private JSmartTextField checkoutDirField_;
     
     /** 
      * Checkbox to toggle the cvslib.jar debug flag 
@@ -127,7 +128,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     /** 
      * Field that contains the URL to view the generated statcvs report 
      */
-    private JTextField launchURLField_;
+    private JSmartTextField launchURLField_;
     
     /** 
      * Saved user.dir before being overwritten (cvs commands require this) 
@@ -198,8 +199,8 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     {
         JPanel p = new JPanel(new ParagraphLayout(5,5,5,5,5,5));
  
-        p.add(new JLabel("Project"), ParagraphLayout.NEW_PARAGRAPH);
-        p.add(projectCombo_ = new JComboBox());
+        p.add(new JSmartLabel("Project"), ParagraphLayout.NEW_PARAGRAPH);
+        p.add(projectCombo_ = new JSmartComboBox());
         projectCombo_.setEditable(true);
         projectCombo_.setAction(new ProjectChangedAction());
         
@@ -210,35 +211,35 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         tb.add(new DeleteAction());
         p.add(tb);
         
-        p.add(new JLabel("CVS Module"), ParagraphLayout.NEW_PARAGRAPH);
-        p.add(cvsModuleField_ = new JTextField(20));
+        p.add(new JSmartLabel("CVS Module"), ParagraphLayout.NEW_PARAGRAPH);
+        p.add(cvsModuleField_ = new JSmartTextField(20));
         
-        p.add(new JLabel("CVS Root"), ParagraphLayout.NEW_PARAGRAPH);
-        p.add(cvsRootField_ = new JTextField(50));
+        p.add(new JSmartLabel("CVS Root"), ParagraphLayout.NEW_PARAGRAPH);
+        p.add(cvsRootField_ = new JSmartTextField(50));
         
-        p.add(new JLabel("CVS Password"), ParagraphLayout.NEW_PARAGRAPH);
-        p.add(cvsPasswordField_ = new JTextField(20));
+        p.add(new JSmartLabel("CVS Password"), ParagraphLayout.NEW_PARAGRAPH);
+        p.add(cvsPasswordField_ = new JSmartTextField(20));
         
-        p.add(new JLabel("Checkout Directory"), ParagraphLayout.NEW_PARAGRAPH);
-        p.add(checkoutDirField_ = new JTextField(30));
+        p.add(new JSmartLabel("Checkout Directory"), ParagraphLayout.NEW_PARAGRAPH);
+        p.add(checkoutDirField_ = new JSmartTextField(30));
         
-        p.add(new JLabel("Debug output"), ParagraphLayout.NEW_PARAGRAPH);
+        p.add(new JSmartLabel("Debug output"), ParagraphLayout.NEW_PARAGRAPH);
         p.add(debugCheckBox_ = new JCheckBox());
         
-        p.add(new JLabel("Launch URL"), ParagraphLayout.NEW_PARAGRAPH);        
-        p.add(launchURLField_ = new JTextField(30));
+        p.add(new JSmartLabel("Launch URL"), ParagraphLayout.NEW_PARAGRAPH);        
+        p.add(launchURLField_ = new JSmartTextField(30));
 
         launchURLField_.setEditable(false);
                 
         JPanel b = new JPanel(new GridLayoutPlus(4,1,5,5,5,5));
         
-        b.add(new JButton(new EverythingAction()));
-        b.add(new JButton(new LoginAction()));
-        b.add(new JButton(new CheckoutAction()));
-        b.add(new JButton(new LogAction()));
-        b.add(new JButton(new GenerateStatsAction()));
-        b.add(new JButton(new LaunchAction()));
-        b.add(new JButton(outputArea_.new ClearAction()));
+        b.add(new JSmartButton(new EverythingAction()));
+        b.add(new JSmartButton(new LoginAction()));
+        b.add(new JSmartButton(new CheckoutAction()));
+        b.add(new JSmartButton(new LogAction()));
+        b.add(new JSmartButton(new GenerateStatsAction()));
+        b.add(new JSmartButton(new LaunchAction()));
+        b.add(new JSmartButton(outputArea_.new ClearAction()));
         
         JPanel base = new JPanel(new BorderLayout());
         base.add(BorderLayout.WEST, p);
@@ -313,7 +314,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
      * @param  name   Name to use in throw exception is field is blank
      * @throws IllegalArgumentException if field is blank
      */
-    protected void checkEmpty(JTextField field, String name)
+    protected void checkEmpty(JSmartTextField field, String name)
     {
         String text = field.getText();
         
@@ -328,7 +329,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
      * 
      * @param field  Field to check
      */
-    protected void checkTrailer(JTextField field)
+    protected void checkTrailer(JSmartTextField field)
     {
         String text = field.getText();
         field.setText(FileUtil.trailWithSeparator(text));    

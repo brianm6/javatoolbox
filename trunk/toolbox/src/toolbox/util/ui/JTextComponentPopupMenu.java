@@ -11,7 +11,6 @@ import java.io.File;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JFileChooser;
-import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 import javax.swing.text.JTextComponent;
@@ -70,14 +69,14 @@ public class JTextComponentPopupMenu extends JPopupMenu
      */
     protected void buildView()
     {
-        add(new JMenuItem(new CopyAction()));
-        add(new JMenuItem(new PasteAction()));
-        add(new JMenuItem(new SelectAllAction()));
+        add(new JSmartMenuItem(new CopyAction()));
+        add(new JSmartMenuItem(new PasteAction()));
+        add(new JSmartMenuItem(new SelectAllAction()));
         addSeparator();
-        add(new JMenuItem(new SetFontAction()));
-        add(new JMenuItem(new FindAction(textComponent_)));
-        add(new JMenuItem(new InsertFileAction(textComponent_)));
-        add(new JMenuItem(new SaveAsAction(textComponent_)));
+        add(new JSmartMenuItem(new SetFontAction()));
+        add(new JSmartMenuItem(new FindAction(textComponent_)));
+        add(new JSmartMenuItem(new InsertFileAction(textComponent_)));
+        add(new JSmartMenuItem(new SaveAsAction(textComponent_)));
         
         textComponent_.addMouseListener(new JPopupListener(this));
     }
