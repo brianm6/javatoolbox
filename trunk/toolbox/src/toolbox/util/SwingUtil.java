@@ -354,11 +354,12 @@ public final class SwingUtil
      */
     public static void setPreferredLAF() throws Exception
     { 
-//        UIManager.setLookAndFeel(
-//            "com.jgoodies.plaf.plastic.PlasticXPLookAndFeel");
-
         UIManager.setLookAndFeel(
-            "com.stefankrause.xplookandfeel.XPLookAndFeel");            
+            "com.jgoodies.plaf.plastic.PlasticXPLookAndFeel");
+            
+        Frame[] frames = Frame.getFrames();
+        for (int i=0; i<frames.length; i++)
+            SwingUtilities.updateComponentTreeUI(frames[i]);                    
     }
 
     /**
