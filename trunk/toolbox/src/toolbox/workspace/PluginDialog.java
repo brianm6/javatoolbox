@@ -623,8 +623,8 @@ public class ManagePluginsDialog extends JDialog
                 "toolbox.plugin.netmeter.NetMeterPlugin"));
             legitPlugins.add(new PluginMeta(
                 "toolbox.junit.JUnitPlugin"));
-            legitPlugins.add(new PluginMeta(
-                "toolbox.plugin.beanshell.BeanShellPlugin"));
+            //legitPlugins.add(new PluginMeta(
+            //    "toolbox.plugin.beanshell.BeanShellPlugin"));
             legitPlugins.add(new PluginMeta(
                 "toolbox.util.ui.plugin.UIDefaultsPlugin"));
 
