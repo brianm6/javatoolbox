@@ -82,7 +82,7 @@ public class ServerView extends JHeaderPanel
         
         // TODO: Fix me!!!!!
         
-        //server_.addServiceListener(this);
+        server_.addServiceListener(this);
         server_.initialize(Collections.EMPTY_MAP);
         server_.getSocketServer().addSocketServerListener(this);
     }
