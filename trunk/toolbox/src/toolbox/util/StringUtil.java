@@ -18,6 +18,7 @@ public final class StringUtil
     private static final Category logger_ = 
         Category.getInstance(StringUtil.class);
     
+    
     /**
      *  Prevent construction
      */
@@ -25,6 +26,7 @@ public final class StringUtil
     {
         super();
     }
+    
 
     /**
      * Left justify a string representing an integer with a given width.
@@ -41,6 +43,7 @@ public final class StringUtil
         return left(Integer.toString(num), width);
     }
 
+
     /**
      * justify string left within given width.
      * <P>the string is padded with space characters on the right to given width
@@ -55,6 +58,7 @@ public final class StringUtil
         return left(str, width, ' ');
     }
 
+
     /**
      * Left justify a string to a given width using a pad character.
      * Strings longer than the width are returned unaltered.
@@ -68,6 +72,7 @@ public final class StringUtil
     {
         return left( str, width, padChar, false );
     }
+    
     
     /**
      * Left justify a string to a given width using a pad character.
@@ -107,6 +112,7 @@ public final class StringUtil
         return justStr;
     }
     
+    
     /**
      * justify right a string representing the integer within given width.
      * <P>the num is converted to a string
@@ -123,6 +129,7 @@ public final class StringUtil
         return right(Integer.toString(num), width);
     }
 
+
     /**
      * Right justifies a string to the given width using spaces.
      * String longer than the width are returned as is.
@@ -135,6 +142,7 @@ public final class StringUtil
     {
         return right(str, width, ' ');
     }
+
 
     /**
      * Right justifies a string to the given width and fill character.
@@ -149,6 +157,7 @@ public final class StringUtil
     {
         return right( str, width, padChar, false );
     }
+   
    
     /**
      * Right justify a string to a given width using a pad character.
@@ -188,6 +197,7 @@ public final class StringUtil
         return justStr;
     }
 
+
     /**
      * Return the given list as a debug string
      * 
@@ -208,6 +218,7 @@ public final class StringUtil
         return buf.toString();
     }
     
+    
     /**
      * Convenience method to check if a string is null or of zero length
      *
@@ -221,12 +232,41 @@ public final class StringUtil
         else
             return false;
     }
+
     
     /**
-     * Generates a ruler underneath a string for character counting purposes
+     * Convenience method to check if a string is null, empty, or blank
+     * (contains only spaces)
+     * 
+     * @param   s  The string to check
+     * @return  True if not null, empty, or blank; false otherwise
+     */
+    public static final boolean isNullEmptyOrBlank(String s)
+    {
+        if (isNullOrEmpty(s) || s.trim().length() == 0)
+            return true;
+        else
+            return false;
+    }
+
+    
+    /**
+     * Generates a numbered ruler underneath a string for character counting 
+     * purposes. For example:
+     * <pre>
+     * 
+     * Input : getStringRuler("abcdef") 
+     * Output: abcdef
+     *         123456
+     * 
+     * Input : getStringRuler("this is long") 
+     * Output: this is long
+     *         123456789012
+     *                  111 <- read upwards
+     * </pre> 
      * 
      * @param   s    String
-     * @return  String
+     * @return  String containing the original string with the ruler appended
      */
     public static final String getStringRuler(String s)
     {
@@ -251,6 +291,7 @@ public final class StringUtil
 
         return sb.toString();
     }
+
     
     /**
      * Truncate a string to the given length.
@@ -259,7 +300,7 @@ public final class StringUtil
      * 
      * @param  s   String to truncate
      * @param  n   Length to truncate to
-     * @return String
+     * @return Truncated string
      */
     public static String truncate(String s, int n)
     {
@@ -268,6 +309,7 @@ public final class StringUtil
         else
             return s.substring(0, n);    
     }  
+
     
     /**
      * Repeats a string a specified number of times
