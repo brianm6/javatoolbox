@@ -20,6 +20,8 @@ public class SocketServerConfigTest extends TestCase
 
     /**
      * Entrypoint 
+     * 
+     * @param  args  None
      */
     public static void main(String[] args)
     {
@@ -28,6 +30,8 @@ public class SocketServerConfigTest extends TestCase
         
     /**
      * Constructor for SocketServerConfigTest
+     * 
+     * @param  arg0  Name
      */
     public SocketServerConfigTest(String arg0)
     {
@@ -36,10 +40,12 @@ public class SocketServerConfigTest extends TestCase
     
     /**
      * Tests the load(File) method 
+     * 
+     * @throws  Exception on error
      */
     public void testLoadByFile() throws Exception
     {
-        /* TODO: generate props file on the fly */
+        // TODO: generate props file on the fly
         SocketServerConfig config = new SocketServerConfig();
         config.load("SocketServer.properties");
         assertEquals("ports don't match", 0, config.getServerPort());
@@ -48,6 +54,8 @@ public class SocketServerConfigTest extends TestCase
     
     /**
      * Tests the load(Properties) method 
+     * 
+     * @throws  Exception on error
      */
     public void testLoadByProps() throws Exception
     {
@@ -63,11 +71,20 @@ public class SocketServerConfigTest extends TestCase
         SocketServerConfig config = new SocketServerConfig();
         config.load(props);
         
-        assertEquals("active conns don't match", 3, config.getActiveConnections());
-        assertEquals("handler size don't match", 5, config.getHandlerQueueSize());
-        assertEquals("server port don't match", 7, config.getServerPort());
-        assertEquals("socket queue don't match", 11, config.getSocketQueueSize());
-        assertEquals("socket timeout don't match", 13, config.getSocketTimeout());
+        assertEquals("active conns don't match", 
+            3, config.getActiveConnections());
+            
+        assertEquals("handler size don't match", 
+            5, config.getHandlerQueueSize());
+            
+        assertEquals("server port don't match", 
+            7, config.getServerPort());
+            
+        assertEquals("socket queue don't match", 
+            11, config.getSocketQueueSize());
+            
+        assertEquals("socket timeout don't match", 
+            13, config.getSocketTimeout());
         
         assertEquals("socket handlers don't match", 
             "toolbox.util.net.test.NullConnectionHandler", 

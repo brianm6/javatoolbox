@@ -17,7 +17,7 @@ public class StringConnectionTest extends TestCase
     /**
      * Entrypoint
      *
-     * @param  args  Arguments
+     * @param  args  None
      */
     public static void main(String[] args)
     {
@@ -26,7 +26,8 @@ public class StringConnectionTest extends TestCase
     
     /**
      * Constructor for StringConnectionTest.
-     * @param name
+     * 
+     * @param name Name
      */
     public StringConnectionTest(String name)
     {
@@ -35,6 +36,8 @@ public class StringConnectionTest extends TestCase
 
     /**
      * Tests getInputStream()
+     * 
+     * @throws  Exception on error
      */
     public void testGetInputStream() throws Exception
     {
@@ -45,6 +48,8 @@ public class StringConnectionTest extends TestCase
 
     /**
      * Tests getOutputStream()
+     * 
+     * @throws  Exception on error
      */
     public void testGetOutputStream() throws Exception
     {
@@ -55,6 +60,8 @@ public class StringConnectionTest extends TestCase
     
     /**
      * Tests the isConnected() method
+     * 
+     * @throws  Exception on error
      */
     public void testIsConnected() throws Exception
     {

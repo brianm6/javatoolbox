@@ -29,22 +29,36 @@ public class AsyncConnectionHandlerTest extends TestCase
     
     /**
      * Entry point
+     * 
+     * @param  args  None
      */
     public static void main(String[] args)
     {
         TestRunner.run(AsyncConnectionHandlerTest.class);       
     }
 
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Constructor for AsyncConnectionHandlerTest
+     * 
+     * @param  arg  Name
      */
     public AsyncConnectionHandlerTest(String arg)
     {
         super(arg);
     }
     
+    //--------------------------------------------------------------------------
+    // Unit Tests
+    //--------------------------------------------------------------------------
+    
     /**
      * Tests handle()
+     * 
+     * @throws  Exception on error
      */
     public void testHandle() throws Exception
     {
@@ -85,14 +99,20 @@ public class AsyncConnectionHandlerTest extends TestCase
              * 
              * @return  InputStream
              */
-            public InputStream getInputStream() throws IOException { return null;};
+            public InputStream getInputStream() throws IOException 
+            { 
+                return null;
+            }
             
             /**
              * Accessor for the connections output stream
              * 
              * @return  OutputStream
              */
-            public OutputStream getOutputStream() throws IOException { return null;};
+            public OutputStream getOutputStream() throws IOException 
+            { 
+                return null;
+            }
             
             /**
              * @see IConnection#isConnected()
@@ -117,12 +137,13 @@ public class AsyncConnectionHandlerTest extends TestCase
         ReturnValue rv = (ReturnValue)result;
 
         /* 
-         * handle() should be async and we know there is a 5sec delay in handle() 
-         * so the return value should not be immediately available
+         * handle() should be async and we know there is a 5sec delay in 
+         * handle() so the return value should not be immediately available
          */
         assertTrue("return should not be available", !rv.isAvailable());    
 
-        // sleep longer than the delay in handle() to guarantee (ahem) completion
+        // sleep longer than the delay in handle() to guarantee 
+        // (ahem) completion
         ThreadUtil.sleep(10000);
 
         // now the result should definitely be abailable

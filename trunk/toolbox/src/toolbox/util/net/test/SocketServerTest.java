@@ -27,6 +27,8 @@ public class SocketServerTest extends TestCase
     
     /**
      * Entry point
+     * 
+     * @param  args  None
      */
     public static void main(String[] args)
     {
@@ -39,6 +41,8 @@ public class SocketServerTest extends TestCase
 
     /**
      * Constructor for SocketServerTest
+     * 
+     * @param  arg  Name
      */
     public SocketServerTest(String arg)
     {
@@ -51,6 +55,8 @@ public class SocketServerTest extends TestCase
     
     /**
      * Tests simple ping pong between client and server
+     * 
+     * @throws  Exception on error
      */
     public void testSocketServerPingPong() throws Exception
     {
@@ -90,6 +96,8 @@ public class SocketServerTest extends TestCase
     
     /**
      * Tests SocketServer lifecycle state transitions
+     * 
+     * @throws  Exception on error
      */
     public void testSocketServerLifeCycle() throws Exception
     { 
@@ -112,6 +120,8 @@ public class SocketServerTest extends TestCase
     
     /**
      * Stress tests start/stop of socket server 
+     * 
+     * @throws  Exception on error
      */
     public void testSocketServerLifecycleStress() throws Exception
     {
@@ -126,6 +136,8 @@ public class SocketServerTest extends TestCase
      
     /**
      * Tests socket server with many clients 
+     * 
+     * @throws  Exception on error
      */
     public void testSocketServerManyClients() throws Exception
     {
@@ -154,7 +166,7 @@ public class SocketServerTest extends TestCase
             {
                 try 
                 {
-                    EchoSocketClient client = new EchoSocketClient(port);                   
+                    EchoSocketClient client = new EchoSocketClient(port);
                     int x = 100;
                 
                     client.sendMany(this + prefix + "msg ", x);
@@ -187,6 +199,8 @@ public class SocketServerTest extends TestCase
     
     /**
      * Tests firing of notification events exposed by ISocketServerListener
+     * 
+     * @throws  Exception on error
      */
     public void testFireNotification() throws Exception
     {
@@ -209,7 +223,7 @@ public class SocketServerTest extends TestCase
             public void socketAccepted(Socket socket)
             {
                 logger_.info(
-                    "[socAcp] Listener notified of  accept on socket " + socket);
+                    "[socAcp] Listener notified of accept on socket " + socket);
                 success = true;
             }
         }

@@ -27,6 +27,8 @@ public class SocketConnectionTest extends TestCase
     
     /**
      * Entry point
+     * 
+     * @param  args  None
      */
     public static void main(String[] args)
     {
@@ -39,6 +41,8 @@ public class SocketConnectionTest extends TestCase
     
     /**
      * Constructor for SocketConnectionTest
+     * 
+     * @param  arg  Name
      */
     public SocketConnectionTest(String arg)
     {
@@ -49,6 +53,12 @@ public class SocketConnectionTest extends TestCase
     //  Constructor Tests
     //--------------------------------------------------------------------------
     
+    
+    /**
+     * Tests the default constructor
+     * 
+     * @throws Exception on error
+     */
     public void testDefaultConstructor() throws Exception
     {
         Server server = new Server(false);
@@ -61,16 +71,28 @@ public class SocketConnectionTest extends TestCase
         sc.close();
     }
         
+    /**
+     * Tests the (host,port) constructor
+     * 
+     * @throws  Exception on error
+     */    
     public void testHostPortConstructor() throws Exception
     {
         Server server = new Server(false);
         server.start();        
         
-        SocketConnection sc = new SocketConnection("localhost", server.getPort());
+        SocketConnection sc = 
+            new SocketConnection("localhost", server.getPort());
+            
         sc.connect();
         sc.close();
     }
         
+    /**
+     * Tests the force connect constructor
+     * 
+     * @throws  Exception on error
+     */    
     public void testForceConnectConstructor() throws Exception
     {
         final int port = SocketUtil.getFreePort();
@@ -83,7 +105,7 @@ public class SocketConnectionTest extends TestCase
                 try
                 {
                     SocketConnection sc = 
-                        new SocketConnection("localhost", port, true, 2);                
+                        new SocketConnection("localhost", port, true, 2);
                         
                     logger_.info("Connected after retry!");
                     sc.connect();
@@ -91,6 +113,7 @@ public class SocketConnectionTest extends TestCase
                 }
                 catch(Exception e)
                 {
+                    // Ignore
                 }
             }
         }).start();
@@ -102,10 +125,12 @@ public class SocketConnectionTest extends TestCase
     
     //--------------------------------------------------------------------------
     //  Test methods
-    //--------------------------------------------------------------------------    
+    //--------------------------------------------------------------------------
     
     /**
      * Tests the getInputStream() method
+     * 
+     * @throws  Exception on error
      */
     public void testGetInputStream() throws Exception
     {
@@ -127,6 +152,8 @@ public class SocketConnectionTest extends TestCase
 
     /**
      * Tests the getOutputStream() method
+     * 
+     * @throws  Exception on error
      */
     public void testGetOutputStream() throws Exception
     {
@@ -142,7 +169,7 @@ public class SocketConnectionTest extends TestCase
         Socket socket = new Socket("localhost", port);
         SocketConnection connection = new SocketConnection(socket);
 
-        assertNotNull("output stream is null", connection.getOutputStream());    
+        assertNotNull("output stream is null", connection.getOutputStream());
         
         socket.close();
         s.stop();
@@ -150,6 +177,8 @@ public class SocketConnectionTest extends TestCase
 
     /**
      * Tests the notifications genereated by IConnectionListener
+     * 
+     * @throws  Exception on error
      */
     public void testConnectionListener() throws Exception
     {
@@ -169,6 +198,8 @@ public class SocketConnectionTest extends TestCase
 
     /**
      * Tests SocketConnection lifecycle
+     * 
+     * @throws  Exception on error
      */
     public void xtestConnectionLifeCycle() throws Exception
     {
@@ -206,13 +237,17 @@ public class SocketConnectionTest extends TestCase
 
     /**
      * Tests the isConnected() method
+     * 
+     * @throws  Exception on error
      */
     public void testIsConnected() throws Exception
     {
         Server server = new Server(true);
         server.start();        
         
-        SocketConnection sc = new SocketConnection("localhost", server.getPort());
+        SocketConnection sc = 
+            new SocketConnection("localhost", server.getPort());
+            
         assertTrue(sc.isConnected());
         sc.close();
         assertTrue(!sc.isConnected());
@@ -240,17 +275,17 @@ public class SocketConnectionTest extends TestCase
         
         public void connectionClosing(IConnection connection)
         {
-            logger_.info("Notification: Connection closing " + connection);            
+            logger_.info("Notification: Connection closing " + connection);
         }
         
         public void connectionInterrupted(IConnection connection)
         {
-            logger_.info("Notification: Connection interrupted" + connection);            
+            logger_.info("Notification: Connection interrupted" + connection);
         }
         
         public void connectionStarted(IConnection connection)
         {
-            logger_.info("Notification: Connection started" + connection);                        
+            logger_.info("Notification: Connection started" + connection);
         }
 
     }
@@ -261,10 +296,10 @@ public class SocketConnectionTest extends TestCase
      */
     class Server implements Runnable
     {
-        ServerSocket socket_;
-        boolean longLived_ = false;
-        int port_;
-        boolean keepGoing_ = true;
+        private ServerSocket socket_;
+        private boolean longLived_ = false;
+        private int port_;
+        private boolean keepGoing_ = true;
                     
         /**
          * Constructor 
