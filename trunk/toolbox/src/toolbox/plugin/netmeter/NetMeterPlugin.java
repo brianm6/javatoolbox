@@ -15,6 +15,19 @@ import toolbox.workspace.IPlugin;
  */
 public class NetMeterPlugin extends JPanel implements IPlugin
 {
+    /**
+     * Default server hostname if none is specified.
+     */
+    public static final String DEFAULT_HOSTNAME = "localhost";
+    
+    /**
+     * Default server port if none is specified.
+     */
+    public static final int DEFAULT_PORT = 9999;
+    
+    /**
+     * Grid that factory created clients and servers are placed on.
+     */
     private JPanel grid_;
     
     //--------------------------------------------------------------------------
@@ -27,7 +40,22 @@ public class NetMeterPlugin extends JPanel implements IPlugin
     public NetMeterPlugin()
     {
     }
-    
+
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+
+    /**
+     * Adds another compartment to the grid.
+     * 
+     * @param compartment Component to the grid.
+     */
+    public void addCompartment(JComponent compartment)
+    {
+        grid_.add(compartment);
+        grid_.validate();
+    }
+        
     //--------------------------------------------------------------------------
     // Protected 
     //--------------------------------------------------------------------------
@@ -39,23 +67,18 @@ public class NetMeterPlugin extends JPanel implements IPlugin
     {
         setLayout(new BorderLayout());
         
-        ClientReceiver cr = new ClientReceiver();
-        ClientFactoryView clientFactory = new ClientFactoryView();
-        clientFactory.addRecipient(cr);
+        JComponent clientFactory = new ClientFactoryView(this);
+        JComponent serverFactory = new ServerFactoryView(this);
         
-        //JPanel serverFactory = new ServerFactoryView();
-        
-        JComponent factoryPanel = new JPanel(new GridLayoutPlus(1,2));
+        JComponent factoryPanel = new JPanel(new GridLayoutPlus(2,1));
         factoryPanel.add(clientFactory);
-        //factoryPanel.add(serverFactory);
+        factoryPanel.add(serverFactory);
         
         grid_ = new JPanel(new GridLayoutPlus(2,2));
-        
         
         add(factoryPanel, BorderLayout.WEST);
         add(grid_, BorderLayout.CENTER);
     }
-    
     
     //--------------------------------------------------------------------------
     // IPlugin Interface
@@ -117,21 +140,4 @@ public class NetMeterPlugin extends JPanel implements IPlugin
     public void savePrefs(Element prefs) throws Exception
     {
     }
-    
-    class ClientReceiver implements ClientFactoryView.ClientDelivery
-    {
-        public void acceptDelivery(ClientView clientView)
-        {
-            grid_.add(clientView);
-            grid_.validate();
-        }
-    }
-    
-//    class ServerReceiver implements ServerFactoryView.ServerDelivery
-//    {
-//        public void acceptDelivery(ServerView serverView)
-//        {
-//            // Do something with this!!!
-//        }
-//    }
 }
