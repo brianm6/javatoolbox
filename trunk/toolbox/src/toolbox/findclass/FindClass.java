@@ -1,7 +1,6 @@
 package toolbox.findclass;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,6 +11,8 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import org.apache.commons.io.filefilter.IOFileFilter;
+import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.apache.log4j.Logger;
 import org.apache.regexp.RE;
 import org.apache.regexp.RESyntaxException;
@@ -20,8 +21,7 @@ import toolbox.util.ArrayUtil;
 import toolbox.util.ClassUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.StringUtil;
-import toolbox.util.io.filter.ExtensionFilter;
-import toolbox.util.io.filter.OrFilter;
+import toolbox.util.service.Cancelable;
 
 /**
  * Find class is a utility that can find all occurences of a given class (can be
@@ -46,9 +46,26 @@ import toolbox.util.io.filter.OrFilter;
  * @depend - util - toolbox.util.ClassUtil
  * @depend - util - toolbox.util.FileUtil
  */
-public class FindClass 
+public class FindClass implements Cancelable 
 { 
     private static final Logger logger_ = Logger.getLogger(FindClass.class);
+
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
+    /** 
+     * Filter that identifies java class files.
+     */
+    private static final IOFileFilter FILEFILTER_CLASSES = 
+        new SuffixFileFilter(".class"); 
+    
+    /** 
+     * Filter that identifies the various archives that can possible contain
+     * class files.
+     */
+    private static final IOFileFilter FILEFILTER_ARCHIVES = 
+        new SuffixFileFilter(new String[]{".jar", ".zip", ".ear", ".war"});
     
     //--------------------------------------------------------------------------
     // Fields
@@ -67,7 +84,7 @@ public class FindClass
     /** 
      * Flag to cancel the search. 
      */
-    private boolean isCancelled_;
+    private boolean canceled_;
 
     /** 
      * Regular expression matcher. 
@@ -88,16 +105,6 @@ public class FindClass
      * Default collector of search results. 
      */ 
     private FindClassCollector defaultCollector_;
-
-    /** 
-     * Filter for class files.
-     */
-    private FilenameFilter classFileFilter_;
-    
-    /** 
-     * Filter for archives. 
-     */
-    private OrFilter archiveFilter_; 
     
     //--------------------------------------------------------------------------
     //  Constructors
@@ -108,14 +115,6 @@ public class FindClass
      */
     public FindClass() 
     {
-        classFileFilter_ = new ExtensionFilter(".class");
-        
-        archiveFilter_ = new OrFilter();
-        archiveFilter_.addFilter(new ExtensionFilter(".jar"));
-        archiveFilter_.addFilter(new ExtensionFilter(".zip"));
-        archiveFilter_.addFilter(new ExtensionFilter(".ear"));
-        archiveFilter_.addFilter(new ExtensionFilter(".war"));
-        
         findListeners_ = new FindClassListener[0];
         defaultCollector_ = new FindClassCollector();
         searchTargets_ = new ArrayList();
@@ -142,7 +141,7 @@ public class FindClass
     {
         ignoreCase_  = ignoreCase;
         classToFind_ = classToFind;
-        isCancelled_ = false;
+        canceled_ = false;
         
         defaultCollector_.clear();
 
@@ -157,7 +156,7 @@ public class FindClass
         // Search each target
         for (int i = 0; i < targets.length; i++) 
         { 
-            if (!isCancelled_)
+            if (!canceled_)
             {
                 String target = targets[i];
                 
@@ -175,7 +174,7 @@ public class FindClass
             }
         }
         
-        if (!isCancelled_)
+        if (!canceled_)
             fireSearchCompleted();
         
         return defaultCollector_.getResults();
@@ -196,16 +195,6 @@ public class FindClass
         return searchTargets_;
     }
 
-    
-    /**
-     * Cancels a pending search. The search will stop after processing the
-     * current search target. 
-     */
-    public void cancelSearch()
-    {
-        isCancelled_ = true;
-    }
-    
     
     /**
      * Adds a search target to the front of the search target list.  A search 
@@ -232,7 +221,7 @@ public class FindClass
         if (target.isDirectory())
         {
             searchTargets_.addAll(FileUtil.find(
-                target.getAbsolutePath(), archiveFilter_));
+                target.getAbsolutePath(), FILEFILTER_ARCHIVES));
         }
         else
         {
@@ -270,7 +259,40 @@ public class FindClass
      */
     public List getArchivesInDir(File dir)
     {
-        return FileUtil.find(dir.getAbsolutePath(), archiveFilter_);    
+        return FileUtil.find(dir.getAbsolutePath(), FILEFILTER_ARCHIVES);    
+    }
+
+    //--------------------------------------------------------------------------
+    // Cancelable Interface
+    //--------------------------------------------------------------------------
+
+    /**
+     * @see toolbox.util.service.Cancelable#cancel()
+     */
+    public synchronized void cancel()
+    {
+        canceled_ = true;
+        
+        try
+        {
+            defaultCollector_.waitForCancel();
+        }
+        catch (InterruptedException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+
+    
+    /**
+     * Cancels a pending search. The search will stop after processing the
+     * current search target.
+     *  
+     * @see toolbox.util.service.Cancelable#isCanceled()
+     */
+    public boolean isCanceled()
+    {
+        return canceled_;
     }
     
     //--------------------------------------------------------------------------
@@ -305,7 +327,7 @@ public class FindClass
      */
     protected List getArchiveTargets()
     {
-        return FileUtil.find(".", archiveFilter_);        
+        return FileUtil.find(".", FILEFILTER_ARCHIVES);        
     }
 
     
@@ -372,7 +394,7 @@ public class FindClass
         dirPath = FileUtil.trailWithSeparator(dirPath);
         
         // Regular expression search
-        List classFiles = FileUtil.find(dirPath, classFileFilter_);
+        List classFiles = FileUtil.find(dirPath, FILEFILTER_CLASSES);
         
         for (Iterator i = classFiles.iterator(); i.hasNext();)
         {
@@ -450,7 +472,7 @@ public class FindClass
     protected void fireSearchCancelled()
     {
         for (int i = 0; i < findListeners_.length; i++)
-            findListeners_[i].searchCancelled();
+            findListeners_[i].searchCanceled();
     }
  
     
