@@ -5,9 +5,28 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.StringTokenizer;
 
+import toolbox.util.StringUtil;
+
 /**
  * Shows the current classpath along with detailed info as reported by 
- * System property <code>java.class.path</code>
+ * System property <code>java.class.path</code>. Also, detects redundant
+ * and invalid classpath entries such as jars/dirs that don't exist. 
+ * 
+ * <p>
+ * Example:
+ * <pre>
+ * 
+ * ========================================================================
+ * JAR/Directory                             Size          Date    Time
+ * ========================================================================
+ * \toolbox\classes                                    06-25-2002  12:32a
+ * \toolbox\resources                                  05-15-2002  11:54p
+ * \toolbox\lib\junit.jar                   117,522    04-21-2002  05:57p
+ * \toolbox\lib\log4j.jar                   158,892    04-21-2002  05:57p
+ * \toolbox\lib\jakarta-regexp-1.2.jar       29,871    05-14-2002  06:58p
+ * 
+ * </pre>
+ * 
  */
 public class Main
 {
@@ -32,6 +51,118 @@ public class Main
     
     /** column heading for time **/    
     private static final String COL_TIME = "Time";
+
+
+    /**
+     * Entry point
+     * 
+     * @param   args    command line params
+     */
+    public static void main(String[] args)
+    {
+
+        // stuffed everything info main()
+        String classPath = System.getProperty("java.class.path");
+        
+        StringTokenizer st = 
+            new StringTokenizer(classPath,System.getProperty("path.separator"));
+            
+        int max = 0;
+
+        // find longest for formatting
+        while (st.hasMoreElements())
+        {
+            String path = st.nextToken();
+
+            if (path.length() > max)
+                max = path.length();
+        }
+
+        max++;
+        
+        st = new StringTokenizer(
+            classPath, System.getProperty("path.separator"));
+
+        // header row
+        if (st.countTokens() > 0)
+        {
+            int rowLength = max + MAX_SIZE_LEN + 
+                            MAX_DATE_LEN + MAX_TIME_LEN;
+                            
+            System.out.println(StringUtil.repeat("=", rowLength));
+            System.out.print(COL_ARCHIVE);
+            System.out.print(repeatSpace(max - COL_ARCHIVE.length()));
+            System.out.print(repeatSpace(MAX_SIZE_LEN - COL_SIZE.length()));
+            System.out.print(COL_SIZE);
+            System.out.print(repeatSpace(MAX_DATE_LEN - COL_DATE.length()));
+            System.out.print(COL_DATE);
+            System.out.print(repeatSpace(MAX_TIME_LEN - COL_TIME.length()));
+            System.out.print(COL_TIME);
+            System.out.println();
+            System.out.println(StringUtil.repeat("=", rowLength));
+        }
+
+        // loop through classpath
+        while (st.hasMoreElements())
+        {
+            String path = st.nextToken();
+            System.out.print(path);
+
+            for (int i = 0; i < (max - path.length()); i++)
+                System.out.print(" ");
+
+            File f = new File(path);
+
+            // if archive, get more info
+            if (isArchive(path))
+            {
+                if (f.exists() && f.isFile() && f.canRead())
+                {
+                    Date lastModified = new Date(f.lastModified());
+                    String date = formatDate(lastModified);
+                    String time = formatTime(lastModified);
+                    String length = formatLength(f.length());
+                    
+                    System.out.print(
+                        repeatSpace(MAX_SIZE_LEN - length.length()));
+                        
+                    System.out.print(length);
+                    System.out.print(repeatSpace(MAX_DATE_LEN - date.length()));
+                    System.out.print(date);
+                    System.out.print(repeatSpace(MAX_TIME_LEN - time.length()));
+                    System.out.print(time);
+                }
+                else
+                {
+                    if (!f.exists())
+                        System.out.print("Does not exist!");
+                    else if (!f.isFile())
+                        System.out.print("Is not a file!");
+                    else if (!f.canRead())
+                        System.out.print("Cannot open file!");
+                    else
+                        System.out.print("Unknown error opening file!");
+                }
+            }
+            else if (f.isDirectory())
+            {
+                Date lastModified = new Date(f.lastModified());
+                String date = formatDate(lastModified);
+                String time = formatTime(lastModified);
+                System.out.print(repeatSpace(MAX_SIZE_LEN));
+                System.out.print(repeatSpace(MAX_DATE_LEN - date.length()));
+                System.out.print(date);
+                System.out.print(repeatSpace(MAX_TIME_LEN - time.length()));
+                System.out.print(time);
+            }
+            else if (!f.exists())
+            {
+                System.out.print("Does not exist!");
+            }
+
+            System.out.println();
+        }
+    }
 
 
     /**
@@ -104,116 +235,6 @@ public class Main
 
 
     /**
-     * Entry point
-     * 
-     * @param   args    command line params
-     */
-    public static void main(String[] args)
-    {
-
-        // stuffed everything info main()
-        String classPath = System.getProperty("java.class.path");
-        
-        StringTokenizer st = 
-            new StringTokenizer(classPath,System.getProperty("path.separator"));
-            
-        int max = 0;
-
-        // find longest for formatting
-        while (st.hasMoreElements())
-        {
-            String path = st.nextToken();
-
-            if (path.length() > max)
-                max = path.length();
-        }
-
-        max++;
-        st = new StringTokenizer(classPath, 
-                                 System.getProperty("path.separator"));
-
-        // header row
-        if (st.countTokens() > 0)
-        {
-            int rowLength = max + MAX_SIZE_LEN + 
-                            MAX_DATE_LEN + MAX_TIME_LEN;
-            System.out.println(repeatString(rowLength, "="));
-            System.out.print(COL_ARCHIVE);
-            System.out.print(repeatSpace(max - COL_ARCHIVE.length()));
-            System.out.print(repeatSpace(MAX_SIZE_LEN - COL_SIZE.length()));
-            System.out.print(COL_SIZE);
-            System.out.print(repeatSpace(MAX_DATE_LEN - COL_DATE.length()));
-            System.out.print(COL_DATE);
-            System.out.print(repeatSpace(MAX_TIME_LEN - COL_TIME.length()));
-            System.out.print(COL_TIME);
-            System.out.println();
-            System.out.println(repeatString(rowLength, "="));
-        }
-
-        // loop through classpath
-        while (st.hasMoreElements())
-        {
-            String path = st.nextToken();
-            System.out.print(path);
-
-            for (int i = 0; i < (max - path.length()); i++)
-                System.out.print(" ");
-
-            File f = new File(path);
-
-            // if archive, get more info
-            if (isArchive(path))
-            {
-                if (f.exists() && f.isFile() && f.canRead())
-                {
-                    Date lastModified = new Date(f.lastModified());
-                    String date = formatDate(lastModified);
-                    String time = formatTime(lastModified);
-                    String length = formatLength(f.length());
-                    
-                    System.out.print(
-                        repeatSpace(MAX_SIZE_LEN - length.length()));
-                        
-                    System.out.print(length);
-                    System.out.print(repeatSpace(MAX_DATE_LEN - date.length()));
-                    System.out.print(date);
-                    System.out.print(repeatSpace(MAX_TIME_LEN - time.length()));
-                    System.out.print(time);
-                }
-                else
-                {
-                    if (!f.exists())
-                        System.out.print("Does not exist!");
-                    else if (!f.isFile())
-                        System.out.print("Is not a file!");
-                    else if (!f.canRead())
-                        System.out.print("Cannot open file!");
-                    else
-                        System.out.print("Unknown error opening file!");
-                }
-            }
-            else if (f.isDirectory())
-            {
-                Date lastModified = new Date(f.lastModified());
-                String date = formatDate(lastModified);
-                String time = formatTime(lastModified);
-                System.out.print(repeatSpace(MAX_SIZE_LEN));
-                System.out.print(repeatSpace(MAX_DATE_LEN - date.length()));
-                System.out.print(date);
-                System.out.print(repeatSpace(MAX_TIME_LEN - time.length()));
-                System.out.print(time);
-            }
-            else if (!f.exists())
-            {
-                System.out.print("Does not exist!");
-            }
-
-            System.out.println();
-        }
-    }
-
-
-    /**
      * Builds a string with a given number of spaces
      * 
      * @param   l   number of spaces
@@ -221,24 +242,6 @@ public class Main
      */
     static String repeatSpace(int l)
     {
-        return repeatString(l, " ");
-    }
-
-
-    /**
-     * Builds a string with a given string repeated a given number of times
-     * 
-     * @param   l   number of times to repeat a given character
-     * @param   s   string to repeat
-     * @return      string with given character repeated given number of times
-     */
-    static String repeatString(int l, String s)
-    {
-        StringBuffer sbuf = new StringBuffer("");
-
-        for (int i = 0; i < l; i++)
-            sbuf.append(s);
-
-        return new String(sbuf);
+        return StringUtil.repeat(" ", l);
     }
 }
