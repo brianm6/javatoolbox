@@ -726,7 +726,7 @@ public class TailPane extends JPanel
          */
         public void tailReattached(Tail tail)
         {
-            statusBar_.setStatus(
+            statusBar_.setInfo(
                 "Tail reattached to " + tail.getFile().getName());
         }
     }
@@ -789,7 +789,7 @@ public class TailPane extends JPanel
             else
             {
                 setRegularExpression(getRegularExpression());
-                statusBar_.setStatus("Filtering on regular expression: " + s);
+                statusBar_.setInfo("Filtering on regular expression: " + s);
             }
         }
     }
@@ -865,7 +865,7 @@ public class TailPane extends JPanel
                 mode_ = MODE_STOP;
                 putValue(Action.NAME, mode_);
                 pauseButton_.setEnabled(true);
-                statusBar_.setStatus("Started tail for " + 
+                statusBar_.setInfo("Started tail for " + 
                     ArrayUtil.toString(config_.getFilenames()));
             }
             else
@@ -883,7 +883,7 @@ public class TailPane extends JPanel
                 mode_ = MODE_START;
                 putValue(Action.NAME, mode_);                
                 pauseButton_.setEnabled(false);
-                statusBar_.setStatus("Stopped tail for " + 
+                statusBar_.setInfo("Stopped tail for " + 
                     ArrayUtil.toString(config_.getFilenames()));
             }
         }
@@ -927,14 +927,14 @@ public class TailPane extends JPanel
                     tail.unpause();
                     putValue(Action.NAME, MODE_PAUSE);
                     
-                    statusBar_.setStatus("Unpaused tail for " + 
+                    statusBar_.setInfo("Unpaused tail for " + 
                         tail.getFile().getCanonicalPath());              
                 }
                 else
                 {
                     tail.pause();
                     putValue(Action.NAME, MODE_UNPAUSE);
-                    statusBar_.setStatus("Paused tail for " + 
+                    statusBar_.setInfo("Paused tail for " + 
                         tail.getFile().getCanonicalPath());
                 }
             }
@@ -978,7 +978,7 @@ public class TailPane extends JPanel
                     tail.stop();
             }
             
-            statusBar_.setStatus("Closed tail for " + 
+            statusBar_.setInfo("Closed tail for " + 
                 ArrayUtil.toString(config_.getFilenames()));
         }
     }
