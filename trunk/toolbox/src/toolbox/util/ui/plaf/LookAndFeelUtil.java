@@ -282,17 +282,25 @@ public final class LookAndFeelUtil
     {
         AbstractButton button = group_.getSelected();
         
-        logger_.info("Selected button: " + button);
-        
-        Action action = button.getAction();
-        
-        logger_.info("Selected action: " + action);
-        
-        LookAndFeelActivator activator = 
-            (LookAndFeelActivator) group_.getSelected().getAction();
-        
-        LAFInfo info = activator.getLookAndFeelInfo();
-        info.savePrefs(workspace);
+        if (button != null) // No look and feel selected, skip...
+        {    
+            logger_.info("Selected button: " + button);
+            
+            Action action = button.getAction();
+            
+            logger_.info("Selected action: " + action);
+            
+            LookAndFeelActivator activator = 
+                (LookAndFeelActivator) group_.getSelected().getAction();
+            
+            LAFInfo info = activator.getLookAndFeelInfo();
+            info.savePrefs(workspace);
+        }
+        else
+        {
+            logger_.debug(
+                "No look and feel selected. Not saving LookAndFeelUtil prefs.");
+        }
     }
 
     
