@@ -7,7 +7,7 @@
   <pomVersion>3</pomVersion>
   <id>toolbox</id>
   <name>Java Toolbox</name>
-  <currentVersion>1.1</currentVersion>
+  <currentVersion>SNAPSHOT</currentVersion>
 
   <organization>
     <name>Toolbox</name>
@@ -561,37 +561,32 @@
   
  
     <reports>     
-    
-      <!--
       <report>maven-clover-plugin</report>
-      -->
-      
-      <report>maven-changelog-plugin</report>
-      
-      <!--
-      Pending
-      <report>maven-junit-report-plugin</report>
-      <report>maven-jdepend-plugin</report>
-      <report>maven-changes-plugin</report>
       <report>maven-changelog-plugin</report>
       <report>maven-developer-activity-plugin</report>
       <report>maven-file-activity-plugin</report>
+      <report>maven-jdepend-plugin</report>
+      <report>maven-pmd-plugin</report>
+      <report>maven-statcvs-plugin</report>
       <report>maven-javadoc-plugin</report>
       <report>maven-jxr-plugin</report>
-      <report>maven-pmd-plugin</report>
-      <report>maven-jdepend-plugin</report>
-      <report>maven-statcvs-plugin</report>
       <report>maven-checkstyle-plugin</report>
+      <report>maven-junit-report-plugin</report>
+      
+      <!--
+      EXCLUDED
+      ======================================
+      Doesn't seem to do anything at all
+      <report>maven=changes=plugin</report>
+      ======================================
+      Uses vdoclet to find tags so will only
+      flag stuff that starts with an @      
+      <report>maven=tasklist=plugin</report>
+      ======================================
+      Sucks up way too much memory > 1GB
+      <report>maven=simian=plugin</report>
+      ======================================
       -->
-      
-      <!-- EXCLUDED -->
-      
-      <!-- Uses vdoclet to find tags so will only -->
-      <!-- flag stuff that starts with an @       -->
-      <!-- <report>maven-tasklist-plugin</report> -->
-      
-      <!-- Sucks up way too much memory > 1GB   -->
-      <!-- <report>maven-simian-plugin</report> -->
       
     </reports>
   
