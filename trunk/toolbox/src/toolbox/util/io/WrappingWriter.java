@@ -37,17 +37,17 @@ public class WrappingWriter extends Writer
     /** 
      * Default width to wrap at. 
      */
-    public static final int DEFAULT_WIDTH   = 80;
+    public static final int DEFAULT_WIDTH = 80;
     
     /** 
      * Default prefix for each line. 
      */
-    public static final String DEFAULT_PREFIX  = "";
+    public static final String DEFAULT_PREFIX = "";
     
     /** 
      * Default suffix for each line. 
      */
-    public static final String DEFAULT_SUFFIX  = "";
+    public static final String DEFAULT_SUFFIX = "";
     
     /** 
      * Default newline for each line. 
@@ -98,7 +98,7 @@ public class WrappingWriter extends Writer
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a wrapping writer with default with of 
+     * Creates a wrapping writer with default with of
      * <code>DEFAULT_WIDTH</code>.
      * 
      * @param writer Writer to decorate.
@@ -143,11 +143,11 @@ public class WrappingWriter extends Writer
         // Subtract the space that the pre/suffix takes up from the width
         width_ = width - prefix_.length() - suffix_.length();
         
-        first_   = true;
+        first_ = true;
         stagger_ = false;
         
         // Create a counter with range 1..width 
-        counter_     = new RollingCounter(1, width_, 1); 
+        counter_ = new RollingCounter(1, width_, 1); 
         counter_.addRollingCounterListener(this);
     }
 
