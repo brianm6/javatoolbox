@@ -234,9 +234,9 @@ public final class SwingUtil
     /**
      * Tiles internal frames upon the desktop.
      *
-     * @param desktop Desktop on which to tile windows
+     * @param desktop Desktop on which to tile windows.
      *
-     * <pre>
+     * <pre class="snippet">
      *
      * Based upon the following tiling algorithm:
      *

@@ -26,7 +26,7 @@ import toolbox.util.StringUtil;
  * names) and the values are the result of calling the corresponding get method.
  * <p>
  * Example:
- * <pre>
+ * <pre class="snippet">
  * 
  *   Person person = new Person();
  *   ...
