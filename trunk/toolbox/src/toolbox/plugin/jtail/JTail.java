@@ -50,19 +50,55 @@ public class JTail extends JFrame
     private static final Category logger_ = 
         Category.getInstance(JTail.class);
 
+    /**
+     * File explorer flipper that allows the user to select a file to tail
+     */
     private FileSelectionPane fileSelectionPane_;
+    
+    /**
+     * Tab panel that contains each tail as a single tab
+     */
     private JTabbedPane       tabbedPane_;
+    
+    /**
+     * Flip panel that houses the file explorer 
+     */
     private JFlipPane         flipPane_;    
+    
+    /**
+     * Status bar at the bottom of the screen that shows the status of
+     * varioys activities
+     */
     private JStatusPane       statusBar_;    
+    
+    /**
+     * Main menu bar that includes functionality not found else where 
+     */
     private JMenuBar          menuBar_;    
+    
+    /** 
+     * Map of each tail that is active
+     */
     private Map               tailMap_;
+    
+    /**
+     * Puts the application into test mode. An additional menu item is added
+     * to the file menu which creates a running tail for testing purposes
+     */
     private boolean           testMode_ = true;
-    private JSplitPane        rootSplitPane_;
-
-    /** Configuration manager **/
+    
+    /** 
+     * Configuration manager which oversees the reading and saving of 
+     * application specific preferences. This includes the current active
+     * tails and also window size/position, etc.
+     */
     private IConfigManager configManager_ = new ConfigManager();
     
-    /** JTail configuration information **/
+    /** 
+     * Data object that captures all known application settings/preferences. 
+     * The ConfigManager is responsible for saving/loading this object between
+     * application instances.
+     */
     private IJTailConfig jtailConfig_;            
         
         
@@ -116,7 +152,7 @@ public class JTail extends JFrame
             tailMap_  = new HashMap();
             
             buildView();
-            addListeners();
+            wireView();
             setDefaultCloseOperation(EXIT_ON_CLOSE);            
             loadConfiguration();
             applyConfiguration();
@@ -303,7 +339,7 @@ public class JTail extends JFrame
     /**
      * Adds listeners
      */
-    protected void addListeners()
+    protected void wireView()
     {
         // Intercept closing of app to save configuration
         addWindowListener(new WindowListener());
