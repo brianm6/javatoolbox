@@ -15,6 +15,7 @@ import com.adobe.acrobat.Viewer;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
+import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
 
 /**
@@ -46,6 +47,32 @@ public class AcrobatViewer extends JPanel implements DocumentViewer
     }
     
     //--------------------------------------------------------------------------
+    // Protected
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Lazily loads the UI component.
+     */
+    public void lazyLoad() 
+    {
+        if (viewer_ == null)
+        {    
+            try
+            {
+                Viewer.setEnableDebug(true);
+                setLayout(new BorderLayout());
+                viewer_ = new Viewer();
+                add(BorderLayout.CENTER, viewer_);
+            }
+            catch (Exception e)
+            {
+                ExceptionUtil.handleUI(e, logger_);
+            }
+        }
+    }
+    
+    
+    //--------------------------------------------------------------------------
     // DocumentViewer Interface
     //--------------------------------------------------------------------------
     
@@ -54,18 +81,6 @@ public class AcrobatViewer extends JPanel implements DocumentViewer
      */
     public void startup(Map init) throws DocumentViewerException 
     {
-        try
-        {
-            Viewer.setEnableDebug(true);
-            
-            setLayout(new BorderLayout());
-            viewer_ = new Viewer();
-            add(BorderLayout.CENTER, viewer_);
-        }
-        catch (Exception e)
-        {
-            throw new DocumentViewerException(e);
-        }
     }
     
     
@@ -82,7 +97,9 @@ public class AcrobatViewer extends JPanel implements DocumentViewer
      * @see toolbox.plugin.docviewer.DocumentViewer#view(java.io.File)
      */
     public void view(File file) throws DocumentViewerException
-    {
+    { 
+        lazyLoad();
+        
         try
         {
             view(new BufferedInputStream(new FileInputStream(file)));
@@ -103,6 +120,8 @@ public class AcrobatViewer extends JPanel implements DocumentViewer
      */
     public void view(InputStream is) throws DocumentViewerException
     {
+        lazyLoad();
+        
         try
         {
             viewer_.activate();
@@ -154,6 +173,7 @@ public class AcrobatViewer extends JPanel implements DocumentViewer
      */
     public JComponent getComponent()
     {
+        lazyLoad();
         return this;
     }
 
@@ -164,5 +184,6 @@ public class AcrobatViewer extends JPanel implements DocumentViewer
     public void shutdown()
     {
         viewer_.deactivate();
+        viewer_ = null;
     }
 }
