@@ -1,4 +1,7 @@
-package toolbox.util.thread;
+package toolbox.util.thread.strategy;
+
+import toolbox.util.thread.IThreadable;
+import toolbox.util.thread.ReturnValue;
 
 /**
  * AbstractDispatcherStrategy.java

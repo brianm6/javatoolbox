@@ -1,6 +1,6 @@
 package toolbox.util.thread;
 
-import toolbox.util.sync.EventSemaphore;
+import toolbox.util.thread.concurrent.EventSemaphore;
 
 
 /**
@@ -140,13 +140,13 @@ public final class ReturnValue
     int getState()
     {
         return state_;
-    }
+    } 
 
 
     /**
     * Indicates the corresponding request is processing.
     */
-    void setStarted()
+    public void setStarted()
     {
         if (state_ != STARTED_STATE)
         {
@@ -169,7 +169,7 @@ public final class ReturnValue
     * @param    value         the return value for the request.
     * @exception ValueAlreadyAssignedException if value was already assigned.
     */
-    void setValue(Object value)
+    public void setValue(Object value)
     {
         if (isAvailable())
             throw new ValueAlreadyAssignedException();

@@ -1,9 +1,11 @@
-package toolbox.util.thread;
+package toolbox.util.thread.strategy;
 
 import java.util.ArrayList;
 
-import toolbox.util.sync.BoundedBuffer;
-import toolbox.util.sync.BoundedBufferAdapter;
+import toolbox.util.thread.IThreadable;
+import toolbox.util.thread.ReturnValue;
+import toolbox.util.thread.concurrent.BoundedBuffer;
+import toolbox.util.thread.concurrent.BoundedBufferAdapter;
 
 
 /**
