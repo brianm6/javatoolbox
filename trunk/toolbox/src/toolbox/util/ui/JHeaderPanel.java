@@ -666,4 +666,14 @@ public class JHeaderPanel extends JPanel
         jb.toggleOnProperty(propertyChangeSource, property);
         return jb;
     }
+
+    
+    /**
+     * @return Returns the gradientPanel.
+     */
+    protected GradientPanel getGradientPanel()
+    {
+        return gradientPanel;
+    }
+    
 }
