@@ -295,6 +295,7 @@ public final class ArrayUtil
      * 
      * @param array Array of objects to search.
      * @param obj Object to search for.
+     * @param c Comparator to use for equality test.
      * @return -1 if the object is not found, otherwise the index of the first 
      *         matching object.
      */
