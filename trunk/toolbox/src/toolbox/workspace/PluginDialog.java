@@ -367,6 +367,49 @@ public class PluginDialog extends JDialog
         removeButton_.setEnabled(activeModel_.size() > 0);
         addButton_.setEnabled(inactiveModel_.size() > 0);
     }
+
+    //--------------------------------------------------------------------------
+    // Public Static
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Returns a list of plugins read from plugins.xml.
+     * 
+     * @return List[PluginMetas]
+     */
+    public static List getPluginList() 
+    {
+        InputStream is = null;
+        List pluginList = new ArrayList();
+        
+        try
+        {
+            is = ResourceUtil.getResource(FILE_PLUGINS);
+            Element root = new Builder().build(is).getRootElement();
+            Elements plugins = root.getChildElements(NODE_PLUGIN);
+            
+            for (int i = 0; i < plugins.size(); i++)
+            {  
+                String clazz = 
+                    XOMUtil.getStringAttribute(
+                        plugins.get(i), ATTR_CLASS, null);
+
+                if (clazz != null)
+                    pluginList.add(new PluginMeta(clazz));
+            }
+        }
+        catch (Exception ioe)
+        {
+            ExceptionUtil.handleUI(ioe, logger_);
+        }
+        finally
+        {
+            StreamUtil.close(is);
+        }
+
+        return pluginList;
+    }
+    
     
     //--------------------------------------------------------------------------
     // AddNewPluginAction 
@@ -624,45 +667,6 @@ public class PluginDialog extends JDialog
         
             removeButton_.setEnabled(activeModel_.size() > 0);
             addButton_.setEnabled(inactiveModel_.size() > 0);
-        }
-        
-        
-        /**
-         * Retrusn list of plugins from plugins.xml.
-         * 
-         * @return List of PluginMeta.
-         */
-        public List getPluginList() 
-        {
-            InputStream is = null;
-            List pluginList = new ArrayList();
-            
-            try
-            {
-                is = ResourceUtil.getResource(FILE_PLUGINS);
-                Element root = new Builder().build(is).getRootElement();
-                Elements plugins = root.getChildElements(NODE_PLUGIN);
-                
-                for (int i = 0; i < plugins.size(); i++)
-                {  
-                    String clazz = 
-                        XOMUtil.getStringAttribute(
-                            plugins.get(i), ATTR_CLASS, null);
-
-                    if (clazz != null)
-                        pluginList.add(new PluginMeta(clazz));
-                }
-            }
-            catch (Exception ioe)
-            {
-                ExceptionUtil.handleUI(ioe, logger_);
-            }
-            finally
-            {
-                StreamUtil.close(is);
-            }
-
-            return pluginList;
         }
     }
 }
