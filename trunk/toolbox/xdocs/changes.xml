@@ -91,6 +91,7 @@
     
     <release version="2.0" date="August 2004">
       <action type="add"   >Util - Added FontUtil.isMonospaced()</action>              
+      <action type="update">Util - JSmartTableHeader updated to support auto-resize by clicking on the column divider</action>              
     </release>
     
     <release version="2.0" date="July 2004">
