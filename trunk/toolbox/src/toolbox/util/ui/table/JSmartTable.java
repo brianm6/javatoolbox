@@ -10,6 +10,8 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
+import org.apache.log4j.Logger;
+
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.AntiAliased;
 
@@ -26,6 +28,8 @@ import toolbox.util.ui.AntiAliased;
  */
 public class JSmartTable extends JTable implements AntiAliased
 {
+    private static final Logger logger_ = Logger.getLogger(JSmartTable.class);
+    
     //--------------------------------------------------------------------------
     // Fields 
     //--------------------------------------------------------------------------
@@ -44,7 +48,7 @@ public class JSmartTable extends JTable implements AntiAliased
      */
     public JSmartTable()
     {
-        setTableHeader(new JSmartTableHeader());        
+        smartInit();        
     }
 
 
@@ -57,53 +61,53 @@ public class JSmartTable extends JTable implements AntiAliased
     public JSmartTable(int numRows, int numColumns)
     {
         super(numRows, numColumns);
-        setTableHeader(new JSmartTableHeader());
+        smartInit();
     }
 
 
     /**
      * Creates a JSmartTable.
      * 
-     * @param dm Table model
+     * @param dm Table model.
      */
     public JSmartTable(TableModel dm)
     {
         super(dm);
-        setTableHeader(new JSmartTableHeader());
+        smartInit();
     }
 
 
     /**
      * Creates a JSmartTable.
      * 
-     * @param rowData Row data
-     * @param columnNames Column names
+     * @param rowData Row data.
+     * @param columnNames Column names.
      */
     public JSmartTable(Object[][] rowData, Object[] columnNames)
     {
         super(rowData, columnNames);
-        setTableHeader(new JSmartTableHeader());
+        smartInit();
     }
 
 
     /**
      * Creates a JSmartTable.
      * 
-     * @param rowData Row data
-     * @param columnNames Column names
+     * @param rowData Row data.
+     * @param columnNames Column names.
      */
     public JSmartTable(Vector rowData, Vector columnNames)
     {
         super(rowData, columnNames);
-        setTableHeader(new JSmartTableHeader());
+        smartInit();
     }
 
 
     /**
      * Creates a JSmartTable.
      * 
-     * @param dm Table model
-     * @param cm Column model
+     * @param dm Table model.
+     * @param cm Column model.
      */
     public JSmartTable(TableModel dm, TableColumnModel cm)
     {
@@ -115,9 +119,9 @@ public class JSmartTable extends JTable implements AntiAliased
     /**
      * Creates a JSmartTable.
      * 
-     * @param dm Table model
-     * @param cm Column model
-     * @param sm Selection model
+     * @param dm Table model.
+     * @param cm Column model.
+     * @param sm Selection model.
      */
     public JSmartTable(
         TableModel dm,
@@ -127,7 +131,7 @@ public class JSmartTable extends JTable implements AntiAliased
         super(dm, cm, sm);
         setTableHeader(new JSmartTableHeader(cm));
     }
-
+    
     //--------------------------------------------------------------------------
     // Protected
     //--------------------------------------------------------------------------
@@ -135,8 +139,9 @@ public class JSmartTable extends JTable implements AntiAliased
     /**
      * Initializes the table.
      */
-    protected void init()
+    protected void smartInit()
     {
+        setTableHeader(new JSmartTableHeader(getColumnModel()));        
     }
     
     //--------------------------------------------------------------------------
@@ -158,7 +163,8 @@ public class JSmartTable extends JTable implements AntiAliased
     public void setAntiAliased(boolean b)
     {
         antiAliased_ = b;
-        
+
+        // TODO: Is this necessary?
         JTableHeader header = getTableHeader();
         
         if ((header != null) && (header instanceof AntiAliased))
