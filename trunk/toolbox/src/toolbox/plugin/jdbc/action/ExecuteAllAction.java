@@ -23,7 +23,7 @@ import toolbox.workspace.IStatusBar;
  * 
  * @see toolbox.plugin.jdbc.QueryPlugin
  */
-public class ExecuteAllAction extends BaseAction
+public class ExecuteAllAction extends BaseAction 
 {
     private static final Logger logger_ =
         Logger.getLogger(ExecuteAllAction.class);
@@ -104,7 +104,10 @@ public class ExecuteAllAction extends BaseAction
                     statusBar.setInfo(status);
                     //logger_.debug(status);
                     
-                    String results = plugin.executeSQL(stmts[i]);
+                    String results = 
+                        plugin.executeSQL(
+                            stmts[i], 
+                            new ResultFormatter(getPlugin()));
                     
                     // Scroll to the end of the output textarea if more
                     // than a couple of page fulls of results is appended
