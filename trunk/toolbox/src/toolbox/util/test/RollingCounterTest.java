@@ -7,7 +7,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.RollingCounter;
 
 /**
- * Unit test for RollingCounter
+ * Unit test for RollingCounter.
  */
 public class RollingCounterTest extends TestCase
 {
@@ -19,9 +19,9 @@ public class RollingCounterTest extends TestCase
     //--------------------------------------------------------------------------
             
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -33,7 +33,7 @@ public class RollingCounterTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Tests increment()
+     * Tests increment() in a small range.
      */
     public void testRangeIsSmall()
     {
@@ -63,8 +63,9 @@ public class RollingCounterTest extends TestCase
         logger_.info(sb);
     }
     
+    
     /**
-     * Tests increment()
+     * Tests increment() in a range of size one.
      */
     public void testRangeIsOne()
     {
@@ -74,14 +75,15 @@ public class RollingCounterTest extends TestCase
         
         for(int i=0; i<20; i++)
         {
-            System.out.print(c.getCount() + " ");
+            //System.out.print(c.getCount() + " ");
             c.increment();
         }
-        System.out.println();
+        //System.out.println();
     }
     
+    
     /**
-     * Test a range that is negative
+     * Test a range that is negative.
      */
     public void testRangeIsNegative()
     {
@@ -91,14 +93,15 @@ public class RollingCounterTest extends TestCase
         
         for(int i=0; i<20; i++)
         {
-            System.out.print(c.getCount() + " ");
+            //System.out.print(c.getCount() + " ");
             c.increment();
         }
-        System.out.println();
+        //System.out.println();
     }
     
+    
     /**
-     * Test a range that is negative
+     * Test a range that is negative to positive.
      */
     public void testRangeIsSigned()
     {
@@ -108,13 +111,14 @@ public class RollingCounterTest extends TestCase
         
         for(int i=0; i<22; i++)
         {
-            System.out.print(c.getCount() + " ");
+            //System.out.print(c.getCount() + " ");
             c.increment();
         }
     }
 
+    
     /**
-     * Test listener
+     * Tests the listener.
      */
     public void testListener()
     {
@@ -122,12 +126,21 @@ public class RollingCounterTest extends TestCase
         
         class Ear implements RollingCounter.IRollingCounterListener
         {
+            /**
+             * @see toolbox.util.RollingCounter.IRollingCounterListener#
+             *      afterRoll(toolbox.util.RollingCounter)
+             */
             public void afterRoll(RollingCounter rc)
             {
                 System.out.print("\n[");
                 //System.out.print("*" + rc.getCount() + "*");
             }
             
+            
+            /**
+             * @see toolbox.util.RollingCounter.IRollingCounterListener#
+             *      beforeRoll(toolbox.util.RollingCounter)
+             */
             public void beforeRoll(RollingCounter rc)
             {
                 System.out.print("]");
@@ -146,8 +159,9 @@ public class RollingCounterTest extends TestCase
         }       
     }
     
+    
     /**
-     * Test listener
+     * Tests the listener.
      */
     public void testListener2()
     {
@@ -178,6 +192,7 @@ public class RollingCounterTest extends TestCase
             rc.increment();
         }       
     }    
+
     
     /**
      * Tests isAtStart()
@@ -194,6 +209,7 @@ public class RollingCounterTest extends TestCase
         
         assertTrue(!c.isAtStart());
     }
+    
     
     /**
      * Tests toString()

@@ -14,7 +14,7 @@ import toolbox.log4j.SmartLogger;
 import toolbox.util.PropertiesUtil;
 
 /**
- * Unit Test for PropertiesUtil
+ * Unit Test for PropertiesUtil.
  */
 public class PropertiesUtilTest extends TestCase
 {
@@ -26,9 +26,9 @@ public class PropertiesUtilTest extends TestCase
     //--------------------------------------------------------------------------
             
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -81,6 +81,7 @@ public class PropertiesUtilTest extends TestCase
         assertTrue(PropertiesUtil.getBoolean(props,  "bad key", true));
     }
 
+    
     /**
      * Tests setBoolean()
      */
@@ -96,6 +97,7 @@ public class PropertiesUtilTest extends TestCase
         assertTrue(new Boolean(props.getProperty("1")).booleanValue());
         assertTrue(!new Boolean(props.getProperty("2")).booleanValue());
     }
+    
     
     /**
      * Tests getInteger()
@@ -120,6 +122,7 @@ public class PropertiesUtilTest extends TestCase
         assertEquals(-1, PropertiesUtil.getInteger(props, "doesnt exist", -1));
     }   
 
+    
     /**
      * Tests getLong()
      */
@@ -142,6 +145,7 @@ public class PropertiesUtilTest extends TestCase
         assertEquals(-1  , PropertiesUtil.getLong(props, "5", -1));
         assertEquals(-1  , PropertiesUtil.getLong(props, "doesnt exist", -1));
     }   
+    
     
     /**
      * Tests setInteger()
@@ -169,10 +173,11 @@ public class PropertiesUtilTest extends TestCase
             new Integer(props.getProperty("4")).intValue());
     }
     
+    
     /**
      * Tests toString()
      * 
-     * @throws IOException on I/O error
+     * @throws IOException on I/O error.
      */
     public void testToString() throws IOException
     {

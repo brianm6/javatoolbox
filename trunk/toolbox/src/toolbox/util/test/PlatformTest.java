@@ -8,21 +8,20 @@ import org.apache.log4j.Logger;
 import toolbox.util.Platform;
 
 /**
- * Unit test for Platform
+ * Unit test for Platform.
  */
 public class PlatformTest extends TestCase
 {
-    private static final Logger logger_ =
-        Logger.getLogger(PlatformTest.class);
+    private static final Logger logger_ = Logger.getLogger(PlatformTest.class);
 
     //--------------------------------------------------------------------------
     // Main
     //--------------------------------------------------------------------------
             
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {

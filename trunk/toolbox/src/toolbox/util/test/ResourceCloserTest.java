@@ -6,7 +6,7 @@ import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
 /**
- * Unit test for ResourceCloser
+ * Unit test for ResourceCloser.
  */
 public class ResourceCloserTest extends TestCase
 {
@@ -18,9 +18,9 @@ public class ResourceCloserTest extends TestCase
     //--------------------------------------------------------------------------
         
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -31,6 +31,9 @@ public class ResourceCloserTest extends TestCase
     // Unit Tests
     //--------------------------------------------------------------------------
     
+    /**
+     * Tests resourcecloser.
+     */
     public void testResourceCloser()
     {
         logger_.info("Running testResourceCloser...");

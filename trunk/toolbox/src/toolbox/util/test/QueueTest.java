@@ -8,21 +8,20 @@ import org.apache.log4j.Logger;
 import toolbox.util.Queue;
 
 /**
- * Unit test for Queue
+ * Unit test for Queue.
  */
 public class QueueTest extends TestCase
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(QueueTest.class);
+    private static final Logger logger_ = Logger.getLogger(QueueTest.class);
 
     //--------------------------------------------------------------------------
     // Main
     //--------------------------------------------------------------------------
             
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -34,7 +33,7 @@ public class QueueTest extends TestCase
     //--------------------------------------------------------------------------
 
     /**
-     * Tests the default constructor
+     * Tests the default constructor.
      */
     public void testConstructor()
     {
@@ -43,6 +42,7 @@ public class QueueTest extends TestCase
         Queue q = new Queue();
         assertNotNull(q);
     }
+    
     
     /**
      * Tests enqueue()
@@ -60,6 +60,7 @@ public class QueueTest extends TestCase
         assertEquals(token, q.dequeue());
     }
     
+    
     /**
      * Tests dequeue()
      */    
@@ -76,6 +77,7 @@ public class QueueTest extends TestCase
         assertTrue(q.isEmpty());
     }
 
+    
     /**
      * Tests peek()
      */
@@ -91,6 +93,7 @@ public class QueueTest extends TestCase
         assertEquals(1, q.size());
         assertTrue(!q.isEmpty());
     }    
+    
     
     /**
      * Tests isEmpty()
@@ -108,6 +111,7 @@ public class QueueTest extends TestCase
         assertTrue(q.isEmpty());
     }    
 
+    
     /**
      * Tests size()
      */

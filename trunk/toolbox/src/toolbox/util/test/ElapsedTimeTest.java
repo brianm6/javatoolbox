@@ -12,7 +12,7 @@ import toolbox.util.RandomUtil;
 import toolbox.util.ThreadUtil;
 
 /**
- * Unit test for ElapsedTime
+ * Unit test for ElapsedTime.
  */
 public class ElapsedTimeTest extends TestCase
 {
@@ -24,9 +24,9 @@ public class ElapsedTimeTest extends TestCase
     //--------------------------------------------------------------------------
            
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -38,7 +38,7 @@ public class ElapsedTimeTest extends TestCase
     //--------------------------------------------------------------------------
         
     /**
-     * Tests getDifference() for a ms
+     * Tests getDifference() for a ms.
      */
     public void testMillisecondElapsed()
     {
@@ -54,8 +54,9 @@ public class ElapsedTimeTest extends TestCase
         logger_.info(elapsed);
     }
 
+    
     /**
-     * Tests an elapsed time of one second
+     * Tests an elapsed time of one second.
      */
     public void testSecondElapsed()
     {
@@ -71,8 +72,9 @@ public class ElapsedTimeTest extends TestCase
         logger_.info(elapsed);
     }
 
+    
     /**
-     * Tests an elapsed time of one minute
+     * Tests an elapsed time of one minute.
      */
     public void testMinuteElapsed()
     {
@@ -88,8 +90,9 @@ public class ElapsedTimeTest extends TestCase
         logger_.info(elapsed);
     }
 
+    
     /**
-     * Tests an elapsed time of one hour
+     * Tests an elapsed time of one hour.
      */
     public void testHourElapsed()
     {
@@ -105,8 +108,9 @@ public class ElapsedTimeTest extends TestCase
         logger_.info(elapsed);
     }
 
+    
     /**
-     * Tests an elapsed time of one day
+     * Tests an elapsed time of one day.
      */
     public void testDayElapsed()
     {
@@ -122,8 +126,9 @@ public class ElapsedTimeTest extends TestCase
         logger_.info(elapsed);
     }
 
+    
     /**
-     * Tests millisecond rollover: 1000ms = 1 sec
+     * Tests millisecond rollover: 1000ms = 1 sec.
      */
     public void testMillisRollover()
     {   
@@ -135,8 +140,9 @@ public class ElapsedTimeTest extends TestCase
         logger_.info(elapsed);
     }
         
+    
     /**
-     * Tests seconds rollover: 60s = 1 minute
+     * Tests seconds rollover: 60s = 1 minute.
      */
     public void testSecondsRollover()
     {   
@@ -148,8 +154,9 @@ public class ElapsedTimeTest extends TestCase
         logger_.info(elapsed);
     }
  
+    
     /**
-     * Tests minutes rollover: 60mins = 1 hour
+     * Tests minutes rollover: 60mins = 1 hour.
      */
     public void testMinutesRollover()
     {   
@@ -161,8 +168,9 @@ public class ElapsedTimeTest extends TestCase
         logger_.info(elapsed);
     }
 
+    
     /**
-     * Test hours rollover: 24hrs = 1 day
+     * Test hours rollover: 24hrs = 1 day.
      */
     public void testHoursRollover()
     {   
@@ -173,6 +181,7 @@ public class ElapsedTimeTest extends TestCase
         assertEquals("days is incorrect", compare, elapsed);
         logger_.info(elapsed);
     }
+    
     
     /**
      * Test equals()
@@ -186,8 +195,9 @@ public class ElapsedTimeTest extends TestCase
         assertTrue("times don't match", time.equals(compare));
     }
 
+    
     /**
-     * Tests equals() for not equal
+     * Tests equals() for not equal.
      */
     public void testEqualsNot()    
     {
@@ -198,8 +208,9 @@ public class ElapsedTimeTest extends TestCase
         assertTrue("times should not match", !time.equals(compare));        
     }
     
+    
     /**
-     * Tests constructor 1
+     * Tests constructor 1.
      */
     public void testConsturctor1()
     {
@@ -213,8 +224,9 @@ public class ElapsedTimeTest extends TestCase
         logger_.info(time);
     }
      
+    
     /**
-     * Tests constructor 2 - copy constructor
+     * Tests constructor 2 - copy constructor.
      */
     public void testCopyConstructor()
     {       
@@ -231,8 +243,9 @@ public class ElapsedTimeTest extends TestCase
         logger_.info(time);
     }
     
+    
     /**
-     * Tests constructor 3
+     * Tests constructor 3.
      */
     public void testConsturctor3()
     {

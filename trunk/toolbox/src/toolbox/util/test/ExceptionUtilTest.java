@@ -8,17 +8,21 @@ import org.apache.log4j.Logger;
 import toolbox.util.ExceptionUtil;
 
 /**
- * Unit test for ExceptionUtil
+ * Unit test for ExceptionUtil.
  */
 public class ExceptionUtilTest extends TestCase
 {
     private static final Logger logger_ = 
         Logger.getLogger(ExceptionUtilTest.class);
 
+    //--------------------------------------------------------------------------
+    // Main 
+    //--------------------------------------------------------------------------
+    
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -30,7 +34,7 @@ public class ExceptionUtilTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Tests the getStackTrace() method
+     * Tests the getStackTrace() method.
      */
     public void testGetStackTrace()
     {

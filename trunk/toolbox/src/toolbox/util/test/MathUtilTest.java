@@ -8,21 +8,20 @@ import org.apache.log4j.Logger;
 import toolbox.util.MathUtil;
 
 /**
- * Unit test for MathUtil
+ * Unit test for MathUtil.
  */
 public class MathUtilTest extends TestCase
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(MathUtilTest.class);
+    private static final Logger logger_ = Logger.getLogger(MathUtilTest.class);
     
     //--------------------------------------------------------------------------
     // Main
     //--------------------------------------------------------------------------
         
     /**
-     * Starts the test case and runs the entire suite.
+     * Entrypoint.
      *
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -36,7 +35,7 @@ public class MathUtilTest extends TestCase
     /**
      * Tests isEven()
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testIsEven() throws Exception
     {
@@ -50,10 +49,11 @@ public class MathUtilTest extends TestCase
         assertTrue("-1000 is even!", MathUtil.isEven(-1000));
     }
     
+    
     /**
      * Tests isOdd()
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testIsOdd() throws Exception
     {
@@ -66,6 +66,7 @@ public class MathUtilTest extends TestCase
         assertTrue("999 is odd!", MathUtil.isOdd(999));
         assertTrue("-1000 is not odd!", !MathUtil.isOdd(-1000));
     }
+    
     
     /**
      * Tests addToAll()
@@ -83,6 +84,7 @@ public class MathUtilTest extends TestCase
         assertEquals(n[2], 3 + x);
     }
     
+    
     /**
      * Tests sum()
      */
@@ -94,6 +96,7 @@ public class MathUtilTest extends TestCase
         assertEquals("sum incorrect", 1 + 2 + 3, MathUtil.sum(n));
         assertEquals("sum empty array incorrect", 0, MathUtil.sum(new int[0]));
     }
+    
     
     /**
      * Tests invNormalCumDist() 

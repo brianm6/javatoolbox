@@ -12,7 +12,7 @@ import toolbox.util.RandomUtil;
 import toolbox.util.StringUtil;
 
 /**
- * Unit test for RandomUtil
+ * Unit test for RandomUtil.
  */
 public class RandomUtilTest extends TestCase
 {
@@ -24,9 +24,9 @@ public class RandomUtilTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Entry point
+     * Entry point.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
