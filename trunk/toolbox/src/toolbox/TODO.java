@@ -38,6 +38,9 @@ package toolbox;
  * TODO: Update NetMeter to use MonitoredInput/Output streams.
  * TODO: Customize SQLFormatter formatting options
  *       Change formatter to leave "select *" on the same line. Apply to all
+ * TODO: check out sql formatter in http://quantum.sourceforge.net/screen_shots.html
+ * TODO: Add junit assertions for serialization
+ * TODO: Add property sheel for sqlformatter
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
