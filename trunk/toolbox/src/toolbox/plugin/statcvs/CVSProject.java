@@ -105,9 +105,13 @@ public class CVSProject implements Comparable, IPreferenced
     // Constructors
     //--------------------------------------------------------------------------
 
+    /**
+     * Creates a CVSProject.
+     */
     public CVSProject()
     {
     }
+
     
     /**
      * Creates a CVSProject from its XML representation.
@@ -212,40 +216,6 @@ public class CVSProject implements Comparable, IPreferenced
         XOMUtil.insertOrReplace(prefs, root);
     }
     
-    //--------------------------------------------------------------------------
-    // DOM <--> XML
-    //--------------------------------------------------------------------------
-
-    /**
-     * Returns an XML representation of the data contained in this project.
-     *
-     * @return XML string.
-     */
-    public String toXML()
-    {
-        return toDOM().toString();
-    }
-
-
-    /**
-     * Returns a DOM representation of the data contained in this project.
-     *
-     * @return Element
-     */
-    public Element toDOM()
-    {
-        Element p = new Element(NODE_CVSPROJECT);
-        p.addAttribute(new Attribute(PROP_PROJECT, getProject()));
-        p.addAttribute(new Attribute(PROP_MODULE, getCVSModule()));
-        p.addAttribute(new Attribute(PROP_CVSROOT, getCVSRoot()));
-        p.addAttribute(new Attribute(PROP_PASSWORD, getCVSPassword()));
-        p.addAttribute(new Attribute(PROP_CHECKOUT_DIR, getCheckoutDir()));
-        p.addAttribute(new Attribute(PROP_DEBUG, isDebug() ? "true" : "false"));
-        p.addAttribute(new Attribute(PROP_LAUNCH_URL, getLaunchURL()));
-        p.addAttribute(new Attribute(PROP_ENGINE, getEngine()));
-        return p;
-    }
-
     //--------------------------------------------------------------------------
     // Accessors/Mutators
     //--------------------------------------------------------------------------

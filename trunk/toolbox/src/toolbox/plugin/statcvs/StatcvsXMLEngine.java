@@ -65,6 +65,7 @@ public class StatcvsXMLEngine implements StatcvsEngine
             "index.html";
     }
 
+    
     /**
      * @see toolbox.plugin.statcvs.StatcvsEngine#generateStats()
      */

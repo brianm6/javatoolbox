@@ -12,7 +12,7 @@ public interface Invoker extends Destroyable
      * Invokes the run() method on class that implements Runnable.
      * 
      * @param invokable Object instance that implements Runnable.
-     * @throws Exception on error.
+     * @throws Exception on invocation error.
      */
     void invoke(Runnable invokable) throws Exception;
 
@@ -23,7 +23,7 @@ public interface Invoker extends Destroyable
      * @param target Object to invoke method on.
      * @param method Name of method to invoke.
      * @param params Method's parameters.
-     * @throws Exception on error.
+     * @throws Exception on invocation error.
      */
     void invoke(Object target, String method, Object[] params) throws Exception;
     

@@ -126,6 +126,8 @@ public class Client extends AbstractService
     
     /**
      * Creates a loopback Client attached to NetMeter.DEFAULT_PORT.
+     * 
+     * @throws ServiceException on error.
      */
     public Client() throws ServiceException
     {
@@ -138,6 +140,7 @@ public class Client extends AbstractService
      * 
      * @param hostname Server hostname.
      * @param port Server port.
+     * @throws ServiceException on error.
      */
     public Client(String hostname, int port) throws ServiceException
     {

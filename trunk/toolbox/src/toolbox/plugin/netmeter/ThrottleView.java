@@ -14,8 +14,18 @@ import toolbox.util.io.Bandwidth;
  */
 public class ThrottleView extends JPanel
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Slider that controls the throttle.
+     */
     private JSlider throttleSlider_;
     
+    /**
+     * Bandwidth throttle for the input/output streams.
+     */
     private Bandwidth bandwidth_;
     
     //--------------------------------------------------------------------------
@@ -24,16 +34,17 @@ public class ThrottleView extends JPanel
     
     /**
      * Creates a ThrottleView.
-     * 
-     * 
      */
     public ThrottleView()
     {
         buildView();
     }
     
+    
     /**
      * Creates a ThrottleView.
+     * 
+     * @param bandwidth Bandwidth to use as the throttle.
      */
     public ThrottleView(Bandwidth bandwidth)
     {
@@ -44,7 +55,6 @@ public class ThrottleView extends JPanel
     //--------------------------------------------------------------------------
     // Protected
     //--------------------------------------------------------------------------
-    
 
     /**
      * Constructs the user interface.
@@ -90,6 +100,10 @@ public class ThrottleView extends JPanel
     // MyChangeListener
     //--------------------------------------------------------------------------
     
+    /**
+     * MyChangeListener is responsible for updating the Bandwidth as the slider
+     * is moved.
+     */
     class MyChangeListener implements ChangeListener
     {
         /**

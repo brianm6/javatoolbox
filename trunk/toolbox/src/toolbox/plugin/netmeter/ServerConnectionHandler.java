@@ -25,6 +25,9 @@ public class ServerConnectionHandler implements IConnectionHandler
     // Fields
     //--------------------------------------------------------------------------
     
+    /**
+     * UI component for the server.
+     */
     private ServerView serverView_;
 
     //--------------------------------------------------------------------------
@@ -32,7 +35,9 @@ public class ServerConnectionHandler implements IConnectionHandler
     //--------------------------------------------------------------------------
     
     /**
-     * @param serverView
+     * Sets the server view.
+     * 
+     * @param serverView ServerView
      */
     public void setServerView(ServerView serverView) 
     {
@@ -42,7 +47,9 @@ public class ServerConnectionHandler implements IConnectionHandler
     
     
     /**
-     * @return
+     * Returns the ServerView.
+     * 
+     * @return ServerView
      */
     public ServerView getServerView() 
     {
