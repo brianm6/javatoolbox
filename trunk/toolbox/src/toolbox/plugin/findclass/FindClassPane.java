@@ -11,7 +11,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -32,6 +34,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -40,6 +43,7 @@ import javax.swing.table.TableColumnModel;
 
 import org.apache.log4j.Logger;
 import org.apache.regexp.RESyntaxException;
+
 import org.jedit.syntax.JavaTokenMarker;
 import org.jedit.syntax.TextAreaDefaults;
 
@@ -67,7 +71,6 @@ import toolbox.util.ui.plugin.IPreferenced;
 import toolbox.util.ui.plugin.IStatusBar;
 import toolbox.util.ui.plugin.PluginWorkspace;
 import toolbox.util.ui.plugin.WorkspaceAction;
-import toolbox.util.ui.table.SmartTableModel;
 import toolbox.util.ui.table.TableSorter;
 
 /**
@@ -76,8 +79,6 @@ import toolbox.util.ui.table.TableSorter;
  */
 public class JFindClass extends JFrame implements IPreferenced
 {
-    // TODO: Update tablecell renderer to highlight the matching substring
-
     //--------------------------------------------------------------------------
     // Constants
     //--------------------------------------------------------------------------
@@ -90,15 +91,10 @@ public class JFindClass extends JFrame implements IPreferenced
     private static final String   ATTR_IGNORECASE      = "ignorecase";
     private static final String   ATTR_SEARCH          = "search";
     private static final String   ATTR_SHOWPATH        = "showpath";
+    private static final String   ATTR_HILITE_MATCHES  = "highlightmatches";
     private static final String NODE_TOP_FLIPPANE      = "TopFlipPane";
     private static final String NODE_LEFT_FLIPPANE     = "LeftFlipPane";
  
-    // Table columns
-    private static final int COL_NUM       = 0;
-    private static final int COL_SOURCE    = 1;
-    private static final int COL_CLASS     = 2;
-    private static final int COL_SIZE      = 3;
-    private static final int COL_TIMESTAMP = 4;
 
     //--------------------------------------------------------------------------
     // Fields
@@ -110,6 +106,7 @@ public class JFindClass extends JFrame implements IPreferenced
     private JButton              dupesButton_;
     private JCheckBox            ignoreCaseCheckBox_;
     private JCheckBox            showPathCheckBox_;
+    private JCheckBox            hiliteMatchesCheckBox_;
    
     // Left flip pane            
     private JFlipPane            leftFlipPane_;
@@ -124,7 +121,7 @@ public class JFindClass extends JFrame implements IPreferenced
     
     // Results    
     private JTable               resultTable_;
-    private SmartTableModel      resultTableModel_;
+    private ResultsTableModel    resultTableModel_;
     private TableSorter          resultTableSorter_;    
     private JScrollPane          resultPane_;
     private int                  resultCount_;
@@ -132,16 +129,6 @@ public class JFindClass extends JFrame implements IPreferenced
 
     // Status
     private IStatusBar           statusBar_;
-    
-    /** Result table column headers */    
-    private String[] resultColumns_ = new String[] 
-    {
-        "Num", 
-        "Source", 
-        "Class File",
-        "Size", 
-        "Timestamp"
-    };
 
     //--------------------------------------------------------------------------
     //  Constructors
@@ -218,19 +205,21 @@ public class JFindClass extends JFrame implements IPreferenced
         searchField_.setAction(searchAction);
         searchField_.setToolTipText("I like Regular expressions!");
         
-        searchButton_       = new JButton(searchAction);
-        dupesButton_        = new JButton(new FindDupesAction());
-        ignoreCaseCheckBox_ = new JCheckBox("Ignore Case", true);
-        showPathCheckBox_   = new JCheckBox("Show Path", true);
+        searchButton_          = new JButton(searchAction);
+        dupesButton_           = new JButton(new FindDupesAction());
+        ignoreCaseCheckBox_    = new JCheckBox("Ignore Case", true);
+        showPathCheckBox_      = new JCheckBox("Show Path", true);
+        hiliteMatchesCheckBox_ = new JCheckBox("Highlight Match", true);
         
         JPanel searchPanel = new JPanel(new FlowLayout());
         searchPanel.add(searchLabel);
-        searchPanel.add(searchField_);
+        searchPanel.add(searchField_); 
         searchPanel.add(searchButton_);
         searchPanel.add(dupesButton_);
         searchPanel.add(new JLabel("      "));
         searchPanel.add(ignoreCaseCheckBox_);
         searchPanel.add(showPathCheckBox_);
+        searchPanel.add(hiliteMatchesCheckBox_);
         
         return searchPanel;
         //getContentPane().add(searchPanel, BorderLayout.NORTH);
@@ -317,7 +306,7 @@ public class JFindClass extends JFrame implements IPreferenced
         JLabel resultLabel = new JLabel("Results");
         
         // Setup sortable table
-        resultTableModel_  = new SmartTableModel(resultColumns_,0);
+        resultTableModel_  = new ResultsTableModel();
         resultTableSorter_ = new TableSorter(resultTableModel_);
         resultTable_       = new JTable(resultTableSorter_);
         resultPane_        = new JScrollPane(resultTable_);
@@ -361,7 +350,6 @@ public class JFindClass extends JFrame implements IPreferenced
     protected void tweakTable()
     {
         resultTable_.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
-        
         TableColumnModel columnModel = resultTable_.getColumnModel();
 
         // Tweak file number column
@@ -383,9 +371,9 @@ public class JFindClass extends JFrame implements IPreferenced
         column.setMaxWidth(300);
 
         // Set alternating row renderer
-        for (int i=0; i < resultColumns_.length; i++)
+        for (int i=0; i < resultTableModel_.getColumnCount(); i++)
             resultTable_.setDefaultRenderer(resultTable_.getColumnClass(i), 
-                new AlternatingCellRenderer());
+                new ResultsTableCellRenderer());
     }
 
     //--------------------------------------------------------------------------
@@ -398,8 +386,18 @@ public class JFindClass extends JFrame implements IPreferenced
     public void applyPrefs(Element prefs) throws Exception
     {
         Element root = prefs.getFirstChildElement(NODE_JFINDCLASS_PLUGIN);
-        
-        fileExplorer_.applyPrefs(prefs);
+
+        ignoreCaseCheckBox_.setSelected(
+            XOMUtil.getBooleanAttribute(root, ATTR_IGNORECASE, true));
+            
+        showPathCheckBox_.setSelected(
+            XOMUtil.getBooleanAttribute(root, ATTR_SHOWPATH, true));
+
+        hiliteMatchesCheckBox_.setSelected(
+            XOMUtil.getBooleanAttribute(root, ATTR_HILITE_MATCHES, false));
+            
+        searchField_.setText(
+            XOMUtil.getStringAttribute(root, ATTR_SEARCH, ""));
         
         if (root != null)
         {
@@ -409,15 +407,8 @@ public class JFindClass extends JFrame implements IPreferenced
             topFlipPane_.applyPrefs(
                 root.getFirstChildElement(NODE_TOP_FLIPPANE));
         }
-
-        ignoreCaseCheckBox_.setSelected(
-            XOMUtil.getBooleanAttribute(root, ATTR_IGNORECASE, true));
             
-        showPathCheckBox_.setSelected(
-            XOMUtil.getBooleanAttribute(root, ATTR_SHOWPATH, true));
-            
-        searchField_.setText(
-            XOMUtil.getStringAttribute(root, ATTR_SEARCH, "")); 
+        fileExplorer_.applyPrefs(root);
     }
     
     /**
@@ -444,6 +435,9 @@ public class JFindClass extends JFrame implements IPreferenced
             ATTR_SHOWPATH, showPathCheckBox_.isSelected()+""));
 
         root.addAttribute(new Attribute(
+            ATTR_HILITE_MATCHES, hiliteMatchesCheckBox_.isSelected()+""));
+
+        root.addAttribute(new Attribute(
             ATTR_SEARCH, searchField_.getText().trim()));
             
         XOMUtil.injectChild(prefs, root);
@@ -454,7 +448,8 @@ public class JFindClass extends JFrame implements IPreferenced
     //--------------------------------------------------------------------------
 
     /**
-     * Kicks off the search 
+     * Listens for events generated by the search process and updates the
+     * GUI accordingly. 
      */
     class SearchListener extends FindClassAdapter
     {
@@ -469,15 +464,7 @@ public class JFindClass extends JFrame implements IPreferenced
          */
         public void classFound(FindClassResult searchResult)
         {
-            Vector row = new Vector();
-            String offset = " ";
-            
-            row.add(offset + (++resultCount_));
-            row.add(offset + searchResult.getClassLocation());
-            row.add(offset + searchResult.getClassFQN());
-            row.add(offset + searchResult.getFileSize()+"");
-            row.add(offset + DateTimeUtil.format(searchResult.getTimestamp()));
-            resultTableModel_.addRow(row);
+            resultTableModel_.addResult(searchResult);
         }
         
         /**
@@ -505,7 +492,7 @@ public class JFindClass extends JFrame implements IPreferenced
          */
         public void searchCancelled()
         {
-            statusBar_.setStatus("Search canceled");
+            statusBar_.setStatus("Search cancelled");
             resultTableSorter_.setEnabled(true);
         }
         
@@ -521,14 +508,13 @@ public class JFindClass extends JFrame implements IPreferenced
             {
                 public void run()
                 {
-                    resultTableSorter_.setEnabled(true);
+                    //resultTableSorter_.setEnabled(true);
                     statusBar_.setStatus(
                         resultTableModel_.getRowCount() + " matches found.");
                 }
             });
             
         }
-            
     }
 
     /**
@@ -551,23 +537,7 @@ public class JFindClass extends JFrame implements IPreferenced
         
         protected void addResults(FindClassResult result)
         {        
-            Vector row = new Vector(5);
-            String offset = " ";
-                
-            row.add(offset + (++resultCount_));
-                    
-            if (showPathCheckBox_.isSelected())
-                row.add(offset + result.getClassLocation());
-            else
-            {
-                // TODO: handle non-jar targets
-                row.add(offset + FileUtil.stripPath(result.getClassLocation()));
-            }
-                        
-            row.add(offset + result.getClassFQN());
-            row.add(offset + result.getFileSize()+"");
-            row.add(offset + DateTimeUtil.format(result.getTimestamp()));
-            resultTableModel_.addRow(row);
+            resultTableModel_.addResult(result);
         }
 
         protected void runFinally()
@@ -689,11 +659,17 @@ public class JFindClass extends JFrame implements IPreferenced
     }
  
     /**
-     * Alternating color cell renderer to make the results table easier on
-     * the eyes
+     * Renderer for the contents of the Results table
      */   
-    class AlternatingCellRenderer extends DefaultTableCellRenderer
+    class ResultsTableCellRenderer extends DefaultTableCellRenderer
     {
+        private DecimalFormat decimalFormatter_;
+        
+        public ResultsTableCellRenderer()
+        {
+            decimalFormatter_ = new DecimalFormat("###,###");    
+        }
+        
         //----------------------------------------------------------------------
         // Overrides javax.swing.table.DefaultTableCellRenderer
         //----------------------------------------------------------------------
@@ -718,7 +694,8 @@ public class JFindClass extends JFrame implements IPreferenced
             int     row,
             int     column)
         {
-
+            String text = value.toString();
+            
             if (isSelected)
             {
                 setForeground(table.getSelectionForeground());
@@ -734,8 +711,6 @@ public class JFindClass extends JFrame implements IPreferenced
                     setBackground(table.getBackground());
                 else
                     setBackground(new Color(240,240,240));
-                    
-                
             }
 
             if (hasFocus)
@@ -755,8 +730,66 @@ public class JFindClass extends JFrame implements IPreferenced
             else
                 setBorder(noFocusBorder);
 
-            setValue(value);
+            switch (column)
+            {
+                case ResultsTableModel.COL_NUM:
+                    setHorizontalAlignment(SwingConstants.CENTER);
+                    setValue(text);
+                    break;
+                    
+                case ResultsTableModel.COL_SIZE:
+                    setHorizontalAlignment(SwingConstants.CENTER);
+                    setValue(decimalFormatter_.format(value));
+                    break;
+                    
+                case ResultsTableModel.COL_TIMESTAMP:
+                    setValue(DateTimeUtil.format((Date)value));                    
+                    break;
+                    
+                case ResultsTableModel.COL_SOURCE:
+                    if (!showPathCheckBox_.isSelected())
+                        setValue(FileUtil.stripPath(text));
+                    else
+                        setValue(text);
+                    break;
 
+                case ResultsTableModel.COL_CLASS:
+                
+                    // Hilight search string match in the entire classes' FQCN                
+                    if (hiliteMatchesCheckBox_.isSelected())
+                    {
+                        // Apparently, the number value has to pulled from the 
+                        // sorted model instead of the base model while 
+                        // rendering the cells.
+                
+                        String number = resultTableSorter_.getValueAt(row,0)+"";
+                        
+                        FindClassResult result = 
+                            resultTableModel_.getResult(number);
+                        
+                        int start = result.getMatchBegin();
+                        int end = result.getMatchEnd();
+                        
+                        StringBuffer sb = new StringBuffer();
+                        sb.append("<html>");
+                        sb.append(text.substring(0, start));
+                        sb.append("<font color=#cc0000>");
+                        sb.append(text.substring(start, end));
+                        sb.append("</font>");
+                        sb.append(text.substring(end));
+                        sb.append("</html>");
+                            
+                        setValue(sb);
+                    }
+                    else
+                        setValue(text);
+                        
+                    break;
+                    
+                default:
+                    setValue(value);
+            }
+            
             return this;
         }
     }
@@ -788,7 +821,7 @@ public class JFindClass extends JFrame implements IPreferenced
             logger_.debug("Finding duplicates");
             
             // Empty results table
-            resultTableModel_.setNumRows(0);
+            resultTableModel_.clear();
             resultCount_ = 0;
             resultTableSorter_.setEnabled(false);
             
@@ -828,11 +861,13 @@ public class JFindClass extends JFrame implements IPreferenced
             {
                 // Jar or directory path
                 String location = (String) 
-                    resultTable_.getModel().getValueAt(idx, COL_SOURCE); 
+                    resultTable_.getModel().getValueAt(
+                        idx, ResultsTableModel.COL_SOURCE); 
                     
                 // FQN of class
                 String clazz  = (String) 
-                    resultTable_.getModel().getValueAt(idx, COL_CLASS);
+                    resultTable_.getModel().getValueAt(
+                        idx, ResultsTableModel.COL_CLASS);
             
                 location = location.trim();
                 clazz  = clazz.trim();
@@ -888,7 +923,7 @@ public class JFindClass extends JFrame implements IPreferenced
             {
                 search_ = searchField_.getText().trim();
                 
-                if (StringUtil.isNullOrEmpty(search_))
+                if (StringUtil.isNullOrBlank(search_))
                     statusBar_.setWarning("Enter class to search for");
                 else
                 {
@@ -926,7 +961,7 @@ public class JFindClass extends JFrame implements IPreferenced
             putValue(MNEMONIC_KEY, new Integer('C'));
             
             // Empty results table
-            resultTableModel_.setNumRows(0);
+            resultTableModel_.clear();
             resultCount_ = 0;
             resultTableSorter_.setEnabled(false);
             
