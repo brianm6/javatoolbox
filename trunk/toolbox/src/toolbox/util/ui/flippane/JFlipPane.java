@@ -401,9 +401,10 @@ public class JFlipPane extends JPanel
         PropertiesUtil.setInteger(
             prefs, prefix + PROP_DIMENSION, getDimension());
             
-        String flipper = getActiveFlipper().getName();
-        if (!StringUtil.isNullOrEmpty(flipper))
-            prefs.setProperty(prefix + PROP_ACTIVE , flipper);
+        JComponent flipper = getActiveFlipper();
+        
+        if (flipper != null)
+            prefs.setProperty(prefix + PROP_ACTIVE , flipper.getName());
     }
     
     /**
