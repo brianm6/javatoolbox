@@ -9,8 +9,8 @@ public class ThreadContainer extends ThreadGroup
 {
 
     /**
-    * Constructs a new thread container.
-    */
+     * Constructs a new thread container.
+     */
     public ThreadContainer()
     {
         super("");
@@ -18,10 +18,10 @@ public class ThreadContainer extends ThreadGroup
 
 
     /**
-    * Creates a new thread encapsualting the behavior in runnable.
-    *
-    * @param    runnable     the runnable to run in the thread.
-    */
+     * Creates a new thread encapsualting the behavior in runnable.
+     *
+     * @param    runnable     the runnable to run in the thread.
+     */
     public Thread createThread(java.lang.Runnable runnable)
     {
         return new Thread(this, runnable);

@@ -19,8 +19,8 @@ public abstract class ThreadedDispatcherStrategy
 
 
     /**
-    * Creates a new threaded publication strategy.
-    */
+     * Creates a new threaded publication strategy.
+     */
     ThreadedDispatcherStrategy()
     {
         container_ = new ThreadContainer();
@@ -29,12 +29,12 @@ public abstract class ThreadedDispatcherStrategy
 
 
     /**
-    * Publishes the request in an alternate thread and returns a future
-    * object that can interrogate the result.
-    *
-    * @return   the future object encapsualting the request result.
-    * @param    request        the request to publish.
-    */
+     * Publishes the request in an alternate thread and returns a future
+     * object that can interrogate the result.
+     *
+     * @param    request    Request to publish.
+     * @return   Future object encapsualting the request result
+     */
     public ReturnValue dispatch(IThreadable request)
     {
         ReturnValue result = new ReturnValue();
@@ -45,12 +45,12 @@ public abstract class ThreadedDispatcherStrategy
 
 
     /**
-    * Publish the request in an alternate thread using the supplied
-    * callback to supply status information about the response.
-    *
-    * @param    request        the request to publish.
-    * @param    callback    the callback to receive status.
-    */
+     * Publish the request in an alternate thread using the supplied
+     * callback to supply status information about the response.
+     *
+     * @param    request    Request to publish.
+     * @param    callback   Callback to receive status.
+     */
     public void dispatchAsync(IThreadable request, ReturnValue.Listener callback)
     {
         ReturnValue result = new ReturnValue(request, callback);
@@ -59,8 +59,8 @@ public abstract class ThreadedDispatcherStrategy
 
 
     /**
-    * Blocks the current thread until all pending requests are complete. 
-    */
+     * Blocks the current thread until all pending requests are complete. 
+     */
     public final void join()
     {
         join(0);
@@ -68,12 +68,12 @@ public abstract class ThreadedDispatcherStrategy
 
 
     /**
-    * Blocks the current thread until all pending requests are complete or
-    * the timeout has elapsed.
-    *
-    * @param    timeout         the timeout value in milliseconds.  If 0,
-    *                            the join will wait indefinitely.
-    */
+     * Blocks the current thread until all pending requests are complete or
+     * the timeout has elapsed.
+     *
+     * @param    timeout  Timeout value in milliseconds.  If 0, the join will 
+     *                    wait indefinitely.
+     */
     public synchronized void join(long timeout)
     {
         while (pendingResults_ > 0)

@@ -21,27 +21,27 @@ public final class ReturnValue
     {
 
         /**
-       * Signals reception of request.
-       *
-       * @param  request    the pending request.
-       */
+         * Signals reception of request.
+         *
+         * @param  request    the pending request.
+         */
         void pending(IThreadable request);
 
 
-        /**
-       * Signals initiation of request.
-       *
-       * @param  request    the initiated request.
-       */
+        /** 
+         * Signals initiation of request.
+         *
+         * @param  request    the initiated request.
+         */
         void started(IThreadable request);
 
 
         /**
-       * Signals completion of request.
-       *
-       * @param  request    the finished request.
-       * @param  result    the request result.
-       */
+         * Signals completion of request.
+         *
+         * @param  request    the finished request.
+         * @param  result    the request result.
+         */
         void finished(IThreadable request, Object result);
     }
 
@@ -58,8 +58,8 @@ public final class ReturnValue
 
 
     /**
-    * Constructs a new unavailable return value.
-    */
+     * Constructs a new unavailable return value.
+     */
     public ReturnValue()
     {
         value_ = null;
@@ -69,10 +69,10 @@ public final class ReturnValue
 
 
     /**
-    * Constructs a new return value with value. 
-    *
-    * @param    value         the return value of the request.
-    */
+     * Constructs a new return value with value. 
+     *
+     * @param    value         the return value of the request.
+     */
     public ReturnValue(Object value)
     {
         value_ = value;
@@ -82,11 +82,11 @@ public final class ReturnValue
 
 
     /**
-    * Constructs a new return value with the listneer. 
-    *
-    * @param    request          the corresponding request.
-    * @param    listener      the listener to notify when done.
-    */
+     * Constructs a new return value with the listneer. 
+     *
+     * @param    request          the corresponding request.
+     * @param    listener      the listener to notify when done.
+     */
     public ReturnValue(IThreadable request, Listener listener)
     {
         this();
@@ -98,10 +98,10 @@ public final class ReturnValue
 
 
     /**
-    * Returns true if the result value is available for reading.
-    *
-    * @return    true if the result value is available for reading.
-    */
+     * Returns true if the result value is available for reading.
+     *
+     * @return    true if the result value is available for reading.
+     */
     public boolean isAvailable()
     {
 
@@ -114,10 +114,10 @@ public final class ReturnValue
 
 
     /**
-    * Returns the return value, blocking until it is available.
-    *
-    * @return    Returns the return value, blocking until it is available.
-    */
+     * Returns the return value, blocking until it is available.
+     *
+     * @return    Returns the return value, blocking until it is available.
+     */
     public Object getValue()
     {
         if (isAvailable())
@@ -133,10 +133,10 @@ public final class ReturnValue
 
 
     /**
-    * Gets the current state of the corresponding request.
-    *
-    * @return    the current state of the corresponding request.
-    */
+     * Gets the current state of the corresponding request.
+     *
+     * @return    the current state of the corresponding request.
+     */
     int getState()
     {
         return state_;
@@ -144,8 +144,8 @@ public final class ReturnValue
 
 
     /**
-    * Indicates the corresponding request is processing.
-    */
+     * Indicates the corresponding request is processing.
+     */
     public void setStarted()
     {
         if (state_ != STARTED_STATE)
@@ -164,11 +164,11 @@ public final class ReturnValue
 
 
     /**
-    * Assigns the return value.  This operation can only be called once.
-    *
-    * @param    value         the return value for the request.
-    * @exception ValueAlreadyAssignedException if value was already assigned.
-    */
+     * Assigns the return value.  This operation can only be called once.
+     *
+     * @param   value         the return value for the request.
+     * @throws  ValueAlreadyAssignedException if value was already assigned.
+     */
     public void setValue(Object value)
     {
         if (isAvailable())

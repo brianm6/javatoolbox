@@ -15,11 +15,11 @@ public abstract class AbstractDispatcherStrategy
 {
 
     /**
-    * Publish the request by processing it in the current thread.
-    *
-    * @return   the ReturnValue encapsualting the request result.
-    * @param    request        the request to publish.
-    */
+     * Publish the request by processing it in the current thread.
+     *
+     * @param    request    Request to publish.
+     * @return   ReturnValue encapsualting the request result.
+     */
     public ReturnValue dispatch(IThreadable request)
     {
         return new ReturnValue(process(request));
@@ -27,12 +27,12 @@ public abstract class AbstractDispatcherStrategy
 
 
     /**
-    * Publish the request by processing it in the current thread and
-    * block until the request is completed.
-    *
-    * @return   the request result.
-    * @param    request        the request to publish.
-    */
+     * Publish the request by processing it in the current thread and
+     * block until the request is completed.
+     *
+     * @param    request   Request to publish.
+     * @return   Request result.
+     */
     public final Object dispatchAndWait(IThreadable request)
     {
         return dispatch(request).getValue();
@@ -40,11 +40,11 @@ public abstract class AbstractDispatcherStrategy
 
 
     /**
-    * Processes the request in the current thread.
-    *
-    * @return   the result of the request or null if no result. 
-    * @param    request        the request to process.
-    */
+     * Processes the request in the current thread.
+     *
+     * @param    request   Request to process
+     * @return   Result of the request or null if no result. 
+     */
     public Object process(IThreadable request)
     {
         return request.run();
@@ -52,8 +52,8 @@ public abstract class AbstractDispatcherStrategy
 
 
     /**
-    * Performs any cleanup activities.
-    */
+     * Performs any cleanup activities.
+     */
     public void shutdown()
     {
     }

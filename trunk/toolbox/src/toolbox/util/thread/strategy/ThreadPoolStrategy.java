@@ -42,8 +42,8 @@ public class ThreadPoolStrategy extends ThreadedDispatcherStrategy
 
 
     /**
-    * Creates a default thread pool.
-    */
+     * Creates a default thread pool.
+     */
     public ThreadPoolStrategy()
     {
         this(DEFAULT_POOL_SIZE, DEFAULT_QUEUE_SIZE);
@@ -51,12 +51,12 @@ public class ThreadPoolStrategy extends ThreadedDispatcherStrategy
 
 
     /**
-    * Creates a thread pool consisting of poolSize threads and a queue
-    * of queueSize.
-    *
-    * @param    poolSize    the number of threads in the pool.
-    * @param    queueSize    the maximum number of buffered requests.
-    */
+     * Creates a thread pool consisting of poolSize threads and a queue
+     * of queueSize.
+     *
+     * @param    poolSize    the number of threads in the pool.
+     * @param    queueSize    the maximum number of buffered requests.
+     */
     public ThreadPoolStrategy(int poolSize, int queueSize)
     {
         poolSize_ = poolSize;
@@ -67,23 +67,23 @@ public class ThreadPoolStrategy extends ThreadedDispatcherStrategy
 
 
     /**
-    * Services the request by putting it on the request queue.  If the
-    * queue is full, the calling thread is blocked until a slot becomes
-    * available.
-    *
-    * @param    request        the request to publish.
-    * @param    result            holds the request result.
-    */
+     * Services the request by putting it on the request queue.  If the
+     * queue is full, the calling thread is blocked until a slot becomes
+     * available.
+     *
+     * @param    request        the request to publish.
+     * @param    result            holds the request result.
+     */
     public void service(IThreadable request, ReturnValue result)
     {
         requestQueue_.put(new Task(request, result));
     }
 
 
-    /**
-    * Publish a null request for each thread in the pool to signal
-    * shutdown.
-    */
+    /** 
+     * Publish a null request for each thread in the pool to signal
+     * shutdown.
+     */
     public void shutdown()
     {
         for (int i = 0; i < poolSize_; ++i)
@@ -92,8 +92,8 @@ public class ThreadPoolStrategy extends ThreadedDispatcherStrategy
 
 
     /**
-    * Strategy specific runnable for thread-pool strategy.
-    */
+     * Strategy specific runnable for thread-pool strategy.
+     */
     class ThreadPoolRunnable
         implements java.lang.Runnable
     {

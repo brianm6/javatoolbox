@@ -15,11 +15,11 @@ public class ThreadPerRequestStrategy extends ThreadedDispatcherStrategy
 {
 
     /**
-    * Services the request in new thread and records the result
-    *
-    * @param    request        the request to publish.
-    * @param    result            holds the request result.
-    */
+     * Services the request in new thread and records the result
+     *
+     * @param    request  Request to publish.
+     * @param    result   Holds the request result.
+     */
     public void service(IThreadable request, ReturnValue result)
     {
         createThread(new ThreadPerRequestRunnable(request, result));
@@ -27,8 +27,8 @@ public class ThreadPerRequestStrategy extends ThreadedDispatcherStrategy
 
 
     /**
-    * Strategy specific runnable for thread-per-request strategy.
-    */
+     * Strategy specific runnable for thread-per-request strategy.
+     */
     class ThreadPerRequestRunnable
         implements java.lang.Runnable
     {
@@ -37,11 +37,11 @@ public class ThreadPerRequestStrategy extends ThreadedDispatcherStrategy
 
 
         /**
-       * Creates a new runnable that will process request.
-       *
-       * @param    request        the request to process.
-       * @param    result            the holder for the return value.
-       */
+         * Creates a new runnable that will process request.
+         *
+         * @param    request   Request to process.
+         * @param    result    Holder for the return value.
+         */
         public ThreadPerRequestRunnable(IThreadable request, ReturnValue result)
         {
             request_ = request;
@@ -50,8 +50,8 @@ public class ThreadPerRequestStrategy extends ThreadedDispatcherStrategy
 
 
         /**
-       * Process my encapsulated request and update the return value.
-       */
+         * Process my encapsulated request and update the return value.
+         */
         public void run()
         {
             try

@@ -1,6 +1,6 @@
 package toolbox.util.thread;
 
-import toolbox.util.thread.strategy.*;
+import toolbox.util.thread.strategy.AbstractDispatcherStrategy;
 
 /**
  * AbstractDispatcher.java
@@ -16,11 +16,11 @@ public abstract class AbstractDispatcher
 
 
     /**
-    * Constructs a new request publisher using the specified strategy.
-    *
-    * @param    strategy         strategy that encapsualtes request
-    *                     delivery and processing.
-    */
+     * Constructs a new request publisher using the specified strategy.
+     *
+     * @param    strategy  Strategy that encapsualtes request
+     *                     delivery and processing.
+     */
     public AbstractDispatcher(AbstractDispatcherStrategy strategy)
     {
         running_ = true;
@@ -29,10 +29,10 @@ public abstract class AbstractDispatcher
 
 
     /**
-    * Returns the associated strategy.
-    *
-    * @return    the associated strategy.
-    */
+     * Returns the associated strategy.
+     *
+     * @return    the associated strategy.
+     */
     public AbstractDispatcherStrategy strategy()
     {
         return strategy_;
@@ -40,11 +40,11 @@ public abstract class AbstractDispatcher
 
 
     /**
-    * Passes the request to the associated strategy for processing.
-    *
-    * @return   the ReturnValue encapsualting the request result.
-    * @param    request        request to publish.
-    */
+     * Passes the request to the associated strategy for processing.
+     *
+     * @param    request        request to publish.
+     * @return   the ReturnValue encapsualting the request result.
+     */
     public ReturnValue dispatch(IThreadable request)
     {
         if (!running_)
@@ -55,12 +55,12 @@ public abstract class AbstractDispatcher
 
 
     /**
-    * Passes the request to the associated strategy for processing and
-    * waits for result.
-    *
-    * @return   the request result.
-    * @param    request         request to publish.
-    */
+     * Passes the request to the associated strategy for processing and
+     * waits for result.
+     *
+     * @param    request  Request to publish.
+     * @return   Request result.
+     */
     public Object dispatchAndWait(IThreadable request)
     {
         if (!running_)
@@ -71,8 +71,8 @@ public abstract class AbstractDispatcher
 
 
     /**
-    * Terminates all publishing activities. 
-    */
+     * Terminates all publishing activities. 
+     */
     public final synchronized void shutdown()
     {
         if (running_)

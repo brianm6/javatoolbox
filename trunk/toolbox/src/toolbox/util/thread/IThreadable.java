@@ -11,9 +11,9 @@ public interface IThreadable
 {
 
     /**
-    * Performs the processing of the request.
-    *
-    * @return    the result of the request or null if no result.
-    */
+     * Performs the processing of the request.
+     *
+     * @return  Result of the request or null if no result.
+     */
     public Object run();
 }
