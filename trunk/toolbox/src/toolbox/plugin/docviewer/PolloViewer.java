@@ -41,7 +41,7 @@ public class PolloViewer implements DocumentViewer
     private JScrollPane scroller_;
     
     //--------------------------------------------------------------------------
-    // DocumentViewer Interface 
+    // Protected 
     //--------------------------------------------------------------------------
 
     /**
