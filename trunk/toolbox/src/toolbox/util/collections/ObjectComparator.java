@@ -12,7 +12,7 @@ import java.util.Comparator;
  * <p>
  * Example:
  * 
- * <pre>
+ * <pre class="snippet">
  * Comparator oc;
  * List people = ...;
  * 

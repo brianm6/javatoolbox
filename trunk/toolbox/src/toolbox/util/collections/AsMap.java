@@ -8,8 +8,7 @@ import toolbox.util.typecast.Typecast;
  * Used to convert an object into a Map.
  * <p>
  * Example:
- * 
- * <pre>
+ * <pre class="snippet">
  *  Map map = AsMap.of(someObject);
  * 
  *  // The toString() implementation dumps the objects attributes.
