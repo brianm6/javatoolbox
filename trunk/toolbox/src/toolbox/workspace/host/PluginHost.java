@@ -100,6 +100,15 @@ public interface PluginHost
     
     
     /**
+     * Selects the given plugin. The interpretation of select is left to the
+     * PluginHost implementor.
+     * 
+     * @param plugin Plugin to select.
+     */
+    void selectPlugin(IPlugin plugin);
+    
+    
+    /**
      * Necessary for transfering the contents of one host to another.
      * 
      * @return Map containing the startup parameters.
