@@ -14,6 +14,8 @@ import toolbox.util.ui.AntiAliased;
  * <p>
  * <ul>
  *   <li>Support for antialised text
+ *   <li>Scroll to the end of the list
+ *   <li>Scroll to the beginning of the list
  * </ul>
  */
 public class JSmartList extends JList implements AntiAliased
@@ -67,6 +69,27 @@ public class JSmartList extends JList implements AntiAliased
         super(dataModel);
     }
 
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Scrolls to the top of the list.
+     */
+    public void scrollToTop()
+    {
+        ensureIndexIsVisible(0);
+    }
+
+    
+    /**
+     * Scrolls to the end of the list.
+     */
+    public void scrollToBottom()
+    {
+        ensureIndexIsVisible(getModel().getSize() - 1);
+    }
+    
     //--------------------------------------------------------------------------
     // AntiAliased Interface
     //--------------------------------------------------------------------------
