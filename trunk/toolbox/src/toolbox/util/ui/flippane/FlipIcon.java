@@ -48,15 +48,14 @@ public class FlipIcon implements Icon
         FontRenderContext fontRenderContext = 
             new FontRenderContext(null,true,true);
             
-        glyphs_ = font.createGlyphVector(fontRenderContext,text);
-        width_ = (int)glyphs_.getLogicalBounds().getWidth() + 4;
+        glyphs_ = font.createGlyphVector(fontRenderContext, text);
+        width_ = (int) glyphs_.getLogicalBounds().getWidth() + 4;
         //height = (int)glyphs.getLogicalBounds().getHeight();
 
-        LineMetrics lineMetrics = 
-            font.getLineMetrics(text,fontRenderContext);
-            
+        LineMetrics lineMetrics = font.getLineMetrics(text, fontRenderContext);
+
         ascent_ = lineMetrics.getAscent();
-        height_ = (int)lineMetrics.getHeight();
+        height_ = (int) lineMetrics.getHeight();
 
         renderHints_ = new RenderingHints(
             RenderingHints.KEY_ANTIALIASING,
@@ -80,8 +79,7 @@ public class FlipIcon implements Icon
      */
     public int getIconWidth()
     {
-        return (int)(rotate_ == FlipIcon.CW || 
-                     rotate_ == FlipIcon.CCW ? height_ : width_);
+        return (int) (rotate_ == CW || rotate_ == CCW ? height_ : width_);
     } 
 
     
@@ -92,8 +90,7 @@ public class FlipIcon implements Icon
      */
     public int getIconHeight()
     {
-        return (int)(rotate_ == FlipIcon.CW ||
-                     rotate_ == FlipIcon.CCW ? width_ : height_);
+        return (int) (rotate_ == CW || rotate_ == CCW ? width_ : height_);
     } 
 
     
@@ -107,40 +104,47 @@ public class FlipIcon implements Icon
      */
     public void paintIcon(Component c, Graphics g, int x, int y)
     {
-        Graphics2D g2d = (Graphics2D)g;
+        Graphics2D g2d = (Graphics2D) g;
         g2d.setFont(font_);
         AffineTransform oldTransform = g2d.getTransform();
         RenderingHints oldHints = g2d.getRenderingHints();
 
         g2d.setRenderingHints(renderHints_);
         g2d.setColor(c.getForeground());
-
         
-        if (rotate_ == FlipIcon.NONE)
+        if (rotate_ == NONE)
         {
             // No rotation
-            g2d.drawGlyphVector(glyphs_,x + 2,y + ascent_);
+            g2d.drawGlyphVector(glyphs_, x + 2, y + ascent_);
         } 
-        else if (rotate_ == FlipIcon.CW)
+        else if (rotate_ == CW)
         {
             // Clockwise rotation
             AffineTransform trans = new AffineTransform();
             trans.concatenate(oldTransform);
             trans.translate(x, y + 2);
             trans.rotate(Math.PI / 2, height_ / 2, width_ / 2);
+            
             g2d.setTransform(trans);
-            g2d.drawGlyphVector(glyphs_,(height_ - width_) / 2,
+            
+            g2d.drawGlyphVector(
+                glyphs_,
+                (height_ - width_) / 2,
                 (width_ - height_) / 2 + ascent_);
         } 
-        else if (rotate_ == FlipIcon.CCW)
+        else if (rotate_ == CCW)
         {
             // Counterclockwise rotation
             AffineTransform trans = new AffineTransform();
             trans.concatenate(oldTransform);
-            trans.translate(x,y - 2);
+            trans.translate(x, y - 2);
             trans.rotate(Math.PI * 3 / 2, height_ / 2, width_ / 2);
+            
             g2d.setTransform(trans);
-            g2d.drawGlyphVector(glyphs_,(height_ - width_) / 2,
+            
+            g2d.drawGlyphVector(
+                glyphs_,
+                (height_ - width_) / 2,
                 (width_ - height_) / 2 + ascent_);
         } 
 
