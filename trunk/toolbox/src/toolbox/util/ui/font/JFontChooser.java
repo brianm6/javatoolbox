@@ -34,7 +34,6 @@ import javax.swing.event.ListSelectionListener;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
-import toolbox.util.Banner;
 import toolbox.util.ui.JSmartCheckBox;
 import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartTextField;
@@ -122,9 +121,9 @@ public class JFontChooser extends JPanel
 
 
     /**
-     * Construct a new JFontChooser whose family, style & size widget
+     * Constructs a new JFontChooser whose family, style & size widget
      * selections are set according to the supplied initial Font. Additionally,
-     * the style & size values available will be dictated by the values in
+     * the style and size values available will be dictated by the values in
      * styleDisplayNames and predefinedSizes, respectively.
      * 
      * @param initialFont Newly constructed JFontChooser's family, style, and
@@ -140,25 +139,22 @@ public class JFontChooser extends JPanel
      *        which will be available to the user as a convenience for
      *        populating the font size text field; all values must be greater
      *        than 0.
-     * @param antiAlias Turns on antialiasing of fonts
+     * @param antiAlias Turns on antialiasing of fonts.
      */
-    public JFontChooser(Font initialFont, 
-                        String[] styleDisplayNames,
-                        int[] predefinedSizes,     
-                        boolean antiAlias)
+    public JFontChooser(
+        Font initialFont, 
+        String[] styleDisplayNames,
+        int[] predefinedSizes,     
+        boolean antiAlias)
     {
         buildView(initialFont, styleDisplayNames, predefinedSizes, antiAlias);
         wireView();
         setAntiAlias(false);
         phraseCanvas_.invalidate();
         phraseCanvas_.repaint();
-        
-        logger_.debug("\n" + Banner.getBanner("AntialiasX = " + antiAlias));
-        
         setAntiAlias(antiAlias);
         phraseCanvas_.invalidate();
         phraseCanvas_.repaint();
-        
     }
 
     //--------------------------------------------------------------------------
@@ -324,7 +320,7 @@ public class JFontChooser extends JPanel
      * @throws IllegalArgumentException thrown if predefinedSizes does not 
      *         contain one or more integer values or if it contains any 
      *         integers with a value of less than 1.
-     * @return Integer Array.
+     * @return Integer[]
      */
     private Integer[] validateAndConvertPredefinedSizes(int[] predefinedSizes)
     {
@@ -396,7 +392,7 @@ public class JFontChooser extends JPanel
     /**
      * Returns true if the antialias check box is selected, false otherwise.
      * 
-     * @return Antialias flag.
+     * @return boolean
      */
     public boolean isAntiAliased()
     {
@@ -436,6 +432,7 @@ public class JFontChooser extends JPanel
         return fontFamily;
     }
 
+    
     /**
      * Returns the currently selected font style.
      * 
@@ -453,7 +450,7 @@ public class JFontChooser extends JPanel
     /**
      * Returns the currently selected font size.
      * 
-     * @return Currently selected font size.
+     * @return int
      * @throws FontChooserException thrown if no font size is currently 
      *         specified.
      */
@@ -484,7 +481,7 @@ public class JFontChooser extends JPanel
     /**
      * Returns the currently selected font.
      * 
-     * @return Currently selected font.
+     * @return Font
      * @throws FontChooserException thrown if no valid font is currently 
      *         specified.
      */

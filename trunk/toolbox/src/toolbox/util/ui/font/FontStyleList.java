@@ -35,7 +35,7 @@ public class FontStyleList extends JSmartList
     //--------------------------------------------------------------------------
     
     /**
-     * Returns currently selected font style.
+     * Returns currently selected font style. See Font.PLAIN, etc.
      * 
      * @return currently selected font style.
      * @throws FontChooserException thrown if no font style is currently
@@ -43,7 +43,7 @@ public class FontStyleList extends JSmartList
      */
     public int getSelectedStyle() throws FontChooserException
     {
-        switch (this.getSelectedIndex())
+        switch (getSelectedIndex())
         {
             case 0 :
                 return Font.PLAIN;
@@ -61,9 +61,9 @@ public class FontStyleList extends JSmartList
     
     
     /**
-     * Change the currently selected style in this FontStyleList.
+     * Sets the currently selected style.
      * 
-     * @param style New selected style for this FontStyleList.
+     * @param style Style to select.
      * @throws IllegalArgumentException thrown if style is not one of
      *         Font.PLAIN, Font.BOLD, Font.ITALIC, or Font.BOLD + Font.ITALIC.
      */
