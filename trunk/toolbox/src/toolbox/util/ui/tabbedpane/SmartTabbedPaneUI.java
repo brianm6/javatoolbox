@@ -26,7 +26,7 @@ public class SmartTabbedPaneUI extends BasicTabbedPaneUI
     /**
      * Text position which defaults to LEFT (not the Icon position).
      */
-    private int horizontalTextPosition_ = SwingUtilities.LEFT;
+    private int horizontalTextPosition_;
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -37,6 +37,7 @@ public class SmartTabbedPaneUI extends BasicTabbedPaneUI
      */
     public SmartTabbedPaneUI()
     {
+        this(SwingUtilities.LEFT);
     }
 
 
