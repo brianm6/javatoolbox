@@ -24,6 +24,8 @@ public class DefaultState implements State
     
     /**
      * Creates a DefaultState.
+     * 
+     * @param name Friendly name of this state.
      */
     public DefaultState(String name)
     {
