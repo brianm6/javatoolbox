@@ -12,7 +12,7 @@ public interface ServiceListener
      * @param service Service that started.
      * @throws ServiceException on error.
      */
-    public void serviceStarted(Service service) throws ServiceException;
+    void serviceStarted(Service service) throws ServiceException;
     
     
     /**
@@ -21,7 +21,7 @@ public interface ServiceListener
      * @param service Service that stopped.
      * @throws ServiceException on error.
      */
-    public void serviceStopped(Service service) throws ServiceException;
+    void serviceStopped(Service service) throws ServiceException;
     
     
     /**
@@ -30,7 +30,7 @@ public interface ServiceListener
      * @param service Service that was paused.
      * @throws ServiceException on error.
      */
-    public void servicePaused(Service service) throws ServiceException;
+    void servicePaused(Service service) throws ServiceException;
     
     
     /**
@@ -39,5 +39,5 @@ public interface ServiceListener
      * @param service Service that was resumed.
      * @throws ServiceException on error.
      */
-    public void serviceResumed(Service service) throws ServiceException;
+    void serviceResumed(Service service) throws ServiceException;
 }
