@@ -48,6 +48,7 @@
  * TODO: Make monospaced fonts stand out in JFontChooser
  * TODO: Add dbcopy functionality from dbunit
  * TODO: Replace invoker with executor
+ * TODO: Write ndoc maven plugin
  * =============================================================================
  *                              Build
  * =============================================================================
@@ -62,7 +63,6 @@
  * TODO: Add regular expression cheat sheet (TextToolsPlugin maybe)
  * TODO: Add search and replace to text editors
  * TODO: Ctrl-S in Save Dialog box should remember where it was last opened up
- * TODO: Fileexplorer: F2 to rename a file or directory
  * TODO: Integrate JDiff Plugin/make Toolbox Plugin
  * TODO: Add shortcuts to fileexplorer
  * =============================================================================
@@ -128,6 +128,7 @@
             <action type="add"   >Build - Added JBlanket plugin for test coverage</action>
             <action type="add"   >Build - Added Findbugs plugin to the Maven site goal</action>
             <action type="add"   >Build - Add NDoc goal in maven.xml to generate javadocs that look like .NET</action>
+            <action type="add"   >Util - Added hotkeys to JFileExplorer for rename (F2), up one level (Backspace), refresh (F5), and delete (DEL).</action>
         </release>
 
         <!-- =================================================================== -->
