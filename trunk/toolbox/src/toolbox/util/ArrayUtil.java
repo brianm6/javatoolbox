@@ -2,6 +2,7 @@ package toolbox.util;
 
 import java.lang.reflect.Array;
 import java.util.Comparator;
+import java.util.List;
 
 import org.apache.commons.beanutils.MethodUtils;
 import org.apache.commons.lang.Validate;
@@ -13,6 +14,7 @@ import org.apache.log4j.Logger;
  *  <li>add - Addition onto the end of an array
  *  <li>concat - Concatenation of two existing arrays
  *  <li>contains - Test for containment using default equals impl or a Comparator
+ *  <li>drainTo - Adds the contents of an array to a List
  *  <li>equals - Array equality
  *  <li>indexOf - Find index of an element in an array
  *  <li>init - Initialize an array with values
@@ -570,6 +572,21 @@ public final class ArrayUtil
             {
                 logger_.error("invoke", e);
             }
+        }
+    }
+
+    
+    /**
+     * Drains the contents of an array into a list.
+     * 
+     * @param array Array to drain from.
+     * @param list List to train to.
+     */
+    public static void drainTo(Object[] array, List list)
+    {
+        for (int i = 0; i < array.length; i++)
+        {
+            list.add(array[i]);
         }
     }
 }
