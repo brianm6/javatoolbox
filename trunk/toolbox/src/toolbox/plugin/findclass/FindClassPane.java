@@ -7,11 +7,16 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.Collections;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
@@ -25,7 +30,9 @@ import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -49,10 +56,6 @@ import toolbox.util.ui.JSmartOptionPane;
 import toolbox.util.ui.JStatusPane;
 import toolbox.util.ui.ThreadSafeTableModel;
 
-//import de.java2html.JavaSource;
-//import de.java2html.JavaSource2HTMLConverter;
-//import de.java2html.JavaSourceConverter;
-
 /**
  * GUI for FindClass
  */
@@ -73,8 +76,9 @@ public class JFindClass extends JFrame
     
     // Top flip pane
     private JFlipPane            topFlipPane_;
-    private JList                pathList_;
-    private DefaultListModel     pathModel_;
+    private JList                searchList_;
+    private DefaultListModel     searchListModel_;
+    private JPopupMenu           searchPopupMenu_;
     private JEditorPane          sourceArea_;
     
 
@@ -110,7 +114,7 @@ public class JFindClass extends JFrame
      * 
      * @param  args  None recognized
      */    
-    public static void main(String[] args)
+    public static void main(String[] args) throws Exception
     {
         JFindClass jfc = new JFindClass();
         jfc.setVisible(true);
@@ -123,7 +127,7 @@ public class JFindClass extends JFrame
     /**
      * Constructor for JFindClass
      */
-    public JFindClass()
+    public JFindClass() throws Exception
     {
         this("JFindClass");
     }
@@ -134,9 +138,10 @@ public class JFindClass extends JFrame
      * 
      * @param  title  Window title
      */
-    public JFindClass(String title)
+    public JFindClass(String title) throws Exception
     {
         super(title);
+        SwingUtil.setPreferredLAF();        
         buildView();
         init();
         setSize(800,600);
@@ -157,7 +162,7 @@ public class JFindClass extends JFrame
         List targets = findClass_.getSearchTargets();
         
         for (Iterator i = targets.iterator(); i.hasNext(); 
-            pathModel_.addElement(i.next()));
+            searchListModel_.addElement(i.next()));
     }
 
 
@@ -241,15 +246,19 @@ public class JFindClass extends JFrame
      */
     protected JPanel buildClasspathPanel()
     {
-        // Classpath 
-        //JLabel pathListLabel = new JLabel("Classpath");
-        pathModel_ = new DefaultListModel(); 
-        pathList_  = new JList(pathModel_);
-        pathList_.setFont(SwingUtil.getPreferredMonoFont());
+        searchListModel_ = new DefaultListModel(); 
+        searchList_ = new JList(searchListModel_);
+        searchList_.setFont(SwingUtil.getPreferredMonoFont());
+        
+        // Create popup menu and wire it to the JList
+        searchPopupMenu_ = new JPopupMenu();
+        searchPopupMenu_.add(new JMenuItem(new ClearSearchListAction()));
+        searchPopupMenu_.add(new JMenuItem(new AddClasspathToSearchListAction()));
+        MouseListener popupListener = new SearchListPopupListener();
+        searchList_.addMouseListener(popupListener);
         
         JPanel pathPanel = new JPanel(new BorderLayout());
-        //pathPanel.add(pathListLabel, BorderLayout.NORTH);
-        pathPanel.add(new JScrollPane(pathList_), BorderLayout.CENTER);
+        pathPanel.add(new JScrollPane(searchList_), BorderLayout.CENTER);
         pathPanel.setPreferredSize(new Dimension(100, 400));
         return pathPanel;
     }
@@ -423,7 +432,7 @@ public class JFindClass extends JFrame
         public void searchingTarget(String target)
         {
             statusBar_.setStatus("Searching " + target + " ...");
-            pathList_.setSelectedValue(target, true);    
+            searchList_.setSelectedValue(target, true);    
         }
 
         
@@ -442,6 +451,8 @@ public class JFindClass extends JFrame
      */
     class JFileExplorerHandler extends JFileExplorerAdapter
     {
+        Category logger_ = Category.getInstance(JFileExplorerHandler.class);
+        
         /**
          * Adds a directory to the path list
          * 
@@ -449,8 +460,18 @@ public class JFindClass extends JFrame
          */
         public void folderDoubleClicked(String folder)
         {
-            findClass_.addSearchTarget(new File(folder));
-            syncPathModel();
+            System.out.println("Hellp!");
+            
+            List targets = findClass_.getArchivesInDir(new File(folder));
+            
+            logger_.info("Found " + targets.size() + " targets to add");
+            
+            Iterator i = targets.iterator();
+            while (i.hasNext())
+            {
+                String target = (String) i.next();
+                searchListModel_.addElement(target);
+            }
         }
  
         /**
@@ -460,24 +481,37 @@ public class JFindClass extends JFrame
          */       
         public void fileDoubleClicked(String file)
         {
-            findClass_.addSearchTarget(file);
-            syncPathModel();
-        }
-     
-        /**
-         * Syncs the path list model with the search targets in FindClass
-         */   
-        protected void syncPathModel()
-        {
-            pathModel_.clear();
-            List targets = findClass_.getSearchTargets();
-            
-            for (int i=0; 
-                 i<targets.size(); 
-                 pathModel_.addElement(targets.get(i++)));
+            if (FindClass.isArchive(file))
+                searchListModel_.addElement(file);
+            else
+                statusBar_.setStatus(file + " is not a valid archive.");
         }
     }
- 
+
+
+    /**
+     * Popup menu listener for RMB on the Classpath list
+     */ 
+    class SearchListPopupListener extends MouseAdapter
+    {
+        public void mousePressed(MouseEvent e)
+        {
+            maybeShowPopup(e);
+        }
+
+        public void mouseReleased(MouseEvent e)
+        {
+            maybeShowPopup(e);
+        }
+
+        private void maybeShowPopup(MouseEvent e)
+        {
+            if (e.isPopupTrigger())
+                searchPopupMenu_.show(e.getComponent(), e.getX(), e.getY());
+        }
+    }
+
+
  
     /**
      * Alternating color cell renderer to make the results table easier on
@@ -637,11 +671,13 @@ public class JFindClass extends JFrame
         
         public void doSearch()
         {
+            String method = "[search] ";
+            
             try
             {
                 String search = searchField_.getText().trim();
                 
-                logger_.debug("Searching for " + search);
+                logger_.debug(method + "Searching for " + search);
                 
                 if (StringUtil.isNullOrEmpty(search))
                 {
@@ -649,9 +685,20 @@ public class JFindClass extends JFrame
                 }
                 else
                 {
+                    // Empty results table
                     resultTableModel_.setNumRows(0);
                     resultCount_ = 0;
                     
+                    // Clear out from previous runs
+                    findClass_.removeAllSearchTargets();
+                    
+                    // Copy 1-1 from the seach list model to FindClass
+                    for (Enumeration e = searchListModel_.elements(); 
+                         e.hasMoreElements(); )
+                        
+                        findClass_.addSearchTarget((String)e.nextElement());
+                    
+                    // Execute the search
                     Object results[]  = findClass_.findClass(
                         search, ignoreCaseCheckBox_.isSelected());             
                     
@@ -661,6 +708,51 @@ public class JFindClass extends JFrame
             catch (Exception ex)
             {
                 handleException(ex, logger_);
+            }
+        }
+    }
+    
+    /**
+     * Clears all entries in the search list
+     */
+    protected class ClearSearchListAction extends AbstractAction
+    {
+        public ClearSearchListAction()
+        {
+            super("Clear");
+            putValue(MNEMONIC_KEY, new Integer('C'));
+            putValue(SHORT_DESCRIPTION, "Clears search targets");
+        }
+        
+        public void actionPerformed(ActionEvent e)
+        {
+            searchListModel_.removeAllElements();
+        }
+    }
+    
+    
+    /**
+     * Adds the current classpath to the search list
+     */
+    protected class AddClasspathToSearchListAction extends AbstractAction
+    {
+        public AddClasspathToSearchListAction()
+        {
+            super("Add Classpath");
+            putValue(MNEMONIC_KEY, new Integer('A'));
+            putValue(SHORT_DESCRIPTION, 
+                "Adds the current classpath to the search list");
+        }
+        
+        public void actionPerformed(ActionEvent e)
+        {
+            List targets = findClass_.getClassPathTargets();
+            
+            Iterator i = targets.iterator();
+            while (i.hasNext())
+            {
+                String target = (String) i.next();
+                searchListModel_.addElement(target);
             }
         }
     }
