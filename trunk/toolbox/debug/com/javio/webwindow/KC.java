@@ -1,8 +1,5 @@
 package com.javio.webwindow;
 
-import D.D;
-import D.S;
-import F.Z;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -11,8 +8,13 @@ import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.net.URL;
 import java.text.BreakIterator;
-import java.util.ArrayList;
 import java.util.Iterator;
+
+import D.D;
+import D.S;
+import F.Z;
+
+import toolbox.util.StringUtil;
 
 // Referenced classes of package com.javio.webwindow:
 //            UC, RZ, ZC, HC, 
@@ -21,7 +23,12 @@ import java.util.Iterator;
 
 public class KC extends UC
 {
-
+    static
+    {
+        System.out.println(StringUtil.addBars(
+            "Loaded debug com.javio.webwindow.KC"));
+    }
+    
     private boolean abs;
     private boolean charWidth;
     private Font charsWidth;
@@ -358,7 +365,13 @@ public class KC extends UC
                     return QC.stringToColor(s1);
             }
         }
-        for (EI ei = V; ei != null && !F.D.isBlockElement(ei.getType()); ei = ei.getParent())
+        
+        // =====================================================================
+        // OVERRIDE: Import F.D clashes with D.D so took isBlockElement() from
+        //           F.D and added it as a method to the current class.
+        // BEFORE  : for (EI ei = V; ei != null && !F.D.isBlockElement(ei.getType()); ei = ei.getParent())
+        for (EI ei = V; ei != null && !isBlockElement(ei.getType()); ei = ei.getParent())
+        // =====================================================================
         {
             D d2 = ei.getStyle();
             if (d2 == null)
@@ -373,6 +386,31 @@ public class KC extends UC
         return null;
     }
 
+    // =========================================================================
+    // OVERRIDE: Verbatim copy from F.D
+    public static final boolean isBlockElement(int i)
+    {
+        switch (i)
+        {
+            case 0 : // '\0'
+            case 1 : // '\001'
+            case 2 : // '\002'
+            case 3 : // '\003'
+            case 4 : // '\004'
+            case 5 : // '\005'
+            case 6 : // '\006'
+            case 21 : // '\025'
+            case 22 : // '\026'
+            case 23 : // '\027'
+            case 27 : // '\033'
+            case 29 : // '\035'
+            case 85 : // 'U'
+                return true;
+        }
+        return false;
+    }
+    // =========================================================================
+    
     private Color charWidth()
     {
         if (EI())
@@ -428,6 +466,11 @@ public class KC extends UC
 
     public final void paint(Graphics g, Rectangle rectangle, int j)
     {
+        // =====================================================================
+        // OVERRIDE: Call super impl so that font smoothing works
+        super.paint(g, rectangle, j);
+        // =====================================================================
+        
         fillRect.x = G.x;
         fillRect.y = G.y;
         fillRect.width = G.width;
