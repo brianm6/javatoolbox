@@ -205,6 +205,7 @@
                 <include name="jaxen.jar"/>
                 <include name="pollo.jar"/>
                 <include name="javassist.jar"/>
+                <include name="matra.jar"/>                
 
                 <!-- ===== Apache Commons ===== -->
                 <include name="commons-beanutils.jar"/>

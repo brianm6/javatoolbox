@@ -461,6 +461,14 @@
     </dependency>
 
     <dependency>
+      <id>matra</id>
+      <version/>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+      </properties>
+    </dependency>
+              
+    <dependency>
       <id>metouia</id>
       <version/>
       <properties>
