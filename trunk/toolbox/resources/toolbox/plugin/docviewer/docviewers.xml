@@ -5,6 +5,7 @@
     <docviewer name="Acrobat Viewer"     class="toolbox.plugin.docviewer.AcrobatViewer"/>
     <docviewer name="Calpha Viewer"      class="toolbox.plugin.docviewer.CalphaViewer"/>
     <docviewer name="DTD Viewer"         class="toolbox.plugin.docviewer.DTDViewer"/>
+    <docviewer name="Java Viewer"        class="toolbox.plugin.docviewer.JavaViewer"/>    
     <docviewer name="JEdit Viewer"       class="toolbox.plugin.docviewer.JEditViewer"/>
     <docviewer name="Multivalent Viewer" class="toolbox.plugin.docviewer.MultivalentViewer"/>
     <docviewer name="Multivalent Text Viewer" class="toolbox.plugin.docviewer.MultivalentViewer"/>
