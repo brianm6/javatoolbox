@@ -2,7 +2,6 @@ package toolbox.plugin.netmeter;
 
 import java.awt.BorderLayout;
 
-import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -11,6 +10,7 @@ import toolbox.util.service.Service;
 import toolbox.util.service.ServiceException;
 import toolbox.util.service.ServiceListener;
 import toolbox.util.service.ServiceView;
+import toolbox.util.ui.JHeaderPanel;
 import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.layout.ParagraphLayout;
@@ -26,7 +26,8 @@ import toolbox.util.ui.layout.ParagraphLayout;
  *     manipulation of the service state.
  * </ul>
  */
-public class ClientView extends JPanel implements ServiceListener, StatsListener
+public class ClientView extends JHeaderPanel implements ServiceListener, 
+                                                        StatsListener
 {
     //--------------------------------------------------------------------------
     // Fields
@@ -68,6 +69,7 @@ public class ClientView extends JPanel implements ServiceListener, StatsListener
      */
     public ClientView(Client client)
     {
+        super("Client");
         client_ = client;
         client_.addServiceListener(this);
         client_.addStatsListener(this);
@@ -83,10 +85,9 @@ public class ClientView extends JPanel implements ServiceListener, StatsListener
      */
     protected void buildView()
     {
-        setBorder(BorderFactory.createEtchedBorder());
-        setLayout(new BorderLayout());
-        add(buildInputPanel(), BorderLayout.CENTER);
-        add(new ServiceView(client_), BorderLayout.SOUTH);
+        JPanel content = new JPanel(new BorderLayout());
+        content.add(buildInputPanel(), BorderLayout.CENTER);
+        content.add(new ServiceView(client_), BorderLayout.SOUTH);
         
         if (client_ != null)
         {
@@ -100,6 +101,8 @@ public class ClientView extends JPanel implements ServiceListener, StatsListener
             else
                 serverPortField_.setText(client_.getPort() + "");
         }
+        
+        setContent(content);
     }
     
     

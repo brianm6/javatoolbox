@@ -2,7 +2,6 @@ package toolbox.plugin.netmeter;
 
 import java.awt.BorderLayout;
 
-import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -10,6 +9,7 @@ import toolbox.util.service.Service;
 import toolbox.util.service.ServiceException;
 import toolbox.util.service.ServiceListener;
 import toolbox.util.service.ServiceView;
+import toolbox.util.ui.JHeaderPanel;
 import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.layout.ParagraphLayout;
@@ -17,7 +17,7 @@ import toolbox.util.ui.layout.ParagraphLayout;
 /**
  * ServerView is an updateable view of the Server object. 
  */
-public class ServerView extends JPanel implements ServiceListener
+public class ServerView extends JHeaderPanel implements ServiceListener
 {
     //--------------------------------------------------------------------------
     // Fields
@@ -54,6 +54,7 @@ public class ServerView extends JPanel implements ServiceListener
      */
     public ServerView(Server server)
     {
+        super("Server");
         server_ = server;
         server_.addServiceListener(this);
         buildView();
@@ -68,13 +69,14 @@ public class ServerView extends JPanel implements ServiceListener
      */
     protected void buildView()
     {
-        setBorder(BorderFactory.createEtchedBorder());
-        setLayout(new BorderLayout());
-        add(buildInputPanel(), BorderLayout.CENTER);
-        add(new ServiceView(server_), BorderLayout.SOUTH);
+        JPanel content = new JPanel(new BorderLayout());
+        content.add(buildInputPanel(), BorderLayout.CENTER);
+        content.add(new ServiceView(server_), BorderLayout.SOUTH);
         
         if (server_ != null)
             serverPortField_.setText(server_.getPort() + "");
+        
+        setContent(content);
     }
     
     
