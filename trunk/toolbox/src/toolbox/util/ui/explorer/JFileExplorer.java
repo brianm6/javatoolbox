@@ -54,6 +54,7 @@ import toolbox.util.io.filter.DirectoryFilter;
 import toolbox.util.io.filter.FileFilter;
 import toolbox.util.ui.plugin.IPreferenced;
 import toolbox.util.ui.statusbar.JStatusBar;
+import toolbox.util.ui.tree.*;
 import toolbox.util.ui.tree.JSmartTree;
 
 /**

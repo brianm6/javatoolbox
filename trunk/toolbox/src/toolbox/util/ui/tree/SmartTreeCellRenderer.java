@@ -1,10 +1,11 @@
-package toolbox.util.ui;
+package toolbox.util.ui.tree;
 
 import java.awt.Graphics;
 
 import javax.swing.tree.DefaultTreeCellRenderer;
 
 import toolbox.util.SwingUtil;
+import toolbox.util.ui.AntiAliased;
 
 /**
  * SmartTreeCellRenderer adds the following behavior.
