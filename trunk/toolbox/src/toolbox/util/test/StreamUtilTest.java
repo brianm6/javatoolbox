@@ -3,10 +3,10 @@ package toolbox.util.test;
 import java.io.OutputStream;
 import java.io.StringReader;
 
-import org.apache.log4j.Logger;
-
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
+
+import org.apache.log4j.Logger;
 
 import toolbox.util.StreamUtil;
 import toolbox.util.io.StringInputStream;
@@ -39,21 +39,33 @@ public class StreamUtilTest extends TestCase
     //--------------------------------------------------------------------------
         
     /**
-     * Tests the toString() method
+     * Tests the asString() method
      * 
      * @throws  Exception on error
      */
-    public void testToString() throws Exception
+    public void testAsString() throws Exception
     {
-        logger_.info("Running testToString...");
+        logger_.info("Running testAsString...");
         
-        String testString = "this is a test string for toString()";
-        
+        String testString = "this is a test string for asString()";
         StringInputStream sis = new StringInputStream(testString);
-        String toString = StreamUtil.asString(sis);
+        String asString = StreamUtil.asString(sis);
+        assertEquals(testString, asString);
+    }
+
+    /**
+     * Tests toBytes()
+     * 
+     * @throws  Exception on error
+     */
+    public void testToBytes() throws Exception
+    {
+        logger_.info("Running testToBytes...");
         
-        assertEquals("toString() does not match original string", 
-            testString, toString);
+        String testString = "this is a test string for toBytes()";
+        StringInputStream sis = new StringInputStream(testString);
+        byte[] bytes = StreamUtil.toBytes(sis);
+        assertEquals(testString, new String(bytes));
     }
     
     /**
@@ -138,20 +150,20 @@ public class StreamUtilTest extends TestCase
         sos.write("testing".getBytes());
         StreamUtil.close(sos);
         StreamUtil.close((OutputStream) null);
-   }
+    }
    
-   /**
-    * Tests close(InputStream)
-    * 
-    * @throws Exception on error
-    */
-   public void testCloseInputStream() throws Exception
-   {
+    /**
+     * Tests close(InputStream)
+     * 
+     * @throws Exception on error
+     */
+    public void testCloseInputStream() throws Exception
+    {
        logger_.info("Running testCloseOutputStream...");
         
        StringOutputStream sos = new StringOutputStream();
        sos.write("testing".getBytes());
        StreamUtil.close(sos);
        StreamUtil.close((OutputStream) null);
-  }
+    }
 }
