@@ -83,7 +83,6 @@ public class JFileExplorer extends JPanel implements IPreferenced
     private JComboBox       rootsComboBox_;
     private JPopupMenu      folderPopup_;
 
-    private String root_;
     private String currentPath_;
     private Icon   driveIcon_;
 
@@ -573,8 +572,6 @@ public class JFileExplorer extends JPanel implements IPreferenced
         
         if (treeModel_ != null)
             treeModel_.setRoot(rootNode_);
-
-        root_ = root;
     }
 
 
@@ -702,7 +699,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
     }
 
     //--------------------------------------------------------------------------
-    //  Inner Classes
+    // FileNode
     //--------------------------------------------------------------------------
 
     /**
@@ -744,6 +741,9 @@ public class JFileExplorer extends JPanel implements IPreferenced
         }
     }
 
+    //--------------------------------------------------------------------------
+    // DriveIconCellRenderer
+    //--------------------------------------------------------------------------
     
     /**
      * Inner class for rendering our own display for the Roots drop down menu.
@@ -774,7 +774,10 @@ public class JFileExplorer extends JPanel implements IPreferenced
         }
     }
 
-
+    //--------------------------------------------------------------------------
+    // FileListMouseListener
+    //--------------------------------------------------------------------------
+    
     /**
      * Handles double click mouse events on a file in the file list.
      */
@@ -798,7 +801,10 @@ public class JFileExplorer extends JPanel implements IPreferenced
         }
     }
 
-
+    //--------------------------------------------------------------------------
+    // FileListSelectionListener
+    //--------------------------------------------------------------------------
+    
     /**
      * Listens for selection changes in the file list, and fires events
      * accordingly.
@@ -814,6 +820,9 @@ public class JFileExplorer extends JPanel implements IPreferenced
         }
     }
 
+    //--------------------------------------------------------------------------
+    // DirTreeMouseListener
+    //--------------------------------------------------------------------------
     
     /**
      * Inner class for handling click event on the JTree.
@@ -834,7 +843,10 @@ public class JFileExplorer extends JPanel implements IPreferenced
         }
     }
 
-
+    //--------------------------------------------------------------------------
+    // DriveComboListener
+    //--------------------------------------------------------------------------
+    
     /**
      * Handles the changing of the selection of the file root (drive letter).
      */
@@ -853,7 +865,10 @@ public class JFileExplorer extends JPanel implements IPreferenced
         }
     }
 
-
+    //--------------------------------------------------------------------------
+    // DirTreeSelectionListener
+    //--------------------------------------------------------------------------
+    
     /**
      * Updates the file list when the directory folder selection changes.
      */
@@ -889,7 +904,10 @@ public class JFileExplorer extends JPanel implements IPreferenced
         }
     }
 
-
+    //--------------------------------------------------------------------------
+    // InfoBar
+    //--------------------------------------------------------------------------
+    
     /**
      * Simple file information bar that shows file attributes.
      */    
@@ -955,6 +973,9 @@ public class JFileExplorer extends JPanel implements IPreferenced
         }
     }
 
+    //--------------------------------------------------------------------------
+    // InfoBarUpdater
+    //--------------------------------------------------------------------------
     
     /** 
      * Updates the infobar with the currently selected file.
