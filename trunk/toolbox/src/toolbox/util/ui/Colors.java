@@ -9,7 +9,7 @@ import org.apache.commons.collections.iterators.ArrayIterator;
 /**
  * Additional colors from X11's rgb.txt.
  */
-public class Colors
+public final class Colors
 {
     public static final XColor alice_blue =  new XColor("alice blue", 240, 248, 255); 
     public static final XColor aliceblue =  new XColor("aliceblue", 240, 248, 255);
@@ -764,9 +764,9 @@ public class Colors
     public static final XColor yellow4 =  new XColor("yellow4", 139, 139, 0);
     public static final XColor yellowgreen = new XColor("yellowgreen", 154, 205, 5);
 
-
-
-    
+    /**
+     * Colors accessible via an array.
+     */
     private static final XColor[] COLORS =
     {
         alice_blue,
@@ -1524,13 +1524,7 @@ public class Colors
     };
     
     //--------------------------------------------------------------------------
-    // Constants
-    //--------------------------------------------------------------------------
-
-    private static XColor key_ = new XColor("", -1, -1, -1);
-    
-    //--------------------------------------------------------------------------
-    // Public
+    // Static Public
     //--------------------------------------------------------------------------
 
     /**
@@ -1541,13 +1535,9 @@ public class Colors
      */
     public static Color getColor(String name)
     {
-        key_.name_ = name.toLowerCase();
-        int pos = Arrays.binarySearch(COLORS, key_);
-
-        if (pos < 0)
-            return null;
-
-        return COLORS[pos];
+        XColor key = new XColor(name.toLowerCase(), 0, 0, 0);
+        int pos = Arrays.binarySearch(COLORS, key);
+        return pos < 0 ? null : COLORS[pos]; 
     }
 
     
@@ -1566,10 +1556,13 @@ public class Colors
     //--------------------------------------------------------------------------
 
     /**
-     * Internal Color Representation.
+     * Specialization of {@link java.awt.Color} with an assigned name.
      */
     public static class XColor extends Color implements Comparable
     {
+        /**
+         * Friendly name of this color.
+         */
         private String name_;
 
         //----------------------------------------------------------------------
