@@ -288,7 +288,6 @@
     </target>
 
 
-
     <!--=============================-->
     <!--             DIST            -->
     <!--=============================-->
@@ -303,6 +302,7 @@
         </copy>
         
     </target>
+
 
     <!--=============================-->
     <!--          JAVADOC            -->
@@ -337,6 +337,7 @@
             version="true"/>
             
     </target>
+
 
     <!--=============================-->
     <!--            JUNIT            -->
@@ -376,6 +377,7 @@
 		 			
 		 			<!-- exclude the GUI tests -->
                     <exclude name="**/ui/**/*Test.java" />
+                    <exclude name="**/SwingUtilTest.java"/>
                     
                 </fileset>
             </batchtest>
@@ -406,6 +408,7 @@
         </exec>            
             
     </target>
+
 
     <!--=============================-->
     <!--        CLOVER.INIT          -->
@@ -493,7 +496,7 @@
     
     
     <!--=============================-->
-    <!--    depends="clover.init"     CLOVER.CLEAN         -->
+    <!--        CLOVER.CLEAN         -->
     <!--=============================-->
     <target name="clover.clean"
             description="Removes clover generated files">
@@ -501,25 +504,6 @@
         <delete dir="${clover}" verbose="false" quiet="off"/>
         <delete dir="${clover}"/>
     </target>
-    
-    
-    <!--=============================-->
-    <!--    UPLOAD TO UXSDEV05       -->
-    <!--=============================-->
-	<target name="upload" depends="init" description="Uploads toolbox.jar to uxsdev05">    
-	
-	  <ftp server="uxsdev05"
-	       userid="spatel"
-	       password="jell0zone"
-	       remotedir="/export/home/spatel/bin"
-	       verbose="yes">
-	       
-		<fileset dir="${dist}">
-	    	<include name="toolbox.jar"/>
-    	</fileset>		   
-	  </ftp>	
-	  
- 	</target>
     
     
     <!--=============================--> 
@@ -536,6 +520,7 @@
         </copy>
         
  	</target>
+
     
     <!--=============================--> 
     <!--        CHECKSTYLE           -->
