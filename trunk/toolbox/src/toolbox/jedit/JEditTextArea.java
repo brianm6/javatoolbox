@@ -10,9 +10,34 @@ import org.jedit.syntax.TextAreaDefaults;
 import org.jedit.syntax.TokenMarker;
 
 import toolbox.util.SwingUtil;
+import toolbox.jedit.JEditActions;
 
 /**
- * Modified JEditTextArea that supports a mouse wheel, tab size, and font
+ * Modified JEditTextArea that supports the following features:
+ * <ul>
+ * <li>mouse wheel support
+ * <li>tab size can be adjusted
+ * <li>font can be changed
+ * <li>simple text search facility
+ * <li>Right mouse button activated popup menu with:
+ *     <ul>
+ *     <li>Copy, cut, paste
+ *     <li>Save to file
+ *     <li>Insert from file
+ *     <li>Antialias text
+ *     </ul>
+ * </ul>
+ * <p>
+ * Keyboard shortcuts added:
+ * <ul>
+ * <li>Ctrl+A - Select All
+ * <li>Ctrl+V - Paste
+ * <li>Ctrl+C - Copy
+ * <li>Ctrl+X - Cut
+ * <li>Ctrl+O - Open file
+ * <li>Ctrl+S - Save file
+ * <li>Ctrl+F - Find
+ * </ul>
  */
 public class JEditTextArea extends org.jedit.syntax.JEditTextArea
     implements MouseWheelListener
@@ -60,22 +85,25 @@ public class JEditTextArea extends org.jedit.syntax.JEditTextArea
 
         // Some more useful keybindings...reuse actions from the popup menu            
         getInputHandler().addKeyBinding(
-            "C+A", new JEditTextAreaPopupMenu.SelectAllAction(this));
+            "C+A", new JEditActions.SelectAllAction(this));
             
         getInputHandler().addKeyBinding(
-            "C+V", new JEditTextAreaPopupMenu.PasteAction(this));
+            "C+V", new JEditActions.PasteAction(this));
             
         getInputHandler().addKeyBinding(
-            "C+C", new JEditTextAreaPopupMenu.CopyAction(this));
+            "C+C", new JEditActions.CopyAction(this));
 
         getInputHandler().addKeyBinding(
-            "C+X", new JEditTextAreaPopupMenu.CutAction(this));
+            "C+X", new JEditActions.CutAction(this));
             
         getInputHandler().addKeyBinding(
-            "C+O", new JEditTextAreaPopupMenu.InsertFileAction(this));
+            "C+O", new JEditActions.InsertFileAction(this));
             
         getInputHandler().addKeyBinding(
-            "C+S", new JEditTextAreaPopupMenu.SaveAsAction(this));
+            "C+S", new JEditActions.SaveAsAction(this));
+            
+        getInputHandler().addKeyBinding(
+            "C+F", new JEditActions.FindAction(this));
     }
     
     //--------------------------------------------------------------------------
@@ -101,12 +129,9 @@ public class JEditTextArea extends org.jedit.syntax.JEditTextArea
     }
 
     //--------------------------------------------------------------------------
-    // Interface java.awt.event.MouseWheelListener 
+    // MouseWheelListener Interface
     //--------------------------------------------------------------------------
     
-    /**
-     * Handle wheel
-     */
     public void mouseWheelMoved(MouseWheelEvent mouseWheelEvent)
     {
         if (mouseWheelEvent.getScrollAmount() == 0)
