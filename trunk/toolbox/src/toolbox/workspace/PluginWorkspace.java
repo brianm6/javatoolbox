@@ -56,7 +56,7 @@ import toolbox.util.ui.plaf.LookAndFeelUtil;
 import toolbox.workspace.host.PluginHost;
 import toolbox.workspace.host.PluginHostListener;
 import toolbox.workspace.host.PluginHostManager;
-import toolbox.workspace.prefs.PreferencesView;
+import toolbox.workspace.prefs.PreferencesDialog;
 
 /**
  * Generic Frame that accepts pluggable GUI components that are displayed on a
@@ -515,7 +515,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
              */
             public void actionPerformed(ActionEvent e)
             {
-                new PreferencesView(PluginWorkspace.this).setVisible(true);
+                new PreferencesDialog(PluginWorkspace.this).setVisible(true);
             }
         });
 
