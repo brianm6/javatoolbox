@@ -23,24 +23,20 @@ public class ConfigManager implements IConfigManager
     private static final String CONFIG_FILE = ".jtail.xml";
     
     //--------------------------------------------------------------------------
-    //  Constructors
+    // Constructors
     //--------------------------------------------------------------------------
     
     /**
-     * Constructor for ConfigManager.
+     * Default constructor
      */
     public ConfigManager()
     {
-        super();
     }
 
     //--------------------------------------------------------------------------
-    //  IConfigManager Interface
+    // IConfigManager Interface
     //--------------------------------------------------------------------------
 
-    /**
-     * @see toolbox.jtail.IConfigManager#save(IJTailConfig)
-     */
     public void save(IJTailConfig jtailConfig)
     {
         JTailConfig config = (JTailConfig)jtailConfig;
@@ -63,9 +59,6 @@ public class ConfigManager implements IConfigManager
         }
     }
 
-    /**
-     * @see toolbox.jtail.IConfigManager#load()
-     */
     public IJTailConfig load()
     {
         String userHome = System.getProperty("user.home");
@@ -110,9 +103,6 @@ public class ConfigManager implements IConfigManager
         return jtailConfig;
     }
    
-    /**
-     * @see toolbox.jtail.config.IConfigManager#createTailPaneConfig()
-     */
     public ITailPaneConfig createTailPaneConfig()
     {
         return new TailPaneConfig();

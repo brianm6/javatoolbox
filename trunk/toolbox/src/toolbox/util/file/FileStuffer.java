@@ -17,34 +17,22 @@ import toolbox.util.ThreadUtil;
  */
 public class FileStuffer implements Runnable
 {
-    /** 
-     * The output file 
-     */
+    /** The output file */
     private File file_;
     
-    /** 
-     * The delay between each write 
-     */
+    /** The delay in millis between each write */
     private int delay_;
     
-    /** 
-     * The thread that the stuffer runs on 
-     */
+    /** The thread that the stuffer runs on */
     private Thread thread_;
     
-    /** 
-     * Flag to stop the stuffer 
-     */
+    /** Flag to stop the stuffer */
     private boolean stop_;
     
-    /**
-     * Flag to open/close file instead of append/flush
-     */
+    /** Flag to open/close file instead of append/flush */
     private boolean openClose_ = false;
 
-    /**
-     * File stuffer
-     */
+    /** File stuffer */
     private IStuffProvider stuffer_;
     
     //--------------------------------------------------------------------------
@@ -52,7 +40,7 @@ public class FileStuffer implements Runnable
     //--------------------------------------------------------------------------
 
     /**
-     * FileStuffer entrypoint
+     * FileStuffer entrypoint.
      * <pre>
      * 
      * arg[0] = file name

@@ -16,15 +16,17 @@ import java.util.Map;
  * Map map = typecast.coerce( new com.some.Object() );
  * </pre>
  *
- * @see toolbox.util.collection.AsMap
+ * @see toolbox.util.collections.AsMap
  * @see ClassFinder
- * 
- * @todo improve cache to have several alternatives to a WeakIdentityCache
- *       (e.g. SoftReference, LRUTable, TimeDelayed, or a CombinedCache which 
- *             would combine them all )
  */
 public class Typecast
 {
+    /*
+     * TO DO:improve cache to have several alternatives to a WeakIdentityCache
+     *       (e.g. SoftReference, LRUTable, TimeDelayed, or a CombinedCache 
+     *       which would combine them all )
+     */
+    
     // INSTANCE VARIABLES
 
     private Class toClass_;
@@ -187,7 +189,7 @@ public class Typecast
      * @param identity
      * @param policy
      * @param loader
-     * @return
+     * @return Object
      */
     private Object newInstance(Object identity, String policy, 
         ClassLoader loader)

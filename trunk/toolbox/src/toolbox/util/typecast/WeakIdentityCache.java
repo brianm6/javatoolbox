@@ -11,12 +11,10 @@ import toolbox.util.collections.ReferenceHashMap;
  * the keys to store objects.  Since the IdentityWeakReference key uses the 
  * object reference to implement hashCode() and equals(), all objects are 
  * stored based for each instance.
- *  
+ * <p>  
  * The values stored within the ReferenceMap are SoftReferences, and 
  * allows the values to reference the key and still be garbage collected
  * as resources are demanded.
- *
- * @see WeakIdentity
  */
 public class WeakIdentityCache implements IdentityCache
 {

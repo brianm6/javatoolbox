@@ -39,44 +39,28 @@ import toolbox.util.Assert;
  */
 public class JFontChooser extends JPanel
 {
-    /** 
-     * JList for font family 
-     */
+    /** JList for font family */
     private JList fontFamilyList_;
     
-    /** 
-     * FontStlyeList (subclass of JList) for font style 
-     */
+    /** FontStlyeList (subclass of JList) for font style */
     private FontStyleList fontStyleList_;
     
-    /** 
-     * JTextField for font size 
-     */
+    /** JTextField for font size */
     private JTextField fontSize_;
     
-    /** 
-     * JList for font size 
-     */
+    /** JList for font size */
     private JList fontSizeList_;
 
-    /**
-     * Anti-aliasing check box
-     */
+    /** Anti-aliasing check box */
     private JCheckBox antiAliasCheckBox_;
     
-    /** 
-     * PhraseCanvas in which font samples are displayed 
-     */
+    /** PhraseCanvas in which font samples are displayed */
     private PhraseCanvas phraseCanvas_;
 
-    /** 
-     * List of listeners 
-     */
+    /** List of listeners */
     private List listeners_ = new ArrayList();
 
-    /** 
-     * Maximum number of characters permissibile in a valid font size 
-     */
+    /** Maximum number of characters permissibile in a valid font size */
     private int maxNumCharsInFontSize_ = 3;
 
     //--------------------------------------------------------------------------
@@ -84,7 +68,7 @@ public class JFontChooser extends JPanel
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a JFontChooser
+     * Default constructor
      */
     public JFontChooser()
     {
@@ -92,9 +76,9 @@ public class JFontChooser extends JPanel
     }
 
     /**
-     * Like {@link #JFontChooser(java.awt.Font, String[], int[])}, except 
-     * that a default list of styles{"Plain", "Bold", "Italic", "Bold Italic"}
-     * and font sizes {8, 9, 10, 12, 14} will be used.
+     * Like {@link #JFontChooser(java.awt.Font, String[], int[], boolean)}, 
+     * except that a default list of styles{"Plain", "Bold", "Italic", 
+     * "Bold Italic"} and font sizes {8, 9, 10, 12, 14} will be used.
      * 
      * @param  initialFont  Initial font to selected
      */
@@ -137,9 +121,9 @@ public class JFontChooser extends JPanel
      * @param antiAlias  Turns on antialiasing of fonts
      */    
     public JFontChooser(Font initialFont, 
-                         String[] styleDisplayNames,
-                         int[] predefinedSizes,     
-                         boolean antiAlias)
+                        String[] styleDisplayNames,
+                        int[] predefinedSizes,     
+                        boolean antiAlias)
     {
         buildView(initialFont, styleDisplayNames, predefinedSizes, antiAlias);
         wireView();
@@ -455,8 +439,7 @@ public class JFontChooser extends JPanel
      * 
      * @return Currently selected font.
      * @throws FontChooserException thrown if no valid font is currently 
-     *         specified; the actual class of the exception thrown may be
-     *         {@link JFontChooser.FontChooserException},
+     *         specified.
      */
     public Font getSelectedFont() throws FontChooserException
     {

@@ -21,9 +21,7 @@ public class TreeTest extends TestCase
     private static final Logger logger_ = 
         Logger.getLogger(TreeTest.class);
     
-    /** 
-     * Temporary directory that will serve as the root dir for tests 
-     */
+    /** Temporary directory that will serve as the root dir for tests */
     private File rootDir_;
 
     //--------------------------------------------------------------------------
@@ -41,7 +39,7 @@ public class TreeTest extends TestCase
     }
 
     //--------------------------------------------------------------------------
-    // Setup
+    // Overrides junit.framework.TestCase
     //--------------------------------------------------------------------------
     
     /**
@@ -154,7 +152,7 @@ public class TreeTest extends TestCase
     }
 
     /**
-     * Tests for more then one dir in the root
+     * Tests for more then one dir in the root.
      * <pre> 
      *
      *   rootDir_
@@ -193,7 +191,7 @@ public class TreeTest extends TestCase
     }
 
     /**
-     * Tests for an empty root directory
+     * Tests for an empty root directory.
      * <pre> 
      *
      *   rootDir_
@@ -212,9 +210,8 @@ public class TreeTest extends TestCase
         printNativeTree(rootDir_);
     }
 
-
     /**
-     * Tests tree with only one folder
+     * Tests tree with only one folder.
      * <pre> 
      *
      *   rootDir_
@@ -238,7 +235,6 @@ public class TreeTest extends TestCase
         
         printNativeTree(rootDir_);
     }
-
 
     /**
      * Tests for a large directory structure
@@ -288,7 +284,6 @@ public class TreeTest extends TestCase
         
         printNativeFileTree(rootDir_);
     }
-
 
     /**
      * Tests for an empty tree with files in the root only

@@ -16,7 +16,6 @@ import toolbox.util.collections.AsMap;
  */
 public class TailPaneConfig implements ITailPaneConfig, XMLConstants
 {
-    /** Logger */
     private static final Logger logger_ =
         Logger.getLogger(TailPaneConfig.class);
     
@@ -138,7 +137,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
 
 
     /**
-     * Marshals from Java object representation to XML representation
+     * Marshals from Java object representation to XML representation.
      * <pre>
      * 
      * Tail
