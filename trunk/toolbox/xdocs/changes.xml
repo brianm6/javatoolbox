@@ -33,16 +33,19 @@
  * TODO: Add undo to TextToolsPlugin
  * TODO: Beef up junit plugin with junitx classes
  * TODO: apache geronimo twiddle = Console
- * TODO: StatCVS: Add nuke checkout dir
- * TODO: StatCVS: Add support for projects that span multiple modules
- * TODO: StatCVS: Create output directory if it doesn't already exist
+ * =============================================================================
+ *                              Build
+ * =============================================================================
+ * TODO: Integrate JCoverage into the maven build - 
+ *       pending new JCoverage plugin since current one gets line to lone error.
+ 
  * TODO: Figure out how to use JGoodies data binding framework 
- * TODO: *Add a way to change the lookand feel font globally
- * TODO: *http://pdfdoclet.sourceforge.net/examples.html
+ 
+ * TODO: Add a way to change the lookand feel font globally - partially working
+ * TODO: http://pdfdoclet.sourceforge.net/examples.html
  * TODO: http://www.infonode.net/index.html?idwdownload
  * TODO: Checkout FlexDock on java.net
  * TODO: Include Askkelon in maven build
- * TODO: Rename Banner.java to Figlet
  * TODO: Extend PropertySheet to smooth fonts
  * TODO: Add regular expression cheat sheet (TextToolsPlugin maybe)
  * TODO: Add search and replace to text editors
@@ -51,7 +54,6 @@
  * TODO: Fileexplorer: F2 to rename a file or directory
  * TODO: Integrate JDiff Plugin/make Toolbox Plugin
  * TODO: Add shortcuts to fileexplorer
- * TODO: Integrate JCoverage into the maven build
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
@@ -78,6 +80,14 @@
  * TODO: For a selected Jar, make it the search target and autolist all the 
  *       classes within it.
  * TODO: Add size and index number columns to the search target page.
+ * =============================================================================
+ *                              StatCVSPlugin
+ * =============================================================================
+ * TODO: StatCVS: Add nuke checkout dir
+ * TODO: StatCVS: Add support for projects that span multiple modules
+ * TODO: StatCVS: Create output directory if it doesn't already exist
+ * =============================================================================
+ *                              TcpTunnelPlugin
  * =============================================================================
  * TODO: TCPTunnel: Add option just to monitor the count and not output data.
  * TODO: TCPTunnel: Figure out why it freezes up
@@ -190,6 +200,15 @@
           <tr>
             <td width="20%">Util</td>
             <td>Added replaceIgnoreCase() to StringUtil</td>
+          </tr>
+        </table>
+      </action>
+
+      <action type="add">
+        <table>
+          <tr>
+            <td width="20%">Util</td>
+            <td>Added toolbox.util.clock.SystemClock and associated classes to simulate the System time in the past or the future for testing purposes</td>
           </tr>
         </table>
       </action>
