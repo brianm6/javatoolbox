@@ -3,12 +3,11 @@ package toolbox.junit;
 import java.util.Enumeration;
 import java.util.Vector;
 
-import junit.runner.SimpleTestCollector;
 import junit.runner.TestCollector;
 
 /**
  * CompleteTestCollector serves as a compound test collector that
- * merges the behavior of the JUnit provided SimpleTestCollector and
+ * merges the behavior of the JUnit provided FileTestCollector and
  * the new JarTestCollector. The resulting collector will find
  * all JUnit test cases in a given classpath regardless of the location of
  * the class file (directory or archive). 
@@ -38,24 +37,24 @@ public class CompleteTestCollector implements TestCollector
     private TestCollector dirCollector_;
     
     //--------------------------------------------------------------------------
-    //  Constructors
+    // Constructors
     //--------------------------------------------------------------------------
     
     /**
-     * Constructor for CompleteTestCollector.
+     * Creates a CompleteTestCollector.
      */
     public CompleteTestCollector()
     {
         jarCollector_ = new JarTestCollector();
-        dirCollector_ = new SimpleTestCollector();
+        dirCollector_ = new FileTestCollector();
     }
 
     //--------------------------------------------------------------------------
-    //  TestCollector Interface
+    // TestCollector Interface
     //--------------------------------------------------------------------------
     
     /**
-     * Merge the results of the JarTestCollector and the SimpleTestCollector
+     * Merge the results of the JarTestCollector and the FileTestCollector
      * 
      * @return Enumeration of class names
      * @see TestCollector#collectTests()
