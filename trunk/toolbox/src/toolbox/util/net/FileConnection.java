@@ -10,11 +10,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import toolbox.util.Assert;
-import toolbox.util.ResourceCloser;
 import toolbox.util.StreamUtil;
 
 /**
- * Concrete implementation of an IConnection that wraps a file
+ * Concrete implementation of an IConnection that uses one file to read input
+ * from and other file to write output to.
  */
 public class FileConnection extends AbstractConnection implements IConnection
 {
@@ -23,6 +23,9 @@ public class FileConnection extends AbstractConnection implements IConnection
      */
     private File inputFile_;
 
+    /**
+     * InputStream tied to the connection
+     */
     private InputStream inputStream_;
         
     /**
@@ -30,6 +33,9 @@ public class FileConnection extends AbstractConnection implements IConnection
      */
     private File outputFile_;
     
+    /**
+     * OutputStream tied to the connection
+     */
     private OutputStream outputStream_;
 
     /**
@@ -157,12 +163,6 @@ public class FileConnection extends AbstractConnection implements IConnection
     {
         return connected_;
     }
-
-    //--------------------------------------------------------------------------
-    //  Accessor/Mutators
-    //--------------------------------------------------------------------------
-    
-    
 
     //--------------------------------------------------------------------------
     // Overridden from java.lang.Object
