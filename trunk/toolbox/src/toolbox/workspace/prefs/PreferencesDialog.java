@@ -10,7 +10,6 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
@@ -30,7 +29,7 @@ import toolbox.util.ui.tree.JSmartTree;
 import toolbox.util.ui.tree.SmartTreeCellRenderer;
 
 /**
- * The PreferencesDialog is spawned by the PluginWorkspace to allow the user 
+ * The PreferencesDialog is invoked by the PluginWorkspace to allow the user 
  * to change various preferences supported by the program. Preferences are
  * grouped together on different panels and can be switched between be selecting
  * that panel's node on the configuration tree. New panels can easily be
@@ -71,21 +70,6 @@ public class PreferencesDialog extends JDialog
      * Source of the PreferencesViews.
      */
     private PreferencesManager preferencesManager_;
-
-    //--------------------------------------------------------------------------
-    // Main
-    //--------------------------------------------------------------------------
-
-    public static void main(String[] args) throws Exception
-    {
-        // TODO: Remove me once i'm no longer useful for testing!
-        
-        JFrame frame = new JFrame();
-        SwingUtil.centerWindow(frame);
-        JDialog d = new PreferencesDialog(frame, new PreferencesManager());
-        d.setVisible(true);
-        SwingUtil.centerWindow(d);
-    }
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -161,7 +145,7 @@ public class PreferencesDialog extends JDialog
 
     /**
      * Builds the ok/cancel/apply button panel.
-     *-
+     *
      * @return JPanel
      */
     protected JPanel buildButtonPanel()
