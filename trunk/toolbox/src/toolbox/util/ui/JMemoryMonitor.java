@@ -113,20 +113,29 @@ public class JMemoryMonitor extends JComponent
         logger_.debug("Label font: " + labelFont_);
         
         setDoubleBuffered(true);
-        setForeground(UIManager.getColor("Label.foreground"));
+        setForeground(UIManager.getColor("InternalFrame.activeTitleForeground"));
+        //setForeground(UIManager.getColor("Label.foreground"));
         setBackground(UIManager.getColor("Label.background"));
         setFont(labelFont_);
         
         FontRenderContext frc = new FontRenderContext(null, false, false);
         lineMetrics_ = labelFont_.getLineMetrics(TEST_STRING, frc);
 
-        progressBackground_ = UIManager.getColor("ScrollBar.thumb");
-        progressForeground_ = UIManager.getColor("ScrollBar.thumbHighlight");
+        //progressBackground_ = UIManager.getColor("controlLtHighlight");
+        //progressBackground_ = UIManager.getColor("Label.background").darker();
+        //progressBackground_ = UIManager.getColor("ScrollBar.thumb");
+        //progressForeground_ = UIManager.getColor("ScrollBar.thumbHighlight");
+        //progressForeground_ = UIManager.getColor("controlShadow");
+        
+        progressBackground_ = UIManager.getColor("InternalFrame.activeTitleBackground");
+        progressForeground_ = UIManager.getColor("InternalFrame.inactiveTitleBackground");
 
+        
         // =====================================================================
         // WORKAROUND: GTK LAF does not have these props so just use labels 
         if (progressBackground_ == null)
             progressBackground_ = getBackground();
+        
         if (progressForeground_ == null)
             progressForeground_ = getForeground();
         // =====================================================================
