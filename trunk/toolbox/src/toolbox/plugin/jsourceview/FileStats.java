@@ -1,30 +1,31 @@
 package toolbox.jsourceview;
 
+import toolbox.util.collections.AsMap;
+
 /**
  * FileStats represents the statistics gathered for one or more source files
  */
 public class FileStats
 {
-    /** 
-     * Total number of lines in file 
-     */    
+    /** Total number of lines in file */    
     private int totalLines_;
     
-    /** 
-     * Number of comment lines in file 
-     */
+    /** Number of comment lines in file */
     private int commentLines_;
     
-    /** 
-     * Number of code lines in file 
-     */
+    /** Number of code lines in file */
     private int codeLines_;
     
-    /** 
-     * Number of blank lines in file 
-     */
+    /** Number of blank lines in file */
     private int blankLines_;
     
+    /** 
+     * Number of misc lines in the file. This can include import statement,
+     * licences embedded as comments, etc. Basically, lines of text which don't
+     * really represent in full the category to which they belong.
+     */
+    private int thrownOutLines_;
+        
     //--------------------------------------------------------------------------
     //  Constructors
     //--------------------------------------------------------------------------
@@ -60,10 +61,11 @@ public class FileStats
      */
     public void add(FileStats filestats)
     {
-        totalLines_   += filestats.getTotalLines();
-        commentLines_ += filestats.getCommentLines();
-        codeLines_    += filestats.getCodeLines();
-        blankLines_   += filestats.getBlankLines();
+        totalLines_     += filestats.getTotalLines();
+        commentLines_   += filestats.getCommentLines();
+        codeLines_      += filestats.getCodeLines();
+        blankLines_     += filestats.getBlankLines();
+        thrownOutLines_ += filestats.getThrownOutLines();
     }
 
     /**
@@ -97,9 +99,17 @@ public class FileStats
     {
         ++blankLines_;
     }
+    
+    /**
+     * Increments the thrown out lines by one
+     */
+    public void incrementThrownOutLines()
+    {
+        ++thrownOutLines_;
+    }
 
     //--------------------------------------------------------------------------
-    //  Getters/Setters
+    //  Accessors
     //--------------------------------------------------------------------------
     
     /**
@@ -135,42 +145,19 @@ public class FileStats
     }
 
     /**
-     * Sets the blankLines.
-     * 
-     * @param blankLines The blankLines to set
+     * @return Number of lines thrown out
      */
-    public void setBlankLines(int blankLines)
+    public int getThrownOutLines()
     {
-        blankLines_ = blankLines;
+        return thrownOutLines_;
     }
-
-    /**
-     * Sets the codeLines.
-     * 
-     * @param codeLines The codeLines to set
-     */
-    public void setCodeLines(int codeLines)
+    
+    //--------------------------------------------------------------------------
+    // Overrides java.lang.Object
+    //--------------------------------------------------------------------------
+    
+    public String toString()
     {
-        codeLines_ = codeLines;
-    }
-
-    /**
-     * Sets the commentLines.
-     * 
-     * @param commentLines The commentLines to set
-     */
-    public void setCommentLines(int commentLines)
-    {
-        commentLines_ = commentLines;
-    }
-
-    /**
-     * Sets the totalLines.
-     * 
-     * @param totalLines The totalLines to set
-     */
-    public void setTotalLines(int totalLines)
-    {
-        totalLines_ = totalLines;
+        return AsMap.of(this).toString();
     }
 }
