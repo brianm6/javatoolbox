@@ -39,6 +39,7 @@
  * TODO: Find out why Tiny LAFs are not working
  * TODO: Checkout SIGAR http://www.hyperic.net/downloads/sigar-download.htm
  * TODO: Added rename/delete file to JFileExplorer file list.
+ * TODO: Look into JXTA shell
  * =============================================================================
  *                              Build
  * =============================================================================
