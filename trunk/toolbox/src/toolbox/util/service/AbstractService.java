@@ -11,6 +11,7 @@ public abstract class AbstractService implements Service
     // Constants
     //--------------------------------------------------------------------------
     
+    private static final int STATE_NONE     = -1;
     private static final int STATE_INIT     = 0;
     private static final int STATE_RUNNING  = 1;
     private static final int STATE_STOPPED  = 2;
@@ -53,13 +54,23 @@ public abstract class AbstractService implements Service
      */
     public AbstractService()
     {
-        state_ = STATE_INIT;
+        state_ = STATE_NONE;
         listeners_ = new ServiceListener[0];
     }
 
     //--------------------------------------------------------------------------
     // Service Interface
     //--------------------------------------------------------------------------
+    
+    /**
+     * @see toolbox.util.service.Service#initialize()
+     */
+    public void initialize() throws ServiceException
+    {
+        state_ = STATE_INIT;
+        fireServiceInitialized();
+    }
+    
     
     /**
      * @see toolbox.util.service.Service#start()
@@ -152,9 +163,31 @@ public abstract class AbstractService implements Service
         listeners_ = (ServiceListener[]) ArrayUtil.add(listeners_, listener);
     }
 
+    
+    /**
+     * @see toolbox.util.service.Service#removeServiceListener(
+     *      toolbox.util.service.ServiceListener)
+     */
+    public void removeServiceListener(ServiceListener listener)
+    {
+        listeners_ = (ServiceListener[]) ArrayUtil.remove(listeners_, listener);
+    }
+    
     //--------------------------------------------------------------------------
     // Protected
     //--------------------------------------------------------------------------
+
+    /**
+     * Notifies registered listeners that the service has been initialized.
+     * 
+     * @throws ServiceException on service related error.
+     */
+    protected void fireServiceInitialized() throws ServiceException
+    {
+        for (int i = 0; i < listeners_.length; 
+            listeners_[i++].serviceInitialized(this));
+    }
+
     
     /**
      * Notifies registered listeners that the service has started.
