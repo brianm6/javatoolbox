@@ -278,6 +278,15 @@
     </dependency>
 
     <dependency>
+      <id>commons-math</id>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+      </properties>
+      <version>LATEST</version>
+      <url>http://jakarta.apache.org/commons/math</url>
+    </dependency>
+
+    <dependency>
       <id>commons-net</id>
       <properties>
         <jnlp.jar>true</jnlp.jar>
