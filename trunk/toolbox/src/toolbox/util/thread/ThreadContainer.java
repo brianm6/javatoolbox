@@ -12,7 +12,7 @@ public class ThreadContainer extends ThreadGroup
     //--------------------------------------------------------------------------
     
     /**
-     * Constructs a new thread container.
+     * Creates a ThreadContainer.
      */
     public ThreadContainer()
     {

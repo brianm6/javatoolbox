@@ -8,26 +8,52 @@ import toolbox.util.thread.concurrent.EventSemaphore;
  */
 public final class ReturnValue
 {
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
     /**
-     * Pending state
+     * Pending state.
      */
     public static final int PENDING_STATE = 0;
     
     /**
-     * Started state
+     * Started state.
      */
     public static final int STARTED_STATE = 1;
     
     /**
-     * Finished state
+     * Finished state.
      */
     public static final int FINISHED_STATE = 2;
 
+    //--------------------------------------------------------------------------
+    // Fields 
+    //--------------------------------------------------------------------------
     
+    /**
+     * Current state.
+     */
     private int state_;
+    
+    /**
+     * The actual value of the return object, if any.
+     */
     private Object value_;
+    
+    /**
+     * Request.
+     */
     private IThreadable request_;
+    
+    /**
+     * Listener.
+     */
     private Listener listener_;
+    
+    /**
+     * Is the return value available?
+     */
     private EventSemaphore available_;
 
     //--------------------------------------------------------------------------
@@ -35,7 +61,7 @@ public final class ReturnValue
     //--------------------------------------------------------------------------
     
     /**
-     * Constructs a new unavailable return value.
+     * Creates a ReturnValue.
      */
     public ReturnValue()
     {
@@ -46,7 +72,7 @@ public final class ReturnValue
 
 
     /**
-     * Constructs a new return value with value. 
+     * Creates a ReturnValue with value. 
      *
      * @param value Return value of the request.
      */
@@ -59,7 +85,7 @@ public final class ReturnValue
 
 
     /**
-     * Constructs a new return value with the listneer. 
+     * Creates a ReturnValue with a listener. 
      *
      * @param request Corresponding request.
      * @param listener Listener to notify when done.
@@ -127,7 +153,7 @@ public final class ReturnValue
 
 
     /**
-     * Assigns the return value.  This operation can only be called once.
+     * Assigns the return value. This operation can only be called once.
      *
      * @param value Return value for the request.
      * @throws ValueAlreadyAssignedException if value was already assigned.
@@ -172,7 +198,7 @@ public final class ReturnValue
     //--------------------------------------------------------------------------
         
     /**
-     * Listener
+     * Listener Interface for events related to the ReturnValue.
      */
     public static interface Listener
     {
@@ -202,11 +228,11 @@ public final class ReturnValue
     }
 
     //--------------------------------------------------------------------------
-    // Inner Classes
+    // ValuealreadyAssignedException
     //--------------------------------------------------------------------------
     
     /**
-     * Inner Class
+     * Exception thrown if the value is already assigned.
      */
     public static class ValueAlreadyAssignedException
         extends RuntimeException
