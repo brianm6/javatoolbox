@@ -1,6 +1,7 @@
 package toolbox.util;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -584,5 +585,25 @@ public final class ArrayUtil
         {
             list.add(array[i]);
         }
+    }
+    
+    
+    /**
+     * Does that same thing as Arrays.asList() except the returned list is
+     * mutable. 
+     * 
+     * @param obj Array of objects.
+     * @return List
+     * 
+     * TODO: Write unit test
+     */
+    public static List toList(Object[] obj)
+    {
+        List list = new ArrayList(obj.length);
+
+        for (int i = 0; i < obj.length; i++)
+            list.add(obj[i]);
+
+        return list;
     }
 }
