@@ -40,6 +40,7 @@ import toolbox.util.StringUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.io.StringInputStream;
 import toolbox.util.io.StringOutputStream;
+import toolbox.util.ui.JHeaderPanel;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartSplitPane;
@@ -156,8 +157,18 @@ public class TextToolsPlugin extends JPanel implements IPlugin
         // Root 
         setLayout(new BorderLayout());
         splitter_ = new JSmartSplitPane(JSplitPane.VERTICAL_SPLIT);
-        splitter_.setTopComponent(new JScrollPane(inputArea_));
-        splitter_.setBottomComponent(new JScrollPane(outputArea_));
+        
+        splitter_.setTopComponent(
+            new JHeaderPanel(
+                "Input", 
+                null, 
+                new JScrollPane(inputArea_)));
+        
+        splitter_.setBottomComponent(
+            new JHeaderPanel(
+                "Output",
+                null,
+                new JScrollPane(outputArea_)));
         
         add(splitter_, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
