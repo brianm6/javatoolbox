@@ -18,9 +18,13 @@ import toolbox.util.xslfo.FOProcessorFactory;
  */
 public class FOPProcessorTest extends TestCase
 {
-    private static final Logger logger_ =
+    private static final Logger logger_ = 
         Logger.getLogger(FOPProcessorTest.class);
 
+    //--------------------------------------------------------------------------
+    // Constants 
+    //--------------------------------------------------------------------------
+    
     /**
      * File containing sample xslfo content suitable for testing.
      */
@@ -34,7 +38,7 @@ public class FOPProcessorTest extends TestCase
     /**
      * Entrypoint. 
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -48,7 +52,7 @@ public class FOPProcessorTest extends TestCase
     /**
      * Tests renderPDF() with successive calls in parallel.
      *  
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testRenderPDFInParallel() throws Exception
     {
@@ -78,7 +82,7 @@ public class FOPProcessorTest extends TestCase
     /**
      * Tests renderPDF() with successive calls in sequence.
      *  
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testRenderPDFInSequence() throws Exception
     {
@@ -97,7 +101,7 @@ public class FOPProcessorTest extends TestCase
     /**
      * Tests renderPostscript()
      *  
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testRenderPostscript() throws Exception
     {

@@ -20,6 +20,10 @@ import org.xml.sax.InputSource;
  */
 public class FOPProcessor implements FOProcessor
 {
+    //--------------------------------------------------------------------------
+    // Fields 
+    //--------------------------------------------------------------------------
+    
     /** 
      * Driver for PDF generation. 
      */
@@ -56,8 +60,8 @@ public class FOPProcessor implements FOProcessor
 
 
     /**
-     * @see toolbox.util.xslfo.FOProcessor#renderPDF(
-     *      java.io.InputStream, java.io.OutputStream)
+     * @see toolbox.util.xslfo.FOProcessor#renderPDF(java.io.InputStream, 
+     *      java.io.OutputStream)
      */
     public void renderPDF(InputStream foStream, OutputStream pdfStream)
         throws Exception
@@ -79,8 +83,8 @@ public class FOPProcessor implements FOProcessor
     
     
     /**
-     * @see toolbox.util.xslfo.FOProcessor#renderPostscript(
-     *      java.io.InputStream, java.io.OutputStream)
+     * @see toolbox.util.xslfo.FOProcessor#renderPostscript(java.io.InputStream,
+     *      java.io.OutputStream)
      */
     public void renderPostscript(InputStream foStream, OutputStream psStream)
         throws Exception

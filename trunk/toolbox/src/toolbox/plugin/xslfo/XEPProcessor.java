@@ -32,8 +32,8 @@ public class XEPProcessor implements FOProcessor
 
     
     /**
-     * @see toolbox.util.xslfo.FOProcessor#renderPDF(
-     *      java.io.InputStream, java.io.OutputStream)
+     * @see toolbox.util.xslfo.FOProcessor#renderPDF(java.io.InputStream, 
+     *      java.io.OutputStream)
      */
     public void renderPDF(InputStream foStream, OutputStream pdfStream)
         throws Exception
@@ -50,8 +50,8 @@ public class XEPProcessor implements FOProcessor
     
     
     /**
-     * @see toolbox.util.xslfo.FOProcessor#renderPostscript(
-     *      java.io.InputStream, java.io.OutputStream)
+     * @see toolbox.util.xslfo.FOProcessor#renderPostscript(java.io.InputStream,
+     *      java.io.OutputStream)
      */
     public void renderPostscript(InputStream foStream, OutputStream psStream)
         throws Exception
@@ -66,13 +66,18 @@ public class XEPProcessor implements FOProcessor
     /**
      * XEP forces us to the the filesystem as the point of interface.
      * 
-     * @param foFile XSL-FO input file
-     * @param pdfFile PDF output file
-     * @throws Excepption on error
+     * @param foFile XSL-FO input file.
+     * @param pdfFile PDF output file.
+     * @throws Excepption on error.
      */    
     private void renderPDF(File foFile, File pdfFile) throws Exception
     {
-        XSLDriver.main(new String[] { 
-            "-fo", foFile.getAbsolutePath(), pdfFile.getAbsolutePath() } );
+        XSLDriver.main(
+            new String[] 
+            { 
+			    "-fo", 
+                foFile.getAbsolutePath(), 
+                pdfFile.getAbsolutePath() 
+            });
     }
 }

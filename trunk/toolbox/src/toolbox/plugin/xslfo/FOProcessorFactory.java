@@ -24,7 +24,7 @@ public final class FOProcessorFactory
     //--------------------------------------------------------------------------
     
     /**
-     * Prevent construction.
+     * Private constructor.
      */
     private FOProcessorFactory()
     {
@@ -37,7 +37,7 @@ public final class FOProcessorFactory
     /**
      * Creates a FOProcessor.
      * 
-     * @param foImpl Implementation to create. See FO_* constants
+     * @param foImpl Implementation to create. See FO_* constants.
      * @return FOProcessor
      */
     public static FOProcessor createProcessor(String foImpl)

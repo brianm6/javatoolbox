@@ -12,7 +12,7 @@ public interface FOProcessor
     /**
      * Intializes the FO processor.
      * 
-     * @param props Initialization properties
+     * @param props Initialization properties.
      */
     void initialize(Properties props);
     
@@ -21,9 +21,9 @@ public interface FOProcessor
      * Transforms the FO originating from an inputstream and writes the
      * rendered PDF to an outputstream.
      * 
-     * @param foStream Stream to read FO XML instructions from
-     * @param pdfStream Stream to write PDF output to
-     * @throws Exception on error
+     * @param foStream Stream to read FO XML instructions from.
+     * @param pdfStream Stream to write PDF output to.
+     * @throws Exception on error.
      */
     void renderPDF(InputStream foStream, OutputStream pdfStream) 
         throws Exception;
@@ -32,9 +32,9 @@ public interface FOProcessor
     /**
      * Renders XSL-FO to a Postscript document.
      * 
-     * @param foStream Source of XSL-FO
-     * @param psStream Destination of Postscript output
-     * @throws Exception on error
+     * @param foStream Source of XSL-FO.
+     * @param psStream Destination of Postscript output.
+     * @throws Exception on error.
      */    
     void renderPostscript(InputStream foStream, OutputStream psStream)
         throws Exception;
