@@ -157,7 +157,7 @@ public class WebWindowViewer implements DocumentViewer
      */
     public String[] getViewableFileTypes()
     {
-        return new String[] {"html", "htm"};
+        return new String[] {"html", "htm", "HTML", "HTM"};
     }
 
     
