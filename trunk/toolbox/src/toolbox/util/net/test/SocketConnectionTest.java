@@ -33,7 +33,7 @@ public class SocketConnectionTest extends TestCase
     /**
      * Entry point
      * 
-     * @param  args  None recognized
+     * @param args None recognized
      */
     public static void main(String[] args)
     {
@@ -66,7 +66,7 @@ public class SocketConnectionTest extends TestCase
     /**
      * Tests the (host,port) constructor
      * 
-     * @throws  Exception on error
+     * @throws Exception on error
      */    
     public void testHostPortConstructor() throws Exception
     {
@@ -85,7 +85,7 @@ public class SocketConnectionTest extends TestCase
     /**
      * Tests the force connect constructor
      * 
-     * @throws  Exception on error
+     * @throws Exception on error
      */    
     public void testForceConnectConstructor() throws Exception
     {
@@ -131,7 +131,7 @@ public class SocketConnectionTest extends TestCase
     /**
      * Tests the getInputStream() method
      * 
-     * @throws  Exception on error
+     * @throws Exception on error
      */
     public void testGetInputStream() throws Exception
     {
@@ -154,7 +154,7 @@ public class SocketConnectionTest extends TestCase
     /**
      * Tests the getOutputStream() method
      * 
-     * @throws  Exception on error
+     * @throws Exception on error
      */
     public void testGetOutputStream() throws Exception
     {
@@ -177,7 +177,7 @@ public class SocketConnectionTest extends TestCase
     /**
      * Tests the notifications genereated by IConnectionListener
      * 
-     * @throws  Exception on error
+     * @throws Exception on error
      */
     public void testConnectionListener() throws Exception
     {
@@ -206,7 +206,7 @@ public class SocketConnectionTest extends TestCase
     /**
      * Tests SocketConnection lifecycle
      * 
-     * @throws  Exception on error
+     * @throws Exception on error
      */
     public void testConnectionLifeCycle() throws Exception
     {
@@ -246,7 +246,7 @@ public class SocketConnectionTest extends TestCase
     /**
      * Tests the isConnected() method
      * 
-     * @throws  Exception on error
+     * @throws Exception on error
      */
     public void testIsConnected() throws Exception
     {
@@ -279,7 +279,6 @@ public class SocketConnectionTest extends TestCase
         }
     }
 
-
     //--------------------------------------------------------------------------
     // Test helper classes
     //--------------------------------------------------------------------------
@@ -300,7 +299,7 @@ public class SocketConnectionTest extends TestCase
         //----------------------------------------------------------------------
                             
         /**
-         * Default constructor 
+         * Creates a non-longlived server with an arbitrary port 
          */
         public Server()
         {
@@ -309,6 +308,8 @@ public class SocketConnectionTest extends TestCase
 
         /**
          * Creates a long lived Server
+         * 
+         * @param longLived Long lived server
          */
         public Server(boolean longLived)
         {
@@ -318,8 +319,8 @@ public class SocketConnectionTest extends TestCase
         /**
          * Creates a Server
          * 
-         * @param port
-         * @param longLived
+         * @param port Server port
+         * @param longLived Long lived server
          */
         public Server(int port, boolean longLived)
         {
@@ -334,6 +335,8 @@ public class SocketConnectionTest extends TestCase
         
         /**
          * Starts the socket server
+         * 
+         * @throws IOException on I/O error
          */
         public void start() throws IOException
         {
@@ -345,6 +348,8 @@ public class SocketConnectionTest extends TestCase
 
         /**
          * Stops the socket server
+         * 
+         * @throws IOException on I/O error
          */
         public void stop() throws IOException
         {
@@ -354,6 +359,8 @@ public class SocketConnectionTest extends TestCase
 
         /**
          * Retrieves the server socket port
+         * 
+         * @return int
          */
         public int getPort() 
         {
@@ -364,7 +371,7 @@ public class SocketConnectionTest extends TestCase
          * Once called, will not return until the socket server is ready to
          * accept new connections.
          * 
-         * @throws InterruptedException
+         * @throws InterruptedException on interruption
          */
         public void waitForStart() throws InterruptedException
         {

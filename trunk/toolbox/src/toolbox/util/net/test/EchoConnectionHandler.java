@@ -30,7 +30,7 @@ public class EchoConnectionHandler implements IConnectionHandler
     //--------------------------------------------------------------------------
     
     /**
-     * Constructor for EchoConnectionHandler
+     * Creates an EchoConnectionHandler
      */
     public EchoConnectionHandler()
     {
@@ -42,7 +42,7 @@ public class EchoConnectionHandler implements IConnectionHandler
 
     /**
      * @see toolbox.util.net.IConnectionHandler#handle(
-     *          toolbox.util.net.IConnection)
+     *      toolbox.util.net.IConnection)
      */
     public Object handle(IConnection conn)
     {

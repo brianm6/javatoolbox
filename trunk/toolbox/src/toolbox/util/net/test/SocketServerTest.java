@@ -31,7 +31,7 @@ public class SocketServerTest extends TestCase
     /**
      * Entry point
      * 
-     * @param  args  None recognized 
+     * @param args None recognized 
      */
     public static void main(String[] args)
     {
@@ -39,13 +39,13 @@ public class SocketServerTest extends TestCase
     }
     
     //--------------------------------------------------------------------------
-    //  Unit Tests
+    // Unit Tests
     //--------------------------------------------------------------------------
     
     /**
      * Tests simple ping pong between client and server
      * 
-     * @throws  Exception on error
+     * @throws Exception on error
      */
     public void testSocketServerPingPong() throws Exception
     {
@@ -88,7 +88,7 @@ public class SocketServerTest extends TestCase
     /**
      * Tests SocketServer lifecycle state transitions
      * 
-     * @throws  Exception on error
+     * @throws Exception on error
      */
     public void testSocketServerLifeCycle() throws Exception
     { 
@@ -114,7 +114,7 @@ public class SocketServerTest extends TestCase
     /**
      * Stress tests start/stop of socket server 
      * 
-     * @throws  Exception on error
+     * @throws Exception on error
      */
     public void testSocketServerLifecycleStress() throws Exception
     {
@@ -132,7 +132,7 @@ public class SocketServerTest extends TestCase
     /**
      * Tests socket server with many clients 
      * 
-     * @throws  Exception on error
+     * @throws Exception on error
      */
     public void testSocketServerManyClients() throws Exception
     {
@@ -197,7 +197,7 @@ public class SocketServerTest extends TestCase
     /**
      * Tests firing of notification events exposed by ISocketServerListener
      * 
-     * @throws  Exception on error
+     * @throws Exception on error
      */
     public void testFireNotification() throws Exception
     {
@@ -212,7 +212,10 @@ public class SocketServerTest extends TestCase
         
         // Start server and attach listener
         SocketServer server = new SocketServer(config);
-        DefaultSocketServerListener listener = new DefaultSocketServerListener();
+        
+        DefaultSocketServerListener listener = 
+            new DefaultSocketServerListener();
+            
         server.addSocketServerListener(listener);
         server.start();
 

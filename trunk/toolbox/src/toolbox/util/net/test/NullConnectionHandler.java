@@ -10,9 +10,8 @@ import toolbox.util.net.IConnectionHandler;
  */
 public class NullConnectionHandler implements IConnectionHandler
 {
-
     /**
-     * Constructor for NullConnectionHandler.
+     * Creates a NullConnectionHandler
      */
     public NullConnectionHandler()
     {

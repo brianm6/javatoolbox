@@ -26,7 +26,7 @@ public class SocketServerConfigTest extends TestCase
     /**
      * Entrypoint 
      * 
-     * @param  args  None
+     * @param args None
      */
     public static void main(String[] args)
     {
@@ -40,7 +40,7 @@ public class SocketServerConfigTest extends TestCase
     /**
      * Tests the load(File) method 
      * 
-     * @throws  Exception on error
+     * @throws Exception on error
      */
     public void testLoadByFile() throws Exception
     {
@@ -113,7 +113,7 @@ public class SocketServerConfigTest extends TestCase
     /**
      * Tests the load(Properties) method 
      * 
-     * @throws  Exception on error
+     * @throws Exception on error
      */
     public void testLoadByProps() throws Exception
     {
