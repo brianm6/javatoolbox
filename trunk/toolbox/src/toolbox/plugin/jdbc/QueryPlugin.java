@@ -37,6 +37,7 @@ import toolbox.jedit.JEditActions;
 import toolbox.jedit.JEditPopupMenu;
 import toolbox.jedit.JEditTextArea;
 import toolbox.jedit.SQLDefaults;
+import toolbox.plugin.jdbc.action.ListColumnsAction;
 import toolbox.util.ClassUtil;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
@@ -51,7 +52,6 @@ import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JConveyorMenu;
 import toolbox.util.ui.JHeaderPanel;
 import toolbox.util.ui.JSmartMenuItem;
-import toolbox.util.ui.JSmartOptionPane;
 import toolbox.util.ui.JSmartPopupMenu;
 import toolbox.util.ui.JSmartSplitPane;
 import toolbox.util.ui.JSmartTextArea;
@@ -138,12 +138,16 @@ public class QueryPlugin extends JPanel implements IPlugin
     
     /**
      * Terminator character for SQL statements is a semicolon.
+     * 
+     * TODO: Make this a preference.
      */
     public static final char SQL_TERMINATOR = ';';
     
     /**
      * The number of lines that must be contained in a given resultset before
      * the output textarea will autoscroll to the end.
+     * 
+     * TODO: Make this a preference
      */
     public static final int AUTO_SCROLL_THRESHOLD = 50;
     
@@ -204,19 +208,30 @@ public class QueryPlugin extends JPanel implements IPlugin
     }
 
     //--------------------------------------------------------------------------
-    // Package Protected
+    // Public
     //--------------------------------------------------------------------------
-
+    
     /**
      * Returns the status bar.
      *
      * @return IStatusBar
      */
-    IStatusBar getStatusBar()
+    public IStatusBar getStatusBar()
     {
         return statusBar_;
     }
 
+    
+    /**
+     * Returns the results area where the output of SQL statements is displayed.
+     * 
+     * @return JSmartTextArea
+     */
+    public JSmartTextArea getResultsArea()
+    {
+        return resultsArea_;
+    }    
+    
     //--------------------------------------------------------------------------
     // Build UI
     //--------------------------------------------------------------------------
@@ -375,7 +390,7 @@ public class QueryPlugin extends JPanel implements IPlugin
         JButton listColumns = JHeaderPanel.createButton(
                 ImageCache.getIcon(ImageCache.IMAGE_COLUMNS),
                 "List columns",
-                new ListColumnsAction());
+                new ListColumnsAction(this));
 
         JToolBar toolbar = JHeaderPanel.createToolBar();
         toolbar.add(listTables);
@@ -1067,60 +1082,6 @@ public class QueryPlugin extends JPanel implements IPlugin
             String tables = JDBCUtil.format(rs);
             resultsArea_.append(tables);
             JDBCUtil.releaseConnection(conn);
-        }
-    }
-
-    //--------------------------------------------------------------------------
-    // ListColumnsAction
-    //--------------------------------------------------------------------------
-
-    /**
-     * Queries the DB metadata and dumps a list of all columns. If a table
-     * name is selected in the results area, then only the columns for the
-     * selected table are returned.
-     */
-    class ListColumnsAction extends WorkspaceAction
-    {
-        /**
-         * Creates a ListColumnsAction.
-         */
-        public ListColumnsAction()
-        {
-            super("List Columns", true, true, null, statusBar_);
-        }
-
-
-        /**
-         * @see toolbox.util.ui.SmartAction#runAction(
-         *      java.awt.event.ActionEvent)
-         */
-        public void runAction(ActionEvent e) throws Exception
-        {
-            String table = resultsArea_.getSelectedText();
-
-            if (StringUtils.isBlank(table))
-            {
-                JSmartOptionPane.showMessageDialog(QueryPlugin.this,
-                    "Select text matching the column name from the output " +
-                    "area.", "Error", JSmartOptionPane.ERROR_MESSAGE);
-            }
-            else
-            {
-                Connection conn = null;
-
-                try
-                {
-                    conn = JDBCUtil.getConnection();
-                    DatabaseMetaData meta = conn.getMetaData();
-                    ResultSet rs = meta.getColumns(null, null, table, null);
-                    String tables = JDBCUtil.format(rs);
-                    resultsArea_.append(tables);
-                }
-                finally
-                {
-                    JDBCUtil.releaseConnection(conn);
-                }
-            }
         }
     }
 }
