@@ -19,7 +19,6 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 
 import nu.xom.Element;
@@ -100,7 +99,7 @@ public class JTail extends JFrame implements IPreferenced
     /** 
      * Tab panel that contains each tail as a single tab 
      */
-    private JTabbedPane tabbedPane_;
+    private JTailTabbedPane tabbedPane_;
 
     /** 
      * Flip pane that houses the file explorer 
@@ -254,6 +253,8 @@ public class JTail extends JFrame implements IPreferenced
         
         statusBar_.setStatus("Added tail for " + 
             ArrayUtil.toString(config.getFilenames(), false));
+            
+        tailPane.addTailPaneListener(tabbedPane_);
     }
     
     /**
@@ -297,7 +298,7 @@ public class JTail extends JFrame implements IPreferenced
      * @param config TailPane configuration
      * @return Label
      */
-    protected String makeTabLabel(ITailPaneConfig config)
+    public static String makeTabLabel(ITailPaneConfig config)
     {
         StringBuffer tabname = new StringBuffer();
         String[] filenames = config.getFilenames();
@@ -322,7 +323,7 @@ public class JTail extends JFrame implements IPreferenced
      * @param config TailPane configuration
      * @return String
      */
-    protected String makeTabToolTip(ITailPaneConfig config)
+    public static String makeTabToolTip(ITailPaneConfig config)
     {
         StringBuffer tabname = new StringBuffer();
         String[] filenames = config.getFilenames();
@@ -534,6 +535,7 @@ public class JTail extends JFrame implements IPreferenced
         {
             Object closeButton = e.getSource();
             TailPane pane = (TailPane)tailMap_.get(closeButton);
+            pane.removeTailPaneListener(tabbedPane_);
             tabbedPane_.remove(pane);        
             tailMap_.remove(closeButton);
             
