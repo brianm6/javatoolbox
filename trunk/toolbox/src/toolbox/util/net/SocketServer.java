@@ -72,7 +72,7 @@ public class SocketServer implements Runnable
     /**
      * Create a SocketServer with the given server configuration
      * 
-     * @param  newConfig  Server configuration
+     * @param newConfig Server configuration
      */
     public SocketServer(SocketServerConfig newConfig)
     {
@@ -155,7 +155,7 @@ public class SocketServer implements Runnable
      * the connection handler. In this case, the default returns the config 
      * specified connection handler decorated by an async connection handler.
      * 
-     * @return  IConnectionHandler
+     * @return IConnectionHandler
      */
     public IConnectionHandler getConnectionHandler()
     {
@@ -166,7 +166,7 @@ public class SocketServer implements Runnable
     /**
      * Accessor for the port the server is running on
      * 
-     * @return  Server port number
+     * @return Server port number
      */
     public int getServerPort()
     {
@@ -174,7 +174,7 @@ public class SocketServer implements Runnable
     }
 
     //--------------------------------------------------------------------------
-    //  Private
+    // Private
     //--------------------------------------------------------------------------
 
     /**
@@ -201,13 +201,13 @@ public class SocketServer implements Runnable
     }
 
     //--------------------------------------------------------------------------
-    //  Overrides java.lang.Object
+    // Overrides java.lang.Object
     //--------------------------------------------------------------------------
 
     /**
      * Dumps SocketServer state to a string 
      * 
-     * @return  String
+     * @return String
      */
     public String toString()
     {
@@ -224,13 +224,13 @@ public class SocketServer implements Runnable
     }
 
     //--------------------------------------------------------------------------
-    //  Listener support
+    // Listener support
     //--------------------------------------------------------------------------
 
     /**
      * Fires notification that a new socket client was just accepted
      * 
-     * @param  socket  New socket that was created
+     * @param socket New socket that was created
      */
     protected void fireSocketAccepted(Socket socket, IConnection conn)
     {
@@ -250,7 +250,7 @@ public class SocketServer implements Runnable
     /**
      * Adds a listener to the socket server
      * 
-     * @param  listener  Implementor of ISocketServerListener
+     * @param listener Implementor of ISocketServerListener
      */
     public void addSocketServerListener(ISocketServerListener listener)
     {
@@ -261,7 +261,7 @@ public class SocketServer implements Runnable
     /**
      * Removes a listener from the socket server
      * 
-     * @param  listener  Implementor of ISocketServerListener
+     * @param listener Implementor of ISocketServerListener
      */
     public void removeSocketServerListener(ISocketServerListener listener)
     {
