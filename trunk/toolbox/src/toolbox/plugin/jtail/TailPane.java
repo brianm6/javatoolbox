@@ -131,9 +131,8 @@ public class TailPane extends JPanel
         queue_          = new BlockingQueue();
         queueListener_  = new TailQueueListener();        
         queueReader_    = new BatchingQueueReader(queue_);        
-        queueReader_.addBatchQueueListener(queueListener_);
-        Thread queueReaderThread = new Thread(queueReader_);
-        queueReaderThread.start();
+        queueReader_.addBatchingQueueListener(queueListener_);
+        queueReader_.start();
         
         // Setup tail
         tail_ = new Tail();
