@@ -29,7 +29,11 @@ public class SocketServerConfigTest extends TestCase
     {
         TestRunner.run(SocketServerConfigTest.class);
     }
-        
+
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+            
     /**
      * Constructor for SocketServerConfigTest
      * 
@@ -39,6 +43,10 @@ public class SocketServerConfigTest extends TestCase
     {
         super(arg0);
     }
+    
+    //--------------------------------------------------------------------------
+    // Unit Tests
+    //--------------------------------------------------------------------------
     
     /**
      * Tests the load(File) method 
