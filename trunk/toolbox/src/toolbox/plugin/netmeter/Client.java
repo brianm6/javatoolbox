@@ -8,7 +8,6 @@ import java.util.TimerTask;
 
 import org.apache.log4j.Logger;
 
-import toolbox.util.ElapsedTime;
 import toolbox.util.ThreadUtil;
 import toolbox.util.io.EventOutputStream;
 import toolbox.util.net.SocketConnection;
@@ -27,6 +26,9 @@ public class Client implements Service
     private EventOutputStream os_;
     private boolean stopped_;
 
+    private Thread clientThread_;
+    private Timer timer_;
+    
     //--------------------------------------------------------------------------
     // Main
     //--------------------------------------------------------------------------
@@ -92,51 +94,60 @@ public class Client implements Service
      */
     public void start() throws ServiceException
     {
-        try
+        clientThread_ = new Thread(new Runnable()
         {
-            
-            conn_ = new SocketConnection(hostname_, port_);
-            
-            os_ = new EventOutputStream("Client", 
-                        new BufferedOutputStream(conn_.getOutputStream()));
-                        //conn_.getOutputStream());
-            
-            
-            Timer t = new Timer();
-            t.schedule(new Collector(), 1000, 1000);
-            
-            ElapsedTime time = new ElapsedTime();
-            
-            byte[] b = "hoooooooooopppppppppppppppppptrtttttttttttttttt".getBytes();
-            
-            //for(int i=0; i<500000; i++)
-            //    os_.write(b);
-            
-            while (!stopped_)
+            public void run()
             {
-                os_.write(b);
+                try
+                {
+            
+                    conn_ = new SocketConnection(hostname_, port_);
+            
+                    os_ = new EventOutputStream("Client", 
+                              new BufferedOutputStream(
+                                  conn_.getOutputStream()));
+            
+                    timer_ = new Timer();
+                    timer_.schedule(new ThroughputCollector(), 1000, 1000);
+            
+                    //ElapsedTime time = new ElapsedTime();
+            
+                    byte[] b = "hoooooooooopppppppppppppppppptrtttttttttttttttt".getBytes();
+            
+                    //for(int i=0; i<500000; i++)
+                    //    os_.write(b);
+            
+                    while (!stopped_)
+                    {
+                        os_.write(b);
+                    }
+            
+                    os_.flush();
+                    conn_.close();
+                    
+                    //time.setEndTime();
+            
+                    //double seconds = time.getSeconds() +  (time.getMillis()/(double)1000);
+                    //double thruput = (os_.getCount() / (double) seconds);            
+            
+                    //NumberFormat nf = NumberFormat.getIntegerInstance();
+            
+                    //logger_.info(
+                    //    "Client thruput: " + 
+                    //    nf.format(os_.getCount()) + "/" + nf.format(seconds) + " ==> " + 
+                    //    nf.format(thruput/1000) + " kb/s");
+            
+            
+                }
+                catch (IOException ioe)
+                {
+                    logger_.error(ioe);
+                }
+                
             }
-            
-            os_.flush();
-            conn_.close();
-            time.setEndTime();
-            
-            double seconds = time.getSeconds() +  (time.getMillis()/(double)1000);
-            double thruput = (os_.getCount() / (double) seconds);            
-            
-            NumberFormat nf = NumberFormat.getIntegerInstance();
-            
-            logger_.info(
-                "Client thruput: " + 
-                nf.format(os_.getCount()) + "/" + nf.format(seconds) + " ==> " + 
-                nf.format(thruput/1000) + " kb/s");
-            
-            
-        }
-        catch (IOException ioe)
-        {
-            throw new ServiceException(ioe);
-        }
+        });
+        
+        clientThread_.start();
     }
 
 
@@ -145,15 +156,9 @@ public class Client implements Service
      */
     public void stop() throws ServiceException
     {
-        try
-        {
-            stopped_ = true;
-            conn_.close();
-        }
-        catch (IOException e)
-        {
-            throw new ServiceException(e);
-        }
+        timer_.cancel();    
+        stopped_ = true;
+        ThreadUtil.join(clientThread_);
     }
 
 
@@ -191,11 +196,10 @@ public class Client implements Service
     }
     
     //--------------------------------------------------------------------------
-    //
+    // ThroughputCollector
     //--------------------------------------------------------------------------
     
-    
-    class Collector extends TimerTask
+    class ThroughputCollector extends TimerTask
     {
         int lastCount_ = 0;
         
