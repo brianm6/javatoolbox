@@ -123,6 +123,16 @@ public class AbstractServiceTest extends TestCase
     class MockServiceListener implements ServiceListener
     {
         /**
+         * @see toolbox.util.service.ServiceListener#serviceInitialized(
+         *      toolbox.util.service.Service)
+         */
+        public void serviceInitialized(Service service) 
+            throws ServiceException
+        {
+            logger_.info("Event: service initialized");
+        }
+        
+        /**
          * @see toolbox.util.service.ServiceListener#servicePaused(
          *      toolbox.util.service.Service)
          */
