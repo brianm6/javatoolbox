@@ -37,10 +37,10 @@ import toolbox.util.ui.JFileExplorerAdapter;
 import toolbox.util.ui.JFlipPane;
 import toolbox.util.ui.JSmartOptionPane;
 import toolbox.util.ui.JStatusPane;
-import toolbox.util.ui.font.FontSelectionDialog;
-import toolbox.util.ui.font.FontSelectionException;
-import toolbox.util.ui.font.FontSelectionPane;
-import toolbox.util.ui.font.IFontDialogListener;
+import toolbox.util.ui.font.JFontChooserDialog;
+import toolbox.util.ui.font.FontChooserException;
+import toolbox.util.ui.font.JFontChooser;
+import toolbox.util.ui.font.IFontChooserDialogListener;
 
 /**
  * GUI front end to the tail
@@ -140,7 +140,7 @@ public class JTail extends JFrame
         
         fileSelectionPane_ = new FileSelectionPane();
         flipPane_ = new JFlipPane(JFlipPane.LEFT);
-        flipPane_.addFlipper("File Eplorer", fileSelectionPane_);
+        flipPane_.addFlipper("File Explorer", fileSelectionPane_);
         
         tabbedPane_ = new JTailTabbedPane();
 
@@ -232,6 +232,14 @@ public class JTail extends JFrame
      */
     protected void saveConfiguration()
     {
+        // Size and location
+        jtailConfig_.setSize(getSize());
+        jtailConfig_.setLocation(getLocation());
+        
+        // Last selected directory
+        String path = fileSelectionPane_.getFileExplorer().getCurrentPath();
+        jtailConfig_.setDirectory(path);
+        
         // Since each of the ITailPaneConfigs are maintained inside the 
         // TailPane itself, gather them up and update jtailConfig before
         // saving. Essentially, do the reverse of applyConfiguration(). 
@@ -245,8 +253,8 @@ public class JTail extends JFrame
             ITailPaneConfig config = tailPane.getConfiguration();
             configs = (ITailPaneConfig[])ArrayUtil.add(configs, config);    
         }
-        jtailConfig_.setTailPaneConfigs(configs);
         
+        jtailConfig_.setTailConfigs(configs);
         
         configManager_.save(jtailConfig_);
     }
@@ -271,15 +279,22 @@ public class JTail extends JFrame
         else
             SwingUtil.centerWindow(this);
         
+        // Last selected directory
+        if (jtailConfig_.getDirectory() != null)
+        {
+            fileSelectionPane_.getFileExplorer().selectFolder(
+                jtailConfig_.getDirectory());
+        }
+        
         // Tails left running since last save
-        ITailPaneConfig[] tailPaneConfigs = jtailConfig_.getTailPaneConfigs();
+        ITailPaneConfig[] tailPaneConfigs = jtailConfig_.getTailConfigs();
         for (int i=0; i< tailPaneConfigs.length; i++)
         {
             ITailPaneConfig config = tailPaneConfigs[i];
             
             // Apply defaults if any
             if (config.getFont() == null)
-                config.setFont(getDefaultFont());
+                config.setFont(jtailConfig_.getDefaultConfig().getFont());
                 
             addTail(config);
         }
@@ -310,17 +325,16 @@ public class JTail extends JFrame
         return (TailPane)tabbedPane_.getSelectedComponent();
     }
     
-    
     /**
-     * @return  Default font
+     * @return  Configuration of currently selected tail in the tabbed pane
      */
-    protected Font getDefaultFont()
+    protected ITailPaneConfig getSelectedConfig()
     {
-        return jtailConfig_.getDefaultFont();
+        return getSelectedTail().getConfiguration();
     }
-
+    
     //--------------------------------------------------------------------------
-    //  INNER CLASSES
+    //  Inner Classes
     //--------------------------------------------------------------------------
     
     /**
@@ -335,9 +349,17 @@ public class JTail extends JFrame
          */
         public void fileDoubleClicked(String file)
         {
+            ITailPaneConfig defaults = jtailConfig_.getDefaultConfig();
+            
             // TODO: fix to use factory
-            ITailPaneConfig config = new TailPaneConfig(file, true, false, 
-                SwingUtil.getPreferredMonoFont(), "");
+            ITailPaneConfig config = 
+                new TailPaneConfig(
+                    file, 
+                    defaults.isAutoScroll(), 
+                    defaults.isShowLineNumbers(),
+                    defaults.isAntiAlias(),
+                    defaults.getFont(),
+                    defaults.getFilter());
                 
             addTail(config);
         }
@@ -354,11 +376,18 @@ public class JTail extends JFrame
          */
         public void actionPerformed(ActionEvent e)
         {
+            ITailPaneConfig defaults = jtailConfig_.getDefaultConfig();
             
-            ITailPaneConfig config = new TailPaneConfig(
-                fileSelectionPane_.getFileExplorer().getFilePath(), 
-                    true, false, SwingUtil.getPreferredMonoFont(), "");
-            
+            // TODO: fix to use factory
+            ITailPaneConfig config = 
+                new TailPaneConfig(
+                    fileSelectionPane_.getFileExplorer().getFilePath(),
+                    defaults.isAutoScroll(), 
+                    defaults.isShowLineNumbers(),
+                    defaults.isAntiAlias(),
+                    defaults.getFont(),
+                    defaults.getFilter());
+                
             addTail(config);
         }
     }
@@ -402,7 +431,7 @@ public class JTail extends JFrame
     }
 
     //--------------------------------------------------------------------------
-    //  ACTIONS
+    //  Actions
     //--------------------------------------------------------------------------
     
     /**
@@ -492,9 +521,10 @@ public class JTail extends JFrame
      * Select Font action
      */
     private class SetFontAction extends AbstractAction 
-        implements IFontDialogListener
+        implements IFontChooserDialogListener
     {
         private Font lastFont_;
+        private boolean lastAntiAlias_;
         
         public SetFontAction()
         {
@@ -513,13 +543,15 @@ public class JTail extends JFrame
          */
         public void actionPerformed(ActionEvent e)
         {
-            lastFont_ = getSelectedTail().getTailFont();
+            // Remember state just in case user cancels operation
+            lastFont_      = getSelectedConfig().getFont();
+            lastAntiAlias_ = getSelectedConfig().isAntiAlias();
             
             // Show font selection dialog with font from the current
             // tail set as the default selected font
-            FontSelectionDialog fsd = 
-                new FontSelectionDialog(JTail.this, false, 
-                    lastFont_);
+            JFontChooserDialog fsd = new JFontChooserDialog(
+                JTail.this, false, lastFont_, lastAntiAlias_);
+                    
             fsd.setTitle("Select font");
             
             fsd.addFontDialogListener(this);
@@ -531,45 +563,52 @@ public class JTail extends JFrame
          * Sets the font of the currently selected tail to the chosen 
          * font in the font selection dialog
          * 
-         * @param  fontPanel  Font selection panel in the dialog box
+         * @param  fontChooser  Font chooser component
          */
-        public void applyButtonPressed(FontSelectionPane fontPanel)
+        public void applyButtonPressed(JFontChooser fontChooser)
         {
             try
             {
-                getSelectedTail().setTailFont(
-                    fontPanel.getSelectedFont());
+                // Apply current settings
+                ITailPaneConfig config = getSelectedConfig();
+                config.setFont(fontChooser.getSelectedFont());
+                config.setAntiAlias(fontChooser.isAntiAlias());
+                getSelectedTail().setConfiguration(config);
             }
-            catch (FontSelectionException fse)
+            catch (FontChooserException fse)
             {
-                JSmartOptionPane.showExceptionMessageDialog(
-                    JTail.this, fse);
+                JSmartOptionPane.showExceptionMessageDialog(JTail.this, fse);
             }
         }
 
         /**
          *  Cancel button was pressed 
          */
-        public void cancelButtonPressed(FontSelectionPane fontPanel)
+        public void cancelButtonPressed(JFontChooser fontChooser)
         {
-            // Restore last font
-            getSelectedTail().setTailFont(lastFont_);            
+            // Restore saved state
+            ITailPaneConfig config = getSelectedConfig();
+            config.setFont(lastFont_);            
+            config.setAntiAlias(lastAntiAlias_);
+            getSelectedTail().setConfiguration(config);
         }
         
         /**
          * OK button was pressed
          */
-        public void okButtonPressed(FontSelectionPane fontPanel)
+        public void okButtonPressed(JFontChooser fontChooser)
         {
             try
             {
-                getSelectedTail().setTailFont(
-                    fontPanel.getSelectedFont());
+                // Use new settings
+                ITailPaneConfig config = getSelectedConfig();
+                config.setFont(fontChooser.getSelectedFont());
+                config.setAntiAlias(fontChooser.isAntiAlias());
+                getSelectedTail().setConfiguration(config);
             }
-            catch (FontSelectionException fse)
+            catch (FontChooserException fse)
             {
-                JSmartOptionPane.showExceptionMessageDialog(
-                    JTail.this, fse);
+                JSmartOptionPane.showExceptionMessageDialog(JTail.this, fse);
             }
         }
     }
