@@ -57,8 +57,11 @@ public class JSmartTextAreaTest extends UITestCase
         
         JPanel cp = new JPanel(new BorderLayout());
         JSmartTextArea area = new JSmartTextArea("hello");
-        cp.add(new JScrollPane(area), BorderLayout.CENTER);
+        
+        cp.add(createPropertyChangeConsole(area), BorderLayout.CENTER);
+        cp.add(new JScrollPane(area), BorderLayout.NORTH);
         cp.add(createPropertySheet(area), BorderLayout.SOUTH);
+        
         launchInDialog(cp, SCREEN_ONE_THIRD);
     }
     
