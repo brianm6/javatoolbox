@@ -92,30 +92,23 @@ public class FindClass
         }
 
         /* build list of archives and dirs to search */        
-        List searchList    = new ArrayList();
-        List classpathList = getClassPathTargets();
+        List searchList = new ArrayList();
+        searchList.addAll(getClassPathTargets());
+        searchList.addAll(getArchiveTargets());
+
+        /* convert search list to an array */
+        classpath_ = (String[])searchList.toArray(new String[0]);
         
         if (logger_.isDebugEnabled())
         {
             logger_.debug("Search targets");
             logger_.debug("==============================");
             
-            for(int i=0; i < classpathList.size(); i++)
-                logger_.debug("Classpath   " + classpathList.get(i));
-        }
-        
-        List archiveList   = getArchiveTargets();
+            for(int i=0; i < classpath_.length; i++)
+                logger_.debug(classpath_[i]);
 
-        if (logger_.isDebugEnabled())
-        {
-            for(int i=0; i < archiveList.size(); i++)
-                logger_.debug("Archive     " + archiveList.get(i));
+            logger_.debug("==============================");                
         }
-        
-        searchList.addAll(classpathList);
-        searchList.addAll(archiveList);
-
-        classpath_ = (String[])searchList.toArray(new String[0]);
 
         findClass();
         
@@ -318,6 +311,8 @@ public class FindClass
                 
             listener.classFound(result);
         }
+        
+        //System.out.println(clazzSource + " => " + clazz);   
     }
     
  
