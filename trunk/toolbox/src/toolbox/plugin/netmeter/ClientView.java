@@ -17,11 +17,6 @@ import toolbox.util.ui.layout.ParagraphLayout;
 public class ClientView extends JPanel implements ServiceListener, StatsListener
 {
     /**
-     * Composite view that controls the service aspects of the client.
-     */
-    private ServiceView serviceView_;
-    
-    /**
      * Non-UI client object.
      */
     private Client client_;

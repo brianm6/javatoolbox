@@ -16,11 +16,6 @@ import toolbox.util.ui.layout.ParagraphLayout;
 public class ServerView extends JPanel implements ServiceListener
 {
     /**
-     * Composite ServiceView.
-     */
-    private ServiceView serviceView_;
-    
-    /**
      * Non-UI server component.
      */
     private Server server_;

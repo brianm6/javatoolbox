@@ -1,7 +1,6 @@
 package toolbox.rtelnet;
 
 import java.io.IOException;
-import java.io.LineNumberReader;
 import java.net.SocketException;
 
 import org.apache.commons.net.telnet.TelnetClient;
@@ -15,11 +14,6 @@ import toolbox.util.ThreadUtil;
  */
 public class RemoteTelnetClient extends TelnetClient implements Runnable
 {
-    /** 
-     * Telnet response read from here.
-     */
-    private LineNumberReader lnr_;
-    
     /** 
      * Telnet respones are buffered here so that they can be searched. 
      */

@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -38,11 +37,6 @@ public class ClientFactoryView extends JPanel
      */
     private JTextField serverPortField_;
     
-    /**
-     * Button that triggers creation of a new ClientView.
-     */
-    private JButton createButton_;
-        
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -93,7 +87,7 @@ public class ClientFactoryView extends JPanel
         inputPanel.add(serverPortField_);
         
         JPanel buttonPanel = new JPanel(new FlowLayout());
-        buttonPanel.add(createButton_ = new JSmartButton(new CreateAction()));
+        buttonPanel.add(new JSmartButton(new CreateAction()));
         
         JPanel pp = new JPanel(new BorderLayout());
         pp.add(title, BorderLayout.CENTER);

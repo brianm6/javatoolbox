@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -29,11 +28,6 @@ public class ServerFactoryView extends JPanel
      * Server port.
      */
     private JTextField serverPortField_;
-    
-    /**
-     * Button that creates a new ServerView.
-     */
-    private JButton createButton_;
     
     //--------------------------------------------------------------------------
     // Constructors
@@ -71,7 +65,7 @@ public class ServerFactoryView extends JPanel
         inputPanel.add(serverPortField_);
 
         JPanel buttonPanel = new JPanel(new FlowLayout());
-        buttonPanel.add(createButton_ = new JSmartButton(new CreateAction()));
+        buttonPanel.add(new JSmartButton(new CreateAction()));
         add(inputPanel, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
     }

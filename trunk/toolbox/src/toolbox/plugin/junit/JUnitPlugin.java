@@ -9,7 +9,6 @@ import java.awt.event.KeyEvent;
 import java.util.Map;
 
 import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JComponent;
@@ -36,8 +35,6 @@ import toolbox.util.ui.list.JListPopupMenu;
 import toolbox.util.ui.list.JSmartList;
 import toolbox.util.ui.list.RegexListModelFilter;
 import toolbox.workspace.IPlugin;
-import toolbox.workspace.IStatusBar;
-import toolbox.workspace.PluginWorkspace;
 
 /**
  * Simple plugin that allows running of JUnit tests by package.
@@ -50,14 +47,10 @@ public class JUnitPlugin extends JPanel implements IPlugin
     private static final String NODE_JUNIT_PLUGIN = "JUnitPlugin";
     private static final String ATTR_FILTER       = "filter";
 
-    private Action getPackagesAction_;
-    private Action testPackagesAction_;
-    
     private JTextField              filterField_;
     private JList                   packageList_;
     private DefaultListModel        packageModel_;
     private RegexListModelFilter    filterModel_;
-    private IStatusBar              statusBar_;
            
     //--------------------------------------------------------------------------
     //  Constructors
@@ -111,10 +104,10 @@ public class JUnitPlugin extends JPanel implements IPlugin
         buttonPanel.setBorder(BorderFactory.createEtchedBorder());
         
         buttonPanel.add(
-            new JSmartButton(getPackagesAction_ = new GetPackageListAction()));
+            new JSmartButton(new GetPackageListAction()));
             
         buttonPanel.add(
-            new JSmartButton(testPackagesAction_ = new TestPackagesAction()));
+            new JSmartButton(new TestPackagesAction()));
 
         // configure the root panel        
         setLayout(new BorderLayout());
@@ -145,9 +138,6 @@ public class JUnitPlugin extends JPanel implements IPlugin
      */
     public void startup(Map params)
     {
-        if (params != null)
-            statusBar_= (IStatusBar) params.get(PluginWorkspace.PROP_STATUSBAR);
-
         buildView();        
     }
 
