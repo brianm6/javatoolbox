@@ -35,6 +35,7 @@ import javax.swing.event.ListSelectionListener;
 import org.apache.log4j.Logger;
 
 import toolbox.util.Assert;
+import toolbox.util.Banner;
 
 /**
  * JFontChooser is a UI component that provides the ability to select a font
@@ -149,6 +150,16 @@ public class JFontChooser extends JPanel
     {
         buildView(initialFont, styleDisplayNames, predefinedSizes, antiAlias);
         wireView();
+        setAntiAlias(false);
+        phraseCanvas_.invalidate();
+        phraseCanvas_.repaint();
+        
+        logger_.debug("\n" + Banner.getBanner("AntialiasX = " + antiAlias));
+        
+        setAntiAlias(antiAlias);
+        phraseCanvas_.invalidate();
+        phraseCanvas_.repaint();
+        
     }
 
     //--------------------------------------------------------------------------
@@ -393,6 +404,9 @@ public class JFontChooser extends JPanel
     public void setAntiAlias(boolean b)
     {
         antiAliasCheckBox_.setSelected(b);
+        
+        if (phraseCanvas_ != null) 
+            phraseCanvas_.setAntiAlias(b);
     }
     
     /**
@@ -684,6 +698,8 @@ public class JFontChooser extends JPanel
                     
                 phraseCanvas_.setFont(
                     JFontChooser.this.getSelectedFont());
+                    
+                phraseCanvas_.setAntiAlias(JFontChooser.this.isAntiAlias());
             }
             catch (FontChooserException e)
             {
