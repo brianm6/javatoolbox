@@ -429,7 +429,10 @@ public final class JDBCUtil
     {
         String formattedResults = null;
         Connection conn = null;
-        
+     
+        // Trim whitespace and remove trailing semicolon if any
+        sql = StringUtils.chomp(sql.trim(), ";");
+            
         try
         {
             conn = getConnection();
