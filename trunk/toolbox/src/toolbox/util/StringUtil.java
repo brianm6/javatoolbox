@@ -524,25 +524,35 @@ public final class StringUtil
     }
     
     /**
-     * Retrieves a specific line from a string.
+     * Retrieves the nth line from a string
      * 
-     * @param   s     Multiline string
-     * @param   line  Line number to retrieve. First line starts at 1
-     * @return  Line 
+     * @param   s           Multiline string
+     * @param   lineNumber  Line number to retrieve. First line starts at 0
+     * @return  Line contents at the given lineNumber
      */
-    public static String getLine(String s, int line) throws IOException
+    public static String getLine(String s, int lineNumber)
     {
-//        String[] lines = tokenize(s, Stringz.NL);
-//        if (line < lines.length)
-//            return lines[line-1];     
-//        else
-//            throw new IndexOutOfBoundsException("Cannot get line " + line +
-//                "from a string that contains only " + lines.length + "lines.");
-
         LineNumberReader lnr = new LineNumberReader(new StringReader(s));
-        lnr.setLineNumber(line);
-        String lineString = lnr.readLine();
-        lnr.close();
+        String lineString = null;
+        
+        try
+        {
+            while (lnr.getLineNumber() <= lineNumber)
+            {
+                lineString = lnr.readLine();
+                 
+                if (lineString == null)
+                    return null;
+            }
+        }
+        catch (IOException ioe)
+        {
+            logger_.error("getLine", ioe);
+        }
+        finally
+        {
+            ResourceCloser.close(lnr);
+        }
         
         return lineString;
     }
