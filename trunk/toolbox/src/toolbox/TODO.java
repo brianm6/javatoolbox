@@ -15,7 +15,9 @@ package toolbox;
  * TODO: Upgrade to CLI2
  * TODO: add .cvspass to conf
  * TODO: Add sql helpers to jdbc plugin
+ * 
  * TODO: Add history to statusbar.
+ * TODO: Add icons to statusbar.
  * 
  * TODO: FindClass: Add option to have decompiler dump to one textarea or multiple tabs
  * TODO: FindClass: Have decompiler text area rembember font setting if dump to tabs
