@@ -2,4 +2,4 @@
 <templates><template name="brc" description="**** brc" context="java" enabled="true" deleted="false">//--------------------------------------------------------------------------
     //
     //--------------------------------------------------------------------------</template><template name="lj" description="**** log4j" context="java" enabled="true" deleted="false">private static final Logger logger_ =
-	Logger.getLogger(${enclosing_type}.class);</template></templates>
+	Logger.getLogger(${enclosing_type}.class);</template><template name="lx" description="******* junit log" context="java" enabled="true" deleted="false">logger_.info("Running ${enclosing_method}...");</template></templates>
