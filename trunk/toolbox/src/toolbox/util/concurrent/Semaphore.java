@@ -213,6 +213,7 @@ public class Semaphore implements Sync
             throw new IllegalArgumentException("Negative argument");
 
         permits_ += n;
+        
         for (long i = 0; i < n; ++i)
             notify();
     }
