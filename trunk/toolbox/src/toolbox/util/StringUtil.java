@@ -1,6 +1,8 @@
 package toolbox.util;
 
 import java.io.IOException;
+import java.io.LineNumberReader;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.List;
@@ -519,5 +521,29 @@ public final class StringUtil
     public static boolean isMultiline(String s)
     {
         return s.indexOf("\n") >= 0;
+    }
+    
+    /**
+     * Retrieves a specific line from a string.
+     * 
+     * @param   s     Multiline string
+     * @param   line  Line number to retrieve. First line starts at 1
+     * @return  Line 
+     */
+    public static String getLine(String s, int line) throws IOException
+    {
+//        String[] lines = tokenize(s, Stringz.NL);
+//        if (line < lines.length)
+//            return lines[line-1];     
+//        else
+//            throw new IndexOutOfBoundsException("Cannot get line " + line +
+//                "from a string that contains only " + lines.length + "lines.");
+
+        LineNumberReader lnr = new LineNumberReader(new StringReader(s));
+        lnr.setLineNumber(line);
+        String lineString = lnr.readLine();
+        lnr.close();
+        
+        return lineString;
     }
 }
