@@ -8,6 +8,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
+import java.util.Enumeration;
 import java.util.Iterator;
 
 import javax.swing.AbstractAction;
@@ -29,6 +30,7 @@ import org.apache.regexp.RESyntaxException;
 
 import toolbox.findclass.FindClass;
 import toolbox.findclass.FindClassResult;
+import toolbox.util.ClassUtil;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.JListPopupMenu;
@@ -193,12 +195,12 @@ public class ManagePluginsDialog extends JDialog
     {
         inactiveModel_.clear();
         FindClass fc = new FindClass();
-        FindClassResult[] results = new FindClassResult[0];
+        FindClassResult[] foundPlugins = new FindClassResult[0];
         
         try
         {
             // Find classes that end in "Plugin"
-            results = fc.findClass("Plugin$", true);
+            foundPlugins = fc.findClass("Plugin$", true);
         }
         catch (RESyntaxException mpe)
         {
@@ -209,23 +211,36 @@ public class ManagePluginsDialog extends JDialog
             ExceptionUtil.handleUI(ioe, logger_);
         }
 
-        logger_.debug("Results: " + results.length);
+        logger_.debug("Results: " + foundPlugins.length);
 
-        for (int i=0; i<results.length; i++)
+        for (int i=0; i<foundPlugins.length; i++)
         {
-            String clazz = results[i].getClassFQN();
-         
-            logger_.debug("Inspecting " + clazz + "...");
+            String clazz     = foundPlugins[i].getClassFQN();
+            String clazzName = ClassUtil.stripPackage(clazz);
+                     
+            logger_.debug("Inspecting " + clazzName + "...");
 
             boolean skip = false;
-                            
+                
+            // Exclude the plugins that are already loaded                
             for (Iterator it = parent_.getPlugins().values().iterator(); 
                  it.hasNext(); )
             {
                 String pluginClass = it.next().getClass().getName();
-
-                // Exclude the plugins that are already loaded
+                
                 if (pluginClass.equals(clazz))
+                {
+                    skip = true;
+                    break;
+                }
+            }
+            
+            // Exclude plugins that already occur in the inactive list
+            for (Enumeration e=inactiveModel_.elements(); e.hasMoreElements();)
+            {
+                PluginMeta pm = (PluginMeta) e.nextElement();
+                
+                if (pm.getClassName().equals(clazz))
                 {
                     skip = true;
                     break;
@@ -234,7 +249,7 @@ public class ManagePluginsDialog extends JDialog
 
             if (!skip)
             {
-                logger_.debug("Passed already loaded check : " + clazz);
+                logger_.debug("Passed already loaded check : " + clazzName);
                     
                 Object plugin = null;
 
@@ -243,11 +258,11 @@ public class ManagePluginsDialog extends JDialog
                 try
                 {                            
                     plugin = Class.forName(clazz).newInstance();
-                    logger_.debug("Passed instantiation check: " + clazz);
+                    logger_.debug("Passed instantiation check: " + clazzName);
                 }
                 catch (Throwable t)
                 {
-                    logger_.debug("Failed newInstance() : " + clazz + " " + t);
+                    logger_.debug("Failed newInstance() : " + clazzName + " " + t);
                     skip = true;
                 }
                 
@@ -257,7 +272,7 @@ public class ManagePluginsDialog extends JDialog
                 {
                     if (plugin instanceof IPlugin)
                     {
-                        logger_.debug("Passed instanceof check: " + clazz);
+                        logger_.debug("Passed instanceof check: " + clazzName);
                         
                         inactiveModel_.addElement(
                             (new PluginMeta((IPlugin)plugin)));
@@ -267,6 +282,9 @@ public class ManagePluginsDialog extends JDialog
         }
     }
     
+    /**
+     * PluginMeta info used to populate the active/inactive lists
+     */
     class PluginMeta
     {
         private String className_;
