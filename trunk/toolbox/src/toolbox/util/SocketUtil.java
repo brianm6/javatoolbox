@@ -98,7 +98,7 @@ public class SocketUtil
 
     /**
      * Determines if the reason for an InterruptedIOException is the timeout
-     * of the call to socket.accept()
+     * of the call to socket.accept().
      * 
      * <pre>
      * NOTE: This is crude, but there is no otherway to execute conditional

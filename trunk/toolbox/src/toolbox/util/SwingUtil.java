@@ -150,15 +150,13 @@ public final class SwingUtil
    
    
    /**
-    * Given a component, this method will find the root frame ancestor if
-    * one exists. i.e Given any component in a Frame, return the Frame given
-    * only a refererence to the component
+    * Finds the frame for a given component. 
     * 
     * @param   component  Component to find parent frame for
     * @return  Frame that component is a child of or null if the component
     *          does not have a parent frame or if the parent frame is not
     *          a Frame (could be a Dialog).
-    * @see     SwingUtilities#getWindowAncestor()
+    * @see     javax.swing.SwingUtilities#getWindowAncestor(Component)
     */
     public static Frame getFrameAncestor(Component component)
     {

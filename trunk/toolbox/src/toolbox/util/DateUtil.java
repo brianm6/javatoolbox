@@ -6,8 +6,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * Utility class that deals only with the DATE portions of the java.util.Date 
- * object.
+ * Utility class that deals only with the DATE portions of the 
+ * {@link java.util.Date} class.
  * 
  * <p><pre>
  * 

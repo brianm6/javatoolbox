@@ -7,7 +7,7 @@ import java.util.Date;
 
 /**
  * Utility class that deals with both the DATE and TIME portions of the 
- * java.util.Date object
+ * {@link java.util.Date} class.
  * 
  * TODO: Revisit chaining vs. confusing
  */
