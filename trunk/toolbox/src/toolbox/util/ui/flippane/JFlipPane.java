@@ -13,9 +13,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -42,13 +43,13 @@ import toolbox.util.ui.ImageCache;
  */
 public class JFlipPane extends JPanel
 {
-    /*
-     * TODO: Figure out way to remember size of expanded panel even though it
-     *       is collapsed
-     */
-
     private static final Logger logger_ =
         Logger.getLogger(JFlipPane.class);
+
+    /**
+     * Root node for preferences
+     */
+    private static final String NODE_JFLIPPANE = "JFlipPane";
 
     /** 
      * Attribute for the collapsed state of the flippane
@@ -134,9 +135,9 @@ public class JFlipPane extends JPanel
     private List listeners_;
     
     /** 
-     * Hashtable mapping a name (button text) to a flippane component 
+     * Maps a name (button text) to a flippane component 
      */
-    private Hashtable flippers_;
+    private Map flippers_;
 
     // Not really used            
     private JButton         popupButton_;
@@ -150,13 +151,13 @@ public class JFlipPane extends JPanel
     /**
      * Creates a JFlipPane with the given position
      * 
-     * @param  position  Position (JFlipPane.[TOP|LEFT|BOTTOM|RIGHT]
+     * @param  position  Position (JFlipPane.[TOP|LEFT|BOTTOM|RIGHT])
      */
     public JFlipPane(String position)
     {
         position_  = position;
         dimension_ = 0;
-        flippers_  = new Hashtable();
+        flippers_  = new HashMap();
         listeners_ = new ArrayList();
                         
         buildView();
@@ -174,7 +175,6 @@ public class JFlipPane extends JPanel
      */
     public void addFlipper(String name, JComponent flipper)
     {
-        // TODO: put this as a client property instead
         flipper.setName(name);   
            
         // Add to internal map
@@ -193,7 +193,7 @@ public class JFlipPane extends JPanel
         else if (position_.equals(JFlipPane.RIGHT))
             rotation = FlipIcon.CW;
         else
-            throw new InternalError("Invalid position: " + position_);
+            throw new IllegalArgumentException("Invalid position: "+ position_);
 
         // Create the button
         JToggleButton button = new JToggleButton();
@@ -202,8 +202,6 @@ public class JFlipPane extends JPanel
         button.setIcon(new FlipIcon(rotation, button.getFont(), name));
         button.setActionCommand(name);
         button.addActionListener(new FlipperHandler());
-        
-        // TODO: put in client property
         button.setName(name);
 
         // Add to button group and button panel
@@ -424,7 +422,8 @@ public class JFlipPane extends JPanel
      */
     public void applyPrefs(Element prefs)
     {
-        Element root = prefs.getFirstChildElement("JFlipPane");
+        Element root = XOMUtil.getFirstChildElement(
+            prefs, NODE_JFLIPPANE, new Element(NODE_JFLIPPANE));
 
         int dim = XOMUtil.getIntegerAttribute(root, ATTR_DIMENSION, 100);
         
@@ -453,8 +452,7 @@ public class JFlipPane extends JPanel
      */
     public void savePrefs(Element prefs)
     {
-        Element flipPane = new Element("JFlipPane");
-        
+        Element flipPane = new Element(NODE_JFLIPPANE);
         flipPane.addAttribute(new Attribute(ATTR_COLLAPSED, isCollapsed()+""));
         flipPane.addAttribute(new Attribute(ATTR_DIMENSION, getDimension()+""));
         
@@ -466,7 +464,6 @@ public class JFlipPane extends JPanel
 
         XOMUtil.insertOrReplace(prefs, flipPane);
     }
-
 
     //--------------------------------------------------------------------------
     // Event Notification Support
@@ -521,7 +518,7 @@ public class JFlipPane extends JPanel
     }
 
     //--------------------------------------------------------------------------
-    //  Private
+    // Protected
     //--------------------------------------------------------------------------
 
     /**
@@ -549,8 +546,8 @@ public class JFlipPane extends JPanel
         closeButton_.addActionListener(new FlipperHandler());
 
         // Popup button
-        popupButton_ = new JButton(
-            ImageCache.getIcon("/toolbox/util/ui/images/Triangle.gif"));
+        popupButton_ = 
+            new JButton(ImageCache.getIcon(ImageCache.IMAGE_TRIANGLE));
             
         popupButton_.setRequestFocusEnabled(false);
         popupButton_.setToolTipText("Popup menu");
@@ -718,7 +715,9 @@ public class JFlipPane extends JPanel
     }
 
     /**
-     * @return  Position (left, right, top, bottom)
+     * Return the position (left, right, top, bottom)
+     * 
+     * @return String
      */            
     protected String getPosition()
     {
@@ -726,7 +725,9 @@ public class JFlipPane extends JPanel
     }            
 
     /**
-     * @return  Popup button
+     * Returns the Popup button
+     * 
+     * @return JButton
      */
     protected JButton getPopupButton()
     {
@@ -734,7 +735,9 @@ public class JFlipPane extends JPanel
     }
 
     /**
-     * @return  Close button
+     * Returns the close button
+     * 
+     * @return JButton
      */
     protected JButton getCloseButton()
     {
@@ -765,12 +768,12 @@ public class JFlipPane extends JPanel
                 
                 if (isFlipperActive(flipper))
                 {
-                    logger_.debug("Toggeling flipper");
+                    //logger_.debug("Toggeling flipper");
                     toggleFlipper();
                 }
                 else 
                 {
-                    logger_.debug("Selecting flipper");
+                    //logger_.debug("Selecting flipper");
                     
                     // Must be expanded before flipper can be selected
                     if (isCollapsed())
