@@ -24,6 +24,7 @@ import toolbox.util.Stringz;
  * TODO: Add option to have refences to already traversed objects generate
  *       unique labels to they can be referenced. (ugly but useful)
  * TODO: Allow option to leave out nulls
+ * TODO: Add interface to support custom dumpers for specific types of objects.
  * </pre>
  */
 public class Dumper implements Stringz
