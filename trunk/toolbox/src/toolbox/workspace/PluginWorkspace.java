@@ -44,8 +44,15 @@ import toolbox.util.SwingUtil;
  * a tab panel. All pluggable GUI components must implements the IPlugin 
  * interface as a base set of functionality to be hosted by PluginWorkspace.
  * 
+ * <pre>
+ * 
  * TODO: Plugin to tail System.out and System.err
  * TODO: Plugin to configure log4j
+ * TODO: Make plugins detachable
+ * TODO: Make webstart enabled
+ * TODO: Make sure all plugin constructors are harmless
+ * 
+ * </pre>
  */
 public class PluginWorkspace extends JFrame implements IStatusBar
 {
