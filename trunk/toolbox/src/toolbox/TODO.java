@@ -83,7 +83,7 @@ package toolbox;
  *  - Updated FileComparator to use static instances
  *  - Relaced ClassUtil.stripClass and stripPackage with commons-lang equivalent
  *  - Removed toolbox.util.Assert and replaced with Validate from commons-lang
- *  - Added max depth support to Tree
+ *  - Added maxdepth (-l) and show fullpath (-p) flags to Tree
  * 
  * April 2004 
  * 	- Scan source for refactorings to use DisposeAction 
