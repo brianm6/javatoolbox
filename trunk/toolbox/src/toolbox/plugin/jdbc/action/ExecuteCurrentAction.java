@@ -22,7 +22,7 @@ import toolbox.workspace.IStatusBar;
  * 
  * @see toolbox.plugin.jdbc.QueryPlugin
  */
-public class ExecuteCurrentAction extends BaseAction
+public class ExecuteCurrentAction extends BaseAction 
 {
     private static final Logger logger_ = 
         Logger.getLogger(ExecuteCurrentAction.class);
@@ -123,8 +123,6 @@ public class ExecuteCurrentAction extends BaseAction
         }
 
         
-        plugin.getResultsArea().setText(sql);
-        
         if (StringUtils.isBlank(sql))
         {
             statusBar.setWarning("No SQL statement(s) to execute");
@@ -134,11 +132,12 @@ public class ExecuteCurrentAction extends BaseAction
             statusBar.setInfo("Executing...");
             
             ElapsedTime time = new ElapsedTime();
-            String results = plugin.executeSQL(sql);
-            time.setEndTime();
             
-            //plugin.getResultsArea().append(results + "\n");
-
+            String results = plugin.executeSQL(
+                sql, new ResultFormatter(getPlugin()));
+            
+            time.setEndTime();
+ 
             if ((!StringUtils.isBlank(results)) &&
                 (StringUtil.tokenize(results, StringUtil.NL).length 
                     < plugin.getAutoScrollThreshold()))
