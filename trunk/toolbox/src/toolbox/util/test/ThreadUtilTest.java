@@ -1,13 +1,14 @@
 package toolbox.util.test;
 
 import java.io.PrintWriter;
+import java.io.Writer;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
+
 import org.apache.log4j.Category;
 import toolbox.util.ArrayUtil;
 import toolbox.util.ThreadUtil;
-import java.io.Writer;
 
 /**
  * Unit test for ThreadUtil
@@ -17,6 +18,16 @@ public class ThreadUtilTest extends TestCase
     /** Logger **/
     private static final Category logger_ = 
         Category.getInstance(ThreadUtilTest.class);
+
+    /**
+     * Entrypoint
+     * 
+     * @param  args  Args
+     */
+    public static void main(String[] args)
+    {
+        TestRunner.run(ThreadUtilTest.class);
+    }
     
     /**
      * Arg constructor
@@ -26,17 +37,6 @@ public class ThreadUtilTest extends TestCase
     public ThreadUtilTest(String name)
     {
         super(name);
-    }
-
-    /**
-     * Entrypoint
-     * 
-     * @param  args  Args
-     */
-    public static void main(String[] args)
-    {
-        //BasicConfigurator.configure();
-        TestRunner.run(ThreadUtilTest.class);
     }
 
     /**
@@ -56,7 +56,7 @@ public class ThreadUtilTest extends TestCase
     public void testRunSimple() throws Exception
     {
         Tester target = new Tester();
-        ThreadUtil.run(target, "pingSimple", new Object[0]).join();
+        ThreadUtil.run(target, "pingSimple", null).join();
         assertTrue("ping was not executed", target.pingSimpleCalled);
     }
 
@@ -127,6 +127,12 @@ public class ThreadUtilTest extends TestCase
             target.pingPrimitiveCalled);
     } 
  
+    public void testInner() throws Exception
+    {
+        Tester target = new Tester();
+        target.testFromInnerClass();
+    }  
+ 
     /**
      * Test class for testRun()
      */   
@@ -136,6 +142,7 @@ public class ThreadUtilTest extends TestCase
         public boolean pingArgsCalled;
         public boolean pingComplexCalled;
         public boolean pingPrimitiveCalled;
+        public boolean pingInnerCalled;
                
         /**
          * Default constructor
@@ -146,6 +153,7 @@ public class ThreadUtilTest extends TestCase
             pingArgsCalled      = false;
             pingComplexCalled   = false;
             pingPrimitiveCalled = false;
+            pingInnerCalled     = false;
         }
         
         /**
@@ -183,6 +191,24 @@ public class ThreadUtilTest extends TestCase
         {
             pingPrimitiveCalled = true;
             logger_.info("Called pingPrimitive!");
+        }
+        
+        /**
+         * Simplest method - no args 
+         */
+        public void pingInner()
+        {
+            pingInnerCalled = true;
+            logger_.info("Called pingInner()");
+        }
+        
+        /**
+         * Test calling a method from in innerclass on itself
+         */
+        public void testFromInnerClass() throws Exception
+        {
+            ThreadUtil.run(Tester.this, "pingInner", null).join();
+            assertTrue("pingInner() not called", pingInnerCalled);
         }
     }
 }
