@@ -33,7 +33,7 @@ import toolbox.util.ArrayUtil;
  * }
  * </pre>
  *
- * @see toolbox.util.io.test.MulticastOutputStreamTest
+ * @see toolbox.util.io.MulticastOutputStreamTest
  */
 public class MulticastOutputStream extends OutputStream
 {

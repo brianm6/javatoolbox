@@ -20,7 +20,7 @@ public class PackageTesterTest extends TestCase
     /**
      * Package to use for testing purposes.
      */
-    private static final String testPackage_ = "toolbox.showpath.test";    
+    private static final String testPackage_ = "toolbox.showpath";    
     
     //--------------------------------------------------------------------------
     // Main
