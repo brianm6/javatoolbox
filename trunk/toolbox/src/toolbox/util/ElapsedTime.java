@@ -2,6 +2,7 @@ package toolbox.util;
 
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -400,7 +401,11 @@ public class ElapsedTime
         if (getMillis() > 0)
             sb.append(getMillis() + "ms");
         
-        return sb.toString().trim();
+        // Prevent from returning an empty string in case no time passed
+        if (StringUtils.isBlank(sb.toString().trim()))
+            sb.append("0s");
+        
+        return sb.toString().trim(); 
     }
 
     
