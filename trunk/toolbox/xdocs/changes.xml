@@ -141,6 +141,15 @@
         </table>
       </action>
 
+      <action type="update">
+        <table>
+          <tr>
+            <td width="20%">Util</td>
+            <td>Added rtelnet to the main program launcher</td>
+          </tr>
+        </table>
+      </action>
+
     </release>
 
     
