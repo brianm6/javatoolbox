@@ -40,7 +40,16 @@ import toolbox.util.ui.JSmartTextField;
 public class HttpProxyConfigurator extends JHeaderPanel implements IConfigurator
 {
     //--------------------------------------------------------------------------
-    // XML Constants
+    // Constants
+    //--------------------------------------------------------------------------
+
+    /**
+     * URL to test the proxy settings.
+     */
+    private static final String URL_TEST = "http://www.yahoo.com/index.html";
+    
+    //--------------------------------------------------------------------------
+    // IPreferenced Constants
     //--------------------------------------------------------------------------
 
     public  static final String NODE_HTTP_PROXY          = "HttpProxy";
@@ -156,7 +165,7 @@ public class HttpProxyConfigurator extends JHeaderPanel implements IConfigurator
     }
 
     //--------------------------------------------------------------------------
-    // Preferences Interface
+    // IConfigurator Interface
     //--------------------------------------------------------------------------
 
     /**
@@ -391,8 +400,7 @@ public class HttpProxyConfigurator extends JHeaderPanel implements IConfigurator
 
             try
             {
-                String html = ResourceUtil.getResourceAsString(
-                    "http://www.yahoo.com/index.html");
+                String html = ResourceUtil.getResourceAsString(URL_TEST);
                 
                 JSmartOptionPane.showDetailedMessageDialog(
                     SwingUtil.getFrameAncestor(HttpProxyConfigurator.this),
