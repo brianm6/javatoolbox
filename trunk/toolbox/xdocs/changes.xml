@@ -97,6 +97,7 @@
       <action type="update">Upgraded to cvs 1.12.9 to get maven-statcvs-plugin working</action>
       <action type="add"   >QueryPlugin error messages can now be redirected to the results pane.</action>
       <action type="fix"   >Fixed single selection execution in QueryPlugin</action>
+      <action type="add"   >Added BrowserLauncher</action>
     </release>
 
     <release version="2.0" date="June 2004">
