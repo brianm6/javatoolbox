@@ -91,7 +91,7 @@ public class BlockingQueueTest extends TestCase
                 }
                 catch(InterruptedException e) 
                 {
-                    // Ignore
+                    ;   // Ignore
                 }
                 
                 time.setEndTime();
