@@ -46,31 +46,20 @@ public class TailPane extends JPanel implements ActionListener
     /** The tailer **/    
     private Tail tail_;
 
-
-	/**
-	 * Creates a TailPane with the given file. Autoscroll and line numbers
-     * are turned on by default.
+    /** Configuration **/
+    private TailConfig config_;
+    
+    
+    /** 
+     * Creates a TAilPane with the given configuration
      * 
-     * @param  file  File to tail
-	 */
-	public TailPane(File file) throws FileNotFoundException
-	{
-        this(file, true, true);
-	}
-
-
-    /**
-     * Creates a TailPane with the given settings
-     * 
-     * @param  file             File to tail
-     * @param  autoScroll       If true, autoscroll will be enabled
-     * @param  showLineNumbers  If true, lines numbers will be shown
+     * @param  config  TailConfig
      */
-    public TailPane(File file, boolean autoScroll, boolean showLineNumbers)
-        throws FileNotFoundException
+    public TailPane(TailConfig config) throws FileNotFoundException
     {
-        buildView(autoScroll, showLineNumbers);
-        init(file);
+        setConfiguration(config);                
+        buildView();
+        init();
     }
     
     
@@ -79,18 +68,19 @@ public class TailPane extends JPanel implements ActionListener
      * 
      * @param  file  File to tail
      */
-    protected void init(File file) throws FileNotFoundException
+    protected void init() throws FileNotFoundException
     {
+        // Setup queue
         queue_ = new BlockingQueue();
-        
-        tail_ = new Tail();
-        tail_.addTailListener(new TailListener());
-        tail_.setTailFile(file);
-        tail_.start();
-        
         queueReader_ = new TailQueueReader(queue_);
         Thread consumer = new Thread(queueReader_);
         consumer.start();
+        
+        // Setup tail
+        tail_ = new Tail();
+        tail_.addTailListener(new TailListener());
+        tail_.setTailFile(config_.getFilename());
+        tail_.start();
         
         logger_.debug("tail and reader started");
     }
@@ -229,9 +219,9 @@ public class TailPane extends JPanel implements ActionListener
 	/**
 	 * Builds the GUI
 	 */	
-	protected void buildView(boolean autoScroll, boolean showLineNumbers)
+	protected void buildView()
 	{
-		tailArea_ = new JSmartTextArea(autoScroll);
+		tailArea_ = new JSmartTextArea(config_.isAutoScroll());
         tailArea_.setFont(SwingUtil.getPreferredMonoFont());
         tailArea_.setDoubleBuffered(false);
         
@@ -239,8 +229,10 @@ public class TailPane extends JPanel implements ActionListener
 		pauseButton_    = new JButton("Pause");
 		startButton_    = new JButton("Start");
         closeButton_    = new JButton("Close");
-        autoScrollBox_  = new JCheckBox("Autoscroll", autoScroll);
-        lineNumbersBox_ = new JCheckBox("Line Numbers", showLineNumbers);
+        autoScrollBox_  = new JCheckBox("Autoscroll", config_.isAutoScroll());
+        
+        lineNumbersBox_ = 
+            new JCheckBox("Line Numbers", config_.isShowLineNumbers());
         
         
 		JPanel buttonPanel = new JPanel(new FlowLayout());
@@ -386,5 +378,36 @@ public class TailPane extends JPanel implements ActionListener
     {
         return closeButton_;
     }
-    
+
+
+    /**
+     * Sets the configuration
+     * 
+     * @param  config  Tail configuration
+     */
+    public void setConfiguration(TailConfig config)
+    {
+        config_ = config;
+
+        // Buildview comes after setConfigutation in the constructor        
+        if (autoScrollBox_ != null)
+            autoScrollBox_.setSelected(config_.isAutoScroll());
+            
+        if (lineNumbersBox_ != null)
+            lineNumbersBox_.setSelected(config_.isShowLineNumbers());
+    }
+
+
+    /**
+     * Gets the configuration
+     * 
+     * @return TailConfig
+     */
+    public TailConfig getConfiguration()
+    {
+        // Make sure configuration up to date
+        config_.setAutoScroll(autoScrollBox_.isSelected());
+        config_.setShowLineNumbers(lineNumbersBox_.isSelected());
+        return config_;
+    }    
 }

@@ -4,26 +4,34 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
-import java.util.Properties;
 
 import javax.swing.JButton;
-import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 
 import org.apache.log4j.Category;
+import toolbox.util.ArrayUtil;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.file.FileStuffer;
 import toolbox.util.ui.JFileExplorerAdapter;
 import toolbox.util.ui.JSmartOptionPane;
+import toolbox.util.ui.JSmartStatusBar;
+
+import electric.xml.Document;
+import electric.xml.Element;
+import electric.xml.Elements;
+import electric.xml.ParseException;
 
 /**
  * GUI front end to the tail
@@ -33,15 +41,18 @@ public class JTail extends JFrame
     /** Logger **/
     private static final Category logger_ = 
         Category.getInstance(JTail.class);
+
+    private static final String DOC_JTAIL   = "JTail";
+    private static final String CONFIG_FILE = ".jtail.xml";
     
     
-    private JDesktopPane desktop_;
-    private FileSelectionWindow fileExplorerWindow_;
-    private FileSelectionPane fileSelectionPane_;
-    private JTabbedPane tabbedPane_;
-    private Properties props_;
-    private Map tailPaneMap_ = new HashMap();
-    
+    private FileSelectionPane   fileSelectionPane_;
+    private JTabbedPane         tabbedPane_;
+    private JSmartStatusBar     statusBar_;    
+    private JMenuBar            menuBar_;    
+    private Map                 tailMap_;
+        
+        
     static
     {
         FileStuffer stuffer = new FileStuffer(new File("c:\\crap.txt"), 100);
@@ -56,7 +67,6 @@ public class JTail extends JFrame
     {
         JTail jtail = new JTail();
         jtail.setVisible(true);
-        //SwingUtil.tile(jtail.getDesktop());
     }
 
 
@@ -88,11 +98,11 @@ public class JTail extends JFrame
     {
         try
         {
-            build2();
+            tailMap_ = new HashMap();
+            buildView();
             addListeners();
             setDefaultCloseOperation(EXIT_ON_CLOSE);            
-            loadProperties();
-            processProperties();
+            applyConfiguration(loadConfiguration());
             setSize(800,400);
             SwingUtil.centerWindow(this);            
         }
@@ -108,34 +118,7 @@ public class JTail extends JFrame
     /**
      * Builds the GUI
      */
-    protected void build()
-    {
-        desktop_ = new JDesktopPane();
-        setContentPane(desktop_);
-        
-        fileExplorerWindow_ = new FileSelectionWindow();
-        fileExplorerWindow_.setVisible(true);
-        //fileExplorer_.pack();
-        
-        desktop_.add(fileExplorerWindow_);
-                
-        tabbedPane_ = new JTabbedPane();
-        //tabbedPane_.addTab("Testing", new JLabel("Testing"));
-        
-        JInternalFrame tabbedWindow = new JInternalFrame("JTail");
-        tabbedWindow.getContentPane().setLayout(new BorderLayout());
-        tabbedWindow.getContentPane().add(tabbedPane_, BorderLayout.CENTER);
-        tabbedWindow.setVisible(true);     
-        desktop_.add(tabbedWindow);   
-        tabbedWindow.setLocation(1,1);
-        tabbedWindow.setSize(200,200);
-    }
-
-
-    /**
-     * Builds the GUI
-     */
-    protected void build2()
+    protected void buildView()
     {
         getContentPane().setLayout(new BorderLayout());
         
@@ -146,6 +129,28 @@ public class JTail extends JFrame
             fileSelectionPane_, tabbedPane_);                
 
         getContentPane().add(BorderLayout.CENTER, rootSplitPane);
+        
+        statusBar_ = new JSmartStatusBar();
+        getContentPane().add(BorderLayout.SOUTH, statusBar_);
+        
+        setJMenuBar(createMenuBar());
+    }
+    
+    
+    /**
+     * Creates the menu bar
+     */
+    protected JMenuBar createMenuBar()
+    {
+        JMenuBar menuBar = new JMenuBar();
+        JMenu fileMenu = new JMenu("File");
+        JMenuItem saveConfigMenuItem = new JMenuItem("Save configuration");
+        saveConfigMenuItem.addActionListener(new MenuListener());
+        
+        menuBar.add(fileMenu);
+        fileMenu.add(saveConfigMenuItem);
+        
+        return menuBar;
     }
     
     
@@ -154,21 +159,41 @@ public class JTail extends JFrame
      * 
      * @param  file   File to tail
      */     
-    protected void tailFile(File file)
+    protected void tail(File file)
+    {
+        TailConfig config = new TailConfig();
+        config.setFilename(file.getAbsolutePath());
+        config.setAutoScroll(true);
+        config.setShowLineNumbers(false);
+        
+        tail(config);
+    }
+
+
+    /**
+     * Creates a tail of the given configuration
+     * 
+     * @param  config  Tail configuration
+     */     
+    protected void tail(TailConfig config)
     {
         try
         {
-            TailPane tailPane = new TailPane(file);
+            logger_.debug(config);
+            //File file = new File(config.getFilename());
+            
+            TailPane tailPane = new TailPane(config);
             
             JButton closeButton = tailPane.getCloseButton();
             
             // Create map of (closeButton, tailPane) so that the tail pane
             // can be reassociated if it needs to be removed from the
             // tabbed pane
-            tailPaneMap_.put(closeButton, tailPane);
+            tailMap_.put(closeButton, tailPane);
             
             closeButton.addActionListener(new CloseButtonListener());
-            tabbedPane_.addTab(file.getName(), tailPane);
+            
+            tabbedPane_.addTab(config.getFilename(), tailPane);
             tabbedPane_.setSelectedComponent(tailPane);
         }
         catch (FileNotFoundException e)
@@ -180,75 +205,119 @@ public class JTail extends JFrame
 
          
     /**
-     * Loads properties from $HOME/.jtail.properties    
+     * Loads properties from $HOME/.jtail.xml
+     * 
+     * @throws  IOException on I/O error
      */
-    protected void loadProperties() throws FileNotFoundException, IOException
+    protected TailConfig[] loadConfiguration() throws IOException
+    {
+        TailConfig[] configs = new TailConfig[0];
+        
+        String userHome = System.getProperty("user.home");
+        String filename = userHome + File.separator + CONFIG_FILE;
+     
+        File xmlFile = new File(filename);
+        
+        if (!xmlFile.exists())
+        {
+            // create a new configuration
+        }
+        else if (!xmlFile.canRead())
+        {
+            JOptionPane.showMessageDialog(this, 
+                "Cannot read configuration from " + filename + ". " + 
+                "Using defaults.");
+        }
+        else if (!xmlFile.isFile())
+        {
+            JOptionPane.showMessageDialog(this,
+                "Configuration file " + filename + " cannot be a directory. " +
+                "Using Defaults.");
+        }
+        else
+        {
+            try
+            {
+                Document config = new Document(xmlFile);            
+
+                // Iterate through each "tail" element, hydrate the object
+                // and apply the configuration
+                for (Elements tails = config.getRoot().getElements(); 
+                    tails.hasMoreElements();)
+                {
+                    Element tail = tails.next();
+                    TailConfig props = TailConfig.unmarshal(tail);                    
+                    configs = (TailConfig[])ArrayUtil.addElement(configs, props);
+                }
+            }
+            catch (ParseException pe)
+            {
+                JSmartOptionPane.showExceptionMessageDialog(this, pe);
+            }
+        }
+        
+        return configs;
+    }    
+    
+    
+    /**
+     * Saves the current configuration of all tail instances to 
+     * $HOME/.jtail.xml
+     */
+    protected void saveConfiguration()
     {
         String userHome = System.getProperty("user.home");
-        String propsFile = userHome + File.separator + ".junit.properties";
-        
+        String filename = userHome + File.separator + ".jtail.xml";
+     
+        File configFile = new File(filename);
+
         try
         {
-            props_.load(new FileInputStream(propsFile));
+            Document document = new Document();
+                    
+            for (Iterator i = tailMap_.keySet().iterator(); i.hasNext(); )
+            {
+                TailPane tail = (TailPane)tailMap_.get(i.next());
+                TailConfig config = tail.getConfiguration();
+                document.setRoot(DOC_JTAIL);
+                document.getRoot().addElement(config.marshal());                
+            }
+
+            document.write(configFile);
+            
+            logger_.debug(document.toString());
         }
-        catch (FileNotFoundException e)
+        catch (IOException ioe)
         {
-            // do nothing
+            JSmartOptionPane.showExceptionMessageDialog(this, ioe);                        
+        }
+    }
+    
+    
+    /**
+     * Applies configurations
+     */
+    protected void applyConfiguration(TailConfig[] configs)
+    {
+        for (int i=0; i<configs.length; i++)
+        {
+            TailConfig config = configs[i];
+            tail(config);
         }
     }    
     
-    
-    /**
-     * Applies the properties to the current configuration
-     */
-    protected void processProperties()
-    {
-        // TODO: fill me in
-    }    
-    
-    
-    /**
-     * Returns the desktop.
-     * 
-     * @return JDesktopPane
-     */
-    public JDesktopPane getDesktop()
-    {
-        return desktop_;
-    }
-
-
-    /**
-     * Sets the desktop.
-     * 
-     * @param desktop The desktop to set
-     */
-    public void setDesktop(JDesktopPane desktop)
-    {
-        desktop_ = desktop;
-    }
-
 
     /**
      * Adds listeners
      */
     protected void addListeners()
     {
-//        fileExplorerWindow_.getFileSelectionPane().getFileExplorer().
-//            addJFileExplorerListener(new FileSelectionListener());
-//            
-//        fileExplorerWindow_.getFileSelectionPane().getTailButton().
-//            addActionListener(new TailButtonListener());
-            
         fileSelectionPane_.getFileExplorer().
             addJFileExplorerListener(new FileSelectionListener());
             
         fileSelectionPane_.getTailButton().
             addActionListener(new TailButtonListener());
-            
     }
-    
-    
     
 
     /**
@@ -263,7 +332,20 @@ public class JTail extends JFrame
          */
         public void fileDoubleClicked(String file)
         {
-            tailFile(new File(file));
+            tail(new File(file));
+        }
+    }
+    
+    
+    /**
+     * Menu Listener
+     */
+    class MenuListener implements ActionListener
+    {
+        
+        public void actionPerformed(ActionEvent e)
+        {
+            saveConfiguration();
         }
     }
     
@@ -280,10 +362,7 @@ public class JTail extends JFrame
          */
         public void actionPerformed(ActionEvent e)
         {
-//            tailFile(new File(fileExplorerWindow_.getFileSelectionPane().
-//                getFileExplorer().getFilePath()));
-                
-            tailFile(new File(
+            tail(new File(
                 fileSelectionPane_.getFileExplorer().getFilePath()));
                 
         }
@@ -302,7 +381,7 @@ public class JTail extends JFrame
          */
         public void actionPerformed(ActionEvent e)
         {
-            TailPane pane = (TailPane)tailPaneMap_.get(e.getSource());
+            TailPane pane = (TailPane)tailMap_.get(e.getSource());
             
             if (e != null)
             {
@@ -310,6 +389,4 @@ public class JTail extends JFrame
             }                
         }
     }
-    
-    
 }
