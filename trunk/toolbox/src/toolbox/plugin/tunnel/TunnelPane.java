@@ -17,7 +17,6 @@ import javax.swing.JToolBar;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.FormLayout;
 
-import nu.xom.Attribute;
 import nu.xom.Element;
 
 import org.apache.commons.lang.StringUtils;
@@ -678,7 +677,7 @@ public class TunnelPane extends JPanel implements IPreferenced
          */
         public void actionPerformed(ActionEvent e)
         {
-            tunnel_.setSupressBinary(!tunnel_.isSupressBinary());
+            tunnel_.setSuppressBinary(!tunnel_.isSuppressBinary());
         }
     }
 }
