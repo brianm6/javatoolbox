@@ -56,11 +56,11 @@ import toolbox.util.ui.plugin.WorkspaceAction;
  * Features:
  * <p>
  * <ul>
- * <li>user selectable FO implementation (Apache FOP or RenderX XEP)
- * <li>user selectable output format (PDF or Postscript)
- * <li>user selectable viewer  (Embedded PDF viewer or can launch Acrobat)
- * <li>XML editor is capable of syntax-hiliting and formatting the XML for
- *     increased legibility
+ *   <li>Selectable XSL-FO implementation (Apache FOP or RenderX XEP)
+ *   <li>Selectable output format (PDF or Postscript)
+ *   <li>Selectable viewer  (Embedded PDF viewer or launched Acrobat Viewer)
+ *   <li>XML editor with syntax-hiliting
+ *   <li>XML formatter
  * </ul>
  */ 
 public class XSLFOPlugin extends JPanel implements IPlugin
@@ -69,53 +69,80 @@ public class XSLFOPlugin extends JPanel implements IPlugin
      
     private static final Logger logger_ = 
         Logger.getLogger(XSLFOPlugin.class);
-
+    
+    /** 
+     * XML: Root preferences node for this plugin
+     */
     private static final String NODE_XSLFO_PLUGIN = "XSLFOPlugin";
+    
+    /**
+     * XML: Node for PDFViewer preferences
+     */
     private static final String NODE_PDF_VIEWER   = "PDFViewer";
     
-    /** Flip panel that houses the file explorer */
+    /** 
+     * Flip panel that houses the file explorer 
+     */
     private JFlipPane flipPane_;    
     
-    /** Shared status bar with plugin host */
+    /** 
+     * Shared status bar with plugin host 
+     */
     private IStatusBar statusBar_;
     
-    /** XML text work area */
+    /** 
+     * XML text work area 
+     */
     private JEditTextArea xmlArea_;
 
-    /** Default settings for XML text area */
+    /** 
+     * Default settings for XML text area 
+     */
     private TextAreaDefaults defaults_;    
     
-    /** XML output pane */
+    /** 
+     * XML output pane 
+     */
     private JPanel outputPanel_;
     
-    /** Embedded PDF viewer component */
+    /** 
+     * Embedded PDF viewer component 
+     */
     private Viewer viewer_;    
 
-    /** File explorer to load xml from files directly */
+    /** 
+     * File explorer used to open XML files 
+     */
     private JFileExplorer explorer_;
 
-    /** Full Path to acrobat reader executable */
+    /** 
+     * Full Path to acrobat reader executable 
+     */
     private String pdfViewerPath_;
 
-    /** Apache XSLFO implementation = FOP */
+    /** 
+     * Apache XSLFO implementation = FOP 
+     */
     private FOProcessor fopProcessor_;
     
-    /** RenderX XSLFO implementation = XEP */
+    /** 
+     * RenderX XSLFO implementation = XEP 
+     */
     private FOProcessor xepProcessor_;
 
     //--------------------------------------------------------------------------
-    //  Constructors
+    // Constructors
     //--------------------------------------------------------------------------
 
     /**
-     * Default Constructor
+     * Creates an XSLFOPlugin
      */
     public XSLFOPlugin()
     {
     }
 
     //--------------------------------------------------------------------------
-    // Private
+    // Protected
     //--------------------------------------------------------------------------
 
     /**
@@ -149,7 +176,7 @@ public class XSLFOPlugin extends JPanel implements IPlugin
     /**
      * Customizes the colors used for syntax hiliting the xml
      * 
-     * @return  Syntax styles
+     * @return Syntax styles
      */
     protected static SyntaxStyle[] getSyntaxStyles()
     {
@@ -232,9 +259,10 @@ public class XSLFOPlugin extends JPanel implements IPlugin
     /**
      * Launches Adobe Acrobat Reader on the given file
      * 
-     * @param outfile
+     * @param outfile File to open in PDF viewer
+     * @throws IOException on I/O error
      */
-    private void viewPDFExternal(String outfile) throws IOException
+    protected void viewPDFExternal(String outfile) throws IOException
     {
         if (StringUtil.isNullOrEmpty(pdfViewerPath_))
         {
@@ -274,9 +302,10 @@ public class XSLFOPlugin extends JPanel implements IPlugin
     /**
      * Views a PDF using an embedded java pdf viewer
      * 
-     * @param file
+     * @param file File to view with the embedded PDF viewer
+     * @throws Exception on error
      */
-    private void viewPDFEmbedded(File file) throws Exception
+    protected void viewPDFEmbedded(File file) throws Exception
     {
         viewPDFEmbedded(new FileInputStream(file));
     }
@@ -284,8 +313,8 @@ public class XSLFOPlugin extends JPanel implements IPlugin
     /**
      * Views a PDF using an embedded java pdf viewer
      * 
-     * @param inputStream
-     * @throws Exception
+     * @param inputStream Stream to read PDF bytes from
+     * @throws Exception on error
      */
     private void viewPDFEmbedded(InputStream inputStream) throws Exception
     {
@@ -302,7 +331,9 @@ public class XSLFOPlugin extends JPanel implements IPlugin
     }
 
     /**
-     * @return  Apache FOP processor
+     * Returns the Apache FOP processor
+     * 
+     * @return FOProcessor
      */
     protected FOProcessor getFOP()
     {
@@ -318,7 +349,9 @@ public class XSLFOPlugin extends JPanel implements IPlugin
     }
 
     /**
-     * @return  RenderX XEP processor
+     * Returns the RenderX XEP processor
+     * 
+     * @return FOProcessor
      */
     protected FOProcessor getXEP()
     {
@@ -360,6 +393,12 @@ public class XSLFOPlugin extends JPanel implements IPlugin
         
         buildView();
     }
+
+    public void shutdown()
+    {
+        if (viewer_ != null)
+            viewer_.deactivate();
+    }    
 
     //--------------------------------------------------------------------------
     // IPreferenced Interface
@@ -415,20 +454,14 @@ public class XSLFOPlugin extends JPanel implements IPlugin
         XOMUtil.insertOrReplace(prefs, root);
     }
 
-    public void shutdown()
-    {
-        if (viewer_ != null)
-            viewer_.deactivate();
-    }    
-    
     //--------------------------------------------------------------------------
-    //  Inner Classes
+    // Listeners
     //--------------------------------------------------------------------------
     
     /**
      * Populates file that is double clicked on in the text area
      */
-    private class FileSelectionListener extends JFileExplorerAdapter
+    class FileSelectionListener extends JFileExplorerAdapter
     {
         public void fileDoubleClicked(String file)
         {
@@ -448,15 +481,15 @@ public class XSLFOPlugin extends JPanel implements IPlugin
     }
     
     //--------------------------------------------------------------------------
-    //  Actions
+    // Actions
     //--------------------------------------------------------------------------
     
     /**
      * Formats the XML with correct indentation and spacing
      */
-    private class FormatAction extends WorkspaceAction 
+    class FormatAction extends WorkspaceAction 
     {
-        public FormatAction()
+        FormatAction()
         {
             super("Format", false, null, null);
         }
@@ -470,9 +503,9 @@ public class XSLFOPlugin extends JPanel implements IPlugin
     /**
      * Launches FOP AWT viewer
      */
-    private class FOPAWTAction extends WorkspaceAction
+    class FOPAWTAction extends WorkspaceAction
     {
-        public FOPAWTAction()
+        FOPAWTAction()
         {
             super("Launch with FOP AWT", false, null, null);
         }
@@ -489,9 +522,9 @@ public class XSLFOPlugin extends JPanel implements IPlugin
     /**
      * Renders the XSLFO and views using the internal PDF viewer
      */
-    private class FOPRenderAction extends WorkspaceAction
+    class FOPRenderAction extends WorkspaceAction
     {
-        public FOPRenderAction()
+        FOPRenderAction()
         {
             super("Render with FOP", true, XSLFOPlugin.this, statusBar_);
         }
@@ -510,9 +543,9 @@ public class XSLFOPlugin extends JPanel implements IPlugin
     /**
      * Uses FOP formatter and views externally as a PDF
      */
-    private class FOPLaunchAction extends WorkspaceAction
+    class FOPLaunchAction extends WorkspaceAction
     {
-        public FOPLaunchAction()
+        FOPLaunchAction()
         {
             super("Launch with FOP", true, XSLFOPlugin.this, statusBar_);
         }
@@ -534,11 +567,11 @@ public class XSLFOPlugin extends JPanel implements IPlugin
     /**
      * Saves generated PDF to file
      */
-    private class FOPExportToPDFAction extends WorkspaceAction
+    class FOPExportToPDFAction extends WorkspaceAction
     {
         private File lastDir_;
         
-        public FOPExportToPDFAction()
+        FOPExportToPDFAction()
         {
             super("Export to PDF..", false, null, null);
         }
@@ -571,9 +604,9 @@ public class XSLFOPlugin extends JPanel implements IPlugin
     /**
      * Uses XEP formatter and views as PDF
      */
-    private class XEPRenderAction extends WorkspaceAction
+    class XEPRenderAction extends WorkspaceAction
     {
-        public XEPRenderAction()
+        XEPRenderAction()
         {
             super("Render with XEP", true, XSLFOPlugin.this, statusBar_);
         }
@@ -590,9 +623,9 @@ public class XSLFOPlugin extends JPanel implements IPlugin
     /**
      * Uses XEP formatter and views externally as a PDF
      */
-    private class XEPLaunchAction extends WorkspaceAction
+    class XEPLaunchAction extends WorkspaceAction
     {
-        public XEPLaunchAction()
+        XEPLaunchAction()
         {
             super("Launch with XEP", true, XSLFOPlugin.this, statusBar_);
         }
@@ -612,11 +645,11 @@ public class XSLFOPlugin extends JPanel implements IPlugin
     /**
      * Exports XSL-FO to a Postscript file
      */
-    private class FOPExportToPostscriptAction extends WorkspaceAction
+    class FOPExportToPostscriptAction extends WorkspaceAction
     {
         private File lastDir_;
         
-        public FOPExportToPostscriptAction()
+        FOPExportToPostscriptAction()
         {
             super("Export to Postscript..", false, null, null);
         }
