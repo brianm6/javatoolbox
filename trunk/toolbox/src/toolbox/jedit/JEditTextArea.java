@@ -31,6 +31,7 @@ import toolbox.workspace.IPreferenced;
  *   <li>Adjustable font
  *   <li>Simple text search facility
  *   <li>Persistence of preferences
+ *   <li>Automatically saves and restores the editor contents
  *   <li>Right mouse button activated popup menu with:
  *     <ul>
  *       <li>Copy, cut, paste
