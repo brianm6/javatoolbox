@@ -9,14 +9,14 @@ import org.apache.log4j.Logger;
  */
 public class Main extends TailAdapter
 {
-    /** Logger **/
+    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(Main.class);
 
     /**
      * Entrypoint 
      * 
-     * @param  args  Args
+     * @param  args  List of files to tail
      */    
     public static void main(String args[])
     {

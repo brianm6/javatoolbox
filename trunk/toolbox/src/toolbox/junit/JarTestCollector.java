@@ -13,8 +13,8 @@ import java.util.zip.ZipFile;
 import junit.runner.TestCollector;
 
 /**
- * Test collector that will find JUnit tests embeded in jar/zip
- * files on the classpath
+ * Test collector that will find JUnit tests embeded in jar/zip files on the 
+ * classpath.
  */
 public class JarTestCollector implements TestCollector
 {
@@ -39,9 +39,10 @@ public class JarTestCollector implements TestCollector
      */
     public Enumeration collectTests()
     {
-        String    classPath = System.getProperty("java.class.path");
-        Vector    result    = new Vector();
-        List      archives  = getArchives(classPath);
+        String classPath = System.getProperty("java.class.path");
+        Vector result    = new Vector();
+        List   archives  = getArchives(classPath);
+        
         collectFilesInJars(archives, result);
         return result.elements();
     }
@@ -77,12 +78,13 @@ public class JarTestCollector implements TestCollector
     /**
      * Determines whether a given file is a java archive or not
      * 
-     * @param   s   absolute name of the java archive
-     * @return      true if a valid archive, false otherwise
+     * @param   s   Absolute name of the java archive
+     * @return  True if a valid archive, false otherwise
      */
     protected boolean isArchive(String s) 
     { 
         s = s.toUpperCase();
+        
         if (s.endsWith(".JAR") || s.endsWith(".ZIP"))
             return true;
         else
@@ -93,8 +95,8 @@ public class JarTestCollector implements TestCollector
     /**
      * Collects test classes in a jar/zip file
      * 
-     * @param  archives   List of archive files
-     * @param  result     Running list of test files that where found
+     * @param  archives  List of archive files
+     * @param  result    Running list of test files that where found
      */
     protected void collectFilesInJars(List archives, List result)
     {
@@ -115,12 +117,13 @@ public class JarTestCollector implements TestCollector
         }
     }
     
+    
     /**
      * Finds all classes in a given jar file and tests for criteria matching
      * a JUnit test case
      * 
-     * @param   jarName     The name of the jar file to search
-     * @param   result      Running list of test files that were found
+     * @param   jarName   Name of the jar file to search
+     * @param   result    Running list of test files that were found
      * @throws  IOException on error
      */
     protected void findInArchive(String jarName, List result) 
@@ -153,6 +156,7 @@ public class JarTestCollector implements TestCollector
                 result.add(classname);                
             }
         }
+        
         zf.close();
     }
 }

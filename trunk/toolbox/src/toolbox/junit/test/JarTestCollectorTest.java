@@ -15,7 +15,7 @@ import toolbox.junit.JarTestCollector;
  */
 public class JarTestCollectorTest extends TestCase
 {
-    /** Logger **/
+    /** Logger */
     private static final Logger logger_ =
         Logger.getLogger(JarTestCollectorTest.class);
             
@@ -59,7 +59,7 @@ public class JarTestCollectorTest extends TestCase
         for(Enumeration e = tc.collectTests(); e.hasMoreElements(); )
         {
             String classname = (String)e.nextElement();
-            System.out.println("Testclass=" + classname);
+            logger_.info("Testclass: " + classname);
         }
         
     }

@@ -39,7 +39,7 @@ import toolbox.util.ui.plugin.IStatusBar;
  */
 public class JUnitPlugin extends JPanel implements  IPlugin
 {
-    /** Logger **/
+    /** Logger */
     public static final Logger logger_ =
         Logger.getLogger(JUnitPlugin.class);
 
@@ -146,7 +146,7 @@ public class JUnitPlugin extends JPanel implements  IPlugin
     //--------------------------------------------------------------------------
     
     /**
-     * @see com.swa.turbo.util.ui.IPlugin#init()
+     * @see toolbox.util.ui.plugin.IPlugin#init()
      */
     public void init()
     {
@@ -230,7 +230,6 @@ public class JUnitPlugin extends JPanel implements  IPlugin
         public void actionPerformed(ActionEvent e)
         {
             String[] packages = ClassUtil.getPackagesInClasspath();
-            //System.out.println(ArrayUtil.toString(packages,true));
 
             packageList_.setModel(new DefaultListModel());
             packageModel_ = new DefaultListModel();
@@ -273,7 +272,7 @@ public class JUnitPlugin extends JPanel implements  IPlugin
     }
     
     //--------------------------------------------------------------------------
-    //  ActionListeners
+    //  Inner Classes
     //--------------------------------------------------------------------------
 
     /**

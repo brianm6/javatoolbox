@@ -55,7 +55,7 @@ public class Main
     /**
      * Entry point
      * 
-     * @param   args    command line params
+     * @param  args  None recognized
      */
     public static void main(String[] args)
     {

@@ -26,7 +26,7 @@ public interface ITailListener
     public void tailPaused();
     
     /**
-     * Tails has been unpaused
+     * Tail has been unpaused
      */
     public void tailUnpaused();
     
