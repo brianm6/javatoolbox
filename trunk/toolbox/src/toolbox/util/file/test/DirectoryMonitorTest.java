@@ -15,7 +15,7 @@ import toolbox.util.file.IDirectoryListener;
 import toolbox.util.file.IFileActivity;
 
 /**
- * Unit test for DirectoryMonitor
+ * Unit test for DirectoryMonitor.
  */
 public class DirectoryMonitorTest extends TestCase
 {
@@ -29,7 +29,7 @@ public class DirectoryMonitorTest extends TestCase
     /**
      * Entrypoint
      * 
-     * @param  args  None
+     * @param args None recognized
      */
     public static void main(String[] args)
     {
@@ -41,7 +41,7 @@ public class DirectoryMonitorTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Tests the DirectoryMonitor 
+     * Tests the DirectoryMonitor. 
      * 
      * @throws  Exception on IO error
      */

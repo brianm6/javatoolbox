@@ -19,36 +19,36 @@ public class RegexFilterReader extends LineNumberReader
         Logger.getLogger(RegexFilterReader.class);
     
     /** 
-     * Default regular expression matches all if one is not specified 
+     * Default regular expression matches all if one is not specified. 
      */    
     private static final String DEFAULT_MATCH = ".";
 
     /** 
-     * Regular expression as a string 
+     * Regular expression as a string. 
      */
     private String strRegExp_;
     
     /** 
-     * Flag to match case 
+     * Flag to match case. 
      */
     private boolean matchCase_;
 
     /** 
-     * Inverse match flag 
+     * Inverse match flag. 
      */
     private boolean matchInverse_;
     
     /** 
-     * Regular expression 
+     * Regular expression. 
      */
     private RE regExp_;
 
     //--------------------------------------------------------------------------
-    //  Constructors
+    // Constructors
     //--------------------------------------------------------------------------
         
     /**
-     * Creates a RegexFilterReader
+     * Creates a RegexFilterReader.
      * 
      * @param in Reader to filter
      */
@@ -57,8 +57,9 @@ public class RegexFilterReader extends LineNumberReader
         this(in, DEFAULT_MATCH, false);
     }
 
+    
     /**
-     * Creates a RegexFilterReader
+     * Creates a RegexFilterReader.
      * 
      * @param in Reader to filter
      * @param regExp Regular expression to match
@@ -69,8 +70,9 @@ public class RegexFilterReader extends LineNumberReader
         this(in, regExp, matchCase, false);
     }
 
+    
     /**
-     * Creates a RegexFilterReader
+     * Creates a RegexFilterReader.
      * 
      * @param in Reader to filter
      * @param regExp Regular expression to match
@@ -104,7 +106,7 @@ public class RegexFilterReader extends LineNumberReader
     //--------------------------------------------------------------------------
         
     /**
-     * Reads the next line that matches the regular expression
+     * Reads the next line that matches the regular expression.
      * 
      * @return String that matches regular expression or null if the end of the
      *         stream has been reached

@@ -9,22 +9,22 @@ import java.util.Date;
 public class TimedRunner implements Runnable
 {
     /**
-     * Number of milliseconds run() should take to execute
+     * Number of milliseconds run() should take to execute.
      */
     private long millis_;
 
     /**
-     * Flag for whether run() was executed
+     * Flag for whether run() was executed.
      */
     private boolean wasInvoked_;
 
     /**
-     * Timestamp on entry of invocation
+     * Timestamp on entry of invocation.
      */
     private Date begin_;
 
     /**
-     * Timestamp on exit from invocation
+     * Timestamp on exit from invocation.
      */
     private Date end_;
 
@@ -33,9 +33,9 @@ public class TimedRunner implements Runnable
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a TimedRunner
+     * Creates a TimedRunner.
      * 
-     * @param  millis  Number of millis that run() should take to execute
+     * @param millis Number of millis that run() should take to execute
      */
     public TimedRunner(long millis)
     {
@@ -47,7 +47,7 @@ public class TimedRunner implements Runnable
     //--------------------------------------------------------------------------
 
     /**
-     * Pauses for millis before returning
+     * Pauses for millis before returning.
      */
     public void run()
     {
@@ -72,7 +72,7 @@ public class TimedRunner implements Runnable
     //--------------------------------------------------------------------------
 
     /**
-     * Returns true if the run() method was executed, false otherwise
+     * Returns true if the run() method was executed, false otherwise.
      *
      * @return boolean
      */
@@ -81,8 +81,9 @@ public class TimedRunner implements Runnable
         return wasInvoked_;
     }
 
+    
     /**
-     * Returns the timestamp on entry to run()
+     * Returns the timestamp on entry to run().
      *
      * @return Date
      */
@@ -91,8 +92,9 @@ public class TimedRunner implements Runnable
         return begin_;
     }
 
+    
     /**
-     * Returns the timestamp on exit of run()
+     * Returns the timestamp on exit of run().
      *
      * @return Date
      */

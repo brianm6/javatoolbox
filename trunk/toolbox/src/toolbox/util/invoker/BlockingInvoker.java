@@ -20,6 +20,7 @@ public class BlockingInvoker implements Invoker
         invokable.run();
     }
 
+    
     /**
      * @see toolbox.util.invoker.Invoker#invoke(
      *      java.lang.Object, java.lang.String, java.lang.Object[])
@@ -29,6 +30,7 @@ public class BlockingInvoker implements Invoker
     {
         MethodUtils.invokeMethod(target, method, params);
     }
+    
     
     /**
      * @see toolbox.util.invoker.Invoker#shutdown()

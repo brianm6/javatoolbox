@@ -12,7 +12,7 @@ import toolbox.util.ThreadUtil;
 import toolbox.util.file.FileStuffer;
 
 /**
- * Unit test for FileStuffer
+ * Unit test for FileStuffer.
  */
 public class FileStufferTest extends TestCase
 {
@@ -24,9 +24,9 @@ public class FileStufferTest extends TestCase
     //--------------------------------------------------------------------------
         
     /**
-     * Entrypoint
+     * Entrypoint.
      *
-     * @param  args None recognized
+     * @param args None recognized
      */
     public static void main(String[] args)
     {
@@ -38,9 +38,9 @@ public class FileStufferTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Tests running the filestuffer
+     * Tests running the filestuffer.
      * 
-     * @throws  Exception on error
+     * @throws Exception on error
      */
     public void testFileStuffer() throws Exception
     {
@@ -65,8 +65,9 @@ public class FileStufferTest extends TestCase
         outfile.delete();
     }
     
+    
     /**
-     * Tests printUsage()
+     * Tests printUsage().
      */
     public void testPrintUsage()
     {

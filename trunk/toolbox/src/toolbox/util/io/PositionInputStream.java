@@ -5,13 +5,28 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * InputStream that supports positioning
+ * InputStream that supports positioning.
  */
 public class PositionInputStream extends InputStream
 {
+    /**
+     * Wrapped input stream.
+     */
     private InputStream in_;
+    
+    /**
+     * Current offset in the stream.
+     */
     private long offset_ = 0;
+    
+    /**
+     * Marked offset in the stream.
+     */
     private long markOffset_ = 0;
+    
+    /**
+     * Values of the last byte that was read.
+     */
     private int lastByteRead_ = -1;
 
     //--------------------------------------------------------------------------
@@ -19,20 +34,20 @@ public class PositionInputStream extends InputStream
     //--------------------------------------------------------------------------
 
     /**
-     * Constructor for PositionInputStream
+     * Creates a PositionInputStream.
      * 
-     * @param iStream Input stream
+     * @param is Input stream
      */
-    public PositionInputStream(InputStream iStream)
+    public PositionInputStream(InputStream is)
     {
-        if (iStream == null)
+        if (is == null)
             throw new NullPointerException();
 
-        in_ = iStream;
+        in_ = is;
     }
 
     //--------------------------------------------------------------------------
-    // Overridden from java.io.InputStream
+    // Overrides from java.io.InputStream
     //--------------------------------------------------------------------------
 
     /**
@@ -51,6 +66,7 @@ public class PositionInputStream extends InputStream
         return read;
     }
 
+    
     /**
      * Read a byte into a portion of an array.
      * 
@@ -74,6 +90,7 @@ public class PositionInputStream extends InputStream
         return read;
     }
 
+    
     /**
      * Skip characters.
      *
@@ -90,8 +107,9 @@ public class PositionInputStream extends InputStream
         return skipped;
     }
 
+    
     /**
-     * Returns number of bytes available to read from stream without blocking
+     * Returns number of bytes available to read from stream without blocking.
      * 
      * @return Number of bytes available to read
      * @throws IOException on I/O error
@@ -101,6 +119,7 @@ public class PositionInputStream extends InputStream
         return in_.available();
     }
 
+    
     /**
      * Close the stream.
      *
@@ -111,6 +130,7 @@ public class PositionInputStream extends InputStream
         in_.close();
     }
 
+    
     /**
      * Tell whether this stream supports the mark() operation.
      * 
@@ -121,6 +141,7 @@ public class PositionInputStream extends InputStream
         return in_.markSupported();
     }
 
+    
     /**
      * Mark the present position in the stream.
      *
@@ -132,6 +153,7 @@ public class PositionInputStream extends InputStream
         markOffset_ = offset_;
     }
 
+    
     /**
      * Reset the stream.
      *
@@ -148,7 +170,7 @@ public class PositionInputStream extends InputStream
     //--------------------------------------------------------------------------
     
     /**
-     * Reads until a given byte
+     * Reads until a given byte.
      * 
      * @param stopAt Byte to stop at
      * @return Bytes from the current postion until the stopAt or EOF is found.
@@ -159,8 +181,9 @@ public class PositionInputStream extends InputStream
         return readUntil(new byte[] { stopAt });
     }
 
+    
     /**
-     * Reads until any number of given bytes
+     * Reads until any number of given bytes.
      * 
      * @param stopAt Any byte to stop at
      * @return Bytes from the current postion until the stopAt or EOF is found.
@@ -189,8 +212,9 @@ public class PositionInputStream extends InputStream
         return oStream.toByteArray();
     }
 
+    
     /**
-     * Returns the current offset read using the InputStream
+     * Returns the current offset read using the InputStream.
      * 
      * @return long
      */
@@ -199,6 +223,7 @@ public class PositionInputStream extends InputStream
         return offset_;
     }
 
+    
     /**
      * Returns the last byte read by this InputStream.
      * 

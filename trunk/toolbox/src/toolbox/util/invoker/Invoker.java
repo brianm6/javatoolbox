@@ -26,7 +26,7 @@ public interface Invoker
     
     
     /**
-     * Shuts down the invoker
+     * Shuts down the invoker.
      * 
      * @throws Exception on error
      */    

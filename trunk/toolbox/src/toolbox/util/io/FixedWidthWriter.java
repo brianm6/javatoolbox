@@ -11,11 +11,11 @@ import java.io.Writer;
 public class FixedWidthWriter extends FilterWriter
 {
     //--------------------------------------------------------------------------
-    //  Constructors
+    // Constructors
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a FixedWidthWriter
+     * Creates a FixedWidthWriter.
      * 
      * @param writer Writer to chain
      */
@@ -25,11 +25,11 @@ public class FixedWidthWriter extends FilterWriter
     }
 
     //--------------------------------------------------------------------------
-    //  Public
+    // Public
     //--------------------------------------------------------------------------
 
     /**
-     * Writes right padded
+     * Writes right padded.
      * 
      * @param str String to write
      * @param width Max width
@@ -42,7 +42,7 @@ public class FixedWidthWriter extends FilterWriter
 
 
     /**
-     * Writes right padded
+     * Writes right padded.
      * 
      * @param str String to write
      * @param width Max width
@@ -57,7 +57,7 @@ public class FixedWidthWriter extends FilterWriter
 
 
     /**
-     * Writes left padded
+     * Writes left padded.
      * 
      * @param str String to write
      * @param width Max width
@@ -70,7 +70,7 @@ public class FixedWidthWriter extends FilterWriter
 
 
     /**
-     * Writes left padded
+     * Writes left padded.
      * 
      * @param str String to write
      * @param width Max width

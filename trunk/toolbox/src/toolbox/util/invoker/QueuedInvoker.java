@@ -18,22 +18,22 @@ public class QueuedInvoker implements Invoker
         Logger.getLogger(QueuedInvoker.class);
     
     /** 
-     * Queue of Runnables waiting to be invoked 
+     * Queue of Runnables waiting to be invoked. 
      */
     private BlockingQueue queue_;
     
     /**
-     * Thread that pulls Runnables off of the queue_
+     * Thread that pulls Runnables off of the queue_.
      */
     private Thread consumer_;
 
     /**
-     * Invokable unit of work
+     * Invokable unit of work.
      */
     private Invokable invokable_;
 
     /**
-     * Optional delay between invocations in millis
+     * Optional delay between invocations in millis.
      */
     private long delay_;
 
@@ -42,15 +42,16 @@ public class QueuedInvoker implements Invoker
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a queued invoker with no delay between invocations
+     * Creates a queued invoker with no delay between invocations.
      */
     public QueuedInvoker()
     {
         this(0);
     }    
 
+    
     /**
-     * Creates a queued invoker that start consumption immediately
+     * Creates a queued invoker that start consumption immediately.
      * 
      * @param  millis  Delay in milliseconds between invocations
      */
@@ -72,11 +73,17 @@ public class QueuedInvoker implements Invoker
     // Public
     //--------------------------------------------------------------------------
 
+    /**
+     * Returns true if there is no queued work pending.
+     * 
+     * @return boolean
+     */
     public boolean isIdle()
     {
         return isEmpty() && !invokable_.isRunning();
     }
 
+    
     /**
      * Returns true if the invocation queue is empty, false otherwise. Use to 
      * check if it is safe to shutdown invoker.
@@ -88,6 +95,7 @@ public class QueuedInvoker implements Invoker
         return queue_.size() == 0;
     }
 
+    
     /**
      * Returns the number of invocation requests in the queue. Use to monitor
      * throughput of the queue.
@@ -111,6 +119,7 @@ public class QueuedInvoker implements Invoker
         queue_.push(invokable);
     }
 
+    
     /**
      * @see toolbox.util.invoker.Invoker#invoke(
      *      java.lang.Object, java.lang.String, java.lang.Object[])
@@ -137,6 +146,7 @@ public class QueuedInvoker implements Invoker
         });
     }
     
+    
     /**
      * @see toolbox.util.invoker.Invoker#shutdown()
      */
@@ -157,7 +167,7 @@ public class QueuedInvoker implements Invoker
     //--------------------------------------------------------------------------
 
     /**
-     * Invokable unit of work
+     * Invokable unit of work.
      */
     class Invokable implements Runnable
     {

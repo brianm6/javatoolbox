@@ -10,7 +10,7 @@ import toolbox.util.invoker.Invoker;
 import toolbox.util.invoker.ThreadedInvoker;
 
 /**
- * Unit test for ThreadedInvoker
+ * Unit test for ThreadedInvoker.
  */
 public class ThreadedInvokerTest extends TestCase
 {
@@ -22,9 +22,9 @@ public class ThreadedInvokerTest extends TestCase
     //--------------------------------------------------------------------------
 
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
-     * @param  args  None recognized
+     * @param args None recognized
      */
     public static void main(String[] args)
     {
@@ -61,6 +61,7 @@ public class ThreadedInvokerTest extends TestCase
         assertTrue("Method was not invoked", invokable.wasInvoked());
     }
 
+    
     /**
      * Tests that a call to invoke(Object, Method, Object[]) returns before the 
      * amount of time that it takes to execute the method.
@@ -85,11 +86,11 @@ public class ThreadedInvokerTest extends TestCase
         Thread.sleep(delay + 1000); // 1 sec for invocation overhead
 
         assertTrue("Method was not invoked", invokable.wasInvoked());
-
     }
 
+    
     /**
-     * Stress tests invoke()
+     * Stress tests invoke().
      * 
      * @throws Exception on error
      */

@@ -10,7 +10,7 @@ import javax.swing.JTextArea;
 public class JTextAreaOutputStream extends OutputStream
 {
     /** 
-     * Textarea to dump to 
+     * Textarea to dump to. 
      */
     private JTextArea textArea_;
 
@@ -19,7 +19,7 @@ public class JTextAreaOutputStream extends OutputStream
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a JTextAreaOutputStream
+     * Creates a JTextAreaOutputStream.
      * 
      * @param textArea JTextArea sink for the output stream
      */

@@ -3,21 +3,21 @@ package toolbox.util.io;
 import java.io.OutputStream;
 
 /**
- * An output stream that flows into a StringBuffer
+ * An output stream that flows into a StringBuffer.
  */
 public class StringOutputStream extends OutputStream
 {
     /** 
-     * Output buffer 
+     * Output buffer. 
      */
     private StringBuffer output_;
 
     //--------------------------------------------------------------------------
-    //  Constructors
+    // Constructors
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a StringOutputStream
+     * Creates a StringOutputStream.
      */
     public StringOutputStream()
     {
@@ -25,27 +25,29 @@ public class StringOutputStream extends OutputStream
     }
 
     //--------------------------------------------------------------------------
-    //  Overrides java.io.OutputStream
+    // Overrides java.io.OutputStream
     //--------------------------------------------------------------------------
 
     /**
-     * Close the stream - no-op
+     * Close the stream - no-op.
      */
     public void close()
     {
         // nothing to close
     }
 
+    
     /**
-     * Flush the stream - no-op
+     * Flush the stream - no-op.
      */
     public void flush()
     {
         // nothing to flush
     }
 
+    
     /**
-     * Write a single character
+     * Write a single character.
      *
      * @param outputChar Character to write to the stream
      */
@@ -60,7 +62,7 @@ public class StringOutputStream extends OutputStream
     //--------------------------------------------------------------------------
 
     /**
-     * Returns the contents of the the stream
+     * Returns the contents of the the stream.
      * 
      * @return String
      */
@@ -70,11 +72,11 @@ public class StringOutputStream extends OutputStream
     }
 
     //--------------------------------------------------------------------------
-    //  Public
+    // Public
     //--------------------------------------------------------------------------
         
     /**
-     * Returns the StringBuffer backing the stream
+     * Returns the StringBuffer backing the stream.
      * 
      * @return StringBuffer
      */

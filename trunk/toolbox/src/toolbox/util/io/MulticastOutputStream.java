@@ -16,7 +16,7 @@ import toolbox.util.ArrayUtil;
 public class MulticastOutputStream extends OutputStream
 {
     /** 
-     * Members of the multicast group of streams 
+     * Members of the multicast group of streams. 
      */
     private OutputStream[] streams_;
 
@@ -25,15 +25,16 @@ public class MulticastOutputStream extends OutputStream
     //--------------------------------------------------------------------------
     
     /**
-     * Creates an empty MulticastOutputStream
+     * Creates an empty MulticastOutputStream.
      */
     public MulticastOutputStream()
     {
         streams_ = new OutputStream[0];
     }
     
+    
     /**
-     * Creates a MulticastOutputStream
+     * Creates a MulticastOutputStream.
      * 
      * @param out Stream to add to the multicast group
      */
@@ -48,7 +49,7 @@ public class MulticastOutputStream extends OutputStream
     //--------------------------------------------------------------------------
     
     /**
-     * Adds a stream to the multicast group
+     * Adds a stream to the multicast group.
      * 
      * @param out Stream to add
      */
@@ -58,8 +59,9 @@ public class MulticastOutputStream extends OutputStream
             ArrayUtil.add(streams_, new BufferedOutputStream(out));
     }
 
+    
     /**
-     * Removes a stream from the multicast group
+     * Removes a stream from the multicast group.
      * 
      * @param out Stream to remove
      */
@@ -73,7 +75,7 @@ public class MulticastOutputStream extends OutputStream
     //--------------------------------------------------------------------------
 
     /**
-     * Writes integer to each stream in the multicast group
+     * Writes integer to each stream in the multicast group.
      * 
      * @param b Integer to write
      * @throws IOException on I/O error
@@ -83,8 +85,9 @@ public class MulticastOutputStream extends OutputStream
         for (int i=0; i<streams_.length; streams_[i++].write(b));
     }
 
+    
     /**
-     * Flushes all streams in the multicast group
+     * Flushes all streams in the multicast group.
      * 
      * @throws IOException on I/O error
      */
@@ -93,10 +96,11 @@ public class MulticastOutputStream extends OutputStream
         for (int i=0; i<streams_.length; streams_[i++].flush());
     }
 
+    
     /**
-     * Closes all streams in the multicast group
+     * Closes all streams in the multicast group.
      * 
-     * @throws  IOException on I/O error
+     * @throws IOException on I/O error
      */
     public synchronized void close() throws IOException
     {

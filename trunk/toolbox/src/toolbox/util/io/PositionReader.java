@@ -4,22 +4,22 @@ import java.io.IOException;
 import java.io.Reader;
 
 /**
- * Position based reader
+ * Position based reader.
  */
 public class PositionReader extends Reader
 {
     /**
-     * Internal reader
+     * Internal reader.
      */
     private Reader in_;
     
     /**
-     * Current offset into the reader
+     * Current offset into the reader.
      */
     private long offset_ = 0;
     
     /**
-     * Current offset of the marked position
+     * Current offset of the marked position.
      */
     private long markOffset_ = 0;
 
@@ -28,7 +28,7 @@ public class PositionReader extends Reader
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a position reader
+     * Creates a position reader.
      * 
      * @param reader Reader to chain
      */
@@ -57,6 +57,7 @@ public class PositionReader extends Reader
         return read;
     }
 
+    
     /**
      * Read characters into a portion of an array.
      * 
@@ -79,6 +80,7 @@ public class PositionReader extends Reader
         return read;
     }
 
+    
     /**
      * Skip characters.
      *
@@ -95,6 +97,7 @@ public class PositionReader extends Reader
         return skipped;
     }
 
+    
     /**
      * Tell whether this stream is ready to be read.
      *
@@ -106,6 +109,7 @@ public class PositionReader extends Reader
         return in_.ready();
     }
 
+    
     /**
      * Tell whether this stream supports the mark() operation.
      * 
@@ -116,6 +120,7 @@ public class PositionReader extends Reader
         return in_.markSupported();
     }
 
+    
     /**
      * Mark the present position in the stream.
      *
@@ -128,6 +133,7 @@ public class PositionReader extends Reader
         markOffset_ = offset_;
     }
 
+    
     /**
      * Reset the stream.
      *
@@ -139,6 +145,7 @@ public class PositionReader extends Reader
         offset_ = markOffset_;
     }
 
+    
     /**
      * Close the stream.
      *
@@ -181,8 +188,9 @@ public class PositionReader extends Reader
         return sb.toString();
     }
 
+    
     /**
-     * Returns the current offset in the Reader
+     * Returns the current offset in the Reader.
      * 
      * @return long
      */

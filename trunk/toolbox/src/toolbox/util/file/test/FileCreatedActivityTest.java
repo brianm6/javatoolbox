@@ -12,7 +12,7 @@ import toolbox.util.FileUtil;
 import toolbox.util.file.FileCreatedActivity;
 
 /**
- * Unit test for FileCreatedActivity
+ * Unit test for FileCreatedActivity.
  */
 public class FileCreatedActivityTest extends TestCase
 {
@@ -24,9 +24,9 @@ public class FileCreatedActivityTest extends TestCase
     //--------------------------------------------------------------------------
         
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
-     * @param  args  None recognized
+     * @param args None recognized
      */
     public static void main(String[] args)
     {
@@ -38,9 +38,9 @@ public class FileCreatedActivityTest extends TestCase
     //--------------------------------------------------------------------------
         
     /**
-     * Tests getFiles()
+     * Tests getFiles().
      * 
-     * @throws  Exception on error
+     * @throws Exception on error
      */
     public void testGetFiles() throws Exception
     {

@@ -10,7 +10,7 @@ import toolbox.util.invoker.Invoker;
 import toolbox.util.invoker.QueuedInvoker;
 
 /**
- * Unit test for QueuedInvoker
+ * Unit test for QueuedInvoker.
  */
 public class QueuedInvokerTest extends TestCase
 {
@@ -22,9 +22,9 @@ public class QueuedInvokerTest extends TestCase
     //--------------------------------------------------------------------------
 
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
-     * @param  args  None recognized
+     * @param args None recognized
      */
     public static void main(String[] args)
     {
@@ -90,6 +90,7 @@ public class QueuedInvokerTest extends TestCase
         }
     }
 
+    
     /**
      * Tests that a call to invoke(Object, Method, Object[]) returns before the 
      * amount of time that it takes to execute the method.
@@ -144,6 +145,7 @@ public class QueuedInvokerTest extends TestCase
         }
     }
 
+    
     /**
      * Stress tests invoke()
      * 
@@ -175,7 +177,7 @@ public class QueuedInvokerTest extends TestCase
             // Verify
             for (int i = 0; i < invokables.length; i++)
             {
-                assertTrue("Method was not invoked", invokables[i].wasInvoked());
+                assertTrue("Method was not invoked",invokables[i].wasInvoked());
 
                 // Compare current begin timestamp to previous end timestamp to
                 // verify invokables where execute in sequence.
@@ -201,6 +203,7 @@ public class QueuedInvokerTest extends TestCase
         }
     }
 
+    
     /**
      * Tests shutdown() while there are still pending pending invocations in
      * the queue.

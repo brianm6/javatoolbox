@@ -7,21 +7,21 @@ import java.io.Reader;
 import toolbox.util.StringUtil;
 
 /**
- * Simple reader that reads string delimited tokens a line at a time
+ * Simple reader that reads string delimited tokens a line at a time.
  */
 public class TokenReader extends LineNumberReader
 {
     /**
-     * Token delimiter
+     * Token delimiter.
      */
     private String delimiter_;
     
     //--------------------------------------------------------------------------
-    //  Constructors
+    // Constructors
     //--------------------------------------------------------------------------
     
     /**
-     * Create a TokenReader with the given delimiter
+     * Create a TokenReader with the given delimiter.
      * 
      * @param in Reader to read tokens from
      * @param delimiter Delimiter used to separate tokens
@@ -33,14 +33,14 @@ public class TokenReader extends LineNumberReader
     }
     
     //--------------------------------------------------------------------------
-    //  Public
+    // Public
     //--------------------------------------------------------------------------
     
     /**
-     * Returns the next batch of tokens parsed from a single line
+     * Returns the next batch of tokens parsed from a single line.
      *
      * @return Array of tokens, or null or end of reader reached.
-     * @throws IOException on IO error
+     * @throws IOException on I/O error
      */
     public String[] readTokens() throws IOException
     {

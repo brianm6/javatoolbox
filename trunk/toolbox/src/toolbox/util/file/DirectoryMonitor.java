@@ -21,32 +21,33 @@ public class DirectoryMonitor
         Logger.getLogger(DirectoryMonitor.class);
 
     /** 
-     * Directory listeners 
+     * Directory listeners. 
      */
     private List listeners_ = new ArrayList();
     
     /** 
-     * File activities that this monitor will provide notification for 
+     * File activities that this monitor will provide notification for. 
      */
     private List activities_ = new ArrayList();
 
     /** 
-     * Delay interval in millis used to check for new activity. Defaults to 5sec 
+     * Delay interval in millis used to check for new activity. 
+     * Defaults to 5sec. 
      */
     private int delay_ = 5000;
 
     /** 
-     * Shutdown flag for file activity thread 
+     * Shutdown flag for file activity thread. 
      */
     private boolean shutdown_ = false;
 
     /** 
-     * Directory to monitor 
+     * Directory to monitor. 
      */
     private File directory_;
 
     /** 
-     * Thread that IFileActivity implementors are dispatched on 
+     * Thread that IFileActivity implementors are dispatched on. 
      */
     private Thread monitor_;
     
@@ -55,9 +56,9 @@ public class DirectoryMonitor
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a DirectoryMonitor with the given directory
+     * Creates a DirectoryMonitor with the given directory.
      * 
-     * @param  dir  Directory to monitor for file activity
+     * @param dir Directory to monitor for file activity
      */
     public DirectoryMonitor(File dir)
     {
@@ -69,7 +70,7 @@ public class DirectoryMonitor
     //--------------------------------------------------------------------------
     
     /**
-     * Starts execution of the directory monitor
+     * Starts execution of the directory monitor.
      * 
      * @throws IllegalStateException if monitor already running
      */
@@ -87,6 +88,7 @@ public class DirectoryMonitor
         shutdown_ = false;               
     }
 
+    
     /**
      * Requests termination of the monitor. Does not block on termination
      * nor does it guarantee termination.
@@ -103,8 +105,9 @@ public class DirectoryMonitor
         monitor_ = null;
     }
 
+    
     /**
-     * Accessor for delay
+     * Accessor for delay.
      *
      * @return int
      */
@@ -113,8 +116,9 @@ public class DirectoryMonitor
         return delay_;
     }
 
+    
     /**
-     * Mutator for delay
+     * Mutator for delay.
      *
      * @param newDelay    Delay
      */
@@ -123,6 +127,7 @@ public class DirectoryMonitor
         delay_ = newDelay;
     }
 
+    
     /**
      * Returns the directory.
      * 
@@ -133,6 +138,7 @@ public class DirectoryMonitor
         return directory_;
     }
 
+    
     /**
      * Sets the directory.
      * 
@@ -143,20 +149,22 @@ public class DirectoryMonitor
         directory_ = directory;
     }
 
+    
     /**
-     * Adds an activity to monitor
+     * Adds an activity to monitor.
      * 
-     * @param activity  Activity to monitor
+     * @param activity Activity to monitor
      */
     public void addFileActivity(IFileActivity activity)
     {
         activities_.add(activity);
     }
 
+    
     /**
-     * Removes an activity from the list of monitored activities
+     * Removes an activity from the list of monitored activities.
      * 
-     * @param  activity  Activity to remove
+     * @param activity Activity to remove
      */
     public void removeFileActivity(IFileActivity activity)
     {
@@ -168,11 +176,11 @@ public class DirectoryMonitor
     //--------------------------------------------------------------------------
 
     /**
-     * Fires notification of file activity to the directory monitor listeners
+     * Fires notification of file activity to the directory monitor listeners.
      *
-     * @param   actvitity  Activity that generated this event
-     * @param   files      Files affected by the activity 
-     * @throws  Exception on error
+     * @param actvitity Activity that generated this event
+     * @param files Files affected by the activity 
+     * @throws Exception on error
      */
     protected void fireFileActivity(IFileActivity activity, File[] files) 
         throws Exception
@@ -185,35 +193,36 @@ public class DirectoryMonitor
         }
     }
 
+    
     /**
      * Removes a listener from the list that is notified each time
      * a file becomes available.
      *
-     * @param    listener    Listener to remove from the notification list
+     * @param listener Listener to remove from the notification list
      */
     public void removeDirectoryListener(IDirectoryListener listener)
     {
         listeners_.remove(listener);
     }
 
+    
     /**
-     * Adds a listener to the list that's notified each time a 
-     * new file is available.
+     * Adds a listener to the list that's notified each time a new file is 
+     * available.
      *
-     * @param    listener    Listener to add to notification list
+     * @param listener Listener to add to notification list
      */
     public void addDirectoryListener(IDirectoryListener listener)
     {
         listeners_.add(listener);
     }
 
-
     //--------------------------------------------------------------------------
     //  Inner Classes
     //--------------------------------------------------------------------------
     
     /**
-     * Starts running monitor
+     * Starts running monitor.
      */
     class ActivityRunner implements Runnable
     {

@@ -13,17 +13,17 @@ import toolbox.util.ArrayUtil;
 public class EventInputStream extends FilterInputStream
 {
     /**
-     * List of registered listeners interested in stream events
+     * List of registered listeners interested in stream events.
      */
     private Listener[] listeners_;
     
     /**
-     * Total number of bytes read from the stream
+     * Total number of bytes read from the stream.
      */
     private int count_;
     
     /**
-     * Friendly name for this stream
+     * Friendly name for this stream.
      */
     private String name_;
     
@@ -32,7 +32,7 @@ public class EventInputStream extends FilterInputStream
     //--------------------------------------------------------------------------
         
     /**
-     * Creates an EventInputStream
+     * Creates an EventInputStream.
      * 
      * @param in InputStream to chain 
      */
@@ -41,8 +41,9 @@ public class EventInputStream extends FilterInputStream
         this(null, in);
     }
     
+    
     /**
-     * Creates an EventInputStream
+     * Creates an EventInputStream.
      * 
      * @param name Stream name
      * @param in InputStream to chain 
@@ -70,6 +71,7 @@ public class EventInputStream extends FilterInputStream
         return c;
     }
 
+    
     /**
      * @see java.io.InputStream#read(byte[], int, int)
      */
@@ -88,6 +90,7 @@ public class EventInputStream extends FilterInputStream
         return read;
     }
 
+    
     /**
      * @see java.io.FilterInputStream#close()
      */
@@ -102,7 +105,7 @@ public class EventInputStream extends FilterInputStream
     //--------------------------------------------------------------------------
     
     /**
-     * Adds a Listener to the list of registered stream listeners
+     * Adds a Listener to the list of registered stream listeners.
      * 
      * @param listener Listener to register
      */
@@ -111,8 +114,9 @@ public class EventInputStream extends FilterInputStream
         listeners_ = (Listener[]) ArrayUtil.add(listeners_, listener);
     }
     
+    
     /** 
-     * Fires notification that the stream was closed
+     * Fires notification that the stream was closed.
      */
     protected void fireStreamClosed()
     {
@@ -120,8 +124,9 @@ public class EventInputStream extends FilterInputStream
             listeners_[i].streamClosed(this);               
     }
 
+    
     /** 
-     * Fires notification that a byte was read from the stream
+     * Fires notification that a byte was read from the stream.
      * 
      * @param b Bytes that was read
      */
@@ -136,7 +141,7 @@ public class EventInputStream extends FilterInputStream
     //--------------------------------------------------------------------------
     
     /**
-     * Returns the number of bytes read from the stream
+     * Returns the number of bytes read from the stream.
      * 
      * @return Num bytes read
      */
@@ -145,16 +150,18 @@ public class EventInputStream extends FilterInputStream
         return count_;
     }
         
+    
     /**
-     * Resets the number of bytes read back to zero
+     * Resets the number of bytes read back to zero.
      */
     public void resetCount()
     {
         count_ = 0;
     }    
     
+    
     /**
-     * Returns the friendly name of the stream
+     * Returns the friendly name of the stream.
      * 
      * @return Stream name
      */
@@ -174,14 +181,15 @@ public class EventInputStream extends FilterInputStream
     public interface Listener
     {
         /**
-         * Notification that the stream has been closed
+         * Notification that the stream has been closed.
          * 
          * @param stream Stream that was closed
          */
         public void streamClosed(EventInputStream stream);
         
+        
         /**
-         * Notification that data was read from the stream
+         * Notification that data was read from the stream.
          * 
          * @param stream Stream data was read from
          * @param b Byte read from the stream

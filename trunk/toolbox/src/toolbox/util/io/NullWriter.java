@@ -3,7 +3,7 @@ package toolbox.util.io;
 import java.io.Writer;
 
 /**
- * NullWriter sends all characters written to it to /dev/null
+ * NullWriter sends all characters written to it to /dev/null.
  */
 public class NullWriter extends Writer
 {
@@ -12,23 +12,25 @@ public class NullWriter extends Writer
     //--------------------------------------------------------------------------
     
     /**
-     * Closes the stream
+     * Closes the stream.
      */
     public void close()
     {
         // Nothing to do
     }
 
+    
     /**
-     * Flushes the stream
+     * Flushes the stream.
      */
     public void flush()
     {
         // Nothing to do
     }
 
+    
     /**
-     * Eat written characters
+     * Eat written characters.
      * 
      * @param cbuf Character buffer to write
      * @param off Offset into character buffer

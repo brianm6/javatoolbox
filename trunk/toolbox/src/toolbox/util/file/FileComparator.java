@@ -20,7 +20,7 @@ public class FileComparator implements Comparator
     public static final int COMPARE_DATE = 3; // File timestamp
     
 	/**
-	 * Field to compare
+	 * Field to compare.
 	 */    
     private int compareBy_;
     
@@ -29,7 +29,7 @@ public class FileComparator implements Comparator
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a FileComparator
+     * Creates a FileComparator.
      * 
      * @param compareBy File attribute to base comparision on. 
      *        Use FileComparator.COMPARE_[NAME|SIZE|DATE]

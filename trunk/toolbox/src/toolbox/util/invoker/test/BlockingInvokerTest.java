@@ -10,7 +10,7 @@ import toolbox.util.invoker.BlockingInvoker;
 import toolbox.util.invoker.Invoker;
 
 /**
- * Unit test for BlockingInvoker
+ * Unit test for BlockingInvoker.
  */
 public class BlockingInvokerTest extends TestCase
 {
@@ -22,7 +22,7 @@ public class BlockingInvokerTest extends TestCase
     //--------------------------------------------------------------------------
 
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
      * @param args None recognized
      */
@@ -59,6 +59,7 @@ public class BlockingInvokerTest extends TestCase
             time.getTotalMillis() >= delay);
     }
 
+    
     /**
      * Tests that a call to invoke(Object, Method, Object[]) blocks for >= the 
      * amount of time that it takes to execute the method.
@@ -83,6 +84,7 @@ public class BlockingInvokerTest extends TestCase
             time.getTotalMillis() >= delay);
     }
 
+    
     /**
      * Stress tests invoke()
      * 

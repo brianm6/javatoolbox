@@ -24,6 +24,7 @@ public class ThreadedInvoker implements Invoker
         new Thread(invokable).start();
     }
 
+    
     /**
      * @see toolbox.util.invoker.Invoker#invoke(
      *      java.lang.Object, java.lang.String, java.lang.Object[])
@@ -47,6 +48,7 @@ public class ThreadedInvoker implements Invoker
             }
         });
     }
+    
     
     /**
      * @see toolbox.util.invoker.Invoker#shutdown()

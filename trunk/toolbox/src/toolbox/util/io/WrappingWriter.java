@@ -31,57 +31,57 @@ public class WrappingWriter extends Writer
     implements RollingCounter.IRollingCounterListener
 {
     /** 
-     * Default width to wrap at 
+     * Default width to wrap at. 
      */
     public static final int DEFAULT_WIDTH   = 80;
     
     /** 
-     * Default prefix for each line 
+     * Default prefix for each line. 
      */
     public static final String DEFAULT_PREFIX  = "";
     
     /** 
-     * Default suffix for each line 
+     * Default suffix for each line. 
      */
     public static final String DEFAULT_SUFFIX  = "";
     
     /** 
-     * Default newline for each line 
+     * Default newline for each line. 
      */
     public static final String DEFAULT_NEWLINE = "\n";
 
     /** 
-     * Delegate writer 
+     * Delegate writer.
      */
     private Writer writer_;
     
     /** 
-     * Rolling counter to keep track of line position 
+     * Rolling counter to keep track of line position. 
      */
     private RollingCounter counter_;
     
     /** 
-     * Width of writer 
+     * Width of writer. 
      */
     private int width_;
     
     /** 
-     * Prefix decorator prepended to each line 
+     * Prefix decorator prepended to each line. 
      */
     private String prefix_;     
     
     /** 
-     * Suffix decorator appended to each line 
+     * Suffix decorator appended to each line. 
      */
     private String suffix_;     
     
     /**
-     *  Flag to mark the consumption of the first character 
+     *  Flag to mark the consumption of the first character. 
      */
     private boolean first_;
     
     /** 
-     * Flag to stagger writing on a new line until the next char is written 
+     * Flag to stagger writing on a new line until the next char is written. 
      */
     private boolean stagger_;
 
@@ -90,7 +90,8 @@ public class WrappingWriter extends Writer
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a wrapping writer with default with of <code>DEFAULT_WIDTH</code>
+     * Creates a wrapping writer with default with of 
+     * <code>DEFAULT_WIDTH</code>.
      * 
      * @param writer Writer to decorate
      */ 
@@ -102,7 +103,7 @@ public class WrappingWriter extends Writer
 
     /**
      * Creates a wrapping writer with the given width and no prefix/suffix
-     * decorators
+     * decorators.
      * 
      * @param writer Writer to decorate
      * @param width Number of characters after which a line will be wrapped
@@ -114,7 +115,7 @@ public class WrappingWriter extends Writer
 
         
     /**
-     * Creates a wrapping writer
+     * Creates a wrapping writer.
      * 
      * @param writer Writer to decorate
      * @param width Number of characters after which a line will be wrapped
@@ -123,15 +124,15 @@ public class WrappingWriter extends Writer
      */ 
     public WrappingWriter(Writer writer, int width, String prefix,String suffix)
     {
-        writer_    = writer;
-        prefix_    = prefix;
-        suffix_    = suffix;
+        writer_ = writer;
+        prefix_ = prefix;
+        suffix_ = suffix;
         
         // Subtract the space that the pre/suffix takes up from the width
-        width_     = width - prefix_.length() - suffix_.length();
+        width_ = width - prefix_.length() - suffix_.length();
         
-        first_     = true;
-        stagger_   = false;
+        first_   = true;
+        stagger_ = false;
         
         // Create a counter with range 1..width 
         counter_     = new RollingCounter(1, width_, 1); 
@@ -211,7 +212,7 @@ public class WrappingWriter extends Writer
     //--------------------------------------------------------------------------
 
     /**
-     * Counter has rolled back to the beginning of the range
+     * Counter has rolled back to the beginning of the range.
      * 
      * @param rc Counter that was rolled
      */
@@ -222,7 +223,7 @@ public class WrappingWriter extends Writer
     
     
     /**
-     * Counter is about to roll to the beginning of the range
+     * Counter is about to roll to the beginning of the range.
      * 
      * @param rc Counter being rolled
      */

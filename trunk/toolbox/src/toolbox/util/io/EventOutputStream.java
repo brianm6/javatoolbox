@@ -15,32 +15,32 @@ import toolbox.util.ArrayUtil;
 public class EventOutputStream extends FilterOutputStream
 {
     /** 
-     * Array of registered listeners 
+     * Array of registered listeners. 
      */
     private Listener[] listeners_;
     
     /** 
-     * Total number of bytes written to the stream 
+     * Total number of bytes written to the stream. 
      */
     private int count_;
     
     /** 
-     * Friendly name for this stream
+     * Friendly name for this stream.
      */
     private String name_;
     
     /** 
-     * Number of bytes written last time a sample was taken
+     * Number of bytes written last time a sample was taken.
      */
     private int lastSample_;
     
     /** 
-     * Sample period in milliseconds 
+     * Sample period in milliseconds. 
      */
     private long samplePeriod_ = 1000;
 
     /** 
-     * Timer that takes samples to monitor the stream throughput 
+     * Timer that takes samples to monitor the stream throughput. 
      */    
     private Timer throughputTimer_;
     
@@ -49,7 +49,7 @@ public class EventOutputStream extends FilterOutputStream
     //--------------------------------------------------------------------------
         
     /**
-     * Creates an EventOutputStream
+     * Creates an EventOutputStream.
      * 
      * @param out OutputStream to chain 
      */
@@ -57,6 +57,7 @@ public class EventOutputStream extends FilterOutputStream
     {
         this(null, out);
     }
+    
     
     /**
      * Creates an EventOutputStream with the given name outputstream to
@@ -78,7 +79,7 @@ public class EventOutputStream extends FilterOutputStream
     //--------------------------------------------------------------------------
     
     /**
-     * Writes byte to stream keeping track of the count
+     * Writes byte to stream keeping track of the count.
      * 
      * @param b Byte to write 
      * @throws IOException on I/O error
@@ -90,8 +91,9 @@ public class EventOutputStream extends FilterOutputStream
         fireByteWritten(b);
     }
 
+    
     /**
-     * Hooks for when the stream is flushed
+     * Hooks for when the stream is flushed.
      * 
      * @see java.io.FilterOutputStream#flush()
      */
@@ -101,8 +103,9 @@ public class EventOutputStream extends FilterOutputStream
         fireStreamFlushed();
     }
     
+    
     /**
-     * Hooks for when the stream is closed
+     * Hooks for when the stream is closed.
      * 
      * @see java.io.FilterOutputStream#close()
      */
@@ -117,7 +120,7 @@ public class EventOutputStream extends FilterOutputStream
     //--------------------------------------------------------------------------
     
     /**
-     * Adds a Listener to the list of registered stream listeners
+     * Adds a Listener to the list of registered stream listeners.
      * 
      * @param listener Listener to register
      */
@@ -127,8 +130,9 @@ public class EventOutputStream extends FilterOutputStream
         listeners_ = (Listener[]) ArrayUtil.add(listeners_, listener);
     }
     
+    
     /** 
-     * Fires notification that the stream was closed
+     * Fires notification that the stream was closed.
      */
     protected void fireStreamClosed()
     {
@@ -141,8 +145,9 @@ public class EventOutputStream extends FilterOutputStream
         }
     }
 
+    
     /** 
-     * Fires notification that the stream was flushed
+     * Fires notification that the stream was flushed.
      */
     protected void fireStreamFlushed()
     {
@@ -155,8 +160,9 @@ public class EventOutputStream extends FilterOutputStream
         }
     }
 
+    
     /** 
-     * Fires notification that a byte was written to the stream
+     * Fires notification that a byte was written to the stream.
      * 
      * @param b Byte written to stream
      */
@@ -229,8 +235,9 @@ public class EventOutputStream extends FilterOutputStream
         }
     }
 
+    
     /** 
-     * Fires notification of stream throughput per sample period
+     * Fires notification of stream throughput per sample period.
      * 
      * @param throughput Number of bytes written per sample period
      */
@@ -251,7 +258,7 @@ public class EventOutputStream extends FilterOutputStream
     //--------------------------------------------------------------------------
     
     /**
-     * Returns the number of bytes written to the stream
+     * Returns the number of bytes written to the stream.
      * 
      * @return int
      */
@@ -260,16 +267,18 @@ public class EventOutputStream extends FilterOutputStream
         return count_;
     }
         
+    
     /**
-     * Resets the number of bytes written back to zero
+     * Resets the number of bytes written back to zero.
      */
     public void resetCount()
     {
         count_ = 0;
     }    
     
+    
     /**
-     * Returns the stream name
+     * Returns the stream name.
      * 
      * @return String
      */
@@ -278,8 +287,9 @@ public class EventOutputStream extends FilterOutputStream
         return name_;
     }
     
+    
     /**
-     * Starts monitoring of stream throughtput
+     * Starts monitoring of stream throughtput.
      */
     public void startThroughputMonitor()
     {
@@ -288,8 +298,9 @@ public class EventOutputStream extends FilterOutputStream
         throughputTimer_.schedule(new ThroughputTask(), 0, samplePeriod_);
     }
 
+    
     /**
-     * Stops monitoring of stream throughput
+     * Stops monitoring of stream throughput.
      */    
     public void stopThroughputMonitor()
     {
@@ -307,30 +318,33 @@ public class EventOutputStream extends FilterOutputStream
     public interface Listener
     {
         /**
-         * Notification that the stream has been closed
+         * Notification that the stream has been closed.
          * 
          * @param stream Stream that was closed
          */
         public void streamClosed(EventOutputStream stream);
         
+        
         /**
-         * Notification that the stream was flushed
+         * Notification that the stream was flushed.
          * 
          * @param stream Stream that was flushed
          */
         public void streamFlushed(EventOutputStream stream);
         
+        
         /**
-         * Notification that data was written to the stream
+         * Notification that data was written to the stream.
          * 
          * @param stream Stream data was written to
          * @param b Byte written to the stream
          */
         public void byteWritten(EventOutputStream stream, int b);
         
+        
         /**
          * Notification of the number of bytes transfered through the stream
-         * over the last sample period
+         * over the last sample period.
          * 
          * @param stream Stream being monitored for throughput
          * @param bytesPerPeriod Number of bytes transferred over sample period
