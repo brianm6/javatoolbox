@@ -4,8 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -24,6 +22,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
+
 import org.jedit.syntax.KeywordMap;
 import org.jedit.syntax.SQLTokenMarker;
 import org.jedit.syntax.TextAreaDefaults;
@@ -130,17 +129,20 @@ public class QueryPlugin extends JPanel implements IPlugin
             
         sqlArea_.setFont(SwingUtil.getPreferredMonoFont());
         
+        sqlArea_.getInputHandler().addKeyBinding(
+            "C+ENTER", new ExecuteAction());
+        
         // Wire CTRL-Enter to execute the query
-        sqlArea_.addKeyListener( new KeyAdapter()
-        {
-            public void keyTyped(KeyEvent e)
-            {
-                if ((e.getKeyChar() ==  '\n') && ((KeyEvent.getKeyModifiersText(
-                    e.getModifiers()).equals("Ctrl"))))
-                        (new RunQueryAction()).actionPerformed(
-                            new ActionEvent(sqlArea_, 0, "" ));
-            }
-        });
+        //sqlArea_.getPainter().addKeyListener( new KeyAdapter()
+        //{
+        //    public void keyTyped(KeyEvent e)
+        //    {
+        //        if ((e.getKeyChar() ==  '\n') && ((KeyEvent.getKeyModifiersText(
+        //            e.getModifiers()).equals("Ctrl"))))
+        //                (new ExecuteAction()).actionPerformed(
+        //                    new ActionEvent(sqlArea_, 0, "" ));
+        //    }
+        //});
         
         resultsArea_ = new JTextArea();
         resultsArea_.setFont(SwingUtil.getPreferredMonoFont());
@@ -154,7 +156,7 @@ public class QueryPlugin extends JPanel implements IPlugin
         // Buttons 
         JPanel buttonPanel = new JPanel(new FlowLayout());
             
-        queryButton_ = new JButton(new RunQueryAction());
+        queryButton_ = new JButton(new ExecuteAction());
         buttonPanel.add(queryButton_);
 
         clearButton_ = new JButton(new ClearAction());
@@ -225,8 +227,8 @@ public class QueryPlugin extends JPanel implements IPlugin
             }
             else
             {
-                throw new IllegalArgumentException(
-                    "SQL statement not supported: " + sql);
+                // Everything else is processed as an update
+                metaResults = JDBCUtil.executeUpdate(sql) + " rows affected.";
             }
             
             addToHistory(sql);
@@ -249,7 +251,7 @@ public class QueryPlugin extends JPanel implements IPlugin
         if (!sqlHistory_.containsValue(sql))
         {   
             sqlHistory_.put(sql, sql);
-            JMenuItem menuItem = new JMenuItem(new RunHistoryQueryAction(sql));
+            JMenuItem menuItem = new JMenuItem(new ExecutePriorAction(sql));
             sqlPopup_.add(menuItem);
         }
     }
@@ -287,7 +289,7 @@ public class QueryPlugin extends JPanel implements IPlugin
             String[] historyItems = StringUtil.tokenize(history, "|");
     
             logger_.debug(
-                "Restoring " + historyItems.length + "sql stmts to history.");
+                "Restoring " + historyItems.length + " saved sql stmts");
             
             for (int i=0; i<historyItems.length; i++)
                 addToHistory(historyItems[i]);
@@ -337,9 +339,9 @@ public class QueryPlugin extends JPanel implements IPlugin
     /**
      * Runs the query and appends the results to the output text area
      */
-    private class RunQueryAction extends AbstractAction
+    private class ExecuteAction extends AbstractAction
     {
-        public RunQueryAction()
+        public ExecuteAction()
         {
             super("Execute SQL");
             putValue(MNEMONIC_KEY, new Integer('E'));
@@ -352,12 +354,22 @@ public class QueryPlugin extends JPanel implements IPlugin
             
             if (StringUtil.isNullOrEmpty(sql))
             {
-                statusBar_.setStatus("Nothing to execute.");
+                statusBar_.setStatus("Enter SQL to execute");
             }
             else
             {
-                String results = executeSQL(sql);        
-                resultsArea_.append(results);
+                try
+                {   
+                    statusBar_.setStatus("Executing...");
+                    SwingUtil.setWaitCursor(QueryPlugin.this);
+                    String results = executeSQL(sql);        
+                    resultsArea_.append(results);
+                }
+                finally
+                {
+                    SwingUtil.setDefaultCursor(QueryPlugin.this);
+                    statusBar_.setStatus("Done");
+                }
             }
         }
     }
@@ -365,11 +377,11 @@ public class QueryPlugin extends JPanel implements IPlugin
     /**
      * Runs the query selected from the SQL history popup menu
      */
-    private class RunHistoryQueryAction extends AbstractAction
+    private class ExecutePriorAction extends AbstractAction
     {
         private String sql_;
         
-        public RunHistoryQueryAction(String sql)
+        public ExecutePriorAction(String sql)
         {
             super(sql);
             sql_ = sql;
@@ -379,7 +391,7 @@ public class QueryPlugin extends JPanel implements IPlugin
         public void actionPerformed(ActionEvent e)
         {
             sqlArea_.setText(sql_);
-            new RunQueryAction().actionPerformed(e);
+            new ExecuteAction().actionPerformed(e);
         }
     }
     
