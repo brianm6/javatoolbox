@@ -91,6 +91,7 @@ public class JFontChooser extends JPanel
     // UI Name Constants
     //--------------------------------------------------------------------------
     
+    public static final String NAME_FONT_CHOOSER = "fontChooser.component";
     public static final String NAME_FONT_LIST = "fontfamily.list";
     public static final String NAME_STYLE_LIST = "fontStyle.list";
     public static final String NAME_ANTIALIAS_CHECKBOX = "antialias.checkbox";
@@ -225,6 +226,7 @@ public class JFontChooser extends JPanel
         int[]    predefinedSizes, 
         boolean  antiAlias)
     {
+        setName(NAME_FONT_CHOOSER);
         setLayout(new GridBagLayout());
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         GridBagConstraints gbc = new GridBagConstraints();
