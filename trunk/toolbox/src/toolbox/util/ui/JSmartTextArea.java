@@ -28,7 +28,7 @@ import toolbox.workspace.IPreferenced;
  *   <li>Popup menu with cut/copy/paste/save/insert
  *   <li>Capacity limit with the automatic pruning of text to a given percentage
  *       when the capacity is reached.
- *   <li>Support to save/restore preferences to XML
+ *   <li>Support to save/restore preferences to XML including font
  *   <li>Makes sure all appends are executed on the event dispatch thread
  *   <li>Popupmenu access to toggle the built in line wrapping
  * </ul>
