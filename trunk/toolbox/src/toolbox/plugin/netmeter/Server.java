@@ -11,7 +11,10 @@ import toolbox.util.net.ISocketServerListener;
 import toolbox.util.net.SocketServer;
 import toolbox.util.net.SocketServerConfig;
 import toolbox.util.service.Initializable;
+import toolbox.util.service.ObservableService;
 import toolbox.util.service.ServiceException;
+import toolbox.util.service.ServiceListener;
+import toolbox.util.service.ServiceNotifier;
 import toolbox.util.service.ServiceState;
 import toolbox.util.service.ServiceTransition;
 import toolbox.util.service.ServiceUtil;
@@ -24,7 +27,7 @@ import toolbox.util.statemachine.StateMachine;
  * 
  * @see toolbox.plugin.netmeter.Client
  */
-public class Server implements Startable, Initializable
+public class Server implements Startable, Initializable, ObservableService
 {
     //--------------------------------------------------------------------------
     // Fields
@@ -49,6 +52,11 @@ public class Server implements Startable, Initializable
      * Socket server listener. 
      */
     private ISocketServerListener serverListener_;
+    
+    /**
+     * Notifier for service related events.
+     */
+    private ServiceNotifier notifier_;
     
     //--------------------------------------------------------------------------
     // Main
@@ -101,6 +109,7 @@ public class Server implements Startable, Initializable
         
         // Create a state machine that adheres to the natures of this server
         machine_ = ServiceUtil.createStateMachine(this);
+        notifier_ = new ServiceNotifier(this);
     }
 
     //--------------------------------------------------------------------------
@@ -232,6 +241,38 @@ public class Server implements Startable, Initializable
     public ServiceState getState()
     {
         return (ServiceState) machine_.getState();
+    }
+    
+    //--------------------------------------------------------------------------
+    // ObservableService Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see toolbox.util.service.ObservableService#addServiceListener(
+     *      toolbox.util.service.ServiceListener)
+     */
+    public void addServiceListener(ServiceListener listener)
+    {
+        notifier_.addServiceListener(listener);
+    }
+
+
+    /**
+     * @see toolbox.util.service.ObservableService#removeServiceListener(
+     *      toolbox.util.service.ServiceListener)
+     */
+    public void removeServiceListener(ServiceListener listener)
+    {
+        notifier_.removeServiceListener(listener);
+    }
+    
+    
+    /**
+     * @see toolbox.util.service.ObservableService#getStateMachine()
+     */
+    public StateMachine getStateMachine()
+    {
+        return machine_;
     }
     
     //--------------------------------------------------------------------------
