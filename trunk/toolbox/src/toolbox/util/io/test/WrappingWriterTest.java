@@ -6,6 +6,8 @@ import java.io.StringWriter;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import org.apache.log4j.Category;
+
 import toolbox.util.StringUtil;
 import toolbox.util.io.WrappingWriter;
 
@@ -14,6 +16,9 @@ import toolbox.util.io.WrappingWriter;
  */
 public class WrappingWriterTest extends TestCase
 {
+    private static final Category logger_ = 
+        Category.getInstance(WrappingWriterTest.class);
+        
     /**
      * Entrypoint
      * 
@@ -34,13 +39,6 @@ public class WrappingWriterTest extends TestCase
         super(name);
     }
 
-    /**
-     * Setup
-     */
-    public void setUp()
-    {
-        System.out.println(StringUtil.repeat("-", 80));
-    }
 
     /**
      * Tests WrappingWriter
@@ -56,7 +54,7 @@ public class WrappingWriterTest extends TestCase
         w.write("11111111112222222222333333333344444444445555555555");
         w.flush();
         w.close();
-        System.out.println(sw.toString());
+        logger_.info("\n" + sw.toString());
     }
     
     /**
@@ -73,7 +71,7 @@ public class WrappingWriterTest extends TestCase
         w.write("111111112222222233333333444444445555");
         w.flush();
         w.close();
-        System.out.println(sw.toString());
+        logger_.info("\n" + sw.toString());
     }
     
     
@@ -88,8 +86,8 @@ public class WrappingWriterTest extends TestCase
         ww.close();
         String s = sw.toString();
         String compare = "";
-        System.out.println(StringUtil.getStringRuler(s));
-        System.out.println(StringUtil.getStringRuler(compare));
+        logger_.info("\n" + StringUtil.getStringRuler(s));
+        logger_.info("\n" + StringUtil.getStringRuler(compare));
         assertEquals("Strings don't match", compare, s);
     }
 
@@ -106,7 +104,7 @@ public class WrappingWriterTest extends TestCase
         ww.close();
         String s = sw.toString();
         String compare = "a"; 
-        System.out.println(StringUtil.getStringRuler(s));
+        logger_.info("\n" + StringUtil.getStringRuler(s));
         assertEquals("Strings don't match", compare, s);
     }
     
@@ -123,7 +121,7 @@ public class WrappingWriterTest extends TestCase
         ww.write("12345");
         ww.close();
         String s = sw.toString();
-        System.out.println(StringUtil.getStringRuler(s));
+        logger_.info(StringUtil.getStringRuler(s));
         assertEquals("strings don't match", expected, s);
     }    
 
@@ -140,7 +138,7 @@ public class WrappingWriterTest extends TestCase
         ww.write("123456");
         ww.close();
         String s = sw.toString();
-        System.out.println(s);
+        logger_.info(s);
         assertEquals("strings don't match", expected, s);
     }
     
@@ -157,7 +155,7 @@ public class WrappingWriterTest extends TestCase
         ww.write("1234567");
         ww.close();
         String s = sw.toString();
-        System.out.println(s);
+        logger_.info(s);
         assertEquals("strings don't match", expected, s);
     }    
     
@@ -174,7 +172,7 @@ public class WrappingWriterTest extends TestCase
         ww.write("12345");
         ww.close();
         String s = sw.toString();
-        System.out.println(s);
+        logger_.info(s);
         assertEquals("strings don't match", expected, s);
     }
     
@@ -190,7 +188,7 @@ public class WrappingWriterTest extends TestCase
         ww.close();
         String s = sw.toString();
         String compare = "";
-        System.out.println(StringUtil.getStringRuler(s));
+        logger_.info("\n" + StringUtil.getStringRuler(s));
         assertEquals("Strings don't match", compare, s);
     }
 
@@ -208,7 +206,7 @@ public class WrappingWriterTest extends TestCase
         ww.close();
         String s = sw.toString();
         String compare = "[a]"; 
-        System.out.println(StringUtil.getStringRuler(s));
+        logger_.info("\n" + StringUtil.getStringRuler(s));
         assertEquals("Strings don't match", compare, s);
     }
     
@@ -225,7 +223,7 @@ public class WrappingWriterTest extends TestCase
         ww.write("12345");
         ww.close();
         String s = sw.toString();
-        System.out.println(StringUtil.getStringRuler(s));
+        logger_.info("\n" + StringUtil.getStringRuler(s));
         assertEquals("strings don't match", expected, s);
     }    
 
@@ -242,7 +240,7 @@ public class WrappingWriterTest extends TestCase
         ww.write("123456");
         ww.close();
         String s = sw.toString();
-        System.out.println(s);
+        logger_.info(s);
         assertEquals("strings don't match", expected, s);
     }
 
@@ -259,7 +257,7 @@ public class WrappingWriterTest extends TestCase
         ww.write("1234567");
         ww.close();
         String s = sw.toString();
-        System.out.println(s);
+        logger_.info(s);
         assertEquals("strings don't match", expected, s);
     }    
     
@@ -276,7 +274,7 @@ public class WrappingWriterTest extends TestCase
         ww.write("12345");
         ww.close();
         String s = sw.toString();
-        System.out.println(s);
+        logger_.info(s);
         assertEquals("strings don't match", expected, s);
     }
 }
