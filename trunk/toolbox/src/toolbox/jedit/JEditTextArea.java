@@ -20,7 +20,8 @@ import toolbox.util.ui.AntiAliased;
 import toolbox.workspace.IPreferenced;
 
 /**
- * Modified JEditTextArea that supports a host of convenient features.<br>
+ * Modified JEditTextArea that supports a host of convenient features.
+ * <p>
  * These features include:
  * <ul>
  *   <li>Mouse wheel support
@@ -190,9 +191,9 @@ public class JEditTextArea extends org.jedit.syntax.JEditTextArea
     //--------------------------------------------------------------------------
     // Antialiased Interface
     //--------------------------------------------------------------------------
-    
+
     /**
-     * @see toolbox.util.ui.AntiAliased#setAntiAlias(boolean)
+     * @see toolbox.util.ui.AntiAliased#setAntiAliased(boolean)
      */
     public void setAntiAliased(boolean b)
     {
