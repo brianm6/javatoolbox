@@ -229,6 +229,17 @@
         	src       ="${lib}/metouia.jar" 
             dest      ="${classes}" 
             overwrite ="false" />
+
+        <unjar 
+        	src       ="${lib}/commons-cli.jar" 
+            dest      ="${classes}" 
+            overwrite ="false" />
+
+        <unjar 
+        	src       ="${lib}/commons-lang-1.0-rc1.jar" 
+            dest      ="${classes}" 
+            overwrite ="false" />
+
                              
         <jar 
         	jarfile ="${dist}/toolbox.jar" 
