@@ -27,39 +27,55 @@ import toolbox.util.StringUtil;
  * \toolbox\lib\jakarta-regexp-1.2.jar       29,871    05-14-2002  06:58p
  * 
  * </pre>
- * 
  */
 public final class Main
 {
-    /** Max length for size column */
+    /** 
+     * Max length for size column 
+     */
     private static final int MAX_SIZE_LEN = 12;
     
-    /** Max length for date column */
+    /** 
+     * Max length for date column 
+     */
     private static final int MAX_DATE_LEN = 14;
     
-    /** Max length for time column */
+    /** 
+     * Max length for time column 
+     */
     private static final int MAX_TIME_LEN = 8;
 
-    /** Column heading for archive */
+    /** 
+     * Column heading for archive 
+     */
     private static final String COL_ARCHIVE = "JAR/Directory";
     
-    /** Column heading for date */
+    /** 
+     * Column heading for date 
+     */
     private static final String COL_DATE = "Date";
     
-    /** Column heading for size */
+    /** 
+     * Column heading for size 
+     */
     private static final String COL_SIZE = "Size";
     
-    /** Column heading for time */    
+    /** 
+     * Column heading for time 
+     */    
     private static final String COL_TIME = "Time";
 
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+    
     /**
      * Entry point
      * 
-     * @param  args  None recognized
+     * @param args None recognized
      */
     public static void main(String[] args)
     {
-
         // stuffed everything info main()
         String classPath = System.getProperty("java.class.path");
         
@@ -166,8 +182,8 @@ public final class Main
     /**
      * Formats date to specific format: 01/01/1980  12/31/1999
      * 
-     * @param   d   Date to format
-     * @return      Formatted date
+     * @param d Date to format
+     * @return Formatted date
      */
     static String formatDate(Date d)
     {
@@ -179,8 +195,8 @@ public final class Main
     /**
      * Formats the file size length to include commas: 1,233,276
      * 
-     * @param   l   file length
-     * @return      formatted length
+     * @param l file length
+     * @return formatted length
      */
     static String formatLength(long l)
     {
@@ -195,8 +211,8 @@ public final class Main
     /**
      * Formats time to specific format:  12:47a  01:07p
      * 
-     * @param   t   Date to format
-     * @return      Formatted time
+     * @param t Date to format
+     * @return Formatted time
      */
     static String formatTime(Date t)
     {
@@ -215,8 +231,8 @@ public final class Main
     /**
      * Builds a string with a given number of spaces
      * 
-     * @param   l   number of spaces
-     * @return      string containing given number of spaces
+     * @param l number of spaces
+     * @return string containing given number of spaces
      */
     static String repeatSpace(int l)
     {

@@ -21,7 +21,7 @@ public class Main extends TailAdapter
     /**
      * Entrypoint 
      * 
-     * @param  args  List of files to tail
+     * @param args List of files to tail
      */    
     public static void main(String args[])
     {
@@ -35,7 +35,7 @@ public class Main extends TailAdapter
     /**
      * Arg constructor
      * 
-     * @param  args  Array of files to tail
+     * @param args Array of files to tail
      */
     public Main(String args[])
     {

@@ -149,7 +149,7 @@ public class JTail extends JFrame implements IPreferenced
     /**
      * Sets the status bar
      * 
-     * @param  statusBar  Shared status bar
+     * @param statusBar Shared status bar
      */
     public void setStatusBar(IStatusBar statusBar)
     {

@@ -17,16 +17,19 @@ import toolbox.util.ClassUtil;
  */
 public class PackageTester
 {
-    /** Logger */
     public static final Logger logger_ = 
         Logger.getLogger(PackageTester.class);
     
     private List packages_ = new ArrayList();
 
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+    
     /**
      * Runs tests cases in one or more given package names
      * 
-     * @param  args  List of packages to test
+     * @param args List of packages to test
      */            
     public static void main(String args[])
     {
@@ -46,14 +49,14 @@ public class PackageTester
     //--------------------------------------------------------------------------
 
     /**
-     * Default constructor
+     * Creates a PackageTester
      */
     public PackageTester() 
     {
     }
     
     /**
-     * Constructor for PackageTester.
+     * Creates a PackageTester
      * 
      * @param  packageName  Package name
      */
@@ -62,7 +65,6 @@ public class PackageTester
         addPackage(packageName);
     }
 
-
     //--------------------------------------------------------------------------
     //  Public
     //--------------------------------------------------------------------------
@@ -70,7 +72,7 @@ public class PackageTester
     /**
      * Adds a package to the list of packages to be tested
      * 
-     * @param  packageName  Package name to add
+     * @param packageName Package name to add
      */
     public void addPackage(String packageName)
     {

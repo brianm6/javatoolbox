@@ -151,9 +151,9 @@ public class TcpTunnel implements TcpTunnelListener
     /**
      * Entrypoint 
      * 
-     * @param  args  [0] = listenport
-     *               [1] = host to tunnel to
-     *               [2] = port to tunnel to
+     * @param args [0] = listenport
+     *             [1] = host to tunnel to
+     *             [2] = port to tunnel to
      */
     public static void main(String args[])
     {
@@ -185,9 +185,9 @@ public class TcpTunnel implements TcpTunnelListener
     /**
      * Creates a TcpTunnel with incoming/outgoing data echoed to System.out
      * 
-     * @param  listenPort  Local port to listen on
-     * @param  remoteHost  Remote host to connect to
-     * @param  remotePort  Remote port to connect to
+     * @param listenPort Local port to listen on
+     * @param remoteHost Remote host to connect to
+     * @param remotePort Remote port to connect to
      */
     public TcpTunnel(int listenPort, String remoteHost, int remotePort)
     {
@@ -209,7 +209,7 @@ public class TcpTunnel implements TcpTunnelListener
     /**
      * Sets the sink for incoming data
      * 
-     * @param stream  Sink for incoming data
+     * @param stream Sink for incoming data
      */
     public void setIncomingSink(OutputStream stream)
     {
@@ -341,7 +341,7 @@ public class TcpTunnel implements TcpTunnelListener
     /**
      * Adds a TcpTunnelListener
      * 
-     * @param  listener  TcpTunnelListener to add
+     * @param listener TcpTunnelListener to add
      */
     public void addTcpTunnelListener(TcpTunnelListener listener)
     {
@@ -352,7 +352,7 @@ public class TcpTunnel implements TcpTunnelListener
      * Fires notifcation that the status of the tunnel has changed to all
      * registered listeners.
      * 
-     * @param  status  New status
+     * @param status New status
      */
     protected void fireStatusChanged(String status)
     {
@@ -364,7 +364,7 @@ public class TcpTunnel implements TcpTunnelListener
      * Fires notifcation that the number of bytes read has changed to all
      * registered listeners.
      * 
-     * @param  connRead  Bytes read during the life of the last connection
+     * @param connRead Bytes read during the life of the last connection
      */
     protected void fireBytesRead(int connRead)
     {
@@ -376,7 +376,7 @@ public class TcpTunnel implements TcpTunnelListener
      * Fires notifcation that the number of bytes written has changed to all
      * registered listeners.
      * 
-     * @param  connWritten  Bytes written during the life of the last connection
+     * @param connWritten Bytes written during the life of the last connection
      */
     protected void fireBytesWritten(int connWritten)
     {
@@ -388,14 +388,13 @@ public class TcpTunnel implements TcpTunnelListener
     /**
      * Fires notifcation that the tunnel has started.
      * 
-     * @param  status  New status
+     * @param status New status
      */
     protected void fireTunnelStarted()
     {
         for (Iterator i = listeners_.iterator(); i.hasNext(); )
             ((TcpTunnelListener) i.next()).tunnelStarted(this);    
     }
-
     
     //--------------------------------------------------------------------------
     // Interface TcpTunnelListener
@@ -435,7 +434,6 @@ public class TcpTunnel implements TcpTunnelListener
         System.out.println("Tunnel started");
     }
     
-    
     //--------------------------------------------------------------------------
     // Inner Classes
     //--------------------------------------------------------------------------
@@ -446,7 +444,7 @@ public class TcpTunnel implements TcpTunnelListener
          * Tally up counts and generate bytesRead/Written events when
          * stream is closed
          * 
-         * @param  stream  Stream that was closed
+         * @param stream Stream that was closed
          */
         public void streamClosed(EventOutputStream stream)
         {
@@ -470,14 +468,26 @@ public class TcpTunnel implements TcpTunnelListener
             } 
         }
 
+        /**
+         * @see toolbox.util.io.EventOutputStream.Listener#byteWritten(
+         *      toolbox.util.io.EventOutputStream, int)
+         */
         public void byteWritten(EventOutputStream stream, int b)
         { 
         }
         
+        /**
+         * @see toolbox.util.io.EventOutputStream.Listener#streamFlushed(
+         *      toolbox.util.io.EventOutputStream)
+         */
         public void streamFlushed(EventOutputStream stream)
         {
         }
         
+        /**
+         * @see toolbox.util.io.EventOutputStream.Listener#streamThroughput(
+         *      toolbox.util.io.EventOutputStream, float)
+         */
         public void streamThroughput(EventOutputStream stream, 
             float bytesPerPeriod)
         {

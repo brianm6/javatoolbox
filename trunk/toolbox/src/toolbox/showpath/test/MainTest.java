@@ -17,7 +17,7 @@ public class MainTest extends TestCase
     /**
      * Entrypoint
      * 
-     * @param  args  None recognized
+     * @param args None recognized
      */    
     public static void main(String[] args)
     {

@@ -35,7 +35,7 @@ public class LineScanner implements MachineConstants
      * Creates a LineScanner for the given line of source code. Assumes tabs
      * have already been removed from the line of source code.
      * 
-     * @param  line   Line of source code
+     * @param line Line of source code
      */
     public LineScanner(String line)
     {
@@ -49,7 +49,7 @@ public class LineScanner implements MachineConstants
     /**
      * Sets the current line
      * 
-     * @param  line  Line of source code
+     * @param line Line of source code
      */
     public void setLine(String line)
     {
@@ -60,7 +60,7 @@ public class LineScanner implements MachineConstants
     /**
      * Peeks to next token in the line
      * 
-     * @return  State of machine
+     * @return State of machine
      */
     public int peek()
     {

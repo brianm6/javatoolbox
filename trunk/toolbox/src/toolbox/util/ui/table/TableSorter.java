@@ -91,7 +91,7 @@ public class TableSorter extends TableMap
     /**
      * Creates a TableSorter for the given TableModel
      * 
-     * @param  model Model to provide a sorted view of
+     * @param model Model to provide a sorted view of
      */
     public TableSorter(TableModel model)
     {
@@ -106,7 +106,7 @@ public class TableSorter extends TableMap
     /**
      * Sets the model
      * 
-     * @param  model  Table model
+     * @param model Table model
      */
     public void setModel(TableModel model)
     {
@@ -117,8 +117,8 @@ public class TableSorter extends TableMap
     /**
      * Gets table cell value
      * 
-     * @param  row      Row number
-     * @param  column   Column number
+     * @param row Row number
+     * @param column Column number
      * @return Table cell value at the given coordinates 
      */
     public Object getValueAt(int row, int column)
@@ -133,9 +133,9 @@ public class TableSorter extends TableMap
     /**
      * Sets table cell value
      * 
-     * @param  value   Cell value
-     * @param  row     Row number
-     * @param  column  Column number
+     * @param value Cell value
+     * @param row Row number
+     * @param column Column number
      */
     public void setValueAt(Object value, int row, int column)
     {
@@ -150,7 +150,7 @@ public class TableSorter extends TableMap
     /**
      * Notification that the table model has changed
      * 
-     * @param  e  Table model event
+     * @param e Table model event
      */
     public void tableChanged(TableModelEvent e)
     {
@@ -172,7 +172,7 @@ public class TableSorter extends TableMap
     /**
      * Sorts by the given column
      * 
-     * @param  column  Column index
+     * @param column Column index
      */
     public void sortByColumn(int column)
     {
@@ -182,8 +182,8 @@ public class TableSorter extends TableMap
     /**
      * Sorts by the given column
      * 
-     * @param column     Column index
-     * @param ascending  Sort ascending
+     * @param column Column index
+     * @param ascending Sort ascending
      */
     public void sortByColumn(int column, boolean ascending)
     {
@@ -198,7 +198,7 @@ public class TableSorter extends TableMap
     /**
      * Shortcut to add mouse listener to the jtables internal table header
      * 
-     * @param table  Table with header
+     * @param table Table with header
      */    
     public void addMouseListenerToHeaderInTable(JTable table)
     {
@@ -226,7 +226,7 @@ public class TableSorter extends TableMap
     /**
      * Sets the enabled state of the table sorder.
      * 
-     * @param  b  Flag to enable/disable the sorter
+     * @param b Flag to enable/disable the sorter
      */
     public void setEnabled(boolean b)
     {
@@ -254,9 +254,9 @@ public class TableSorter extends TableMap
     /**
      * Compares rows by column
      * 
-     * @param  row1    First row index
-     * @param  row2    Second row index
-     * @param  column  Column index
+     * @param row1 First row index
+     * @param row2 Second row index
+     * @param column Column index
      * @return 1 if row1 > row2, 0 if row1 == row2, -1 if row1 < row2
      */    
     protected int compareRowsByColumn(int row1, int row2, int column)
@@ -364,9 +364,9 @@ public class TableSorter extends TableMap
     /**
      * Compares two rows
      * 
-     * @param   row1  First row index
-     * @param   row2  Second row index
-     * @return  1 if row1 > row2, 0 if row1 == row2, -1 if row1 < row2
+     * @param row1 First row index
+     * @param row2 Second row index
+     * @return 1 if row1 > row2, 0 if row1 == row2, -1 if row1 < row2
      */
     protected int compare(int row1, int row2)
     {
@@ -415,7 +415,7 @@ public class TableSorter extends TableMap
     /**
      * Sorts the table
      * 
-     * @param sender  Initiater of the sort (currently unused)
+     * @param sender Initiater of the sort (currently unused)
      */
     protected void sort(Object sender)
     {
@@ -431,10 +431,10 @@ public class TableSorter extends TableMap
     /**
      * Implementation of a fast sorting strategy
      * 
-     * @param  from  Source
-     * @param  to    Destination
-     * @param  low   Start index
-     * @param  high  End index
+     * @param from Source
+     * @param to Destination
+     * @param low Start index
+     * @param high End index
      */    
     protected void shuttlesort(int from[], int to[], int low, int high)
     {
@@ -498,8 +498,8 @@ public class TableSorter extends TableMap
     /**
      * Swaps two indices in the indexes_ array
      *
-     * @param  i  First index
-     * @param  j  Second index
+     * @param i First index
+     * @param j Second index
      */    
     protected void swap(int i, int j)
     {

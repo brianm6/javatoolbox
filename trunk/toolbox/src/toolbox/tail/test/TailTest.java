@@ -31,7 +31,9 @@ public class TailTest extends TestCase
     public static final Logger logger_ =
         Logger.getLogger(TailTest.class);
 
-    /** Word list used for test data */
+    /** 
+     * Word list used for test data 
+     */
     private String[] words_;
     
     //--------------------------------------------------------------------------
@@ -41,7 +43,7 @@ public class TailTest extends TestCase
     /**
      * Entrypoint
      * 
-     * @param  args  None recognized
+     * @param args None recognized
      */
     public static void main(String[] args)
     {
@@ -84,6 +86,8 @@ public class TailTest extends TestCase
     
     /**
      * Tests tailing of a files backlog for a specific number of lines
+     * 
+     * @throws Exception on error
      */
     public void testTailBacklog() throws Exception
     {
@@ -130,9 +134,9 @@ public class TailTest extends TestCase
     }
 
     /**
+     * Tests tailing a file
      * 
-     * 
-     * @throws  Exception on error
+     * @throws Exception on error
      */
     public void testTailFile() throws Exception
     {
@@ -173,7 +177,7 @@ public class TailTest extends TestCase
     /**
      * Tests the lifecycle of a Tail object (start/stop/pause/unpause)
      * 
-     * @throws  Exception on error
+     * @throws Exception on error
      */
     public void testTailLifeCycle() throws Exception
     {
@@ -228,7 +232,7 @@ public class TailTest extends TestCase
     /**
      * Tests tailing of a stream
      * 
-     * @throws  Exception on error
+     * @throws Exception on error
      */
     public void testTailStream() throws Exception
     {
@@ -297,10 +301,10 @@ public class TailTest extends TestCase
     /**
      * Writes output to a writer in a delayed fashion
      * 
-     * @param  writer     Writer to send output to
-     * @param  iterations Number of times to iterate
-     * @param  delay      Delay between writes in seconds
-     * @param  value      String to send to writer
+     * @param writer Writer to send output to
+     * @param iterations Number of times to iterate
+     * @param delay Delay between writes in seconds
+     * @param value String to send to writer
      */                
     public void writeDelayed(PipedWriter writer, int iterations, 
         int delay, String value)
@@ -322,7 +326,7 @@ public class TailTest extends TestCase
     /**
      * Creates a paragraph full of random words.
      * 
-     * @param  lines  Number of lines contained in the paragraph
+     * @param lines Number of lines contained in the paragraph
      * @return Paragraph of random and gramatically incorrect sentences
      */
     protected String makeParagraph(int lines)

@@ -34,22 +34,34 @@ public class JTailPlugin implements IPlugin
     //--------------------------------------------------------------------------
     // IPlugin Interface
     //--------------------------------------------------------------------------
-    
+
+    /**
+     * @see toolbox.util.ui.plugin.IPlugin#getName()
+     */
     public String getName()
     {
         return "JTail";
     }
 
+    /**
+     * @see toolbox.util.ui.plugin.IPlugin#getComponent()
+     */
     public JComponent getComponent()
     {
         return (JComponent) jtail_.getContentPane();
     }
 
+    /**
+     * @see toolbox.util.ui.plugin.IPlugin#getDescription()
+     */
     public String getDescription()
     {
         return "Tails files as they grow. Similar to 'tail -f' on Unix";
     }
 
+    /**
+     * @see toolbox.util.ui.plugin.IPlugin#startup(java.util.Map)
+     */
     public void startup(Map params)
     {
         IStatusBar statusBar = null;
@@ -77,6 +89,9 @@ public class JTailPlugin implements IPlugin
         jtail_.savePrefs(prefs);
     }
 
+    /**
+     * @see toolbox.util.ui.plugin.IPlugin#shutdown()
+     */
     public void shutdown()
     {
     }

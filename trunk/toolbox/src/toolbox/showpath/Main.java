@@ -15,10 +15,14 @@ public class Main
      */
     private List checkList_;
 
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+    
     /**
      * Entrypoint for showclasspath
      * 
-     * @param  args  None recognized 
+     * @param args None recognized 
      */
     public static void main(String[] args)
     {
@@ -30,7 +34,7 @@ public class Main
     //--------------------------------------------------------------------------
     
     /**
-     * Default constructor
+     * Creates a Main
      */
     public Main()
     {
@@ -62,8 +66,8 @@ public class Main
     /**
      * Checks if a path is a duplicate by checking the existing list
      * 
-     * @param   dupe   Path to check for duplicate
-     * @return  True if duplicate, flase otherwise
+     * @param dupe Path to check for duplicate
+     * @return True if duplicate, flase otherwise
      */
     private boolean isDupe(String dupe)
     {

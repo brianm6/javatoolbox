@@ -45,8 +45,8 @@ public class Relay implements Runnable
     /**
      * Creates a new relay between an input and output stream
      * 
-     * @param  in   Input stream to read bytes from
-     * @param  out  Output stream to write bytes to
+     * @param in Input stream to read bytes from
+     * @param out Output stream to write bytes to
      */
     public Relay(InputStream in, OutputStream out)
     {

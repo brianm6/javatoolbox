@@ -9,25 +9,39 @@ import toolbox.util.ui.plugin.IPreferenced;
  */
 public interface ITailPaneConfig extends IPreferenced
 {
-    /** Default antialis is false */
+    /** 
+     * Default antialis is false 
+     */
     public static final boolean DEFAULT_ANTIALIAS = false;    
     
-    /** Default autoscroll is true */
+    /** 
+     * Default autoscroll is true 
+     */
     public static final boolean DEFAULT_AUTOSCROLL = true;
     
-    /** Default show line number is false */
+    /** 
+     * Default show line number is false 
+     */
     public static final boolean DEFAULT_LINENUMBERS = false;
     
-    /** Default autostart is true */
+    /** 
+     * Default autostart is true 
+     */
     public static final boolean DEFAULT_AUTOSTART = true;
     
-    /** Default regular expression is empty string */
+    /** 
+     * Default regular expression is empty string 
+     */
     public static final String  DEFAULT_REGEX = "";
     
-    /** Default match case on regular expression is false */
+    /**
+     * Default match case on regular expression is false
+     */
     public static final boolean DEFAULT_REGEX_MATCHCASE = false;
     
-    /** Default cut expression is empty string */
+    /** 
+     * Default cut expression is empty string 
+     */
     public static final String  DEFAULT_CUT_EXPRESSION = "";
 
     
@@ -122,7 +136,7 @@ public interface ITailPaneConfig extends IPreferenced
     /**
      * Sets the cut expression used to exclude columns
      * 
-     * @param  cutExpression  Cut expression
+     * @param cutExpression Cut expression
      */
     public void setCutExpression(String cutExpression);
 
@@ -131,7 +145,7 @@ public interface ITailPaneConfig extends IPreferenced
     /**
      * Accessor for the antialias flag
      * 
-     * @return  True if antialias is on, false otherwise
+     * @return True if antialias is on, false otherwise
      */
     public boolean isAntiAlias();
     
@@ -139,7 +153,7 @@ public interface ITailPaneConfig extends IPreferenced
     /**
      * Mutator for the antialias flag
      * 
-     * @param  b  True to turn antialias on, false otherwise
+     * @param b True to turn antialias on, false otherwise
      */
     public void setAntiAlias(boolean b);
     
@@ -147,7 +161,7 @@ public interface ITailPaneConfig extends IPreferenced
     /**
      * Mutator for the autostart flag
      * 
-     * @param  autoStart  True to turn autostart on, false otherwise
+     * @param autoStart True to turn autostart on, false otherwise
      */
     public void setAutoStart(boolean autoStart);
     
@@ -155,7 +169,7 @@ public interface ITailPaneConfig extends IPreferenced
     /**
      * Accessor for the autostart flag
      * 
-     * @return  Autostart flag
+     * @return Autostart flag
      */
     public boolean isAutoStart();
 }

@@ -20,15 +20,15 @@ public class JTailConfig implements IJTailConfig, XMLConstants, IPreferenced
     private static final Logger logger_ = 
         Logger.getLogger(JTailConfig.class);
     
-    private ITailPaneConfig[]   tailPaneConfigs_;
-    private ITailPaneConfig     defaultConfig_;
+    private ITailPaneConfig[] tailPaneConfigs_;
+    private ITailPaneConfig defaultConfig_;
     
     //--------------------------------------------------------------------------
     //  Constructors
     //--------------------------------------------------------------------------
     
     /**
-     * Default constructor
+     * Creates a JTailConfig
      */
     public JTailConfig()
     {
@@ -40,21 +40,35 @@ public class JTailConfig implements IJTailConfig, XMLConstants, IPreferenced
     //  IJTailConfig Interface
     //--------------------------------------------------------------------------
 
+    /**
+     * @see toolbox.jtail.config.IJTailConfig#setDefaultConfig(
+     *      toolbox.jtail.config.ITailPaneConfig)
+     */
     public void setDefaultConfig(ITailPaneConfig defaultConfig)
     {
         defaultConfig_ = defaultConfig;
     }
     
+    /**
+     * @see toolbox.jtail.config.IJTailConfig#getDefaultConfig()
+     */
     public ITailPaneConfig getDefaultConfig()
     {
         return defaultConfig_;
     }
 
+    /**
+     * @see toolbox.jtail.config.IJTailConfig#getTailConfigs()
+     */
     public ITailPaneConfig[] getTailConfigs()
     {
         return tailPaneConfigs_;
     }
 
+    /**
+     * @see toolbox.jtail.config.IJTailConfig#setTailConfigs(
+     *      toolbox.jtail.config.ITailPaneConfig[])
+     */
     public void setTailConfigs(ITailPaneConfig[] tailPaneConfigs)
     {
         tailPaneConfigs_ = tailPaneConfigs;

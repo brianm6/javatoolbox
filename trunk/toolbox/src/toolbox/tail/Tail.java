@@ -141,8 +141,8 @@ public class Tail
     /**
      * Follows the given reader sending the tail output to the writer.
      * 
-     * @param   readFrom  Reader to follow
-     * @param   writeTo   Writer to send the tail output to
+     * @param readFrom Reader to follow
+     * @param writeTo Writer to send the tail output to
      */
     public void follow(Reader readFrom, Writer writeTo, String threadName) 
     {
@@ -169,7 +169,7 @@ public class Tail
     /**
      * Starts the tail
      * 
-     * @throws  FileNotFoundException on file error
+     * @throws FileNotFoundException on file error
      */
     public void start() throws FileNotFoundException
     {
@@ -371,7 +371,7 @@ public class Tail
     /**
      * Connects to the available source for data. Reader or File
      * 
-     * @throws  FileNotFoundException if file not found
+     * @throws FileNotFoundException if file not found
      */
     protected void connect() throws FileNotFoundException
     {
@@ -388,7 +388,7 @@ public class Tail
     /**
      * Adds a listener to the tail.
      * 
-     * @param  listener   Listener to add
+     * @param listener Listener to add
      */
     public void addTailListener(TailListener listener)
     {
@@ -398,7 +398,7 @@ public class Tail
     /**
      * Removes a listener from the tail.
      * 
-     * @param  listener  Listener to remove
+     * @param listener Listener to remove
      */
     public void removeTailListener(TailListener listener)
     {
@@ -408,7 +408,7 @@ public class Tail
     /**
      * Fires event for availability of the next line of the tail
      * 
-     * @param  line  Next line of the tail
+     * @param line Next line of the tail
      */
     protected void fireNextLine(String line)
     {

@@ -56,7 +56,7 @@ public class Main extends FindClassAdapter
     /**
      * FindClass entry point
      * 
-     * @param   args   Optional switches + name of class to find
+     * @param args Optional switches + name of class to find
      */
     public static void main(String args[])
     {
@@ -160,7 +160,7 @@ public class Main extends FindClassAdapter
      * Starts the search
      * 
      * @throws RESyntaxException on invalid regular expression
-     * @throws IOException on IO error
+     * @throws IOException on I/O error
      */
     public void search() throws RESyntaxException, IOException
     {
@@ -189,7 +189,7 @@ public class Main extends FindClassAdapter
     /**
      * Mutator for case sensetive flag
      * 
-     * @param   b  Case sensetive flag
+     * @param b Case sensetive flag
      */    
     public void setCaseSensetive(boolean b)
     {
@@ -199,7 +199,7 @@ public class Main extends FindClassAdapter
     /**
      * Mutator for the show targets flag
      * 
-     * @param  b Show targets flag
+     * @param b Show targets flag
      */    
     public void setShowTargets(boolean b)
     {
@@ -209,7 +209,7 @@ public class Main extends FindClassAdapter
     /**
      * Mutator for the class to find
      * 
-     * @param  find Class to find
+     * @param find Class to find
      */
     public void setClassToFind(String find)
     {
@@ -219,7 +219,7 @@ public class Main extends FindClassAdapter
     /**
      * Mutator for the output of the program
      *
-     * @param  writer  Writer to send output to
+     * @param writer Writer to send output to
      */
     public void setWriter(Writer writer)
     {
@@ -257,9 +257,9 @@ public class Main extends FindClassAdapter
     //--------------------------------------------------------------------------
  
     /**
-     * Implemenation of IFindClassListener
+     * Implementation of IFindClassListener
      * 
-     * @param  searchResult  Results of class that was found.
+     * @param searchResult Results of class that was found.
      */   
     public void classFound(FindClassResult searchResult)
     {

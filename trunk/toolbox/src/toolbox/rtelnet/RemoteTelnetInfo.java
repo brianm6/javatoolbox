@@ -27,11 +27,11 @@ public class RemoteTelnetInfo
     /**
      * Creates a RemoteTelnetInfo with the given parameters
      * 
-     * @param hostname  Host to telnet to
-     * @param port      Port to connect to on telnet host
-     * @param username  Username 
-     * @param password  Password
-     * @param command   Command to execute
+     * @param hostname Host to telnet to
+     * @param port Port to connect to on telnet host
+     * @param username Username 
+     * @param password Password
+     * @param command Command to execute
      */
     public RemoteTelnetInfo(String hostname, int port, String username, 
         String password, String command)
@@ -48,6 +48,8 @@ public class RemoteTelnetInfo
     //--------------------------------------------------------------------------
     
     /**
+     * Returns the command
+     * 
      * @return String
      */
     public String getCommand()
@@ -56,6 +58,8 @@ public class RemoteTelnetInfo
     }
 
     /**
+     * Returns the hostname
+     * 
      * @return String
      */
     public String getHostname()
@@ -64,6 +68,8 @@ public class RemoteTelnetInfo
     }
 
     /**
+     * Returns the password
+     * 
      * @return String
      */
     public String getPassword()
@@ -72,6 +78,8 @@ public class RemoteTelnetInfo
     }
 
     /**
+     * Returns the telnet port
+     * 
      * @return int
      */
     public int getPort()
@@ -80,6 +88,8 @@ public class RemoteTelnetInfo
     }
 
     /**
+     * Returns the username
+     * 
      * @return String
      */
     public String getUsername()
@@ -142,7 +152,9 @@ public class RemoteTelnetInfo
     //--------------------------------------------------------------------------
     
     /**
-     * @return TelnetInfo as string
+     * Returns TelnetInfo as string
+     * 
+     * @return String
      */
     public String toString()
     {

@@ -40,7 +40,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
     //--------------------------------------------------------------------------
     
     /**
-     * Default constructor
+     * Creates a TailPaneConfig
      */
     public TailPaneConfig()
     {
@@ -57,15 +57,15 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
     /**
      * Creates TailConfig with given parameters
      * 
-     * @param  files              Files to tail
-     * @param  autoScroll         Turn on autoscroll
-     * @param  showLineNumbers    Shows line numbers in output
-     * @param  antiAlias          Antialias text in output area
-     * @param  font               Font of display text area
-     * @param  regularExpression  Optional filter (regular expression) for 
-     *                            weeding out junk
-     * @param  cutExpression      Optional expression for removing columns
-     * @param  autoStart          Autostarts tailing (starts it)
+     * @param files Files to tail
+     * @param autoScroll Turn on autoscroll
+     * @param showLineNumbers Shows line numbers in output
+     * @param antiAlias Antialias text in output area
+     * @param font Font of display text area
+     * @param regularExpression Optional filter (regular expression) for 
+     *        weeding out junk
+     * @param cutExpression Optional expression for removing columns
+     * @param autoStart Autostarts tailing (starts it)
      */
     public TailPaneConfig(
         String[] files, 
@@ -181,6 +181,8 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
     //--------------------------------------------------------------------------
     
     /**
+     * Returns string
+     * 
      * @return String representation
      */
     public String toString()
@@ -203,81 +205,132 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
     //  ITailPaneConfig Interface
     //--------------------------------------------------------------------------
 
+    /**
+     * @see toolbox.jtail.config.ITailPaneConfig#isAutoScroll()
+     */
     public boolean isAutoScroll()
     {
         return autoScroll_;
     }
 
+    /**
+     * @see toolbox.jtail.config.ITailPaneConfig#getFilenames()
+     */
     public String[] getFilenames()
     {
         return filenames_;
     }
 
+    /**
+     * @see toolbox.jtail.config.ITailPaneConfig#isShowLineNumbers()
+     */
     public boolean isShowLineNumbers()
     {
         return showLineNumbers_;
     }
  
+    /**
+     * @see toolbox.jtail.config.ITailPaneConfig#setAutoScroll(boolean)
+     */
     public void setAutoScroll(boolean autoScroll)
     {
         autoScroll_ = autoScroll;
     }
 
+    /**
+     * @see toolbox.jtail.config.ITailPaneConfig#setFilenames(
+     *      java.lang.String[])
+     */
     public void setFilenames(String[] filenames)
     {
         filenames_ = filenames;
     }
 
+    /**
+     * @see toolbox.jtail.config.ITailPaneConfig#setShowLineNumbers(boolean)
+     */
     public void setShowLineNumbers(boolean showLineNumbers)
     {
         showLineNumbers_ = showLineNumbers;
     }
  
+    /**
+     * @see toolbox.jtail.config.ITailPaneConfig#getFont()
+     */
     public Font getFont()
     {
         return font_;
     }
 
+    /**
+     * @see toolbox.jtail.config.ITailPaneConfig#setFont(java.awt.Font)
+     */
     public void setFont(Font font)
     {
         font_ = font;
     }
  
+    /**
+     * @see toolbox.jtail.config.ITailPaneConfig#getRegularExpression()
+     */
     public String getRegularExpression()
     {
         return regularExpression_;
     }
 
+    /**
+     * @see toolbox.jtail.config.ITailPaneConfig#setRegularExpression(
+     *      java.lang.String)
+     */
     public void setRegularExpression(String filter)
     {
         regularExpression_ = filter;
     }
 
+    /**
+     * @see toolbox.jtail.config.ITailPaneConfig#getCutExpression()
+     */
     public String getCutExpression()
     {
         return cutExpression_;
     }
 
+    /**
+     * @see toolbox.jtail.config.ITailPaneConfig#setCutExpression(
+     *      java.lang.String)
+     */
     public void setCutExpression(String cutExpression)
     {
         cutExpression_ = cutExpression;
     }
 
+    /**
+     * @see toolbox.jtail.config.ITailPaneConfig#isAntiAlias()
+     */
     public boolean isAntiAlias()
     {
         return antiAlias_;
     }
 
+    /**
+     * @see toolbox.jtail.config.ITailPaneConfig#setAntiAlias(boolean)
+     */
     public void setAntiAlias(boolean b)
     {
         antiAlias_ = b;
     }
  
+    /**
+     * @see toolbox.jtail.config.ITailPaneConfig#isAutoStart()
+     */
     public boolean isAutoStart()
     {
         return autoStart_;
     }
 
+    /**
+     * @see toolbox.jtail.config.ITailPaneConfig#setAutoStart(boolean)
+     */
     public void setAutoStart(boolean autoStart)
     {
         autoStart_ = autoStart;

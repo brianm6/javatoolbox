@@ -62,7 +62,7 @@ public class ResultsTableModel extends AbstractTableModel
     /**
      * Adds a search result to the end of the table
      * 
-     * @param  results  Search result
+     * @param results Search result
      */        
     public void addResult(FindClassResult result)
     {
@@ -84,7 +84,7 @@ public class ResultsTableModel extends AbstractTableModel
     /**
      * Retrieves the FindClassResult for the given result number
      * 
-     * @param  number  Result number (not row number)
+     * @param number Result number (not row number)
      * @return FindClassResult or null if not found
      */
     public FindClassResult getResult(String number)

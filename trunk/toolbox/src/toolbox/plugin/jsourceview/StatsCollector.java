@@ -49,9 +49,9 @@ public class StatsCollector
     /**
      * Scans a given file and generates statistics
      * 
-     * @param   filename  Name of the file
-     * @return  File statistics
-     * @throws  IOException on I/O error
+     * @param filename Name of the file
+     * @return File statistics
+     * @throws IOException on I/O error
      */
     public FileStats getStats(String filename) throws IOException
     {
@@ -66,9 +66,9 @@ public class StatsCollector
     /**
      * Scans a given file and generates statistics
      * 
-     * @param   reader  Source of source code
-     * @return  File statistics
-     * @throws  IOException on I/O error
+     * @param reader Source of source code
+     * @return File statistics
+     * @throws IOException on I/O error
      */
     public FileStats getStats(Reader rdr) throws IOException
     {
@@ -134,8 +134,8 @@ public class StatsCollector
         /**
          * Identify a category to which a line of souce code belongs
          * 
-         * @param  stats Increments category counter here
-         * @param  line  Line of source code
+         * @param stats Increments category counter here
+         * @param line Line of source code
          * @return True if the line was categorized, false otherwise
          */
         boolean identify(FileStats stats, String line);

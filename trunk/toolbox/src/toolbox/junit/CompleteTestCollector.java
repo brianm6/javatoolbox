@@ -57,8 +57,8 @@ public class CompleteTestCollector implements TestCollector
     /**
      * Merge the results of the JarTestCollector and the SimpleTestCollector
      * 
-     * @return  Enumeration of class names
-     * @see     TestCollector#collectTests()
+     * @return Enumeration of class names
+     * @see TestCollector#collectTests()
      */
     public Enumeration collectTests()
     {

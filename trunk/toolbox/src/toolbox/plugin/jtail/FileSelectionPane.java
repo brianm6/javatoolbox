@@ -45,7 +45,7 @@ public class FileSelectionPane extends JPanel
     /**
      * Creates a FileSelectionPane with the given directory selected
      *
-     * @param  dir  Directory to select by default
+     * @param dir Directory to select by default
      */
     public FileSelectionPane(String dir)
     {

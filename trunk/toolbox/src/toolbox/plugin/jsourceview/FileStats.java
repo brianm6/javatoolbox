@@ -67,7 +67,7 @@ public class FileStats
     /**
      * Adds file stat to existing statistics
      * 
-     * @param  filestats  Filestats to add
+     * @param filestats Filestats to add
      */
     public void add(FileStats filestats)
     {

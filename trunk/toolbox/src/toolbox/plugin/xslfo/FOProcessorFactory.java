@@ -33,8 +33,8 @@ public final class FOProcessorFactory
     /**
      * Creates a FOProcessor
      * 
-     * @param   foImpl  Implementation to create. See FO_* constants
-     * @return  FOProcessor
+     * @param foImpl Implementation to create. See FO_* constants
+     * @return FOProcessor
      */
     public static FOProcessor createProcessor(String foImpl)
     {
