@@ -63,12 +63,20 @@
         <id>debug</id>
         <version/>
         <properties>
+          <!-- jnlp.jar>true</jnlp.jar -->
+        </properties>
+      </dependency>
+
+      <dependency>
+        <id>acrobat</id>
+        <version/>
+        <properties>
           <jnlp.jar>true</jnlp.jar>
         </properties>
       </dependency>
     
       <dependency>
-        <id>acrobat</id>
+        <id>alloy</id>
         <version/>
         <properties>
           <jnlp.jar>true</jnlp.jar>
@@ -79,7 +87,7 @@
         <id>ant</id>
         <version/>
         <properties>
-          <jnlp.jar>true</jnlp.jar>
+          <!-- jnlp.jar>true</jnlp.jar -->
         </properties>
       </dependency>
     
@@ -109,7 +117,7 @@
     
       <dependency>
         <id>bsh</id>
-        <version/>
+        <version></version>
         <properties>
           <jnlp.jar>true</jnlp.jar>
         </properties>
@@ -223,7 +231,7 @@
         <id>hamsam</id>
         <version/>
         <properties>
-          <jnlp.jar>true</jnlp.jar>
+          <!-- jnlp.jar>true</jnlp.jar -->
         </properties>
       </dependency>
     
@@ -247,7 +255,7 @@
         <id>jaimlib</id>
         <version/>
         <properties>
-          <jnlp.jar>true</jnlp.jar>
+          <!-- jnlp.jar>true</jnlp.jar -->
         </properties>
       </dependency>
     
@@ -311,7 +319,7 @@
         <id>junit-addons</id>
         <version/>
         <properties>
-          <jnlp.jar>true</jnlp.jar>
+          <!-- jnlp.jar>true</jnlp.jar -->
         </properties>
       </dependency>
     
@@ -338,6 +346,14 @@
           <jnlp.jar>true</jnlp.jar>
         </properties>
       </dependency>
+      
+      <dependency>
+        <id>looks</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
     
       <dependency>
         <id>metouia</id>
@@ -349,14 +365,6 @@
 
       <dependency>
         <id>multivalent</id>
-        <version/>
-        <properties>
-          <jnlp.jar>true</jnlp.jar>
-        </properties>
-      </dependency>
-    
-      <dependency>
-        <id>plastic</id>
         <version/>
         <properties>
           <jnlp.jar>true</jnlp.jar>
@@ -422,6 +430,14 @@
       </dependency>
     
       <dependency>
+        <id>webwindow</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
+    
+      <dependency>
         <id>xercesImpl</id>
         <version/>
         <properties>
@@ -469,8 +485,20 @@
         </properties>
       </dependency>
     
+      <!-- =========================================== -->
+      <!-- Dependencies that support the build process -->
+      <!-- =========================================== -->
+
+      <dependency>
+        <id>commons-jelly-tags-beanshell</id>
+        <groupId>commons-jelly</groupId>
+        <version>SNAPSHOT</version>
+        <!--url>http://www.ibiblio.org/maven/commons-jelly/jars/</url-->
+      </dependency>
+      
     </dependencies>
   
+    
   
   <build>
   
