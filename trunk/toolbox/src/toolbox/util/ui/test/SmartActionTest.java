@@ -1,21 +1,17 @@
 package toolbox.util.ui.test;
 
 import java.awt.BorderLayout;
-import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 
 import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
 
-import toolbox.util.SwingUtil;
+import toolbox.junit.UITestCase;
 import toolbox.util.ThreadUtil;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.SmartAction;
@@ -23,7 +19,7 @@ import toolbox.util.ui.SmartAction;
 /**
  * Unit test for SmartAction. 
  */
-public class SmartActionTest extends TestCase
+public class SmartActionTest extends UITestCase
 {
     private static final Logger logger_ =
         Logger.getLogger(SmartActionTest.class);
@@ -41,11 +37,9 @@ public class SmartActionTest extends TestCase
      * Entrypoint.
      * 
      * @param args None recognized
-     * @throws Exception on error.
      */
-    public static void main(String[] args) throws Exception
+    public static void main(String[] args)
     {
-        SwingUtil.setPreferredLAF();
         TestRunner.run(SmartActionTest.class);
     }
 
@@ -68,14 +62,9 @@ public class SmartActionTest extends TestCase
     {
         logger_.info("Running testSmartAction...");
 
-        JDialog dialog = new JDialog(new JFrame(), "testSmartAction", true);        
-        Container cp = dialog.getContentPane();
-        cp.setLayout(new BorderLayout());
+        JPanel cp = new JPanel(new BorderLayout());
         cp.add(buildButtonPanel());
-        dialog.pack();
-        SwingUtil.centerWindow(dialog);
-        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        dialog.setVisible(true);
+        launchInDialog(cp);
     }
     
     //--------------------------------------------------------------------------
