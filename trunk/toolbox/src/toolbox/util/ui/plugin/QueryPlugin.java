@@ -24,22 +24,26 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
+import org.jedit.syntax.KeywordMap;
+import org.jedit.syntax.SQLTokenMarker;
+import org.jedit.syntax.TextAreaDefaults;
 
+import toolbox.jedit.JEditTextArea;
+import toolbox.jedit.JavaDefaults;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.JDBCUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
-import toolbox.util.ui.JPopupListener;
 import toolbox.util.ui.JTextComponentPopupMenu;
 import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.util.ui.layout.ParagraphLayout;
 
 /**
- * Simple SQL query panel
+ * Simple SQL query Plugin
  * 
  * <pre>
- * TODO: Replace sqlArea_ with JEditTextArea setup to hilite SQL
- * </pre>
+ * TODO: create SQLDefaults for syntax hiliting
+ * <pre>
  */ 
 public class QueryPlugin extends JPanel implements IPlugin
 { 
@@ -65,14 +69,14 @@ public class QueryPlugin extends JPanel implements IPlugin
     public static final String PROP_PASSWORD = "query.plugin.password";
     
     // SQL query & results stuff
-    private IStatusBar  statusBar_;    
-    private JTextArea   sqlArea_;
-    private JTextArea   resultsArea_;
-    private JButton     queryButton_;
-    private JButton     clearButton_;
-    private JPopupMenu  sqlPopup_;
-    private Map         sqlHistory_;
-    private JFlipPane   leftFlipPane_;
+    private IStatusBar      statusBar_;    
+    private JEditTextArea   sqlArea_;
+    private JTextArea       resultsArea_;
+    private JButton         queryButton_;
+    private JButton         clearButton_;
+    private JPopupMenu      sqlPopup_;
+    private Map             sqlHistory_;
+    private JFlipPane       leftFlipPane_;
     
     // JDBC config stuff 
     private JTextField driverField_;
@@ -102,10 +106,14 @@ public class QueryPlugin extends JPanel implements IPlugin
     {
         sqlHistory_ = new HashMap();
         sqlPopup_ = new JPopupMenu("History");
-                
-        sqlArea_ = new JTextArea();
+
+        TextAreaDefaults defaults = new JavaDefaults();
+        defaults.popup = sqlPopup_;
+                        
+        sqlArea_ = new JEditTextArea(
+            new SQLTokenMarker(new KeywordMap(true)), defaults);
+            
         sqlArea_.setFont(SwingUtil.getPreferredMonoFont());
-        sqlArea_.addMouseListener(new JPopupListener(sqlPopup_));
         
         // Wire CTRL-Enter to execute the query
         sqlArea_.addKeyListener( new KeyAdapter()
@@ -189,18 +197,20 @@ public class QueryPlugin extends JPanel implements IPlugin
             if (lower.startsWith("select"))
             {
                 // Execute select statement
-                metaResults = JDBCUtil.executeAndFormatQuery(sql);
+                metaResults = JDBCUtil.executeQuery(sql);
             }
             else if (lower.startsWith("insert") ||
                      lower.startsWith("delete") ||
-                     lower.startsWith("update"))
+                     lower.startsWith("update") ||
+                     lower.startsWith("create") ||
+                     lower.startsWith("drop") )
             {
                 metaResults = JDBCUtil.executeUpdate(sql) + " rows affected."; 
             }
             else
             {
                 throw new IllegalArgumentException(
-                    "Not a valid SQL statement: " + sql);
+                    "SQL statement not supported: " + sql);
             }
             
             addToHistory(sql);
@@ -424,12 +434,15 @@ public class QueryPlugin extends JPanel implements IPlugin
                     urlField_.getText(),
                     userField_.getText(),
                     passwordField_.getText());
+                    
+                statusBar_.setStatus("Connected to DB!");
             }
-            catch (ClassNotFoundException cnfe)
+            catch (Throwable se)
             {
-                ExceptionUtil.handleUI(cnfe, logger_);
+                statusBar_.setStatus("Connect failed: " + se.getMessage());
+                ExceptionUtil.handleUI(se, logger_);
+                
             }
         }
-
     }
 }
