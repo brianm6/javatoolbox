@@ -18,34 +18,24 @@ public class DefaultSocketServerListener implements ISocketServerListener
     /**
      * Queue for accepted events.
      */    
-    private BlockingQueue accepted_ = new BlockingQueue();
+    private BlockingQueue accepted_;
     
     /**
      * Queue for started evetnts.
      */
-    private BlockingQueue started_  = new BlockingQueue();
-    
+    private BlockingQueue started_;
+
     //--------------------------------------------------------------------------
-    // ISocketServerListener Interface
+    // Constructors
     //--------------------------------------------------------------------------
 
     /**
-     * @see toolbox.util.net.ISocketServerListener#socketAccepted(
-     *      java.net.Socket, toolbox.util.net.IConnection)
+     * Creates a DefaultSocketServerListener.
      */
-    public void socketAccepted(Socket socket, IConnection connection)
+    public DefaultSocketServerListener()
     {
-        accepted_.push(connection);
-    }
-
-    
-    /**
-     * @see toolbox.util.net.ISocketServerListener#serverStarted(
-     *      toolbox.util.net.SocketServer)
-     */
-    public void serverStarted(SocketServer server)
-    {
-        started_.push(server);            
+        accepted_ = new BlockingQueue();
+        started_  = new BlockingQueue();
     }
     
     //--------------------------------------------------------------------------
@@ -73,5 +63,28 @@ public class DefaultSocketServerListener implements ISocketServerListener
     public SocketServer waitForStart() throws InterruptedException
     {
         return (SocketServer) started_.pull();
+    }
+    
+    //--------------------------------------------------------------------------
+    // ISocketServerListener Interface
+    //--------------------------------------------------------------------------
+
+    /**
+     * @see toolbox.util.net.ISocketServerListener#socketAccepted(
+     *      java.net.Socket, toolbox.util.net.IConnection)
+     */
+    public void socketAccepted(Socket socket, IConnection connection)
+    {
+        accepted_.push(connection);
+    }
+
+    
+    /**
+     * @see toolbox.util.net.ISocketServerListener#serverStarted(
+     *      toolbox.util.net.SocketServer)
+     */
+    public void serverStarted(SocketServer server)
+    {
+        started_.push(server);            
     }
 }
