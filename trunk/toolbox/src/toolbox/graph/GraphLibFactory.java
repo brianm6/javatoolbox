@@ -1,5 +1,8 @@
 package toolbox.graph;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 
 /**
@@ -64,5 +67,20 @@ public final class GraphLibFactory
             logger_.error(e);
         }
         return lib;
+    }
+    
+    
+    /**
+     * Returns a list of all known GraphLib implementations in no particular
+     * order.
+     * 
+     * @return List<GraphLib>
+     */
+    public static List createAll()
+    {
+        List result = new ArrayList();
+        result.add(create(TYPE_JUNG));
+        result.add(create(TYPE_PREFUSE));
+        return result;
     }
 }
