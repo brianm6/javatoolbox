@@ -27,8 +27,7 @@ import org.apache.log4j.Category;
 import toolbox.jtail.config.IConfigManager;
 import toolbox.jtail.config.IJTailConfig;
 import toolbox.jtail.config.ITailPaneConfig;
-import toolbox.jtail.exml.ConfigManager;
-import toolbox.jtail.exml.TailPaneConfig;
+import toolbox.jtail.config.tinyxml.ConfigManager;
 import toolbox.util.ArrayUtil;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.SwingUtil;
@@ -37,10 +36,10 @@ import toolbox.util.ui.JFileExplorerAdapter;
 import toolbox.util.ui.JFlipPane;
 import toolbox.util.ui.JSmartOptionPane;
 import toolbox.util.ui.JStatusPane;
-import toolbox.util.ui.font.JFontChooserDialog;
 import toolbox.util.ui.font.FontChooserException;
-import toolbox.util.ui.font.JFontChooser;
 import toolbox.util.ui.font.IFontChooserDialogListener;
+import toolbox.util.ui.font.JFontChooser;
+import toolbox.util.ui.font.JFontChooserDialog;
 
 /**
  * GUI front end to the tail
@@ -79,7 +78,7 @@ public class JTail extends JFrame
     }
 
     //--------------------------------------------------------------------------
-    //  CONSTRUCTORS
+    //  Constructors
     //--------------------------------------------------------------------------
     
     /**
@@ -103,7 +102,7 @@ public class JTail extends JFrame
     }
 
     //--------------------------------------------------------------------------
-    //  IMPLEMENTATION
+    //  Implementation
     //--------------------------------------------------------------------------    
     
     /** 
@@ -351,15 +350,13 @@ public class JTail extends JFrame
         {
             ITailPaneConfig defaults = jtailConfig_.getDefaultConfig();
             
-            // TODO: fix to use factory
-            ITailPaneConfig config = 
-                new TailPaneConfig(
-                    file, 
-                    defaults.isAutoScroll(), 
-                    defaults.isShowLineNumbers(),
-                    defaults.isAntiAlias(),
-                    defaults.getFont(),
-                    defaults.getFilter());
+            ITailPaneConfig config = configManager_.createTailPaneConfig();
+            config.setFilename(file);
+            config.setAutoScroll(defaults.isAutoScroll());
+            config.setShowLineNumbers(defaults.isShowLineNumbers());
+            config.setAntiAlias(defaults.isAntiAlias());
+            config.setFont(defaults.getFont());
+            config.setFilter(defaults.getFilter());
                 
             addTail(config);
         }
@@ -377,16 +374,14 @@ public class JTail extends JFrame
         public void actionPerformed(ActionEvent e)
         {
             ITailPaneConfig defaults = jtailConfig_.getDefaultConfig();
-            
-            // TODO: fix to use factory
-            ITailPaneConfig config = 
-                new TailPaneConfig(
-                    fileSelectionPane_.getFileExplorer().getFilePath(),
-                    defaults.isAutoScroll(), 
-                    defaults.isShowLineNumbers(),
-                    defaults.isAntiAlias(),
-                    defaults.getFont(),
-                    defaults.getFilter());
+
+            ITailPaneConfig config = configManager_.createTailPaneConfig();
+            config.setFilename(fileSelectionPane_.getFileExplorer().getFilePath());
+            config.setAutoScroll(defaults.isAutoScroll());
+            config.setShowLineNumbers(defaults.isShowLineNumbers());
+            config.setAntiAlias(defaults.isAntiAlias());
+            config.setFont(defaults.getFont());
+            config.setFilter(defaults.getFilter());
                 
             addTail(config);
         }
