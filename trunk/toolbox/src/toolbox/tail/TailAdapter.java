@@ -1,51 +1,57 @@
 package toolbox.tail;
 
 /**
- * Adapter for ITailListener interface 
+ * Adapter class for TailListener 
  */
-public class TailAdapter implements ITailListener
+public class TailAdapter implements TailListener
 {
-
-    /**
-     * @see ITailListener#tailStarted()
+    /*
+     * @see toolbox.tail.TailListener#tailStarted(toolbox.tail.Tail)
      */
-    public void tailStarted()
+    public void tailStarted(Tail tail)
     {
     }
 
-    /**
-     * @see ITailListener#tailStopped()
+    /*
+     * @see toolbox.tail.TailListener#tailStopped(toolbox.tail.Tail)
      */
-    public void tailStopped()
+    public void tailStopped(Tail tail)
     {
     }
 
-    /**
-     * @see ITailListener#tailEnded()
+    /*
+     * @see toolbox.tail.TailListener#tailEnded(toolbox.tail.Tail)
      */
-    public void tailEnded()
+    public void tailEnded(Tail tail)
     {
     }
 
-    /**
-     * @see ITailListener#tailPaused()
+    /*
+     * @see toolbox.tail.TailListener#tailPaused(toolbox.tail.Tail)
      */
-    public void tailPaused()
+    public void tailPaused(Tail tail)
     {
     }
 
-    /**
-     * @see ITailListener#tailUnpaused()
+    /*
+     * @see toolbox.tail.TailListener#tailUnpaused(toolbox.tail.Tail)
      */
-    public void tailUnpaused()
+    public void tailUnpaused(Tail tail)
     {
     }
 
-    /**
-     * @see ITailListener#nextLine(String)
+    /*
+     * @see toolbox.tail.TailListener#tailReattached(toolbox.tail.Tail)
      */
-    public void nextLine(String line)
+    public void tailReattached(Tail tail)
     {
     }
 
+    /*
+     * @see toolbox.tail.TailListener#nextLine(toolbox.tail.Tail, 
+     *      java.lang.String)
+     */
+    public void nextLine(Tail tail, String line)
+    {
+    }
 }
