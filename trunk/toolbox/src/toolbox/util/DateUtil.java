@@ -40,8 +40,8 @@ public final class DateUtil
     /**
      * Formats a date to MM-dd-yyyy.
      * 
-     * @param d Date to format
-     * @return Date in MM-dd-yyyy format
+     * @param d Date to format.
+     * @return Date in MM-dd-yyyy format.
      */
     public static String format(Date d)
     {
@@ -54,9 +54,9 @@ public final class DateUtil
      * Adds a given number of days to a date. The original date is returned 
      * for chaining.
      * 
-     * @param date Date to add days to
+     * @param date Date to add days to.
      * @param days Number of days to add. Can be unsigned to subtract days.
-     * @return Reference to modified passed in date
+     * @return Reference to modified passed in date.
      */
     public static Date addDays(Date date, int days)
     {
@@ -72,9 +72,9 @@ public final class DateUtil
      * Adds a given number of weeks to a date. The original date is returned 
      * for chaining.
      * 
-     * @param date Date to add weeks to
-     * @param weeks Number of weeks to add
-     * @return Reference to modified passed in date
+     * @param date Date to add weeks to.
+     * @param weeks Number of weeks to add.
+     * @return Reference to modified passed in date.
      */
     public static Date addWeeks(Date date, int weeks)
     {
@@ -85,8 +85,8 @@ public final class DateUtil
     /**
      * Compares only the date portions of a Date object.
      *
-     * @param d1 First date
-     * @param d2 Second date
+     * @param d1 First date.
+     * @param d2 Second date.
      * @return -1 if d1 occurs d2,
      *          0 if d1 and d2 are the same day,
      *          1 if d1 occurs after d2
@@ -106,8 +106,8 @@ public final class DateUtil
      * Copies only the date portion of an existing date. The time portion is 
      * zeroed out.
      * 
-     * @param d Date to copy
-     * @return Copy of date with time portion zeroed out
+     * @param d Date to copy.
+     * @return Copy of date with time portion zeroed out.
      */
     public static Date copy(Date d)
     {
@@ -124,7 +124,7 @@ public final class DateUtil
     /**
      * Gets the beginning of the current month. Time portion is zeroed out.
      *
-     * @return First day of the current month
+     * @return First day of the current month.
      */
     public static Date getBeginningOfMonth()
     {
@@ -139,9 +139,9 @@ public final class DateUtil
     /**
      * Compares two dates for equality based on year, month, and day.
      *
-     * @param date1 First date
-     * @param date2 Second date
-     * @return True if the dates are equal, false otherwise
+     * @param date1 First date.
+     * @param date2 Second date.
+     * @return True if the dates are equal, false otherwise.
      */
     public static boolean equals(Date date1, Date date2)
     {
@@ -161,7 +161,7 @@ public final class DateUtil
     /**
      * Gets the current date with the time portion zeroed out.
      * 
-     * @return Todays date
+     * @return Todays date.
      */
     public static Date getToday()
     {
@@ -174,7 +174,7 @@ public final class DateUtil
      * Answers the question: What date is next Thursday?
      *
      * @param day Calendar.MONDAY, TUE, ...
-     * @return Next occuring date of the given day
+     * @return Next occuring date of the given day.
      */
     public static Date getNextDay(int day)
     {
@@ -187,7 +187,7 @@ public final class DateUtil
      * Answers the question: 
      * What is the date of the first Tuesday after 6/21/2000?
      *
-     * @param fromDate Date to search from
+     * @param fromDate Date to search from.
      * @param day Calendar.MONDAY, TUE, ...
      * @return Next occurring date of the given day from the passed date.
      */
@@ -215,7 +215,7 @@ public final class DateUtil
      * today. Answers the question: What was the date of last Wednesday?
      *
      * @param day Calendar.MONDAY, TUE, ...
-     * @return Previous occuring date of the given day
+     * @return Previous occuring date of the given day.
      */
     public static Date getPreviousDay(int day)
     {
@@ -227,9 +227,9 @@ public final class DateUtil
      * Gets the previous occurrence of the given day of the week startinf from 
      * the the given date.
      *
-     * @param fromDate Date of where to start looking
+     * @param fromDate Date of where to start looking.
      * @param day Calendar.MONDAY, TUE, ...
-     * @return Previous occurrence of the day
+     * @return Previous occurrence of the day.
      */
     public static Date getPreviousDay(Date fromDate, int day)
     {
@@ -253,9 +253,9 @@ public final class DateUtil
     /**
      * Computes the number of days difference between two dates.
      *
-     * @param before The lessor of the two dates
-     * @param after The greater of the two dates
-     * @return Number of days in between
+     * @param before The lessor of the two dates.
+     * @param after The greater of the two dates.
+     * @return Number of days in between.
      */
     public static int getDifferenceInDays(final Date before, final Date after)
     {
@@ -274,9 +274,9 @@ public final class DateUtil
     /**
      * Computes number of whole weeks difference between two dates.
      *
-     * @param before The lessor of the two dates
-     * @param after The greater of the two dates
-     * @return Number of whole weeks in between
+     * @param before The lessor of the two dates.
+     * @param after The greater of the two dates.
+     * @return Number of whole weeks in between.
      */
     public static int getDifferenceInWeeks(Date before, Date after)
     {
@@ -330,10 +330,10 @@ public final class DateUtil
      * Determines if a date is between a given date range inclusize of the
      * minimum and maximum dates in the range.
      * 
-     * @param date Date to check
-     * @param begin Start of range
-     * @param end End of range
-     * @return True if the date is in the range (inclusive)
+     * @param date Date to check.
+     * @param begin Start of range.
+     * @param end End of range.
+     * @return True if the date is in the range (inclusive).
      */
     public static boolean isBetween(Date date, Date begin, Date end)
     {
@@ -346,7 +346,7 @@ public final class DateUtil
      * 
      * @param a Is this date on or after...
      * @param b this date?
-     * @return True if a is on or after b, false otherwise
+     * @return True if a is on or after b, false otherwise.
      */
     public static boolean isOnOrAfter(final Date a, final Date b)
     {
@@ -362,7 +362,7 @@ public final class DateUtil
      * 
      * @param isThis Is this date on or before...
      * @param beforeThis this date?
-     * @return True if a is on or before b, false otherwise
+     * @return True if a is on or before b, false otherwise.
      */
     public static boolean isOnOrBefore(final Date isThis, final Date beforeThis)
     {
@@ -377,8 +377,8 @@ public final class DateUtil
      * Zeros out the time portion of the given date. Returns original date for 
      * chaining.
      * 
-     * @param d Date to zero out
-     * @return Date with zeroed out time
+     * @param d Date to zero out.
+     * @return Date with zeroed out time.
      */
     public static Date zeroTime(Date d)
     {
@@ -399,8 +399,8 @@ public final class DateUtil
      * or equal to the 3rd day of the week. If greater than or equal to the 
      * 4th day of the week, then it is rounded up.
      *
-     * @param days Number of days
-     * @return Number of weeks in given number of days
+     * @param days Number of days.
+     * @return Number of weeks in given number of days.
      */
     public static int roundToWeeks(int days)
     {
@@ -411,9 +411,9 @@ public final class DateUtil
     /**
      * Subtracts days from a given date.
      * 
-     * @param d Date to subtract days from
-     * @param days Number of days to subtract
-     * @return Modified original date for chaining  
+     * @param d Date to subtract days from.
+     * @param days Number of days to subtract.
+     * @return Modified original date for chaining.  
      */
     public static Date subtractDays(Date d, int days)
     {
