@@ -52,20 +52,24 @@ public class SwingUtil
         UIManager.installLookAndFeel("Metouia", 
             "net.sourceforge.mlf.metouia.MetouiaLookAndFeel");
             
-        UIManager.installLookAndFeel("Kunstsoff",    
+        UIManager.installLookAndFeel("Kunststoff",    
             "com.incors.plaf.kunststoff.KunststoffLookAndFeel");
+        
+        //System.setProperty("skinlf.themepack", "toolbox.jar");
+        //UIManager.installLookAndFeel("SkinLF", 
+        //    "com.l2fprod.gui.plaf.skin.SkinLookAndFeel");
             
-        UIManager.installLookAndFeel("SkinLF", 
-            "com.l2fprod.gui.plaf.skin.SkinLookAndFeel");
-            
-        UIManager.installLookAndFeel("Plastic",
+        UIManager.installLookAndFeel("JGoodies Plastic",
             "com.jgoodies.plaf.plastic.PlasticLookAndFeel");
             
-        UIManager.installLookAndFeel("Plastic3D",
-            "com.jgoodies.plaf.plastic.PlasticLookAndFeel");
+        UIManager.installLookAndFeel("JGoodies Plastic 3D",
+            "com.jgoodies.plaf.plastic.Plastic3DLookAndFeel");
 
-        UIManager.installLookAndFeel("PlasticXP",
-            "com.jgoodies.plaf.plastic.PlasticLookAndFeel");
+        UIManager.installLookAndFeel("JGoodies Plastic XP",
+            "com.jgoodies.plaf.plastic.PlasticXPLookAndFeel");
+        
+        UIManager.installLookAndFeel("XPLookAndFeel", 
+            "com.stefankrause.xplookandfeel.XPLookAndFeel");
     }
 
     //--------------------------------------------------------------------------
