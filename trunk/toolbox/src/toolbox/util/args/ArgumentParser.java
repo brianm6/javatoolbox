@@ -85,6 +85,15 @@ public class ArgumentParser
         return values.get(o.longForm());
     }
 
+    /**
+     * Convenience method to allows for defaults in the event that 
+     * an option was not supplied for a boolean value
+     * 
+     * @param   opt  Option to get
+     * @param   def  Default value for option
+     * @return  Option or the default if the option was not present on the
+     *          command line
+     */
     public final boolean getBooleanValue(Option opt, boolean def)
     {
         Object obj = getOptionValue(opt);
