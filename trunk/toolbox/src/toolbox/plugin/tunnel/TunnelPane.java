@@ -37,7 +37,7 @@ import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.SmartAction;
 import toolbox.util.ui.flippane.JFlipPane;
-import toolbox.util.ui.textarea.action.AutoScrollAction;
+import toolbox.util.ui.textarea.action.AutoTailAction;
 import toolbox.util.ui.textarea.action.LineWrapAction;
 import toolbox.workspace.IPreferenced;
 import toolbox.workspace.IStatusBar;
@@ -61,6 +61,8 @@ public class TunnelPane extends JPanel implements IPreferenced
     private static final String   ATTR_LOCAL_PORT     =   "localport";
     private static final String   NODE_INCOMING       =   "Incoming";
     private static final String   NODE_OUTGOING       =   "Outgoing";
+    
+    public static final String PROP_SUPRESS_BINARY = "supress";
 
     //--------------------------------------------------------------------------
     // Fields
@@ -352,17 +354,17 @@ public class TunnelPane extends JPanel implements IPreferenced
         tb.add(JHeaderPanel.createToggleButton(
             new SupressBinaryAction(),
             area,
-            "supress"));
+            PROP_SUPRESS_BINARY));
         
         tb.add(JHeaderPanel.createToggleButton(
             new LineWrapAction(area),
             area,
-            "lineWrap"));
+            JSmartTextArea.PROP_LINEWRAP));
 
         tb.add(JHeaderPanel.createToggleButton(
-            new AutoScrollAction(area),
+            new AutoTailAction(area),
             area,
-            "autoscroll"));
+            JSmartTextArea.PROP_AUTOTAIL));
 
         tb.add(JHeaderPanel.createButton(
             new toolbox.util.ui.textarea.action.ClearAction(area)));
@@ -405,15 +407,15 @@ public class TunnelPane extends JPanel implements IPreferenced
         outgoingArea_.applyPrefs(XOMUtil.getFirstChildElement(
             root, NODE_OUTGOING, new Element(NODE_OUTGOING)));
 
-        incomingArea_.setPruneFactor(50);
-        outgoingArea_.setPruneFactor(50);
+        incomingArea_.setPruningFactor(50);
+        outgoingArea_.setPruningFactor(50);
     }
 
 
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs)
+    public void savePrefs(Element prefs) throws Exception
     {
         Element root = new Element(NODE_TCPTUNNEL_PLUGIN);
 
