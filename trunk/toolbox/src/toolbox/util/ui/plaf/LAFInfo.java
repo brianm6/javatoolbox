@@ -10,8 +10,11 @@ import nu.xom.Attribute;
 import nu.xom.Element;
 import nu.xom.Elements;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.log4j.Logger;
 
+import toolbox.util.StringUtil;
 import toolbox.util.collections.AsMap;
 import toolbox.workspace.IPreferenced;
 
@@ -254,13 +257,7 @@ public class LAFInfo implements IPreferenced
      */
     public boolean equals(Object obj)
     {
-        if (obj == this)
-            return true;
-
-        if (obj == null || !obj.getClass().equals(getClass()))
-            return false;
-
-        return toString().equals(obj.toString());
+        return EqualsBuilder.reflectionEquals(this, obj);
     }
     
       
@@ -271,23 +268,7 @@ public class LAFInfo implements IPreferenced
      */
     public String toString()
     {
-        return AsMap.of(this).toString();
-        
-        //    StringBuffer sb = new StringBuffer();
-        //    sb.append(getName());
-        //    sb.append(getClassName());
-        //    sb.append(getAction());
-        //    
-        //    for (Iterator i = props_.keySet().iterator(); i.hasNext(); )
-        //    {
-        //        String key = (String) i.next();
-        //        String value = (String) props_.get(key);
-        //        
-        //        sb.append(key);
-        //        sb.append(value);
-        //    }
-        //    
-        //    return sb.toString();
+        return StringUtil.addBars(AsMap.of(this).toString());
     }
     
     
@@ -296,6 +277,6 @@ public class LAFInfo implements IPreferenced
      */
     public int hashCode()
     {
-        return toString().hashCode();
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 }
