@@ -25,12 +25,12 @@ public class DesktopPluginHost extends AbstractPluginHost
     //--------------------------------------------------------------------------
     
     /**
-     * Desktop
+     * Desktop.
      */
     private JDesktopPane desktop_;
     
     /**
-     * Maps IPlugin -> JInternalFrame
+     * Maps IPlugin -> JInternalFrame.
      */
     private Map pluginToFrameMap_;
     
@@ -92,7 +92,6 @@ public class DesktopPluginHost extends AbstractPluginHost
         frame.getContentPane().add(plugin.getComponent(), BorderLayout.CENTER);
         frame.setVisible(true);
         desktop_.add(frame);
-        frame.pack();
         pluginToFrameMap_.put(plugin, frame);
         
         try
