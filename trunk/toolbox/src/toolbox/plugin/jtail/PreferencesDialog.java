@@ -117,7 +117,7 @@ public class PreferencesDialog extends JSmartDialog implements ActionListener
         gbc.gridwidth = 1;
         gbc.insets = new Insets(0, 4, 7, 4);
 
-        prefPanel.add(new JSmartLabel("AutoScroll", SwingConstants.RIGHT), gbc);
+        prefPanel.add(new JSmartLabel("AutoTail", SwingConstants.RIGHT), gbc);
 
         gbc.gridx++;
         prefPanel.add(new JSmartCheckBox(), gbc);
