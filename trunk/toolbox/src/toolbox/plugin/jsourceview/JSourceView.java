@@ -25,17 +25,25 @@ import javax.swing.JTextField;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
+import toolbox.util.ExceptionUtil;
 import toolbox.util.Queue;
 import toolbox.util.SwingUtil;
 import toolbox.util.io.filter.DirectoryFilter;
 import toolbox.util.io.filter.ExtensionFilter;
 import toolbox.util.io.filter.OrFilter;
-import toolbox.util.ui.JSmartOptionPane;
 import toolbox.util.ui.ThreadSafeTableModel;
 
 /**
  * JSourceView gathers statistics on one or more source files and presents
  * them in a table format for viewing.
+ * 
+ * <pre>
+ * TODO: Added explorer to pick directory
+ * TODO: Save last picked directory
+ * TODO: Update Queue to BlockingQueue
+ * TODO: Remove Exit menu item
+ * </pre> 
+ * 
  */
 public class JSourceView extends JFrame implements ActionListener
 {
@@ -44,8 +52,8 @@ public class JSourceView extends JFrame implements ActionListener
     
     private static OrFilter sourceFilter_;
 
-    private static final String TEXT_GO     = "Go!";
-    private static final String TEXT_CANCEL = "Cancel";
+    private static final String LABEL_GO     = "Go!";
+    private static final String LABEL_CANCEL = "Cancel";
     
     private JTextField  dirField_;
     private JButton     goButton_;
@@ -117,13 +125,13 @@ public class JSourceView extends JFrame implements ActionListener
      */    
     public JSourceView()
     {
-        super("JSourceView v1.1");
+        super("JSourceView");
         
         dirField_ = new JTextField(12);
-        dirField_.setFont(SwingUtil.getPreferredSerifFont());
+        //dirField_.setFont(SwingUtil.getPreferredSerifFont());
         dirField_.addActionListener(this);
         
-        goButton_ = new JButton("Go!");
+        goButton_ = new JButton(LABEL_GO);
         JPanel topPanel = new JPanel();
         scanStatusLabel_ = new JLabel(" ");
         parseStatusLabel_ = new JLabel(" ");
@@ -138,7 +146,7 @@ public class JSourceView extends JFrame implements ActionListener
         goButton_.addActionListener(this);
         tableModel_ = new ThreadSafeTableModel(colNames_, 0);
         table_ = new JTable(tableModel_);
-        table_.setFont(SwingUtil.getPreferredSerifFont());
+        //table_.setFont(SwingUtil.getPreferredSerifFont());
         
         getContentPane().add(topPanel, BorderLayout.NORTH);
         getContentPane().add(new JScrollPane(table_), BorderLayout.CENTER);
@@ -188,7 +196,7 @@ public class JSourceView extends JFrame implements ActionListener
         }
         catch (Exception e)
         {
-            JSmartOptionPane.showExceptionMessageDialog(this, e);
+            ExceptionUtil.handleUI(e, logger_);
         }
     }
 
@@ -260,7 +268,7 @@ public class JSourceView extends JFrame implements ActionListener
     {
         String s = JOptionPane.showInputDialog("Save to file");
         
-        if(s.length() > 0)
+        if (s.length() > 0)
             tableModel_.saveToFile(s);
     }
     
@@ -286,9 +294,9 @@ public class JSourceView extends JFrame implements ActionListener
      */
     protected void goButtonPressed()
     {
-        if (goButton_.getText().equals(TEXT_GO))
+        if (goButton_.getText().equals(LABEL_GO))
         {
-            goButton_.setText(TEXT_CANCEL);
+            goButton_.setText(LABEL_CANCEL);
             String s = dirField_.getText();
             workQueue_ = new Queue();
             
@@ -305,7 +313,7 @@ public class JSourceView extends JFrame implements ActionListener
         }
         else
         {
-            goButton_.setText(TEXT_GO);
+            goButton_.setText(LABEL_GO);
             scanDirWorker_.cancel();
             parserWorker_.cancel();
             
@@ -355,10 +363,14 @@ public class JSourceView extends JFrame implements ActionListener
      */
     private class ScanDirWorker implements Runnable
     {
-        /** Directory to scan */
+        /** 
+         * Directory to scan 
+         */
         private File file_;
 
-        /** Cancel flag */
+        /** 
+         * Cancel flag 
+         */
         private boolean cancel_ = false;
         
         /**
@@ -370,7 +382,6 @@ public class JSourceView extends JFrame implements ActionListener
         {
             file_ = dir;
         }
-
                 
         /**
          * Starts scanning directory on a separate thread
@@ -447,7 +458,7 @@ public class JSourceView extends JFrame implements ActionListener
                     break;
                     
                 // Pop file of the queue
-                String filename = (String)workQueue_.dequeue();
+                String filename = (String) workQueue_.dequeue();
                 
                 if(filename != null)
                 {
@@ -495,7 +506,7 @@ public class JSourceView extends JFrame implements ActionListener
             tableModel_.addRow(totalRow);
             
             setParseStatus("Done parsing.");
-            goButton_.setText(TEXT_GO);
+            goButton_.setText(LABEL_GO);
         }
         
         /**
@@ -519,13 +530,13 @@ public class JSourceView extends JFrame implements ActionListener
                 
                 String line;
                 
-                while((line = lineReader.readLine()) != null) 
+                while ((line = lineReader.readLine()) != null) 
                 {
                     filestats.setTotalLines(filestats.getTotalLines()+1);
                     
                     if (line.trim().length() == 0)
                     {
-                        filestats.setBlankLines(filestats.getBlankLines()+1);
+                        filestats.setBlankLines(filestats.getBlankLines() + 1);
                     }
                     else
                     {
@@ -544,8 +555,7 @@ public class JSourceView extends JFrame implements ActionListener
             }
             catch (Exception e)
             {
-                JSmartOptionPane.showExceptionMessageDialog(
-                    JSourceView.this, e);
+                ExceptionUtil.handleUI(e, logger_);
             }
             finally
             {
