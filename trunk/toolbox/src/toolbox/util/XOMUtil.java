@@ -1,6 +1,7 @@
 package toolbox.util;
 
 import java.io.IOException;
+import java.io.OutputStream;
 
 import nu.xom.Builder;
 import nu.xom.Document;
@@ -276,5 +277,25 @@ public class XOMUtil
             child = node.getFirstChildElement(elementName);
             
         return (child == null ? defaultNode : child);
+    }
+    
+    
+    /**
+     * Returns a formatted text version of an XML document.
+     * 
+     * @param root Node to format.
+     * @throws IOException on I/O error.
+     * @return String
+     */
+    public static String format(Element root) throws IOException
+    {
+        // TODO: Write unit test
+        
+        OutputStream os = new StringOutputStream();
+        Serializer ser = new Serializer(os);
+        ser.setIndent(2);
+        ser.setMaxLength(80);
+        ser.write(root.getDocument());
+        return os.toString();
     }
 }
