@@ -1,6 +1,7 @@
 package toolbox.tree;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FilenameFilter;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -34,7 +35,7 @@ import toolbox.util.FileUtil;
 import toolbox.util.collections.AsMap;
 import toolbox.util.file.FileComparator;
 import toolbox.util.io.filter.AndFilter;
-import toolbox.util.io.filter.FileFilter;
+import toolbox.util.io.filter.FileOnlyFilter;
 import toolbox.util.io.filter.RegexFilter;
 
 /**
@@ -597,7 +598,7 @@ public class Tree2
         showFiles_ = useRegex | showDate_ | showSize_ ? true : showFiles;
         
         if (showFiles_)
-            fileFilter_ = new FileFilter();
+            fileFilter_ = new FileOnlyFilter();
         
         // TODO: expose case sensetivity?
         if (useRegex)

@@ -5,7 +5,7 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.io.File;
-import java.io.FilenameFilter;
+import java.io.FileFilter;
 import java.util.Arrays;
 import java.util.Enumeration;
 
@@ -28,7 +28,7 @@ import javax.swing.tree.TreeSelectionModel;
 import nu.xom.Attribute;
 import nu.xom.Element;
 
-import org.apache.commons.io.filefilter.DirectoryFileFilter;
+import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -37,7 +37,7 @@ import toolbox.util.Platform;
 import toolbox.util.StringUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.file.FileComparator;
-import toolbox.util.io.filter.FileFilter;
+import toolbox.util.io.filter.FileOnlyFilter;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JSmartComboBox;
 import toolbox.util.ui.JSmartSplitPane;
@@ -720,8 +720,9 @@ public class JFileExplorer extends JPanel implements IPreferenced
         String pathToAddFolders,
         DefaultMutableTreeNode currentNode)
     {
-        File[] files = new File(pathToAddFolders).listFiles(
-            (FilenameFilter) DirectoryFileFilter.INSTANCE);
+        File[] files = 
+            new File(pathToAddFolders).listFiles(
+                (FileFilter) FileFilterUtils.directoryFileFilter());
             
         Arrays.sort(files, FileComparator.COMPARE_NAME);
         String[] fileList = new String[files.length];
@@ -744,7 +745,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
         setCurrentPath(path);
         listModel_.clear();
         File f = new File(path);
-        File[] files = f.listFiles(new FileFilter());
+        File[] files = f.listFiles(new FileOnlyFilter());
         Arrays.sort(files, FileComparator.COMPARE_NAME);
         
         for (int i = 0; i < files.length; i++)
