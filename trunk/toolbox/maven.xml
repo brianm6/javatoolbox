@@ -369,6 +369,7 @@ Commands:
                 <include name="classworlds.jar"/>
                 <include name="bsh.jar"/>
                 <include name="statcvs.jar"/>
+                <include name="l2fprod-common.jar"/>
 
                 <!-- Doc viewer plugin -->
                 <include name="calphahtml.jar"/>
