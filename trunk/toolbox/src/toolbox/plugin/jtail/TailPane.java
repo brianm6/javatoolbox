@@ -47,11 +47,11 @@ import toolbox.util.ui.JHeaderPanel;
 import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.JSmartTextField;
+import toolbox.util.ui.JSmartTextPane;
 import toolbox.util.ui.JSmartToggleButton;
 import toolbox.util.ui.SmartAction;
-import toolbox.util.ui.textarea.action.AutoTailAction;
+import toolbox.util.ui.action.NullAction;
 import toolbox.util.ui.textarea.action.ClearAction;
-import toolbox.util.ui.textarea.action.LineWrapAction;
 import toolbox.workspace.IStatusBar;
 
 /**
@@ -126,7 +126,7 @@ public class TailPane extends JHeaderPanel
     /**
      * Tail output is appended into this text area.
      */
-    private JSmartTextArea tailArea_;
+    private JSmartTextPane tailArea_;
 
     /**
      * Toggle button that handles pause/unpause of tail.
@@ -287,7 +287,7 @@ public class TailPane extends JHeaderPanel
         JPanel p = new JPanel(new BorderLayout());
         JToolBar tb = JHeaderPanel.createToolBar();
 
-        tailArea_ = new JSmartTextArea("");
+        tailArea_ = new JSmartTextPane();
         tailArea_.setFont(FontUtil.getPreferredMonoFont());
 
         JButton clearButton = JHeaderPanel.createButton(
@@ -323,7 +323,7 @@ public class TailPane extends JHeaderPanel
             JHeaderPanel.createToggleButton(
                 ImageCache.getIcon(ImageCache.IMAGE_LOCK),
                 "AutoTail",
-                new AutoTailAction(tailArea_),
+                new NullAction(), //new AutoTailAction(tailArea_),
                 tailArea_,
                 JSmartTextArea.PROP_AUTOTAIL);
 
@@ -331,7 +331,7 @@ public class TailPane extends JHeaderPanel
             JHeaderPanel.createToggleButton(
                 ImageCache.getIcon(ImageCache.IMAGE_LINEWRAP),
                 "Wrap Lines",
-                new LineWrapAction(tailArea_),
+                new NullAction(), //new LineWrapAction(tailArea_),
                 tailArea_,
                 JSmartTextArea.PROP_LINEWRAP);
 
@@ -483,10 +483,10 @@ public class TailPane extends JHeaderPanel
     public void setConfiguration(ITailPaneConfig config)
     {
         config_ = config;
-        tailArea_.setAutoTail(config_.isAutoTail());
+        //tailArea_.setAutoTail(config_.isAutoTail());
         lineNumberDecorator_.setEnabled(config_.isShowLineNumbers());
         tailArea_.setFont(config_.getFont());
-        tailArea_.setAntiAliased(config.isAntiAliased());
+        //tailArea_.setAntiAliased(config.isAntiAliased());
         setRegularExpression(config_.getRegularExpression());
         setCutExpression(config_.getCutExpression());
     }
@@ -501,10 +501,10 @@ public class TailPane extends JHeaderPanel
     public ITailPaneConfig getConfiguration() throws IOException
     {
         // Make sure configuration up to date
-        config_.setAutoTail(tailArea_.isAutoTail());
+        //config_.setAutoTail(tailArea_.isAutoTail());
         config_.setShowLineNumbers(lineNumberDecorator_.isEnabled());
         config_.setFont(tailArea_.getFont());
-        config_.setAntiAliased(tailArea_.isAntiAliased());
+        //config_.setAntiAliased(tailArea_.isAntiAliased());
         config_.setRegularExpression(getRegularExpression());
         config_.setCutExpression(getCutExpression());
 
@@ -771,6 +771,8 @@ public class TailPane extends JHeaderPanel
      */
     class TailQueueListener implements IBatchingQueueListener
     {
+        int cnt = 0;
+        
         //----------------------------------------------------------------------
         //  IBatchingQueueListener Interface
         //----------------------------------------------------------------------
@@ -781,19 +783,37 @@ public class TailPane extends JHeaderPanel
          */
         public void nextBatch(Object[] objs)
         {
+            StringBuffer sb = new StringBuffer();
+
+//            if (objs.length > 1)
+//                logger_.debug("Batch size = " + objs.length);
+//            else
+//            {
+//                if (cnt++ % 100 == 0)
+//                    logger_.debug("[Batch size] = " + objs.length);
+//            }
+            
             // Iterate over each line delivered
             for (int i = 0; i < objs.length; i++)
             {
-                String line = (String) objs[i];
+                StringBuffer line = new StringBuffer((String) objs[i]);
 
                 // Apply filters
+                boolean discard = false;
+                
                 for (int j = 0; j < filters_.length; j++)
-                    line = filters_[j].filter(line);
+                {
+                    discard = !filters_[j].filter(line);
+                    if (discard)
+                        break;
+                }
 
-                if (line != null)
-                    tailArea_.append(line + "\n");
+                //if (line != null)
+                if (!discard)
+                    sb.append(line + "\n");
             }
 
+            tailArea_.append(sb.toString());
             fireNewDataAvailable(TailPane.this);
         }
     }
