@@ -41,6 +41,39 @@ public final class ThreadUtil
         }
     }
     
+    
+    /**
+     * Joins the current thread without try/catch business
+     */
+    public static void join()
+    {
+        try
+        {
+            Thread.currentThread().join();
+        }
+        catch(Exception e)
+        {
+        }
+    }
+
+
+    /**
+     * Joins the current thread without try/catch business
+     * 
+     * @param  millis  Max number of millis to wait
+     */
+    public static void join(int millis)
+    {
+        try
+        {
+            Thread.currentThread().join(millis);
+        }
+        catch(Exception e)
+        {
+        }
+    }
+
+    
     /**
      * Runs an objects method in a thread 
      * 
@@ -58,6 +91,7 @@ public final class ThreadUtil
         return thread;
     }
 }
+
 
 /**
  * Runs a method on a given object in a thread
