@@ -17,7 +17,11 @@ import toolbox.util.io.throughput.ThroughputEvent;
 import toolbox.util.io.throughput.ThroughputListener;
 import toolbox.util.net.SocketConnection;
 import toolbox.util.service.AbstractService;
+import toolbox.util.service.Destroyable;
+import toolbox.util.service.Initializable;
 import toolbox.util.service.ServiceException;
+import toolbox.util.service.ServiceTransition;
+import toolbox.util.service.Startable;
 
 /**
  * Client is a non-UI component that behaves as a Service. Its sole purpose is
@@ -70,11 +74,6 @@ public class Client extends AbstractService
      */
     private DefaultThroughputMonitor monitor_;
     
-    /**
-     * Internal flag used to terminate the connection.
-     */
-    private boolean stopped_;
-
     /**
      * Thread that client request is spawned off on in order for start()
      * to return immediately.
@@ -144,6 +143,12 @@ public class Client extends AbstractService
      */
     public Client(String hostname, int port) throws ServiceException
     {
+        super(new Class[] {
+            Startable.class, 
+            Initializable.class,
+            Destroyable.class
+        });
+    
         setHostname(hostname);
         setPort(port);
         setBandwidth(new Bandwidth(50000, 50000, Bandwidth.TYPE_BOTH));
@@ -209,7 +214,9 @@ public class Client extends AbstractService
 
     
     /**
-     * @return
+     * Returns the bandwidth allocated for this client.
+     * 
+     * @return Bandwidth
      */
     public Bandwidth getBandwidth()
     {
@@ -237,8 +244,9 @@ public class Client extends AbstractService
      */
     public void initialize(Map configuration) throws ServiceException
     {
+        checkTransition(ServiceTransition.INITIALIZE);
         monitor_ = new DefaultThroughputMonitor();
-        super.initialize(configuration);
+        transition(ServiceTransition.INITIALIZE);
     }
     
     
@@ -247,6 +255,8 @@ public class Client extends AbstractService
      */
     public void start() throws ServiceException
     {
+        checkTransition(ServiceTransition.START);
+        
         clientThread_ = new Thread(new Runnable()
         {
             public void run()
@@ -266,7 +276,8 @@ public class Client extends AbstractService
                     
                     byte[] b = "abcdefghijklmnopqrstuvwxyz123456789".getBytes();
             
-                    while (!stopped_) {
+                    while (isRunning()) 
+                    {
                         tos_.write(b);
                         ThreadUtil.sleep(0);
                     }
@@ -298,7 +309,7 @@ public class Client extends AbstractService
         }
         
         clientThread_.start();
-        super.start();
+        transition(ServiceTransition.START);
     }
 
 
@@ -307,19 +318,29 @@ public class Client extends AbstractService
      */
     public void stop() throws ServiceException
     {
+        checkTransition(ServiceTransition.STOP);
         monitor_.setMonitoringThroughput(false);
-        stopped_ = true;
         ThreadUtil.join(clientThread_);
-        super.stop();
+        transition(ServiceTransition.STOP);
     }
-
-
+    
+    
+    /**
+     * @see toolbox.util.service.AbstractService#destroy()
+     */
+    public void destroy() throws ServiceException
+    {
+        checkTransition(ServiceTransition.DESTROY);
+        transition(ServiceTransition.DESTROY);
+    }
+    
+    
     /**
      * @see toolbox.util.service.Service#suspend()
      */
     public void suspend() throws ServiceException
     {
-        throw new IllegalArgumentException("Pause not supported");
+        throw new IllegalStateException("Pause not supported");
     }
 
 
@@ -328,16 +349,7 @@ public class Client extends AbstractService
      */
     public void resume() throws ServiceException
     {
-        throw new IllegalArgumentException("Resume not supported");
-    }
-
-
-    /**
-     * @see toolbox.util.service.Service#isRunning()
-     */
-    public boolean isRunning()
-    {
-        return !stopped_;
+        throw new IllegalStateException("Resume not supported");
     }
 
 
@@ -346,7 +358,7 @@ public class Client extends AbstractService
      */
     public boolean isSuspended()
     {
-        throw new IllegalArgumentException("Pause not supported");
+        throw new IllegalStateException("Pause not supported");
     }
     
     //--------------------------------------------------------------------------
@@ -373,5 +385,4 @@ public class Client extends AbstractService
                 + " bytes/s");
         }
     }
-
 }
