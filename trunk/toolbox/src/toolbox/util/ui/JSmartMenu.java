@@ -8,20 +8,29 @@ import javax.swing.JMenu;
 import toolbox.util.SwingUtil;
 
 /**
- * 
+ * JSmartMenu adds the following behavior.
+ * <p>
+ * <ul>
+ *   <li>Support for antialised text
+ * </ul>
  */
-public class JSmartMenu extends JMenu
+public class JSmartMenu extends JMenu implements AntiAliased
 {
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
-     * 
+     * Creates a JSmartMenu
      */
     public JSmartMenu()
     {
-        super();
     }
 
     /**
-     * @param s
+     * Creates a JSmartMenu
+     * 
+     * @param s Menu text
      */
     public JSmartMenu(String s)
     {
@@ -29,8 +38,10 @@ public class JSmartMenu extends JMenu
     }
 
     /**
-     * @param s
-     * @param b
+     * Creates a JSmartMenu
+     * 
+     * @param s Menu text
+     * @param b Can the menu be torn off  
      */
     public JSmartMenu(String s, boolean b)
     {
@@ -38,7 +49,9 @@ public class JSmartMenu extends JMenu
     }
 
     /**
-     * @param a
+     * Creates a JSmartMenu
+     * 
+     * @param a Action activated by the selection of this menu
      */
     public JSmartMenu(Action a)
     {
@@ -76,5 +89,4 @@ public class JSmartMenu extends JMenu
         SwingUtil.makeAntiAliased(gc, isAntiAliased());
         super.paintComponent(gc);
     }
-
 }
