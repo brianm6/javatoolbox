@@ -5,59 +5,59 @@
 	<classpathentry kind="src" path="debug"/>
 	<classpathentry kind="lib" path="resources"/>
 	<classpathentry sourcepath="JRE_SRC" kind="var" path="JRE_LIB"/>
-	<classpathentry sourcepath="lib/src/junit-src.zip" kind="lib" path="lib/junit.jar"/>
-	<classpathentry sourcepath="lib/src/log4j-src.zip" kind="lib" path="lib/log4j.jar"/>
-	<classpathentry sourcepath="lib/src/jode-src.zip" kind="lib" path="lib/jode.jar"/>
-	<classpathentry kind="lib" path="lib/metouia.jar"/>
+	<classpathentry kind="lib" path="lib/apple-mrj.jar"/>
+	<classpathentry kind="lib" path="lib/acrobat.jar"/>
+	<classpathentry kind="lib" path="lib/alloy.jar"/>
+	<classpathentry sourcepath="lib/src/ant-src.zip" kind="lib" path="lib/ant.jar"/>
+	<classpathentry kind="lib" path="lib/avalon-framework.jar"/>
+	<classpathentry kind="lib" path="lib/batik.jar"/>
+	<classpathentry sourcepath="lib/src/bsh-src.zip" kind="lib" path="lib/bsh.jar"/>
+	<classpathentry kind="lib" path="lib/calphahtml.jar"/>
+	<classpathentry kind="lib" path="build/lib/clover.jar"/>
 	<classpathentry sourcepath="lib/src/commons-beanutils-src.zip" kind="lib" path="lib/commons-beanutils.jar"/>
-	<classpathentry sourcepath="lib/src/commons-logging-src.zip" kind="lib" path="lib/commons-logging.jar"/>
+	<classpathentry sourcepath="lib/src/commons-cli-src.zip" kind="lib" path="lib/commons-cli.jar"/>
+	<classpathentry sourcepath="lib/src/commons-io-src.zip" kind="lib" path="lib/commons-io.jar"/>
+	<classpathentry sourcepath="lib/src/commons-codec-src.zip" kind="lib" path="lib/commons-codec.jar"/>
 	<classpathentry sourcepath="lib/src/commons-collections-src.zip" kind="lib" path="lib/commons-collections.jar"/>
 	<classpathentry sourcepath="lib/src/commons-lang-src.zip" kind="lib" path="lib/commons-lang.jar"/>
+	<classpathentry sourcepath="lib/src/commons-logging-src.zip" kind="lib" path="lib/commons-logging.jar"/>
 	<classpathentry sourcepath="lib/src/commons-net-src.zip" kind="lib" path="lib/commons-net.jar"/>
-	<classpathentry sourcepath="lib/src/jakarta-regexp-src.zip" kind="lib" path="lib/jakarta-regexp.jar"/>
-	<classpathentry kind="lib" path="lib/kunststoff.jar"/>
-	<classpathentry kind="lib" path="lib/xplookandfeel.jar"/>
-	<classpathentry kind="lib" path="lib/batik.jar"/>
-	<classpathentry kind="lib" path="lib/acrobat.jar"/>
-	<classpathentry sourcepath="lib/src/fop-src.zip" kind="lib" path="lib/fop.jar"/>
-	<classpathentry kind="lib" path="lib/avalon-framework.jar"/>
-	<classpathentry sourcepath="lib/src/jedit-syntax-src.zip" kind="lib" path="lib/jedit-syntax.jar"/>
-	<classpathentry kind="lib" path="lib/apple-mrj.jar"/>
 	<classpathentry kind="lib" path="lib/cryptix32.jar"/>
 	<classpathentry kind="lib" path="lib/cryptix32-pgp.jar"/>
-	<classpathentry sourcepath="lib/src/saxon-src.zip" kind="lib" path="lib/saxon.jar"/>
-	<classpathentry kind="lib" path="lib/xep.jar"/>
-	<classpathentry sourcepath="lib/src/xt-src.zip" kind="lib" path="lib/xt.jar"/>
-	<classpathentry sourcepath="lib/src/commons-cli-src.zip" kind="lib" path="lib/commons-cli.jar"/>
-	<classpathentry kind="lib" path="build/lib/clover.jar"/>
-	<classpathentry sourcepath="lib/src/commons-io-src.zip" kind="lib" path="lib/commons-io.jar"/>
 	<classpathentry kind="lib" path="lib/cvslib.jar"/>
-	<classpathentry sourcepath="lib/src/ant-src.zip" kind="lib" path="lib/ant.jar"/>
+	<classpathentry sourcepath="lib/src/fop-src.zip" kind="lib" path="lib/fop.jar"/>
 	<classpathentry sourcepath="lib/src/hamsam-src.zip" kind="lib" path="lib/hamsam.jar"/>
-	<classpathentry sourcepath="lib/src/commons-codec-src.zip" kind="lib" path="lib/commons-codec.jar"/>
+	<classpathentry kind="lib" path="lib/hippolf.jar"/>
+	<classpathentry kind="lib" path="lib/hsqldb.jar"/>
+	<classpathentry kind="lib" path="lib/jaimlib.jar"/>
+	<classpathentry sourcepath="lib/src/jakarta-regexp-src.zip" kind="lib" path="lib/jakarta-regexp.jar"/>
+	<classpathentry sourcepath="lib/src/jaxen-src.zip" kind="lib" path="lib/jaxen.jar"/>
+	<classpathentry sourcepath="lib/src/jedit-syntax-src.zip" kind="lib" path="lib/jedit-syntax.jar"/>
+	<classpathentry sourcepath="lib/src/javassist-src.zip" kind="lib" path="lib/javassist.jar"/>
+	<classpathentry sourcepath="lib/src/jode-src.zip" kind="lib" path="lib/jode.jar"/>
+	<classpathentry kind="lib" path="lib/jreversepro.jar"/>
+	<classpathentry sourcepath="lib/src/junit-src.zip" kind="lib" path="lib/junit.jar"/>
+	<classpathentry sourcepath="lib/src/junit-addons-src.zip" kind="lib" path="lib/junit-addons.jar"/>
+	<classpathentry kind="lib" path="lib/kunststoff.jar"/>
+	<classpathentry kind="lib" path="lib/liquidlf.jar"/>
+	<classpathentry sourcepath="lib/src/log4j-src.zip" kind="lib" path="lib/log4j.jar"/>
+	<classpathentry kind="lib" path="lib/looks.jar"/>
+	<classpathentry kind="lib" path="lib/metouia.jar"/>
+	<classpathentry sourcepath="lib/src/multivalent-src.zip" kind="lib" path="lib/multivalent.jar"/>
+	<classpathentry sourcepath="lib/src/pollo-src.zip" kind="lib" path="lib/pollo.jar"/>
+	<classpathentry kind="lib" path="lib/sametime-comm.jar"/>
+	<classpathentry kind="lib" path="lib/sametime-comm-res.jar"/>
+	<classpathentry sourcepath="lib/src/saxon-src.zip" kind="lib" path="lib/saxon.jar"/>
+	<classpathentry sourcepath="lib/src/skinlf-src.zip" kind="lib" path="lib/skinlf.jar"/>
 	<classpathentry sourcepath="K:/workspaces/workspace-lib/statcvs/src" kind="lib" path="lib/statcvs.jar"/>
 	<classpathentry sourcepath="lib/src/tinylaf-src.zip" kind="lib" path="lib/tinylaf.jar"/>
+	<classpathentry kind="lib" path="lib/toniclf.jar"/>
+	<classpathentry kind="lib" path="lib/xep.jar"/>
 	<classpathentry sourcepath="lib/src/xercesImpl-src.zip" kind="lib" path="lib/xercesImpl.jar"/>
 	<classpathentry sourcepath="lib/src/xml-apis-src.zip" kind="lib" path="lib/xml-apis.jar"/>
 	<classpathentry sourcepath="lib/src/xom-src.zip" kind="lib" path="lib/xom.jar"/>
-	<classpathentry kind="lib" path="lib/jaimlib.jar"/>
-	<classpathentry sourcepath="lib/src/bsh-src.zip" kind="lib" path="lib/bsh.jar"/>
-	<classpathentry kind="lib" path="lib/sametime-comm.jar"/>
-	<classpathentry kind="lib" path="lib/sametime-comm-res.jar"/>
-	<classpathentry sourcepath="lib/src/skinlf-src.zip" kind="lib" path="lib/skinlf.jar"/>
-	<classpathentry sourcepath="lib/src/multivalent-src.zip" kind="lib" path="lib/multivalent.jar"/>
-	<classpathentry kind="lib" path="lib/jreversepro.jar"/>
-	<classpathentry kind="lib" path="lib/hsqldb.jar"/>
-	<classpathentry kind="lib" path="lib/toniclf.jar"/>
-	<classpathentry kind="lib" path="lib/liquidlf.jar"/>
-	<classpathentry sourcepath="lib/src/javassist-src.zip" kind="lib" path="lib/javassist.jar"/>
-	<classpathentry sourcepath="lib/src/junit-addons-src.zip" kind="lib" path="lib/junit-addons.jar"/>
-	<classpathentry sourcepath="lib/src/pollo-src.zip" kind="lib" path="lib/pollo.jar"/>
-	<classpathentry sourcepath="lib/src/jaxen-src.zip" kind="lib" path="lib/jaxen.jar"/>
-	<classpathentry kind="lib" path="lib/calphahtml.jar"/>
-	<classpathentry kind="lib" path="lib/looks.jar"/>
-	<classpathentry kind="lib" path="lib/hippolf.jar"/>
+	<classpathentry kind="lib" path="lib/xplookandfeel.jar"/>
+	<classpathentry sourcepath="lib/src/xt-src.zip" kind="lib" path="lib/xt.jar"/>
 	<classpathentry kind="lib" path="lib/webwindow.jar"/>
-	<classpathentry kind="lib" path="lib/alloy.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>
