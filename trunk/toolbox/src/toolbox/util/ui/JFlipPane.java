@@ -52,30 +52,28 @@ import toolbox.util.ArrayUtil;
 
 /**
  * JFlipPane - panel with flipper like behavior
- * 
- * @author Semir Patel, Slava Pestov
  */
 public class JFlipPane extends JPanel
 {
-    /** Logger **/
+    /** Logger */
     private static final Logger logger_ =
         Logger.getLogger(JFlipPane.class);
     
     // Positions
     
-    /** Top position **/
+    /** Top position */
     public static final String TOP    = "top";
     
-    /** Left position **/
+    /** Left position */
     public static final String LEFT   = "left";
     
-    /** Bottom position **/
+    /** Bottom position */
     public static final String BOTTOM = "bottom";
     
-    /** Right position **/
+    /** Right position */
     public static final String RIGHT  = "right";
     
-    /** Splitter bar width in pixels **/
+    /** Splitter bar width in pixels */
     public static final int SPLITTER_WIDTH = 10;
 
     // Instance variables
@@ -103,7 +101,7 @@ public class JFlipPane extends JPanel
     /**
      * Creates a JFlipPane with the given position
      * 
-     * @param  position Position (JSplitPane.[TOP|LEFT|BOTTOM|RIGHT]
+     * @param  position  Position (JSplitPane.[TOP|LEFT|BOTTOM|RIGHT]
      */
     public JFlipPane(String position)
     {
@@ -116,7 +114,7 @@ public class JFlipPane extends JPanel
     } 
 
     //--------------------------------------------------------------------------
-    //  Implementation
+    //  Private
     //--------------------------------------------------------------------------
 
     /**
@@ -143,7 +141,6 @@ public class JFlipPane extends JPanel
         buttonPanel_.add(closeButton_);
         closeButton_.addActionListener(new ActionHandler());
 
-
         // Popup button
         popupButton_ = new JButton(loadIcon("ToolbarMenu.gif"));
         popupButton_.setRequestFocusEnabled(false);
@@ -151,7 +148,6 @@ public class JFlipPane extends JPanel
         popupButton_.addMouseListener(new MouseHandler());
         buttonPanel_.add(popupButton_);        
                 
-
         // Adds buttons to mutually exclusive button group
         popup_ = new JPopupMenu();
         buttonGroup_ = new ButtonGroup();
@@ -312,8 +308,8 @@ public class JFlipPane extends JPanel
     /**
      * Returns the button wired to the given flipper
      * 
-     * @param  flipper  Flipper to find button for
-     * @return Button that activates the flipper 
+     * @param   flipper  Flipper to find button for
+     * @return  Button that activates the flipper 
      */
     public JToggleButton getButtonFor(JComponent flipper)
     {
@@ -598,7 +594,7 @@ public class JFlipPane extends JPanel
      * This implements precisely defined behavior, as opposed to
      * MouseEvent.isPopupTrigger().
      * 
-     * @param   evt     The event
+     * @param   evt     Event
      * @return  True if popup trigger, false otherwise
      */
     public static boolean isPopupTrigger(MouseEvent evt)
@@ -608,13 +604,13 @@ public class JFlipPane extends JPanel
 
 
     /**
-     * Shows the specified popup menu, ensuring it is displayed within
-     * the bounds of the screen.
+     * Shows the specified popup menu, ensuring it is displayed within the 
+     * bounds of the screen.
      * 
-     * @param popup     The popup menu
-     * @param comp      The component to show it for
-     * @param x         The x co-ordinate
-     * @param y         The y co-ordinate
+     * @param popup  Popup menu
+     * @param comp   Component to show it for
+     * @param x      x co-ordinate
+     * @param y      y co-ordinate
      */
     public static void showPopupMenu(JPopupMenu popup, Component comp,
         int x, int y)
@@ -725,12 +721,10 @@ public class JFlipPane extends JPanel
         }
     } 
     
-    ////////////////////////////////////////////////////////////////////////////
-    //                                                                        //
-    //                          JFlipPaneListener                             //
-    //                                                                        //
-    ////////////////////////////////////////////////////////////////////////////
-
+	//--------------------------------------------------------------------------
+    //  Interface JFlipPaneListener 
+    //--------------------------------------------------------------------------
+    
     /**
      * Interface for JFlippane generated events
      */
@@ -751,12 +745,9 @@ public class JFlipPane extends JPanel
         public void expanded(JFlipPane flipPane);
     }
 
-
-    ////////////////////////////////////////////////////////////////////////////
-    //                                                                        //
-    //                          RotatedTextIcon                               //
-    //                                                                        //
-    ////////////////////////////////////////////////////////////////////////////
+    //--------------------------------------------------------------------------
+    //  Class RotatedTextIcon 
+    //--------------------------------------------------------------------------
     
     /**
      * RotatedTextIcon
@@ -885,12 +876,10 @@ public class JFlipPane extends JPanel
         } 
     }    
     
-    ////////////////////////////////////////////////////////////////////////////
-    //                                                                        //
-    //                          FlipPaneBorder                                //
-    //                                                                        //
-    ////////////////////////////////////////////////////////////////////////////
-    
+	//--------------------------------------------------------------------------
+    //  Class FlipPaneBorder 
+    //--------------------------------------------------------------------------
+        
     /**
      * Custom border for JFlipPane
      */
@@ -901,7 +890,6 @@ public class JFlipPane extends JPanel
         private Color color1_;
         private Color color2_;
         private Color color3_;
-    
     
         /**
          * Creates a FlipPaneBorder for the given position
@@ -1033,11 +1021,9 @@ public class JFlipPane extends JPanel
         } 
     }    
     
-    ////////////////////////////////////////////////////////////////////////////
-    //                                                                        //
-    //                          FlipButtonLayout                              //
-    //                                                                        //
-    ////////////////////////////////////////////////////////////////////////////
+    //--------------------------------------------------------------------------
+    //  Class FlipButtonLayout 
+    //--------------------------------------------------------------------------
     
     /**
      * Button layout for the buttons in the JFlipPane
@@ -1045,7 +1031,6 @@ public class JFlipPane extends JPanel
     public class FlipButtonLayout implements LayoutManager
     {
         private JFlipPane flipPane_;
-    
         
         /**
          * Creates a button layout
@@ -1218,11 +1203,9 @@ public class JFlipPane extends JPanel
         } 
     }    
 
-    ////////////////////////////////////////////////////////////////////////////
-    //                                                                        //
-    //                          FlipCardPanel                                 //
-    //                                                                        //
-    ////////////////////////////////////////////////////////////////////////////
+    //--------------------------------------------------------------------------
+    //  Class FlipCardPanel 
+    //--------------------------------------------------------------------------
     
     /**
      * Card like panel for use in JFlipPane that houses all the flippers

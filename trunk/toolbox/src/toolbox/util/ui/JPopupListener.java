@@ -27,7 +27,7 @@ public class JPopupListener extends MouseAdapter
     }
     
     //--------------------------------------------------------------------------
-    //  Overriden MouseAdapter Methods
+    //  Overriden from java.awt.event.MouseAdapter
     //--------------------------------------------------------------------------
     
     /**
