@@ -13,7 +13,9 @@ import electric.xml.Attributes;
 import electric.xml.Element;
 
 /**
- * Tail properties
+ * TailConfig is a data object that captures the configuration of a
+ * given tail instance with the ability to marshal itself to and from 
+ * XML format. 
  */
 public class TailConfig
 {
@@ -26,18 +28,33 @@ public class TailConfig
     private static final String ATTR_FILE        = "file";
     private static final String ATTR_AUTOSCROLL  = "autoScroll";
     private static final String ATTR_LINENUMBERS = "showLineNumbers";
+   
+    private static final boolean DEFAULT_AUTOSCROLL = true;
+    private static final boolean DEFAULT_LINENUMBERS = false;
+    private static final String  DEFAULT_FILTER = "";
+    private static final boolean DEFAULT_FILTER_NEGATE = true;
+    private static final boolean DEFAULT_FILTER_MATCHCASE = false;
     
     // Font XML element
-    private static final String ELEMENT_FONT     = "Font";
-    private static final String ATTR_FAMILY      = "family";
-    private static final String ATTR_STYLE       = "style";        
-    private static final String ATTR_SIZE        = "size";
+    public static final String ELEMENT_FONT     = "Font";
+    public static final String ATTR_FAMILY      = "family";
+    public static final String ATTR_STYLE       = "style";        
+    public static final String ATTR_SIZE        = "size";
 
-    
+    // Filter XML element
+    private static final String ELEMENT_FILTER = "Filter";
+    private static final String ATTR_NEGATE    = "negate";
+    private static final String ATTR_MATCH_CASE = "matchCase";
+
     private String  filename_;
     private boolean autoScroll_;
     private boolean showLineNumbers_;
     private Font    font_;
+    private String  filter_;
+
+    //
+    //  CONSTRUCTORS
+    //
 
     /**
      * Default constructor
@@ -53,15 +70,166 @@ public class TailConfig
      * @param  file             File to tail
      * @param  autoScroll       Turn on autoscroll
      * @param  showLineNumbers  Shows line numbers in output
+     * @param  font             Font of display text area
+     * @param  filter           Optional filter (regular expression) 
+     *                            for weeding out junk            
      */
     public TailConfig(String file, boolean autoScroll, boolean showLineNumbers,
-        Font font)
+        Font font, String filter)
     {
         setFilename(file);
         setAutoScroll(autoScroll);
         setShowLineNumbers(showLineNumbers);
         setFont(font);
+        setFilter(filter);
     }
+
+    //
+    //  MEATY STUFF
+    //
+    
+    /**
+     * Unmarshals an XML element representing a TailConfig object
+     * 
+     * @param   tail  Element representing a TailConfigs
+     * @return  Fully populated TailConfig
+     * @throws  IOException on IO error
+     */
+    public static TailConfig unmarshal(Element tail) throws IOException 
+    {
+        
+        // DEBUG
+        
+        Attributes attribs = tail.getAttributeObjects();
+        
+        while (attribs.hasMoreElements())
+        {
+            Attribute attrib = attribs.next();
+            
+            logger_.debug("[unmars] " + attrib.getName() + " : " + 
+                attrib.getValue());
+        }
+        
+        // REAL 
+        
+        TailConfig config = new TailConfig();
+        
+        // Handle tail element
+        config.setFilename(tail.getAttribute(ATTR_FILE));
+        
+        // Optional autoscroll
+        if (tail.getAttribute(ATTR_AUTOSCROLL) != null)
+            config.setAutoScroll(new Boolean(
+                tail.getAttribute(ATTR_AUTOSCROLL)).booleanValue());
+        else
+            config.setAutoScroll(DEFAULT_AUTOSCROLL);
+                
+        // Optional show line numbers
+        if (tail.getAttribute(ATTR_LINENUMBERS) != null)
+            config.setShowLineNumbers(new Boolean(
+                tail.getAttribute(ATTR_LINENUMBERS)).booleanValue());
+        else
+            config.setShowLineNumbers(DEFAULT_LINENUMBERS);
+        
+        // Handle optional font element    
+        Element fontNode = tail.getElement(ELEMENT_FONT);
+        
+        if (fontNode != null)
+        {
+            String family = fontNode.getAttribute(ATTR_FAMILY);
+            int style = Integer.parseInt(fontNode.getAttribute(ATTR_STYLE));
+            int size = Integer.parseInt(fontNode.getAttribute(ATTR_SIZE));
+            config.setFont(new Font(family, style, size));
+        }
+        else
+        {
+            // TODO: what is the default font?
+            config.setFont(null);    
+        }
+        
+        // Handle optional filter element
+        Element filterNode = tail.getElement(ELEMENT_FILTER);
+        
+        if (filterNode != null)
+        {
+            config.setFilter(filterNode.getTextString());
+
+            // TODO: support negate and case
+        }
+        else
+        {
+            config.setFilter(DEFAULT_FILTER);
+        }
+            
+        return config;
+    }
+
+
+    /**
+     * Marshals from Java object representation to XML representation
+     * 
+     * @return  Tail XML node
+     * @throws  IOExcetion on IO error
+     */
+    public Element marshal()  throws IOException 
+    {
+        // Tail element
+        Element tail = new Element(ELEMENT_TAIL);
+        tail.setAttribute(ATTR_FILE, getFilename());
+        tail.setAttribute(ATTR_AUTOSCROLL, 
+            new Boolean(isAutoScroll()).toString());
+        tail.setAttribute(ATTR_LINENUMBERS, 
+            new Boolean(isShowLineNumbers()).toString());
+        
+        // Font element    
+        Element font = new Element(ELEMENT_FONT);
+        font.setAttribute(ATTR_FAMILY, getFont().getFamily());
+        font.setAttribute(ATTR_STYLE, getFont().getStyle() + "");
+        font.setAttribute(ATTR_SIZE, getFont().getSize() + "");            
+        
+        // Filter element
+        Element filter = new Element(ELEMENT_FILTER);
+        filter.setText(getFilter());
+        
+        // Add child nodes to tail
+        tail.addElement(font);
+        tail.addElement(filter);
+        
+        return tail;
+    }
+
+
+    /**
+     * @return String representation
+     */
+    public String toString()
+    {
+        StringBuffer sb = new StringBuffer("\n");
+        
+        try
+        {
+            ObjectMap map = new ObjectMap(this);
+            
+            Iterator i = map.keySet().iterator();
+            
+            while(i.hasNext())
+            {
+                Object key = i.next();
+                Object value = map.get(key);
+                sb.append(key + " = " + value + "\n");        
+            }
+        }
+        catch (IntrospectionException e)
+        {
+        }
+        
+        return sb.toString();
+    }
+
+
+    //
+    //  ACCESSORS/MUTATORS
+    //
 
 
     /**
@@ -150,103 +318,26 @@ public class TailConfig
     {
         font_ = font;
     }
-
+    
     
     /**
-     * Unmarshals an XML element representing a TailProp object
+     * Returns the filter.
      * 
-     * @param   tail  Element representing a tailprops
-     * @return  Fully populated TailProp
+     * @return String
      */
-    public static TailConfig unmarshal(Element tail) throws IOException 
+    public String getFilter()
     {
-        
-        // DEBUG
-        
-        Attributes attribs = tail.getAttributeObjects();
-        
-        while (attribs.hasMoreElements())
-        {
-            Attribute attrib = attribs.next();
-            
-            logger_.debug("[unmars] " + attrib.getName() + " : " + 
-                attrib.getValue());
-        }
-        
-        // REAL 
-        
-        TailConfig props = new TailConfig();
-        
-        // Handle tail element
-        props.setFilename(tail.getAttribute(ATTR_FILE));
-        props.setAutoScroll(
-            new Boolean(tail.getAttribute(ATTR_AUTOSCROLL)).booleanValue());
-        props.setShowLineNumbers(
-            new Boolean(tail.getAttribute(ATTR_LINENUMBERS)).booleanValue());
-        
-        // Handle font element    
-        Element fontNode = tail.getElement(ELEMENT_FONT);
-        String  family   = fontNode.getAttribute(ATTR_FAMILY);
-        int     style    = Integer.parseInt(fontNode.getAttribute(ATTR_STYLE));
-        int     size     = Integer.parseInt(fontNode.getAttribute(ATTR_SIZE));
-        props.setFont(new Font(family, style, size));
-            
-        return props;
+        return filter_;
     }
 
 
     /**
-     * Marshals from Java object representation to XML representation
+     * Sets the filter.
      * 
-     * @return  Tail XML node
+     * @param filter The filter to set
      */
-    public Element marshal()  throws IOException 
+    public void setFilter(String filter)
     {
-        // Tail element
-        Element tail = new Element(ELEMENT_TAIL);
-        tail.setAttribute(ATTR_FILE, getFilename());
-        tail.setAttribute(ATTR_AUTOSCROLL, 
-            new Boolean(isAutoScroll()).toString());
-        tail.setAttribute(ATTR_LINENUMBERS, 
-            new Boolean(isShowLineNumbers()).toString());
-        
-        // Font element    
-        Element font = new Element(ELEMENT_FONT);
-        font.setAttribute(ATTR_FAMILY, getFont().getFamily());
-        font.setAttribute(ATTR_STYLE, getFont().getStyle() + "");
-        font.setAttribute(ATTR_SIZE, getFont().getSize() + "");            
-        
-        // Make font child of tail
-        tail.addElement(font);
-        
-        return tail;
-    }
-    
-    
-    /**
-     * @return String representation
-     */
-    public String toString()
-    {
-        StringBuffer sb = new StringBuffer("\n");
-        
-        try
-        {
-            ObjectMap map = new ObjectMap(this);
-            
-            Iterator i = map.keySet().iterator();
-            
-            while(i.hasNext())
-            {
-                Object key = i.next();
-                Object value = map.get(key);
-                sb.append(key + " = " + value + "\n");        
-            }
-        }
-        catch (IntrospectionException e)
-        {
-        }
-        
-        return sb.toString();
+        filter_ = filter;
     }
 }

@@ -4,7 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.FileNotFoundException;
 
 import javax.swing.AbstractAction;
@@ -17,8 +18,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import org.apache.log4j.Category;
+import org.apache.regexp.RE;
+import org.apache.regexp.RESyntaxException;
+
 import toolbox.tail.Tail;
 import toolbox.tail.TailAdapter;
+import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.concurrent.BatchQueueReader;
 import toolbox.util.concurrent.BlockingQueue;
@@ -28,7 +33,7 @@ import toolbox.util.ui.JSmartTextArea;
 /**
  * Tail pane
  */
-public class TailPane extends JPanel implements ActionListener
+public class TailPane extends JPanel
 {
     /** Logger **/
 	private static final Category logger_ = 
@@ -41,7 +46,7 @@ public class TailPane extends JPanel implements ActionListener
     private JCheckBox      autoScrollBox_;
     private JCheckBox      lineNumbersBox_;
     private JTextField     filterField_;
-    
+
     private BlockingQueue    queue_;
     private TailQueueReader  queueReader_;
     
@@ -54,11 +59,15 @@ public class TailPane extends JPanel implements ActionListener
     /** Configuration **/
     private TailConfig config_;
     
+    /** Dirty filter flag **/
+    private boolean filterDirty_;
     
+        
     /** 
      * Creates a TAilPane with the given configuration
      * 
-     * @param  config  TailConfig
+     * @param   config  TailConfig
+     * @throws  FileNotFoundException
      */
     public TailPane(TailConfig config) throws FileNotFoundException
     {
@@ -68,10 +77,16 @@ public class TailPane extends JPanel implements ActionListener
     }
     
     
+    //
+    //  MEATY STUFF
+    //
+    
+    
     /**
-     * Init tail
+     * Initializes the tail
      * 
      * @param  file  File to tail
+     * @throws FileNotFoundException
      */
     protected void init() throws FileNotFoundException
     {
@@ -85,11 +100,12 @@ public class TailPane extends JPanel implements ActionListener
         tail_ = new Tail();
         tail_.addTailListener(new TailListener());
         tail_.setTailFile(config_.getFilename());
-        startButton_.getAction().actionPerformed(new ActionEvent(this, 0, "Start"));
-        //tail_.start();
-        
-        logger_.debug("tail and reader started");
+
+        // Start tail through action so button states are OK        
+        startButton_.getAction().actionPerformed(
+            new ActionEvent(this, 0, "Start"));
     }
+
     
 	/**
 	 * Builds the GUI
@@ -104,9 +120,9 @@ public class TailPane extends JPanel implements ActionListener
 		pauseButton_    = new JButton(new PauseUnpauseAction());
 		startButton_    = new JButton(new StartStopAction());
         closeButton_    = new JButton(new CloseAction());
-        autoScrollBox_  = new JCheckBox("Autoscroll");
-        lineNumbersBox_ = new JCheckBox("Line Numbers");
-        filterField_    = new JTextField(12);
+        autoScrollBox_  = new JCheckBox(new AutoScrollAction());
+        lineNumbersBox_ = new JCheckBox(new ShowLineNumbersAction());
+        filterField_    = new JTextField(10);
         
 		JPanel buttonPanel = new JPanel(new FlowLayout());
 		buttonPanel.add(startButton_);
@@ -117,68 +133,12 @@ public class TailPane extends JPanel implements ActionListener
         buttonPanel.add(lineNumbersBox_);
         buttonPanel.add(new JLabel("Filter"));
         buttonPanel.add(filterField_);
-        
-
-        autoScrollBox_.addActionListener(this);
-        lineNumbersBox_.addActionListener(this);
 		
 		setLayout(new BorderLayout());
 		add(new JScrollPane(tailArea_), BorderLayout.CENTER);
 		add(buttonPanel, BorderLayout.SOUTH);
 	}
-	
-    
-	/**
-	 * Handles all widget button clicks and checkbox state changes
-     * 
-     * @param  e  ActionEvent
-	 */
-	public void actionPerformed(ActionEvent e)
-	{
-		Object obj = e.getSource();
-		
-        try
-        {
-            if (obj == autoScrollBox_)
-                autoScrollBoxChanged();
-            else if (obj == lineNumbersBox_)
-                lineNumbersBoxChanged();
-    		else        
-    			logger_.warn("No action handler for " + e);
-        }
-        catch (Exception ee)
-        {
-            JSmartOptionPane.showExceptionMessageDialog(null, ee);
-        }
-	}
-
-    
-    /**
-     * Called when the user has toggled the autoscroll checkbox
-     */
-    protected void autoScrollBoxChanged()
-    {
-        tailArea_.setAutoScroll(autoScrollBox_.isSelected());
-    }
-
-    
-    /**
-     * Called when the user has toggled the show line numbers checkbox
-     */
-    protected void lineNumbersBoxChanged()
-    {
-        // no op since the checkbox is queried directly for its state
-    }
  
- 
-    /**
-     * @return Close button
-     */
-    public JButton getCloseButton()
-    {
-        return closeButton_;
-    }
-
 
     /**
      * Sets the configuration
@@ -193,6 +153,7 @@ public class TailPane extends JPanel implements ActionListener
         tailArea_.setAutoScroll(config_.isAutoScroll());
         lineNumbersBox_.setSelected(config_.isShowLineNumbers());
         tailArea_.setFont(config_.getFont());
+        setFilter(config_.getFilter());
     }
 
 
@@ -207,9 +168,24 @@ public class TailPane extends JPanel implements ActionListener
         config_.setAutoScroll(autoScrollBox_.isSelected());
         config_.setShowLineNumbers(lineNumbersBox_.isSelected());
         config_.setFont(tailArea_.getFont());
+        config_.setFilter(getFilter());
         return config_;
     }    
- 
+
+
+    //
+    //  ACCESSORS/MUTATORS
+    //
+
+    
+    /**
+     * @return Close button
+     */
+    public JButton getCloseButton()
+    {
+        return closeButton_;
+    }
+
  
     /**
      * @return  Font for the tail output area
@@ -252,6 +228,11 @@ public class TailPane extends JPanel implements ActionListener
     }
 
 
+    //
+    //  INNER CLASSES
+    //
+
+    
     /**
      * Listener for tail
      */
@@ -284,7 +265,9 @@ public class TailPane extends JPanel implements ActionListener
     private class TailQueueReader extends BatchQueueReader
     {
         int lineNumber_ = 0;
-
+        RE regExp_;
+        String oldFilter = "";
+        
         /**
          * Creates a queue consumer for the given queue
          * 
@@ -299,7 +282,7 @@ public class TailPane extends JPanel implements ActionListener
         /**
          * Adds contents of queue to the output
          *
-         * @see toolbox.util.concurrent.BatchQueueReader#execute(Object[])
+         * @see toolbox.util.concurrent.BatchQueueReader#execute()
          */
         public void execute(Object[] objs)
         {
@@ -307,14 +290,48 @@ public class TailPane extends JPanel implements ActionListener
                 logger_.debug("Lines popped: " + objs.length);
             
             StringBuffer sb = new StringBuffer();
+            String filter = filterField_.getText().trim();   
+            boolean byPassFilter = StringUtil.isNullOrEmpty(filter);
+            
+            if (!byPassFilter)
+            {
+                if(!filter.equals(oldFilter))
+                {
+                    try
+                    {
+                        regExp_ = new RE(filter);
+                    }
+                    catch (RESyntaxException re)
+                    {
+                        JSmartOptionPane.showExceptionMessageDialog(null, re);
+                    }
+                
+                    oldFilter = filter;   
+                }
+            }
 
+
+            // Iterate over each line delivered            
             for(int i=0; i<objs.length; i++)
             {
-                lineNumber_++;
-                if (lineNumbersBox_.isSelected())
-                    sb.append("[" + lineNumber_ + "] ");
+                String line = (String)objs[i];
+
+                // Filter was detected, apply to line and return (skip)
+                // if match found
+                if ((!byPassFilter) && regExp_.match(line))
+                {
+                    // skip
+                }    
+                else
+                {
+                    lineNumber_ += 1;
                     
-                sb.append(objs[i] + "\n");
+                    // Decorate with line number if checked
+                    if (lineNumbersBox_.isSelected())
+                        sb.append("[" + lineNumber_ + "] ");
+                        
+                    sb.append(objs[i] + "\n");
+                }
             }
             
             tailArea_.append(sb.toString()); 
@@ -330,7 +347,12 @@ public class TailPane extends JPanel implements ActionListener
             lineNumber_ = 0;
         }
     }
+
    
+    //
+    //  GUI ACTIONS
+    //
+    
     
     /**
      * Starts/stops the tail
@@ -386,6 +408,7 @@ public class TailPane extends JPanel implements ActionListener
         }
     }
 
+
     /**
      * Pauses/unpauses the tail
      */
@@ -435,9 +458,11 @@ public class TailPane extends JPanel implements ActionListener
          */
         public CloseAction()
         {
-            super("Close");
-            putValue(MNEMONIC_KEY, new Integer('C'));
+            super("Closez");
+            putValue(MNEMONIC_KEY, new Integer('z'));
             putValue(SHORT_DESCRIPTION, "Closes the tail pane");
+//            putValue(ACCELERATOR_KEY,
+//                 KeyStroke.getKeyStroke(KeyEvent.VK_Z, 0));            
         }
     
         /**
@@ -456,6 +481,7 @@ public class TailPane extends JPanel implements ActionListener
             queueReader_.shutdown();
         }
     }
+
 
     /**
      * Clears the output area
@@ -480,6 +506,62 @@ public class TailPane extends JPanel implements ActionListener
         public void actionPerformed(ActionEvent e)
         { 
             tailArea_.setText("");
+        }
+    }
+
+    
+    /**
+     * Toggles autoscroll of the output text area
+     */
+    private class AutoScrollAction extends AbstractAction
+    {
+        /**
+         * Default constructor
+         */
+        public AutoScrollAction()
+        {
+            super("Autoscroll");
+            putValue(MNEMONIC_KEY, new Integer('a'));
+            putValue(SHORT_DESCRIPTION, "Toggles autoscroll");
+        }
+    
+        /**
+         * Toggle autoscroll
+         * 
+         * @param  e    ActionEvent
+         */
+        public void actionPerformed(ActionEvent e)
+        { 
+            tailArea_.setAutoScroll(autoScrollBox_.isSelected()); 
+        }
+    }
+
+
+    /**
+     * Toggles line numbers in the output area
+     */
+    private class ShowLineNumbersAction extends AbstractAction
+    {
+        /**
+         * Default constructor
+         */
+        public ShowLineNumbersAction()
+        {
+            super("Line numbers");
+            putValue(MNEMONIC_KEY, new Integer('L'));
+            putValue(SHORT_DESCRIPTION, 
+                "Toggles display of line numbers in the output");
+        }
+    
+        /**
+         * Toggle line numbers
+         * 
+         * @param  e    ActionEvent
+         */
+        public void actionPerformed(ActionEvent e)
+        { 
+            // no op since the checkbox is queried directly 
+            // for its state            
         }
     }
 }
