@@ -13,6 +13,9 @@ import toolbox.util.ResourceUtil;
  */
 public class ImageCache
 {
+    private static final String ROOT = "/toolbox/util/ui/images/";
+    public  static final String IMAGE_SAVE = ROOT + "Save.gif";
+    
     private static final Map iconCache_ = new HashMap();
     private static final Map imageCache_ = new HashMap();
     
