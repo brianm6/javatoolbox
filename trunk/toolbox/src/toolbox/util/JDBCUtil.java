@@ -26,6 +26,7 @@ import org.apache.commons.dbcp.DriverManagerConnectionFactory;
 import org.apache.commons.dbcp.PoolableConnectionFactory;
 import org.apache.commons.dbcp.PoolingDriver;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.Validate;
 import org.apache.commons.pool.ObjectPool;
 import org.apache.commons.pool.impl.GenericObjectPool;
 import org.apache.log4j.Logger;
@@ -387,6 +388,28 @@ public final class JDBCUtil
         
         return rows;
     }   
+    
+    
+    /**
+     * Returns the count from a sql count statement.
+     * 
+     * @param sqlCountStmt Something like <code>select count(*) from user</code>
+     * @return Count returned by the sql statement.
+     * @throws SQLException on SQL error.
+     * @throws IllegalArgumentException on invalid sql statement.
+     */
+    public static int executeCount(String sqlCountStmt) 
+        throws SQLException, IllegalArgumentException
+    {
+        // Validate that the sql stmt is selecting a count
+        String[] tokens = StringUtils.split(sqlCountStmt);
+        Validate.isTrue(tokens.length > 2, "Not a valid SQL count statement");
+        Validate.isTrue(tokens[0].equalsIgnoreCase("select"));
+        Validate.isTrue(tokens[1].toLowerCase().startsWith("count"));
+        
+        Object[][] results = executeQueryArray(sqlCountStmt);
+        return Integer.parseInt(results[0][0].toString());
+    }
     
     
     /**
