@@ -35,6 +35,7 @@
  * TODO: apache geronimo twiddle = Console
  * TODO: Write a CVS log formatter to append logs to bottom of a file.
  * TODO: Add class file DocumentViewer
+ * TODO: Remove dependency on concurrent.jar
  * =============================================================================
  *                              Build
  * =============================================================================
@@ -220,6 +221,15 @@
           <tr>
             <td width="20%">JTailPlugin</td>
             <td>Changed filters to work on a StringBuffer instead of a String to streamline chained filters</td>
+          </tr>
+        </table>
+      </action>
+      
+      <action type="Add">
+        <table>
+          <tr>
+            <td width="20%">Lib</td>
+            <td>Added backported version of JDK1.5 java.util.concurrent to JDK1.4. Replaced all instances of               BlockingQueue and Mutex with the backported equivalents</td>
           </tr>
         </table>
       </action>
