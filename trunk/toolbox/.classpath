@@ -2,7 +2,6 @@
 <classpath>
     <classpathentry kind="src" path="src"/>
     <classpathentry kind="src" path="debug"/>
-    <classpathentry kind="lib" path="resources"/>
     <classpathentry kind="var" path="JRE_LIB" sourcepath="JRE_SRC"/>
     <classpathentry kind="lib" path="lib/junit.jar" sourcepath="lib/src/junit-src.zip"/>
     <classpathentry kind="lib" path="lib/log4j.jar" sourcepath="lib/src/log4j-src.zip"/>
@@ -45,5 +44,7 @@
     <classpathentry kind="lib" path="lib/bsh.jar" sourcepath="lib/src/bsh-src.zip"/>
     <classpathentry kind="lib" path="lib/sametime-comm.jar"/>
     <classpathentry kind="lib" path="lib/sametime-comm-res.jar"/>
+    <classpathentry kind="lib" path="lib/skinlf.jar" sourcepath="lib/src/skinlf-src.zip"/>
+    <classpathentry kind="var" path="TOOLBOX_RESOURCES"/>
     <classpathentry kind="output" path="classes"/>
 </classpath>
