@@ -12,6 +12,7 @@ public interface ITailPaneConfig
     public static final String  DEFAULT_FILTER           = "";
     public static final boolean DEFAULT_FILTER_NEGATE    = true;
     public static final boolean DEFAULT_FILTER_MATCHCASE = false;
+    public static final boolean DEFAULT_ANTIALIAS        = false;
 
     /**
      * Returns the autoScroll nature of the text area.
@@ -91,4 +92,20 @@ public interface ITailPaneConfig
      * @param filter The filter to set
      */
     public void setFilter(String filter);
+    
+    
+    /**
+     * Accessor for the antialias flag
+     * 
+     * @return  True if antialias is on, false otherwise
+     */
+    public boolean isAntiAlias();
+    
+    
+    /**
+     * Mutator for the antialias flag
+     * 
+     * @param  b  True to turn antialias on, false otherwise
+     */
+    public void setAntiAlias(boolean b);
 }
