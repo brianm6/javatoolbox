@@ -5,7 +5,7 @@ import java.util.Comparator;
 import java.util.Date;
 
 /**
- * A {@java.util.File} comparator that can compare on varios file attributes.
+ * A {@java.io.File} comparator that can compare on varios file attributes.
  * <p>
  * <ul>
  *   <li>File name (case insensetive)
