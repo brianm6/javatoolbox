@@ -10,32 +10,21 @@ import org.apache.log4j.Logger;
  */
 public class ResourceUtilTest extends TestCase
 {
-    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(ResourceUtilTest.class);
-    
+
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+        
     /**
      * Entrypoint
      * 
-     * @param  args Args
+     * @param  args  None recognized
      */
     public static void main(String[] args)
     {
         TestRunner.run(ResourceUtilTest.class);    
-    }
-    
-    //--------------------------------------------------------------------------
-    // Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Constructor for ResourceUtilTest
-     * 
-     * @param  arg0  Name
-     */
-    public ResourceUtilTest(String arg0)
-    {
-        super(arg0);
     }
     
     //--------------------------------------------------------------------------

@@ -6,6 +6,8 @@ import java.awt.Container;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 
+import org.apache.log4j.Logger;
+
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
@@ -17,30 +19,23 @@ import toolbox.util.ui.JSmartTextArea;
  */
 public class JSmartTextAreaTest extends TestCase
 {
+    private static final Logger logger_ =
+        Logger.getLogger(JSmartTextAreaTest.class);
+        
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+    
     /** 
      * Entry point
      * 
-     * @param  args  None
+     * @param  args  None recognized
      */
     public static void main(String[] args)
     {
         TestRunner.run(JSmartTextAreaTest.class);
     }
 
-    //--------------------------------------------------------------------------
-    // Constructors 
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Constructor for JSmartTextAreaTest.
-     * 
-     * @param arg0  Name
-     */
-    public JSmartTextAreaTest(String arg0)
-    {
-        super(arg0);
-    }
-    
     //--------------------------------------------------------------------------
     // Unit Tests 
     //--------------------------------------------------------------------------
@@ -50,6 +45,8 @@ public class JSmartTextAreaTest extends TestCase
      */
     public void testAutoScroll()
     {
+        logger_.info("Running testAutoScroll...");
+        
         JFrame frame = new JFrame("testAutoScroll");        
         Container cp = frame.getContentPane();
         cp.setLayout(new BorderLayout());

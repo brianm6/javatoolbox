@@ -9,6 +9,9 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+
+import org.apache.log4j.Logger;
+
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
@@ -20,28 +23,21 @@ import toolbox.util.ui.layout.ParagraphLayout;
  */
 public class ParagraphLayoutTest extends TestCase
 {
+    private static final Logger logger_ =
+        Logger.getLogger(ParagraphLayoutTest.class);
+        
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+    
     /**
      * Entrypoint
      * 
-     * @param  args  None
+     * @param  args  None recognized
      */
     public static void main(String[] args)
     {
         TestRunner.run(ParagraphLayoutTest.class);
-    }
-
-    //--------------------------------------------------------------------------
-    //  Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Constructor for ParagraphLayoutTest.
-     * 
-     * @param  arg0  Test name
-     */
-    public ParagraphLayoutTest(String arg0)
-    {
-        super(arg0);
     }
 
     //--------------------------------------------------------------------------
@@ -53,6 +49,8 @@ public class ParagraphLayoutTest extends TestCase
      */
     public void testParagraphLayout()
     {
+        logger_.info("Running testParagraphLayout...");
+        
         JFrame jf = new JFrame("ParagraphLayout Unit Test");
         Container f = jf.getContentPane();
         f.setLayout(new ParagraphLayout());

@@ -21,28 +21,18 @@ public class StringUtilTest extends TestCase implements Stringz
     private static Logger logger_ = 
         Logger.getLogger(StringUtilTest.class);
 
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+    
     /**
      * Entrypoint
      * 
-     * @param  args  Args
+     * @param  args  None recognized
      */
     public static void main(String[] args)
     {
         TestRunner.run(StringUtilTest.class);
-    }
-
-    //--------------------------------------------------------------------------
-    //  Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * StringUtilTest constructor
-     * 
-     * @param  name  Test name
-     */
-    public StringUtilTest(String name)
-    {
-        super(name);
     }
 
     //--------------------------------------------------------------------------

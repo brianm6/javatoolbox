@@ -12,34 +12,23 @@ import toolbox.util.Console;
  */
 public class ConsoleTest extends TestCase
 {
-    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(ConsoleTest.class);
 
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+    
     /**
      * Entrypoint
      *
-     * @param  args  Arguments
+     * @param  args  None recognized
      */
     public static void main(String[] args)
     {
         TestRunner.run(ConsoleTest.class);
     }
 
-    //--------------------------------------------------------------------------
-    // Constructors
-    //--------------------------------------------------------------------------
-        
-    /**
-     * Constructor for ConsoleTest.
-     * 
-     * @param name  Test name
-     */
-    public ConsoleTest(String name)
-    {
-        super(name);
-    }
-    
     //--------------------------------------------------------------------------
     // Unit Tests
     //--------------------------------------------------------------------------

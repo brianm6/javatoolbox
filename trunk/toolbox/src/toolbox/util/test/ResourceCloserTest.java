@@ -12,7 +12,11 @@ public class ResourceCloserTest extends TestCase
 {
     private static final Logger logger_ = 
         Logger.getLogger(ResourceCloserTest.class);
-    
+
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+        
     /**
      * Entrypoint
      * 
@@ -24,21 +28,6 @@ public class ResourceCloserTest extends TestCase
     }
     
     //--------------------------------------------------------------------------
-    // Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Constructor for ResourceCloserTest
-     * 
-     * @param  arg0  Name
-     */
-    public ResourceCloserTest(String arg0)
-    {
-        super(arg0);
-    }
-    
-    //--------------------------------------------------------------------------
     // Unit Tests
     //--------------------------------------------------------------------------
-  
 }

@@ -1,10 +1,11 @@
 package toolbox.util.ui.font.test;
 
 import javax.swing.JFrame;
-import junit.framework.TestCase;
-import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
+
+import junit.framework.TestCase;
+import junit.textui.TestRunner;
 
 import toolbox.util.ui.font.IFontChooserDialogListener;
 import toolbox.util.ui.font.JFontChooser;
@@ -17,7 +18,11 @@ public class JFontChooserDialogTest extends TestCase
 {
     private static final Logger logger_ = 
         Logger.getLogger(JFontChooserDialogTest.class);
-        
+
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+            
     /**
      * Entry point
      * 
@@ -26,20 +31,6 @@ public class JFontChooserDialogTest extends TestCase
     public static void main(String[] args)
     {
         TestRunner.run(JFontChooserDialogTest.class);
-    }
-
-    //--------------------------------------------------------------------------
-    // Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Constructor for JFontChooserDialogTest.
-     * 
-     * @param arg0 Name
-     */
-    public JFontChooserDialogTest(String arg0)
-    {
-        super(arg0);
     }
 
     //--------------------------------------------------------------------------
@@ -73,7 +64,6 @@ public class JFontChooserDialogTest extends TestCase
             new JFontChooserDialog(new JFrame(), "Select font", false);
             
         fsd.addFontDialogListener(listener);
-        
         fsd.setVisible(true);            
     }
 }

@@ -16,32 +16,21 @@ import toolbox.util.StringUtil;
  */
 public class RandomUtilTest extends TestCase
 {
-    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(RandomUtilTest.class);
 
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+    
     /**
      * Entry point
      * 
-     * @param  args  Args
+     * @param  args  None recognized
      */
     public static void main(String[] args)
     {
         TestRunner.run(RandomUtilTest.class);
-    }
-
-    //--------------------------------------------------------------------------
-    // Constructors
-    //--------------------------------------------------------------------------
-        
-    /**
-     * Constructor for RandomUtilTest
-     * 
-     * @param  arg0  Name
-     */
-    public RandomUtilTest(String arg0)
-    {
-        super(arg0);
     }
 
     //--------------------------------------------------------------------------

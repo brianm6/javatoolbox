@@ -16,7 +16,11 @@ public class MapUtilTest extends TestCase
 {
     private static final Logger logger_ = 
         Logger.getLogger(MapUtilTest.class);
-        
+
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+            
     /**
      * Entrypoint
      * 
@@ -27,17 +31,10 @@ public class MapUtilTest extends TestCase
         TestRunner.run(MapUtilTest.class);
     }
 
-    /**
-     * Constructor for MapUtilTest.
-     * 
-     * @param arg0 Name
-     */
-    public MapUtilTest(String arg0)
-    {
-        super(arg0);
-    }
-
-    
+    //--------------------------------------------------------------------------
+    // Unit Tests
+    //--------------------------------------------------------------------------
+        
     /**
      * Tests toString()
      */

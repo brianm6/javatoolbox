@@ -3,7 +3,11 @@ package toolbox.util.ui.font.test;
 import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
+
+import org.apache.log4j.Logger;
+
 import junit.framework.TestCase;
+import junit.textui.TestRunner;
 
 import toolbox.util.ui.font.JFontChooser;
 
@@ -12,6 +16,13 @@ import toolbox.util.ui.font.JFontChooser;
  */
 public class JFontChooserTest extends TestCase
 {
+    private static final Logger logger_ =
+        Logger.getLogger(JFontChooserTest.class);
+        
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+    
     /**
      * Entry point
      * 
@@ -19,21 +30,7 @@ public class JFontChooserTest extends TestCase
      */
     public static void main(String[] args)
     {
-        junit.textui.TestRunner.run(JFontChooserTest.class);
-    }
-
-    //--------------------------------------------------------------------------
-    // Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Constructor for JFontChooserTest.
-     * 
-     * @param arg0 Name
-     */
-    public JFontChooserTest(String arg0)
-    {
-        super(arg0);
+        TestRunner.run(JFontChooserTest.class);
     }
 
     //--------------------------------------------------------------------------
@@ -45,6 +42,8 @@ public class JFontChooserTest extends TestCase
      */
     public void testFontSelectionPanel()
     {
+        logger_.info("Running testFontSelectionPanel...");
+        
         JFrame f = new JFrame();
         JFontChooser fsp = new JFontChooser();
         f.getContentPane().add(BorderLayout.CENTER, fsp);

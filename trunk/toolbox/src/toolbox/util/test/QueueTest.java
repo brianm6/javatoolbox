@@ -12,10 +12,13 @@ import toolbox.util.Queue;
  */
 public class QueueTest extends TestCase
 {
-    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(QueueTest.class);
-        
+
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+            
     /**
      * Entrypoint
      * 
@@ -24,20 +27,6 @@ public class QueueTest extends TestCase
     public static void main(String[] args)
     {
         TestRunner.run(QueueTest.class);
-    }
-
-    //--------------------------------------------------------------------------
-    // Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Constructor for QueueTest.
-     * 
-     * @param  arg0  Test name
-     */
-    public QueueTest(String arg0)
-    {
-        super(arg0);
     }
 
     //--------------------------------------------------------------------------

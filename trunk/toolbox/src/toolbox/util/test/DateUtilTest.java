@@ -19,7 +19,11 @@ public class DateUtilTest extends TestCase
 {
     private static final Logger logger_ = 
         Logger.getLogger(DateUtilTest.class);
-    
+
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+        
     /**
      * Entrypoint
      *
@@ -29,21 +33,6 @@ public class DateUtilTest extends TestCase
     {
         TestRunner.run(DateUtilTest.class);
     }
-
-    //--------------------------------------------------------------------------
-    // Constructors
-    //--------------------------------------------------------------------------
-
-    /**
-     * DateUtilTest constructor
-     * 
-     * @param name  Test name
-     */
-    public DateUtilTest(String name)
-    {
-        super(name);
-    }
-
 
     //--------------------------------------------------------------------------
     // Unit Tests
@@ -87,7 +76,6 @@ public class DateUtilTest extends TestCase
         }
     }
 
-
     /**
      * Tests getDifferenceInWeeks()
      */
@@ -116,7 +104,6 @@ public class DateUtilTest extends TestCase
         assertEquals("Difference should be 4 weeks",
             4, DateUtil.getDifferenceInWeeks(now, then));
     }
-
 
     /**
      * Tests isBefore()
@@ -164,7 +151,6 @@ public class DateUtilTest extends TestCase
             !DateUtil.isBefore(now, then));
     }
 
-
     /**
      * Tests isBetween()
      */
@@ -199,7 +185,6 @@ public class DateUtilTest extends TestCase
             DateUtil.isBetween(endBorder, beginRange, endRange));
 
     }
-
 
     /**
      * Tests the roundToWeeks() method
@@ -247,7 +232,6 @@ public class DateUtilTest extends TestCase
             DateUtil.roundToWeeks(14));
     }
 
-
     /**
      * Tests equals()
      */
@@ -269,7 +253,6 @@ public class DateUtilTest extends TestCase
         Date sameDay = cal.getTime();
         assertTrue(DateUtil.equals(now, sameDay));
     }
- 
     
     /**
      * Tests addDays() 
@@ -283,7 +266,6 @@ public class DateUtilTest extends TestCase
         DateUtil.addDays(tomorrow, -1);
         assertTrue(DateUtil.equals(today, tomorrow));
     }
- 
     
     /**
      * Tests compare()
@@ -301,7 +283,6 @@ public class DateUtilTest extends TestCase
         assertTrue(DateUtil.compare(tomorrow, yesterday) > 0);       
     }
     
-    
     /**
      * Tests addWeeks()
      */
@@ -318,7 +299,6 @@ public class DateUtilTest extends TestCase
         assertTrue(DateUtil.equals(futureWeeks, futureDays));
     }
  
- 
     /**
      * Tests copy()   
      */
@@ -330,7 +310,6 @@ public class DateUtilTest extends TestCase
         Date copy = DateUtil.copy(today);
         assertTrue(DateUtil.equals(today, copy));
     }
-    
     
     /**
      * Tests isOnOrBefore()
@@ -353,7 +332,6 @@ public class DateUtilTest extends TestCase
         assertTrue(!DateUtil.isOnOrBefore(wayAfter, now));
     }
 
-
     /**
      * Tests isOnOrAfter()
      */
@@ -374,7 +352,6 @@ public class DateUtilTest extends TestCase
         assertTrue(!DateUtil.isOnOrAfter(wayBefore, now));
         assertTrue(DateUtil.isOnOrAfter(wayAfter, now));
     }
-
     
     /**
      * Tests getToday()
@@ -400,7 +377,6 @@ public class DateUtilTest extends TestCase
         assertEquals(cal.get(Calendar.MONTH), calNow.get(Calendar.MONTH));
         assertEquals(cal.get(Calendar.DATE), calNow.get(Calendar.DATE));        
     }
-
     
     /**
      * Tests getBeginningOfMonth()
@@ -424,7 +400,6 @@ public class DateUtilTest extends TestCase
         assertEquals(cnow.get(Calendar.MONTH), cbom.get(Calendar.MONTH));
         assertEquals(cnow.get(Calendar.YEAR), cbom.get(Calendar.YEAR));
     }
-
     
     /**
      * Tests getNextDay()
@@ -455,7 +430,6 @@ public class DateUtilTest extends TestCase
             DateUtil.addWeeks(DateUtil.getToday(), 1), 
                 DateUtil.getNextDay(dayToday)));
     }
-
     
     /**
      * Tests getPreviousDay()
@@ -487,7 +461,6 @@ public class DateUtilTest extends TestCase
             DateUtil.addWeeks(DateUtil.getToday(), -1), 
                 DateUtil.getPreviousDay(dayToday)));
     }
-
     
     /**
      * Tests substractDays() 
@@ -501,7 +474,6 @@ public class DateUtilTest extends TestCase
         DateUtil.subtractDays(today, -1);
         assertTrue(DateUtil.equals(today,yesterday));
     }
-
     
     /**
      * Tests zeroTime()
@@ -521,7 +493,6 @@ public class DateUtilTest extends TestCase
         assertEquals(0, c.get(Calendar.SECOND));
         assertEquals(0, c.get(Calendar.MILLISECOND));
     }    
-    
     
     /**
      * Tests format()

@@ -12,32 +12,21 @@ import toolbox.util.Platform;
  */
 public class PlatformTest extends TestCase
 {
-    /** Logger */
     private static final Logger logger_ =
         Logger.getLogger(PlatformTest.class);
-        
+
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+            
     /**
      * Entrypoint
      * 
-     * @param  args  None
+     * @param  args  None recognized
      */
     public static void main(String[] args)
     {
         TestRunner.run(PlatformTest.class);
-    }
-
-    //--------------------------------------------------------------------------
-    // Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Constructor for PlatformTest
-     * 
-     * @param  arg  Test name
-     */
-    public PlatformTest(String arg)
-    {
-        super(arg);
     }
 
     //--------------------------------------------------------------------------

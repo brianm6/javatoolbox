@@ -13,32 +13,21 @@ import toolbox.util.AssertionException;
  */
 public class AssertTest extends TestCase
 {
-    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(AssertTest.class);
 
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+    
     /**
      * Entrypoint
      * 
-     * @param args Args
+     * @param args None recognized
      */
     public static void main(String[] args)
     {
         TestRunner.run(AssertTest.class);
-    }
-
-    //--------------------------------------------------------------------------
-    // Constructors
-    //--------------------------------------------------------------------------
-            
-    /**
-     * Constructor for AssertTest.
-     * 
-     * @param arg0  Name
-     */
-    public AssertTest(String arg0)
-    {
-        super(arg0);
     }
 
     //--------------------------------------------------------------------------

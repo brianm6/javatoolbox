@@ -6,6 +6,9 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+
+import org.apache.log4j.Logger;
+
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
@@ -18,28 +21,21 @@ import toolbox.util.ui.layout.StackLayout;
  */
 public class StackLayoutTest extends TestCase
 {
+    private static final Logger logger_ =
+        Logger.getLogger(StackLayoutTest.class);
+        
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+    
     /**
      * Entrypoint
      * 
-     * @param  args  None
+     * @param  args  None recognized
      */
     public static void main(String[] args)
     {
         TestRunner.run(StackLayoutTest.class);
-    }
-
-    //--------------------------------------------------------------------------
-    //  Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Constructor for StackLayoutTest.
-     * 
-     * @param arg0 Name
-     */
-    public StackLayoutTest(String arg0)
-    {
-        super(arg0);
     }
 
     //--------------------------------------------------------------------------
@@ -51,6 +47,8 @@ public class StackLayoutTest extends TestCase
      */
     public void testStackLayout()
     {
+        logger_.info("Running testStackLayout...");
+        
         JFrame jf = new JFrame("StackLayout Unit Test");
         Container f = jf.getContentPane();
         f.setLayout(new StackLayout());

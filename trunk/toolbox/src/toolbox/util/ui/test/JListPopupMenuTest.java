@@ -7,6 +7,8 @@ import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
+import org.apache.log4j.Logger;
+
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
@@ -18,6 +20,13 @@ import toolbox.util.ui.JListPopupMenu;
  */
 public class JListPopupMenuTest extends TestCase
 {
+    private static final Logger logger_ =
+        Logger.getLogger(JListPopupMenuTest.class);
+        
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+    
     /** 
      * Entry point
      * 
@@ -26,20 +35,6 @@ public class JListPopupMenuTest extends TestCase
     public static void main(String[] args)
     {
         TestRunner.run(JListPopupMenuTest.class);
-    }
-
-    //--------------------------------------------------------------------------
-    // Constructors 
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Constructor for JListPopupMenuTest
-     * 
-     * @param arg0  Name
-     */
-    public JListPopupMenuTest(String arg0)
-    {
-        super(arg0);
     }
     
     //--------------------------------------------------------------------------
@@ -51,6 +46,8 @@ public class JListPopupMenuTest extends TestCase
      */
     public void testListPopup()
     {
+        logger_.info("Running testListPopup...");
+        
         JFrame frame = new JFrame("testListPopup");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 

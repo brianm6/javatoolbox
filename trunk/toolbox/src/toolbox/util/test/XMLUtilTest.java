@@ -14,29 +14,19 @@ public class XMLUtilTest extends TestCase
 {
     private static final Logger logger_ =
         Logger.getLogger(XMLUtilTest.class);
-        
+
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+            
     /**
      * Entrypoint
      * 
-     * @param  args  None
+     * @param  args  None recognized
      */
     public static void main(String[] args)
     {
         TestRunner.run(XMLUtilTest.class);
-    }
-
-    //--------------------------------------------------------------------------
-    // Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Constructor for XMLUtilTest
-     * 
-     * @param  arg0  Test name
-     */
-    public XMLUtilTest(String arg0)
-    {
-        super(arg0);
     }
 
     //--------------------------------------------------------------------------

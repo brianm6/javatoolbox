@@ -16,7 +16,6 @@ import toolbox.util.ThreadUtil;
  */
 public class ElapsedTimeTest extends TestCase
 {
-    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(ElapsedTimeTest.class);
        
@@ -28,20 +27,6 @@ public class ElapsedTimeTest extends TestCase
     public static void main(String[] args)
     {
         TestRunner.run(ElapsedTimeTest.class);
-    }
-
-    //--------------------------------------------------------------------------
-    // Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Constructor for ElapsedTimeTest.
-     * 
-     * @param arg0  Name
-     */
-    public ElapsedTimeTest(String arg0)
-    {
-        super(arg0);
     }
 
     //--------------------------------------------------------------------------

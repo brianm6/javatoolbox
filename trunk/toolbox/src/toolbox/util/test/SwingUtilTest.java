@@ -29,32 +29,21 @@ import toolbox.util.SwingUtil;
  */
 public class SwingUtilTest extends TestCase
 {
-    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(SwingUtilTest.class);
-    
+
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+        
     /**
      * Entry point
      * 
-     * @param  args  None
+     * @param  args  None recognized
      */
     public static void main(String[] args)
     {
         TestRunner.run(SwingUtilTest.class);
-    }
-
-    //--------------------------------------------------------------------------
-    // Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Constructor for SwingUtilTest.
-     * 
-     * @param   arg0    Name
-     */
-    public SwingUtilTest(String arg0)
-    {
-        super(arg0);
     }
 
     //--------------------------------------------------------------------------

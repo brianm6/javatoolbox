@@ -12,33 +12,17 @@ import toolbox.util.ExceptionUtil;
  */
 public class ExceptionUtilTest extends TestCase
 {
-    
-    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(ExceptionUtilTest.class);
 
     /**
      * Entrypoint
      * 
-     * @param  args  None
+     * @param  args  None recognized
      */
     public static void main(String[] args)
     {
         TestRunner.run(ExceptionUtilTest.class);
-    }
-
-    //--------------------------------------------------------------------------
-    // Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Constructor
-     * 
-     * @param  name  Name
-     */
-    public ExceptionUtilTest(String name)
-    {
-        super(name);
     }
     
     //--------------------------------------------------------------------------

@@ -2,10 +2,11 @@ package toolbox.util.ui.test;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import junit.framework.TestCase;
-import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
+
+import junit.framework.TestCase;
+import junit.textui.TestRunner;
 
 import toolbox.util.ExceptionUtil;
 import toolbox.util.RandomUtil;
@@ -14,11 +15,10 @@ import toolbox.util.SwingUtil;
 import toolbox.util.ui.JSmartOptionPane;
 
 /**
- * Unit test for JSmartOptionPaneTest 
+ * Unit test for JSmartOptionPane
  */
 public class JSmartOptionPaneTest extends TestCase
 {
-    /** Logger */
     private static final Logger logger_ =
         Logger.getLogger(JSmartOptionPaneTest.class);
         
@@ -31,6 +31,10 @@ public class JSmartOptionPaneTest extends TestCase
 
     private static final JFrame PARENT = new JFrame();
 
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+    
     /**
      * Entry point
      * 
@@ -39,20 +43,6 @@ public class JSmartOptionPaneTest extends TestCase
     public static void main(String[] args)
     {
         TestRunner.run(JSmartOptionPaneTest.class);
-    }
-
-    //--------------------------------------------------------------------------
-    // Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Constructor for DetailedDialogTest.
-     * 
-     * @param arg0  Name
-     */
-    public JSmartOptionPaneTest(String arg0)
-    {
-        super(arg0);
     }
 
     //--------------------------------------------------------------------------

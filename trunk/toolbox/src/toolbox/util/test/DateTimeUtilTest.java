@@ -15,32 +15,21 @@ import toolbox.util.DateTimeUtil;
  */
 public class DateTimeUtilTest extends TestCase
 {
-    /** Logger */
     private static final Logger logger_ =
         Logger.getLogger(DateTimeUtilTest.class);
-        
+
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+            
     /**
      * Entrypoint
      * 
-     * @param  args  None
+     * @param  args  None recognized
      */
     public static void main(String[] args)
     {
         TestRunner.run(DateTimeUtilTest.class);
-    }
-
-    //--------------------------------------------------------------------------
-    // Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Constructor for DateTimeUtilTest.
-     * 
-     * @param arg0  Name
-     */
-    public DateTimeUtilTest(String arg0)
-    {
-        super(arg0);
     }
 
     //--------------------------------------------------------------------------
@@ -78,8 +67,6 @@ public class DateTimeUtilTest extends TestCase
         
         DateTimeUtil.add(d, 1, 1, 1, 1, 1, 1);
         logger_.info("After adding: " + DateTimeUtil.format(d));      
-        
-        // TODO: Assert correctness
     }
     
     /**

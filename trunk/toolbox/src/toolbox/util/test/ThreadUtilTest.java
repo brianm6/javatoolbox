@@ -16,10 +16,13 @@ import toolbox.util.ThreadUtil;
  */
 public class ThreadUtilTest extends TestCase
 {
-    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(ThreadUtilTest.class);
 
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+    
     /**
      * Entrypoint
      * 
@@ -30,20 +33,6 @@ public class ThreadUtilTest extends TestCase
         TestRunner.run(ThreadUtilTest.class);
     }
     
-    //--------------------------------------------------------------------------
-    // Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Arg constructor
-     * 
-     * @param  name  Name
-     */
-    public ThreadUtilTest(String name)
-    {
-        super(name);
-    }
-
     //--------------------------------------------------------------------------
     // Unit Tests
     //--------------------------------------------------------------------------

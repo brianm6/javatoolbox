@@ -19,31 +19,21 @@ public class ClassUtilTest extends TestCase
 {
     private static final Logger logger_ = 
         Logger.getLogger(ClassUtilTest.class);
-    
+
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+        
     /**
      * Entrypoint
      * 
-     * @param  args  None
+     * @param  args  None recognized
      */
     public static void main(String[] args)
     {
         TestRunner.run(ClassUtilTest.class);
     }
 
-    //--------------------------------------------------------------------------
-    // Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Constructor for ClassUtilTest.
-     * 
-     * @param arg0  Name
-     */
-    public ClassUtilTest(String arg0)
-    {
-        super(arg0);
-    }
-    
     //--------------------------------------------------------------------------
     // Unit Tests
     //--------------------------------------------------------------------------

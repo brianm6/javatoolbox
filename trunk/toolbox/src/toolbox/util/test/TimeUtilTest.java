@@ -14,32 +14,21 @@ import toolbox.util.TimeUtil;
  */
 public class TimeUtilTest extends TestCase
 {
-    /** Logger */
     private static final Logger logger_ =
         Logger.getLogger(TimeUtilTest.class);
-        
+
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+            
     /**
      * Entrypoint
      * 
-     * @param  args  None
+     * @param  args  None recognized
      */
     public static void main(String[] args)
     {
         TestRunner.run(TimeUtilTest.class);
-    }
-
-    //--------------------------------------------------------------------------
-    // Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Constructor for DateTimeUtilTest.
-     * 
-     * @param arg0  Name
-     */
-    public TimeUtilTest(String arg0)
-    {
-        super(arg0);
     }
 
     //--------------------------------------------------------------------------
@@ -52,6 +41,7 @@ public class TimeUtilTest extends TestCase
     public void testFormat()
     {
         logger_.info("Running testFormat...");
+        
         Date d = new Date();
         String time = TimeUtil.format(d);
         logger_.info("Formatted time: " + time);

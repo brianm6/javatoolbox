@@ -13,31 +13,21 @@ public class RollingCounterTest extends TestCase
 {
     private static final Logger logger_ = 
         Logger.getLogger(RollingCounterTest.class);
-        
+
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+            
     /**
      * Entrypoint
      * 
-     * @param  args  None
+     * @param  args  None recognized
      */
     public static void main(String[] args)
     {
         TestRunner.run(RollingCounterTest.class);
     }
 
-    //--------------------------------------------------------------------------
-    // Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Constructor for RollingCounterTest.
-     * 
-     * @param arg0 Name
-     */
-    public RollingCounterTest(String arg0)
-    {
-        super(arg0);
-    }
-    
     //--------------------------------------------------------------------------
     // Unit Tests
     //--------------------------------------------------------------------------
@@ -63,7 +53,6 @@ public class RollingCounterTest extends TestCase
                 c.increment();
             }
         }
-        
         
         for(int i=0; i<20; i++)
         {

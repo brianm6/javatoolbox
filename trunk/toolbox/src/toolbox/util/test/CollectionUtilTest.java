@@ -16,10 +16,13 @@ import toolbox.util.CollectionUtil;
  */
 public class CollectionUtilTest extends TestCase
 {
-    /** Logger */
     private static final Logger logger_ =
         Logger.getLogger(CollectionUtilTest.class);
-        
+
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+            
     /**
      * Entrypoint
      *
@@ -28,20 +31,6 @@ public class CollectionUtilTest extends TestCase
     public static void main(String[] args)
     {
         TestRunner.run(CollectionUtilTest.class);
-    }
-
-    //--------------------------------------------------------------------------
-    // Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Constructor for CollectionUtilTest.
-     * 
-     * @param  arg0  Name
-     */
-    public CollectionUtilTest(String arg0)
-    {
-        super(arg0);
     }
 
     //--------------------------------------------------------------------------

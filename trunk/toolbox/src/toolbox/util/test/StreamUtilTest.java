@@ -17,10 +17,13 @@ import toolbox.util.io.StringOutputStream;
  */
 public class StreamUtilTest extends TestCase
 {
-    /** Logger */
     private static final Logger logger_ =
         Logger.getLogger(StreamUtilTest.class);
-        
+
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+            
     /**
      * Entrypoint
      * 
@@ -29,20 +32,6 @@ public class StreamUtilTest extends TestCase
     public static void main(String[] args)
     {
         TestRunner.run(StreamUtilTest.class);
-    }
-    
-    //--------------------------------------------------------------------------
-    // Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Constructor for StreamUtilTest
-     * 
-     * @param  arg0  Name
-     */
-    public StreamUtilTest(String arg0)
-    {
-        super(arg0);
     }
     
     //--------------------------------------------------------------------------

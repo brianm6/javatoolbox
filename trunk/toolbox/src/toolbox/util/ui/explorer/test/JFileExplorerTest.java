@@ -24,7 +24,6 @@ import toolbox.util.ui.JFileExplorerListener;
  */
 public class JFileExplorerTest extends TestCase
 {
-    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(JFileExplorerTest.class);
         
@@ -36,20 +35,6 @@ public class JFileExplorerTest extends TestCase
     public static void main(String[] args)
     {
         TestRunner.run(JFileExplorerTest.class);
-    }
-    
-    //--------------------------------------------------------------------------
-    // Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Constructor for JFileExplorerTest.
-     * 
-     * @param arg0  Name
-     */
-    public JFileExplorerTest(String arg0)
-    {
-        super(arg0);
     }
     
     //--------------------------------------------------------------------------
@@ -109,7 +94,6 @@ public class JFileExplorerTest extends TestCase
             getContentPane().add(testPanel, BorderLayout.SOUTH);
         }        
 
-
         /**
          * @param  file  File double clicked 
          */
@@ -117,7 +101,6 @@ public class JFileExplorerTest extends TestCase
         {
             logger_.info("file " + file + " double clicked");
         }
-        
         
         /**
          * @param  folder  Folder that was selected
@@ -127,12 +110,10 @@ public class JFileExplorerTest extends TestCase
             logger_.info("folder " + folder + " selected");
         }
         
-        
         public void folderDoubleClicked(String folder)
         {
             logger_.info("folder " + folder + " double clicked");    
         }
-                
                 
         /**
          * @param  e  Action performed
