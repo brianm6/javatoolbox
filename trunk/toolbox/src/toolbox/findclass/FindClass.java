@@ -125,6 +125,7 @@ public class FindClass
         
         findListeners_ = new FindClassListener[0];
         defaultCollector_ = new FindClassCollector();
+        searchTargets_ = new ArrayList();
         addSearchListener(defaultCollector_);
     }
 
@@ -196,7 +197,7 @@ public class FindClass
     public List getSearchTargets()
     {
         // build lazily
-        if (searchTargets_ == null)
+        if (searchTargets_.isEmpty())
             buildSearchTargets();    
         
         return searchTargets_;
