@@ -67,8 +67,6 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      // TODO: Write log4j pattern layout that combines class name and method
      // TODO: Convert project build and layout to Maven
      // TODO: Added themes for Tiny Look and Feel
-     // TODO: Swipe memory monitor from JEdit
-     
     
     //--------------------------------------------------------------------------
     // Constants
@@ -76,25 +74,25 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         
     private static final Logger logger_ = 
         Logger.getLogger(PluginWorkspace.class);
+    
+    private static final String NODE_WORKSPACE      = "Workspace";
+    private static final String   ATTR_MAXXED       = "maximized";
+    private static final String   ATTR_WIDTH        = "width";
+    private static final String   ATTR_HEIGHT       = "height";
+    private static final String   ATTR_XCOORD       = "xcoord";
+    private static final String   ATTR_YCOORD       = "ycoord";
+    private static final String   ATTR_LAF          = "lookandfeel";
+    private static final String   ATTR_SELECTED_TAB = "selectedtab";
+    
+    private static final String   NODE_PLUGIN       = "Plugin";
+    private static final String     ATTR_CLASS      = "class";
+    private static final String     ATTR_LOADED     = "loaded";
+    
+    private static final String NODE_ROOT           = "Root";
+    private static final String NODE_UNLOADED       = "Unloaded";
 
-    private static final String FILE_PREFS     = ".toolbox.xml";
-    
-    private static final String ATTR_MAXXED       = "maximized";
-    private static final String ATTR_WIDTH        = "width";
-    private static final String ATTR_HEIGHT       = "height";
-    private static final String ATTR_XCOORD       = "xcoord";
-    private static final String ATTR_YCOORD       = "ycoord";
-    private static final String ATTR_LAF          = "lookandfeel";
-    private static final String ATTR_SELECTED_TAB = "selectedtab";
-    private static final String ATTR_CLASS        = "class";
-    private static final String ATTR_LOADED       = "loaded";
-    
-    private static final String NODE_WORKSPACE    = "Workspace";
-    private static final String NODE_PLUGIN       = "Plugin";
-    private static final String NODE_ROOT         = "Root";
-    private static final String NODE_UNLOADED     = "Unloaded";
-    
-    public  static final String PROP_STATUSBAR    = "workspace.statusbar";
+    private static final String FILE_PREFS     = ".toolbox.xml";    
+    public  static final String PROP_STATUSBAR = "workspace.statusbar";
     
     //--------------------------------------------------------------------------
     // Fields
@@ -157,7 +155,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     }
 
     //--------------------------------------------------------------------------
-    //  Constructors
+    // Constructors
     //--------------------------------------------------------------------------
 
     /**
@@ -177,7 +175,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     }
 
     //--------------------------------------------------------------------------
-    //  Public
+    // Public
     //--------------------------------------------------------------------------
 
     /**
@@ -232,7 +230,8 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     /**
      * Registers a plugin with the GUI. Must be called prior buildView()
      * 
-     * @param  plugin  Plugin to add to the GUI
+     * @param plugin Plugin to add to the GUI
+     * @param prefs Plugin preferences DOM
      * @throws Exception on error
      */
     public void registerPlugin(IPlugin plugin, Element prefs) throws Exception
@@ -256,7 +255,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     }
 
     /**
-     * Registeres a plugin given its FQN
+     * Registers a plugin given its FQN
      * 
      * @param  pluginClass  Name of plugin class that implements the IPlugin 
      *                      interface
@@ -274,10 +273,11 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     }
 
     /**
-     * Registeres a plugin given its FQN
+     * Registers a plugin given its FQN and preferences 
      * 
-     * @param  pluginClass  Name of plugin class that implements the IPlugin 
-     *                      interface
+     * @param pluginClass Name of plugin class that implements the IPlugin 
+     *                    interface
+     * @param prefs Plugin preferences DOM
      * @throws Exception on instantiation error
      */
     public void registerPlugin(String pluginClass, Element prefs) 
@@ -439,16 +439,16 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     protected boolean hasPlugin(String pluginClass) 
     {
         for (Iterator i = plugins_.values().iterator(); i.hasNext();)
-        {
             if (i.next().getClass().getName().equals(pluginClass))
                 return true;
-        }
         
         return false;
     }
     
     /**
-     * @return Plugin for a given class
+     * Returns a plugin given its class name
+     * 
+     * @return IPlugin
      */
     protected IPlugin getPluginByClass(String pluginClass)
     {
@@ -463,7 +463,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     }
 
     /**
-     * Loads preferences from $HOME/.toolbox.properties
+     * Loads the workspace and plugin preferences from $HOME/.toolbox.xml
      */
     protected void loadPrefs()
     {
@@ -509,6 +509,8 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      * Workspace
      *  |
      *  +--Plugin
+     * 
+     * @see toolbox.util.ui.plugin.IPreferenced#savePrefs(nu.xom.Element)
      */
     public void savePrefs(Element prefs) throws Exception
     {
@@ -598,6 +600,9 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         statusBar_.setStatus("Saved preferences");
     }
 
+    /**
+     * @see toolbox.util.ui.plugin.IPreferenced#applyPrefs(nu.xom.Element)
+     */
     public void applyPrefs(Element prefs)
     {
         Element root = prefs.getFirstChildElement(NODE_WORKSPACE);
@@ -714,7 +719,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
 
 
     //--------------------------------------------------------------------------
-    //  Package Protected
+    // Package Protected
     //--------------------------------------------------------------------------
     
     /**
@@ -728,13 +733,13 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     }
     
     //--------------------------------------------------------------------------
-    //  Inner Classes
+    // Inner Classes
     //--------------------------------------------------------------------------
 
     /**
      * Saves preferences when the application is closed
      */
-    private class CloseWindowListener extends WindowAdapter
+    class CloseWindowListener extends WindowAdapter
     {
         public void windowClosing(WindowEvent e)
         {
@@ -750,7 +755,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     }
 
     //--------------------------------------------------------------------------
-    //  Actions
+    // Actions
     //--------------------------------------------------------------------------
 
     /**
