@@ -12,10 +12,28 @@
   <!-- ==================================================================== -->
 
   <LookAndFeel
-      name="Metal"
+      name="Metal (Default)"
       class="javax.swing.plaf.metal.MetalLookAndFeel"
       action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
       <Property name="group.name" value="Sun"/>
+  </LookAndFeel>
+
+  <LookAndFeel
+      name="Metal"
+      class="javax.swing.plaf.metal.MetalLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateMetalLookAndFeelAction">
+      <Property name="group.name" value="Sun"/>
+      <Property name="theme.name" value="(Emerald)"/>
+      <Property name="theme.class" value="toolbox.util.ui.plaf.metal.EmeraldTheme"/>
+  </LookAndFeel>
+
+  <LookAndFeel
+      name="Metal"
+      class="javax.swing.plaf.metal.MetalLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateMetalLookAndFeelAction">
+      <Property name="group.name" value="Sun"/>
+      <Property name="theme.name" value="(Green)"/>
+      <Property name="theme.class" value="toolbox.util.ui.plaf.metal.GreenTheme"/>
   </LookAndFeel>
 
   <LookAndFeel
