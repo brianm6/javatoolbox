@@ -21,6 +21,7 @@ public interface IPreferenced
      * 
      * @param  prefs  Properties object from which to read the implementors 
      *                preferences from. 
+     * @throws Exception on error
      */
-    public void applyPrefs(Properties prefs);
+    public void applyPrefs(Properties prefs) throws Exception;
 }
