@@ -25,6 +25,7 @@ package toolbox;
  * TODO: Update to latest Multivalent
  * TODO: Figure out how to use forms
  * TODO: Alphasort plugin menu
+ * TODO: Add tile and cascade to Desktop plugin host
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
