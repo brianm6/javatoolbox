@@ -18,16 +18,17 @@ import org.apache.log4j.Category;
 import toolbox.util.ThreadUtil;
 
 /**
- * Tail enables the following of a live stream/reader/file. APIs are exposed
- * to facilitate start/stop/pause/wait functionality in addition to adding
- * or removing multiple listeners based on the lifecycle of the tail. 
- * One or more outputstreams/writers can also be specified as the destination
- * for the output for tail.
+ * Tail enables the following of a live stream/reader/file. APIs are 
+ * exposed to facilitate start/stop/pause/wait functionality in 
+ * addition to adding or removing multiple listeners that report on 
+ * the lifecycle of the tail. One or more outputstreams/writers can 
+ * also be specified as the destination for the output of the tail.
  */
 public class Tail implements Runnable
 {
     /** Logger **/
-    private static final Category logger_ = Category.getInstance(Tail.class);
+    private static final Category logger_ = 
+        Category.getInstance(Tail.class);
     
     /** Number of line for initial backlog **/
     public static final int NUM_LINES_BACKLOG = 10;
@@ -74,7 +75,8 @@ public class Tail implements Runnable
      * @param  filename  File to tail
      * @throws FileNotFoundException if file not found
      */
-    public void setTailFile(String filename) throws FileNotFoundException
+    public void setTailFile(String filename) 
+        throws FileNotFoundException
     {
         setTailFile(new File(filename));
     }
@@ -115,8 +117,8 @@ public class Tail implements Runnable
 
     
     /**
-     * @return  True if the tail is running, false otherwise. This does not
-     *          depend on whether the tail is paused or not.
+     * @return  True if the tail is running, false otherwise. 
+     *           This has no bearing on whether the tail is paused or not
      */
     public boolean isAlive()
     {
