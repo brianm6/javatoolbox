@@ -34,6 +34,8 @@ public class PrefuseGraph implements toolbox.graph.Graph
     
     /**
      * Creates a PrefuseGraph.
+     * 
+     * @param directed True for directed, false otherwise.
      */
     public PrefuseGraph(boolean directed)
     {
