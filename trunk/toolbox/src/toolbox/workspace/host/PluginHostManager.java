@@ -2,7 +2,7 @@ package toolbox.workspace.host;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
-import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JComponent;
 import javax.swing.JMenu;
@@ -113,7 +113,8 @@ public class PluginHostManager
      * @param hostClass Class name of plugin host to create.
      * @throws PluginException on plugin error
      */
-    public void setPluginHost(String pluginHostClass) throws PluginException
+    public void setPluginHost(String pluginHostClass, Map props) 
+        throws PluginException
     {
 
         boolean firstTime = (current_ == null);
@@ -139,7 +140,7 @@ public class PluginHostManager
         
         if (firstTime)
         {
-            current_.startup(new HashMap());
+            current_.startup(props);
         }
         else
         {
