@@ -9,6 +9,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Properties;
 
 import javax.swing.JButton;
@@ -35,6 +37,7 @@ import toolbox.util.io.filter.DirectoryFilter;
 import toolbox.util.io.filter.ExtensionFilter;
 import toolbox.util.io.filter.OrFilter;
 import toolbox.util.ui.ThreadSafeTableModel;
+import toolbox.util.ui.table.TableSorter;
 
 /**
  * JSourceView gathers statistics on one or more source files and presents
@@ -43,6 +46,9 @@ import toolbox.util.ui.ThreadSafeTableModel;
  * <pre>
  * TODO: Added explorer to pick directory
  * TODO: Update Queue to BlockingQueue
+ * TODO: Figure out how to save table column sizes
+ * TODO: Convert actionPerformed() to Actions
+ * TODO: Add chart for visualization
  * </pre> 
  * 
  */
@@ -51,8 +57,8 @@ public class JSourceView extends JFrame implements ActionListener
     private static final Logger logger_ = 
         Logger.getLogger(JSourceView.class);
     
-    private static OrFilter sourceFilter_;
-
+    private static final String PROP_LAST_DIR = "jsourceview.dir";
+    
     private static final String LABEL_GO     = "Go!";
     private static final String LABEL_CANCEL = "Cancel";
     
@@ -67,8 +73,9 @@ public class JSourceView extends JFrame implements ActionListener
     
     private JTable               table_;
     private ThreadSafeTableModel tableModel_;
+    private TableSorter          tableSorter_;
     private Queue                workQueue_;
-
+    
     private Thread        scanDirThread_;
     private ScanDirWorker scanDirWorker_;
     private Thread        parserThread_;
@@ -94,6 +101,8 @@ public class JSourceView extends JFrame implements ActionListener
         "Percentage"
     };
 
+    private static OrFilter sourceFilter_;
+    
     static
     {
         // create filter to flesh out source files
@@ -131,10 +140,12 @@ public class JSourceView extends JFrame implements ActionListener
     {
         super("JSourceView");
         
-        dirField_ = new JTextField(20);
+        dirField_ = new JTextField(25);
         dirField_.addActionListener(this);
         
         goButton_ = new JButton(LABEL_GO);
+        goButton_.addActionListener(this);
+        
         JPanel topPanel = new JPanel();
         scanStatusLabel_ = new JLabel(" ");
         parseStatusLabel_ = new JLabel(" ");
@@ -145,10 +156,12 @@ public class JSourceView extends JFrame implements ActionListener
         topPanel.add(new JLabel("Directory"));
         topPanel.add(dirField_);
         topPanel.add(goButton_);
-        
-        goButton_.addActionListener(this);
-        tableModel_ = new ThreadSafeTableModel(colNames_, 0);
-        table_ = new JTable(tableModel_);
+
+        // Setup sortable table
+        tableModel_  = new ThreadSafeTableModel(colNames_, 0);
+        tableSorter_ = new TableSorter(tableModel_);
+        table_       = new JTable(tableSorter_);
+        tableSorter_.addMouseListenerToHeaderInTable(table_);
         
         getContentPane().add(topPanel, BorderLayout.NORTH);
         getContentPane().add(new JScrollPane(table_), BorderLayout.CENTER);
@@ -320,9 +333,12 @@ public class JSourceView extends JFrame implements ActionListener
             goButton_.setText(LABEL_CANCEL);
             String s = dirField_.getText();
             workQueue_ = new Queue();
+            tableModel_.setRowCount(0);
             
-            table_.setModel(
-                tableModel_ = new ThreadSafeTableModel(colNames_, 0));
+            // To avoid a whole mess of sorting going on while the table is
+            // being populated, just disable the sorter temporarily. This is 
+            // turned back on when the parser thread completes
+            tableSorter_.setEnabled(false);
             
             scanDirWorker_ = new ScanDirWorker(new File(s));
             scanDirThread_ = new Thread(scanDirWorker_);
@@ -358,7 +374,7 @@ public class JSourceView extends JFrame implements ActionListener
     //--------------------------------------------------------------------------
     
     /** 
-     * Scans directory
+     * Scans file system recursively for files containing source code.
      */
     private class ScanDirWorker implements Runnable
     {
@@ -393,8 +409,6 @@ public class JSourceView extends JFrame implements ActionListener
             if (cancel_)
                 return;
                 
-            Thread.yield();
-            
             // Process files in current directory
             File srcFiles[] = file.listFiles(sourceFilter_);
             
@@ -463,7 +477,7 @@ public class JSourceView extends JFrame implements ActionListener
                 // Pop file of the queue
                 String filename = (String) workQueue_.dequeue();
                 
-                if(filename != null)
+                if (filename != null)
                 {
                     setParseStatus("Parsing [" + workQueue_.size() + "] " + 
                         filename + " ...");
@@ -474,42 +488,38 @@ public class JSourceView extends JFrame implements ActionListener
                     ++fileCount;
 
                     // Create table row data and append                    
-                    String tableRow[] = new String[colNames_.length];
-                    tableRow[0] = fileCount+"";
+                    Object tableRow[] = new Object[colNames_.length];
+                    tableRow[0] = new Integer(fileCount);
                     tableRow[1] = FileUtil.stripFile(filename);
                     tableRow[2] = FileUtil.stripPath(filename);
-                    tableRow[3] = String.valueOf(fileStats.getCodeLines());
-                    tableRow[4] = String.valueOf(fileStats.getCommentLines());
-                    tableRow[5] = String.valueOf(fileStats.getBlankLines());
-                    tableRow[6] = String.valueOf(fileStats.getTotalLines());
-                    tableRow[7] = fileStats.getPercent() + "%";
+                    tableRow[3] = new Integer(fileStats.getCodeLines());
+                    tableRow[4] = new Integer(fileStats.getCommentLines());
+                    tableRow[5] = new Integer(fileStats.getBlankLines());
+                    tableRow[6] = new Integer(fileStats.getTotalLines());
+                    tableRow[7] = new Integer(fileStats.getPercent()); // + "%";
                     
                     tableModel_.addRow(tableRow);
                 }
                 
-                Thread.yield();
+                //Thread.yield();
             }
         
-            // Make separator row
-            String rulerRow[] = new String[colNames_.length];
-            for(int i = 0; i < rulerRow.length; i++)
-                rulerRow[i] =  "========";
-            tableModel_.addRow(rulerRow);
+            NumberFormat df = DecimalFormat.getIntegerInstance();
+            NumberFormat pf = DecimalFormat.getPercentInstance();
             
-     
-            String totalRow[] = new String[colNames_.length];       
-            totalRow[0] = "";
-            totalRow[1] = "Grand";
-            totalRow[2] = "Total";
-            totalRow[3] = String.valueOf(totalStats.getCodeLines());
-            totalRow[4] = String.valueOf(totalStats.getCommentLines());
-            totalRow[5] = String.valueOf(totalStats.getBlankLines());
-            totalRow[6] = String.valueOf(totalStats.getTotalLines());
-            totalRow[7] = totalStats.getPercent() + "%";
-            tableModel_.addRow(totalRow);
+            setParseStatus(
+             "[Total lines " + df.format(totalStats.getTotalLines()) + "]  " +
+             "[Code lines " + df.format(totalStats.getCodeLines()) + "]  " +
+             "[Comment lines " + df.format(totalStats.getCommentLines()) + "]  " +
+             "[Empty lines " + df.format(totalStats.getBlankLines()) + "]  " +
+             "[Percent code vs comments " + df.format(totalStats.getPercent()) + 
+             "%]"); 
             
-            setParseStatus("Done parsing.");
+            setScanStatus("Done parsing.");
             goButton_.setText(LABEL_GO);
+            
+            // Turn the sorter back on
+            tableSorter_.setEnabled(true);
         }
         
         /**
@@ -545,7 +555,7 @@ public class JSourceView extends JFrame implements ActionListener
                     {
                         Machine.scanLine(new LineScanner(line), linestatus);
                         
-                        if(linestatus.getCountLine())
+                        if (linestatus.getCountLine())
                             filestats.setCodeLines(
                                 filestats.getCodeLines() + 1);
                         else
@@ -572,7 +582,8 @@ public class JSourceView extends JFrame implements ActionListener
         public void cancel()
         {
             cancel_ = true;
-            logger_.debug("Search cancelled: " + cancel_);            
+            tableSorter_.setEnabled(true);
+            logger_.debug("Search canceled: " + cancel_);            
         }
     }
 }
