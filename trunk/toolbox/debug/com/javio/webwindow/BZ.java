@@ -1,8 +1,5 @@
 package com.javio.webwindow;
 
-import java.awt.Component;
-import java.awt.Frame;
-
 import toolbox.util.StringUtil;
 
 class BZ implements Runnable
@@ -15,13 +12,18 @@ class BZ implements Runnable
     
     private final HTMLPane exit;
 
+    
     BZ(HTMLPane htmlpane)
     {
         exit = htmlpane;
     }
 
+    
     public final void run()
     {
+        // =====================================================================
+        // OVERRIDE: Disable timer
+        
         /*
         System.out.println("Evaluation timer has started...");
         try
@@ -43,5 +45,7 @@ class BZ implements Runnable
             System.exit(0);
         }
         */
+        
+        // =====================================================================
     }
 }
