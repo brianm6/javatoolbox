@@ -1,6 +1,6 @@
 package toolbox.util.io.throughput;
 
-import toolbox.util.io.monitored.MonitoredChannel;
+import toolbox.util.io.MonitoredChannel;
 
 /**
  * ThroughputMonitor outlines the interface necessary to monitor the byte 

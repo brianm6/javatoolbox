@@ -1,6 +1,6 @@
 package toolbox.util.io.transferred;
 
-import toolbox.util.io.monitored.MonitoredChannel;
+import toolbox.util.io.MonitoredChannel;
 
 
 public interface TransferredListener 

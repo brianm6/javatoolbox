@@ -2,7 +2,7 @@ package toolbox.util.io.transferred;
 
 import java.util.Date;
 
-import toolbox.util.io.monitored.MonitoredChannel;
+import toolbox.util.io.MonitoredChannel;
 
 public class TransferredEvent 
 {
