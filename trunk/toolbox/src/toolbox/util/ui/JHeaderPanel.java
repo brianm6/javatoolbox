@@ -562,10 +562,14 @@ public class JHeaderPanel extends JPanel
        JToolBar tb = createToolBar();
        
        tb.add(createToggleButton(
-           new LineWrapAction(textArea), textArea, "wrapLine"));
+           new LineWrapAction(textArea), 
+           textArea, 
+           JSmartTextArea.PROP_LINEWRAP));
        
        tb.add(createToggleButton(
-           new AutoTailAction(textArea), textArea, "autoscroll"));
+           new AutoTailAction(textArea), 
+           textArea, 
+           JSmartTextArea.PROP_AUTOTAIL));
        
        tb.add(createButton(new ClearAction(textArea)));
        return tb;
@@ -696,5 +700,4 @@ public class JHeaderPanel extends JPanel
     {
         return gradientPanel;
     }
-    
 }
