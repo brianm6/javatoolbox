@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.sql.SQLException;
 
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.Icon;
 import javax.swing.JButton;
@@ -26,7 +27,7 @@ import org.apache.log4j.Logger;
 
 import toolbox.plugin.jdbc.action.BaseAction;
 import toolbox.util.ExceptionUtil;
-import toolbox.util.JDBCUtil;
+import toolbox.util.JDBCSession;
 import toolbox.util.StringUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.ui.ImageCache;
@@ -168,6 +169,12 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
     {
         return (DBProfile) profileCombo_.getSelectedItem();
     }
+
+    
+    public String getSession()
+    {
+        return getCurrentProfile().getProfileName();
+    }
     
     //--------------------------------------------------------------------------
     // Protected 
@@ -231,13 +238,17 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
     
         content.add(new JSmartLabel("User"), ParagraphLayout.NEW_PARAGRAPH);
         content.add(userField_ = new JSmartTextField(15));
-     
-        content.add(new JSmartLabel("Password"), ParagraphLayout.NEW_PARAGRAPH);
-        content.add(passwordField_ = new JPasswordField(15));
 
+        Action connectDisconnectAction = 
+            new ConnectDisconnectAction(ConnectDisconnectAction.MODE_CONNECT);
+
+        content.add(new JSmartLabel("Password"), ParagraphLayout.NEW_PARAGRAPH);
+        passwordField_ = new JPasswordField(15);
+        passwordField_.setAction(connectDisconnectAction);
+        content.add(passwordField_);
+            
         content.add(new JSmartLabel(""), ParagraphLayout.NEW_PARAGRAPH);
-        content.add(new JSmartButton(
-            new ConnectDisconnectAction(ConnectDisconnectAction.MODE_CONNECT)));
+        content.add(new JSmartButton(connectDisconnectAction));
         
         setContent(content);
     }
@@ -354,7 +365,7 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
         /**
          * Action name when in connect mode.
          */
-        public static final String MODE_CONNECT    = "Connect";
+        public static final String MODE_CONNECT = "Connect";
         
         /**
          * Action name when in disconnect mode.
@@ -410,7 +421,7 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
         private void disconnect() throws SQLException
         {
             statusBar_.setInfo("Disconnecting from the database...");
-            JDBCUtil.shutdown();
+            JDBCSession.shutdown(getSession());
             statusBar_.setInfo("Disconnected from the database.");
         }
 
@@ -426,7 +437,8 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
             
             if (StringUtils.isBlank(jarField_.getText()))
             {    
-                JDBCUtil.init(
+                JDBCSession.init(
+                    getSession(),
                     driverField_.getText(),
                     urlField_.getText(),
                     userField_.getText(),
@@ -434,13 +446,14 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
             }
             else
             {
-                JDBCUtil.init(
+                JDBCSession.init(
+                    getSession(),
                     StringUtil.tokenize(jarField_.getText(), ","),
                     driverField_.getText(),
                     urlField_.getText(),
                     userField_.getText(),
-                    String.valueOf(passwordField_.getPassword()),
-                    false);
+                    String.valueOf(passwordField_.getPassword()));
+                    //false);
             }
        
             statusBar_.setInfo("Connected to the database!");
