@@ -50,6 +50,7 @@
  * TODO: Rename Banner.java to Figlet
  * TODO: Extend PropertySheet to smooth fonts
  * TODO: Add regular expression cheat sheet (TextToolsPlugin maybe)
+ * TODO: Write a state machine
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
@@ -94,7 +95,7 @@
   <body>
     
     <release version="2.0" date="August 2004">
-      <action type="add"   >Util - Added FontUtil.isMonospaced()</action>
+      <action type="add   ">Util - Added FontUtil.isMonospaced()</action>
       <action type="update">Util - JSmartTableHeader updated to support auto-resize by clicking on the column divider</action>
       <action type="add   ">Util - Added emphasis of monospaced fonts to JFontChooser</action>
       <action type="add   ">Util - Added ability to render font names in the listbox using the font itself in JFontChooser</action>
@@ -116,6 +117,7 @@
       <action type="fix"   >Util - Fixed QueryPlugin to remove the session from the session map if Connect fails</action>
       <action type="update">Build - Updated fatjar maven goals to pull the list of jars directly from the Maven POM instead of the hardcoded list used previously</action>
       <action type="update">Util - Added javabean property to JSmartTextArea to control updates on the event dispatch thread</action>
+      <action type="build ">Added custom stylesheet for jxr plugin (decrease code font size and made Verdana the default font)</action>
     </release>
     
     <release version="2.0" date="July 2004">
