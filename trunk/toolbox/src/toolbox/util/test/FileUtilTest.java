@@ -2,10 +2,10 @@ package toolbox.util.test;
 
 import java.io.File;
 
+import org.apache.log4j.Logger;
+
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
-
-import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
 import toolbox.util.FileUtil;
@@ -16,32 +16,21 @@ import toolbox.util.RandomUtil;
  */
 public class FileUtilTest extends TestCase
 {
-    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(FileUtilTest.class);
 
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+    
     /**
      * Runs the test case in text mode
      * 
-     * @param  args  Args
+     * @param  args  None recognized
      */
     public static void main(String[] args)
     {
         TestRunner.run(FileUtilTest.class);
-    }
-
-    //--------------------------------------------------------------------------
-    // Constructors
-    //--------------------------------------------------------------------------
-                    
-    /**
-     * Constructor for FileUtilTest.
-     * 
-     * @param  arg0  Test name
-     */
-    public FileUtilTest(String arg0)
-    {
-        super(arg0);
     }
 
     //--------------------------------------------------------------------------
@@ -62,7 +51,6 @@ public class FileUtilTest extends TestCase
         assertTrue("temp is not a directory", file.isDirectory());
         logger_.info("Passed: Temp dir = " + tempDir);
     }
-
 
     /**
      * Tests the getTempFilename() method 
@@ -85,7 +73,6 @@ public class FileUtilTest extends TestCase
         
         logger_.info("Passed: Created temp file " + tempFile);
     }
-
     
     /**
      * Tests cleanDir() for failure by passing a file instead of a directory
@@ -115,7 +102,6 @@ public class FileUtilTest extends TestCase
             f.delete();    
         }
     }
-
     
     /**
      * Tests cleanDir() for failure by passing in a non-existant directory
@@ -139,7 +125,6 @@ public class FileUtilTest extends TestCase
             logger_.info("Passed: " + e);
         }
     }
-
     
     /**
      * Tests cleanDir() for cleaning the contents of a single directory
@@ -187,7 +172,6 @@ public class FileUtilTest extends TestCase
         logger_.info("Contents after: " + ArrayUtil.toString(after));
         assertEquals("No files should be left in " + dir, 0, after.length);
     }
-
     
     /**
      * Tests getFileContents()
@@ -204,20 +188,43 @@ public class FileUtilTest extends TestCase
         FileUtil.setFileContents(file, contents, false);
         
         // Read it back in
-        File reread = new File(file);
         String currentContents = FileUtil.getFileContents(file);
         
         // Compare
         assertEquals("contents should be equals", contents, currentContents);
-        logger_.info("Passed: getFileContents on " + file);        
         
         // Clean up
-        reread.delete();
+        new File(file).delete();
     }
 
+    /**
+     * Tests getFileAsBytes()
+     * 
+     * @throws Exception on error
+     */
+    public void testGetFileAsBytes() throws Exception
+    {
+        logger_.info("Running testGetFileAsBytes...");
+        
+        String file = FileUtil.getTempFilename();
+        
+        try
+        {
+            String contents = "blah blah blah";
+            FileUtil.setFileContents(file, contents, false);
+            byte[] currentContents = FileUtil.getFileAsBytes(file);
+            
+            assertEquals("File contents should be equal", contents, 
+                new String(currentContents));
+        }
+        finally
+        {
+            FileUtil.delete(file);
+        }
+    }
 
     /**
-     * Tests getFileContents() for a large file
+     * Tests getFileContents() for a large file (500k)
      * 
      * @throws Exception on error
      */
@@ -249,7 +256,6 @@ public class FileUtilTest extends TestCase
         reread.delete();
     }
 
-
     /**
      * Tests setFileContents()
      * 
@@ -272,10 +278,33 @@ public class FileUtilTest extends TestCase
         assertEquals("contents should be equals", contents, currentContents);
         logger_.info("Passed: setFileContents on " + file);
         
-        // Clean up
         reread.delete();
     }
 
+    /**
+     * Tests setFileContents()
+     * 
+     * @throws Exception on error
+     */
+    public void testSetFileContentsBytes() throws Exception
+    {
+        logger_.info("Running testSetFileContentsBytes...");
+        
+        // Create a file
+        String file = FileUtil.getTempFilename();
+        byte[] contents = "blah blah blah".getBytes();
+        FileUtil.setFileContents(file, contents, false);
+        
+        // Read it back in
+        byte[] currentContents = FileUtil.getFileAsBytes(file);
+        
+        // Compare
+        assertEquals("contents should be equals", 
+            new String(contents), 
+                new String(currentContents));
+                
+        new File(file).delete();
+    }
 
     /**
      * Tests setFileContents(File)
@@ -302,7 +331,6 @@ public class FileUtilTest extends TestCase
         // Clean up
         reread.delete();
     }
-
     
     /**
      * Tests moveFile() for simple case
@@ -399,7 +427,6 @@ public class FileUtilTest extends TestCase
             destDir.delete();
         }
     }
-    
 
     /**
      * Tests trailWithSeparator() with the separator missing
@@ -412,7 +439,6 @@ public class FileUtilTest extends TestCase
         String trailed = FileUtil.trailWithSeparator(path);
         assertEquals(path + File.separator, trailed);
     }    
-
     
     /**
      * Tests trailWithSeparator() with separator already there
@@ -426,7 +452,6 @@ public class FileUtilTest extends TestCase
         assertEquals(path, trailed);
     }    
     
-    
     /**
      * Tests matchPlatformSeparator()
      */
@@ -439,7 +464,6 @@ public class FileUtilTest extends TestCase
         assertEquals(match, FileUtil.matchPlatformSeparator("/a/b"));
     }
     
-    
     /**
      * Tests dropExtension()
      */
@@ -451,7 +475,6 @@ public class FileUtilTest extends TestCase
         assertEquals("foobar", FileUtil.dropExtension("foobar.txt"));
         assertEquals("foobar.old", FileUtil.dropExtension("foobar.old.txt"));
     }
-    
     
     /**
      * Tests stripPath()
@@ -492,5 +515,22 @@ public class FileUtilTest extends TestCase
             "c:" + s + "a" + s + "c" + s + "..", 
             FileUtil.stripFile(
                 "c:" + s + "a" + s + "c" + s + ".." + s + "file.txt"));
+    }
+    
+    /**
+     * Tests delete()
+     * 
+     * @throws Exception on error
+     */
+    public void testDelete() throws Exception
+    {
+        logger_.info("Running testDelete...");
+        
+        String file = FileUtil.getTempFilename();
+        FileUtil.setFileContents(file, "test data", false);
+        File f = new File(file);
+        assertTrue(f.exists());
+        FileUtil.delete(file);
+        assertTrue(!f.exists());
     }
 }
