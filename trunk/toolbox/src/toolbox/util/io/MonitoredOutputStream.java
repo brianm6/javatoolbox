@@ -130,13 +130,8 @@ public class MonitoredOutputStream extends FilterOutputStream
      */
     protected void fireStreamClosed()
     {
-        switch (listeners_.length)
-        {
-            case 0 : return;
-            case 1 : listeners_[0].streamClosed(this); return;
-            default: for (int i = 0, n = listeners_.length; i < n; i++)
-                        listeners_[i].streamClosed(this);
-        }
+        for (int i = 0; i < listeners_.length; i++)
+            listeners_[i].streamClosed(this);
     }
 
     
@@ -145,13 +140,8 @@ public class MonitoredOutputStream extends FilterOutputStream
      */
     protected void fireStreamFlushed()
     {
-        switch (listeners_.length)
-        {
-            case 0 : return;
-            case 1 : listeners_[0].streamFlushed(this); return;
-            default: for (int i = 0, n = listeners_.length; i < n; i++)
-                        listeners_[i].streamFlushed(this);
-        }
+        for (int i = 0; i < listeners_.length; i++)
+            listeners_[i].streamFlushed(this);
     }
 
     //--------------------------------------------------------------------------
