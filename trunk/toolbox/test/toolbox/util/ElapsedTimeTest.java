@@ -5,20 +5,28 @@ import java.util.Date;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import org.apache.commons.lang.math.RandomUtils;
 import org.apache.log4j.Logger;
-
-import toolbox.util.ElapsedTime;
-import toolbox.util.RandomUtil;
-import toolbox.util.ThreadUtil;
 
 /**
  * Unit test for ElapsedTime.
+ * 
+ * @see toolbox.util.ElapsedTime
  */
 public class ElapsedTimeTest extends TestCase
 {
     private static final Logger logger_ = 
         Logger.getLogger(ElapsedTimeTest.class);
-       
+    
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Max wait time for unit tests = 1 second.
+     */
+    private static final int MAX_WAIT = 1000;
+    
     //--------------------------------------------------------------------------
     // Main
     //--------------------------------------------------------------------------
@@ -237,16 +245,18 @@ public class ElapsedTimeTest extends TestCase
     /**
      * Tests constructor 1.
      */
-    public void testConsturctor1()
+    public void testConstructor1()
     {
-        logger_.info("Running testConsturctor1...");
+        logger_.info("Running testConstructor1...");
         
+        int delta = RandomUtils.nextInt(MAX_WAIT);
         Date start = new Date();
-        ThreadUtil.sleep(RandomUtil.nextInt(1000));
+        ThreadUtil.sleep(delta);
         Date end = new Date();   
         
         ElapsedTime time = new ElapsedTime(start, end);
-        logger_.info(time);
+        logger_.info("Elapsed time = " + time);
+        assertTrue(time.getTotalMillis() >= delta);
     }
      
     
@@ -257,15 +267,16 @@ public class ElapsedTimeTest extends TestCase
     {       
         logger_.info("Running testCopyConstructor...");
         
+        int delta = RandomUtils.nextInt(MAX_WAIT);
         Date start = new Date();
-        ThreadUtil.sleep(RandomUtil.nextInt(1000));
+        ThreadUtil.sleep(delta);
         Date end = new Date();   
  
         ElapsedTime time = new ElapsedTime(start, end);   
         ElapsedTime copy = new ElapsedTime(time);
         
         assertTrue("times should be equals", time.equals(copy));
-        logger_.info(time);
+        logger_.info("Elapsed time = " + time);
     }
     
     
@@ -276,11 +287,12 @@ public class ElapsedTimeTest extends TestCase
     {
         logger_.info("Running testConstructor3...");
         
+        int delta = RandomUtils.nextInt(MAX_WAIT);
         Date start = new Date();
-        ThreadUtil.sleep(RandomUtil.nextInt(1000));
+        ThreadUtil.sleep(delta);
         Date end = new Date();   
         
         ElapsedTime time = new ElapsedTime(start.getTime(), end.getTime());
-        logger_.info(time);
+        logger_.info("Elapsed time = " + time);
     }
 }
