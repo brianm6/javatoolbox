@@ -6,9 +6,12 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.Window;
 import java.awt.font.TextAttribute;
 import java.util.HashMap;
@@ -576,5 +579,24 @@ public final class SwingUtil
         JPanel panel = new JPanel(new FlowLayout());
         panel.add(component);
         return panel;    
+    }
+
+    /**
+     * Turns on antialiasing for a graphics context
+     * 
+     * @param  graphics  Graphics context
+     * @param  antiAlias Set to true to turn antialiasing on for the graphics
+     *                   context; false to turn it off.
+     */
+    public static final void setAntiAlias(Graphics graphics, boolean antiAlias)
+    {    
+        //((Graphics2D)g).setRenderingHint
+        //  (RenderingHints.KEY_ANTIALIASING,
+        //   RenderingHints.VALUE_ANTIALIAS_ON);
+    
+        ((Graphics2D)graphics).setRenderingHint(
+            RenderingHints.KEY_TEXT_ANTIALIASING,
+            (antiAlias ? RenderingHints.VALUE_TEXT_ANTIALIAS_ON 
+                       : RenderingHints.VALUE_TEXT_ANTIALIAS_OFF));
     }
 }
