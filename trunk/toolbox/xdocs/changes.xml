@@ -65,7 +65,6 @@
  * TODO: Fileexplorer: F2 to rename a file or directory
  * TODO: Integrate JDiff Plugin/make Toolbox Plugin
  * TODO: Add shortcuts to fileexplorer
- * TODO: Add NDoclet to build
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
@@ -128,7 +127,7 @@
             <action type="update">Util - Updated JFlipPane divider to match the colors of the currently installed Look and Feel</action>
             <action type="add"   >Build - Added JBlanket plugin for test coverage</action>
             <action type="add"   >Build - Added Findbugs plugin to the Maven site goal</action>
-
+            <action type="add"   >Build - Add NDoc goal in maven.xml to generate javadocs that look like .NET</action>
         </release>
 
         <!-- =================================================================== -->
