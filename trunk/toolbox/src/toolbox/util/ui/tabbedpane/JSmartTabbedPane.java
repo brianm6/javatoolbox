@@ -6,15 +6,29 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.Icon;
-import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
+
+import org.apache.log4j.Logger;
+
+import toolbox.util.ArrayUtil;
+import toolbox.util.ui.event.DebugComponentListener;
+import toolbox.util.ui.event.DebugContainerListener;
+import toolbox.util.ui.event.DebugPropertyChangeListener;
 
 /***
  * A JTabbedPane which has an icon on each tab to close the tab.
  */
 public class JSmartTabbedPane extends JTabbedPane
 {
+    private static final Logger logger_ =
+        Logger.getLogger(JSmartTabbedPane.class);
+    
+    /**
+     * Listeners
+     */
+    private SmartTabbedPaneListener[] listeners_;
+        
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -26,6 +40,11 @@ public class JSmartTabbedPane extends JTabbedPane
     {
         //setUI(new SmartTabbedPaneUI(SwingConstants.RIGHT));
         addMouseListener(new MouseListener());
+        addPropertyChangeListener(new DebugPropertyChangeListener());
+        addComponentListener(new DebugComponentListener());
+        addContainerListener(new DebugContainerListener());
+        
+        listeners_ = new SmartTabbedPaneListener[0];
     }
 
     //--------------------------------------------------------------------------
@@ -45,17 +64,6 @@ public class JSmartTabbedPane extends JTabbedPane
     //--------------------------------------------------------------------------
     
     /***
-     * Adds a panel
-     * 
-     * @param pJPanel the panel
-     * @param title the title
-     */
-    public void addPanel(JPanel pJPanel, String title)
-    {
-        add(pJPanel, title);
-    }
-    
-    /***
      * Adds a tab
      * 
      * @param title title
@@ -67,9 +75,49 @@ public class JSmartTabbedPane extends JTabbedPane
         super.addTab(title, new SmartTabbedPaneIcon(extraIcon), component);
         
         // TODO: move this somewhere where it is only executed once
-        setUI(new SmartTabbedPaneUI(SwingConstants.LEFT));
+        if (!(getUI() instanceof SmartTabbedPaneUI)) 
+            setUI(new SmartTabbedPaneUI(SwingConstants.LEFT));
     }
 
+    //--------------------------------------------------------------------------
+    // Event Support
+    //--------------------------------------------------------------------------
+
+    /**
+     * Adds a tabbed pane listener
+     * 
+     * @param  listener  Listener to add
+     */
+    public void addSmartTabbedPaneListener(SmartTabbedPaneListener listener)
+    {
+        listeners_ = 
+            (SmartTabbedPaneListener[]) ArrayUtil.add(listeners_, listener);
+    }
+
+    /**
+     * Removes a tabbed pane listener
+     * 
+     * @param listener Listener to remove
+     */
+    public void removeSmartTabbedPaneListener(SmartTabbedPaneListener listener)
+    {
+        listeners_ = 
+            (SmartTabbedPaneListener[]) ArrayUtil.remove(listeners_, listener);
+    }
+
+    /**
+     * Fires notification to all listeners that a tab is about to be close
+     * via the close icon on the tab.
+     * 
+     * @param tabIndex Zero based index of tab being closed
+     */
+    protected void fireTabClosing(int tabIndex)
+    {
+        for (int i=0; 
+             i<listeners_.length; 
+             listeners_[i++].tabClosing(this, tabIndex));        
+    }
+    
     //--------------------------------------------------------------------------
     // Inner Classes
     //--------------------------------------------------------------------------
@@ -90,7 +138,10 @@ public class JSmartTabbedPane extends JTabbedPane
                     getIconAt(tabNumber)).getBounds();
                 
                 if (rect.contains(e.getX(), e.getY()))
-                   removeTabAt(tabNumber);
+                {
+                    fireTabClosing(tabNumber);
+                    removeTabAt(tabNumber);
+                }
             }
         }
     }
