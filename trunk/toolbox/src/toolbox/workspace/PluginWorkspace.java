@@ -46,22 +46,21 @@ import toolbox.util.ui.ImageCache;
  * Generic Frame that accepts pluggable GUI components that are displayed on
  * a tab panel. All pluggable GUI components must implements the IPlugin 
  * interface as a base set of functionality to be hosted by PluginWorkspace.
- * 
- * <pre>
- * 
- * TODO: Plugin to tail System.out and System.err
- * TODO: Plugin to configure log4j
- * TODO: Make plugins detachable
- * TODO: Make webstart enabled
- * TODO: Write log4j pattern layout that combines class name and method
- * TODO: Abstraction for concrete regular expression engine implementation
- * TODO: Convert project build and layout to Maven
- * TODO: Use Quilt for JUnit Test coverage instead of Clover
- * TODO: Add support for selecting Plastic Look & Feel color themes 
- * </pre>
  */
 public class PluginWorkspace extends JFrame implements IStatusBar
 {
+    /*
+     * TODO: Plugin to configure log4j
+     * TODO: Make plugins detachable
+     * TODO: Make webstart enabled
+     * TODO: Write log4j pattern layout that combines class name and method
+     * TODO: Abstraction for concrete regular expression engine implementation
+     * TODO: Convert project build and layout to Maven
+     * TODO: Use Quilt for JUnit Test coverage instead of Clover
+     * TODO: Add support for selecting Plastic Look & Feel color themes
+     * TODO: Updated to use JStatusBar 
+     */
+        
     private static final Logger logger_ = 
         Logger.getLogger(PluginWorkspace.class);
 
@@ -75,29 +74,19 @@ public class PluginWorkspace extends JFrame implements IStatusBar
     private static final String PROP_LOADED   = "workspace.plugins.loaded";
     private static final String PROP_SELECTED = "workspace.plugins.selected";
     
-    /**
-     * Plugins are added to this tab panel in order or registration
-     */
+    /** Plugins are added to this tab panel in order or registration */
     private JTabbedPane tabbedPane_;
     
-    /**
-     *  Status bar at bottom of screen
-     */
+    /** Status bar at bottom of screen */
     private JLabel statusLabel_;
     
-    /**
-     * Look and Feel Menu Items
-     */
+    /** Look and Feel Menu Items */
     private JMenu lafMenu_;
     
-    /**
-     *  Preferences stores as NV pairs
-     */
+    /** Preferences stores as NV pairs */
     private Properties prefs_;
     
-    /**
-     * Map of plugin names -> plugins
-     */
+    /** Map of plugin names -> plugins */
     private Map plugins_ = new SequencedHashMap();
 
     //--------------------------------------------------------------------------
