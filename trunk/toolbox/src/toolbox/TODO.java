@@ -7,6 +7,7 @@ package toolbox;
  * TODO: Figure out how to launch web browser consistently for build.xml
  * TODO: Add vizant for visualization of build dependencies
  * TODO: "Recent" menu type component
+ * TODO: Add package.html to all packages
  */
 public class TODO
 {
