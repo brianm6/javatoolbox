@@ -9,10 +9,14 @@ import java.awt.Dimension;
 import java.awt.Insets;
 
 /**
- * Paragraph Layout
+ * Paragraph Layout.
  */
 public class ParagraphLayout extends ConstraintLayout
 {
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
     /** TYPE */
     public static final int TYPE_MASK = 0x03;
     
@@ -58,9 +62,14 @@ public class ParagraphLayout extends ConstraintLayout
     /** New line stretch h/v */
     public static final Integer NEW_LINE_STRETCH_HV = new Integer(0x0f);
 
-    private int hGapMajor_, vGapMajor_;
-    private int hGapMinor_, vGapMinor_;
-    private int rows_;
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
+    private int hGapMajor_; 
+    private int vGapMajor_;
+    private int hGapMinor_;
+    private int vGapMinor_;
     private int colWidth1_;
     private int colWidth2_;
 
@@ -69,7 +78,7 @@ public class ParagraphLayout extends ConstraintLayout
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a ParagraphLayout
+     * Creates a ParagraphLayout.
      */
     public ParagraphLayout()
     {
@@ -77,14 +86,14 @@ public class ParagraphLayout extends ConstraintLayout
     }
 
     /**
-     * Creates a new paragraph layout
+     * Creates a new paragraph layout.
      * 
-     * @param  hMargin    Horizontal margin
-     * @param  vMargin    Vertical margin
-     * @param  hGapMajor  Horizontal gap major
-     * @param  vGapMajor  Vertical gap major
-     * @param  hGapMinor  Horizontal gap minor
-     * @param  vGapMinor  Vertical gap minor
+     * @param hMargin Horizontal margin
+     * @param vMargin Vertical margin
+     * @param hGapMajor Horizontal gap major
+     * @param vGapMajor Vertical gap major
+     * @param hGapMinor Horizontal gap minor
+     * @param vGapMinor Vertical gap minor
      */
     public ParagraphLayout(
         int hMargin,
@@ -107,11 +116,11 @@ public class ParagraphLayout extends ConstraintLayout
     //--------------------------------------------------------------------------
 
     /**
-     * Measures layout
+     * Measures layout.
      * 
-     * @param  target     Target container
-     * @param  dimension  Dimension
-     * @param  type       Type
+     * @param target Target container
+     * @param dimension Dimension
+     * @param type Type
      */
     public void measureLayout(Container target, Dimension dimension, int type)
     {
@@ -303,7 +312,7 @@ public class ParagraphLayout extends ConstraintLayout
     //--------------------------------------------------------------------------
 
     /**
-     * Layout row
+     * Layout row.
      */
     protected void layoutRow(
         Container target,
