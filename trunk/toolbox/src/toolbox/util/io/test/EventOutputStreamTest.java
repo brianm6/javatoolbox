@@ -151,8 +151,6 @@ public class EventOutputStreamTest extends TestCase
         eos.addListener(new ThroughputListener());
         eos.startThroughputMonitor();
         
-        int seconds = 2;
-        
         logger_.info("");
         logger_.info("[1 byte packet]");
         stuffStream(eos, 1, 2);

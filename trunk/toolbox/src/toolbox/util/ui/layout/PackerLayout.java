@@ -155,7 +155,6 @@ public class PackerLayout extends ConstraintLayout implements Direction
         if (count > 0)
         {
             Insets insets = target.getInsets();
-            Dimension size = target.getSize();
 
             int minX = 0;
             int maxX = 0;

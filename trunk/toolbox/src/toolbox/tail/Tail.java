@@ -56,34 +56,54 @@ public class Tail
     private static final Logger logger_ = 
         Logger.getLogger(Tail.class);
     
-    /** Default number of lines to print for backlog */ 
+    /** 
+     * Default number of lines to print for backlog 
+     */ 
     public static final int DEFAULT_BACKLOG = 20;
 
-    /** Tail listeners */ 
+    /** 
+     * Tail listeners 
+     */ 
     private TailListener[] listeners_;
     
-    /** Writer where tail output will be sent */ 
+    /** 
+     * Writer where tail output will be sent 
+     */ 
     private Writer sink_;
 
-    /** Tailer thread */ 
+    /** 
+     * Tailer thread 
+     */ 
     private Thread tailer_;
 
-    /** Reader which tail will follow */
+    /** 
+     * Reader which tail will follow 
+     */
     private BufferedReader reader_;
     
-    /** File which tail will follow */ 
+    /** 
+     * File which tail will follow 
+     */ 
     private File file_;
 
-    /** Number of lines backlog to print if tailing a file */
+    /** 
+     * Number of lines backlog to print if tailing a file 
+     */
     private int backlog_;
      
-    /** Paused state of the tailer (not thread!) */
+    /** 
+     * Paused state of the tailer (not thread!) 
+     */
     private boolean paused_;
 
-    /** Flag set if the tailer thread needs to shutdown */ 
+    /** 
+     * Flag set if the tailer thread needs to shutdown 
+     */ 
     private boolean pendingShutdown_;
     
-    /** Thread name..mostly for debugging */
+    /** 
+     * Thread name..mostly for debugging 
+     */
     private String threadName_;
     
     //--------------------------------------------------------------------------
@@ -91,7 +111,7 @@ public class Tail
     //--------------------------------------------------------------------------
     
     /**
-     * Default constructor
+     * Creates a Tail
      */
     public Tail()
     {
@@ -480,7 +500,6 @@ public class Tail
             {
                 showBacklog();
                 
-                int cnt                 = 0;
                 int strikes             = 0;
                 Date preTimeStamp       = null;
                 Date resetTimeStamp     = null;

@@ -39,7 +39,7 @@ public class EvictingListTest extends TestCase
 
         try
         {
-            EvictingList list = new EvictingList(0);
+            new EvictingList(0);
             fail("Size <=0 is invalid");
         }
         catch (IllegalArgumentException iae)

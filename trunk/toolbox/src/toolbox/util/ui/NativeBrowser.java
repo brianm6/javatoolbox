@@ -12,18 +12,27 @@ import toolbox.util.Platform;
  */
 public class NativeBrowser
 {
-    private static final Logger logger_ = Logger.getLogger(NativeBrowser.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(NativeBrowser.class);
     
-    /** The default system browser under windows */
+    /** 
+     * The default system browser under windows 
+     */
     private static final String WIN_PATH = "rundll32";
     
-    /** The flag to display a url */
+    /** 
+     * The flag to display a url 
+     */
     private static final String WIN_FLAG = "url.dll,FileProtocolHandler";
     
-    /** The default browser under unix */
+    /** 
+     * The default browser under unix 
+     */
     private static final String UNIX_PATH = "netscape";
     
-    /** The flag to display a url */
+    /** 
+     * The flag to display a url 
+     */
     private static final String UNIX_FLAG = "-remote openURL";
     
     //--------------------------------------------------------------------------
@@ -48,7 +57,7 @@ public class NativeBrowser
             {
                 // cmd = 'rundll32 url.dll,FileProtocolHandler http://...'
                 cmd = WIN_PATH + " " + WIN_FLAG + " " + url;
-                Process p = Runtime.getRuntime().exec(cmd);
+                Runtime.getRuntime().exec(cmd);
             }
             else
             {

@@ -229,7 +229,6 @@ public class BasicGridLayout extends ConstraintLayout
             if (count > 0)
             {
                 Insets insets = target.getInsets();
-                Dimension size = target.getSize();
                 int index = 0;
 
                 calcCellSizes(target, type);

@@ -117,7 +117,6 @@ public class StatusLayout extends AbstractLayout
         for (int i = 0; i < count; i++)
         {
             Component child = parent.getComponent(i);
-            Dimension size = child.getPreferredSize();
 
             if (table_.containsKey(child))
             {
@@ -149,7 +148,7 @@ public class StatusLayout extends AbstractLayout
         for (int i = 0; i < count; i++)
         {
             Component child = parent.getComponent(i);
-            Dimension size = child.getPreferredSize();
+            
             if (table_.containsKey(child))
             {
                 StatusArea constraint = (StatusArea) table_.get(child);

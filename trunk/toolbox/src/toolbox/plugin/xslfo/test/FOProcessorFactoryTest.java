@@ -77,9 +77,7 @@ public class FOProcessorFactoryTest extends TestCase
         
         try
         {
-            FOProcessor fop =
-                FOProcessorFactory.createProcessor("FO_IMPL_BOGUS");
-
+            FOProcessorFactory.createProcessor("FO_IMPL_BOGUS");
             fail("Exception should have thrown for unknown FO impl");
         }
         catch (IllegalArgumentException iae)

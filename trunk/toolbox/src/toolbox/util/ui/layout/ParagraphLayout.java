@@ -121,11 +121,10 @@ public class ParagraphLayout extends ConstraintLayout
         {
             Insets insets = target.getInsets();
             Dimension size = target.getSize();
-            int x = 0;
             int y = 0;
             int rowHeight = 0;
             int colWidth = 0;
-            int numRows = 0;
+            
             boolean lastWasParagraph = false;
 
             Dimension[] sizes = new Dimension[count];
@@ -155,8 +154,6 @@ public class ParagraphLayout extends ConstraintLayout
                     }
                     else if (n == NEW_LINE || lastWasParagraph)
                     {
-                        x = 0;
-                        
                         if (!lastWasParagraph && i != 0)
                             y += rowHeight + vGapMinor_;
                             
@@ -194,7 +191,6 @@ public class ParagraphLayout extends ConstraintLayout
                     insets.bottom   - 
                     2 * getVMargin();
                         
-                x = 0;
                 y = 0;
                 lastWasParagraph = false;
                 int start = 0;
@@ -211,7 +207,7 @@ public class ParagraphLayout extends ConstraintLayout
                     if (includeComponent(c))
                     {
                         Dimension d = sizes[i];
-                        int w = d.width;
+                        
                         int h = d.height;
                         Integer n = (Integer) getConstraint(c);
                         int nv = n != null ? n.intValue() : 0;

@@ -93,7 +93,7 @@ public class SocketServerConfigTest extends TestCase
                 4000, config.getHandlerQueueSize());
                 
             // Load by file via constructor
-            SocketServerConfig config2 = new SocketServerConfig(file);
+            new SocketServerConfig(file);
         }
         finally
         {

@@ -460,9 +460,9 @@ public class JFlipPane extends JPanel
         
         JComponent flipper = getActiveFlipper();
         
-        if (getActiveFlipper() != null)
+        if (flipper != null)
             flipPane.addAttribute(
-                new Attribute(ATTR_ACTIVE, getActiveFlipper().getName()));
+                new Attribute(ATTR_ACTIVE, flipper.getName()));
 
         XOMUtil.insertOrReplace(prefs, flipPane);
     }

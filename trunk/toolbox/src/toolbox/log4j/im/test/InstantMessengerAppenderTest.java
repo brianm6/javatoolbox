@@ -3,11 +3,9 @@ package toolbox.log4j.im.test;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
-import org.apache.log4j.Layout;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
-import org.apache.log4j.SimpleLayout;
 
 import toolbox.log4j.im.InstantMessengerAppender;
 import toolbox.util.ThreadUtil;
@@ -47,7 +45,6 @@ public class InstantMessengerAppenderTest extends TestCase
     public void testAppend() throws Exception
     {
         Logger root = Logger.getRootLogger();
-        Layout layout = new SimpleLayout();
         
         InstantMessengerAppender imAppender = new InstantMessengerAppender();
         
