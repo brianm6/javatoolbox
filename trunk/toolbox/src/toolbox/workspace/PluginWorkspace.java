@@ -67,31 +67,35 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         Logger.getLogger(PluginWorkspace.class);
 
     //--------------------------------------------------------------------------
-    // Constants
+    // XML Constants
     //--------------------------------------------------------------------------
 
     // Workspace preferences nodes and attributes.
     private static final String NODE_WORKSPACE      = "Workspace";
-    private static final String   ATTR_MAXXED       = "maximized";
-    private static final String   ATTR_WIDTH        = "width";
-    private static final String   ATTR_HEIGHT       = "height";
-    private static final String   ATTR_XCOORD       = "xcoord";
-    private static final String   ATTR_YCOORD       = "ycoord";
-    private static final String   ATTR_SMOOTH_FONTS = "smoothfonts";
-    private static final String   ATTR_LOG_LEVEL    = "loglevel";
-    private static final String   ATTR_DECORATIONS  = "decorations";
-    private static final String   ATTR_PLUGINHOST   = "pluginhost";
+    private static final String   ATTR_MAXXED       =   "maximized";
+    private static final String   ATTR_WIDTH        =   "width";
+    private static final String   ATTR_HEIGHT       =   "height";
+    private static final String   ATTR_XCOORD       =   "xcoord";
+    private static final String   ATTR_YCOORD       =   "ycoord";
+    private static final String   ATTR_SMOOTH_FONTS =   "smoothfonts";
+    private static final String   ATTR_LOG_LEVEL    =   "loglevel";
+    private static final String   ATTR_DECORATIONS  =   "decorations";
+    private static final String   ATTR_PLUGINHOST   =   "pluginhost";
 
     // Plugin preferences nodes and attributes.
     private static final String   NODE_PLUGIN       = "Plugin";
-    private static final String     ATTR_CLASS      = "class";
-    private static final String     ATTR_LOADED     = "loaded";
+    private static final String     ATTR_CLASS      =   "class";
+    private static final String     ATTR_LOADED     =   "loaded";
 
     /**
      * This is a wrapper for NODE_WORKSPACE so we can treat it as an arbitrary
      * element and not the document root.
      */
     private static final String NODE_ROOT = "Root";
+
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
 
     /**
      * Name of file that appliation and plugin preferences are stored in.
@@ -110,7 +114,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     public static final String KEY_WORKSPACE = "workspace.self";
 
     //--------------------------------------------------------------------------
-    // Fields
+    // UI Fields
     //--------------------------------------------------------------------------
 
     /**
@@ -125,20 +129,9 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     private LoggingMenu logMenu_;
 
     /**
-     * Preferences stored as XML.
+     * Plugin menu.
      */
-    private Element prefs_;
-
-    /**
-     * Default initialization map for all plugins. Passed into
-     * IPlugin.startup().
-     */
-    private Map bootstrapMap_;
-
-    /**
-     * Unloaded preferences.
-     */
-    private Element unloadedPrefs_;
+    private JSmartMenu pluginMenu_;
 
     /**
      * Smooth fonts check box.
@@ -150,20 +143,38 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      */
     private JCheckBoxMenuItem decorationsCheckBoxItem_;
 
+    //--------------------------------------------------------------------------
+    // Preferences Fields
+    //--------------------------------------------------------------------------
+
     /**
-     * Manages the plugin host.
+     * Preferences stored as XML.
      */
-    private PluginHostManager pluginHostManager_;
+    private Element prefs_;
+
+    /**
+     * Unloaded preferences.
+     */
+    private Element unloadedPrefs_;
 
     /**
      * Manages workspace preferences.
      */
     private PreferencesManager preferencesManager_;
 
+    //--------------------------------------------------------------------------
+    // Plugin Fields
+    //--------------------------------------------------------------------------
+
     /**
-     * Plugin menu.
+     * Manages the plugin host.
      */
-    private JSmartMenu pluginMenu_;
+    private PluginHostManager pluginHostManager_;
+
+    /**
+     * Default initialization map for plugins. Passed into IPlugin.startup().
+     */
+    private Map bootstrapMap_;
 
     //--------------------------------------------------------------------------
     // Main
@@ -179,7 +190,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         // Workaround for annoying WebStart dlg box asking for disk in drive a:
         System.setSecurityManager(null);
 
-        JFrame.setDefaultLookAndFeelDecorated(true);    // to decorate frames
+        JFrame.setDefaultLookAndFeelDecorated(true);      // to decorate frames
         Toolkit.getDefaultToolkit().setDynamicLayout(true);
         //JDialog.setDefaultLookAndFeelDecorated(true);   // to decorate dialogs
 
@@ -214,13 +225,14 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     }
 
     //--------------------------------------------------------------------------
-    // Public
+    // Plugin Management
     //--------------------------------------------------------------------------
 
     /**
-     * Registers a plugin with the GUI. Must be called prior buildView().
+     * Registers a plugin with the PluginHostManager. Must be called prior
+     * buildView().
      *
-     * @param plugin Plugin to add to the GUI.
+     * @param plugin Plugin to register.
      * @throws Exception on error.
      */
     public void registerPlugin(IPlugin plugin) throws Exception
@@ -231,12 +243,8 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         // Restore unloaded preferences if they exist
         //
 
-        Element workspaceNode =
-            prefs_.getFirstChildElement(NODE_WORKSPACE);
-
-        Elements pluginWrappers =
-            unloadedPrefs_.getChildElements(NODE_PLUGIN);
-
+        Element workspaceNode = prefs_.getFirstChildElement(NODE_WORKSPACE);
+        Elements pluginWrappers = unloadedPrefs_.getChildElements(NODE_PLUGIN);
         Element pluginWrapper = null;
 
         for (int i = 0; i < pluginWrappers.size(); i++)
@@ -260,9 +268,10 @@ public class PluginWorkspace extends JFrame implements IPreferenced
 
 
     /**
-     * Registers a plugin with the GUI. Must be called prior buildView().
+     * Registers a plugin with the PluginHostManager along with an existing set
+     * of preferences. Must be called prior buildView().
      *
-     * @param plugin Plugin to add to the GUI.
+     * @param plugin Plugin to register.
      * @param prefs Plugin preferences DOM.
      * @throws Exception on error.
      */
@@ -282,8 +291,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     /**
      * Registers a plugin given its FQCN.
      *
-     * @param pluginClass Name of plugin class that implements the IPlugin
-     *        interface.
+     * @param pluginClass Name of class that implements the IPlugin interface.
      * @throws Exception on instantiation error.
      */
     public void registerPlugin(String pluginClass) throws Exception
@@ -303,8 +311,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     /**
      * Registers a plugin given its FQCN and preferences.
      *
-     * @param pluginClass Name of plugin class that implements the IPlugin
-     *        interface.
+     * @param pluginClass Name of class that implements the IPlugin interface.
      * @param prefs Plugin preferences DOM.
      * @throws Exception on instantiation error.
      */
@@ -328,7 +335,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
 
 
     /**
-     * Deregisters a plugin given its fully qualified name.
+     * Deregisters a plugin given its FQCN.
      *
      * @param pluginClass Class name of plugin to remove.
      * @param removeTab Set to true to also remove the tab the plugin was in.
@@ -355,7 +362,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         }
     }
 
-
+    
     /**
      * Returns the root of the preferences DOM. Access to the preferences exists
      * primarily so that the PluginHosts can read/write their prefs into the
@@ -381,11 +388,11 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     {
         return statusBar_;
     }
-    
-    
+
+
     /**
      * Returns the preferences manager.
-     * 
+     *
      * @return PreferencesManager
      */
     PreferencesManager getPreferencesManager()
@@ -518,7 +525,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         menu.add(smoothFontsCheckBoxItem_);
         menu.add(decorationsCheckBoxItem_);
         menu.add(pluginHostManager_.createMenu());
-        
+
         menu.add(new AbstractAction("Preferences")
         {
             /**
@@ -528,7 +535,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
             public void actionPerformed(ActionEvent e)
             {
                 new PreferencesDialog(
-                    PluginWorkspace.this, 
+                    PluginWorkspace.this,
                     preferencesManager_).setVisible(true);
             }
         });
@@ -710,7 +717,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         // Save prefs managed by the PreferencesManager
         //
         preferencesManager_.savePrefs(root);
-        
+
         //
         // Save loaded plugin prefs
         //
@@ -845,7 +852,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         // Restore prefs stored by the Preferences dialog
         //
         preferencesManager_.applyPrefs(root);
-        
+
         if (root != null)
         {
             //
@@ -980,7 +987,8 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     //--------------------------------------------------------------------------
 
     /**
-     * Adds/removes plugins to/from the plugin frame.
+     * Brings up a dialog box that used to adds/remove plugins. The newer
+     * PluginMenu is much easier though. 
      */
     class PluginsAction extends AbstractAction
     {
@@ -1172,9 +1180,9 @@ public class PluginWorkspace extends JFrame implements IPreferenced
                 if (!isDisplayable())
                 {
                     logger_.debug(
-                        "Frame is not displayed yet! Setting decorated to " + 
+                        "Frame is not displayed yet! Setting decorated to " +
                         useDecorations);
-                    
+
                     //JFrame.setDefaultLookAndFeelDecorated(!useDecorations);
                     setUndecorated(useDecorations);
                 }
