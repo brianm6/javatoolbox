@@ -63,6 +63,10 @@ public class PreferencesManager implements IPreferenced
         IConfigurator lookAndFeel = new LookAndFeelConfigurator();
         nodeMap_.put(LookAndFeelConfigurator.NODE_LOOK_AND_FEEL, lookAndFeel);
         SwingUtil.attachPhantom(lookAndFeel.getView());
+        
+        IConfigurator swing = new SwingConfigurator();
+        nodeMap_.put(SwingConfigurator.NODE_HTTP_PROXY, swing);
+        SwingUtil.attachPhantom(swing.getView());
     }
 
     //--------------------------------------------------------------------------
