@@ -12,7 +12,7 @@ import toolbox.util.MathUtil;
  */
 public class MathUtilTest extends TestCase
 {
-    /** Logger **/
+    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(MathUtilTest.class);
     
@@ -77,5 +77,46 @@ public class MathUtilTest extends TestCase
         assertTrue("2 is not odd!", !MathUtil.isOdd(2));
         assertTrue("999 is odd!", MathUtil.isOdd(999));
         assertTrue("-1000 is not odd!", !MathUtil.isOdd(-1000));
+    }
+    
+    
+    /**
+     * Tests addToAll()
+     */
+    public void testAddToAll()
+    {
+        logger_.info("Running testAddToAll...");
+        
+        int[] n = new int[] { 1, 2, 3};
+        int x = 10;
+        MathUtil.addToAll(n, x);
+        
+        assertEquals(n[0], 1 + x);
+        assertEquals(n[1], 2 + x);
+        assertEquals(n[2], 3 + x);
+    }
+    
+    
+    /**
+     * Tests sum()
+     */
+    public void testSum()
+    {
+        logger_.info("Running testSum...");
+        
+        int[] n = new int[] { 1, 2, 3};
+        int sum = MathUtil.sum(n);
+        assertEquals(1 + 2 + 3, sum);
+    }
+    
+    
+    /**
+     * Tests invNormalCumDist() 
+     */
+    public void testInvNormalCumDist()
+    {
+        logger_.info("Running testInvNormalCumDist...");
+        logger_.info("Inverse normal cumulative distribution(0.5): " + 
+            MathUtil.invNormalCumDist(0.5));
     }
 }
