@@ -36,6 +36,7 @@ import toolbox.util.service.ServiceException;
 import toolbox.util.service.ServiceTransition;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.tabbedpane.JSmartTabbedPane;
+import toolbox.util.ui.table.JSmartTable;
 import toolbox.workspace.AbstractPlugin;
 
 /**
@@ -184,7 +185,7 @@ public class UIDefaultsPlugin extends AbstractPlugin implements ActionListener
         }
 
         view_.remove(tabbedPane_);
-        tabbedPane_ = getTabbedPane();
+        tabbedPane_ = buildTabbedPane();
         view_.add(tabbedPane_);
         SwingUtilities.updateComponentTreeUI(SwingUtil.getFrameAncestor(view_));
     }
@@ -199,7 +200,7 @@ public class UIDefaultsPlugin extends AbstractPlugin implements ActionListener
     protected void buildView()
     {
         view_ = new JPanel(new BorderLayout());
-        tabbedPane_ = getTabbedPane();
+        tabbedPane_ = buildTabbedPane();
         view_.add(tabbedPane_);
 
         UIManager.LookAndFeelInfo[] info = UIManager.getInstalledLookAndFeels();
@@ -213,6 +214,7 @@ public class UIDefaultsPlugin extends AbstractPlugin implements ActionListener
         {
             JButton button = new JSmartButton(info[i].getName());
             button.addActionListener(this);
+            button.setToolTipText(info[i].getName());
             buttons.add(button);
             infoMap_.put(info[i].getName(), info[i]);
         }
@@ -224,7 +226,7 @@ public class UIDefaultsPlugin extends AbstractPlugin implements ActionListener
      *
      * @return JTabbedPane
      */
-    protected JTabbedPane getTabbedPane()
+    protected JTabbedPane buildTabbedPane()
     {
         Map components = new TreeMap();
         UIDefaults defaults = UIManager.getDefaults();
@@ -320,11 +322,9 @@ public class UIDefaultsPlugin extends AbstractPlugin implements ActionListener
 
                     if (o instanceof Font)
                         rowData[i][2] = o;
-
-                    if (o instanceof Color)
+                    else if (o instanceof Color)
                         rowData[i][2] = o;
-
-                    if (o instanceof Icon)
+                    else if (o instanceof Icon)
                         rowData[i][2] = o;
                 }
                 else
@@ -337,7 +337,7 @@ public class UIDefaultsPlugin extends AbstractPlugin implements ActionListener
             UIDefaultsTableModel myModel = 
                 new UIDefaultsTableModel(tableCellRenderer_, rowData, colName);
             
-            JTable table = new JTable(myModel);
+            JTable table = new JSmartTable(myModel);
 
             table.setDefaultRenderer(
                 tableCellRenderer_.getClass(), tableCellRenderer_);
