@@ -25,6 +25,7 @@ import nu.xom.Element;
 import org.apache.log4j.Logger;
 
 import toolbox.util.Queue;
+import toolbox.util.StringUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartLabel;
@@ -214,6 +215,11 @@ public class JSourceView extends JPanel implements IPreferenced
      * Workspace status bar (in addition to the two we've already got). 
      */
     private IStatusBar workspaceStatusBar_;
+
+    /**
+     * Remembers last selected directory in the Directory chooser.
+     */
+    private File lastDir_;
     
     //--------------------------------------------------------------------------
     // Constructors
@@ -318,6 +324,9 @@ public class JSourceView extends JPanel implements IPreferenced
         
         dirField_.setText(XOMUtil.getStringAttribute(root, ATTR_LAST_DIR, ""));
         dirField_.setCaretPosition(0);
+        
+        if (!StringUtil.isNullOrBlank(dirField_.getText()))
+            lastDir_ = new File(dirField_.getText());
     }
 
     
@@ -552,9 +561,15 @@ public class JSourceView extends JPanel implements IPreferenced
             JFileChooser chooser = new JFileChooser();
             chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             
+            if (lastDir_ != null)
+                chooser.setCurrentDirectory(lastDir_);
+            
             if (chooser.showDialog(JSourceView.this, "Select Directory") 
                 == JFileChooser.APPROVE_OPTION)
+            {
                 dirField_.setText(chooser.getSelectedFile().getCanonicalPath());
+                lastDir_ = chooser.getSelectedFile();
+            }
         }
     }
 
