@@ -60,8 +60,6 @@
  *       Change formatter to leave "select *" on the same line. Apply to all
  * TODO: icons for execute all, execute selected, execute current
  * TODO: Ctrl-Up/Down should scroll through query history
- * TODO: Update ExecuteCurrentAction to execute multiple sql statements within
- *       a selection.
  * TODO: Lift more stuff from hsqldb manager
  * TODO: Base 64 encode passwords (statcvs, jdbcplugin, etc)
  * =============================================================================
@@ -95,30 +93,32 @@
   <body>
     
     <release version="2.0" date="August 2004">
-      <action type="add   ">Util - Added FontUtil.isMonospaced()</action>
-      <action type="update">Util - JSmartTableHeader updated to support auto-resize by clicking on the column divider</action>
-      <action type="add   ">Util - Added emphasis of monospaced fonts to JFontChooser</action>
-      <action type="add   ">Util - Added ability to render font names in the listbox using the font itself in JFontChooser</action>
-      <action type="add   ">Util - Added JSmartDialog. Persists size, location, and esc key is bound to dispose.</action>
-      <action type="add   ">Util - Added convenience methods to PreferenceUtil to save/restore bounds for a component</action>
-      <action type="add   ">Lib - Added jemmy.jar to unit test UI components</action>
-      <action type="add   ">Test - Jemmified JFontChooserDialog test and createed JemmyUtil in the process</action>
-      <action type="update">Workspace - Updated PluginWorkspace to extend JSmartFrame and delegated save/apply of prefs to superclass</action>
-      <action type="update">Util- Updated TableSorter so that auto-resize and sort don't conflict when mouse is clicked near the column dividers</action>
-      <action type="update">Workspace - Updated to accept a preferences filename on the command line which overrides the default</action>
-      <action type="update">FindClassPlugin - Reduced startup time by limited default search targets to those on the classpath only</action>
-      <action type="update">Misc - Converting all implementors of IPreferenced to use the javabean method for passivation/hydration</action>
-      <action type="add"   >Lib - Added janino.jar to use inside JTailPlugin for creating dynamic filters coded in java on the fly</action>
-      <action type="add"   >Lib - Added jalopy.jar, jakarta-oro.jar, and jdom.jar to support toolbox.util.formatter.JavaFormatter</action>
-      <action type="add"   >Util - Created concrete instances of toolbox.util.formatter.Formatter to handle Java, XML, and HTML</action>
-      <action type="update">Util - Renamed StringUtil.addBars() to banner()</action>
-      <action type="update">Util - Replaced StringUtil.left() and right() with StringUtils.rightPad() and leftPad()</action>
-      <action type="update">Util - Upated code snippets in javadocs to use class=snippet</action>
-      <action type="fix"   >Util - Fixed QueryPlugin to remove the session from the session map if Connect fails</action>
-      <action type="update">Build - Updated fatjar maven goals to pull the list of jars directly from the Maven POM instead of the hardcoded list used previously</action>
-      <action type="update">Util - Added javabean property to JSmartTextArea to control updates on the event dispatch thread</action>
-      <action type="build ">Added custom stylesheet for jxr plugin (decrease code font size and made Verdana the default font)</action>
-      <action type="util  ">Added simple implemenation of a finite state machine to toolbox.util.statemachine.</action>
+      <action type="Util">Added FontUtil.isMonospaced()</action>
+      <action type="Util">JSmartTableHeader updated to support auto-resize by clicking on the column divider</action>
+      <action type="Util">Added emphasis of monospaced fonts to JFontChooser</action>
+      <action type="Util">Added ability to render font names in the listbox using the font itself in JFontChooser</action>
+      <action type="Util">Added JSmartDialog. Persists size, location, and esc key is bound to dispose.</action>
+      <action type="Util">Added convenience methods to PreferenceUtil to save/restore bounds for a component</action>
+      <action type="Lib">Added jemmy.jar to unit test UI components</action>
+      <action type="Test">Jemmified JFontChooserDialog test and createed JemmyUtil in the process</action>
+      <action type="Workspace">Updated PluginWorkspace to extend JSmartFrame and delegated save/apply of prefs to superclass</action>
+      <action type="Util">Updated TableSorter so that auto-resize and sort don't conflict when mouse is clicked near the column dividers</action>
+      <action type="Workspace">Updated to accept a preferences filename on the command line which overrides the default</action>
+      <action type="FindClassPlugin">Reduced startup time by limited default search targets to those on the classpath only</action>
+      <action type="Misc">Converting all implementors of IPreferenced to use the javabean method for passivation/hydration</action>
+      <action type="Lib">Added janino.jar to use inside JTailPlugin for creating dynamic filters coded in java on the fly</action>
+      <action type="Lib">Added jalopy.jar, jakarta-oro.jar, and jdom.jar to support toolbox.util.formatter.JavaFormatter</action>
+      <action type="Util">Created concrete instances of toolbox.util.formatter.Formatter to handle Java, XML, and HTML</action>
+      <action type="Util">Renamed StringUtil.addBars() to banner()</action>
+      <action type="Util">Replaced StringUtil.left() and right() with StringUtils.rightPad() and leftPad()</action>
+      <action type="Util">Upated code snippets in javadocs to use class=snippet</action>
+      <action type="Util">Fixed QueryPlugin to remove the session from the session map if Connect fails</action>
+      <action type="Build">Updated fatjar maven goals to pull the list of jars directly from the Maven POM instead of the hardcoded list used previously</action>
+      <action type="Util">Added javabean property to JSmartTextArea to control updates on the event dispatch thread</action>
+      <action type="Build">Added custom stylesheet for jxr plugin (decrease code font size and made Verdana the default font)</action>
+      <action type="Util">Added simple implemenation of a finite state machine to toolbox.util.statemachine</action>
+      <action type="QueryPlugin">Updated to execute multiple sql statements within a selection on ExecuteAll</action>
+
     </release>
     
     <release version="2.0" date="July 2004">
