@@ -43,7 +43,6 @@ package toolbox;
  * =============================================================================
  * 								JDBCPlugin
  * =============================================================================
- * TODO: Fix sql history list getting too big
  * TODO: Add realtime grep filter to results pane
  * TODO: Fix ClassCastException on execute async
  * TODO: Customize SQLFormatter formatting options
@@ -83,7 +82,8 @@ package toolbox;
  * July 2004
  *  - Upgraded to commons-collections-3.1
  *  - Introduced JDBCSession (multi client version of JDBCUtil)
- *   
+ *  - Fix sql history list getting too big
+ *    
  * June 2004
  *  - Updated Jode to 1.1.2-pre1
  *  - Added StringUtil.indent()
