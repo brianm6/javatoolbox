@@ -13,6 +13,7 @@ import java.util.Stack;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
+import toolbox.util.StreamUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.ThreadUtil;
 import toolbox.util.collections.AsMap;
@@ -216,12 +217,7 @@ public class Tail
 
                 ThreadUtil.stop(tailer_);
                 
-                if (reader_ != null)
-                    reader_.close();
-            }
-            catch (IOException e)
-            {
-                logger_.error("stop", e);
+                StreamUtil.close(reader_);
             }
             finally
             {
@@ -600,7 +596,8 @@ public class Tail
             }
             catch (Exception e)
             {
-                logger_.error("Tailer.run", e);
+                if (!pendingShutdown_)
+                    logger_.error("Tailer.run", e);
             }
         }
     }
