@@ -6,7 +6,7 @@ import java.io.FilenameFilter;
 /**
  * Filters files only.
  */
-public class FileFilter implements FilenameFilter
+public class FileOnlyFilter implements FilenameFilter
 {
     //--------------------------------------------------------------------------
     //  FilenameFilter Interface
