@@ -1,6 +1,7 @@
 package toolbox.util.ui.plugin;
 
 import java.awt.Component;
+import java.util.Map;
 
 /**
  * IPlugin defines the interface for any plugins that can hosted by the 
@@ -42,16 +43,10 @@ public interface IPlugin extends IPreferenced
     
     /**
      * Initializes the plugin
-     */
-    public void init();
-    
-    /**
-     * Sets the status bar. The plugin can use the passed object as a
-     * callback into the hosts environment for setting/getting status messages
      * 
-     * @param  statusBar  Interface exposing methods to set status text
+     * @param  props  Initialization properties and parameters
      */
-    public void setStatusBar(IStatusBar statusBar);
+    public void startup(Map props);
     
     /**
      * Cleans up resources before the plugin is shutdown
