@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import toolbox.util.thread.IThreadable;
 import toolbox.util.thread.ReturnValue;
-import toolbox.util.thread.concurrent.IBoundedBuffer;
 import toolbox.util.thread.concurrent.BoundedBufferAdapter;
+import toolbox.util.thread.concurrent.IBoundedBuffer;
 
 
 /**

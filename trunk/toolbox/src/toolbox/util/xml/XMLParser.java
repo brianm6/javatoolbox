@@ -1,7 +1,7 @@
 package toolbox.util.xml;
 
-import java.io.Reader;
 import java.io.IOException;
+import java.io.Reader;
 import java.util.Stack;
 
 /**
