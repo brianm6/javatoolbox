@@ -15,7 +15,8 @@ public interface FileTypes
         "jsl",
         "svg",
         "xmi",
-        "xml", 
+        "xml",
+        "xsd",
         "xsl", 
         "xslt", 
     };
