@@ -3,89 +3,170 @@ package toolbox.util.ui;
 
 import java.awt.Component;
 import java.awt.Graphics;
-import java.awt.GridLayout;
-import java.net.MalformedURLException;
-import java.net.URL;
 
-import javax.swing.ButtonGroup;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.UIManager;
+import javax.swing.SwingConstants;
 
+import org.apache.commons.lang.Validate;
+
+/**
+ * CompoundIcon creates a new icon from two existing icons given a horizontal
+ * or vertical orientation.
+ * 
+ * <pre>
+ * 
+ *   +---+---+
+ *   | 1 | 2 |   Join horizontally
+ *   +---+---+
+ *   
+ *   
+ *   +---+
+ *   | 1 |
+ *   +---+       Join vertically
+ *   | 2 |
+ *   +---+
+ *
+ * </pre>
+ */
 public class CompoundIcon implements Icon
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Join the icons next to each other or one on top of the other.
+     * 
+     * @see SwingConstants#HORIZONTAL
+     * @see SwingConstants#VERTICAL
+     */
+    private int orientation_;
+    
+    /**
+     * First icon.
+     */
+    private Icon icon1_;
+    
+    /**
+     * Second icon.
+     */
+    private Icon icon2_;
 
-    private Icon left, right;
-    private int gap;
-
-
-    public CompoundIcon(Icon left, Icon right, int gap)
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Creates a CompoundIcon using horizontal orientation.
+     * 
+     * @param icon1 First icon.
+     * @param icon2 Second icon.
+     */
+    public CompoundIcon(Icon icon1, Icon icon2)
     {
-        if (left == null || right == null)
-            throw new NullPointerException();
-        this.left = left;
-        this.right = right;
-        this.gap = gap;
+        this(icon1, icon2, SwingConstants.HORIZONTAL);
+    }
+    
+    
+    /**
+     * Creates a CompoundIcon.
+     * 
+     * @param icon1 First icon.
+     * @param icon2 Second icon.
+     * @param orientation Horizontal or vertically glue the icons together.
+     */
+    public CompoundIcon(Icon icon1, Icon icon2, int orientation)
+    {
+        icon1_ = icon1;
+        icon2_ = icon2;
+        orientation_ = orientation;
+        
+        Validate.isTrue(
+            orientation_ == SwingConstants.HORIZONTAL ||
+            orientation_ == SwingConstants.VERTICAL,
+            "Orientation must be either SwingConstants.[HORIZONTAL|VERTICAL]");
     }
 
-
+    //--------------------------------------------------------------------------
+    // Icon Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see javax.swing.Icon#getIconHeight()
+     */
     public int getIconHeight()
     {
-        return Math.max(left.getIconHeight(), right.getIconHeight());
+        int height = 0;
+        
+        switch (orientation_)
+        {
+            case SwingConstants.HORIZONTAL:
+                height = Math.max(
+                    icon1_.getIconHeight(), icon2_.getIconHeight());
+                break;
+            
+            case SwingConstants.VERTICAL:
+                height = icon1_.getIconHeight() + icon2_.getIconHeight();
+                break;
+        }
+        
+        return height;
     }
 
 
+    /**
+     * @see javax.swing.Icon#getIconWidth()
+     */
     public int getIconWidth()
     {
-        return left.getIconWidth() + gap + right.getIconWidth();
+        int width = 0;
+        
+        switch (orientation_)
+        {
+            case SwingConstants.HORIZONTAL:
+                width = icon1_.getIconWidth() + icon2_.getIconWidth();
+                break;
+            
+            case SwingConstants.VERTICAL:
+                width = Math.max(icon1_.getIconWidth(), icon2_.getIconHeight());
+                break;
+        }
+        
+        return width;
     }
 
 
+    /**
+     * @see javax.swing.Icon#paintIcon(java.awt.Component, java.awt.Graphics, 
+     *      int, int)
+     */
     public void paintIcon(Component c, Graphics g, int x, int y)
     {
-        int h = getIconHeight();
-        left.paintIcon(c, g, x, y + (h - left.getIconHeight()) / 2);
-        right.paintIcon(c, g, x + left.getIconWidth() + gap, y
-            + (h - right.getIconHeight()) / 2);
-    }
-
-
-    public static void main(String[] args) throws MalformedURLException
-    {
-        System.setProperty("proxyHost", "proxy.swacorp.com");
-        System.setProperty("proxyPort", "8080");
-        
-        JPanel p = new JPanel(new GridLayout(0, 1));
-        URL url1 = new URL(
-            "http://forum.java.sun.com/images/toolbox_settings.gif");
-        URL url2 = new URL(
-            "http://forum.java.sun.com/images/toolbox_watches.gif");
-        URL url3 = new URL(
-            "http://forum.java.sun.com/images/toolbox_dukedollars.gif");
-
-        Icon radioIcon = UIManager.getIcon("RadioButton.icon");
-        ButtonGroup bg = new ButtonGroup();
-        add(url1, p, bg, radioIcon);
-        add(url2, p, bg, radioIcon);
-        add(url3, p, bg, radioIcon);
-
-        JFrame f = new JFrame("Example");
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.getContentPane().add(p);
-        f.setSize(400,400);
-        //f.setLocationRelativeTo(null);
-        f.setVisible(true);
-    }
-
-
-    static void add(URL url, JPanel p, ButtonGroup bg, Icon radioIcon)
-    {
-        JRadioButton btn = new JRadioButton(new CompoundIcon(radioIcon,
-            new ImageIcon(url), 3));
-        p.add(btn);
-        bg.add(btn);
+        switch (orientation_)
+        {
+            case SwingConstants.HORIZONTAL:
+                
+                int h = getIconHeight();
+                icon1_.paintIcon(c, g, x, y + (h - icon1_.getIconHeight()) / 2);
+                
+                icon2_.paintIcon(
+                    c, g, 
+                    x + icon1_.getIconWidth(), 
+                    y + (h - icon2_.getIconHeight()) / 2);
+                
+                break;
+            
+            case SwingConstants.VERTICAL:
+                
+                int w = getIconWidth();
+                icon1_.paintIcon(c, g, x + (w - icon1_.getIconWidth()) / 2, y);
+                
+                icon2_.paintIcon(
+                    c, g, 
+                    x + (w - icon2_.getIconWidth()) / 2 , 
+                    y + icon1_.getIconHeight());
+                
+                break;
+        }
     }
 }
