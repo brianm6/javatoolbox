@@ -3,6 +3,9 @@ package toolbox.plugin.jdbc;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -12,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
@@ -35,7 +39,7 @@ import toolbox.jedit.JEditActions;
 import toolbox.jedit.JEditPopupMenu;
 import toolbox.jedit.JEditTextArea;
 import toolbox.jedit.SQLDefaults;
-import toolbox.plugin.jdbc.action.*;
+import toolbox.plugin.jdbc.action.ExecuteCurrentAction;
 import toolbox.plugin.jdbc.action.FormatSQLAction;
 import toolbox.plugin.jdbc.action.ListColumnsAction;
 import toolbox.plugin.jdbc.action.ListTablesAction;
@@ -50,6 +54,7 @@ import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.db.SQLFormatter;
+import toolbox.util.io.JTextAreaOutputStream;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JConveyorMenu;
 import toolbox.util.ui.JHeaderPanel;
@@ -468,19 +473,23 @@ public class QueryPlugin extends JPanel implements IPlugin
             ImageCache.getIcon(ImageCache.IMAGE_QUESTION_MARK),
             "SQL Reference",
             new SQLReferenceAction(this));
-
+        
+        JButton bench = JHeaderPanel.createButton(new BenchmarkAction());
+        
         JToolBar toolbar = JHeaderPanel.createToolBar();
         toolbar.add(executeAll);
         toolbar.add(executeCurrent);
         toolbar.add(format);
         toolbar.addSeparator();
+        toolbar.add(bench);
+        toolbar.addSeparator();
         toolbar.add(clear);
         toolbar.add(help);
-
+        
         return new JHeaderPanel("SQL Editor", toolbar, sqlEditor_);
     }
 
-
+    
     /**
      * Constructs the results area.
      *
@@ -826,7 +835,7 @@ public class QueryPlugin extends JPanel implements IPlugin
     }
     
     //--------------------------------------------------------------------------
-    // ExecutzePriorAction
+    // ExecutePriorAction
     //--------------------------------------------------------------------------
 
     /**
@@ -898,6 +907,38 @@ public class QueryPlugin extends JPanel implements IPlugin
             String s = getActiveText();
 
             System.out.println(StringUtil.addBars(s));
+        }
+    }
+    
+    //--------------------------------------------------------------------------
+    // BenchmarkAction
+    //--------------------------------------------------------------------------
+    
+    class BenchmarkAction extends WorkspaceAction 
+    {
+        BenchmarkAction() 
+        {
+            super("", true, true, null, statusBar_);
+            putValue(SMALL_ICON, ImageCache.getIcon(ImageCache.IMAGE_DUKE));
+            putValue(Action.NAME, "");
+            putValue(SHORT_DESCRIPTION, "Runs JDBC Benchmark");
+        }
+        
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(java.awt.event.ActionEvent)
+         */
+        public void runAction(ActionEvent e) throws Exception
+        {
+            DBProfile profile = dbConfigPane_.getCurrentProfile();
+            OutputStream os = new JTextAreaOutputStream(resultsArea_);                    
+            PrintWriter pw = new PrintWriter(new OutputStreamWriter(os));
+            
+            DBBenchmark benchmark = new DBBenchmark(
+                profile.getUrl(), 
+                profile.getUsername(), 
+                profile.getPassword(), 
+                true,
+                pw);
         }
     }
 }
