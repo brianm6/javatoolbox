@@ -15,10 +15,12 @@
     </layout>
   </appender>
 
+  <!--
   <appender name ="sockethub" class="org.apache.log4j.net.SocketHubAppender">
     <param name="Port" value="9999"/>
     <param name="LocationInfo" value="true"/>
   </appender>
+  -->
 
   <!-- ===================================================================== -->
   <!-- LOGGERS                                                               -->
@@ -27,13 +29,13 @@
   <logger name="org.apache.commons.beanutils" additivity="true">
     <level value="info"/>
     <appender-ref ref="console"/>
-    <appender-ref ref="sockethub"/>    
+    <!--appender-ref ref="sockethub"/-->
   </logger>
   
   <root>
     <level value="debug"/>
     <appender-ref ref="console"/>
-    <appender-ref ref="sockethub"/>
+    <!--appender-ref ref="sockethub"/-->
   </root>   
    
    <!-- Toplevel logger for Toolbox -->
