@@ -14,11 +14,12 @@ import toolbox.log4j.SmartLogger;
 
 /**
  * Unit test for StringUtil.
+ * 
+ * @see toolbox.util.StringUtil
  */
 public class StringUtilTest extends TestCase
 {
-    private static Logger logger_ = 
-        Logger.getLogger(StringUtilTest.class);
+    private static Logger logger_ = Logger.getLogger(StringUtilTest.class);
 
     //--------------------------------------------------------------------------
     // Main
@@ -45,12 +46,10 @@ public class StringUtilTest extends TestCase
     {
         logger_.info("Running testRightForTruncation...");
 
-        String s = "HELLO";
-        String a4 = "HELL";
-        String b4 = StringUtil.right(s, 4, ' ', true);
-        
-        if (!a4.equals(b4))
-            fail("ERROR RIGHT 4");
+        String input    = "hello";
+        String expected = "hell";
+        String result   = StringUtil.right(input, 4, ' ', true);
+        assertEquals(expected, result);
     }
     
     //--------------------------------------------------------------------------
@@ -64,12 +63,10 @@ public class StringUtilTest extends TestCase
     {
         logger_.info("Running testLeftForTruncation...");
 
-        String s = "HELLO";
-        String a4 = "HELL";
-        String b4 = StringUtil.left(s, 4, ' ', true);
-
-        if (!a4.equals(b4))
-            fail("ERROR LEFT 4");
+        String input    = "hello";
+        String expected = "hell";
+        String result   = StringUtil.left(input, 4, ' ', true);
+        assertEquals(expected, result);
     }
 
     //--------------------------------------------------------------------------
@@ -157,8 +154,8 @@ public class StringUtilTest extends TestCase
     /**
      * Tests indent(s, numChars, indentChar)
      */
-    public void testIndentIntString() {
-        
+    public void testIndentIntString() 
+    {
         logger_.info("Running testIndentIntString...");
         
         // Zero empty
@@ -530,4 +527,120 @@ public class StringUtilTest extends TestCase
         logger_.debug(StringUtil.banner("this is a single line"));
         logger_.debug(StringUtil.banner("this\nis a\nmulti-line"));
     }
+    
+    
+    /**
+     * testReplaceIgnoreCase
+     */
+    public void testReplaceIgnoreCase() 
+    {
+        logger_.info("Running testReplaceIgnoreCase...");
+        
+        // Empty Text ----------------------------------------------------------
+        
+        // Text is empty
+        assertEquals("", StringUtil.replaceIgnoreCase("", "a", "b"));
+        
+        // Text length = 1 -----------------------------------------------------
+        
+        // Text is one char, no match
+        assertEquals("a", StringUtil.replaceIgnoreCase("a", "b", "c"));
+        assertEquals("a", StringUtil.replaceIgnoreCase("a", "B", "c"));
+        
+        // Text is one char, single match
+        assertEquals("b", StringUtil.replaceIgnoreCase("a", "a", "b"));
+        assertEquals("b", StringUtil.replaceIgnoreCase("a", "A", "b"));
+
+        // Text is one char, single match no-op
+        assertEquals("a", StringUtil.replaceIgnoreCase("a", "a", "a"));
+        assertEquals("a", StringUtil.replaceIgnoreCase("a", "A", "a"));
+
+        // Text is one char, single match, expansion
+        assertEquals("123", StringUtil.replaceIgnoreCase("a", "a", "123"));
+        assertEquals("123", StringUtil.replaceIgnoreCase("a", "A", "123"));
+
+        // Text is one char, single match, expansion with duplicate
+        assertEquals("aa", StringUtil.replaceIgnoreCase("a", "a", "aa"));
+        assertEquals("aa", StringUtil.replaceIgnoreCase("a", "A", "aa"));
+
+        // Text is one char, single match, contraction
+        assertEquals("", StringUtil.replaceIgnoreCase("a", "a", ""));
+        assertEquals("", StringUtil.replaceIgnoreCase("a", "A", ""));
+
+        // Text length = n -----------------------------------------------------
+        
+        // Text is multiple chars, no match
+        assertEquals("abc", StringUtil.replaceIgnoreCase("abc", "xyz", "123"));
+        assertEquals("AbC", StringUtil.replaceIgnoreCase("AbC", "XyZ", "123"));
+        
+        // Text is multiple chars, single match
+        assertEquals("xyz", StringUtil.replaceIgnoreCase("abc", "abc", "xyz"));
+        assertEquals("xyz", StringUtil.replaceIgnoreCase("AbC", "aBc", "xyz"));
+
+        // Text is multiple chars, single match, expansion
+        assertEquals("abc123", 
+            StringUtil.replaceIgnoreCase("abc", "abc", "abc123"));
+        assertEquals("ABC123", 
+            StringUtil.replaceIgnoreCase("AbC", "aBc", "ABC123"));
+
+        // Text is multiple chars, single match, contraction
+        assertEquals("z", StringUtil.replaceIgnoreCase("abc", "abc", "z"));
+        assertEquals("z", StringUtil.replaceIgnoreCase("AbC", "aBc", "z"));
+
+        // Text is multiple chars, multiple match
+        assertEquals("xyzxyz", 
+            StringUtil.replaceIgnoreCase("abcabc", "abc", "xyz"));
+        assertEquals("xyzxyz", 
+            StringUtil.replaceIgnoreCase("AbCaBC", "aBc", "xyz"));
+
+        // Text is multiple chars, multiple match, expansion
+        assertEquals("hellohello", 
+            StringUtil.replaceIgnoreCase("abcabc", "abc", "hello"));
+        assertEquals("hellohello", 
+            StringUtil.replaceIgnoreCase("AbCaBC", "aBc", "hello"));
+
+        // Text is multiple chars, multiple match, contraction
+        assertEquals("", StringUtil.replaceIgnoreCase("abcabc", "abc", ""));
+        assertEquals("", StringUtil.replaceIgnoreCase("AbCaBC", "aBc", ""));
+
+        // Text is multiple char superset, no match
+        assertEquals("1abc2", 
+            StringUtil.replaceIgnoreCase("1abc2", "xyz", "123"));
+        assertEquals("1AbC2", 
+            StringUtil.replaceIgnoreCase("1AbC2", "XyZ", "123"));
+        
+        // Text is multiple char superset, single match
+        assertEquals("1xyz2", 
+            StringUtil.replaceIgnoreCase("1abc2", "abc", "xyz"));
+        assertEquals("1xyz2", 
+            StringUtil.replaceIgnoreCase("1AbC2", "aBc", "xyz"));
+                    
+        // Text is multiple char superset, single match, expansion
+        assertEquals("1*abc*2", 
+            StringUtil.replaceIgnoreCase("1abc2", "abc", "*abc*"));
+        assertEquals("1*abc*2", 
+            StringUtil.replaceIgnoreCase("1AbC2", "aBc", "*abc*"));
+                        
+        // Text is multiple char superset, single match, contraction
+        assertEquals("12", StringUtil.replaceIgnoreCase("1abc2", "abc", ""));
+        assertEquals("12", StringUtil.replaceIgnoreCase("1AbC2", "aBc", ""));
+
+        // Text is multiple chars superset, multiple match
+        assertEquals("xyz123xyz", 
+            StringUtil.replaceIgnoreCase("abc123abc", "abc", "xyz"));
+        assertEquals("xyz123xyz", 
+            StringUtil.replaceIgnoreCase("AbC123aBC", "aBc", "xyz"));
+
+        // Text is multiple chars superset, multiple match, expansion
+        assertEquals("hello123hello", 
+            StringUtil.replaceIgnoreCase("abc123abc", "abc", "hello"));
+        assertEquals("hello123hello", 
+            StringUtil.replaceIgnoreCase("AbC123aBC", "aBc", "hello"));
+
+        // Text is multiple chars superset, multiple match, contraction
+        assertEquals("123", 
+            StringUtil.replaceIgnoreCase("abc123abc", "abc", ""));
+        assertEquals("123", 
+            StringUtil.replaceIgnoreCase("AbC123aBC", "aBc", ""));
+    }    
 }
