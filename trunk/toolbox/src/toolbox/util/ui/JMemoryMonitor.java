@@ -13,6 +13,8 @@ import java.awt.font.FontRenderContext;
 import java.awt.font.LineMetrics;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.AbstractAction;
 import javax.swing.JComponent;
@@ -21,6 +23,8 @@ import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 
 import org.apache.log4j.Logger;
+
+import toolbox.util.SwingUtil;
 
 /**
  * Simple memory monitor component lifted from JEdit with minor modifications
@@ -47,6 +51,24 @@ public class JMemoryMonitor extends JComponent
      */
     public JMemoryMonitor()
     {
+        // Reset the colors/fonts/etc whenever the look and feel changes
+        UIManager.addPropertyChangeListener(new PropertyChangeListener()
+        {
+            public void propertyChange(PropertyChangeEvent evt)
+            {
+                setDefaults();
+            }
+        });
+        
+        setDefaults();
+    }
+
+    //--------------------------------------------------------------------------
+    // Protected 
+    //--------------------------------------------------------------------------
+    
+    protected void setDefaults()
+    {
         labelFont_ = UIManager.getFont("Label.font");
         
         setDoubleBuffered(true);
@@ -57,8 +79,8 @@ public class JMemoryMonitor extends JComponent
         FontRenderContext frc = new FontRenderContext(null,false,false);
         lineMetrics_ = labelFont_.getLineMetrics(TEST_STRING, frc);
         
-        progressBackground_ = UIManager.getColor("ScrollBar.thumbHighlight");
-        progressForeground_ = UIManager.getColor("ScrollBar.thumbShadow");
+        progressBackground_ = UIManager.getColor("ScrollBar.thumb");
+        progressForeground_ = UIManager.getColor("ScrollBar.thumbHighlight");
     }
 
     //--------------------------------------------------------------------------
@@ -111,9 +133,7 @@ public class JMemoryMonitor extends JComponent
      */
     public void paintComponent(Graphics g)
     {
-        // TODO: Move so its aware of switching LAFs
-        setFont(labelFont_);
-        
+        SwingUtil.setAntiAlias(g, true);
         Insets insets = new Insets(0,0,0,0);
 
         //
@@ -171,7 +191,7 @@ public class JMemoryMonitor extends JComponent
                    (int)(width * fraction),
                    height);
 
-        g2.setColor(UIManager.getColor("Label.foreground"));
+        g2.setColor(Color.black);
 
         g2.drawString(str,
                       insets.left + (int)(width - bounds.getWidth()) / 2,
@@ -192,7 +212,6 @@ public class JMemoryMonitor extends JComponent
                      (int)(insets.top + lineMetrics_.getAscent()));
 
         g2.dispose();
-        
     }
 
     //--------------------------------------------------------------------------
