@@ -4,6 +4,8 @@ import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import org.apache.log4j.Logger;
+
 import toolbox.util.ArrayUtil;
 
 /**
@@ -15,6 +17,13 @@ import toolbox.util.ArrayUtil;
  */
 public class MulticastOutputStream extends OutputStream
 {
+    private static final Logger logger_ = 
+        Logger.getLogger(MulticastOutputStream.class);
+    
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /** 
      * Members of the multicast group of streams. 
      */
@@ -104,6 +113,16 @@ public class MulticastOutputStream extends OutputStream
      */
     public synchronized void close() throws IOException
     {
-        for (int i = 0; i < streams_.length; streams_[i++].close());        
+        for (int i = 0; i < streams_.length; i++)
+        {    
+            try
+            {
+                streams_[i].close();
+            }
+            catch (IOException ioe)
+            {
+                logger_.error(ioe);
+            }
+        }
     }
 }
