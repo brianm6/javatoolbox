@@ -9,8 +9,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,6 +23,7 @@ import javax.swing.Action;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -37,8 +37,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
-
-import net.sf.jode.decompiler.Decompiler;
 
 import nu.xom.Attribute;
 import nu.xom.Element;
@@ -54,17 +52,22 @@ import toolbox.jedit.JEditTextArea;
 import toolbox.jedit.JavaDefaults;
 import toolbox.util.ClassUtil;
 import toolbox.util.DateTimeUtil;
+import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.MathUtil;
+import toolbox.util.StreamUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.ThreadUtil;
 import toolbox.util.XOMUtil;
-import toolbox.util.io.NullWriter;
+import toolbox.util.decompiler.Decompiler;
+import toolbox.util.decompiler.DecompilerException;
+import toolbox.util.decompiler.DecompilerFactory;
 import toolbox.util.ui.JFileExplorer;
 import toolbox.util.ui.JFileExplorerAdapter;
 import toolbox.util.ui.JPopupListener;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartCheckBox;
+import toolbox.util.ui.JSmartComboBox;
 import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartMenuItem;
 import toolbox.util.ui.JSmartPopupMenu;
@@ -125,6 +128,9 @@ public class JFindClass extends JFrame implements IPreferenced
     private DefaultListModel     searchListModel_;
     private JPopupMenu           searchPopupMenu_;
     private JEditTextArea        sourceArea_;
+
+    // Decompiler flipper
+    private JComboBox            decompilerCombo_; 
     
     // Results    
     private JTable               resultTable_;
@@ -255,11 +261,28 @@ public class JFindClass extends JFrame implements IPreferenced
         // Hack for circular reference in popup menu            
         ((JEditPopupMenu) defaults.popup).setTextArea(sourceArea_);
         ((JEditPopupMenu) defaults.popup).buildView();
-            
+
+        Decompiler[] decompilers = null;
+        
+        try
+        {
+            decompilers = DecompilerFactory.createAll(); 
+        }
+        catch (DecompilerException de)
+        {
+            ExceptionUtil.handleUI(de, logger_);
+        }
+
+        decompilerCombo_ = new JSmartComboBox(decompilers);
         JButton decompileButton = new JSmartButton(new DecompileAction());
         JPanel decompilerPanel = new JPanel(new BorderLayout());
         decompilerPanel.add(BorderLayout.CENTER, sourceArea_);
-        decompilerPanel.add(BorderLayout.SOUTH, decompileButton);
+        
+        JPanel buttonPanel = new JPanel(new FlowLayout());
+        buttonPanel.add(decompilerCombo_);
+        buttonPanel.add(decompileButton);
+        
+        decompilerPanel.add(BorderLayout.SOUTH, buttonPanel);
         decompilerPanel.setPreferredSize(new Dimension(100, 400));
         
         return decompilerPanel;
@@ -914,26 +937,63 @@ public class JFindClass extends JFrame implements IPreferenced
             
                 location = location.trim();
                 clazz  = clazz.trim();
-            
-                // Setup decompiler        
-                Decompiler decompiler = new Decompiler();
-                decompiler.setOption("style", "pascal");
-                decompiler.setOption("tabwidth", "4");
-                decompiler.setErr(new PrintWriter(new NullWriter()));
-                decompiler.setClassPath(location);
+                
+                Decompiler d = (Decompiler) decompilerCombo_.getSelectedItem();
 
-                // Java source code will be dumped here                
-                StringWriter writer = new StringWriter();
-                                     
-                decompiler.decompile(clazz, writer, null);
+                String source = null;
                 
-                // Nuke the tabs                
-                String javaSource = StringUtil.replace(
-                    writer.getBuffer().toString(), "\t", "    ");
+                try
+                {
+                    source = d.decompile(clazz, location);
+                }
+                catch (IllegalArgumentException iae)
+                {
+                    if (ClassUtil.isArchive(location))
+                    {   
+                        // Build up a jar url pointing to the class 
+                        // file inside the jar
+                        StringBuffer sb = new StringBuffer();
+                        sb.append("jar:file:");
+                        sb.append(new File(location).getCanonicalPath());
+                        sb.append("!/");
+                        sb.append(clazz.replace('.','/'));
+                        sb.append(".class");
                     
-                //logger_.debug("\n" + javaSource);    
-                
-                sourceArea_.setText(javaSource);
+                        //jar:file:/c:/almanac/my.jar!/com/mycompany/MyClass.class"
+                    
+                        logger_.debug("JAR URL=" + sb);
+                    
+                        URL url = new URL(sb.toString());
+                        
+                        logger_.debug("URL as file=" + url.getFile());
+                        logger_.debug("Class file len=" + 
+                            url.openConnection().getContentLength());
+                    
+                        // Extract the class file as an array of bytes
+                        byte[] bytecode = StreamUtil.toBytes(
+                            url.openConnection().getInputStream());
+                    
+                        // Write out class file to the temp dir on disk 
+                        // (least common denominator so that all decompilers 
+                        // can get to it.
+                        File tempClassFile = 
+                            new File(FileUtil.getTempDir(), 
+                                ClassUtil.stripPackage(clazz) + ".class");
+                        
+                        FileUtil.setFileContents(
+                            tempClassFile.getCanonicalPath(), bytecode, false);
+                    
+                        // Do some decompiling...
+                        source = d.decompile(tempClassFile);
+                        
+                        // Cleanup
+                        FileUtil.delete(tempClassFile.getCanonicalPath());
+                    }
+                    else
+                        source = "Not supported";
+                }
+
+                sourceArea_.setText(source);
                 sourceArea_.setCaretPosition(0);
             }           
         }
