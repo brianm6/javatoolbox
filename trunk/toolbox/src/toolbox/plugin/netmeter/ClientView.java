@@ -205,8 +205,7 @@ public class ClientView extends JHeaderPanel
 
     /**
      * @see toolbox.util.service.ServiceListener#serviceStateChanged(
-     *      toolbox.util.service.Service, toolbox.util.service.ServiceState, 
-     *      toolbox.util.service.ServiceState)
+     *      toolbox.util.service.Service)
      */
     public void serviceStateChanged(Service service) throws ServiceException
     {

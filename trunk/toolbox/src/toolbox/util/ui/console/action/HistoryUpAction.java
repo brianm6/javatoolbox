@@ -55,7 +55,7 @@ public class HistoryUpAction extends AbstractAction
     /**
      * Creates a HistoryUpAction.
      * 
-     * @param UIConsole User interface console.
+     * @param console User interface console.
      */
     public HistoryUpAction(UIConsole console)
     {

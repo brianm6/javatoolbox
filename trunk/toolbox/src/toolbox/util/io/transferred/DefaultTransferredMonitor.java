@@ -125,8 +125,6 @@ public class DefaultTransferredMonitor implements TransferredMonitor
     
     /** 
      * Fires notification of stream transferred per sample period.
-     * 
-     * @param transferred Number of bytes written per sample period.
      */
     protected void fireBytesTransferred()
     {

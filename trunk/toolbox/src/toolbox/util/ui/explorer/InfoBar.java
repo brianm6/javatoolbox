@@ -75,7 +75,7 @@ public class InfoBar extends JStatusBar
     /**
      * Creates an InfoBar.
      * 
-     * @param exporer File explorer to associate this infobar with.
+     * @param explorer File explorer to associate this infobar with.
      */
     InfoBar(JFileExplorer explorer)
     {

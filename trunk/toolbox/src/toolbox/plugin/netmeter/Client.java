@@ -228,6 +228,11 @@ public class Client extends AbstractService
     }
     
     
+    /**
+     * Sets the bandwidth.
+     * 
+     * @param bandwidth Bandwidth to set.
+     */
     public void setBandwidth(Bandwidth bandwidth)
     {
         bandwidth_ = bandwidth;
@@ -236,11 +241,11 @@ public class Client extends AbstractService
     }
     
     //--------------------------------------------------------------------------
-    // Service Interface 
+    // Initializable Interface 
     //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.util.service.AbstractService#initialize(Map)
+     * @see toolbox.util.service.Initializable#initialize(java.util.Map)
      */
     public void initialize(Map configuration) throws ServiceException
     {
@@ -249,9 +254,12 @@ public class Client extends AbstractService
         transition(ServiceTransition.INITIALIZE);
     }
     
+    //--------------------------------------------------------------------------
+    // Startable Interface
+    //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.util.service.Service#start()
+     * @see toolbox.util.service.Startable#start()
      */
     public void start() throws ServiceException
     {
@@ -314,7 +322,7 @@ public class Client extends AbstractService
 
 
     /**
-     * @see toolbox.util.service.Service#stop()
+     * @see toolbox.util.service.Startable#stop()
      */
     public void stop() throws ServiceException
     {
@@ -324,9 +332,12 @@ public class Client extends AbstractService
         transition(ServiceTransition.STOP);
     }
     
+    //--------------------------------------------------------------------------
+    // Destroyable Interface
+    //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.util.service.AbstractService#destroy()
+     * @see toolbox.util.service.Destroyable#destroy()
      */
     public void destroy() throws ServiceException
     {
@@ -334,9 +345,12 @@ public class Client extends AbstractService
         transition(ServiceTransition.DESTROY);
     }
     
+    //--------------------------------------------------------------------------
+    // Suspendable Interface
+    //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.util.service.Service#suspend()
+     * @see toolbox.util.service.Suspendable#suspend()
      */
     public void suspend() throws ServiceException
     {
@@ -345,7 +359,7 @@ public class Client extends AbstractService
 
 
     /**
-     * @see toolbox.util.service.Service#resume()
+     * @see toolbox.util.service.Suspendable#resume()
      */
     public void resume() throws ServiceException
     {
@@ -354,7 +368,7 @@ public class Client extends AbstractService
 
 
     /**
-     * @see toolbox.util.service.Service#isSuspended()
+     * @see toolbox.util.service.Suspendable#isSuspended()
      */
     public boolean isSuspended()
     {

@@ -66,7 +66,7 @@ public class UIConsoleArea extends JSmartTextArea
     /**
      * Create a new console with the specified number of rows and columns.
      * 
-     * @param mainComsole The calling console program to send back data to.
+     * @param console The calling console program to send back data to.
      * @param rows Number of displayable rows.
      * @param columns Number of displayable columns.
      */

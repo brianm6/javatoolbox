@@ -47,7 +47,7 @@ public class JemmyUtil
      * 
      * @param operator Container operator. 
      * @param name Name of the button (not its label).
-     * @return
+     * @return JButtonOperator
      */
     public static JButtonOperator findButton(
         ContainerOperator operator, 
@@ -58,8 +58,10 @@ public class JemmyUtil
     
     
     /**
-     * @param operator
-     * @return
+     * Retusn the source for a JButtonOperator.
+     * 
+     * @param operator JButton operator.
+     * @return JButton
      */
     public static JButton getSource(JButtonOperator operator)
     {
@@ -102,8 +104,10 @@ public class JemmyUtil
     //--------------------------------------------------------------------------
     
     /**
-     * @param operator
-     * @return
+     * Returns the source JList.
+     * 
+     * @param operator JList operator.
+     * @return JList
      */
     public static JList getSource(JListOperator operator)
     {
@@ -116,8 +120,10 @@ public class JemmyUtil
     //--------------------------------------------------------------------------
     
     /**
-     * @param operator
-     * @return
+     * Returns the source JDialog.
+     * 
+     * @param operator JDialog operator.
+     * @return JDialog
      */
     public static JDialog getSource(JDialogOperator operator)
     {

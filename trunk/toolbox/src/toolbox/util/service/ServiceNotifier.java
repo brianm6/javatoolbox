@@ -29,7 +29,7 @@ public class ServiceNotifier implements ObservableService
      * Creates an AbstractService with the default value for strict state
      * transitions.
      * 
-     * @see #DEFAULT_STRICT
+     * @param service Service instance.
      */
     protected ServiceNotifier(Service service)
     {
@@ -41,7 +41,7 @@ public class ServiceNotifier implements ObservableService
     //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.util.service.Service#addServiceListener(
+     * @see toolbox.util.service.ObservableService#addServiceListener(
      *      toolbox.util.service.ServiceListener)
      */
     public void addServiceListener(ServiceListener listener)
@@ -51,7 +51,7 @@ public class ServiceNotifier implements ObservableService
 
     
     /**
-     * @see toolbox.util.service.Service#removeServiceListener(
+     * @see toolbox.util.service.ObservableService#removeServiceListener(
      *      toolbox.util.service.ServiceListener)
      */
     public void removeServiceListener(ServiceListener listener)

@@ -217,7 +217,7 @@ public class DBBenchmark implements Startable, IPreferenced
      * Creates a DBBenchmark and sends output to System.out by default.
      *
      * @param plugin Reference to the query plugin.
-     * @param init True to init the tables, false otherwise.
+     * @param initDB True to init the tables, false otherwise.
      */
     public DBBenchmark(QueryPlugin plugin, boolean initDB)
     {

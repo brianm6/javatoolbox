@@ -8,7 +8,7 @@ import toolbox.util.io.StringInputStream;
 import toolbox.util.io.StringOutputStream;
 
 /**
- * String based implementation of an {@link IConnection}.<br>Very useful for 
+ * String based implementation of an {@link IConnection}. Very useful for 
  * unit testing when a socket based implementation is too much work.
  */
 public class StringConnection extends AbstractConnection implements IConnection

@@ -336,8 +336,6 @@ public final class JDBCUtil
      * are not included in the returned array.
      * 
      * @param rs ResultSet to convert to an array.
-     * @param includeColumnHeaders True to include column names as the first row
-     *        of the returned two-dimensional array, false otherwise.
      * @return Object[][]
      * @throws SQLException on sql error.
      * @see #toArray(ResultSet, boolean)
@@ -354,7 +352,7 @@ public final class JDBCUtil
      * returned from called ResultSet#getObject().
      * 
      * @param rs ResultSet to convert to an array.
-     * @param includeColumnHeaders True to include column names as the first row
+     * @param includeColumnHeader True to include column names as the first row
      *        of the returned two-dimensional array, false otherwise.
      * @return Object[][]
      * @throws SQLException on sql error.

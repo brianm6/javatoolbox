@@ -33,7 +33,7 @@ public class ReturnKeyTypedAction extends TextAction
     /**
      * Creates this object with the appropriate identifier.
      * 
-     * @param consoleArea UI console text area.
+     * @param console UI console text area.
      */
     public ReturnKeyTypedAction(UIConsole console)
     {

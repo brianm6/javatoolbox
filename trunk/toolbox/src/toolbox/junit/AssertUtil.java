@@ -47,7 +47,7 @@ public class AssertUtil
      * 
      * @param serializable Object to be tested for serialization.
      * @throws AssertionFailedError on failure.
-     * @see #assertSerializable(Object, boolean, boolean)
+     * @see #assertSerializable(Object, boolean, boolean, Comparator)
      */
     public static void assertSerializable(Object serializable) 
     {

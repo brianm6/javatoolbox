@@ -131,15 +131,20 @@ public final class Bandwidth
     //--------------------------------------------------------------------------
     
     /**
-     * @param type
+     * Sets the type of bandwidth.
+     * 
+     * @param type Type of bandwidth.
      */
     protected void setType(String type)
     {
         type_ = type;
     }
 
+    
     /**
-     * @param averageBandwidth
+     * Sets the average bandwidth.
+     * 
+     * @param averageBandwidth Average bandwidth.
      */
     protected void setAverageBandwidth(int averageBandwidth)
     {
@@ -148,8 +153,9 @@ public final class Bandwidth
 
     
     /**
-     * 
-     * @return
+     * Returns the average bandwidth.
+     *  
+     * @return int
      */
     protected int getAverageBandwidth() 
     {
@@ -212,8 +218,11 @@ public final class Bandwidth
         bandwidthPerTick_ = bandwidthPerTick;
     }
 
+    
     /**
-     * @param i
+     * Updates the bandwidth.
+     * 
+     * @param bandwidth Bandwith to update to.
      */
     public void updateBandwidth(int bandwidth)
     {
@@ -231,10 +240,16 @@ public final class Bandwidth
     }
     
     
+    /**
+     * Returns the original bandwidth.
+     * 
+     * @return int
+     */
     public int getBandwidth() 
     {
         return origBandwidth_;
     }
+    
     
     /**
      * Account for bandwidth already used for input.

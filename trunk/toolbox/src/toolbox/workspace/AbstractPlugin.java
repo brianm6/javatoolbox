@@ -97,8 +97,8 @@ public abstract class AbstractPlugin implements IPlugin
     //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.util.service.Service#addServiceListener(
-     *      toolbox.util.service.ServiceListener)
+     * @see toolbox.util.service.Service
+     *      #addServiceListener(toolbox.util.service.ServiceListener)
      */
     public void addServiceListener(ServiceListener listener)
     {
@@ -107,8 +107,8 @@ public abstract class AbstractPlugin implements IPlugin
 
     
     /**
-     * @see toolbox.util.service.Service#removeServiceListener(
-     *      toolbox.util.service.ServiceListener)
+     * @see toolbox.util.service.Service
+     *      #removeServiceListener(toolbox.util.service.ServiceListener)
      */
     public void removeServiceListener(ServiceListener listener)
     {

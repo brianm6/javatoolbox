@@ -245,7 +245,7 @@ public class TextToolsPlugin extends AbstractPlugin
     /**
      * Returns the formatterview.
      * 
-     * @return
+     * @return FormatterView
      */
     public FormatterView getFormatterView()
     {

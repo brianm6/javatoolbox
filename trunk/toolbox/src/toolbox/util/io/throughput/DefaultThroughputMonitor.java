@@ -92,8 +92,7 @@ public class DefaultThroughputMonitor implements ThroughputMonitor {
 
     
 	/**
-	 * @see toolbox.util.io.throughput.ThroughputMonitor#setSampleInterval(
-     *      int)
+	 * @see toolbox.util.io.throughput.ThroughputMonitor#setSampleInterval(int)
 	 */
 	public void setSampleInterval(int millis) 
     {
@@ -102,7 +101,7 @@ public class DefaultThroughputMonitor implements ThroughputMonitor {
 
     
 	/**
-	 * @see toolbox.util.io.throughput.ThroughputMonitor#setSampleInterval()
+	 * @see toolbox.util.io.throughput.ThroughputMonitor#getSampleInterval()
 	 */
 	public int getSampleInterval() 
     {
@@ -158,8 +157,6 @@ public class DefaultThroughputMonitor implements ThroughputMonitor {
     
     /** 
      * Fires notification of stream throughput per sample period.
-     * 
-     * @param throughput Number of bytes written per sample period.
      */
     protected void fireCurrentThroughput()
     {

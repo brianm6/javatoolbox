@@ -195,7 +195,7 @@ public class Server /*extends ServiceNotifier*/ implements Startable, Initializa
 
 
     /**
-     * @see toolbox.util.service.Service#stop()
+     * @see toolbox.util.service.Startable#stop()
      */
     public void stop() throws ServiceException
     {

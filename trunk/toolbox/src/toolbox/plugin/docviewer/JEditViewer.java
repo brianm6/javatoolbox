@@ -141,7 +141,7 @@ public class JEditViewer extends AbstractViewer
     /**
      * Creates the text area
      * 
-     * @param file File to create for.
+     * @param fileExtension File extension to activate syntax hiliting.
      */
     protected void createTextArea(String fileExtension) 
     {
