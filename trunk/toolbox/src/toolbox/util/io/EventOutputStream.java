@@ -251,7 +251,9 @@ public class EventOutputStream extends FilterOutputStream
     //--------------------------------------------------------------------------
     
     /**
-     * @return Number of bytes written to the stream
+     * Returns the number of bytes written to the stream
+     * 
+     * @return int
      */
     public int getCount()
     {
@@ -267,7 +269,9 @@ public class EventOutputStream extends FilterOutputStream
     }    
     
     /**
-     * @return Stream name
+     * Returns the stream name
+     * 
+     * @return String
      */
     public String getName()
     {
@@ -305,22 +309,22 @@ public class EventOutputStream extends FilterOutputStream
         /**
          * Notification that the stream has been closed
          * 
-         * @param  stream  Stream that was closed
+         * @param stream Stream that was closed
          */
         public void streamClosed(EventOutputStream stream);
         
         /**
          * Notification that the stream was flushed
          * 
-         * @param  stream  Stream that was flushed
+         * @param stream Stream that was flushed
          */
         public void streamFlushed(EventOutputStream stream);
         
         /**
          * Notification that data was written to the stream
          * 
-         * @param stream  Stream data was written to
-         * @param b       Byte written to the stream
+         * @param stream Stream data was written to
+         * @param b Byte written to the stream
          */
         public void byteWritten(EventOutputStream stream, int b);
         
@@ -328,8 +332,8 @@ public class EventOutputStream extends FilterOutputStream
          * Notification of the number of bytes transfered through the stream
          * over the last sample period
          * 
-         * @param stream          Stream being monitored for throughput
-         * @param bytesPerPeriod  Number of bytes transferred over sample period
+         * @param stream Stream being monitored for throughput
+         * @param bytesPerPeriod Number of bytes transferred over sample period
          */
         public void streamThroughput(EventOutputStream stream, 
             float bytesPerPeriod);

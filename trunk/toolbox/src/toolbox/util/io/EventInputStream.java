@@ -20,7 +20,7 @@ public class EventInputStream extends FilterInputStream
     /**
      * Total number of bytes read from the stream
      */
-    private int  count_;
+    private int count_;
     
     /**
      * Friendly name for this stream
@@ -176,15 +176,15 @@ public class EventInputStream extends FilterInputStream
         /**
          * Notification that the stream has been closed
          * 
-         * @param  stream  Stream that was closed
+         * @param stream Stream that was closed
          */
         public void streamClosed(EventInputStream stream);
         
         /**
          * Notification that data was read from the stream
          * 
-         * @param stream  Stream data was read from
-         * @param b       Byte read from the stream
+         * @param stream Stream data was read from
+         * @param b Byte read from the stream
          */
         public void byteRead(EventInputStream stream, int b);
     }

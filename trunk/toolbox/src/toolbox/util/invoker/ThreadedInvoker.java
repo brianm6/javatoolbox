@@ -12,15 +12,22 @@ public class ThreadedInvoker implements Invoker
     private static final Logger logger_ =
         Logger.getLogger(ThreadedInvoker.class);
 
-    //----------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // Invoker Interface
-    //----------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
 
+    /**
+     * @see toolbox.util.invoker.Invoker#invoke(java.lang.Runnable)
+     */
     public void invoke(Runnable invokable) throws Exception
     {
         new Thread(invokable).start();
     }
 
+    /**
+     * @see toolbox.util.invoker.Invoker#invoke(
+     *      java.lang.Object, java.lang.String, java.lang.Object[])
+     */
     public void invoke(
         final Object target, final String method, final Object[] params) 
         throws Exception
@@ -41,6 +48,9 @@ public class ThreadedInvoker implements Invoker
         });
     }
     
+    /**
+     * @see toolbox.util.invoker.Invoker#shutdown()
+     */
     public void shutdown() throws Exception
     {
     }

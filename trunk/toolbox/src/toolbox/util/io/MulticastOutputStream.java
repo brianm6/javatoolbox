@@ -50,17 +50,18 @@ public class MulticastOutputStream extends OutputStream
     /**
      * Adds a stream to the multicast group
      * 
-     * @param  out  Stream to add
+     * @param out Stream to add
      */
     public synchronized void addStream(OutputStream out)
     {
-        streams_ = (OutputStream[]) ArrayUtil.add(streams_, new BufferedOutputStream(out));
+        streams_ = (OutputStream[]) 
+            ArrayUtil.add(streams_, new BufferedOutputStream(out));
     }
 
     /**
      * Removes a stream from the multicast group
      * 
-     * @param  out  Stream to remove
+     * @param out Stream to remove
      */
     public synchronized void removeStream(OutputStream out)
     {
@@ -74,8 +75,8 @@ public class MulticastOutputStream extends OutputStream
     /**
      * Writes integer to each stream in the multicast group
      * 
-     * @param  b  Integer to write
-     * @throws IOException on IO error
+     * @param b Integer to write
+     * @throws IOException on I/O error
      */
     public synchronized void write(int b) throws IOException
     {
@@ -85,7 +86,7 @@ public class MulticastOutputStream extends OutputStream
     /**
      * Flushes all streams in the multicast group
      * 
-     * @throws IOException on IO error
+     * @throws IOException on I/O error
      */
     public synchronized void flush() throws IOException
     {
@@ -95,7 +96,7 @@ public class MulticastOutputStream extends OutputStream
     /**
      * Closes all streams in the multicast group
      * 
-     * @throws  IOException on IO error
+     * @throws  IOException on I/O error
      */
     public synchronized void close() throws IOException
     {
