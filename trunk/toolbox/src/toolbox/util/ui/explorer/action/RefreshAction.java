@@ -3,7 +3,8 @@ package toolbox.util.ui.explorer.action;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 
-import toolbox.util.FileUtil;
+import org.apache.commons.io.FilenameUtils;
+
 import toolbox.util.ui.explorer.JFileExplorer;
 import toolbox.util.ui.explorer.listener.DriveComboListener;
 
@@ -49,7 +50,7 @@ public class RefreshAction extends AbstractDirAction
     public void refresh()
     {
         String folder = getExplorer().getCurrentPath();
-        String file   = FileUtil.stripPath(getExplorer().getFilePath());
+        String file   = FilenameUtils.getName(getExplorer().getFilePath());
         
         new DriveComboListener(getExplorer()).itemStateChanged(
                 new ItemEvent(getProxy().getRootsComboBox(), 0, null, 

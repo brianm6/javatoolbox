@@ -3,6 +3,7 @@ package toolbox.plugin.jsourceview;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ElapsedTime;
@@ -119,7 +120,7 @@ class SourceParser implements Runnable
                     
                     tableRow[0] = new Integer(fileCount);
                     tableRow[1] = FileUtil.stripFile(filename);
-                    tableRow[2] = FileUtil.stripPath(filename);
+                    tableRow[2] = FilenameUtils.getName(filename);
                     tableRow[3] = new Integer(fileStats.getCodeLines());
                     tableRow[4] = new Integer(fileStats.getCommentLines());
                     tableRow[5] = new Integer(fileStats.getBlankLines());

@@ -24,6 +24,7 @@ import javax.swing.KeyStroke;
 import nu.xom.Element;
 import nu.xom.Elements;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.plugin.jtail.config.IJTailConfig;
@@ -193,7 +194,7 @@ public class JTail extends JPanel implements IPreferenced
         
         for (int i = 0; i < filenames.length; i++)
         {
-            tabname.append(FileUtil.stripPath(filenames[i]));
+            tabname.append(FilenameUtils.getName(filenames[i]));
             
             if (i + 1 < filenames.length)
                 tabname.append("<br>");

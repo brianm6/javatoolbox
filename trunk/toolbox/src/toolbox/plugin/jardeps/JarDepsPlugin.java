@@ -21,6 +21,7 @@ import com.tonicsystems.jarjar.TextDepHandler;
 
 import nu.xom.Element;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
@@ -250,8 +251,8 @@ public class JarDepsPlugin extends AbstractPlugin
                 String[] tokens = StringUtils.split(line);
                 Validate.isTrue(tokens.length == 3);
                 
-                String fromLabel = FileUtil.stripPath(tokens[0]);
-                String toLabel = FileUtil.stripPath(tokens[2]);
+                String fromLabel = FilenameUtils.getName(tokens[0]);
+                String toLabel = FilenameUtils.getName(tokens[2]);
                 
                 Vertex fromVertex = null;
                 Vertex toVertex = null;
@@ -332,8 +333,8 @@ public class JarDepsPlugin extends AbstractPlugin
                 String[] tokens = StringUtils.split(line);
                 Validate.isTrue(tokens.length == 3);
                 
-                String fromLabel = FileUtil.stripPath(tokens[0]);
-                String toLabel = FileUtil.stripPath(tokens[2]);
+                String fromLabel = FilenameUtils.getName(tokens[0]);
+                String toLabel = FilenameUtils.getName(tokens[2]);
                 
                 Vertex fromVertex = null;
                 Vertex toVertex = null;

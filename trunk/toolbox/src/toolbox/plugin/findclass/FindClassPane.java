@@ -31,6 +31,7 @@ import javax.swing.table.TableColumnModel;
 import nu.xom.Attribute;
 import nu.xom.Element;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.regexp.RESyntaxException;
@@ -40,7 +41,6 @@ import toolbox.findclass.FindClassListener;
 import toolbox.findclass.FindClassResult;
 import toolbox.util.ClassUtil;
 import toolbox.util.DateTimeUtil;
-import toolbox.util.FileUtil;
 import toolbox.util.MathUtil;
 import toolbox.util.ThreadUtil;
 import toolbox.util.XOMUtil;
@@ -851,7 +851,7 @@ public class FindClassPane extends JPanel implements IPreferenced
 
                 case ResultsTableModel.COL_SOURCE:
                     if (!showPathToggleButton_.isSelected())
-                        setValue(FileUtil.stripPath(text));
+                        setValue(FilenameUtils.getName(text));
                     else
                         setValue(text);
                     break;
