@@ -1,10 +1,13 @@
 package toolbox.util.ui;
 
 import java.awt.Graphics;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JComponent;
 
 import toolbox.util.SwingUtil;
 
@@ -108,6 +111,47 @@ public class JSmartCheckBoxMenuItem extends JCheckBoxMenuItem
         super(text, icon, b);
     }
 
+    
+    /**
+     * Creates a JSmartCheckedBoxMenuItem.
+     * 
+     * @param action Action activated when the check box is toggled.
+     * @param propertyChangeEventSource The source of the property change event
+     *        that can toggle this check box.
+     * @param property The name of the property from the property change event
+     *        source that can toggle this check box.
+     */
+    public JSmartCheckBoxMenuItem(
+        Action action, 
+        JComponent propertyChangeEventSource,
+        String property)
+    {
+        super(action);
+        toggleOnProperty(propertyChangeEventSource, property);
+    }
+
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Toggles the state of the checkbox based on a property change event
+     * originating from a component.
+     * 
+     * @param comp Component generating the property change event.
+     * @param property Property name to listen for.
+     */
+    public void toggleOnProperty(JComponent comp, String property)
+    {
+        comp.addPropertyChangeListener(property, new PropertyChangeListener() 
+        {
+            public void propertyChange(PropertyChangeEvent evt)
+            {
+                setSelected(((Boolean) evt.getNewValue()).booleanValue());
+            }
+        });
+    }
+    
     //--------------------------------------------------------------------------
     // AntiAliased Interface
     //--------------------------------------------------------------------------
