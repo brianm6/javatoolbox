@@ -28,6 +28,11 @@ public class JungVertex implements toolbox.graph.Vertex
      */
     private Vertex vertex_;
     
+    /**
+     * Graph associated with this vertex.
+     */
+    private Graph graph_;
+    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -41,21 +46,8 @@ public class JungVertex implements toolbox.graph.Vertex
     public JungVertex(toolbox.graph.Graph graph, String label)
     {
         vertex_ = new DirectedSparseVertex();
-        
-        // Temporarily add to graph so that StringLabeller will work
-        Graph g = (Graph) graph.getDelegate();
-        g.addVertex(vertex_);
-        
-        try
-        {
-            StringLabeller.getLabeller(g).setLabel(vertex_, label);
-        }
-        catch (UniqueLabelException e)
-        {
-            logger_.error(e);
-        }
-        
-        g.removeVertex(vertex_);
+        graph_ = (Graph) graph.getDelegate();
+        setText(label);
     }
 
     //--------------------------------------------------------------------------
@@ -77,6 +69,43 @@ public class JungVertex implements toolbox.graph.Vertex
         }
         
         return result;
+    }
+    
+    
+    /**
+     * @see toolbox.graph.Vertex#getText()
+     */
+    public String getText()
+    {
+        return StringLabeller.getLabeller(graph_).getLabel(vertex_);
+    }
+    
+    
+    /**
+     * @see toolbox.graph.Vertex#setText(java.lang.String)
+     */
+    public void setText(String text)
+    {
+        boolean remove = false;
+        
+        if (!graph_.getVertices().contains(vertex_))
+        {
+            // Temporarily add to graph so that StringLabeller will work
+            graph_.addVertex(vertex_);
+            remove = true;
+        }
+        
+        try
+        {
+            StringLabeller.getLabeller(graph_).setLabel(vertex_, text);
+        }
+        catch (UniqueLabelException e)
+        {
+            logger_.error(e);
+        }
+
+        if (remove)
+            graph_.removeVertex(vertex_);
     }
     
     //--------------------------------------------------------------------------
