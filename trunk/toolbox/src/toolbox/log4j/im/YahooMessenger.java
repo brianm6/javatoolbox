@@ -1,199 +1,281 @@
 package toolbox.log4j.im;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Vector;
+import hamsam.api.Buddy;
+import hamsam.api.IMAdapter;
+import hamsam.api.Message;
+import hamsam.api.TextComponent;
+import hamsam.net.ProxyInfo;
+import hamsam.protocol.Protocol;
+import hamsam.protocol.ProtocolManager;
 
-import messenger.DataBuffer;
-import messenger.Protocols;
-import messenger.Yahoo.YahooProtocol;
+import java.util.Properties;
 
-public class YahooMessenger extends Thread
+import org.apache.log4j.helpers.LogLog;
+
+import toolbox.util.ThreadUtil;
+import toolbox.util.concurrent.BlockingQueue;
+import toolbox.util.invoker.Invoker;
+import toolbox.util.invoker.QueuedInvoker;
+
+/**
+ * Yahoo Instant Messenger client that supports login, send message, and logout.
+ */
+public class YahooMessenger implements InstantMessenger
 {
-    private Vector v = null;
-    private YahooProtocol yahoo = null;
-    private Protocols mess = null;
-    private int fDumpFactor = 0;
-    private DataBuffer fYahooData;
-    private boolean fDump = false;
-    private UpdateUser fUpdate;
-
+     // NOTE: Cannot use Log4J logging since this is included in the 
+     //       implementation of a Log4J appender.
+    
+    /** Return code for a successful connection */
+    public static final String CONNECT_SUCCEEDED = "Connect succeeded!";
+    
+    /** Return code for a failed connection */
+    public static final String CONNECT_FAILED = "Connect failed!";
+    
+    /** Available instant messaging protocols */
+    private Protocol[] protocols;
+    
+    /** Yahoo instant messaging protocol */
+    private Protocol yahoo_;
+    
+    /** Listener for client and server side generated Yahoo events */
+    private YahooListener listener_;
+    
+    /** Flag that tracks the connection state */
+    private boolean connected_;
+    
+    /** Invoker used to handle the sending of messages */
+    private Invoker invoker_;
+    
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Default constructor
+     */
     public YahooMessenger()
     {
-        fYahooData = new DataBuffer();
-        v = new Vector();
-
-        yahoo = new YahooProtocol(fYahooData, "scsa.yahoo.com", 5050);
-        // scsa.yahoo.com
-        // cs.yahoo.com
-        // scs.yahoo.com
-        // protocollen aan vector meegeven
-
-        v.addElement(yahoo);
-
-        mess = new Protocols(v);
-
-        fUpdate =
-            new UpdateUser(new DataBuffer(), new DataBuffer(), fYahooData);
-        fUpdate.start();
-
-        start();
     }
 
-    public void run()
+    //--------------------------------------------------------------------------
+    // InstantMessenger Interface
+    //--------------------------------------------------------------------------
+
+    public void initialize(Properties props)
     {
-        BufferedReader console =
-            new BufferedReader(new InputStreamReader(System.in));
-        String r = "";
-        boolean quit = false;
-
-        while (!quit)
-        {
-            try
-            {
-                System.out.println("Command: ");
-                r = console.readLine();
-
-                if (r.equals("YLOGIN"))
-                {
-                    yahoo.setLoginName("supahfuzz");
-                    yahoo.setEncPasswd("techno");
-                    yahoo.login();
-
-                    String message = "howdy doody";
-                    String contact = "analogue";
-
-                    yahoo.sendMessage(contact, message);
-
-                }
-                else if (r.equals("YMSG"))
-                {
-                    String message = "howdy doody";
-                    String contact = "analogue";
-
-                    yahoo.sendMessage(contact, message);
-                }
-                else if (r.equals("DUMP"))
-                {
-                    fDump = true;
-                    System.out.println("dump on");
-
-                }
-                else if (r.equals("NODUMP"))
-                {
-                    fDump = false;
-                    System.out.println("dump off");
-
-                }
-                else if (r.equals("HELP"))
-                {
-                    System.out.println("COMMANDS SUPPORTED:");
-                    System.out.println(" - YLOGIN");
-                    System.out.println(" - YMSG");
-                    System.out.println(" - DUMP");
-                    System.out.println(" - NODUMP");
-                    System.out.println(" - QUIT");
-                }
-                else if (r.equals("QUIT"))
-                {
-                    //icq.logout();
-                    //icq.shutdown();
-                    //msn.shutdown();
-                    //fUpdate.interrupt();
-                    //this.interrupt();
-                    quit = true;
-                }
-                else
-                    System.out.println("Command not understood: " + r);
-            }
-            catch (IOException e)
-            {
-                System.out.println(e.getMessage());
-            }
-            catch (Exception e)
-            {
-                System.out.println(e.getMessage());
-            }
-        }
-        System.exit(0);
+        invoker_ = new QueuedInvoker();
+        protocols = ProtocolManager.getAvailableProtocols();
+        yahoo_ = protocols[0];
+        yahoo_.setListener(listener_ = new YahooListener());
     }
 
     /**
-     * Method main.
-     * @param args
+     * Synchronized method since whole send/recv is async. Waiters in the
+     * queue will return immediately because the connected_ flag gets checked
+     * before anything happens. 
      */
-    public static void main(String[] args)
+    public synchronized void login(String username, String password) 
+        throws InstantMessengerException
     {
-        YahooMessenger yt = new YahooMessenger();
-    }
-
-    class UpdateUser extends Thread
-    {
-        private DataBuffer fICQData;
-        //private Buffer fMSNData;
-        private DataBuffer fMSNData;
-        private DataBuffer fYahooData;
-
-        public UpdateUser(DataBuffer icq, /*Buffer*/
-        DataBuffer msn, DataBuffer yahoo)
+        if (connected_)
+            return;
+            
+        ProxyInfo info = new ProxyInfo();
+        
+        try
         {
-            fICQData = icq;
-            fMSNData = msn;
-            fYahooData = yahoo;
-        }
-
-        public void run()
-        {
-            while (true)
+            yahoo_.connect(username, password, info);
+            String returnCode = (String) listener_.waitForConnect();
+            
+            if (returnCode.equals(CONNECT_SUCCEEDED))
             {
-                if (fICQData.ExistsUserData())
-                {
-                    System.out.print("ICQ: ");
-                    System.out.println(fICQData.getToUser());
-                }
-                if (fICQData.ExistsDump())
-                {
-                    String output = fICQData.getDump();
-                    if (fDump)
-                    {
-                        System.out.println(output);
-                    }
-                }
-                if (fYahooData.ExistsUserData())
-                {
-                    System.out.print("YAHOO: ");
-                    System.out.println(fYahooData.getToUser());
-                }
-                if (fYahooData.ExistsDump())
-                {
-                    String output = fYahooData.getDump();
-                    if (fDump)
-                    {
-                        System.out.println(output);
-                    }
-                }
-                if (fMSNData.ExistsUserData())
-                {
-                    String s = fMSNData.getToUser();
-                    if (!s.equals(""))
-                    {
-                        System.out.println("MSN: " + s);
-                    }
-                }
-                if (fMSNData.ExistsDump())
-                {
-                    String s = fMSNData.getDump();
-                    if (fDump)
-                    {
-                        if (!s.equals(""))
-                        {
-                            System.out.println(s);
-                        }
-                    }
-                }
+                connected_ = true;
+            }
+            else if (returnCode.equals(CONNECT_FAILED))
+            {
+                throw new InstantMessengerException(
+                    "Authentication failed for username '" + username + "'");
+            }
+            else
+            {
+                throw new IllegalArgumentException(
+                    "Return code '" + returnCode + "' is invalid.");
             }
         }
+        catch (Exception e)
+        {
+            connected_ = false;
+            throw new InstantMessengerException(e);    
+        }
     }
 
+    /**
+     * Logs out from yahoo. 
+     */
+    public void logout() throws InstantMessengerException
+    {
+        try
+        {
+            yahoo_.disconnect();
+            LogLog.debug("Waiting for disconnect ack...");
+            listener_.waitForDisconnect();
+            connected_ = false;
+        }
+        catch (Exception e)
+        {
+            throw new InstantMessengerException(e);
+        }
+    }
+    
+    /**
+     * Sends message to the recipient using a queue invoker strategy.
+     */
+    public void send(String recipient, String message)
+    {
+        LogLog.debug("Appending: " + message);
+        
+        final Buddy buddy = new Buddy(yahoo_, recipient);
+        final Message msg = new Message();
+        msg.addComponent(new TextComponent(message));
+        
+        try
+        {
+            invoker_.invoke(new Runnable()
+            {
+                public void run()
+                {
+                    yahoo_.sendInstantMessage(buddy, msg);
+                    ThreadUtil.sleep(100);
+                }
+            });
+        }
+        catch (Exception e)
+        {
+            LogLog.error("send", e);
+        }
+    }
+
+    public void shutdown()
+    {
+        // Nothing to do
+    }
+    
+    public boolean isConnected()
+    {
+        return connected_;
+    }
+    
+    
+    //--------------------------------------------------------------------------
+    // Inner Classes
+    //--------------------------------------------------------------------------
+    
+    /** 
+     * Listener for client and server side generated Yahoo events 
+     */
+    class YahooListener extends IMAdapter
+    {
+        /** Login success and failures both go in this queue */
+        BlockingQueue connected_;
+        
+        /** Disconnect notification goes into this queue */
+        BlockingQueue disconnected_;
+        
+        //----------------------------------------------------------------------
+        // Constructors
+        //----------------------------------------------------------------------
+
+        /** 
+         * Default constructor
+         */
+        public YahooListener()
+        {
+            connected_    = new BlockingQueue();
+            disconnected_ = new BlockingQueue();
+        }
+        
+        //----------------------------------------------------------------------
+        // Public
+        //----------------------------------------------------------------------
+
+        /**
+         * Waits for a connect (failure or success)
+         * 
+         * @return CONNECT_SUCCEEDED or CONNECT_FAILED
+         * @throws InterruptedException if interrupted while pulling from the 
+         *         <code>connected_</code> queue. 
+         */                
+        public String waitForConnect() throws InterruptedException
+        {
+            return (String) connected_.pull();
+        }
+
+        /**
+         * Waits for a successful disconnect
+         * 
+         * @return Protocol that was disconnected.
+         * @throws InterruptedExceptin if interrupted while pulling from the 
+         *         <code>disconnected_</code> queue.
+         */        
+        public Protocol waitForDisconnect() throws InterruptedException
+        {
+            return (Protocol) disconnected_.pull();
+        }
+
+        //----------------------------------------------------------------------
+        // hamsam.api.IMListener Interface
+        //----------------------------------------------------------------------
+
+        public void connected(Protocol protocol)
+        {
+            LogLog.debug("Connected to Yahoo!");
+            
+            try
+            {
+                connected_.push(CONNECT_SUCCEEDED);
+            }
+            catch (InterruptedException e)
+            {
+                LogLog.error("connected", e);
+            }
+        }
+        
+        public void connectFailed(Protocol protocol, String reasonMessage)
+        {
+            
+            LogLog.debug("Connect to Yahoo failed: " + reasonMessage);
+            
+            try
+            {
+                connected_.push(CONNECT_FAILED);
+            }
+            catch (InterruptedException e)
+            {
+                LogLog.error("connectFailed", e);
+            }
+        }
+        
+        public void connecting(Protocol protocol)
+        {
+            LogLog.debug("Connecting to Yahoo...");
+        }
+
+        public void disconnected(Protocol protocol)
+        {
+            try
+            {
+                disconnected_.push(protocol);
+                LogLog.debug("Disconnected from Yahoo");
+            }
+            catch (InterruptedException e)
+            {
+                LogLog.error("disconnected", e);
+            }
+        }
+        
+        public void protocolMessageReceived(Protocol protocol, Message message)
+        {
+            LogLog.debug("Protocol message: " + message.toString());
+        }
+    }
 }
