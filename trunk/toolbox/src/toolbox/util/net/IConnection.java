@@ -5,7 +5,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * Common interface for a generic connection
+ * IConnection models the basic characteristics of a bi-directional stream
+ * based connection.
  */
 public interface IConnection
 {

@@ -16,8 +16,8 @@ public class AsyncConnectionHandler implements IConnectionHandler,  IThreadable
     private IConnection conn_;
 
     /** 
-     * Connection handler to asynchronously run in a separate 
-     * thread of execution
+     * Connection handler to asynchronously run in a separate thread of 
+     * execution
      */
     private IConnectionHandler handler_;
 
