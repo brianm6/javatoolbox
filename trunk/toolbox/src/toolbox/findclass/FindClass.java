@@ -91,7 +91,7 @@ public class FindClass
     /** 
      * Filter for archives. 
      */
-    private FilenameFilter archiveFilter_; 
+    private OrFilter archiveFilter_; 
     
     /** 
      * Filter for directories. 
@@ -110,10 +110,11 @@ public class FindClass
         classFileFilter_ = new ExtensionFilter(".class");
         directoryFilter_ = new DirectoryFilter();
         
-        archiveFilter_ = 
-            new OrFilter(
-                new ExtensionFilter(".jar"), 
-                new ExtensionFilter(".zip"));
+        archiveFilter_ = new OrFilter();
+        archiveFilter_.addFilter(new ExtensionFilter(".jar"));
+        archiveFilter_.addFilter(new ExtensionFilter(".zip"));
+        archiveFilter_.addFilter(new ExtensionFilter(".ear"));
+        archiveFilter_.addFilter(new ExtensionFilter(".war"));
         
         findListeners_ = new FindClassListener[0];
         defaultCollector_ = new FindClassCollector();
