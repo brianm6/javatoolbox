@@ -85,6 +85,8 @@ public class MonitoredInputStream extends FilterInputStream implements Nameable
     //--------------------------------------------------------------------------
     
     /**
+     * Notifies monitors that a single byte was transferred.
+     * 
      * @see java.io.FilterInputStream#read()
      */
     public int read() throws IOException
@@ -102,6 +104,8 @@ public class MonitoredInputStream extends FilterInputStream implements Nameable
 
     
     /**
+     * Notifies monitors that an array of bytes was transferred.
+     * 
      * @see java.io.InputStream#read(byte[], int, int)
      */
     public int read(byte b[], int off, int len) throws IOException 
@@ -119,6 +123,8 @@ public class MonitoredInputStream extends FilterInputStream implements Nameable
 
     
     /**
+     * Contains hook to fire notification that this stream was closed.
+     * 
      * @see java.io.FilterInputStream#close()
      */
     public void close() throws IOException
@@ -132,24 +138,26 @@ public class MonitoredInputStream extends FilterInputStream implements Nameable
     //--------------------------------------------------------------------------
     
     /**
-     * Adds a Listener to the list of registered stream listeners.
+     * Adds a listener to this stream.
      * 
-     * @param listener Listener to register.
+     * @param listener Listener to receive notifications.
      */
     public void addInputStreamListener(InputStreamListener listener)
     {
-        listeners_ = (InputStreamListener[]) ArrayUtil.add(listeners_, listener);
+        listeners_ = 
+            (InputStreamListener[]) ArrayUtil.add(listeners_, listener);
     }
     
     
     /**
-     * Removes a Listener from the list of registered stream listeners.
+     * Removes a listener from this stream.
      * 
-     * @param listener Listener to remove.
+     * @param listener Listener that will no longer receive notifications.
      */
     public void removeInputStreamListener(InputStreamListener listener)
     {
-        listeners_ = (InputStreamListener[]) ArrayUtil.remove(listeners_, listener);
+        listeners_ = 
+            (InputStreamListener[]) ArrayUtil.remove(listeners_, listener);
     }
     
     
@@ -168,7 +176,7 @@ public class MonitoredInputStream extends FilterInputStream implements Nameable
     //--------------------------------------------------------------------------
     
     /**
-     * Returns the friendly name of the stream.
+     * Returns the friendly name of this stream.
      * 
      * @see toolbox.util.service.Nameable#getName()
      */
@@ -179,6 +187,8 @@ public class MonitoredInputStream extends FilterInputStream implements Nameable
 
     
     /**
+     * Sets the friendly name of this stream.
+     * 
      * @see toolbox.util.service.Nameable#setName(java.lang.String)
      */
     public void setName(String name)
@@ -191,7 +201,9 @@ public class MonitoredInputStream extends FilterInputStream implements Nameable
     //--------------------------------------------------------------------------
     
     /**
-     * @return Returns the throughputMonitor.
+     * Returns the throughputMonitor associated with this stream.
+     * 
+     * @return ThroughputMonitor
      */
     public ThroughputMonitor getThroughputMonitor()
     {
@@ -200,6 +212,8 @@ public class MonitoredInputStream extends FilterInputStream implements Nameable
     
     
     /**
+     * Sets teh throughput monitor to associated with this stream.
+     * 
      * @param throughputMonitor The throughputMonitor to set.
      */
     public void setThroughputMonitor(ThroughputMonitor throughputMonitor)
@@ -209,7 +223,9 @@ public class MonitoredInputStream extends FilterInputStream implements Nameable
 
     
     /**
-     * @return Returns the transferredMonitor.
+     * Returns the transferredMonitor associated with this stream.
+     * 
+     * @return TransferredMonitor
      */
     public TransferredMonitor getTransferredMonitor()
     {
@@ -218,6 +234,8 @@ public class MonitoredInputStream extends FilterInputStream implements Nameable
     
     
     /**
+     * Sets the transferred monitor to associate with this stream.
+     * 
      * @param transferredMonitor The transferredMonitor to set.
      */
     public void setTransferredMonitor(TransferredMonitor transferredMonitor)
@@ -230,8 +248,8 @@ public class MonitoredInputStream extends FilterInputStream implements Nameable
     //--------------------------------------------------------------------------
     
     /**
-     * Listener interface used to notify implementers of activity within the
-     * stream.
+     * Notifications supported by a MonitoredInputStream in addition to 
+     * TransferredListener and ThroughputListener.
      */
     public interface InputStreamListener
     {
