@@ -20,13 +20,16 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
 import org.apache.regexp.RESyntaxException;
 
+import nu.xom.Attribute;
 import nu.xom.Element;
 
 import toolbox.jtail.filter.RegexLineFilter;
@@ -65,6 +68,11 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
      */
     private static final String NODE_TEXTTOOLS_PLUGIN = "TextToolsPlugin";
     
+    /**
+     * XML: Attribute for the divider between the input and output panes
+     */
+    private static final String ATTR_DIVIDER_LOCATION = "dividerLocation";
+    
     /** 
      * Reference to the workspace status bar 
      */
@@ -85,6 +93,11 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
      * various text tools.
      */ 
     private JFlipPane topFlipPane_;
+   
+    /**
+     * Main splitter between the input and output areas
+     */
+    private JSplitPane splitter_;
    
     //--------------------------------------------------------------------------
     //  Constructors
@@ -121,18 +134,34 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
         
         // Root 
         setLayout(new BorderLayout());
-        JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-        splitPane.setTopComponent(new JScrollPane(inputArea_));
-        splitPane.setBottomComponent(new JScrollPane(outputArea_));
-        add(splitPane, BorderLayout.CENTER);
+        splitter_ = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+        splitter_.setTopComponent(new JScrollPane(inputArea_));
+        splitter_.setBottomComponent(new JScrollPane(outputArea_));
+        
+        add(splitter_, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
         
         // Top flip pane
         topFlipPane_ = new JFlipPane(JFlipPane.TOP);
-        topFlipPane_.addFlipper("Filter", new RegexFlipper());
+        topFlipPane_.addFlipper("Filter", new FilterFlipper());
         topFlipPane_.addFlipper("Tokenizer", new TokenizerFlipper());
         topFlipPane_.addFlipper("Codec", new CodecFlipper());
-        add(BorderLayout.NORTH, topFlipPane_);
+        add(topFlipPane_, BorderLayout.NORTH);
+    }
+    
+    /**
+     * Returns text to process. If no text is selected then the entire contents
+     * of the input area is returned, otherwise only the selected text is 
+     * returned.
+     * 
+     * @return  Input text to process
+     */
+    protected String getInputText()
+    {
+        String selected = inputArea_.getSelectedText();
+        return (StringUtil.isNullOrBlank(selected) 
+                    ? inputArea_.getText() 
+                    : selected);
     }
     
     //--------------------------------------------------------------------------
@@ -163,31 +192,50 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
                "tokenizing, and regular expression based filtering.";
     }
 
+    public void shutdown()
+    {
+        outputArea_.setText("");
+        inputArea_.setText("");
+        inputArea_ = null;
+        outputArea_ = null;
+        topFlipPane_ = null;
+    }
+
+    //--------------------------------------------------------------------------
+    // IPreferenced Interface
+    //--------------------------------------------------------------------------
+    
     public void applyPrefs(Element prefs) 
     {
-        if (prefs != null)
+        Element root = XOMUtil.getFirstChildElement(
+            prefs, NODE_TEXTTOOLS_PLUGIN, new Element(NODE_TEXTTOOLS_PLUGIN));
+
+        topFlipPane_.applyPrefs(root);
+        outputArea_.applyPrefs(root);
+        
+        final int dividerLocation = 
+            XOMUtil.getIntegerAttribute(root, ATTR_DIVIDER_LOCATION, 150);
+
+        // This may not have to be invoked later..investigate later...            
+        SwingUtilities.invokeLater(new Runnable()
         {
-            Element root = prefs.getFirstChildElement(NODE_TEXTTOOLS_PLUGIN);
-            
-            if (root != null)
+            public void run()
             {
-                topFlipPane_.applyPrefs(root);
-                outputArea_.applyPrefs(root);
+                splitter_.setDividerLocation(dividerLocation);
             }
-        }
+        });
     }
 
     public void savePrefs(Element prefs)
     {
         Element root = new Element(NODE_TEXTTOOLS_PLUGIN);
+        
+        root.addAttribute(new Attribute(
+            ATTR_DIVIDER_LOCATION,splitter_.getDividerLocation()+""));
+            
         topFlipPane_.savePrefs(root);
         outputArea_.savePrefs(root);
         XOMUtil.insertOrReplace(prefs, root);
-    }
-
-    public void shutdown()
-    {
-        outputArea_.setText("");
     }
     
     //--------------------------------------------------------------------------
@@ -199,7 +247,7 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
      */
     class SortAction extends AbstractAction
     {
-        public SortAction()
+        SortAction()
         {
             super("Sort");
             putValue(MNEMONIC_KEY, new Integer('S'));
@@ -208,7 +256,7 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
     
         public void actionPerformed(ActionEvent e)
         {
-            String text = outputArea_.getText();        
+            String text = getInputText();        
             
             if (StringUtil.isNullOrEmpty(text))
             {
@@ -236,7 +284,7 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
      */
     class BannerAction extends SmartAction
     {
-        public BannerAction()
+        BannerAction()
         {
             super("Banner", true, false, null);
             putValue(MNEMONIC_KEY, new Integer('B'));
@@ -245,7 +293,7 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
 
         public void runAction(ActionEvent e) throws Exception
         {
-            String[] lines = StringUtil.tokenize(outputArea_.getText(), "\n");
+            String[] lines = StringUtil.tokenize(getInputText(), NL);
             
             for (int i=0; i<lines.length; i++)
                 outputArea_.append(NL + Banner.getBanner(lines[i]));
@@ -261,13 +309,13 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
      * expression is typed in, the matching set is updated accordingly with
      * each keystroke.
      */
-    class RegexFlipper extends JPanel
+    class FilterFlipper extends JPanel
     {
         private JTextField filterField_;
         private String[] cache_;
         private TextChangedListener docListener_;
         
-        public RegexFlipper()
+        FilterFlipper()
         {
             buildView();
         }
@@ -289,7 +337,7 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
             statusBar_.setStatus("RE: '" + regex + "'");
             
             if (cache_ == null)
-                cache_ = StringUtil.tokenize(outputArea_.getText(), NL);
+                cache_ = StringUtil.tokenize(getInputText(), NL);
 
             String[] lines = cache_;                
             
@@ -345,8 +393,7 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
             {
                 super.keyReleased(e);
         
-                String newValue = 
-                    filterField_.getText().trim();
+                String newValue = filterField_.getText().trim();
  
                 // Only refresh if the filter has changed           
                 if (!newValue.equals(oldValue_))
@@ -411,7 +458,7 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
         
         class TokenizeAction extends AbstractAction
         {
-            public TokenizeAction()
+            TokenizeAction()
             {
                 super("Tokenize");
             }
@@ -419,7 +466,7 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
             public void actionPerformed(ActionEvent e)
             {
                 StringTokenizer st = 
-                    new StringTokenizer(outputArea_.getText(), 
+                    new StringTokenizer(getInputText(), 
                         delimiterField_.getText());
             
                 while(st.hasMoreElements())
@@ -431,16 +478,14 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
         
         class SingleLineAction extends AbstractAction
         {
-            public SingleLineAction()
+            SingleLineAction()
             {
                 super("Convert to single line");
             }
                        
             public void actionPerformed(ActionEvent e)
             {
-                StringTokenizer st = 
-                    new StringTokenizer(outputArea_.getText(), NL);
-                
+                StringTokenizer st = new StringTokenizer(getInputText(), NL);
                 StringBuffer sb = new StringBuffer();
                     
                 while (st.hasMoreElements())
@@ -456,8 +501,6 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
      */
     class CodecFlipper extends JPanel
     {
-        private JTextField  textField_;
-        
         CodecFlipper()
         {
             buildView();
@@ -466,52 +509,96 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
         void buildView()
         {
             setLayout(new FlowLayout());
-            
-            add(new JLabel("Text"));
-            add(textField_ = new JTextField(20));
             add(new JButton(new Base64EncodeAction()));
             add(new JButton(new Base64DecodeAction()));
+            add(new JButton(new HTMLEncodeAction()));
+            add(new JButton(new HTMLDecodeAction()));
+            add(new JButton(new XMLEncodeAction()));
+            add(new JButton(new XMLDecodeAction()));
         }
         
         class Base64EncodeAction extends AbstractAction
         {
-            public Base64EncodeAction()
+            Base64EncodeAction()
             {
                 super("Base64 Encode");
             }
             
             public void actionPerformed(ActionEvent e)
             {
-                byte[] b = Base64.encodeBase64(textField_.getText().getBytes());
+                byte[] b = Base64.encodeBase64(getInputText().getBytes());
                 outputArea_.setText(new String(b));
             }
         }
         
         class Base64DecodeAction extends AbstractAction
         {
-            public Base64DecodeAction()
+            Base64DecodeAction()
             {
                 super("Base64 Decode");
             }
                        
             public void actionPerformed(ActionEvent e)
             {
-                byte[] b = Base64.decodeBase64(textField_.getText().getBytes());
+                byte[] b = Base64.decodeBase64(getInputText().getBytes());
                 outputArea_.setText(new String(b));
             }
         }
         
-        class HTMLEscapeAction extends AbstractAction
+        class HTMLEncodeAction extends AbstractAction
         {
-            public HTMLEscapeAction()
+            HTMLEncodeAction()
             {
                 super("HTML Encode");
             }
             
             public void actionPerformed(ActionEvent e)
             {
+                outputArea_.setText(
+                    StringEscapeUtils.escapeHtml(getInputText()));
             }
-
+        }
+        
+        class HTMLDecodeAction extends AbstractAction
+        {
+            HTMLDecodeAction()
+            {
+                super("HTML Decode");
+            }
+            
+            public void actionPerformed(ActionEvent e)
+            {
+                outputArea_.setText(
+                    StringEscapeUtils.unescapeHtml(getInputText()));
+            }
+        }
+        
+        class XMLEncodeAction extends AbstractAction
+        {
+            XMLEncodeAction()
+            {
+                super("XML Encode");
+            }
+            
+            public void actionPerformed(ActionEvent e)
+            {
+                outputArea_.setText(
+                    StringEscapeUtils.escapeXml(getInputText()));
+            }
+        }
+        
+        class XMLDecodeAction extends AbstractAction
+        {
+            XMLDecodeAction()
+            {
+                super("XML Decode");
+            }
+            
+            public void actionPerformed(ActionEvent e)
+            {
+                outputArea_.setText(
+                    StringEscapeUtils.unescapeXml(getInputText()));
+            }
         }
     }    
 }
