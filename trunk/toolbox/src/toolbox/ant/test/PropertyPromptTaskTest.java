@@ -5,8 +5,6 @@ import junit.textui.TestRunner;
 
 import org.apache.tools.ant.Main;
 
-import toolbox.util.FileUtil;
-
 /**
  * 
  */
