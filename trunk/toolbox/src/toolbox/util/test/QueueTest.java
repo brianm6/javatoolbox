@@ -79,6 +79,18 @@ public class QueueTest extends TestCase
 
     
     /**
+     * Tests dequeue() when empty.
+     */    
+    public void testDequeueWhenEmpty()
+    {
+        logger_.info("Running testDequeueWhenEmpty...");
+        
+        Queue q = new Queue();
+        assertNull(q.dequeue());
+    }
+
+    
+    /**
      * Tests peek()
      */
     public void testPeek()
@@ -93,6 +105,19 @@ public class QueueTest extends TestCase
         assertEquals(1, q.size());
         assertTrue(!q.isEmpty());
     }    
+    
+    
+    /**
+     * Tests peek() when empty.
+     */    
+    public void testPeekWhenEmpty()
+    {
+        logger_.info("Running testPeekWhenEmpty...");
+        
+        Queue q = new Queue();
+        assertNull(q.peek());
+    }
+
     
     
     /**
