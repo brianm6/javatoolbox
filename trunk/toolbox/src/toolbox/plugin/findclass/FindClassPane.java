@@ -7,9 +7,6 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -35,6 +32,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
@@ -52,6 +50,7 @@ import toolbox.util.io.NullWriter;
 import toolbox.util.ui.JFileExplorer;
 import toolbox.util.ui.JFileExplorerAdapter;
 import toolbox.util.ui.JFlipPane;
+import toolbox.util.ui.JPopupListener;
 import toolbox.util.ui.JSmartOptionPane;
 import toolbox.util.ui.JStatusPane;
 import toolbox.util.ui.ThreadSafeTableModel;
@@ -149,7 +148,7 @@ public class JFindClass extends JFrame
     }
 
     //--------------------------------------------------------------------------
-    //  Implementation
+    //  Private
     //--------------------------------------------------------------------------
  
     /**
@@ -201,7 +200,7 @@ public class JFindClass extends JFrame
     protected void buildSearchPanel()
     {
         // Search Panel
-        SearchAction searchAction = new SearchAction();
+        SearchCancelAction searchAction = new SearchCancelAction();
 
         JLabel searchLabel = new JLabel("Find Class");
         searchField_ = new JTextField(20);
@@ -254,8 +253,7 @@ public class JFindClass extends JFrame
         searchPopupMenu_ = new JPopupMenu();
         searchPopupMenu_.add(new JMenuItem(new ClearSearchListAction()));
         searchPopupMenu_.add(new JMenuItem(new AddClasspathToSearchListAction()));
-        MouseListener popupListener = new SearchListPopupListener();
-        searchList_.addMouseListener(popupListener);
+        searchList_.addMouseListener(new JPopupListener(searchPopupMenu_));
         
         JPanel pathPanel = new JPanel(new BorderLayout());
         pathPanel.add(new JScrollPane(searchList_), BorderLayout.CENTER);
@@ -388,7 +386,7 @@ public class JFindClass extends JFrame
      * @param  t   Exception causing error
      * @param  c   Logger to log to
      */
-    public void handleException(Throwable t, Logger c)
+    protected void handleException(Throwable t, Logger c)
     {
         c.error(t.getMessage(), t);
         JSmartOptionPane.showExceptionMessageDialog(this, t);
@@ -431,8 +429,17 @@ public class JFindClass extends JFrame
          */
         public void searchingTarget(String target)
         {
-            statusBar_.setStatus("Searching " + target + " ...");
-            searchList_.setSelectedValue(target, true);    
+            final String target_ = target;
+            
+            SwingUtilities.invokeLater(new Runnable()
+            {
+                public void run()
+                {
+                    statusBar_.setStatus("Searching " + target_ + " ...");
+                    searchList_.setSelectedValue(target_, true);    
+                }
+            });
+            
         }
 
         
@@ -487,30 +494,6 @@ public class JFindClass extends JFrame
                 statusBar_.setStatus(file + " is not a valid archive.");
         }
     }
-
-
-    /**
-     * Popup menu listener for RMB on the Classpath list
-     */ 
-    class SearchListPopupListener extends MouseAdapter
-    {
-        public void mousePressed(MouseEvent e)
-        {
-            maybeShowPopup(e);
-        }
-
-        public void mouseReleased(MouseEvent e)
-        {
-            maybeShowPopup(e);
-        }
-
-        private void maybeShowPopup(MouseEvent e)
-        {
-            if (e.isPopupTrigger())
-                searchPopupMenu_.show(e.getComponent(), e.getX(), e.getY());
-        }
-    }
-
 
  
     /**
@@ -655,18 +638,38 @@ public class JFindClass extends JFrame
     /**
      * Searches for a class in the displayed classpaths
      */
-    protected class SearchAction extends AbstractAction
+    protected class SearchCancelAction extends AbstractAction
     {
-        public SearchAction()
+        private static final String SEARCH = "Search";
+        private static final String CANCEL = "Cancel";
+        private Thread searchThread_;
+        
+        public SearchCancelAction()
         {
-            super("Search");
+            super(SEARCH);
             putValue(MNEMONIC_KEY, new Integer('S'));    
             putValue(SHORT_DESCRIPTION, "Searches for a class");
         }
         
         public void actionPerformed(ActionEvent e)
         {
-            ThreadUtil.run(SearchAction.this, "doSearch", null);
+            if (getValue(NAME).equals(SEARCH))
+            {
+                searchThread_ = 
+                    ThreadUtil.run(SearchCancelAction.this, "doSearch", null);
+            }
+            else
+            {
+                statusBar_.setStatus("Canceling search...");
+                findClass_.cancelSearch();
+                
+                if (searchThread_!= null)
+                    ThreadUtil.join(searchThread_, 60000);
+                    
+                putValue(NAME, SEARCH);
+                putValue(MNEMONIC_KEY, new Integer('S'));                    
+                statusBar_.setStatus("Search canceled");
+            }
         }
         
         public void doSearch()
@@ -677,7 +680,7 @@ public class JFindClass extends JFrame
             {
                 String search = searchField_.getText().trim();
                 
-                logger_.debug(method + "Searching for " + search);
+                logger_.debug(method + "Searching for: " + search);
                 
                 if (StringUtil.isNullOrEmpty(search))
                 {
@@ -685,6 +688,10 @@ public class JFindClass extends JFrame
                 }
                 else
                 {
+                    // Flip title
+                    putValue(NAME, CANCEL);
+                    putValue(MNEMONIC_KEY, new Integer('C'));
+                    
                     // Empty results table
                     resultTableModel_.setNumRows(0);
                     resultCount_ = 0;
@@ -695,14 +702,19 @@ public class JFindClass extends JFrame
                     // Copy 1-1 from the seach list model to FindClass
                     for (Enumeration e = searchListModel_.elements(); 
                          e.hasMoreElements(); )
-                        
+                    {
                         findClass_.addSearchTarget((String)e.nextElement());
+                    }
                     
                     // Execute the search
                     Object results[]  = findClass_.findClass(
                         search, ignoreCaseCheckBox_.isSelected());             
                     
                     statusBar_.setStatus(results.length + " matches found");
+                    
+                    putValue(NAME, SEARCH);
+                    putValue(MNEMONIC_KEY, new Integer('S'));                    
+                    
                 }
             }
             catch (Exception ex)
