@@ -92,7 +92,7 @@
     <!-- xml-apis has to come before saxon because they both have difference -->
     <!-- versions of org.w3c.dom apis                                        --> 
     
-    <!--
+    
     <dependency>
       <id>xml-apis</id>
       <version/>
@@ -100,7 +100,7 @@
         <jnlp.jar>true</jnlp.jar>
       </properties>
     </dependency>
-    -->
+    
     
 
     <!-- 
@@ -762,6 +762,16 @@
     </dependency>
 
     <dependency>
+      <id>util-concurrent</id>
+      <version>LATEST</version>
+      <url>http://www.mathcs.emory.edu/dcl/util</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
+      </properties>
+    </dependency>
+    
+    <dependency>
       <id>webwindow</id>
       <version>LATEST</version>
       <url>http://www.javio.com</url>
@@ -881,14 +891,14 @@
           -->
         </resource>
         
-        <!--
         <resource>
-          <directory>${basedir}/debug</directory>
+          
+          <!-- picks up xml test files in /test subdir - PropertyPromptTest -->
+          <directory>${basedir}/test</directory>
           <includes>
-            <include>**/*</include>
+            <include>**/*.xml</include>
           </includes>
         </resource>
-        -->
         
       </resources>
     </unitTest>
