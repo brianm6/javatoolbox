@@ -12,11 +12,8 @@ import junit.framework.Assert;
  * A file filter that logically ANDs two existing filters so that the 
  * acceptance is sufficient to satisfy both filters
  */
-public class AndFilter implements FilenameFilter
+public class AndFilter extends CompoundFilter implements FilenameFilter
 {
-    private List filters_ = new ArrayList();
-    
-    
     public AndFilter()
     {
     }
@@ -43,9 +40,7 @@ public class AndFilter implements FilenameFilter
      */
     public boolean accept(File dir,String name)
     {
-        Assert.assertTrue("No filters!", filters_.size() > 0);
-        
-        Iterator i = filters_.iterator();
+        Iterator i = iterator();
         
         while(i.hasNext())
         {
@@ -57,13 +52,5 @@ public class AndFilter implements FilenameFilter
         }
 
         return true;        
-    }
-    
-    /**
-     * Adds a filter
-     */
-    public void addFilter(FilenameFilter filter)
-    {
-        filters_.add(filter);        
     }
 }
