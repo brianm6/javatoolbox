@@ -1,9 +1,12 @@
 package toolbox.junit;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.beans.BeanInfo;
 import java.beans.Introspector;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -13,6 +16,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import com.l2fprod.common.propertysheet.PropertySheet;
 import com.l2fprod.common.propertysheet.PropertySheetPanel;
@@ -23,7 +27,9 @@ import org.apache.log4j.Logger;
 
 import toolbox.util.ClassUtil;
 import toolbox.util.SwingUtil;
+import toolbox.util.ui.JCollapsablePanel;
 import toolbox.util.ui.JSmartButton;
+import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.plaf.LookAndFeelUtil;
 
 /**
@@ -93,7 +99,6 @@ public class UITestCase extends TestCase
     {
         menuBar_ = menuBar;
     }
-    
     
     //--------------------------------------------------------------------------
     // Protected 
@@ -256,5 +261,34 @@ public class UITestCase extends TestCase
         panel.add(propSheet, BorderLayout.CENTER);
         panel.add(updateButton, BorderLayout.SOUTH);
         return panel;
-    }    
+    }
+    
+    
+    /**
+     * Creates a console that spews out all property change events that
+     * originate from the given component.
+     * 
+     * @param c Component to spy on.
+     * @return JPanel.
+     */
+    protected JPanel createPropertyChangeConsole(Component c)
+    {
+        JCollapsablePanel p = new JCollapsablePanel("Property Change Events");
+        final JSmartTextArea area = new JSmartTextArea("");
+        
+        c.addPropertyChangeListener(new PropertyChangeListener()
+        {
+            public void propertyChange(PropertyChangeEvent evt)
+            {
+                StringBuffer sb = new StringBuffer();
+                sb.append("Prop: " + evt.getPropertyName() + "\n");
+                sb.append("Old : " + evt.getOldValue() + "\n");
+                sb.append("New : " + evt.getNewValue() + "\n");
+                area.append(sb.toString());
+            }
+        });
+        
+        p.setContent(new JScrollPane(area));
+        return p;
+    }
 }
