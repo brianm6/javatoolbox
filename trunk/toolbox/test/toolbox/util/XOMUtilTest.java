@@ -317,4 +317,16 @@ public class XOMUtilTest extends TestCase
         assertNotNull(node.getFirstChildElement("child").getLocalName());
         assertEquals("value", node.getFirstChildElement("child").getValue());
     }
+
+    
+    public void testEncodeDecodeBlankLines()
+    {
+        String expected = "line1\n\nline3";
+        Element e = new Element("Node");
+        e.appendChild(XOMUtil.encodeBlankLines(expected));
+        String result = XOMUtil.decodeBlankLines(e.getValue());
+
+        logger_.info(result);
+        assertEquals(expected, result);
+    }
 }
