@@ -14,6 +14,7 @@ import junit.textui.TestRunner;
 import org.apache.log4j.Logger;
 
 import toolbox.junit.UITestCase;
+import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.explorer.JFileExplorer;
@@ -90,7 +91,11 @@ public class JFlipPaneTest extends UITestCase
         fp.addFlipper(card2.getText(), card2);
         
         JFileExplorer explorer = new JFileExplorer(false);
-        fp.addFlipper("File Explorer", explorer);
+        
+        fp.addFlipper(
+            ImageCache.getIcon(ImageCache.IMAGE_DUKE), 
+            "File Explorer", 
+            explorer);
         
         fp.addFlipPaneListener(new FlipPaneListener()
         {
