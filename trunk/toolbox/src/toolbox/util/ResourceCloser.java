@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
+import java.net.ServerSocket;
 import java.net.Socket;
 
 import javax.naming.Context;
@@ -200,6 +201,27 @@ public final class ResourceCloser
         }
     }
 
+
+    /**
+     * Closes a server socket quietly
+     * 
+     * @param  serverSocket  Server socket to close
+     */    
+    public static void close(ServerSocket serverSocket)
+    {
+        if (serverSocket != null)
+        {
+            try
+            {
+                serverSocket.close();
+            }
+            catch (IOException e)
+            {
+                logger_.warn(
+                    "An error occurred while closing a ServerSocket", e);
+            }
+        }
+    }
     
     /**
      * Removes an EJB quietly
