@@ -6,19 +6,19 @@ import java.util.Stack;
 
 import javax.swing.JFrame;
 
-import org.apache.log4j.Logger;
-
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
-import toolbox.util.Stringz;
+import org.apache.log4j.Logger;
+
+import toolbox.util.StringUtil;
 import toolbox.util.dump.BasicDumpFormatter;
 import toolbox.util.dump.Dumper;
 
 /**
  * Unit test for Dumper.
  */
-public class DumperTest extends TestCase implements Stringz
+public class DumperTest extends TestCase
 {
     private static final Logger logger_ = Logger.getLogger(DumperTest.class);
 
@@ -37,19 +37,6 @@ public class DumperTest extends TestCase implements Stringz
     }
 
     //--------------------------------------------------------------------------
-    // Overrides TestCase
-    //--------------------------------------------------------------------------
-
-    /**
-     * @see junit.framework.TestCase#setUp()
-     */
-    protected void setUp() throws Exception
-    {
-        super.setUp();
-        System.out.println(NL + BR);
-    }
-
-    //--------------------------------------------------------------------------
     //  Unit Tests
     //--------------------------------------------------------------------------
     
@@ -59,7 +46,7 @@ public class DumperTest extends TestCase implements Stringz
     public void testDumpEmptyObject()
     {
         logger_.info("Running testDumpEmptyObject...");
-        logger_.info("\n\n" + Dumper.dump(new EmptyClass()));
+        logger_.debug(StringUtil.addBars(Dumper.dump(new EmptyClass())));
     }
 
     
@@ -69,7 +56,7 @@ public class DumperTest extends TestCase implements Stringz
     public void testDumpSimpleObject()
     {
         logger_.info("Running testDumpSimpleObject...");
-        logger_.info("\n\n" + Dumper.dump(new Address()));
+        logger_.debug(StringUtil.addBars(Dumper.dump(new Address())));
     }
 
     
@@ -79,7 +66,7 @@ public class DumperTest extends TestCase implements Stringz
     public void testDumpNestedObject()
     {
         logger_.info("Running testDumpNestedObject...");
-        logger_.info("\n\n" + Dumper.dump(new Employee()));            
+        logger_.debug(StringUtil.addBars(Dumper.dump(new Employee())));            
     }
     
     
@@ -89,7 +76,7 @@ public class DumperTest extends TestCase implements Stringz
     public void testDumpJFrame()
     {
         logger_.info("Running testDumpJFrame...");
-        logger_.info("\n\n" + Dumper.dump(new JFrame()));
+        logger_.debug(StringUtil.addBars(Dumper.dump(new JFrame())));
     }
     
     
@@ -99,7 +86,7 @@ public class DumperTest extends TestCase implements Stringz
     public void testDumpMultipleReferences()
     {
         logger_.info("Running testDumpMultipleReferences...");
-        logger_.info("\n\n" + Dumper.dump(new MultipleReferences()));        
+        logger_.debug(StringUtil.addBars(Dumper.dump(new MultipleReferences())));        
     }
     
     
@@ -112,14 +99,20 @@ public class DumperTest extends TestCase implements Stringz
 
         Employee emp = new Employee();
         
-        logger_.info(NL + BRNL + "Max depth = 1" + NL + BRNL +
-            Dumper.dump(emp, 1));
+        logger_.debug(
+            StringUtil.NL + StringUtil.BRNL + "Max depth = 1" + 
+            StringUtil.NL + StringUtil.BRNL +
+            StringUtil.addBars(Dumper.dump(emp, 1)));
          
-        logger_.info(NL + BRNL + "Max depth = 2" + NL + BRNL +
-            Dumper.dump(emp, 2));        
+        logger_.debug(
+            StringUtil.NL + StringUtil.BRNL + "Max depth = 2" + 
+            StringUtil.NL + StringUtil.BRNL +
+            StringUtil.addBars(Dumper.dump(emp, 2)));        
 
-        logger_.info(NL + BRNL + "Max depth = 3" + NL + BRNL +
-            Dumper.dump(emp, 3));        
+        logger_.debug(
+            StringUtil.NL + StringUtil.BRNL + "Max depth = 3" + 
+            StringUtil.NL + StringUtil.BRNL +
+            StringUtil.addBars(Dumper.dump(emp, 3)));        
     }
     
     
@@ -151,17 +144,17 @@ public class DumperTest extends TestCase implements Stringz
             }
         }
         
-        logger_.info("\n\n" + Dumper.dump(new CollectionDump()));
+        logger_.debug(StringUtil.addBars(Dumper.dump(new CollectionDump())));
     }
 
     
     /**
-     * Tests dump(obj, depth, formatter). Creates a new formatter and adds
-     * lastName_ to the list of fields to be excluded. Verifies lastName_
-     * does not show up in the dump!
-     * 
-     * @throws Exception on error
-     */ 
+	 * Tests dump(obj, depth, formatter). Creates a new formatter and adds
+	 * lastName_ to the list of fields to be excluded. Verifies lastName_ does
+	 * not show up in the dump!
+	 * 
+	 * @throws Exception on error
+	 */ 
     public void testDumpObjectDepthFormatter() throws Exception
     {
         logger_.info("Running testDumpObjectDepthFormatter...");
@@ -170,7 +163,7 @@ public class DumperTest extends TestCase implements Stringz
         BasicDumpFormatter formatter = new BasicDumpFormatter();
         formatter.excludeFields("lastName_");
         String dump = Dumper.dump(emp, 10, formatter);
-        logger_.info(NL+NL+dump);
+        logger_.debug(StringUtil.addBars(dump));
         assertTrue(dump.indexOf("lastName_") < 0);        
     }
      
@@ -182,17 +175,23 @@ public class DumperTest extends TestCase implements Stringz
     {
         logger_.info("Running testLegacy...");
         String dump = Dumper.dump(new D());
-        logger_.info("\n\n" + dump);
+        logger_.debug(StringUtil.addBars(dump));
     }
             
     //--------------------------------------------------------------------------
-    //  Tests Helper Classes
+    // EmptyClass
     //--------------------------------------------------------------------------
             
+    /**
+     * EmptyClass
+     */
     class EmptyClass
     {
-        // No fields
     }
+    
+    //--------------------------------------------------------------------------
+    // Employee
+    //--------------------------------------------------------------------------
     
     /**
      * Employee
@@ -218,6 +217,10 @@ public class DumperTest extends TestCase implements Stringz
         }
     }    
     
+    //--------------------------------------------------------------------------
+    // Address
+    //--------------------------------------------------------------------------
+    
     /**
      * Address
      */
@@ -239,6 +242,10 @@ public class DumperTest extends TestCase implements Stringz
         }
     }
 
+    //--------------------------------------------------------------------------
+    // Country
+    //--------------------------------------------------------------------------
+    
     /**
      * Country
      */
@@ -246,6 +253,10 @@ public class DumperTest extends TestCase implements Stringz
     {
         private String country_ = "USA";
     }
+    
+    //--------------------------------------------------------------------------
+    // Status
+    //--------------------------------------------------------------------------
     
     /**
      * Status 
@@ -256,6 +267,10 @@ public class DumperTest extends TestCase implements Stringz
         private String  status_  = null; //"Naturalized";
     }
     
+    //--------------------------------------------------------------------------
+    // MultipleReferences
+    //--------------------------------------------------------------------------
+    
     /**
      * MultipleReferences
      */
@@ -265,8 +280,16 @@ public class DumperTest extends TestCase implements Stringz
         private Address reference_ = address_; 
     }
 
-    ///////////////////////////////////////////////////////////////////////////
-        
+    //--------------------------------------------------------------------------
+    // Legacy Test Objects
+    //--------------------------------------------------------------------------
+    
+    class A
+    {
+        private int anAVariable;
+        private int xDeclaredInAandB = 5;
+    }
+    
     class B extends A
     {
         protected transient int aBVariable;
@@ -285,18 +308,18 @@ public class DumperTest extends TestCase implements Stringz
         //  private String myString2 = "aaaa\nbbbb\n\n\ncccc\n\n";
         //  Object differentType = new C();
         //private volatile static Integer synchInteger = new Integer(9);
-        protected transient FUN fun = new MEGAFUN();
+        protected transient Fun fun = new MegaFun();
         //  static D loop = new D();
         public Stack stack = new Stack();
         //  public javax.swing.JLabel jLabel= new javax.swing.JLabel();
     }
 
-    class FUN extends Object
+    class Fun extends Object
     {
         private Integer funInteger = new Integer(13);
     }
 
-    class MEGAFUN extends FUN
+    class MegaFun extends Fun
     {
         private Integer megaFunInteger = new Integer(14);
         public String toString()
@@ -316,11 +339,5 @@ public class DumperTest extends TestCase implements Stringz
         public D d = new D();
         //public static final TestObject2 to2 = new TestObject2();
 
-    }
-
-    class A
-    {
-        private int anAVariable;
-        private int xDeclaredInAandB = 5;
     }
 }
