@@ -117,11 +117,11 @@ public class DynamicFilterView extends JPanel
 
             for (int i = 0; i < lines.length; i++)
             {
-                String passed = filter.filter(lines[i]);
+                boolean passed = filter.filter(new StringBuffer(lines[i]));
 
-                if (passed != null)
+                if (passed)
                 {
-                    sb.append(passed);
+                    sb.append(lines[i]);
                     sb.append("\n");
                 }
             }
