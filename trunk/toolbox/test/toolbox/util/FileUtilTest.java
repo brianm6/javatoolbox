@@ -622,22 +622,6 @@ public class FileUtilTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Tests getExtension(String)
-     */
-    public void testGetExtensionByFilename()
-    {
-        logger_.info("Running testGetExtensionByFilename...");
-        
-        assertEquals("txt", FileUtil.getExtension("file.txt"));
-        assertEquals("txt", FileUtil.getExtension("file.name.txt"));
-        assertEquals("txt", FileUtil.getExtension(".txt"));
-        assertEquals("", FileUtil.getExtension("noextension"));
-        assertEquals("", FileUtil.getExtension(""));
-        assertEquals("", FileUtil.getExtension("file.txt."));
-    }
-    
-    
-    /**
      * Tests getExtension(File)
      */
     public void testGetExtensionByFile()

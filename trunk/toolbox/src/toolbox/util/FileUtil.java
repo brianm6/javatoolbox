@@ -17,6 +17,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.lang.StringUtils;
@@ -515,31 +516,9 @@ public final class FileUtil
      */
     public static String getExtension(File f)
     {
-        return getExtension(f.getName());
+        return FilenameUtils.getExtension(f.getName());
     }
     
-    
-    /**
-     * Returns the extension of the given filename.
-     * 
-     * @param s Name of file from which to extract the extension.
-     * @return If an extension exists, then the extension not including the
-     *         period, otherwise an empty string.
-     */
-    public static String getExtension(String s)
-    {
-        s = s.trim();
-        
-        int i = s.lastIndexOf(".");
-        
-        String ext = "";
-        
-        if (i >= 0)
-            ext = s.substring(i + 1);
-        
-        return ext;
-    }
- 
     
     /**
      * Runs a file through AsMap to get a dump.
