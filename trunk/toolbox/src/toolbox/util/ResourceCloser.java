@@ -96,50 +96,6 @@ public final class ResourceCloser
     
     
     /**
-     * Closes an inputstream quitely
-     * 
-     * @param  inputStream  Inputstraem to close
-     */    
-    public static void close(InputStream inputStream)
-    {
-        if (inputStream != null)
-        {
-            try
-            {
-                inputStream.close();
-            }
-            catch (IOException e)
-            {
-                logger_.warn(
-                    "An error occurred while closing an InputStream.", e);
-            }
-        }
-    }
-
-
-    /**
-     * Closes an outputstream quitely
-     * 
-     * @param  outputStream  Output stream to close
-     */    
-    public static void close(OutputStream outputStream)
-    {
-        if (outputStream != null)
-        {
-            try
-            {
-                outputStream.close();
-            }
-            catch (IOException e)
-            {
-                logger_.warn(
-                    "An error occurred while closing an OutputStream.", e);
-            }
-        }
-    }
-
-
-    /**
      * Closes a writer quietly
      * 
      * @param  writer  Writer to close
