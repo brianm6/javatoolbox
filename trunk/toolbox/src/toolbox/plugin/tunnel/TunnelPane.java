@@ -311,6 +311,11 @@ public class JTcpTunnelPane extends JPanel
                 connBytesWritten + " conn  " + totalBytesWritten + " total");
         }
 
+        public void tunnelStarted(TcpTunnel tunnel)
+        {
+            statusBar_.setStatus("Tunnel started");
+        }
+
         public void actionPerformed(ActionEvent e)
         {
             try
@@ -325,10 +330,10 @@ public class JTcpTunnelPane extends JPanel
                         getRemoteHost(), 
                         getRemotePort());
                         
-                tunnel_.addIncomingStream(
+                tunnel_.setIncomingSink(
                     new JTextAreaOutputStream(outgoingTextArea_));
                 
-                tunnel_.addOutgoingStream(
+                tunnel_.setOutgoingSink(
                     new JTextAreaOutputStream(incomingTextArea_));
                     
                 tunnel_.addTcpTunnelListener(this);
