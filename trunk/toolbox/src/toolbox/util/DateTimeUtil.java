@@ -9,10 +9,10 @@ import java.util.Date;
  * Utility class that deals with both the DATE and TIME portions of the 
  * java.util.Date object
  */
-public class DateTimeUtil
+public final class DateTimeUtil
 {
     /**
-     * Constructor for DateTimeUtil.
+     * Prevent construction
      */
     private DateTimeUtil()
     {

@@ -104,8 +104,7 @@ public class MapInvocationTargetException extends RuntimeException
         {
             if (target_ != null)
             {
-                pw.print(
-                    "com.ip.util.collection.MapInvocationTargetException: ");
+                pw.print(getClass().getName() + ": ");
                 target_.printStackTrace(pw);
             }
             else

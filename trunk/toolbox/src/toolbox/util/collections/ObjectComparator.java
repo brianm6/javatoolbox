@@ -1,5 +1,6 @@
 package toolbox.util.collections;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Comparator;
 
@@ -196,13 +197,15 @@ public class ObjectComparator implements Comparator, java.io.Serializable
         return AsMap.of(obj).get(property);
     }
 
-    // INNER CLASSES     
+    //--------------------------------------------------------------------------
+    // Inner Classes
+    //--------------------------------------------------------------------------     
 
     /**
      * A description of the property to compare.  If a Comparator
      * is not provided, the property should implement Comparable.
      */
-    public static class Property implements java.io.Serializable
+    public static class Property implements Serializable
     {
         private String name_;
         private boolean reverseOrder_;

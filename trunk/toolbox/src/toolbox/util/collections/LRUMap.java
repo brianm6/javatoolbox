@@ -25,10 +25,10 @@ import java.util.Set;
  *   </ol>
  * </ol>
  * 
- * @todo use an ObjectPool for LRUKey
+ * @todo   Use an ObjectPool for LRUKey
  * @author Steven Lee
  */
-public class LRUMap implements java.util.Map, java.io.Serializable
+public class LRUMap implements Map, Serializable
 {
     /**
      * No time limit
@@ -48,8 +48,7 @@ public class LRUMap implements java.util.Map, java.io.Serializable
     //--------------------------------------------------------------------------
 
     /**
-     * Constructs an LRUMap with a size of 1000
-     * and no time limit.
+     * Constructs an LRUMap with a size of 1000 and no time limit.
      */
     public LRUMap()
     {
@@ -57,8 +56,7 @@ public class LRUMap implements java.util.Map, java.io.Serializable
     }
 
     /**
-     * Constructs an LRUMap with a size of <tt>maxSize</tt>
-     * with no time limit.
+     * Constructs an LRUMap with a size of <tt>maxSize</tt> with no time limit.
      * 
      * @param  maxSize  Max size
      */
@@ -68,8 +66,8 @@ public class LRUMap implements java.util.Map, java.io.Serializable
     }
 
     /**
-     * Constructs an LRUMap with a size of <tt>maxSize</tt>
-     * with a time limit of <tt>timeLimit</tt> in milliseconds.
+     * Constructs an LRUMap with a size of <tt>maxSize</tt> with a time limit of
+     * <tt>timeLimit</tt> in milliseconds.
      * 
      * @param  maxSize      Max size
      * @param  timeLimit    Time limit 
@@ -80,15 +78,13 @@ public class LRUMap implements java.util.Map, java.io.Serializable
     }
 
     /**
-     * Constructs an LRUMap with a size of <tt>maxSize</tt>
-     * with a time limit of <tt>timeLimit</tt> in milliseconds
-     * and using <tt>backingMap</tt> to store the data.
+     * Constructs an LRUMap with a size of <tt>maxSize</tt> with a time limit of
+     * <tt>timeLimit</tt> in milliseconds and using <tt>backingMap</tt> to store
+     * the data.
      * 
-     * @param maxSize the maximum size of this map
-     * @param timeLimit the time limit in milliseconds that a key
-     *                  should exist
-     * @param backingMap the Map used to store the key and values
-     *                   for the LRUMap
+     * @param maxSize    Maximum size of this map
+     * @param timeLimit  Time limit in milliseconds that a key should exist
+     * @param backingMap Map used to store the key and values for the LRUMap
      */
     public LRUMap(int maxSize, long timeLimit, Map backingMap)
     {
@@ -141,9 +137,8 @@ public class LRUMap implements java.util.Map, java.io.Serializable
     }
 
     /**
-     * Checks for if the LRUMap is above the max size or
-     * any of the elements have exceeded the maximum
-     * time limit.
+     * Checks for if the LRUMap is above the max size or any of the elements
+     * have exceeded the maximum time limit.
      */
     public void update()
     {
@@ -272,7 +267,7 @@ public class LRUMap implements java.util.Map, java.io.Serializable
      * 
      * @return a set view of the mappings contained in this map.
      */
-    public java.util.Set entrySet()
+    public Set entrySet()
     {
         update();
         return new EntrySet();
@@ -335,7 +330,7 @@ public class LRUMap implements java.util.Map, java.io.Serializable
      *
      * @return a set view of the keys contained in this map.
      */
-    public java.util.Set keySet()
+    public Set keySet()
     {
         update();
         return new KeySet();
@@ -346,23 +341,24 @@ public class LRUMap implements java.util.Map, java.io.Serializable
      * (optional operation).  If the map previously contained a mapping for
      * this key, the old value is replaced.
      *
-     * @param key key with which the specified value is to be associated.
-     * @param value value to be associated with the specified key.
-     * @return previous value associated with specified key, or <tt>null</tt>
-     *           if there was no mapping for key.  A <tt>null</tt> return can
-     *           also indicate that the map previously associated <tt>null</tt>
-     *           with the specified key, if the implementation supports
-     *           <tt>null</tt> values.
+     * @param   key    Key with which the specified value is to be associated.
+     * @param   value  Value to be associated with the specified key.
+     * @return  
+     * 
+     * Previous value associated with specified key, or <tt>null</tt>
+     * if there was no mapping for key.  A <tt>null</tt> return can also
+     * indicate that the map previously associated <tt>null</tt> with the
+     * specified key, if the implementation supports <tt>null</tt> values.
      * 
      * @throws UnsupportedOperationException if the <tt>put</tt> operation is
-     *              not supported by this map.
+     *         not supported by this map.
      * @throws ClassCastException if the class of the specified key or value
-     *               prevents it from being stored in this map.
+     *         prevents it from being stored in this map.
      * @throws IllegalArgumentException if some aspect of this key or value
-     *              prevents it from being stored in this map.
+     *         prevents it from being stored in this map.
      * @throws NullPointerException this map does not permit <tt>null</tt>
-     *            keys or values, and the specified key or value is
-     *            <tt>null</tt>.
+     *         keys or values, and the specified key or value is
+     *         <tt>null</tt>.
      */
     public Object put(Object key, Object value) 
         throws UnsupportedOperationException, ClassCastException,
@@ -394,22 +390,18 @@ public class LRUMap implements java.util.Map, java.io.Serializable
      * (optional operation).  These mappings will replace any mappings that
      * this map had for any of the keys currently in the specified map.
      *
-     * @param t Mappings to be stored in this map.
-     * 
+     * @param  t   Mappings to be stored in this map.
      * @throws UnsupportedOperationException if the <tt>putAll</tt> method is
-     *           not supported by this map.
-     * 
+     *         not  supported by this map.
      * @throws ClassCastException if the class of a key or value in the
-     *               specified map prevents it from being stored in this map.
-     * 
+     *         specified  map prevents it from being stored in this map.
      * @throws IllegalArgumentException some aspect of a key or value in the
-     *              specified map prevents it from being stored in this map.
-     * 
+     *         specified  map prevents it from being stored in this map.
      * @throws NullPointerException this map does not permit <tt>null</tt>
-     *            keys or values, and the specified key or value is
-     *            <tt>null</tt>.
+     *         keys  or values, and the specified key or value is
+     *         <tt>null</tt>.
      */
-    public void putAll(java.util.Map t)
+    public void putAll(Map t)
         throws UnsupportedOperationException, ClassCastException,
                IllegalArgumentException, NullPointerException
     {
