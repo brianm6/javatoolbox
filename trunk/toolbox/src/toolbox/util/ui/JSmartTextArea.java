@@ -1,10 +1,7 @@
 package toolbox.util.ui;
 
 import java.awt.Graphics;
-import java.awt.event.ActionEvent;
 
-import javax.swing.AbstractAction;
-import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.text.Document;
@@ -18,7 +15,9 @@ import toolbox.util.Assert;
 import toolbox.util.FontUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
+import toolbox.util.ui.action.AntiAliasAction;
 import toolbox.util.ui.textarea.AutoScrollAction;
+import toolbox.util.ui.textarea.LineWrapAction;
 import toolbox.workspace.IPreferenced;
 
 /**
@@ -33,8 +32,8 @@ import toolbox.workspace.IPreferenced;
  *   <li>Popupmenu access to toggle the built in line wrapping
  * </ul>
  */
-public class JSmartTextArea extends JTextArea implements AntiAliased, 
-    IPreferenced
+public class JSmartTextArea extends JTextArea 
+    implements AntiAliased, IPreferenced
 {
     //--------------------------------------------------------------------------
     // Constants
@@ -61,20 +60,16 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
      */
     private JTextComponentPopupMenu popupMenu_;
     
-    /**
-     * Check box that toggles autoscroll.
-     */
-    private JCheckBoxMenuItem autoScrollCheckBox_;
-    
     /** 
-     * Check box that toggles antialiasing of text.
+     * Flag that toggles antialiasing of text.
      */
-    private JCheckBoxMenuItem antiAliasCheckBox_;
+    private boolean antiAlias_;
     
     /**
-     * Check box that toggles line wrapping.
+     * Flag that toggle autoscrolling of the output as it is appended to the
+     * textarea.
      */
-    private JCheckBoxMenuItem wrapLinesCheckBox_;
+    private boolean autoScroll_;
     
     /**
      * Maximum number of characters allowable in the text area before the text
@@ -195,6 +190,169 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
         init();
         setAntiAliased(true);
     }
+
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Convenience method to scroll to the bottom of the text area.
+     */
+    public void scrollToEnd()
+    {
+        setCaretPosition(getDocument().getLength());
+    }
+    
+    
+    /**
+     * Returns true if autoscroll is enabled, false otherwise.
+     * 
+     * @return boolean
+     */
+    public boolean isAutoScroll()
+    {
+        return autoScroll_;
+    }
+
+
+    /**
+     * Sets the autoScroll feature.
+     * 
+     * @param autoScroll True to enable autoscroll, false to disable autoscroll.
+     */
+    public void setAutoScroll(boolean autoScroll)
+    {
+        boolean old = isAutoScroll();
+        autoScroll_ = autoScroll;
+        firePropertyChange("autoscroll", old, autoScroll);
+    }
+   
+   
+    /**
+     * Returns true if antialiasing is enabled, false otherwise.
+     * 
+     * @return boolean
+     */
+    public boolean isAntiAliased()
+    {
+        return antiAlias_;
+    }
+
+
+    /**
+     * Activates antialiasing of text.
+     * 
+     * @param antiAlias True turns antialiasing on; false turns it off.
+     */
+    public void setAntiAliased(boolean antiAlias)
+    {
+        boolean old = antiAlias_;
+        antiAlias_ = antiAlias;
+        firePropertyChange("antialias", old, antiAlias_);
+    }
+
+
+    /**
+     * Returns the maximum number of characters displayable by the text area
+     * before the contents get pruned.
+     * 
+     * @return Max number of displayable characters.
+     */
+    public int getCapacity()
+    {
+        return capacity_;
+    }
+
+
+    /**
+     * Sets the max capacity of the text area.
+     * 
+     * @param i Max capacity.
+     */
+    public void setCapacity(int i)
+    {
+        int old = capacity_;
+        capacity_ = i;
+        firePropertyChange("capacity", old, capacity_);
+    }
+
+
+    /**
+     * Returns the percentage of text that gets pruned from the text area when
+     * the capacity is reached.
+     * 
+     * @return  Percent of text to prune (0 - 100).
+     */
+    public int getPruneFactor()
+    {
+        return pruningFactor_;
+    }
+
+
+    /**
+     * Sets the pruning factor.
+     * 
+     * @param f Pruning factor.
+     */
+    public void setPruneFactor(int f)
+    {
+        Assert.isTrue(
+            f >= 0 && f <= 100,
+            "Pruning factor must be an integer between 0 and 100"); 
+
+        int old = pruningFactor_;
+        pruningFactor_ = f;
+        firePropertyChange("prune", old, pruningFactor_);
+    }
+
+    //--------------------------------------------------------------------------
+    // Protected
+    //--------------------------------------------------------------------------
+
+    /**
+     * JSmartTextArea specific initialization routine for the constructors.
+     */
+    protected void init()
+    {
+        buildView();
+        setCapacity(Integer.MAX_VALUE);
+        setPruneFactor(0);
+        setAntiAliased(SwingUtil.getDefaultAntiAlias());
+        setAutoScroll(true);
+        setLineWrap(false);
+    }
+    
+    
+    /**
+     * Adds a popupmenu to the textarea.
+     */
+    protected void buildView()
+    {
+        //
+        // Build popup menu and append autoscroll, line wrap, and antialias
+        // onto the end.
+        //
+        popupMenu_ = new JTextComponentPopupMenu(this);
+        popupMenu_.addSeparator();
+        
+        popupMenu_.add(
+            new JSmartCheckBoxMenuItem(
+                new AutoScrollAction(this),
+                this,
+                "autoscroll"));
+        
+        popupMenu_.add(
+            new JSmartCheckBoxMenuItem(
+                new LineWrapAction(this),
+                this,
+                "lineWrap"));
+        
+        popupMenu_.add(
+            new JSmartCheckBoxMenuItem(
+                new AntiAliasAction(this),
+                this,
+                "antialias"));
+    }
     
     //--------------------------------------------------------------------------
     // IPreferenced Interface 
@@ -312,9 +470,7 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
      */
     public void setLineWrap(boolean wrap)
     {
-        // Have to keep the cb on the popup menu in sync with the swing comps
-        // internal state.
-        wrapLinesCheckBox_.setSelected(wrap);
+        // NOOP override so line wrap gets included in the property sheet.
         super.setLineWrap(wrap);
     }
     
@@ -324,205 +480,7 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
      */
     public boolean getLineWrap()
     {
-        // This is here so that the PropertySheet java bean info finds the
-        // getter/setter pair.
+        // NOOP override so line wrap gets included in the property sheet.        
         return super.getLineWrap();
-    }
-    
-    //--------------------------------------------------------------------------
-    // Public
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Convenience method to scroll to the bottom of the text area.
-     */
-    public void scrollToEnd()
-    {
-        setCaretPosition(getDocument().getLength());
-    }
-    
-    
-    /**
-     * Returns true if autoscroll is enabled, false otherwise.
-     * 
-     * @return boolean
-     */
-    public boolean isAutoScroll()
-    {
-        return autoScrollCheckBox_.isSelected();
-    }
-
-
-    /**
-     * Sets the autoScroll feature.
-     * 
-     * @param autoScroll True to enable autoscroll, false to disable autoscroll.
-     */
-    public void setAutoScroll(boolean autoScroll)
-    {
-        autoScrollCheckBox_.setSelected(autoScroll);
-    }
-   
-   
-    /**
-     * Returns true if antialiasing is enabled, false otherwise.
-     * 
-     * @return boolean
-     */
-    public boolean isAntiAliased()
-    {
-        return antiAliasCheckBox_.isSelected();
-    }
-
-
-    /**
-     * Activates antialiasing of text.
-     * 
-     * @param antiAlias True turns antialiasing on; false turns it off.
-     */
-    public void setAntiAliased(boolean antiAlias)
-    {
-        antiAliasCheckBox_.setSelected(antiAlias);
-    }
-
-
-    /**
-     * Returns the maximum number of characters displayable by the text area
-     * before the contents get pruned.
-     * 
-     * @return Max number of displayable characters.
-     */
-    public int getCapacity()
-    {
-        return capacity_;
-    }
-
-
-    /**
-     * Returns the percentage of text that gets pruned from the text area when
-     * the capacity is reached.
-     * 
-     * @return  Percent of text to prune (0 - 100).
-     */
-    public int getPruneFactor()
-    {
-        return pruningFactor_;
-    }
-
-
-    /**
-     * Sets the max capacity of the text area.
-     * 
-     * @param i Max capacity.
-     */
-    public void setCapacity(int i)
-    {
-        capacity_ = i;
-    }
-
-
-    /**
-     * Sets the pruning factor.
-     * 
-     * @param f Pruning factor.
-     */
-    public void setPruneFactor(int f)
-    {
-        Assert.isTrue(
-            f >= 0 && f <= 100,
-            "Pruning factor must be an integer between 0 and 100"); 
-                
-        pruningFactor_ = f;
-    }
-
-    //--------------------------------------------------------------------------
-    // Protected
-    //--------------------------------------------------------------------------
-
-    /**
-     * JSmartTextArea specific initialization routine for the constructors.
-     */
-    protected void init()
-    {
-        buildView();
-        setCapacity(Integer.MAX_VALUE);
-        setPruneFactor(0);
-        setAntiAliased(SwingUtil.getDefaultAntiAlias());
-    }
-    
-    
-    /**
-     * Adds a popupmenu to the textarea.
-     */
-    protected void buildView()
-    {
-        // Build popup menu and add register with textarea
-        autoScrollCheckBox_ = 
-            new JSmartCheckBoxMenuItem(new AutoScrollAction(this));
-        
-        antiAliasCheckBox_ = new JSmartCheckBoxMenuItem(new AntiAliasAction());
-        wrapLinesCheckBox_ = new JSmartCheckBoxMenuItem(new WrapLinesAction());
-        
-        popupMenu_ = new JTextComponentPopupMenu(this);
-        popupMenu_.addSeparator();
-        popupMenu_.add(autoScrollCheckBox_);
-        popupMenu_.add(antiAliasCheckBox_);
-        popupMenu_.add(wrapLinesCheckBox_);
-    }    
-
-    //--------------------------------------------------------------------------
-    // AntiAliasAction
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Toggles antialiasing.
-     */
-    class AntiAliasAction extends AbstractAction 
-    {
-        /**
-         * Creates a AntiAliasAction.
-         */
-        public AntiAliasAction()
-        {
-            super("AntiAlias");
-        }
-        
-        
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
-         */
-        public void actionPerformed(ActionEvent e)
-        {
-            repaint();
-        }
-    }
-
-    //--------------------------------------------------------------------------
-    // WrapLinesAction
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Toggles line wrapping.
-     */
-    class WrapLinesAction extends AbstractAction 
-    {
-        /**
-         * Creates a WrapLinesAction.
-         */
-        public WrapLinesAction()
-        {
-            super("Wrap Lines");
-        }
-        
-        
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
-         */
-        public void actionPerformed(ActionEvent e)
-        {
-            setLineWrap(wrapLinesCheckBox_.isSelected());
-        }
     }
 }
