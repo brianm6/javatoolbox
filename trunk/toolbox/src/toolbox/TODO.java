@@ -34,10 +34,9 @@ package toolbox;
  * TODO: Ctrl-Up/Down should scroll through query history
  * TODO: Enable connect/disconnect buttons based on state
  * TODO: Build error pane because dialog boxes are annoying
- * TODO: Change prefs saver to save editor contents to a separate file instead
- *       of trying to embed it in toolbox.xml
  * TODO: Update ExecuteCurrentAction to execute multiple sql statements within
  *       a selection.
+ * TODO: SQL stmts in editor popup menu are too long
  * =============================================================================
  * 								FindClassPlugin
  * =============================================================================
@@ -73,6 +72,8 @@ package toolbox;
  *  - Replaced select methods in StringUtil and StreamUtil with apache commons
  *  - Fixed splash image to use a blown up version of the regular toolbox icon
  *  - Made the jar search activity an async operation in the FindClassPlugin  
+ *  - JEditTextArea now has ability to save the contents between instances
+ *  - JDBCPlugin sql editor now makes use of JEditTextArea saving contents  
  * 
  * February 2004
  * 	- Add Plugin menu
