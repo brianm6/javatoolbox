@@ -82,6 +82,18 @@ public class JTailPlugin implements IPlugin
 
     
     /**
+     * @see toolbox.workspace.IPlugin#shutdown()
+     */
+    public void shutdown()
+    {
+        
+    }
+    
+    //--------------------------------------------------------------------------
+    // IPreferenced Interface
+    //--------------------------------------------------------------------------
+    
+    /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
     public void applyPrefs(Element prefs) throws Exception
@@ -96,13 +108,5 @@ public class JTailPlugin implements IPlugin
     public void savePrefs(Element prefs) throws Exception
     {
         jtail_.savePrefs(prefs);
-    }
-
-    
-    /**
-     * @see toolbox.workspace.IPlugin#shutdown()
-     */
-    public void shutdown()
-    {
     }
 }
