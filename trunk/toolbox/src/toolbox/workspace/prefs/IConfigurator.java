@@ -56,4 +56,13 @@ public interface IConfigurator extends IPreferenced
      * preferences.
      */
     void onCancel();
+    
+    
+    /**
+     * Returns true if this configurator's values are to be applied during the
+     * initial startup process, false otherwise.
+     * 
+     * @return boolean
+     */
+    boolean isApplyOnStartup();
 }

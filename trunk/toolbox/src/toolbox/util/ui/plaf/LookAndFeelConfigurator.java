@@ -203,6 +203,15 @@ public class LookAndFeelConfigurator extends JHeaderPanel
         // Nothing to do
     }
 
+    
+    /**
+     * @see toolbox.workspace.prefs.IConfigurator#isApplyOnStartup()
+     */
+    public boolean isApplyOnStartup()
+    {
+        return false;
+    }
+    
     //--------------------------------------------------------------------------
     // IPreferenced Interface
     //--------------------------------------------------------------------------

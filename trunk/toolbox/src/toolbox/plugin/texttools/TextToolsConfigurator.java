@@ -150,6 +150,15 @@ public class TextToolsConfigurator extends JPanel implements IConfigurator
         // Nothing to do
     }
     
+    
+    /**
+     * @see toolbox.workspace.prefs.IConfigurator#isApplyOnStartup()
+     */
+    public boolean isApplyOnStartup()
+    {
+        return false;
+    }
+    
     //--------------------------------------------------------------------------
     // IPreferenced Interface
     //--------------------------------------------------------------------------

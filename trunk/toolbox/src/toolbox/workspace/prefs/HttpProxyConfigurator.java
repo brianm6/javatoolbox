@@ -247,6 +247,15 @@ public class HttpProxyConfigurator extends JHeaderPanel implements IConfigurator
         // Nothing to do
     }
 
+    
+    /**
+     * @see toolbox.workspace.prefs.IConfigurator#isApplyOnStartup()
+     */
+    public boolean isApplyOnStartup()
+    {
+        return true;
+    }
+    
     //--------------------------------------------------------------------------
     // IPreferenced Interface
     //--------------------------------------------------------------------------
