@@ -20,10 +20,6 @@ public class DateUtilTest extends TestCase
     private static final Logger logger_ = 
         Logger.getLogger(DateUtilTest.class);
     
-    //--------------------------------------------------------------------------
-    // Main
-    //--------------------------------------------------------------------------
-    
     /**
      * Entrypoint
      *
@@ -34,10 +30,6 @@ public class DateUtilTest extends TestCase
         TestRunner.run(DateUtilTest.class);
     }
 
-    //--------------------------------------------------------------------------
-    // Constructors
-    //--------------------------------------------------------------------------
-
     /**
      * DateUtilTest constructor
      * 
@@ -47,6 +39,7 @@ public class DateUtilTest extends TestCase
     {
         super(aName);
     }
+
 
     //--------------------------------------------------------------------------
     // Unit Tests
@@ -182,22 +175,23 @@ public class DateUtilTest extends TestCase
         Date beginBorder = DateTimeUtil.getBeginningOfDay(beginRange);
         Date endBorder   = DateTimeUtil.getEndOfDay(endRange);
 
-        assertTrue("Date should be in min range",
+        assertTrue(
+            "Date should be in min range",
             DateUtil.isBetween(midRange, beginRange, endRange));
-            
-        assertTrue("Date should be before range",
+        assertTrue(
+            "Date should be before range",
             !DateUtil.isBetween(beforeRange, beginRange, endRange));
-            
-        assertTrue("Date should be after range",
+        assertTrue(
+            "Date should be after range",
             !DateUtil.isBetween(afterRange, beginRange, endRange));
-            
-        assertTrue("Date should be on begin border",
+        assertTrue(
+            "Date should be on begin border",
             DateUtil.isBetween(beginBorder, beginRange, endRange));
-            
-        assertTrue("Date should be on end border",
+        assertTrue(
+            "Date should be on end border",
             DateUtil.isBetween(endBorder, beginRange, endRange));
-    }
 
+    }
 
     /**
      * Tests the roundToWeeks() method
@@ -206,33 +200,63 @@ public class DateUtilTest extends TestCase
     {
         logger_.info("Testing roundToWeeks()");
         
-        assertEquals("Number of weeks in 0 days should be 0",
-            0, DateUtil.roundToWeeks(0));
-            
-        assertEquals("Number of weeks in 1 days should be 0",
-            0, DateUtil.roundToWeeks(1));
-            
-        assertEquals("Number of weeks in 3 days should be 0",
-            0, DateUtil.roundToWeeks(3));
-            
-        assertEquals("Number of weeks in 4 days should be 1",
-            1, DateUtil.roundToWeeks(4));
-            
-        assertEquals("Number of weeks in 6 days should be 1",
-            1, DateUtil.roundToWeeks(6));
-            
-        assertEquals("Number of weeks in 7 days should be 1", 
+        assertEquals(
+            "Number of weeks in 0 days should be 0",
+            0,
+            DateUtil.roundToWeeks(0));
+        assertEquals(
+            "Number of weeks in 1 days should be 0",
+            0,
+            DateUtil.roundToWeeks(1));
+        assertEquals(
+            "Number of weeks in 3 days should be 0",
+            0,
+            DateUtil.roundToWeeks(3));
+        assertEquals(
+            "Number of weeks in 4 days should be 1",
+            1,
+            DateUtil.roundToWeeks(4));
+        assertEquals(
+            "Number of weeks in 6 days should be 1",
+            1,
+            DateUtil.roundToWeeks(6));
+        assertEquals(
+            "Number of weeks in 7 days should be 1", 
             1, DateUtil.roundToWeeks(7));
-            
-        assertEquals("Number of weeks in 10 days should be 1",
-            1, DateUtil.roundToWeeks(10));
-            
-        assertEquals("Number of weeks in 11 days should be 2",
-            2, DateUtil.roundToWeeks(11));
-            
-        assertEquals("Number of weeks in 14 days should be 2",
-            2, DateUtil.roundToWeeks(14));
-    }
+        assertEquals(
+            "Number of weeks in 10 days should be 1",
+            1,
+            DateUtil.roundToWeeks(10));
+        assertEquals(
+            "Number of weeks in 11 days should be 2",
+            2,
+            DateUtil.roundToWeeks(11));
+        assertEquals(
+            "Number of weeks in 14 days should be 2",
+            2,
+            DateUtil.roundToWeeks(14));
+
+    /**
+     * Tests equals()
+     */
+    public void testEquals()
+    {
+        logger_.info("Testing equals()");
+        
+        // Equality
+        Date now = new Date();
+        assertTrue(DateUtil.equals(now, now));
+ 
+        // Today != tomorrow       
+        Date tomorrow = DateUtil.addDays(DateUtil.getToday(),1);
+        assertTrue(!DateUtil.equals(now, tomorrow)); 
+        
+        // Today with time == Today with different time
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.MINUTE, 1);
+        Date sameDay = cal.getTime();
+        assertTrue(DateUtil.equals(now, sameDay));
+    }    }
  
     
     /**
@@ -298,25 +322,45 @@ public class DateUtilTest extends TestCase
     
     
     /**
-     * Tests equals()
+     * Tests isOnOrBefore()
      */
-    public void testEquals()
+    public void testIsOnOrBefore()
     {
-        logger_.info("Testing equals()");
+        logger_.info("Testing isOnOrBefore()");
         
-        // Equality
-        Date now = new Date();
-        assertTrue(DateUtil.equals(now, now));
- 
-        // Today != tomorrow       
-        Date tomorrow = DateUtil.addDays(DateUtil.getToday(),1);
-        assertTrue(!DateUtil.equals(now, tomorrow)); 
+        Date now       = new Date();
+        Date today     = DateUtil.getToday();
+        Date yesterday = DateUtil.subtractDays(DateUtil.getToday(),1);
+        Date tomorrow  = DateUtil.addDays(DateUtil.getToday(), 1);
+        Date wayBefore = DateUtil.subtractDays(DateUtil.getToday(), 100);
+        Date wayAfter  = DateUtil.addDays(DateUtil.getToday(), 100);
         
-        // Today with time == Today with different time
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.MINUTE, 1);
-        Date sameDay = cal.getTime();
-        assertTrue(DateUtil.equals(now, sameDay));
+        assertTrue(DateUtil.isOnOrBefore(today, now));
+        assertTrue(DateUtil.isOnOrBefore(yesterday, now));        
+        assertTrue(!DateUtil.isOnOrBefore(tomorrow, now));
+        assertTrue(DateUtil.isOnOrBefore(wayBefore, now));
+        assertTrue(!DateUtil.isOnOrBefore(wayAfter, now));
+    }
+
+    /**
+     * Tests isOnOrAfter()
+     */
+    public void testIsOnOrAfter()
+    {
+        logger_.info("Testing isOnOrAfter()");
+        
+        Date now       = new Date();
+        Date today     = DateUtil.getToday();
+        Date yesterday = DateUtil.subtractDays(DateUtil.getToday(),1);
+        Date tomorrow  = DateUtil.addDays(DateUtil.getToday(), 1);
+        Date wayBefore = DateUtil.subtractDays(DateUtil.getToday(), 100);
+        Date wayAfter  = DateUtil.addDays(DateUtil.getToday(), 100);
+        
+        assertTrue(DateUtil.isOnOrAfter(today, now));
+        assertTrue(!DateUtil.isOnOrAfter(yesterday, now));        
+        assertTrue(DateUtil.isOnOrAfter(tomorrow, now));
+        assertTrue(!DateUtil.isOnOrAfter(wayBefore, now));
+        assertTrue(DateUtil.isOnOrAfter(wayAfter, now));
     }
     
     /**
@@ -343,4 +387,119 @@ public class DateUtilTest extends TestCase
         assertEquals(cal.get(Calendar.MONTH), calNow.get(Calendar.MONTH));
         assertEquals(cal.get(Calendar.DATE), calNow.get(Calendar.DATE));        
     }
+    
+    /**
+     * Tests getBeginningOfMonth()
+     */
+    public void testGetBeginningOfMonth()
+    {
+        logger_.info("Testing getBeginningOfMonth()");
+        
+        // Beginning of month
+        Date bom = DateUtil.getBeginningOfMonth();        
+        Calendar cbom = Calendar.getInstance();
+        cbom.setTime(bom);
+
+        // Right now
+        Date now = new Date();        
+        Calendar cnow = Calendar.getInstance();
+        cnow.setTime(now); 
+
+        // Compare day, month, year.
+        assertEquals(1, cbom.get(Calendar.DAY_OF_MONTH));
+        assertEquals(cnow.get(Calendar.MONTH), cbom.get(Calendar.MONTH));
+        assertEquals(cnow.get(Calendar.YEAR), cbom.get(Calendar.YEAR));
+    }
+    
+    /**
+     * Tests getNextDay()
+     */
+    public void testGetNextDay()
+    {
+        logger_.info("Testing getNextDay()");   
+        
+        Date today = DateUtil.getToday();
+        Calendar ctoday = Calendar.getInstance();
+        ctoday.setTime(today);
+        int dayToday = ctoday.get(Calendar.DAY_OF_WEEK);
+        
+        Date tomorrow = DateUtil.addDays(DateUtil.getToday(), 1);
+        Calendar ctomorrow = Calendar.getInstance();
+        ctomorrow.setTime(tomorrow);
+        int dayTomorrow = ctomorrow.get(Calendar.DAY_OF_WEEK);
+
+        Date nextDay = DateUtil.getNextDay(dayTomorrow);        
+        Calendar cnextday = Calendar.getInstance();
+        cnextday.setTime(nextDay);
+        
+        // If today is monday, check for next tuesday. Should be tomorrow!
+        assertEquals(dayTomorrow, cnextday.get(Calendar.DAY_OF_WEEK)); 
+        
+        // If today is monday, check for next monday, should be a week from now!
+        assertTrue(DateUtil.equals(
+            DateUtil.addWeeks(DateUtil.getToday(), 1), 
+                DateUtil.getNextDay(dayToday)));
+    }
+    
+    /**
+     * Tests getPreviousDay()
+     */
+    public void testPreviousDay()
+    {
+        logger_.info("Testing getPreviousDay()");   
+        
+        Date today = DateUtil.getToday();
+        Calendar ctoday = Calendar.getInstance();
+        ctoday.setTime(today);
+        int dayToday = ctoday.get(Calendar.DAY_OF_WEEK);
+        
+        Date yesterday = DateUtil.subtractDays(DateUtil.getToday(), 1);
+        Calendar cyesterday = Calendar.getInstance();
+        cyesterday.setTime(yesterday);
+        int dayYesterday = cyesterday.get(Calendar.DAY_OF_WEEK);
+
+        Date previousDay = DateUtil.getPreviousDay(dayYesterday);        
+        Calendar cpreviousday = Calendar.getInstance();
+        cpreviousday.setTime(previousDay);
+        
+        // If today is monday, check for previous sunday. Should be yesterday!
+        assertEquals(dayYesterday, cpreviousday.get(Calendar.DAY_OF_WEEK)); 
+        
+        // If today is monday, check for previous monday, should be a week in the past!
+        assertTrue(DateUtil.equals(
+            DateUtil.addWeeks(DateUtil.getToday(), -1), 
+                DateUtil.getPreviousDay(dayToday)));
+    }
+    
+    /**
+     * Tests substractDays() 
+     */
+    public void testSubstractDays()
+    {
+        logger_.info("Testing substractDays()");
+        
+        Date today = new Date();
+        Date yesterday = DateUtil.addDays(new Date(), 1);
+        DateUtil.subtractDays(today, -1);
+        assertTrue(DateUtil.equals(today,yesterday));
+    }
+    
+    /**
+     * Tests zeroTime()
+     */
+    public void testZeroTime()
+    {
+        logger_.info("Testing zeroTime()");
+        
+        Date now = new Date();
+        Date zeroed = DateUtil.zeroTime(now);
+
+        Calendar c = Calendar.getInstance();
+        c.setTime(zeroed);
+                
+        assertEquals(0, c.get(Calendar.HOUR));
+        assertEquals(0, c.get(Calendar.MINUTE));
+        assertEquals(0, c.get(Calendar.SECOND));
+        assertEquals(0, c.get(Calendar.MILLISECOND));
+    }    
 }
