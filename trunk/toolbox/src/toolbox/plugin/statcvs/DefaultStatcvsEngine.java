@@ -70,7 +70,7 @@ public class DefaultStatcvsEngine implements StatcvsEngine
     /**
      * @see toolbox.plugin.statcvs.StatcvsEngine#generateStats()
      */
-    public void generateStats()
+    public void generateStats() throws Exception
     {
         String[] args = new String[]
         {

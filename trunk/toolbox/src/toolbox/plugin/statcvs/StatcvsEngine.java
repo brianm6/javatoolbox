@@ -17,8 +17,10 @@ public interface StatcvsEngine
 
     /**
      * Generates cvs statistics.
+     * 
+     * @throws Exception on error.
      */
-    void generateStats();
+    void generateStats() throws Exception;
 
 
     /**
