@@ -34,12 +34,14 @@ import org.apache.commons.collections.SequencedHashMap;
 import org.apache.log4j.Logger;
 
 import toolbox.log4j.SmartLogger;
+import toolbox.util.ElapsedTime;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.PropertiesUtil;
 import toolbox.util.StreamUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
+import toolbox.util.ui.AbstractSecuredAction;
 import toolbox.util.ui.ImageCache;
 
 /**
@@ -262,6 +264,7 @@ public class PluginWorkspace extends JFrame implements IStatusBar
         
         fileMenu.add(new SavePreferencesAction());
         fileMenu.add(lafMenu_);
+        fileMenu.add(new GarbageCollectAction());
         fileMenu.add(new ExitAction());            
         
         JMenuBar menubar = new JMenuBar();
@@ -661,6 +664,25 @@ public class PluginWorkspace extends JFrame implements IStatusBar
             {
                 ExceptionUtil.handleUI(ex, logger_);
             }
+        }
+    }
+    
+    /**
+     * Triggers garbage collection
+     */
+    class GarbageCollectAction extends AbstractSecuredAction
+    {
+        public GarbageCollectAction()
+        {
+            super("Run GC");
+        }
+        
+        public void actionSecured(ActionEvent e)
+        {
+            ElapsedTime time = new ElapsedTime();
+            System.gc();
+            time.setEndTime();
+            setStatus("Finished GC in " + time);
         }
     }
 }
