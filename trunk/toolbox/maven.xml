@@ -82,15 +82,6 @@
     </preGoal> 
     -->
 
-
-    <!-- =================================================================== -->
-    <!-- POST : XDOC : REGISTER-REPORTS                                      -->
-    <!-- =================================================================== -->
-    <postGoal name="xdoc:register-reports"> 
-        <attainGoal name="maven-linkcheck-plugin:deregister"/> 
-        <attainGoal name="maven-checkstyle-plugin:deregister"/> 
-    </postGoal>
-      
     
     <!-- =================================================================== -->
     <!-- C V S - U P D A T E                                                 -->
