@@ -51,8 +51,8 @@ import toolbox.workspace.host.PluginHost;
 import toolbox.workspace.host.PluginHostManager;
 
 /**
- * Generic Frame that accepts pluggable GUI components that are displayed on
- * a tab panel. All pluggable GUI components must implements the IPlugin 
+ * Generic Frame that accepts pluggable GUI components that are displayed on a
+ * tab panel. All pluggable GUI components must implements the IPlugin
  * interface as a base set of functionality to be hosted by PluginWorkspace.
  */
 public class PluginWorkspace extends JFrame implements IPreferenced
@@ -138,11 +138,6 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     private JCheckBoxMenuItem smoothFontsCheckBoxItem_;
     
     /**
-     * Delegate for all things look and feel related.
-     */
-    //private LookAndFeelUtil lafManager_;
-
-    /**
      * Manages the plugin host.
      */
     private PluginHostManager pluginHostManager_;
@@ -158,10 +153,11 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      */
     public static void main(String args[])
     {
+        // Workaround for annoying WebStart dlg box asking for disk in drive a:
+        System.setSecurityManager(null);
+        
         JFrame.setDefaultLookAndFeelDecorated(false);    // to decorate frames
         JDialog.setDefaultLookAndFeelDecorated(false);   // to decorate dialogs
-
-        //SwingUtil.getLAFs();
 
         try
         {
@@ -349,7 +345,6 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     protected void init()
     {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //lafManager_ = new LookAndFeelUtil();
         pluginHostManager_ = new PluginHostManager();
         
         // Have to build log menu here cuz buildView() requires it to set
@@ -585,7 +580,6 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         LookAndFeelUtil.savePrefs(root);
         
         // Save loaded plugin prefs
-        //for (Iterator i = plugins_.values().iterator(); i.hasNext();)
         for (int i = 0; i < getPluginHost().getPlugins().length; i++)
         {
             IPlugin plugin = getPluginHost().getPlugins()[i];
@@ -696,9 +690,6 @@ public class PluginWorkspace extends JFrame implements IPreferenced
                         Logger.getLogger("toolbox").getLevel().toString()));
 
         logMenu_.setLogLevel(level);
-        
-        // TODO: fix me!
-        //lafManager_.selectOnMenu();
         
         if (root != null)
         {    
@@ -824,9 +815,9 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     //--------------------------------------------------------------------------
 
     /**
-     * Saves the preferences for the workspaces in addition to all the
-     * active plugins.
-     */
+	 * Saves the preferences for the workspaces in addition to all the active
+	 * plugins.
+	 */
     class SavePreferencesAction extends WorkspaceAction
     {
         SavePreferencesAction()
@@ -898,6 +889,8 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      */
     class AntiAliasAction extends AbstractAction
     {
+        // TODO: Figure out where menus aren't adhering.
+        
         AntiAliasAction()
         {
             super("Smooth Fonts");
