@@ -1,7 +1,6 @@
 package toolbox.graph.jung;
 
 import edu.uci.ics.jung.visualization.Layout;
-import edu.uci.ics.jung.visualization.contrib.CircleLayout;
 
 /**
  * Jung implementation of a {@link toolbox.graph.Layout}.
@@ -47,12 +46,27 @@ public class JungLayout implements toolbox.graph.Layout
         return delegate_;
     }
     
+    //--------------------------------------------------------------------------
+    // Layout Interface
+    //--------------------------------------------------------------------------
     
+    /**
+     * @see toolbox.graph.Layout#getName()
+     */
     public String getName()
     {
         return name_;
     }
     
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Sets the layout name.
+     * 
+     * @param name Layout name.
+     */
     public void setName(String name)
     {
         name_ = name;
