@@ -51,7 +51,7 @@ public class MultivalentViewer extends JPanel implements DocumentViewer
     //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.plugin.pdf.DocumentViewer#startup(java.util.Map)
+     * @see toolbox.plugin.docviewer.DocumentViewer#startup(java.util.Map)
      */
     public void startup(Map init)
     {
@@ -74,7 +74,7 @@ public class MultivalentViewer extends JPanel implements DocumentViewer
     
     
     /**
-     * @see toolbox.plugin.pdf.DocumentViewer#view(java.io.InputStream)
+     * @see toolbox.plugin.docviewer.DocumentViewer#view(java.io.InputStream)
      */
     public void view(InputStream is)
     {
@@ -83,7 +83,7 @@ public class MultivalentViewer extends JPanel implements DocumentViewer
     
     
     /**
-     * @see toolbox.plugin.pdf.DocumentViewer#getViewableFileTypes()
+     * @see toolbox.plugin.docviewer.DocumentViewer#getViewableFileTypes()
      */
     public String[] getViewableFileTypes()
     {
@@ -92,7 +92,7 @@ public class MultivalentViewer extends JPanel implements DocumentViewer
 
 
     /**
-     * @see toolbox.plugin.pdf.DocumentViewer#isViewable(java.lang.String)
+     * @see toolbox.plugin.docviewer.DocumentViewer#isViewable(java.lang.String)
      */
     public boolean isViewable(String fileType)
     {
@@ -101,7 +101,7 @@ public class MultivalentViewer extends JPanel implements DocumentViewer
     
     
     /**
-     * @see toolbox.plugin.pdf.DocumentViewer#getComponent()
+     * @see toolbox.plugin.docviewer.DocumentViewer#getComponent()
      */
     public JComponent getComponent()
     {
@@ -110,7 +110,7 @@ public class MultivalentViewer extends JPanel implements DocumentViewer
 
 
     /**
-     * @see toolbox.plugin.pdf.DocumentViewer#shutdown()
+     * @see toolbox.plugin.docviewer.DocumentViewer#shutdown()
      */
     public void shutdown()
     {
