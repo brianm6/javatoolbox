@@ -84,6 +84,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     private static final String   ATTR_SMOOTH_FONTS = "smoothfonts";
     private static final String   ATTR_LOG_LEVEL    = "loglevel";
     private static final String   ATTR_DECORATIONS  = "decorations";
+    private static final String   ATTR_PLUGINHOST   = "pluginhost";
     
     // Plugin preferences nodes and attributes.
     private static final String   NODE_PLUGIN       = "Plugin";
@@ -344,6 +345,17 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         }
     }
     
+    
+    /**
+     * Returns the root of the preferences DOM.
+     * 
+     * @return Element
+     */
+    public Element getPreferences()
+    {
+        return prefs_.getFirstChildElement(NODE_WORKSPACE);
+    }
+    
     //--------------------------------------------------------------------------
     // Package
     //--------------------------------------------------------------------------
@@ -368,7 +380,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     protected void init()
     {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        pluginHostManager_ = new PluginHostManager();
+        pluginHostManager_ = new PluginHostManager(this);
         
         // Have to build log menu here cuz buildView() requires it to set
         // the initial value of the console logger checkbox state.
@@ -394,17 +406,25 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         bootstrapMap_.put(KEY_WORKSPACE, PluginWorkspace.this);
                 
         pluginHostManager_.setPluginHost(
-            PluginHostManager.PLUGIN_HOST_TABBED,
+            XOMUtil.getStringAttribute(
+                XOMUtil.getFirstChildElement(
+                    prefs_,
+                    NODE_WORKSPACE,
+                    new Element(NODE_WORKSPACE)), 
+                ATTR_PLUGINHOST,
+                PluginHostManager.PLUGIN_HOST_TABBED),
             bootstrapMap_);
         
         Container contentPane = getContentPane();
         contentPane.setLayout(new BorderLayout());
         
         contentPane.add(
-            pluginHostManager_.getPluginRecepticle(), BorderLayout.CENTER);
+            pluginHostManager_.getPluginRecepticle(), 
+            BorderLayout.CENTER);
         
         contentPane.add(
-            (Component) statusBar_, BorderLayout.SOUTH);
+            (Component) statusBar_, 
+            BorderLayout.SOUTH);
         
         setJMenuBar(createMenuBar());
         
@@ -706,33 +726,53 @@ public class PluginWorkspace extends JFrame implements IPreferenced
                 new Attribute(ATTR_HEIGHT, getSize().height + "")); 
         }
 
+        //
         // Save currently selected tab
+        //
         
         // Fix me!!!
         //root.addAttribute(
         //    new Attribute(ATTR_SELECTED_TAB,
         //                  tabbedPane_.getSelectedIndex()+""));
 
+        //
+        // Save the pluginhost class
+        //
+        root.addAttribute(
+            new Attribute(
+                ATTR_PLUGINHOST,
+                getPluginHost().getClass().getName()));
+        
+        //
         // Save smooth fonts flag
+        //
         root.addAttribute(
             new Attribute(
                 ATTR_SMOOTH_FONTS, 
                 smoothFontsCheckBoxItem_.isSelected() + ""));
 
+        //
         // Save user decorations flag
+        //
         root.addAttribute(
             new Attribute(
                 ATTR_DECORATIONS, 
                 decorationsCheckBoxItem_.isSelected() + ""));
         
+        //
         // Save log level
+        //
         root.addAttribute(new Attribute(
             ATTR_LOG_LEVEL, Logger.getRootLogger().getLevel().toString()));
         
+        //
         // Save look and feel
+        //
         LookAndFeelUtil.savePrefs(root);
         
+        //
         // Save loaded plugin prefs
+        //
         for (int i = 0; i < getPluginHost().getPlugins().length; i++)
         {
             IPlugin plugin = getPluginHost().getPlugins()[i];
@@ -756,7 +796,9 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         for (int i = 0; i < unloaded.size(); i++)
             root.appendChild(unloaded.get(i).copy());            
 
-            
+        
+        getPluginHost().savePrefs(root);
+        
         // Save to file
         String userhome = System.getProperty("user.home");
         userhome = FileUtil.trailWithSeparator(userhome);
@@ -909,6 +951,15 @@ public class PluginWorkspace extends JFrame implements IPreferenced
             // TODO: Fix me
             //tabbedPane_.setSelectedIndex(
             //    XOMUtil.getIntegerAttribute(root, ATTR_SELECTED_TAB, -1));
+            
+//            try
+//            {
+//                getPluginHost().applyPrefs(root);
+//            }
+//            catch (Exception e)
+//            {
+//                ExceptionUtil.handleUI(e, logger_);
+//            }
         }
         else
         {
