@@ -72,11 +72,6 @@ public class JTail extends JFrame
      */
     private IStatusBar statusBar_;    
     
-    /**
-     * Main menu bar that includes functionality not found else where 
-     */
-    private JMenuBar menuBar_;    
-    
     /** 
      * Map of each tail that is active
      */
@@ -101,7 +96,6 @@ public class JTail extends JFrame
      * application instances.
      */
     private IJTailConfig jtailConfig_;            
-        
         
     /**
      * Entry point 
@@ -180,7 +174,6 @@ public class JTail extends JFrame
         }
     }
 
-
     /**
      * Builds the GUI
      */
@@ -199,7 +192,6 @@ public class JTail extends JFrame
         
         setJMenuBar(createMenuBar());
     }
-    
     
     /**
      * Creates the menu bar
@@ -226,7 +218,6 @@ public class JTail extends JFrame
         menuBar.add(fileMenu);
         return menuBar;
     }
-
 
     /**
      * Adds a tail of the given configuration to the output area
@@ -267,7 +258,6 @@ public class JTail extends JFrame
             ExceptionUtil.handleUI(e, logger_);
         }
     }
-
          
     /**
      * Loads properties (delegated to configuration manager)
@@ -278,7 +268,6 @@ public class JTail extends JFrame
     {
         jtailConfig_ = configManager_.load();
     }    
-    
     
     /**
      * Saves the current configuration of all tail instances
@@ -312,7 +301,6 @@ public class JTail extends JFrame
         
         configManager_.save(jtailConfig_);
     }
-    
     
     /**
      * Applies configurations
@@ -354,7 +342,6 @@ public class JTail extends JFrame
             addTail(config);
         }
     }    
-    
 
     /**
      * Adds listeners
@@ -371,7 +358,6 @@ public class JTail extends JFrame
             addActionListener(new TailButtonListener());
     }
     
-    
     /**
      * @return  Currently selected tail in the tabbed pane
      */
@@ -379,7 +365,6 @@ public class JTail extends JFrame
     {
         return (TailPane)tabbedPane_.getSelectedComponent();
     }
-    
     
     /**
      * @return  Configuration of currently selected tail in the tabbed pane
@@ -419,7 +404,6 @@ public class JTail extends JFrame
         }
     }
     
-    
     /**
      * Tail button listener
      */
@@ -446,7 +430,6 @@ public class JTail extends JFrame
             addTail(config);
         }
     }
-    
     
     /**
      * Tail button listener
@@ -475,7 +458,6 @@ public class JTail extends JFrame
                 "Closed " + pane.getConfiguration().getFilename());
         }
     }
-
 
     /**
      * Saves the configuration when the application is being closed
@@ -517,7 +499,6 @@ public class JTail extends JFrame
         }
     }
 
-
     /**
      * Action to save configurations
      */
@@ -541,7 +522,6 @@ public class JTail extends JFrame
             statusBar_.setStatus("Saved configuration");
         }
     }
-
 
     /**
      * Generates a file with intermittent output so that the file can be
@@ -573,7 +553,6 @@ public class JTail extends JFrame
             statusBar_.setStatus("Created " + file + " for tailing");
         }
     }
-
     
     /**
      * Select Font action
@@ -670,7 +649,6 @@ public class JTail extends JFrame
             }
         }
     }
-    
     
     /**
      * Preferences action
