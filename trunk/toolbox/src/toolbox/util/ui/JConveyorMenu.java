@@ -1,7 +1,6 @@
 package toolbox.util.ui;
 
 import javax.swing.Action;
-import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
 /**
@@ -9,7 +8,7 @@ import javax.swing.JMenuItem;
  * of the menu and items get pushed off the bottom of the menu when the 
  * capacity is reached.
  */
-public class JConveyorMenu extends JMenu
+public class JConveyorMenu extends JSmartMenu
 {
     /** 
      * Max number of items that can be displayed by the menu 
@@ -23,9 +22,8 @@ public class JConveyorMenu extends JMenu
     /**
      * Creates a JConveyorMenu
      * 
-     * @param  capacity  Max number of menu items allowed in the menu before
-     *                   items at the bottom of the menu start getting pushed
-     *                   off.
+     * @param capacity Max number of menu items allowed in the menu before
+     *                 items at the bottom of the menu start getting pushed off.
      */
     public JConveyorMenu(int capacity)
     {
@@ -35,10 +33,9 @@ public class JConveyorMenu extends JMenu
     /**
      * Creates a JConveyorMenu
      * 
-     * @param  title     Menu title
-     * @param  capacity  Max number of menu items allowed in the menu before
-     *                   items at the bottom of the menu start getting pushed
-     *                   off.
+     * @param title Menu title
+     * @param capacity Max number of menu items allowed in the menu before
+     *                 items at the bottom of the menu start getting pushed off.
      */
     public JConveyorMenu(String title, int capacity)
     {

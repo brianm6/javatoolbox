@@ -39,10 +39,10 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
-import org.apache.log4j.Logger;
-
 import nu.xom.Attribute;
 import nu.xom.Element;
+
+import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
 import toolbox.util.DateTimeUtil;
@@ -60,8 +60,6 @@ import toolbox.util.ui.statusbar.JStatusBar;
  */
 public class JFileExplorer extends JPanel implements IPreferenced
 {
-    // TODO: Add filter for file list
-    
     private static final Logger logger_ = 
         Logger.getLogger(JFileExplorer.class);
 
@@ -150,7 +148,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
     /**
      * Sets the current directory path
      *
-     * @param  currentPath   Path to set explorer to
+     * @param currentPath Path to set explorer to
      */
     public void setCurrentPath(String currentPath)
     {
@@ -188,8 +186,8 @@ public class JFileExplorer extends JPanel implements IPreferenced
      * 
      * </pre>
      * 
-     * @param  path  Folder to select. Must be absolute in absolute form 
-     *               from the root.
+     * @param path Folder to select. Must be absolute in absolute form from the 
+     *             root.
      */
     public void selectFolder(String path)
     {
@@ -382,7 +380,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
     /**
      * Adds a JFileExplorerListener
      *
-     * @param  listener  Listener to add
+     * @param listener Listener to add
      */
     public void addJFileExplorerListener(JFileExplorerListener listener)
     {
@@ -394,7 +392,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
     /**
      * Removes a JFileExplorerListener
      *
-     * @param  listener  Listener to remove
+     * @param listener Listener to remove
      */
     public void removeJFileExplorerListener(JFileExplorerListener listener)
     {
@@ -424,7 +422,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
     /**
      * Fires an event when a directory is selected
      * 
-     * @param  folder  Folder that was selected
+     * @param folder Folder that was selected
      */
     protected void fireFolderSelected(String folder)
     {
@@ -435,7 +433,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
     /**
      * Fire an event when a directory is double clicked
      * 
-     * @param  folder  Folder that was double clicked
+     * @param folder Folder that was double clicked
      */
     protected void fireFolderDoubleClicked(String folder)
     {
@@ -450,7 +448,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
     /**
      * Builds the GUI 
      * 
-     * @param  verticalSplitter  Splitter orientation
+     * @param verticalSplitter Splitter orientation
      */
     protected void buildView(boolean verticalSplitter)
     {
@@ -462,7 +460,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
         rootsComboBox_.setRenderer(new DriveIconCellRenderer());
         
         // File list
-        fileList_ = new JList();
+        fileList_ = new JSmartList();
         fileList_.setModel(listModel_ = new DefaultListModel());
         fileList_.addMouseListener(new FileListMouseListener());
         fileList_.addListSelectionListener(new FileListSelectionListener());
@@ -474,7 +472,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
         setTreeRoot(getDefaultRoot());
 
         // Load tree icons        
-        DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
+        DefaultTreeCellRenderer renderer = new SmartTreeCellRenderer();
         renderer.setClosedIcon(ImageCache.getIcon(ImageCache.IMAGE_TREE_OPEN));
         renderer.setOpenIcon(ImageCache.getIcon(ImageCache.IMAGE_TREE_OPEN));
         renderer.setLeafIcon(ImageCache.getIcon(ImageCache.IMAGE_TREE_CLOSED));
@@ -553,7 +551,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
     /**
      * Sets the root for the JTree.
      *
-     * @param root  Root of the tree
+     * @param root Root of the tree
      */
     protected void setTreeRoot(String root)
     {
@@ -568,8 +566,8 @@ public class JFileExplorer extends JPanel implements IPreferenced
     /**
      * Sets the tree folders
      *
-     * @param  pathToAddFolders  Path to add folders to
-     * @param  currentNode       Current node
+     * @param pathToAddFolders Path to add folders to
+     * @param currentNode Current node
      */
     protected void setTreeFolders(String pathToAddFolders,
         DefaultMutableTreeNode currentNode)
@@ -590,7 +588,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
     /**
      * Finds, sorts, and adds the files according to the path to the file list.
      *
-     * @param  path  Path with files
+     * @param path Path with files
      */
     protected void setFileList(String path)
     {
@@ -621,8 +619,8 @@ public class JFileExplorer extends JPanel implements IPreferenced
     /**
      * Adds folders to the tree.
      *
-     * @param  folderList  An array of folders to add
-     * @param  parentNode  Parent node of nodes to add
+     * @param folderList An array of folders to add
+     * @param parentNode Parent node of nodes to add
      */
     protected void addTreeNodes(String[] folderList, 
         DefaultMutableTreeNode parentNode)
@@ -667,7 +665,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
     /**
      * Returns the default root.
      *
-     * @return  Default root drive/directory
+     * @return Default root drive/directory
      */
     protected String getDefaultRoot()
     {
@@ -696,7 +694,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
         /**
          * Creates a FileNode
          * 
-         * @param  userObject  Object to associate with the file node
+         * @param userObject Object to associate with the file node
          */
         FileNode(Object userObject)
         {

@@ -18,6 +18,8 @@ import org.apache.log4j.Logger;
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.JConveyorPopupMenu;
 import toolbox.util.ui.JPopupListener;
+import toolbox.util.ui.JSmartButton;
+import toolbox.util.ui.JSmartMenuItem;
 
 /**
  * Unit test for JConveyorPopupMenu
@@ -36,7 +38,7 @@ public class JConveyorPopupMenuTest extends TestCase
     /** 
      * Entry point
      * 
-     * @param  args  None recognized
+     * @param args None recognized
      * @throws Exception on error
      */
     public static void main(String[] args) throws Exception
@@ -85,12 +87,12 @@ public class JConveyorPopupMenuTest extends TestCase
                     
             public void actionPerformed(ActionEvent e)
             {
-                popupMenu.add(new DummyAction());
+                popupMenu.add(new JSmartMenuItem(new DummyAction()));
             }
         
         }
         
-        JButton add = new JButton(new AddItemAction());
+        JButton add = new JSmartButton(new AddItemAction());
         add.addMouseListener(new JPopupListener(popupMenu));
         
         cp.add(BorderLayout.CENTER, add);

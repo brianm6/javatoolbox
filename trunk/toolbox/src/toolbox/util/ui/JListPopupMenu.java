@@ -7,13 +7,11 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.JList;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
 
 /**
  * PopupMenu for a JList
  */
-public class JListPopupMenu extends JPopupMenu
+public class JListPopupMenu extends JSmartPopupMenu
 {
     /**
      * List that the popup menu is associated with
@@ -27,7 +25,7 @@ public class JListPopupMenu extends JPopupMenu
     /**
      * Creates a JListPopupMenu
      * 
-     * @param  list  JList to add popup to
+     * @param list JList to add popup to
      */
     public JListPopupMenu(JList list)
     {
@@ -37,8 +35,8 @@ public class JListPopupMenu extends JPopupMenu
     /**
      * Creates a JListPopupMenu
      * 
-     * @param label  Popupmenu label
-     * @param list   JList to add popup to
+     * @param label Popupmenu label
+     * @param list JList to add popup to
      */
     public JListPopupMenu(String label, JList list)
     {
@@ -56,8 +54,8 @@ public class JListPopupMenu extends JPopupMenu
      */
     protected void buildView()
     {
-        add(new JMenuItem(new CopyAction()));
-        add(new JMenuItem(new SelectAllAction()));
+        add(new JSmartMenuItem(new CopyAction()));
+        add(new JSmartMenuItem(new SelectAllAction()));
         list_.addMouseListener(new JPopupListener(this));
     }
     

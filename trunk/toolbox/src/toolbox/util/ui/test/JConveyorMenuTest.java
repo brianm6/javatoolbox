@@ -18,6 +18,9 @@ import org.apache.log4j.Logger;
 
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.JConveyorMenu;
+import toolbox.util.ui.JSmartButton;
+import toolbox.util.ui.JSmartMenu;
+import toolbox.util.ui.JSmartMenuItem;
 
 /**
  * Unit test for JConveyorMenu
@@ -36,7 +39,7 @@ public class JConveyorMenuTest extends TestCase
     /** 
      * Entry point
      * 
-     * @param  args  None recognized
+     * @param args None recognized
      * @throws Exception on error
      */
     public static void main(String[] args) throws Exception
@@ -66,8 +69,8 @@ public class JConveyorMenuTest extends TestCase
         
         menuBar.add(menu);
         
-        menuBar.add(
-            new JMenu("Menu Items should start dropping off after 5 items"));
+        menuBar.add(new JSmartMenu(
+            "Menu Items should start dropping off after 5 items"));
         
         Container cp = frame.getContentPane();
         cp.setLayout(new BorderLayout());
@@ -93,12 +96,12 @@ public class JConveyorMenuTest extends TestCase
                     
             public void actionPerformed(ActionEvent e)
             {
-                menu.add(new DummyAction());
+                menu.add(new JSmartMenuItem(new DummyAction()));
             }
         
         }
         
-        JButton add = new JButton(new AddItemAction());
+        JButton add = new JSmartButton(new AddItemAction());
         
         cp.add(BorderLayout.CENTER, add);
         frame.pack();

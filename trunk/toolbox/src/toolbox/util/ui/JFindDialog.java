@@ -8,10 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
@@ -64,7 +62,7 @@ public class JFindDialog extends JDialog
     /**
      * Creates a find dialog for the given search initiator
      * 
-     * @param initiator  Initiator of the searchs
+     * @param initiator Initiator of the searchs
      */
     public JFindDialog(SearchInitiator initiator)
     {
@@ -94,14 +92,14 @@ public class JFindDialog extends JDialog
         c.setLayout(new BorderLayout());
         
         JPanel findPanel = new JPanel(new FlowLayout());
-        findPanel.add(new JLabel("Find"));
-        findPanel.add(findField_ = new JTextField(15));
+        findPanel.add(new JSmartLabel("Find"));
+        findPanel.add(findField_ = new JSmartTextField(15));
         findField_.addActionListener(new FindAction());
         c.add(BorderLayout.NORTH, findPanel);
         
         JPanel buttonPanel = new JPanel(new FlowLayout());
-        findPanel.add(new JButton(new FindAction()));
-        findPanel.add(new JButton(new CancelAction()));
+        findPanel.add(new JSmartButton(new FindAction()));
+        findPanel.add(new JSmartButton(new CancelAction()));
         c.add(BorderLayout.CENTER, buttonPanel);
         
         c.add(BorderLayout.SOUTH, status_ = new JStatusBar());
@@ -204,12 +202,12 @@ public class JFindDialog extends JDialog
          * Selects the text after it has been found
          * 
          * @param start Starting index of selection
-         * @param end   Ending index of selection
+         * @param end Ending index of selection
          */
         public void selectText(int start, int end);
         
         /**
-         * @return  Frame that the search initiator is located in.
+         * @return Frame that the search initiator is located in.
          */
         public Frame getFrame();
     }
