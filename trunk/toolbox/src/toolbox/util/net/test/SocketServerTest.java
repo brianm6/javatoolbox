@@ -246,10 +246,13 @@ public class SocketServerTest extends TestCase
         // Race condition between accept() and handle()
         ThreadUtil.sleep(2000);
         
-        logger_.info(server.toString());
+        // Wait for connection handled
+        listener.waitForHandled();
         
-        // Cleanup
-        server.removeSocketServerListener(listener);
         server.stop();
+        listener.waitForStop();
+        
+        logger_.info(server.toString());
+        server.removeSocketServerListener(listener);
     }
 }

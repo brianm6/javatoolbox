@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
 import toolbox.util.SocketUtil;
+import toolbox.util.StringUtil;
 import toolbox.util.concurrent.Mutex;
 import toolbox.util.thread.ThreadDispatcher;
 import toolbox.util.thread.strategy.ThreadPoolStrategy;
@@ -153,6 +154,8 @@ public class SocketServer implements Runnable
         serverSocket_.close();
         acceptThread_.interrupt();
         logger_.info("Stopped socket server on port " + getServerPort());
+        
+        fireServerStopped();
     }
 
 
@@ -221,13 +224,13 @@ public class SocketServer implements Runnable
         String nl  = "\n";
         String nlt = nl + "\t";
 
-        return "SocketServer" + nl + "{" + nlt + 
-               "serverConfig = " + config_ + nlt + 
-               "serverSocket = " + serverSocket_ + nlt + 
-               "thread       = " + acceptThread_ + nlt + 
-               "publisher    = " + dispatcher_ + nlt + 
-               "shutdown     = " + shutdown_ + nl + 
-               "}";
+        return StringUtil.addBars(
+               "SocketServer" + nl +
+               "serverSocket = " + serverSocket_ + nl + 
+               "thread       = " + acceptThread_ + nl + 
+               "publisher    = " + dispatcher_ + nl + 
+               "shutdown     = " + shutdown_ + nl +
+               StringUtil.addBars("ServerConfig" + nl + config_.toString())); 
     }
 
     //--------------------------------------------------------------------------
@@ -259,14 +262,34 @@ public class SocketServer implements Runnable
 
 
     /**
+     * Fires notification that a connection has been handled.
+     */
+    protected void fireConnectionHandled(IConnectionHandler connectionHandler)
+    {
+        for (int i = 0; i < listeners_.length; 
+             listeners_[i++].connectionHandled(connectionHandler));
+    }
+
+
+    /**
+     * Fires notification that the server has stopped.
+     */
+    protected void fireServerStopped()
+    {
+        for (int i = 0; i < listeners_.length; 
+             listeners_[i++].serverStopped(this));
+    }
+
+
+    /**
      * Adds a listener to the socket server.
      * 
      * @param listener Implementor of ISocketServerListener.
      */
     public void addSocketServerListener(ISocketServerListener listener)
     {
-        listeners_ = 
-            (ISocketServerListener[]) ArrayUtil.add(listeners_, listener);
+        listeners_ = (ISocketServerListener[]) 
+            ArrayUtil.add(listeners_, listener);
     }
     
     
@@ -277,8 +300,8 @@ public class SocketServer implements Runnable
      */
     public void removeSocketServerListener(ISocketServerListener listener)
     {
-        listeners_ = 
-            (ISocketServerListener[]) ArrayUtil.remove(listeners_, listener);
+        listeners_ = (ISocketServerListener[]) 
+            ArrayUtil.remove(listeners_, listener);
     }
     
     //--------------------------------------------------------------------------
@@ -326,6 +349,8 @@ public class SocketServer implements Runnable
                 // Handle the connection
                 handler.handle(socketConn);
 
+                fireConnectionHandled(handler);
+                
                 // On to the next accept...
             }
             catch (SocketException se)

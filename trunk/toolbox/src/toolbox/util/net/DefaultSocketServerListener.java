@@ -25,9 +25,19 @@ public class DefaultSocketServerListener implements ISocketServerListener
     private BlockingQueue accepted_;
     
     /**
-     * Queue for started evetnts.
+     * Queue for started events.
      */
     private BlockingQueue started_;
+    
+    /**
+     * Queue for stopped events.
+     */
+    private BlockingQueue stopped_;
+    
+    /**
+     * Queue for connection handled events.
+     */
+    private BlockingQueue handled_;
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -40,6 +50,8 @@ public class DefaultSocketServerListener implements ISocketServerListener
     {
         accepted_ = new BlockingQueue();
         started_  = new BlockingQueue();
+        handled_  = new BlockingQueue();
+        stopped_  = new BlockingQueue();
     }
     
     //--------------------------------------------------------------------------
@@ -68,6 +80,30 @@ public class DefaultSocketServerListener implements ISocketServerListener
     {
         return (SocketServer) started_.pull();
     }
+
+    
+    /**
+     * Waits for a server socket to stop.
+     * 
+     * @return Socket server after it has been stopped. 
+     * @throws InterruptedException on error.
+     */
+    public SocketServer waitForStop() throws InterruptedException
+    {
+        return (SocketServer) stopped_.pull();
+    }
+
+    
+    /**
+     * Waits for connection to be handled successfully.
+     * 
+     * @return IConnectionHandler Connection handler. 
+     * @throws InterruptedException on error.
+     */
+    public IConnectionHandler waitForHandled() throws InterruptedException
+    {
+        return (IConnectionHandler) handled_.pull();
+    }
     
     //--------------------------------------------------------------------------
     // ISocketServerListener Interface
@@ -90,5 +126,25 @@ public class DefaultSocketServerListener implements ISocketServerListener
     public void serverStarted(SocketServer server)
     {
         started_.push(server);            
+    }
+    
+    
+    /**
+     * @see toolbox.util.net.ISocketServerListener#connectionHandled(
+     *      toolbox.util.net.IConnectionHandler)
+     */
+    public void connectionHandled(IConnectionHandler connectionHandler)
+    {
+        handled_.push(connectionHandler);
+    }
+    
+    
+    /**
+     * @see toolbox.util.net.ISocketServerListener#serverStopped(
+     *      toolbox.util.net.SocketServer)
+     */
+    public void serverStopped(SocketServer server)
+    {
+        stopped_.push(server);
     }
 }

@@ -1,7 +1,11 @@
 package toolbox.plugin.netmeter;
 
 import java.io.IOException;
+import java.net.Socket;
 
+import toolbox.util.net.IConnection;
+import toolbox.util.net.IConnectionHandler;
+import toolbox.util.net.ISocketServerListener;
 import toolbox.util.net.SocketServer;
 import toolbox.util.net.SocketServerConfig;
 import toolbox.util.service.AbstractService;
@@ -26,6 +30,11 @@ public class Server extends AbstractService
      * Server port.
      */
     private int port_;
+    
+    /**
+     * Socket server listener. 
+     */
+    private ISocketServerListener serverListener_;
     
     //--------------------------------------------------------------------------
     // Main
@@ -119,9 +128,55 @@ public class Server extends AbstractService
         
         config.setConnectionHandlerType(
             "toolbox.plugin.netmeter.ServerConnectionHandler");
-            
+        
         server_ = new SocketServer(config);
+        
+        //
+        // Add listener so we can grab references to the created 
+        // IConnectionHandlers for cleanup on shutdown.
+        //
+        serverListener_ = new ServerListener();        
+        server_.addSocketServerListener(serverListener_);
     }
+
+    //--------------------------------------------------------------------------
+    // ServerListener 
+    //--------------------------------------------------------------------------
+    
+    class ServerListener implements ISocketServerListener
+    {
+        /**
+         * @see toolbox.util.net.ISocketServerListener#socketAccepted(java.net.Socket, toolbox.util.net.IConnection)
+         */
+        public void socketAccepted(Socket socket, IConnection connection)
+        {
+        }
+
+
+        /**
+         * @see toolbox.util.net.ISocketServerListener#serverStarted(toolbox.util.net.SocketServer)
+         */
+        public void serverStarted(SocketServer server)
+        {
+        }
+
+
+        /**
+         * @see toolbox.util.net.ISocketServerListener#connectionHandled(toolbox.util.net.IConnectionHandler)
+         */
+        public void connectionHandled(IConnectionHandler connectionHandler)
+        {
+        }
+        
+        /**
+         * @see toolbox.util.net.ISocketServerListener#serverStopped(toolbox.util.net.SocketServer)
+         */
+        public void serverStopped(SocketServer server)
+        {
+            
+        }
+    }
+    
     
     //--------------------------------------------------------------------------
     // Service Interface

@@ -8,6 +8,15 @@ import java.net.Socket;
 public interface ISocketServerListener
 {
     /**
+     * Notification that the socket server has started and is ready to accept
+     * client connections.
+     * 
+     * @param server Server that started up.
+     */    
+    void serverStarted(SocketServer server);
+    
+    
+    /**
      * Notification that a client socket connection was accepted.
      * 
      * @param socket Newly created socket to communicate with the client.
@@ -17,10 +26,18 @@ public interface ISocketServerListener
 
 
     /**
-     * Notification that the socket server has started and is ready to accept
-     * client connections.
+     * Notification that the a client request has been serviced by the given
+     * IConnectionHandler.
      * 
-     * @param server Server that started up
+     * @param connectionHandler Connection handler.
+     */
+    void connectionHandled(IConnectionHandler connectionHandler);
+    
+    
+    /**
+     * Notification that the socket server has stopped.
+     * 
+     * @param server Server that stopped.
      */    
-    void serverStarted(SocketServer server);
+    void serverStopped(SocketServer server);
 }
