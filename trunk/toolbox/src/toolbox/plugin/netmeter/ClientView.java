@@ -153,7 +153,7 @@ public class ClientView extends JHeaderPanel implements ServiceListener,
      */
     public void throughput(int kbs)
     {
-        throughputField_.setText(kbs + "");
+        throughputField_.setText(kbs + " KB/s");
     }
     
     //--------------------------------------------------------------------------
