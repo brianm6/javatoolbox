@@ -49,44 +49,48 @@ public class LRUMap implements Map, Serializable
     //--------------------------------------------------------------------------
 
     /**
-     * Constructs an LRUMap with a size of 1000 and no time limit.
-     */
+	 * Constructs an LRUMap with a size of 1000 and no time limit.
+	 */
     public LRUMap()
     {
         this(DEFAULT_MAX_SIZE);
     }
 
+    
     /**
-     * Constructs an LRUMap with a size of <tt>maxSize</tt> with no time limit.
-     * 
-     * @param  maxSize  Max size
-     */
+	 * Constructs an LRUMap with a size of <tt>maxSize</tt> with no time
+	 * limit.
+	 * 
+	 * @param maxSize Max size
+	 */
     public LRUMap(int maxSize)
     {
         this(maxSize, NO_TIME_LIMIT);
     }
 
+    
     /**
-     * Constructs an LRUMap with a size of <tt>maxSize</tt> with a time limit of
-     * <tt>timeLimit</tt> in milliseconds.
-     * 
-     * @param  maxSize      Max size
-     * @param  timeLimit    Time limit 
-     */
+	 * Constructs an LRUMap with a size of <tt>maxSize</tt> with a time limit
+	 * of <tt>timeLimit</tt> in milliseconds.
+	 * 
+	 * @param maxSize Max size
+	 * @param timeLimit Time limit
+	 */
     public LRUMap(int maxSize, long timeLimit)
     {
         this(maxSize, timeLimit, new HashMap());
     }
 
+    
     /**
-     * Constructs an LRUMap with a size of <tt>maxSize</tt> with a time limit of
-     * <tt>timeLimit</tt> in milliseconds and using <tt>backingMap</tt> to store
-     * the data.
-     * 
-     * @param maxSize    Maximum size of this map
-     * @param timeLimit  Time limit in milliseconds that a key should exist
-     * @param backingMap Map used to store the key and values for the LRUMap
-     */
+	 * Constructs an LRUMap with a size of <tt>maxSize</tt> with a time limit
+	 * of <tt>timeLimit</tt> in milliseconds and using <tt>backingMap</tt>
+	 * to store the data.
+	 * 
+	 * @param maxSize Maximum size of this map
+	 * @param timeLimit Time limit in milliseconds that a key should exist
+	 * @param backingMap Map used to store the key and values for the LRUMap
+	 */
     public LRUMap(int maxSize, long timeLimit, Map backingMap)
     {
         maxSize_   = maxSize;
@@ -100,43 +104,47 @@ public class LRUMap implements Map, Serializable
     //--------------------------------------------------------------------------
 
     /**
-     * @return  Max size
-     */
+	 * @return Max size
+	 */
     public int getMaxSize()
     {
         return maxSize_;
     }
 
+    
     /**
-     * Sets max size
-     * 
-     * @param  maxSize  Max size
-     */
+	 * Sets max size
+	 * 
+	 * @param maxSize Max size
+	 */
     public void setMaxSize(int maxSize)
     {
         maxSize_ = maxSize;
         update();
     }
 
+    
     /**
-     * @return Time limit
-     */
+	 * @return Time limit
+	 */
     public long getTimeLimit()
     {
         return timeLimit_;
     }
 
+    
     /**
-     * Sets time limit
-     * 
-     * @param  timeLimit  Time limit
-     */
+	 * Sets time limit
+	 * 
+	 * @param timeLimit Time limit
+	 */
     public void setTimeLimit(long timeLimit)
     {
         timeLimit_ = timeLimit;
         update();
     }
 
+    
     /**
      * Checks for if the LRUMap is above the max size or any of the elements
      * have exceeded the maximum time limit.
@@ -171,7 +179,9 @@ public class LRUMap implements Map, Serializable
         }
     }
 
-    // MAP METHODS
+    //--------------------------------------------------------------------------
+    // Map Methods
+    //--------------------------------------------------------------------------
 
     /**
      * Removes all mappings from this map (optional operation).
@@ -182,36 +192,38 @@ public class LRUMap implements Map, Serializable
         keys_.clear();
     }
 
+    
     /**
-     * Returns <tt>true</tt> if this map contains a mapping for the specified
-     * key.
-     * 
-     * <b>NOTE:</b> If the key is found, then the timestamp for that entry
-     * will be updated.
-     *
-     * @param  key  Key whose presence in this map is to be tested.
-     * @return True if this map contains a mapping for the specified key
-     */
+	 * Returns <tt>true</tt> if this map contains a mapping for the specified
+	 * key.
+	 * 
+	 * <b>NOTE:</b> If the key is found, then the timestamp for that entry
+	 * will be updated.
+	 * 
+	 * @param key Key whose presence in this map is to be tested.
+	 * @return True if this map contains a mapping for the specified key
+	 */
     public boolean containsKey(Object key)
     {
         update();
         return map_.containsKey(new LRUKey(key));
     }
 
+    
     /**
-     * Returns <tt>true</tt> if this map maps one or more keys to the
-     * specified value.  More formally, returns <tt>true</tt> if and only if
-     * this map contains at least one mapping to a value <tt>v</tt> such that
-     * <tt>(value==null ? v==null : value.equals(v))</tt>.  This operation
-     * will probably require time linear in the map size for most
-     * implementations of the <tt>Map</tt> interface.
-     * <p>
-     * <b>NOTE:</b> Alter the timestamp of all entries with <tt>value</tt>
-     *
-     * @param value value whose presence in this map is to be tested.
-     * @return <tt>true</tt> if this map maps one or more keys to the
-     *         specified value.
-     */
+	 * Returns <tt>true</tt> if this map maps one or more keys to the
+	 * specified value. More formally, returns <tt>true</tt> if and only if
+	 * this map contains at least one mapping to a value <tt>v</tt> such that
+	 * <tt>(value==null ? v==null : value.equals(v))</tt>. This operation
+	 * will probably require time linear in the map size for most
+	 * implementations of the <tt>Map</tt> interface.
+	 * <p>
+	 * <b>NOTE:</b> Alter the timestamp of all entries with <tt>value</tt>
+	 * 
+	 * @param value value whose presence in this map is to be tested.
+	 * @return <tt>true</tt> if this map maps one or more keys to the
+	 *         specified value.
+	 */
     public boolean containsValue(Object value)
     {
         try
@@ -252,28 +264,30 @@ public class LRUMap implements Map, Serializable
         }
     }
 
+    
     /**
-     * Returns a set view of the mappings contained in this map.  Each element
-     * in the returned set is a <tt>Map.Entry</tt>.  The set is backed by the
-     * map, so changes to the map are reflected in the set, and vice-versa.
-     * If the map is modified while an iteration over the set is in progress,
-     * the results of the iteration are undefined.  The set supports element
-     * removal, which removes the corresponding mapping from the map, via the
-     * <tt>Iterator.remove</tt>, <tt>Set.remove</tt>, <tt>removeAll</tt>,
-     * <tt>retainAll</tt> and <tt>clear</tt> operations.  It does not support
-     * the <tt>add</tt> or <tt>addAll</tt> operations.
-     *
-     * <b>NOTE:</b> If the value of an entry is accessed, then the timestamp 
-     * for that entry will be updated.
-     * 
-     * @return a set view of the mappings contained in this map.
-     */
+	 * Returns a set view of the mappings contained in this map. Each element
+	 * in the returned set is a <tt>Map.Entry</tt>. The set is backed by the
+	 * map, so changes to the map are reflected in the set, and vice-versa. If
+	 * the map is modified while an iteration over the set is in progress, the
+	 * results of the iteration are undefined. The set supports element
+	 * removal, which removes the corresponding mapping from the map, via the
+	 * <tt>Iterator.remove</tt>,<tt>Set.remove</tt>,<tt>removeAll</tt>,
+	 * <tt>retainAll</tt> and <tt>clear</tt> operations. It does not
+	 * support the <tt>add</tt> or <tt>addAll</tt> operations.
+	 * 
+	 * <b>NOTE:</b> If the value of an entry is accessed, then the timestamp
+	 * for that entry will be updated.
+	 * 
+	 * @return a set view of the mappings contained in this map.
+	 */
     public Set entrySet()
     {
         update();
         return new EntrySet();
     }
 
+    
     /**
      * Returns the value to which this map maps the specified key.  Returns
      * <tt>null</tt> if the map contains no mapping for this key.  A return
@@ -308,6 +322,7 @@ public class LRUMap implements Map, Serializable
         }
     }
 
+    
     /**
      * Returns <tt>true</tt> if this map contains no key-value mappings.
      *
@@ -319,48 +334,49 @@ public class LRUMap implements Map, Serializable
         return map_.isEmpty();
     }
 
+    
     /**
-     * Returns a set view of the keys contained in this map.  The set is
-     * backed by the map, so changes to the map are reflected in the set, and
-     * vice-versa.  If the map is modified while an iteration over the set is
-     * in progress, the results of the iteration are undefined.  The set
-     * supports element removal, which removes the corresponding mapping from
-     * the map, via the <tt>Iterator.remove</tt>, <tt>Set.remove</tt>,
-     * <tt>removeAll</tt> <tt>retainAll</tt>, and <tt>clear</tt> operations.
-     * It does not support the add or <tt>addAll</tt> operations.
-     *
-     * @return a set view of the keys contained in this map.
-     */
+	 * Returns a set view of the keys contained in this map. The set is backed
+	 * by the map, so changes to the map are reflected in the set, and
+	 * vice-versa. If the map is modified while an iteration over the set is in
+	 * progress, the results of the iteration are undefined. The set supports
+	 * element removal, which removes the corresponding mapping from the map,
+	 * via the <tt>Iterator.remove</tt>,<tt>Set.remove</tt>,<tt>removeAll</tt> 
+     * <tt>retainAll</tt>, and <tt>clear</tt> operations. It does not support 
+     * the add or <tt>addAll</tt> operations.
+	 * 
+	 * @return a set view of the keys contained in this map.
+	 */
     public Set keySet()
     {
         update();
         return new KeySet();
     }
 
+    
     /**
-     * Associates the specified value with the specified key in this map
-     * (optional operation).  If the map previously contained a mapping for
-     * this key, the old value is replaced.
-     *
-     * @param   key    Key with which the specified value is to be associated.
-     * @param   value  Value to be associated with the specified key.
-     * @return  Object
-     * 
-     * Previous value associated with specified key, or <tt>null</tt>
-     * if there was no mapping for key.  A <tt>null</tt> return can also
-     * indicate that the map previously associated <tt>null</tt> with the
-     * specified key, if the implementation supports <tt>null</tt> values.
-     * 
-     * @throws UnsupportedOperationException if the <tt>put</tt> operation is
-     *         not supported by this map.
-     * @throws ClassCastException if the class of the specified key or value
-     *         prevents it from being stored in this map.
-     * @throws IllegalArgumentException if some aspect of this key or value
-     *         prevents it from being stored in this map.
-     * @throws NullPointerException this map does not permit <tt>null</tt>
-     *         keys or values, and the specified key or value is
-     *         <tt>null</tt>.
-     */
+	 * Associates the specified value with the specified key in this map
+	 * (optional operation). If the map previously contained a mapping for this
+	 * key, the old value is replaced.
+	 * 
+	 * @param key Key with which the specified value is to be associated.
+	 * @param value Value to be associated with the specified key.
+	 * @return Object
+	 * 
+	 * Previous value associated with specified key, or <tt>null</tt> if
+	 * there was no mapping for key. A <tt>null</tt> return can also indicate
+	 * that the map previously associated <tt>null</tt> with the specified
+	 * key, if the implementation supports <tt>null</tt> values.
+	 * 
+	 * @throws UnsupportedOperationException if the <tt>put</tt> operation is
+	 *         not supported by this map.
+	 * @throws ClassCastException if the class of the specified key or value
+	 *         prevents it from being stored in this map.
+	 * @throws IllegalArgumentException if some aspect of this key or value
+	 *         prevents it from being stored in this map.
+	 * @throws NullPointerException this map does not permit <tt>null</tt>
+	 *         keys or values, and the specified key or value is <tt>null</tt>.
+	 */
     public Object put(Object key, Object value) 
         throws UnsupportedOperationException, ClassCastException,
                IllegalArgumentException, NullPointerException
@@ -386,22 +402,22 @@ public class LRUMap implements Map, Serializable
         }
     }
 
+    
     /**
-     * Copies all of the mappings from the specified map to this map
-     * (optional operation).  These mappings will replace any mappings that
-     * this map had for any of the keys currently in the specified map.
-     *
-     * @param  t   Mappings to be stored in this map.
-     * @throws UnsupportedOperationException if the <tt>putAll</tt> method is
-     *         not  supported by this map.
-     * @throws ClassCastException if the class of a key or value in the
-     *         specified  map prevents it from being stored in this map.
-     * @throws IllegalArgumentException some aspect of a key or value in the
-     *         specified  map prevents it from being stored in this map.
-     * @throws NullPointerException this map does not permit <tt>null</tt>
-     *         keys  or values, and the specified key or value is
-     *         <tt>null</tt>.
-     */
+	 * Copies all of the mappings from the specified map to this map (optional
+	 * operation). These mappings will replace any mappings that this map had
+	 * for any of the keys currently in the specified map.
+	 * 
+	 * @param t Mappings to be stored in this map.
+	 * @throws UnsupportedOperationException if the <tt>putAll</tt> method is
+	 *         not supported by this map.
+	 * @throws ClassCastException if the class of a key or value in the
+	 *         specified map prevents it from being stored in this map.
+	 * @throws IllegalArgumentException some aspect of a key or value in the
+	 *         specified map prevents it from being stored in this map.
+	 * @throws NullPointerException this map does not permit <tt>null</tt>
+	 *         keys or values, and the specified key or value is <tt>null</tt>.
+	 */
     public void putAll(Map t)
         throws UnsupportedOperationException, ClassCastException,
                IllegalArgumentException, NullPointerException
@@ -413,19 +429,21 @@ public class LRUMap implements Map, Serializable
         }
     }
 
+    
     /**
-     * Removes the mapping for this key from this map if present (optional
-     * operation).
-     *
-     * @param key key whose mapping is to be removed from the map.
-     * @return previous value associated with specified key, or <tt>null</tt>
-     *           if there was no mapping for key.  A <tt>null</tt> return can
-     *           also indicate that the map previously associated <tt>null</tt>
-     *           with the specified key, if the implementation supports
-     *           <tt>null</tt> values.
-     * @throws UnsupportedOperationException if the <tt>remove</tt> method is
-     *         not supported by this map.
-     */
+	 * Removes the mapping for this key from this map if present (optional
+	 * operation).
+	 * 
+	 * @param key key whose mapping is to be removed from the map.
+	 * @return previous value associated with specified key, or <tt>null</tt>
+	 *         if there was no mapping for key. A <tt>null</tt> return can
+	 *         also indicate that the map previously associated <tt>null</tt>
+	 *         with the specified key, if the implementation supports 
+     *         <tt>null</tt>.
+	 *         values.
+	 * @throws UnsupportedOperationException if the <tt>remove</tt> method is
+	 *         not supported by this map.
+	 */
     public Object remove(Object key) throws UnsupportedOperationException    
     {
         try
@@ -440,45 +458,47 @@ public class LRUMap implements Map, Serializable
         }
     }
 
+    
     /**
-     * Returns the number of key-value mappings in this map.  If the
-     * map contains more than <tt>Integer.MAX_VALUE</tt> elements, returns
+	 * Returns the number of key-value mappings in this map. If the map
+	 * contains more than <tt>Integer.MAX_VALUE</tt> elements, returns 
      * <tt>Integer.MAX_VALUE</tt>.
-     *
-     * @return the number of key-value mappings in this map.
-     */
+	 * 
+	 * @return the number of key-value mappings in this map.
+	 */
     public int size()
     {
         update();
         return map_.size();
     }
 
+    
     /**
-     * Returns a collection view of the values contained in this map.  The
-     * collection is backed by the map, so changes to the map are reflected in
-     * the collection, and vice-versa.  If the map is modified while an
-     * iteration over the collection is in progress, the results of the
-     * iteration are undefined.  The collection supports element removal,
-     * which removes the corresponding mapping from the map, via the
-     * <tt>Iterator.remove</tt>, <tt>Collection.remove</tt>,
-     * <tt>removeAll</tt>, <tt>retainAll</tt> and <tt>clear</tt> operations.
-     * It does not support the add or <tt>addAll</tt> operations.
-     * <p>
-     * 
-     * <b>NOTE</b>: Does not Update the timestamp for the entry
-     * 
-     * @return a collection view of the values contained in this map.
-     */
+	 * Returns a collection view of the values contained in this map. The
+	 * collection is backed by the map, so changes to the map are reflected in
+	 * the collection, and vice-versa. If the map is modified while an
+	 * iteration over the collection is in progress, the results of the
+	 * iteration are undefined. The collection supports element removal, which
+	 * removes the corresponding mapping from the map, via the 
+     * <tt>Iterator.remove</tt>, <tt>Collection.remove</tt>,<tt>removeAll</tt>,
+     * <tt>retainAll</tt> and <tt>clear</tt> operations. It does not support 
+     * the add or <tt>addAll</tt> operations.
+	 * <p>
+	 * 
+	 * <b>NOTE</b>: Does not Update the timestamp for the entry
+	 * 
+	 * @return a collection view of the values contained in this map.
+	 */
     public java.util.Collection values()
     {
         update();
         return map_.values();
     }
 
-    // STANDARD METHODS
-
+    
     /**
      * Returns a String that represents the value of this object.
+     * 
      * @return a string representation of the receiver
      */
     public String toString()
@@ -488,14 +508,15 @@ public class LRUMap implements Map, Serializable
     }
 
     /**
-     * @param   o  Object to test for equality
-     * @return  True if equal, false otherwise
-     */
+	 * @param o Object to test for equality
+	 * @return True if equal, false otherwise
+	 */
     public boolean equals(Object o)
     {
         return map_.equals(o);
     }
 
+    
     /**
      * Returns the hash code value for this map.  The hash code of a map is
      * defined to be the sum of the hash codes of each entry in the map's
@@ -519,8 +540,7 @@ public class LRUMap implements Map, Serializable
         return map_.hashCode();
     }
 
-    // HELPER METHODS
-
+    
     protected void updateKey(LRUKey key)
     {
         if (map_.containsKey(key))
@@ -628,6 +648,7 @@ public class LRUMap implements Map, Serializable
         }
     }
 
+    
     /**
      * Entry set
      */
@@ -669,6 +690,7 @@ public class LRUMap implements Map, Serializable
         }
     }
 
+    
     /**
      * Key set
      */

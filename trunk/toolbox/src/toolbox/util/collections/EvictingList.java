@@ -9,10 +9,14 @@ import java.util.List;
  */
 public class EvictingList
 {
-    /** Backing store */
+    /** 
+     * Backing store. 
+     */
     private List list_;
     
-    /** Max size of the list. */
+    /** 
+     * Max size of the list. 
+     */
     private int max_;
     
     //--------------------------------------------------------------------------
@@ -20,11 +24,11 @@ public class EvictingList
     //--------------------------------------------------------------------------
     
     /**
-     * Creates an EvictingList
-     * 
-     * @param  max  Maximum size of the list before elements start getting 
-     *              bumped off. Must be > 0.
-     */
+	 * Creates an EvictingList.
+	 * 
+	 * @param max Maximum size of the list before elements start getting bumped
+	 *        off. Must be > 0.
+	 */
     public EvictingList(int max)
     {
         if (max <=0)
@@ -33,11 +37,16 @@ public class EvictingList
         max_ = max;
         list_ = new ArrayList(max_);
     }
-    
+        
     //--------------------------------------------------------------------------
     // Public
     //-------------------------------------------------------------------------- 
     
+    /**
+     * Adds to the list.
+     * 
+     * @param element Element to add
+     */    
     public void add(Object element)
     {
         if (list_.size() == max_)

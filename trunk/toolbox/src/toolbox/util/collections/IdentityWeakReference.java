@@ -5,10 +5,10 @@ import java.lang.ref.ReferenceQueue;
 import java.lang.ref.WeakReference;
 
 /**
- * A WeakReference which can be used within a hash table as the identity of an 
+ * A WeakReference which can be used within a hash table as the identity of an
  * object. (i.e. object reference)
  * <p>
- * Two IdentityWeakReference(s) are the same if there underlying object have 
+ * Two IdentityWeakReference(s) are the same if there underlying object have
  * the same object reference. (ex: object1 == object2)
  * 
  * @see #REFERENCE_FACTORY
@@ -17,24 +17,19 @@ import java.lang.ref.WeakReference;
 public class IdentityWeakReference extends WeakReference
 {
     private int hash_;
-    
+
     /**
-     * Used within a ReferenceMap to create keys
-     * of IdentityWeakReference(s).
-     * <p>
-     * Example:
-     * <pre>
-     * 
-     *   // Create a map who's keys are based on IdentityWeakReference
-     *   Map map = new ReferenceMap( IdentityWeakReference.REFERENCE_FACTORY );
-     * 
-     * </pre>
-     */
+	 * Used within a ReferenceMap to create keys of IdentityWeakReference(s).
+	 * <p>
+	 * Example:
+	 * <pre>
+	 * // Create a map who's keys are based on IdentityWeakReference 
+     * Map map = new ReferenceMap( IdentityWeakReference.REFERENCE_FACTORY );
+	 * </pre>
+	 */
     public static final ReferenceFactory REFERENCE_FACTORY =
         new ReferenceFactory()
     {
-
-        // REFERENCEFACTORY METHODS
         public Reference create(Object k)
         {
             return k == null ? null : new IdentityWeakReference(k);
@@ -47,26 +42,27 @@ public class IdentityWeakReference extends WeakReference
     };
 
     //--------------------------------------------------------------------------
-    //  Constructors
+    // Constructors
     //--------------------------------------------------------------------------
-    
+
     /**
-     * Hashcode of key, stored here since the key may be tossed by the GC
-     * 
-     * @param  k  Key
-     */
+	 * Hashcode of key, stored here since the key may be tossed by the GC
+	 * 
+	 * @param k Key
+	 */
     public IdentityWeakReference(Object k)
     {
         super(k);
         hash_ = System.identityHashCode(k);
     }
 
+    
     /**
-     * Creates a new IdentityWeakReference
-     * 
-     * @param  k  Key
-     * @param  q  Reference queue
-     */
+	 * Creates a new IdentityWeakReference
+	 * 
+	 * @param k Key
+	 * @param q Reference queue
+	 */
     public IdentityWeakReference(Object k, ReferenceQueue q)
     {
         super(k, q);
@@ -78,17 +74,15 @@ public class IdentityWeakReference extends WeakReference
     //--------------------------------------------------------------------------
 
     /**
-     * Determines equality by the object references
-     * pointed to by each <tt>Reference</tt>.<p>
-     * <pre>
-     * 
-     * return this.get() == ((IdentityWeakReference) o2).get();
-     * 
-     * </pre>
-     * 
-     * @param  o2  Object to compare
-     * @return True if equals, false otherwise
-     */
+	 * Determines equality by the object references pointed to by each 
+     * <tt>Reference</tt>.<p>
+	 * <pre>
+	 *  return this.get() == ((IdentityWeakReference) o2).get();
+	 * </pre>
+	 * 
+	 * @param o2 Object to compare
+	 * @return True if equals, false otherwise
+	 */
     public boolean equals(Object o2)
     {
         if (this == o2)
@@ -101,11 +95,12 @@ public class IdentityWeakReference extends WeakReference
         return this.get() == ((IdentityWeakReference) o2).get();
     }
 
+    
     /**
-     * The System.identityHashCode(..) of the object referenced
-     * 
-     * @return  hashCode
-     */
+	 * The System.identityHashCode(..) of the object referenced.
+	 * 
+	 * @return hashCode
+	 */
     public int hashCode()
     {
         return hash_;
