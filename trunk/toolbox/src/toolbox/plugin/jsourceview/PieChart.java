@@ -1,9 +1,9 @@
 package toolbox.plugin.jsourceview;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -16,49 +16,52 @@ import org.jfree.util.Rotation;
 /**
  * Pie chart that visualizes source code categories.
  */
-public class PieChart extends JPanel // extends ApplicationFrame 
+public class PieChart extends JPanel 
 {
+    private FileStats totals_;
+    
     /**
      * Creates a PieChart.
      */
-    public PieChart() 
+    public PieChart(FileStats totals) 
     {
         super(new BorderLayout());
+        totals_ = totals;
         
         // create a dataset...
-        PieDataset dataset = createSampleDataset();
+        PieDataset dataset = createDataset();
         
         // create the chart...
         JFreeChart chart = createChart(dataset);
         
         // add the chart to a panel...
         ChartPanel chartPanel = new ChartPanel(chart);
-        chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
+        //chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
         add(chartPanel, BorderLayout.CENTER);
     }
 
     
     /**
-     * Creates a sample dataset for the demo.
+     * Creates a dataset with the source code statistics.
      * 
-     * @return A sample dataset.
+     * @return PieDataset
      */
-    private PieDataset createSampleDataset() 
+    protected PieDataset createDataset() 
     {
         DefaultPieDataset result = new DefaultPieDataset();
-        result.setValue("Comments", new Double(10));
-        result.setValue("Source code", new Double(20.0));
-        result.setValue("Thrown out", new Double(40));
-        result.setValue("Blank Lines", new Double(30));
+        result.setValue("Comments", totals_.getCommentLines());
+        result.setValue("Source code", totals_.getCodeLines());
+        result.setValue("Thrown out", totals_.getThrownOutLines());
+        result.setValue("Blank Lines", totals_.getBlankLines());
         return result;
     }
 
     
     /**
-     * Creates a sample chart.
+     * Creates a  chart.
      * 
-     * @param dataset  the dataset.
-     * @return A chart.
+     * @param dataset The dataset.
+     * @return JFreeChart
      */
     private JFreeChart createChart(PieDataset dataset) 
     {
@@ -70,28 +73,14 @@ public class PieChart extends JPanel // extends ApplicationFrame
             false);
 
         // set the background color for the chart...
-        chart.setBackgroundPaint(Color.yellow);
+        //chart.setBackgroundPaint(Colors.getColor("light steel blue"));
+        chart.setBackgroundPaint(UIManager.getColor("JOptionFrame.background"));
         Pie3DPlot plot = (Pie3DPlot) chart.getPlot();
-        plot.setStartAngle(270);
+        //plot.setStartAngle(0);
         plot.setDirection(Rotation.CLOCKWISE);
         plot.setForegroundAlpha(0.5f);
+        //plot.setCircular(true);
         plot.setNoDataMessage("No data to display");
         return chart;
     }
-
-    
-    /**
-     * Starting point for the demonstration application.
-     *
-     * @param args  ignored.
-     */
-//    public static void main(String[] args) {
-//
-//        PieChart demo = new PieChart("Pie Chart 3D Demo 1");
-//        demo.pack();
-//        RefineryUtilities.centerFrameOnScreen(demo);
-//        demo.setVisible(true);
-//
-//    }
-
 }
