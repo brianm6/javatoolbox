@@ -47,9 +47,18 @@ public class JFileExplorerTest extends UITestCase
     // Unit Tests
     //--------------------------------------------------------------------------
     
-    /** 
-     * Tests JFileExplorer.
-     */
+    /**
+	 * Presents JFileExplorer in a window so that it can be tested 
+     * interactively.
+     * <p>
+	 * <ul>
+	 * <li>The listener can be verified since it prints out messages on event
+	 *     notification.
+	 * <li>selectFolder() can be tested by entering a file path in the
+	 *     textfield and clicking on the Set Folder button.
+	 * <li>Refresh can be tested by clicking on the icon in the infobar
+	 * <ul>
+	 */
     public void testJFileExplorer()
     {
         logger_.info("Running testJFileExplorer...");
