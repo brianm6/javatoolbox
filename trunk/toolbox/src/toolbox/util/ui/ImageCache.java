@@ -41,6 +41,7 @@ public class ImageCache
     public static final String IMAGE_LOCK          = ROOT + "Lock.png";
     public static final String IMAGE_PASTE         = ROOT + "Paste.gif";
     public static final String IMAGE_PAUSE         = ROOT + "Pause.png";    
+    public static final String IMAGE_PIE_CHART     = ROOT + "PieChart.png";    
     public static final String IMAGE_PLAY          = ROOT + "Play.png";
     public static final String IMAGE_QUESTION_MARK = ROOT + "QuestionMark.png";
     public static final String IMAGE_REFRESH       = ROOT + "Refresh.gif";
@@ -57,10 +58,10 @@ public class ImageCache
     public static final String IMAGE_TRIANGLE      = ROOT + "Triangle.gif";
     
     public static final String 
-        IMAGE_DOUBLE_ARROW_DOWN = ROOT + "DoubleArrowDown.png";
+        IMAGE_DOUBLE_ARROW_DOWN = ROOT + "TreeOpen.gif"; // "DoubleArrowDown.png";
 
     public static final String 
-        IMAGE_DOUBLE_ARROW_UP = ROOT + "DoubleArrowUp.png";
+        IMAGE_DOUBLE_ARROW_UP = ROOT + "TreeClosed.gif"; // "DoubleArrowUp.png";
     
     public static final String 
         IMAGE_SORT_ASCENDING = ROOT + "SortAscending.gif";
