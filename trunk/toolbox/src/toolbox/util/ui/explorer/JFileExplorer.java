@@ -69,7 +69,6 @@ public class JFileExplorer extends JPanel implements IPreferenced
     private static final String NODE_JFILEEXPLORER = "JFileExplorer";
     private static final String   ATTR_PATH        = "path";
     private static final String   ATTR_FILE        = "file";
-    private static final String   ATTR_DIVIDER     = "dividerlocation";
 
     // Models
     private DefaultListModel        listModel_;
@@ -77,11 +76,11 @@ public class JFileExplorer extends JPanel implements IPreferenced
     private DefaultTreeModel        treeModel_;
 
     // Views        
-    private JSplitPane  splitPane_;
-    private JList       fileList_;
-    private JTree       tree_;
-    private JComboBox   rootsComboBox_;
-    private JPopupMenu  folderPopup_;
+    private JSmartSplitPane splitPane_;
+    private JList           fileList_;
+    private JTree           tree_;
+    private JComboBox       rootsComboBox_;
+    private JPopupMenu      folderPopup_;
 
     private String root_;
     private String currentPath_;
@@ -336,8 +335,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
         if (!StringUtil.isNullOrEmpty(file))
             root.addAttribute(new Attribute(ATTR_FILE, file));
             
-        root.addAttribute(new Attribute(
-              ATTR_DIVIDER, splitPane_.getDividerLocation() + ""));
+        splitPane_.savePrefs(root);
             
         XOMUtil.insertOrReplace(prefs, root);
     }
@@ -349,24 +347,20 @@ public class JFileExplorer extends JPanel implements IPreferenced
      */   
     public void applyPrefs(Element prefs)
     {
-        if (prefs != null)
-        {
-            Element root = prefs.getFirstChildElement(NODE_JFILEEXPLORER);
-            
-            // Restore expanded directory
-            selectFolder(
-                XOMUtil.getStringAttribute(
-                    root, ATTR_PATH, System.getProperty("user.dir")));
-            
-            // Restore selected file    
-            String file = XOMUtil.getStringAttribute(root, ATTR_FILE, null);
-            if (!StringUtil.isNullOrEmpty(file))
-                fileList_.setSelectedValue(file, true);
-            
-            // Restore divider location    
-            splitPane_.setDividerLocation(
-                XOMUtil.getIntegerAttribute(root, ATTR_DIVIDER, 150));
-        }
+        Element root = XOMUtil.getFirstChildElement(
+            prefs, NODE_JFILEEXPLORER, new Element(NODE_JFILEEXPLORER));
+        
+        // Restore expanded directory
+        selectFolder(
+            XOMUtil.getStringAttribute(
+                root, ATTR_PATH, System.getProperty("user.dir")));
+        
+        // Restore selected file    
+        String file = XOMUtil.getStringAttribute(root, ATTR_FILE, null);
+        if (!StringUtil.isNullOrEmpty(file))
+            fileList_.setSelectedValue(file, true);
+
+        splitPane_.applyPrefs(root);        
     }
 
     //--------------------------------------------------------------------------
@@ -508,10 +502,10 @@ public class JFileExplorer extends JPanel implements IPreferenced
 
         // Configurable splitter orientation
         if (verticalSplitter)
-            splitPane_ = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+            splitPane_ = new JSmartSplitPane(JSplitPane.HORIZONTAL_SPLIT,
                 foldersScrollPane, filesScrollPane);
         else
-            splitPane_ = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
+            splitPane_ = new JSmartSplitPane(JSplitPane.VERTICAL_SPLIT,
                 foldersScrollPane, filesScrollPane);
 
         GridBagLayout gridbag = new GridBagLayout();

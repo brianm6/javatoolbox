@@ -16,15 +16,16 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import org.apache.log4j.Logger;
-
 import nu.xom.Attribute;
 import nu.xom.Element;
+
+import org.apache.log4j.Logger;
 
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.io.JTextAreaOutputStream;
+import toolbox.util.ui.JSmartSplitPane;
 import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.SmartAction;
 import toolbox.util.ui.flippane.JFlipPane;
@@ -65,7 +66,7 @@ public class JTcpTunnelPane extends JPanel implements IPreferenced
     /** 
      * Splits the input and output textareas 
      */
-    private JSplitPane splitter_;
+    private JSmartSplitPane splitter_;
     
     /** 
      * Clears the text areas 
@@ -226,6 +227,7 @@ public class JTcpTunnelPane extends JPanel implements IPreferenced
             XOMUtil.getStringAttribute(root, ATTR_LOCAL_PORT, ""));
     
         configFlipPane_.applyPrefs(root);
+        splitter_.applyPrefs(root);
     
         incomingTextArea_.applyPrefs(XOMUtil.getFirstChildElement(
             root, NODE_INCOMING, new Element(NODE_INCOMING)));
@@ -256,6 +258,7 @@ public class JTcpTunnelPane extends JPanel implements IPreferenced
             new Attribute(ATTR_REMOTE_HOST, remoteHostField_.getText()));
 
         configFlipPane_.savePrefs(root);
+        splitter_.savePrefs(root);
             
         Element incoming = new Element(NODE_INCOMING);
         incomingTextArea_.setCapacity(
@@ -312,7 +315,7 @@ public class JTcpTunnelPane extends JPanel implements IPreferenced
             outgoingTextArea_.setColumns(80); 
             
             splitter_ = 
-                new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true,
+                new JSmartSplitPane(JSplitPane.HORIZONTAL_SPLIT, true,
                     new JScrollPane(incomingTextArea_), 
                     new JScrollPane(outgoingTextArea_));
                 

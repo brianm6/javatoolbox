@@ -23,6 +23,8 @@ import javax.swing.JSplitPane;
 
 import com.adobe.acrobat.Viewer;
 
+import nu.xom.Element;
+
 import org.apache.fop.apps.Fop;
 import org.apache.log4j.Logger;
 
@@ -30,7 +32,6 @@ import org.jedit.syntax.SyntaxStyle;
 import org.jedit.syntax.TextAreaDefaults;
 import org.jedit.syntax.Token;
 import org.jedit.syntax.XMLTokenMarker;
-import nu.xom.Element;
 
 import toolbox.jedit.JEditPopupMenu;
 import toolbox.jedit.JEditTextArea;
@@ -43,6 +44,7 @@ import toolbox.util.XOMUtil;
 import toolbox.util.io.StringInputStream;
 import toolbox.util.ui.JFileExplorer;
 import toolbox.util.ui.JFileExplorerAdapter;
+import toolbox.util.ui.JSmartSplitPane;
 import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.util.ui.plugin.IPlugin;
 import toolbox.util.ui.plugin.IStatusBar;
@@ -66,7 +68,7 @@ import toolbox.util.ui.plugin.WorkspaceAction;
 public class XSLFOPlugin extends JPanel implements IPlugin
 {
     // TODO: Create XMLDefaults ala JavaDefaults for JEditTextArea and refactor
-     
+
     private static final Logger logger_ = 
         Logger.getLogger(XSLFOPlugin.class);
     
@@ -130,6 +132,8 @@ public class XSLFOPlugin extends JPanel implements IPlugin
      */
     private FOProcessor xepProcessor_;
 
+    private JSmartSplitPane splitPane_;
+    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -236,8 +240,8 @@ public class XSLFOPlugin extends JPanel implements IPlugin
 
         outputPanel_ = new JPanel(new BorderLayout());
         
-        JSplitPane splitPane = 
-            new JSplitPane(
+        splitPane_ = 
+            new JSmartSplitPane(
                 JSplitPane.VERTICAL_SPLIT,
                 xmlArea_,
                 outputPanel_);
@@ -253,7 +257,7 @@ public class XSLFOPlugin extends JPanel implements IPlugin
         buttonPane.add(new JButton(new XEPLaunchAction()));
         
         add(BorderLayout.WEST, flipPane_);
-        add(BorderLayout.CENTER, splitPane);
+        add(BorderLayout.CENTER, splitPane_);
         add(BorderLayout.SOUTH, buttonPane);
     }
 
@@ -431,6 +435,7 @@ public class XSLFOPlugin extends JPanel implements IPlugin
         explorer_.applyPrefs(root);
         flipPane_.applyPrefs(root);
         xmlArea_.applyPrefs(root);
+        splitPane_.applyPrefs(root);
             
         pdfViewerPath_ = XOMUtil.getString(
             root.getFirstChildElement(NODE_PDF_VIEWER), null);
@@ -463,6 +468,7 @@ public class XSLFOPlugin extends JPanel implements IPlugin
         explorer_.savePrefs(root);
         flipPane_.savePrefs(root);
         xmlArea_.savePrefs(root);
+        splitPane_.savePrefs(root);
         
         if (!StringUtil.isNullOrEmpty(pdfViewerPath_))
         {

@@ -24,13 +24,13 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import nu.xom.Attribute;
+import nu.xom.Element;
+
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
 import org.apache.regexp.RESyntaxException;
-
-import nu.xom.Attribute;
-import nu.xom.Element;
 
 import toolbox.jtail.filter.RegexLineFilter;
 import toolbox.util.Banner;
@@ -38,6 +38,7 @@ import toolbox.util.StringUtil;
 import toolbox.util.Stringz;
 import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
+import toolbox.util.ui.JSmartSplitPane;
 import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.SmartAction;
 import toolbox.util.ui.flippane.JFlipPane;
@@ -65,7 +66,6 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
     
     // XML Preferences
     private static final String NODE_TEXTTOOLS_PLUGIN   = "TextToolsPlugin";
-    private static final String   ATTR_DIVIDER_LOCATION = "dividerLocation";
     private static final String   NODE_INPUT_TEXTAREA   = "InputTextArea";
     private static final String   NODE_OUTPUT_TEXTAREA  = "OutputTextArea";
     
@@ -93,7 +93,7 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
     /**
      * Main splitter between the input and output areas
      */
-    private JSplitPane splitter_;
+    private JSmartSplitPane splitter_;
    
     //--------------------------------------------------------------------------
     // Constructors
@@ -130,7 +130,7 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
         
         // Root 
         setLayout(new BorderLayout());
-        splitter_ = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+        splitter_ = new JSmartSplitPane(JSplitPane.VERTICAL_SPLIT);
         splitter_.setTopComponent(new JScrollPane(inputArea_));
         splitter_.setBottomComponent(new JScrollPane(outputArea_));
         
@@ -234,18 +234,17 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
         outputArea_.applyPrefs(
             XOMUtil.getFirstChildElement(root, NODE_OUTPUT_TEXTAREA, 
                 new Element(NODE_OUTPUT_TEXTAREA)));
-       
-        final int dividerLocation = 
-            XOMUtil.getIntegerAttribute(root, ATTR_DIVIDER_LOCATION, 150);
 
+        splitter_.applyPrefs(root);
+               
         // This may not have to be invoked later..investigate later...            
-        SwingUtilities.invokeLater(new Runnable()
-        {
-            public void run()
-            {
-                splitter_.setDividerLocation(dividerLocation);
-            }
-        });
+//        SwingUtilities.invokeLater(new Runnable()
+//        {
+//            public void run()
+//            {
+//                splitter_.setDividerLocation(dividerLocation);
+//            }
+//        });
     }
 
     /**
@@ -255,9 +254,7 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
     {
         Element root = new Element(NODE_TEXTTOOLS_PLUGIN);
         
-        root.addAttribute(new Attribute(
-            ATTR_DIVIDER_LOCATION, splitter_.getDividerLocation()+""));
-            
+        splitter_.savePrefs(root);
         topFlipPane_.savePrefs(root);
         
         Element input = new Element(NODE_INPUT_TEXTAREA);
