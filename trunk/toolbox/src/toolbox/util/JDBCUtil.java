@@ -62,9 +62,12 @@ import org.apache.log4j.Logger;
  */
 public final class JDBCUtil
 {
-    public static final Logger logger_ =
-        Logger.getLogger(JDBCUtil.class);
+    public static final Logger logger_ = Logger.getLogger(JDBCUtil.class);
 
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /** 
      * JDBC connection properties. 
      */
@@ -99,12 +102,15 @@ public final class JDBCUtil
      * Initialzies the JDBC properties. Must be called before any of the other
      * methods are invoked.
      * 
-     * @param driver JDBC driver to use
-     * @param url URL to database resource
-     * @param user Username used for authentication
-     * @param password Password used for authentication
-     * @throws SQLException on SQL error
-     * @throws ClassNotFoundException if the JDBC driver is not found
+     * @param driver JDBC driver to use.
+     * @param url URL to database resource.
+     * @param user Username used for authentication.
+     * @param password Password used for authentication.
+     * @throws SQLException on SQL error.
+     * @throws ClassNotFoundException if the JDBC driver is not found.
+     * @throws IllegalAccessException if problems accessing jdbc driver.
+     * @throws InstantiationExce3ption if problems instantiating the jdbc 
+     *         driver.
      */    
     public static void init(
         String driver, 
@@ -138,13 +144,17 @@ public final class JDBCUtil
      * Initialzies the JDBC properties using a specific jdbc driver jar file.
      * Must be called before any of the other methods are invoked.
      * 
-     * @param jarFile Jar file containing jdbc drivers
-     * @param driver JDBC driver to use
-     * @param url URL to database resource
-     * @param user Username used for authentication
-     * @param password Password used for authentication
-     * @throws SQLException on SQL error
-     * @throws ClassNotFoundException if the JDBC driver is not found
+     * @param jarFile Jar file containing jdbc drivers.
+     * @param driver JDBC driver to use.
+     * @param url URL to database resource.
+     * @param user Username used for authentication.
+     * @param password Password used for authentication.
+     * @throws SQLException on SQL error.
+     * @throws MalformedURLException if jar file URL is invalid.
+     * @throws ClassNotFoundException if the JDBC driver is not found.
+     * @throws IllegalAccessException if problems accessing jdbc driver.
+     * @throws InstantiationExce3ption if problems instantiating the jdbc 
+     *         driver.
      */    
     public static void init(
         String jarFile,
@@ -180,8 +190,8 @@ public final class JDBCUtil
     /**
      * Returns a connection to the database.
      * 
-     * @return Connection ready for use
-     * @throws SQLException on SQL error
+     * @return Connection ready for use.
+     * @throws SQLException on SQL error.
      */
     public static Connection getConnection() throws SQLException
     {
@@ -200,10 +210,10 @@ public final class JDBCUtil
     /**
      * Executes a SQL INSERT, UPDATE, or DELETE statement.
      * 
-     * @param sql Insert/update/delete sql statement to execute
-     * @return Number of rows affected by the execution of the sql statement
-     * @throws SQLException on any errors
-     */   
+     * @param sql Insert/update/delete sql statement to execute.
+     * @return Number of rows affected by the execution of the sql statement.
+     * @throws SQLException on any errors.
+     **/   
     public static int executeUpdate(String sql) throws SQLException
     {
         Connection conn = null;
@@ -228,9 +238,9 @@ public final class JDBCUtil
      * Executes a SQL query statement and returns the result in a formatted
      * string.
      * 
-     * @param sql Select statement to execute
-     * @return Formatted contents of the result set
-     * @throws SQLException on any SQL error
+     * @param sql Select statement to execute.
+     * @return Formatted contents of the result set.
+     * @throws SQLException on any SQL error.
      */
     public static String executeQuery(String sql) throws SQLException
     {
@@ -287,9 +297,9 @@ public final class JDBCUtil
     /**
      * Formats a result set in a table like manner.
      * 
-     * @param rs ResultSet to format
-     * @return Contents of result set formatted in a table like format
-     * @throws SQLException on sql error
+     * @param rs ResultSet to format.
+     * @return Contents of result set formatted in a table like format.
+     * @throws SQLException on sql error.
      */
     public static Object[][] toArray(ResultSet rs) throws SQLException
     {
@@ -333,9 +343,9 @@ public final class JDBCUtil
     /**
      * Formats a results set in a table like manner.
      * 
-     * @param rs ResultSet to format
-     * @return Contents of result set formatted in a table like format
-     * @throws SQLException on sql error
+     * @param rs ResultSet to format.
+     * @return Contents of result set formatted in a table like format.
+     * @throws SQLException on sql error.
      */
     public static String format(ResultSet rs) throws SQLException 
     {
@@ -442,9 +452,9 @@ public final class JDBCUtil
      *       interface.
      * </pre>
      *
-     * @param rs Result set
-     * @return Size of the result set
-     * @throws SQLException if an SQL error occurs
+     * @param rs Result set.
+     * @return Size of the result set.
+     * @throws SQLException if an SQL error occurs.
      */
     public static int getSize(ResultSet rs) throws SQLException 
     {
@@ -468,7 +478,7 @@ public final class JDBCUtil
     /**
      * Drops table w/o any complaints.
      * 
-     * @param table Table name
+     * @param table Name of table to drop.
      */
     public static void dropTable(String table)
     {
@@ -489,7 +499,7 @@ public final class JDBCUtil
     /**
      * Closes a ResultSet w/o any complaining.
      * 
-     * @param rs Resultset to close
+     * @param rs Resultset to close.
      */
     public static void close(ResultSet rs)
     {
@@ -511,7 +521,7 @@ public final class JDBCUtil
      * Convenience method to close a Statement. Handles nulls and cases where
      * an exception is thrown by logging a warning. 
      * 
-     * @param stmt Statement to close
+     * @param stmt Statement to close.
      */
     public static void close(Statement stmt)
     {
@@ -533,7 +543,7 @@ public final class JDBCUtil
     /**
      * Releases a connection. Supresses any problems. 
      * 
-     * @param connection Connection to release
+     * @param connection Connection to release.
      */
     public static void releaseConnection(Connection connection) 
     {
