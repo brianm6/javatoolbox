@@ -9,18 +9,22 @@ import java.net.PasswordAuthentication;
 
 import javax.swing.AbstractAction;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import nu.xom.Attribute;
 import nu.xom.Element;
 
+import toolbox.util.ResourceUtil;
 import toolbox.util.StringUtil;
+import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.ui.JHeaderPanel;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartCheckBox;
 import toolbox.util.ui.JSmartLabel;
+import toolbox.util.ui.JSmartOptionPane;
 import toolbox.util.ui.JSmartTextField;
 
 /**
@@ -218,6 +222,7 @@ public class ProxyView extends JHeaderPanel implements PreferencesView
      */
     public void onCancel()
     {
+        // Nothing to do
     }
 
     //--------------------------------------------------------------------------
@@ -243,13 +248,13 @@ public class ProxyView extends JHeaderPanel implements PreferencesView
             XOMUtil.getStringAttribute(
                 httpProxy,
                 ATTR_HTTP_PROXY_HOST,
-                "??"));
+                ""));
 
         proxyPortField_.setText(
             XOMUtil.getStringAttribute(
                 httpProxy,
                 ATTR_HTTP_PROXY_PORT,
-                "??"));
+                ""));
 
         proxyUserNameField_.setText(
             XOMUtil.getStringAttribute(
@@ -322,6 +327,7 @@ public class ProxyView extends JHeaderPanel implements PreferencesView
             actionPerformed();
         }
 
+        
         /**
          * Non-event triggered execution.
          */
@@ -340,15 +346,19 @@ public class ProxyView extends JHeaderPanel implements PreferencesView
     //--------------------------------------------------------------------------
 
     /**
-     * Tests the proxy against a well known web site.
+     * Tests the proxy settings against a well known web site.
      */
     class TestProxyAction extends AbstractAction
     {
+        /**
+         * Creates a TestProxyAction.
+         */
         TestProxyAction()
         {
             super("Test");
         }
 
+        
         /**
          * @see java.awt.event.ActionListener#actionPerformed(
          *      java.awt.event.ActionEvent)
@@ -358,6 +368,7 @@ public class ProxyView extends JHeaderPanel implements PreferencesView
             actionPerformed();
         }
 
+        
         /**
          * Non-event triggered execution.
          */
@@ -365,7 +376,27 @@ public class ProxyView extends JHeaderPanel implements PreferencesView
         {
             onApply();
 
-            // TODO: test here
+            try
+            {
+                String html = ResourceUtil.getResourceAsString(
+                    "http://www.yahoo.com/index.html");
+                
+                JSmartOptionPane.showDetailedMessageDialog(
+                    SwingUtil.getFrameAncestor(ProxyView.this),
+                    "Proxy test passed!",
+                    html,
+                    "Information",
+                    JOptionPane.INFORMATION_MESSAGE);
+            }
+            catch (Exception e)
+            {
+                JSmartOptionPane.showDetailedMessageDialog(
+                    SwingUtil.getFrameAncestor(ProxyView.this),
+                    "Proxy settings failed",
+                    e,
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 }
