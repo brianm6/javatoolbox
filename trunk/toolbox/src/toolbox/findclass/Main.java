@@ -2,6 +2,7 @@ package toolbox.findclass;
 
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Category;
+import org.apache.regexp.RESyntaxException;
 import toolbox.util.ArrayUtil;
 
 /**
@@ -23,42 +24,49 @@ public class Main implements IFindClassListener
      */
     public static void main(String args[])
     {
-        /* init log4j */
-        BasicConfigurator.configure();
-        
-        FindClass finder = new FindClass();
-        finder.addFindClassListener(new Main());
-        String classToFind;
-        boolean ignoreCase;
-
-        /* handle args */        
-        if (args.length == 1) 
+        try
         {
-            classToFind = args[0];
-            ignoreCase  = true;
+            /* init log4j */
+            BasicConfigurator.configure();
             
-            finder.findClass(classToFind, ignoreCase);
-        }
-        else if (args.length == 2)
-        { 
-            switch (ArrayUtil.indexOf(args, caseSensetiveFlag_))
+            FindClass finder = new FindClass();
+            finder.addFindClassListener(new Main());
+            String classToFind;
+            boolean ignoreCase;
+    
+            /* handle args */        
+            if (args.length == 1) 
             {
-                case -1: printUsage(); 
-                         break;
+                classToFind = args[0];
+                ignoreCase  = true;
                 
-                case  0: classToFind = args[1]; 
-                         ignoreCase = false;
-                         finder.findClass(classToFind, ignoreCase);
-                         break;                
-                
-                case  1: classToFind = args[0]; 
-                         ignoreCase = false;
-                         finder.findClass(classToFind, ignoreCase);                 
-                         break; 
+                finder.findClass(classToFind, ignoreCase);
             }
+            else if (args.length == 2)
+            { 
+                switch (ArrayUtil.indexOf(args, caseSensetiveFlag_))
+                {
+                    case -1: printUsage(); 
+                             break;
+                    
+                    case  0: classToFind = args[1]; 
+                             ignoreCase = false;
+                             finder.findClass(classToFind, ignoreCase);
+                             break;                
+                    
+                    case  1: classToFind = args[0]; 
+                             ignoreCase = false;
+                             finder.findClass(classToFind, ignoreCase);                 
+                             break; 
+                }
+            }
+            else 
+                printUsage();
         }
-        else 
-            printUsage();
+        catch (RESyntaxException re)
+        {
+            logger_.error("main", re);   
+        }
     }
 
     /**
