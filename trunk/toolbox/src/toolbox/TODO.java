@@ -38,7 +38,6 @@ package toolbox;
  * TODO: Update NetMeter to use MonitoredInput/Output streams.
  * TODO: Upgrade to Maven RC4
  * TODO: Save db profiles to a separate file.
- * TODO: Update JDBCUtil to handle multiple sessions.
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
@@ -83,7 +82,8 @@ package toolbox;
  * =============================== COMPLETED ===================================
  * July 2004
  *  - Upgraded to commons-collections-3.1
- *  
+ *  - Introduced JDBCSession (multi client version of JDBCUtil)
+ *   
  * June 2004
  *  - Updated Jode to 1.1.2-pre1
  *  - Added StringUtil.indent()
