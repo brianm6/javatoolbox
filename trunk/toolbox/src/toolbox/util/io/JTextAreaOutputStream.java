@@ -5,7 +5,7 @@ import java.io.OutputStream;
 import javax.swing.JTextArea;
 
 /**
- * An OutputStream that dumps into a JTextArea
+ * An outputStream that dumps into a JTextArea
  */
 public class JTextAreaOutputStream extends OutputStream
 {
@@ -18,6 +18,11 @@ public class JTextAreaOutputStream extends OutputStream
     // Constructors 
     //--------------------------------------------------------------------------
     
+    /**
+     * Creates a JTextAreaOutputStream
+     * 
+     * @param  textArea  JTextArea sink for the output stream
+     */
     public JTextAreaOutputStream(JTextArea textArea)
     { 
         textArea_ = textArea; 

@@ -63,6 +63,7 @@ public class EventOutputStream extends FilterOutputStream
      * Writes byte to stream keeping track of the count
      * 
      * @param  b  Byte to write 
+     * @throws IOException on I/O error
      */
     public void write(int b) throws IOException
     {
@@ -151,7 +152,7 @@ public class EventOutputStream extends FilterOutputStream
     }    
     
     /**
-     * @return
+     * @return Stream name
      */
     public String getName()
     {

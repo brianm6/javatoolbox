@@ -24,21 +24,21 @@ public class NullOutputStream extends OutputStream
     //--------------------------------------------------------------------------
     
     /**
-     * Noop
+     * @see OutputStream#write(int)
      */
     public void write(int b) throws IOException
     {
     }
     
     /**
-     * Noop
+     * @see OutputStream#close()
      */
     public void close() throws IOException
     {
     }
 
     /**
-     * Noop
+     * @see OutputStream#flush()
      */
     public void flush() throws IOException
     {
