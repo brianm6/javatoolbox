@@ -10,7 +10,7 @@ import javax.swing.JTable;
 
 import junit.textui.TestRunner;
 
-import toolbox.junit.UITestCase;
+import toolbox.junit.testcase.UITestCase;
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartCheckBox;

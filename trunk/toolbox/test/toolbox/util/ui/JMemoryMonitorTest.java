@@ -13,7 +13,7 @@ import junit.textui.TestRunner;
 import org.apache.commons.lang.math.RandomUtils;
 import org.apache.log4j.Logger;
 
-import toolbox.junit.UITestCase;
+import toolbox.junit.testcase.UITestCase;
 
 /**
  * Unit test for JMemoryMonitor.

@@ -10,6 +10,7 @@ import org.apache.commons.lang.ClassUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.junit.testcase.StandaloneTestCase;
+import toolbox.junit.testcase.UITestCase;
 import toolbox.util.ArrayUtil;
 
 /**

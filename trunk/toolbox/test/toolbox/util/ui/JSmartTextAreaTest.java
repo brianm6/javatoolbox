@@ -11,7 +11,7 @@ import nu.xom.Element;
 
 import org.apache.log4j.Logger;
 
-import toolbox.junit.UITestCase;
+import toolbox.junit.testcase.UITestCase;
 import toolbox.util.FontUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.ui.splitpane.JMultiSplitPane;

@@ -13,7 +13,7 @@ import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
 
-import toolbox.junit.UITestCase;
+import toolbox.junit.testcase.UITestCase;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartLabel;

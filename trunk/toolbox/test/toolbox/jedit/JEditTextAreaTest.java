@@ -22,7 +22,7 @@ import org.apache.log4j.Logger;
 import org.jedit.syntax.TextAreaDefaults;
 import org.jedit.syntax.XMLTokenMarker;
 
-import toolbox.junit.UITestCase;
+import toolbox.junit.testcase.UITestCase;
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.JSmartComboBox;
 import toolbox.util.ui.JSmartLabel;

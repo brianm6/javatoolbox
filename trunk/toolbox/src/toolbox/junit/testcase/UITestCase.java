@@ -1,4 +1,4 @@
-package toolbox.junit;
+package toolbox.junit.testcase;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -22,6 +22,7 @@ import junit.framework.TestCase;
 import org.apache.commons.lang.ClassUtils;
 import org.apache.log4j.Logger;
 
+import toolbox.junit.CloverTestSuite;
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.JHeaderPanel;
 import toolbox.util.ui.JSmartTextArea;

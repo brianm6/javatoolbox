@@ -19,7 +19,7 @@ import org.netbeans.jemmy.operators.JListOperator;
 import org.netbeans.jemmy.operators.JTextFieldOperator;
 import org.netbeans.jemmy.util.NameComponentChooser;
 
-import toolbox.junit.UITestCase;
+import toolbox.junit.testcase.UITestCase;
 import toolbox.util.ArrayUtil;
 import toolbox.util.JemmyUtil;
 import toolbox.util.StringUtil;
