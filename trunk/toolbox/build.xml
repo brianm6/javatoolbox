@@ -306,7 +306,6 @@
     <!--            JUNIT            -->
     <!--=============================-->
     <target name="junit" 
-            depends="compile" 
             description="Executes JUnit tests and generates report">
 
         <mkdir dir="${junit}"/>
@@ -349,7 +348,6 @@
     <!--        JUNIT.REPORT         -->
     <!--=============================-->
     <target name="junit.report"
-            depends="junit" 
             description="Launches report containing results of the JUnit test cases">
 
         <junitreport todir="${junit.xml}">
