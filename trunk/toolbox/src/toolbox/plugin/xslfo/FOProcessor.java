@@ -2,21 +2,14 @@ package toolbox.plugin.xslfo;
 
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Properties;
+
+import toolbox.util.service.Initializable;
 
 /**
  * Common interface for all 3rd party XSL-FO implementations.
  */
-public interface FOProcessor
+public interface FOProcessor extends Initializable
 {
-    /**
-     * Intializes the FO processor.
-     * 
-     * @param props Initialization properties.
-     */
-    void initialize(Properties props);
-    
-    
     /**
      * Transforms the FO originating from an inputstream and writes the
      * rendered PDF to an outputstream.

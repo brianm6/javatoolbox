@@ -4,13 +4,18 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
-import java.util.Properties;
+import java.util.Map;
 
 import org.apache.avalon.framework.logger.ConsoleLogger;
 import org.apache.avalon.framework.logger.Logger;
+import org.apache.commons.io.IOUtils;
 import org.apache.fop.apps.Driver;
 import org.apache.fop.messaging.MessageHandler;
+
 import org.xml.sax.InputSource;
+
+import toolbox.util.service.ServiceException;
+import toolbox.util.service.ServiceState;
 
 /**
  * FOPProcessor is a concrete implementation of a {@link FOProcessor} specific
@@ -33,14 +38,32 @@ public class FOPProcessor implements FOProcessor
      */
     private Driver psDriver_;
 
+    /**
+     * State of this processor.
+     */
+    private ServiceState state_;
+    
     //--------------------------------------------------------------------------
-    // FOProcessor Interface
+    // Constructors
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Creates a FOPProcessor.
+     */
+    public FOPProcessor()
+    {
+        state_ = ServiceState.UNINITIALIZED;
+    }
+    
+    //--------------------------------------------------------------------------
+    // Initializable Interface
     //--------------------------------------------------------------------------
 
     /**
-     * @see toolbox.plugin.xslfo.FOProcessor#initialize(java.util.Properties)
+     * @see toolbox.util.service.Initializable#initialize(java.util.Map)
      */
-    public void initialize(Properties props)
+    public void initialize(Map configuration) 
+        throws IllegalStateException, ServiceException
     {
         // Common
         Logger logger = new ConsoleLogger(ConsoleLogger.LEVEL_INFO);
@@ -55,8 +78,25 @@ public class FOPProcessor implements FOProcessor
         psDriver_ = new Driver();
         psDriver_.setLogger(logger);
         psDriver_.setRenderer(Driver.RENDER_PS);
+        
+        state_ = ServiceState.INITIALIZED;
     }
 
+    //--------------------------------------------------------------------------
+    // Service Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see toolbox.util.service.Service#getState()
+     */
+    public ServiceState getState()
+    {
+        return state_;
+    }
+    
+    //--------------------------------------------------------------------------
+    // FOProcessor Interface
+    //--------------------------------------------------------------------------
 
     /**
      * @see toolbox.plugin.xslfo.FOProcessor#renderPDF(java.io.InputStream,
@@ -75,8 +115,8 @@ public class FOPProcessor implements FOProcessor
         }
         finally
         {
-            foStream.close();
-            pdfStream.close();
+            IOUtils.closeQuietly(foStream);
+            IOUtils.closeQuietly(pdfStream);
         }
     }
 
@@ -98,8 +138,8 @@ public class FOPProcessor implements FOProcessor
         }
         finally
         {
-            foStream.close();
-            psStream.close();
+            IOUtils.closeQuietly(foStream);
+            IOUtils.closeQuietly(psStream);
         }
     }
 }

@@ -3,13 +3,15 @@ package toolbox.plugin.xslfo;
 import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Properties;
+import java.util.Map;
 
 import com.renderx.xep.XSLDriver;
 
 import org.apache.commons.io.IOUtils;
 
 import toolbox.util.FileUtil;
+import toolbox.util.service.ServiceException;
+import toolbox.util.service.ServiceState;
 
 /**
  * FOPProcessor is a concrete implementation of a {@link FOProcessor} specific
@@ -19,22 +21,26 @@ import toolbox.util.FileUtil;
 public class XEPProcessor implements FOProcessor
 {
     //--------------------------------------------------------------------------
-    // FOProcessor Interface
+    // Initializable Interface
     //--------------------------------------------------------------------------
 
     /**
-     * @see toolbox.plugin.xslfo.FOProcessor#initialize(java.util.Properties)
+     * @see toolbox.util.service.Initializable#initialize(java.util.Map)
      */
-    public void initialize(Properties props)
+    public void initialize(Map configuration) throws IllegalStateException,
+        ServiceException
     {
         // TODO: Get rid of XEP absolute key
         System.setProperty("com.renderx.xep.ROOT", "C:\\dev\\XEP");
     }
 
+    //--------------------------------------------------------------------------
+    // FOProcessor Interface
+    //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.plugin.xslfo.FOProcessor#renderPDF(java.io.InputStream, 
-     *      java.io.OutputStream)
+     * @see toolbox.plugin.xslfo.FOProcessor#renderPDF(
+     *      java.io.InputStream, java.io.OutputStream)
      */
     public void renderPDF(InputStream foStream, OutputStream pdfStream)
         throws Exception
@@ -46,13 +52,13 @@ public class XEPProcessor implements FOProcessor
         byte[] pdfBytes = FileUtil.getFileAsBytes(pdfFile);
         pdfStream.write(pdfBytes);
         pdfStream.flush();
-        pdfStream.close();
+        IOUtils.closeQuietly(pdfStream);
     }
-    
+
     
     /**
-     * @see toolbox.plugin.xslfo.FOProcessor#renderPostscript(java.io.InputStream,
-     *      java.io.OutputStream)
+     * @see toolbox.plugin.xslfo.FOProcessor#renderPostscript(
+     *      java.io.InputStream, java.io.OutputStream)
      */
     public void renderPostscript(InputStream foStream, OutputStream psStream)
         throws Exception
@@ -60,6 +66,19 @@ public class XEPProcessor implements FOProcessor
         throw new IllegalArgumentException("Not implemented"); 
     }
 
+    
+    //--------------------------------------------------------------------------
+    // Service Interface
+    //--------------------------------------------------------------------------
+
+    /**
+     * @see toolbox.util.service.Service#getState()
+     */
+    public ServiceState getState()
+    {
+        return null;
+    }
+    
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
