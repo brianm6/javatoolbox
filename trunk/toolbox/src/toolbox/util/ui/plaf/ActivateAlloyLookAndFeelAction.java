@@ -1,7 +1,5 @@
 package toolbox.util.ui.plaf;
 
-import java.awt.Font;
-
 import javax.swing.UIManager;
 
 import com.incors.plaf.alloy.AlloyLookAndFeel;
