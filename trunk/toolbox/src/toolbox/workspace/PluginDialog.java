@@ -255,7 +255,6 @@ public class ManagePluginsDialog extends JDialog
         for (int i=0; i<candidatePlugins.length; i++)
         {
             String clazz     = candidatePlugins[i].getClassFQN();
-            String clazzName = ClassUtil.stripPackage(clazz);
             String clazzOnly = ClassUtil.stripPackage(clazz);
                      
             logger_.debug(clazzOnly + " : Inspecting...");
@@ -330,6 +329,10 @@ public class ManagePluginsDialog extends JDialog
         addButton_.setEnabled(inactiveModel_.size() > 0);
     }
     
+    //--------------------------------------------------------------------------
+    // Inner Classes 
+    //--------------------------------------------------------------------------
+    
     /**
      * PluginMeta info used to populate the active/inactive lists
      */
@@ -401,7 +404,7 @@ public class ManagePluginsDialog extends JDialog
      */
     class AddNewPluginAction extends AbstractAction
     {
-        public AddNewPluginAction()
+        AddNewPluginAction()
         {
             super("Add Plugin >>");
             putValue(Action.MNEMONIC_KEY, new Integer('A'));                
@@ -456,7 +459,7 @@ public class ManagePluginsDialog extends JDialog
      */
     class RemovePluginAction extends AbstractAction
     {
-        public RemovePluginAction()
+        RemovePluginAction()
         {
             super("<< Remove Plugin");
             putValue(Action.MNEMONIC_KEY, new Integer('R'));
@@ -511,7 +514,7 @@ public class ManagePluginsDialog extends JDialog
      */
     class CloseAction extends AbstractAction
     {
-        public CloseAction()
+        CloseAction()
         {
             super("Close");
             putValue(Action.MNEMONIC_KEY, new Integer('C'));
@@ -528,7 +531,7 @@ public class ManagePluginsDialog extends JDialog
      */
     class FindPluginsAction extends WorkspaceAction
     {
-        public FindPluginsAction()
+        FindPluginsAction()
         {
             super("Find Plugins", 
                   true, 
