@@ -14,7 +14,9 @@ import toolbox.util.ui.plugin.PluginWorkspace;
  */
 public class JTailPlugin implements IPlugin
 {
-    /** JTail Delegate */
+    /** 
+     * JTail delegate 
+     */
     private JTail jtail_;
 
     //--------------------------------------------------------------------------
@@ -63,7 +65,7 @@ public class JTailPlugin implements IPlugin
         jtail_.savePrefs(prefs);
     }
 
-    public void applyPrefs(Properties prefs)
+    public void applyPrefs(Properties prefs) throws Exception
     {
         jtail_.applyPrefs(prefs);
     }
