@@ -1,15 +1,9 @@
 package toolbox.util.test;
 
-import java.io.OutputStream;
-
 import org.apache.log4j.Logger;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
-
-import toolbox.util.ResourceCloser;
-import toolbox.util.StreamUtil;
-import toolbox.util.io.StringOutputStream;
 
 /**
  * Unit test for ResourceCloser

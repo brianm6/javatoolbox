@@ -6,7 +6,6 @@ import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
-import toolbox.util.ResourceCloser;
 import toolbox.util.ResourceUtil;
 import toolbox.util.StreamUtil;
 import toolbox.util.StringUtil;
