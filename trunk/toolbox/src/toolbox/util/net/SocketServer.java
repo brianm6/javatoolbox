@@ -77,7 +77,7 @@ public class SocketServer implements Runnable
     /**
      * Create a SocketServer with the given server configuration
      * 
-     * @param  newConfig    Server configuration
+     * @param  newConfig  Server configuration
      */
     public SocketServer(SocketServerConfig newConfig)
     {
@@ -95,23 +95,19 @@ public class SocketServer implements Runnable
      */
     public void start() throws IOException
     {
-        String method = "[start ] ";
-
         // Reset shutdown flag
         shutdown_ = false;
 
         try
         {
-            logger_.debug(method + 
-                config_.getName() + " socket server starting ...");
+            logger_.debug(config_.getName() + " socket server starting ...");
 
             /*
-             * create new mutex and acquires it. the run() method will
-             * release it just before doing accept(). At this
-             * point, the end of this method will try to acquire()
-             * it again. This will minimize the chance of a client
-             * immediately getting refused a connection
-             * to the server socket right after start() returns.
+             * create new mutex and acquires it. the run() method will release 
+             * it just before doing accept(). At this point, the end of this 
+             * method will try to acquire() it again. This will minimize the 
+             * chance of a client immediately getting refused a connection to 
+             * the server socket right after start() returns.
              */
             startedMutex_ = new Mutex();
             startedMutex_.acquire();
@@ -136,10 +132,9 @@ public class SocketServer implements Runnable
         }
         catch (InterruptedException ie)
         {
-            logger_.error(method, ie);
+            logger_.error(ie);
         }
     }
-
 
     /** 
      * Stops the socket server
@@ -148,8 +143,6 @@ public class SocketServer implements Runnable
      */
     public void stop() throws IOException
     {
-        String method = "[stop  ] ";
-
         // Set exit variant to at least try to shutdown gracefully
         shutdown_ = true;
         
@@ -158,16 +151,13 @@ public class SocketServer implements Runnable
         
         serverSocket_.close();
         serverThread_.interrupt();
-        logger_.info(method + 
-            "Stopped socket server on port " + getServerPort());
+        logger_.info("Stopped socket server on port " + getServerPort());
     }
 
-
     /**
-     * Default behavior is to ask the server config for a 
-     * concrete instance of the connection handler. In this
-     * case, the default returns the config specified connection
-     * handler decorated by an async connection handler.
+     * Default behavior is to ask the server config for a concrete instance of 
+     * the connection handler. In this case, the default returns the config 
+     * specified connection handler decorated by an async connection handler.
      * 
      * @return  IConnectionHandler
      */
@@ -177,17 +167,15 @@ public class SocketServer implements Runnable
             config_.getConnectionHandler(), dispatcher_);
     }
 
-
     /**
      * Accessor for the port the server is running on
      * 
-     * @return    int
+     * @return  Server port number
      */
     public int getServerPort()
     {
         return serverSocket_.getLocalPort();
     }
-
 
     //--------------------------------------------------------------------------
     //  Private
@@ -254,7 +242,6 @@ public class SocketServer implements Runnable
             ((ISocketServerListener)i.next()).socketAccepted(socket);
     }
 
-
     /**
      * Adds a listener to the socket server
      * 
@@ -264,7 +251,6 @@ public class SocketServer implements Runnable
     {
         listeners_.add(listener);
     }
-
     
     /**
      * Removes a listener from the socket server
@@ -285,10 +271,8 @@ public class SocketServer implements Runnable
      */
     public void run()
     {
-        String method = "[run   ] ";
-        
-        logger_.info(method + config_.getName() +
-             " waiting for connection on " + serverSocket_.getLocalPort());
+        logger_.info(config_.getName() + " waiting for connection on " + 
+            serverSocket_.getLocalPort());
 
         while (!shutdown_)
         {
@@ -300,8 +284,7 @@ public class SocketServer implements Runnable
                 // Wait for a connection
                 Socket socket = serverSocket_.accept();
 
-                logger_.debug(method + 
-                    config_.getName() + " accepted connection from " + 
+                logger_.debug(config_.getName() + " accepted connection from " + 
                     socket.getInetAddress() + ":" + socket.getPort());
 
                 // Fire notification to listeners                             
@@ -326,18 +309,18 @@ public class SocketServer implements Runnable
                 // If socket closed exception, ignore because 
                 // it occurs in shutdown process
                 if (!SocketUtil.isReasonSocketClosed(se))
-                    logger_.error(method, se);
+                    logger_.error("run", se);
             }
             catch (InterruptedIOException iioe)
             {
                 // If accept times out, just ignore and 
                 // let it loop around again
                 if (!SocketUtil.isReasonAcceptTimeout(iioe))
-                    logger_.error(method, iioe);
+                    logger_.error("run", iioe);
             }
             catch (IOException e)
             {
-                logger_.error(method, e);
+                logger_.error("run", e);
             }
         }
     }
