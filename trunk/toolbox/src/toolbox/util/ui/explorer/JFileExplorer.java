@@ -44,6 +44,7 @@ import toolbox.util.file.FileComparator;
 import toolbox.util.io.filter.FileOnlyFilter;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JSmartComboBox;
+import toolbox.util.ui.JSmartMenuItem;
 import toolbox.util.ui.JSmartSplitPane;
 import toolbox.util.ui.explorer.action.DeleteDirAction;
 import toolbox.util.ui.explorer.action.DeleteFileAction;
@@ -51,6 +52,7 @@ import toolbox.util.ui.explorer.action.RefreshAction;
 import toolbox.util.ui.explorer.action.RenameDirAction;
 import toolbox.util.ui.explorer.action.RenameFileAction;
 import toolbox.util.ui.explorer.action.UpOneLevelAction;
+import toolbox.util.ui.explorer.action.ViewFileAction;
 import toolbox.util.ui.explorer.listener.DirTreeMouseListener;
 import toolbox.util.ui.explorer.listener.DirTreeSelectionListener;
 import toolbox.util.ui.explorer.listener.DriveComboListener;
@@ -700,10 +702,15 @@ public class JFileExplorer extends JPanel implements IPreferenced
         setFileList(getDefaultRoot());
         fileList_.setFixedCellHeight(15);
         JListPopupMenu popup = new JListPopupMenu(fileList_);
-        
+
+        // Popup menu accessible operations...
         AbstractAction deleteFileAction = new DeleteFileAction(this);
-        popup.add(deleteFileAction);
+        AbstractAction renameFileAction = new RenameFileAction(this);
+        popup.add(new JSmartMenuItem(deleteFileAction));
+        popup.add(new JSmartMenuItem(renameFileAction));
+        popup.add(new JSmartMenuItem(new ViewFileAction(this)));
         
+        // Key binding accessible operations...
         SwingUtil.bindKey(
             fileList_,
             deleteFileAction,
@@ -716,14 +723,13 @@ public class JFileExplorer extends JPanel implements IPreferenced
         
         SwingUtil.bindKey(
             fileList_,
-            new RenameFileAction(this),
+            renameFileAction,
             KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0));
 
         SwingUtil.bindKey(
             fileList_,
             new UpOneLevelAction(this),
             KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0));
-
     }
     
     //--------------------------------------------------------------------------
