@@ -70,8 +70,6 @@ public class TcpTunnel implements TcpTunnelListener
      */
     public static void main(String args[]) throws IOException
     {
-        String method = "[main  ] ";
-
         if (args.length != 3)
         {
             System.err.println("Usage: java " + TcpTunnel.class.getName() + 
