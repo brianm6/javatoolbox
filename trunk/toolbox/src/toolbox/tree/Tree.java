@@ -5,11 +5,15 @@ import java.io.FilenameFilter;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.util.Iterator;
+
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.PosixParser;
 
 import toolbox.util.ArrayUtil;
-import toolbox.util.args.ArgumentParser;
-import toolbox.util.args.Option;
-import toolbox.util.args.OptionException;
 import toolbox.util.io.filter.DirectoryFilter;
 import toolbox.util.io.filter.FileFilter; 
 
@@ -77,32 +81,43 @@ public class Tree
 	{
         // command line options and arguments
         String rootDir = null;
-        boolean showFiles;
+        boolean showFiles = false;
+                
+        CommandLineParser parser = new PosixParser();
+        Options options = new Options();
+        Option  fileOption = new Option("f", "files", false, "List files");
+        Option  helpOption = new Option("h", "help", false, "Print usage");
+        Option  helpOption2 = new Option("?", "/?", false, "Print Usage");
         
-        ArgumentParser parser = new ArgumentParser();
-        Option showFilesOption  = parser.addBooleanOption('f', "files");
+        options.addOption(helpOption2);
+        options.addOption(helpOption);
+        options.addOption(fileOption);        
 
-        try
+
+        CommandLine cmdLine = parser.parse(options, args, true);
+    
+        for (Iterator i = cmdLine.iterator(); i.hasNext(); )
         {
-            parser.parse(args);
+            Option option = (Option) i.next();
+            String opt = option.getOpt();
+            
+            if (opt.equals(fileOption.getOpt()))
+            {
+                showFiles = true;
+            }
+            else if (opt.equals(helpOption.getOpt())  ||
+                     opt.equals(helpOption2.getOpt()))
+            {
+                printUsage();
+                System.exit(0);
+            }
         }
-        catch (OptionException e)
-        {
-            System.err.println(e.getMessage());
-            printUsage();
-            System.exit(2);
-        }
-
-        // Extract option to show files
-        showFiles = parser.getBooleanValue(showFilesOption, DEFAULT_SHOWFILES);
-
-        String[] otherArgs = parser.getRemainingArgs();
         
         // Root directory argument        
-        switch (otherArgs.length)
+        switch (cmdLine.getArgs().length)
         {
             case 0  :  rootDir = System.getProperty("user.dir"); break;
-            case 1  :  rootDir = otherArgs[0]; break;
+            case 1  :  rootDir = cmdLine.getArgs()[0]; break;
             default :  System.err.println("ERROR: Invalid arguments");
                        printUsage(); System.exit(2);
                        break;
@@ -120,17 +135,9 @@ public class Tree
         }
 	}
 
-
-    /**
-     * Prints program usage
-     */
-    protected static void printUsage()
-    {
-        System.out.println("Tree shows a directory structure.");
-        System.out.println("Usage    : tree [-f] <dir>");
-        System.out.println("Options  : -f  => include files");
-    }
-
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
     
     /**
      * Creates a tree with the given root directory
@@ -200,6 +207,20 @@ public class Tree
         
         if (showFiles_)
             fileFilter_ = new FileFilter();
+    }
+
+    //--------------------------------------------------------------------------
+    //  Implementation
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Prints program usage
+     */
+    protected static void printUsage()
+    {
+        System.out.println("Tree shows a directory structure.");
+        System.out.println("Usage    : tree [-f] <dir>");
+        System.out.println("Options  : -f  => include files");
     }
 
 
