@@ -21,6 +21,10 @@ public class DirectoryMonitorTest extends TestCase
 {
     private static final Logger logger_ = 
         Logger.getLogger(DirectoryMonitorTest.class);
+
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
         
     /**
      * Entrypoint
@@ -30,20 +34,6 @@ public class DirectoryMonitorTest extends TestCase
     public static void main(String[] args)
     {
         TestRunner.run(DirectoryMonitorTest.class);
-    }
-    
-    //--------------------------------------------------------------------------
-    // Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Constructor for DirectoryMonitorTest
-     * 
-     * @param  arg0  Name
-     */
-    public DirectoryMonitorTest(String arg0)
-    {
-        super(arg0);
     }
 
     //--------------------------------------------------------------------------

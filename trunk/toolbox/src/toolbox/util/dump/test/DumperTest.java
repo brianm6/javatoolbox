@@ -23,10 +23,14 @@ public class DumperTest extends TestCase implements Stringz
     private static final Logger logger_ = 
         Logger.getLogger(DumperTest.class);
 
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+
     /**
      * Entrypoint
      * 
-     * @param args  None
+     * @param args  None recognized
      */
     public static void main(String[] args)
     {
@@ -34,21 +38,7 @@ public class DumperTest extends TestCase implements Stringz
     }
 
     //--------------------------------------------------------------------------
-    //  Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Constructor for ObjectDumperTest.
-     * 
-     * @param arg0  Name
-     */
-    public DumperTest(String arg0)
-    {
-        super(arg0);
-    }
-
-    //--------------------------------------------------------------------------
-    //  Overridden Methods from TestCase
+    //  Overridden from junit.framework.TestCase
     //--------------------------------------------------------------------------
 
     /**

@@ -15,6 +15,10 @@ public class TeeOutputStreamTest extends TestCase
 {
     private static final Logger logger_ = 
         Logger.getLogger(TeeOutputStreamTest.class);
+
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
         
     /**
      * Entrypoint
@@ -24,20 +28,6 @@ public class TeeOutputStreamTest extends TestCase
     public static void main(String[] args)
     {
         TestRunner.run(TeeOutputStreamTest.class);
-    }
-    
-    //--------------------------------------------------------------------------
-    //  Constructors
-    //--------------------------------------------------------------------------
-        
-    /**
-     * Constructor for TeeOutputStreamTest.
-     * 
-     * @param arg0  Name
-     */
-    public TeeOutputStreamTest(String arg0)
-    {
-        super(arg0);
     }
     
     //--------------------------------------------------------------------------

@@ -16,9 +16,12 @@ import toolbox.util.net.StringConnection;
  */
 public class StringConnectionTest extends TestCase
 {
-    /** Logger **/
     private static final Logger logger_ =
         Logger.getLogger(StringConnectionTest.class);
+
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
         
     /**
      * Entrypoint
@@ -30,20 +33,6 @@ public class StringConnectionTest extends TestCase
         TestRunner.run(StringConnectionTest.class);
     }
     
-    //--------------------------------------------------------------------------
-    // Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Constructor for StringConnectionTest.
-     * 
-     * @param name Name
-     */
-    public StringConnectionTest(String name)
-    {
-        super(name);
-    }
-
     //--------------------------------------------------------------------------
     // Unit Tests
     //--------------------------------------------------------------------------

@@ -19,6 +19,10 @@ public class WrappingWriterTest extends TestCase
     private static final Logger logger_ = 
         Logger.getLogger(WrappingWriterTest.class);
         
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+        
     /**
      * Entrypoint
      * 
@@ -27,20 +31,6 @@ public class WrappingWriterTest extends TestCase
     public static void main(String[] args)
     {
         TestRunner.run(WrappingWriterTest.class);
-    }
-
-    //--------------------------------------------------------------------------
-    //  Constructors
-    //--------------------------------------------------------------------------
-        
-    /**
-     * Constructor for WrappingWriterTest.
-     * 
-     * @param  name  Name of test
-     */
-    public WrappingWriterTest(String name)
-    {
-        super(name);
     }
 
     //--------------------------------------------------------------------------

@@ -2,10 +2,10 @@ package toolbox.util.io.test;
 
 import java.io.IOException;
 
+import org.apache.log4j.Logger;
+
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
-
-import org.apache.log4j.Logger;
 
 import toolbox.util.io.NullWriter;
 
@@ -17,6 +17,10 @@ public class NullWriterTest extends TestCase
     private static final Logger logger_ =
         Logger.getLogger(NullWriterTest.class);
         
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+        
     /**
      * Entrypoint
      * 
@@ -25,20 +29,6 @@ public class NullWriterTest extends TestCase
     public static void main(String[] args)
     {
         TestRunner.run(NullWriterTest.class);
-    }
-
-    //--------------------------------------------------------------------------
-    //  Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Constructor for NullWriterTest.
-     * 
-     * @param arg0 Name
-     */
-    public NullWriterTest(String arg0)
-    {
-        super(arg0);
     }
 
     //--------------------------------------------------------------------------

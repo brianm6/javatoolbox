@@ -22,6 +22,10 @@ public class NotFilterTest extends TestCase
      * Test directory for filtering files 
      */
     private File testDir_;
+     
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
         
     /** 
      * Entrypoint
@@ -32,23 +36,9 @@ public class NotFilterTest extends TestCase
     {
         TestRunner.run(NotFilterTest.class);
     }
-
-    //--------------------------------------------------------------------------
-    //  Constructors
-    //--------------------------------------------------------------------------
     
-    /**
-     * Constructor for NotFilterTest.
-     * 
-     * @param  arg0  Test name
-     */
-    public NotFilterTest(String arg0)
-    {
-        super(arg0);
-    }
-
     //--------------------------------------------------------------------------
-    //  Setup/Teardown
+    // Overridden from TestCase
     //--------------------------------------------------------------------------
     
     /** 
@@ -62,7 +52,6 @@ public class NotFilterTest extends TestCase
         FileUtil.setFileContents(base + "NotFilterTest.txt", "testing", false);
         super.setUp();
     }
-
 
     /**
      * Clean up temporary directory 

@@ -24,9 +24,12 @@ import toolbox.util.net.SocketConnection;
  */
 public class SocketConnectionTest extends TestCase
 {
-    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(SocketConnectionTest.class);
+
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
     
     /**
      * Entry point
@@ -36,20 +39,6 @@ public class SocketConnectionTest extends TestCase
     public static void main(String[] args)
     {
         TestRunner.run(SocketConnectionTest.class);
-    }
-
-    //--------------------------------------------------------------------------
-    //  Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Constructor for SocketConnectionTest
-     * 
-     * @param  arg  Name
-     */
-    public SocketConnectionTest(String arg)
-    {
-        super(arg);
     }
     
     //--------------------------------------------------------------------------

@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.apache.log4j.Logger;
+
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
-
-import org.apache.log4j.Logger;
 
 import toolbox.util.ThreadUtil;
 import toolbox.util.net.AbstractConnection;
@@ -23,9 +23,12 @@ import toolbox.util.thread.strategy.ThreadPoolStrategy;
  */
 public class AsyncConnectionHandlerTest extends TestCase
 {
-    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(AsyncConnectionHandlerTest.class);
+
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
     
     /**
      * Entry point
@@ -35,20 +38,6 @@ public class AsyncConnectionHandlerTest extends TestCase
     public static void main(String[] args)
     {
         TestRunner.run(AsyncConnectionHandlerTest.class);       
-    }
-
-    //--------------------------------------------------------------------------
-    // Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Constructor for AsyncConnectionHandlerTest
-     * 
-     * @param  arg  Name
-     */
-    public AsyncConnectionHandlerTest(String arg)
-    {
-        super(arg);
     }
     
     //--------------------------------------------------------------------------

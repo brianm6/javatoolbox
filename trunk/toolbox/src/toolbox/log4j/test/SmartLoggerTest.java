@@ -16,6 +16,10 @@ public class SmartLoggerTest extends TestCase
     private static Logger logger_ = 
         Logger.getLogger(SmartLoggerTest.class);
 
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+
     /**
      * Entrypoint
      * 
@@ -24,20 +28,6 @@ public class SmartLoggerTest extends TestCase
     public static void main(String[] args)
     {
         TestRunner.run(SmartLoggerTest.class);
-    }
-
-    //--------------------------------------------------------------------------
-    //  Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * SmartLoggerTest constructor
-     * 
-     * @param  name  Test name
-     */
-    public SmartLoggerTest(String name)
-    {
-        super(name);
     }
 
     //--------------------------------------------------------------------------

@@ -12,34 +12,23 @@ import toolbox.findclass.Main;
  */
 public class MainTest extends TestCase
 {
-    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(MainTest.class);
-    
-    /**
-     * Test entry point
-     * 
-     * @param  args  Args
-     */
-    public static void main(String[] args)
-    {
-        TestRunner.run(MainTest.class);
-    }
 
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
     
     /**
-     * Arg constructor
+     * Test entry point
      * 
-     * @param arg  Args
+     * @param  args  None recognized
      */
-    public MainTest(String arg)
+    public static void main(String[] args)
     {
-        super(arg);
+        TestRunner.run(MainTest.class);
     }
-    
+
     //--------------------------------------------------------------------------
     // Unit Tests
     //--------------------------------------------------------------------------

@@ -16,6 +16,10 @@ public class PackageTesterTest extends TestCase
         Logger.getLogger(PackageTesterTest.class);
         
     private static final String testPackage_ = "toolbox.showpath.test";    
+    
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
         
     /**
      * Entrypoint
@@ -25,20 +29,6 @@ public class PackageTesterTest extends TestCase
     public static void main(String[] args)
     {
         TestRunner.run(PackageTesterTest.class);
-    }
-    
-    //--------------------------------------------------------------------------
-    // Constructors 
-    //--------------------------------------------------------------------------
-        
-    /**
-     * Constructor for PackageTesterTest.
-     * 
-     * @param arg0 Test name
-     */
-    public PackageTesterTest(String arg0)
-    {
-        super(arg0);
     }
     
     //--------------------------------------------------------------------------

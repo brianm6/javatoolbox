@@ -17,6 +17,10 @@ public class ExtensionFilterTest extends TestCase
 {
     private static final Logger logger_ = 
         Logger.getLogger(ExtensionFilterTest.class);
+       
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
         
     /** 
      * Entrypoint
@@ -26,20 +30,6 @@ public class ExtensionFilterTest extends TestCase
     public static void main(String[] args)
     {
         TestRunner.run(ExtensionFilterTest.class);
-    }
-
-    //--------------------------------------------------------------------------
-    //  Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Constructor for ExtensionFilterTest.
-     * 
-     * @param  arg0  Test name
-     */
-    public ExtensionFilterTest(String arg0)
-    {
-        super(arg0);
     }
 
     //--------------------------------------------------------------------------

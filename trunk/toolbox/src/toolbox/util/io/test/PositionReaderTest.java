@@ -14,9 +14,12 @@ import toolbox.util.io.PositionReader;
  */
 public class PositionReaderTest extends TestCase
 {
-    /** Logger */
     public static final Logger logger_ =
         Logger.getLogger(PositionReaderTest.class);
+
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
 
     /**
      * Entrypoint
@@ -26,20 +29,6 @@ public class PositionReaderTest extends TestCase
     public static void main(String[] args)
     {
         TestRunner.run(PositionReaderTest.class);
-    }
-
-    //--------------------------------------------------------------------------
-    //  Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Constructor for PositionReaderTest.
-     * 
-     * @param arg0  Test name
-     */
-    public PositionReaderTest(String arg0)
-    {
-        super(arg0);
     }
 
     //--------------------------------------------------------------------------

@@ -15,6 +15,10 @@ public class MulticastOutputStreamTest extends TestCase
 {
     private static final Logger logger_ = 
         Logger.getLogger(MulticastOutputStreamTest.class);
+
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
         
     /**
      * Entrypoint
@@ -24,20 +28,6 @@ public class MulticastOutputStreamTest extends TestCase
     public static void main(String[] args)
     {
         TestRunner.run(MulticastOutputStreamTest.class);
-    }
-    
-    //--------------------------------------------------------------------------
-    //  Constructors
-    //--------------------------------------------------------------------------
-        
-    /**
-     * Constructor for MulticastOutputStreamTest.
-     * 
-     * @param  arg0  Test name
-     */
-    public MulticastOutputStreamTest(String arg0)
-    {
-        super(arg0);
     }
     
     //--------------------------------------------------------------------------

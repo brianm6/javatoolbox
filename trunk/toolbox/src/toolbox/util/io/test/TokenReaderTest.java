@@ -15,9 +15,12 @@ import toolbox.util.io.TokenReader;
  */
 public class TokenReaderTest extends TestCase
 {
-    /** Logger **/
     public static final Logger logger_ =
         Logger.getLogger(TokenReaderTest.class);
+
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
         
     /**
      * Entrypoint
@@ -27,20 +30,6 @@ public class TokenReaderTest extends TestCase
     public static void main(String[] args)
     {
         TestRunner.run(TokenReaderTest.class);
-    }
-
-    //--------------------------------------------------------------------------
-    //  Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Constructor for TokenReaderTest.
-     * 
-     * @param arg0  Name
-     */
-    public TokenReaderTest(String arg0)
-    {
-        super(arg0);
     }
 
     //--------------------------------------------------------------------------

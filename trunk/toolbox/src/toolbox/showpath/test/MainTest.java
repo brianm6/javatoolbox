@@ -6,10 +6,14 @@ import junit.textui.TestRunner;
 import toolbox.showpath.Main;
 
 /**
- * Unit test for toolbox.showpath.Main
+ * Unit test for Main
  */
 public class MainTest extends TestCase
 {
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+    
     /**
      * Entrypoint
      * 
@@ -18,20 +22,6 @@ public class MainTest extends TestCase
     public static void main(String[] args)
     {
         TestRunner.run(MainTest.class);
-    }
-
-    //--------------------------------------------------------------------------
-    // Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Constructor for MainTest.
-     * 
-     * @param arg0 Test name
-     */
-    public MainTest(String arg0)
-    {
-        super(arg0);
     }
 
     //--------------------------------------------------------------------------

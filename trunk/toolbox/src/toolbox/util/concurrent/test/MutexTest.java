@@ -12,9 +12,12 @@ import toolbox.util.concurrent.Mutex;
  */
 public class MutexTest extends TestCase
 {
-    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(MutexTest.class);
+
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
 
     /**
      * Entrypoint
@@ -24,20 +27,6 @@ public class MutexTest extends TestCase
     public static void main(String[] args)
     {
         TestRunner.run(MutexTest.class);
-    }
-    
-    //--------------------------------------------------------------------------
-    // Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Constructor for MutexTest.
-     * 
-     * @param arg0 Test name
-     */
-    public MutexTest(String arg0)
-    {
-        super(arg0);
     }
 
     //--------------------------------------------------------------------------

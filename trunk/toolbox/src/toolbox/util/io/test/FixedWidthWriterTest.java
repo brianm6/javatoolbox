@@ -15,9 +15,12 @@ import toolbox.util.io.FixedWidthWriter;
  */
 public class FixedWidthWriterTest extends TestCase
 {
-    /** Logger */
     private static final Logger logger_ =
         Logger.getLogger(FixedWidthWriterTest.class);
+
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
         
     /**
      * Entry point
@@ -27,20 +30,6 @@ public class FixedWidthWriterTest extends TestCase
     public static void main(String[] args)
     {
         TestRunner.run(FixedWidthWriterTest.class);
-    }
-
-    //--------------------------------------------------------------------------
-    // Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Constructor for FixedWidthWriterTest.
-     * 
-     * @param arg0  Test name
-     */
-    public FixedWidthWriterTest(String arg0)
-    {
-        super(arg0);
     }
 
     //--------------------------------------------------------------------------

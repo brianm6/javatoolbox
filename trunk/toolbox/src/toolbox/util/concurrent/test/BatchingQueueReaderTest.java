@@ -1,9 +1,9 @@
 package toolbox.util.concurrent.test;
 
+import org.apache.log4j.Logger;
+
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
-
-import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
 import toolbox.util.concurrent.BatchingQueueReader;
@@ -20,10 +20,14 @@ public class BatchingQueueReaderTest extends TestCase
 
     private BlockingQueue batches_;
 
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+
     /**
      * Entrypoint
      * 
-     * @param  args  None
+     * @param  args  None recognized
      */    
     public static void main(String[] args)
     {
@@ -31,19 +35,9 @@ public class BatchingQueueReaderTest extends TestCase
     }
 
     //--------------------------------------------------------------------------
-    //  Constructors
+    //  Setup
     //--------------------------------------------------------------------------
     
-    /**
-     * Constructor for BatchingQueueReaderTest
-     * 
-     * @param arg0  Name
-     */
-    public BatchingQueueReaderTest(String arg0)
-    {
-        super(arg0);
-    }
-
     /**
      * @see junit.framework.TestCase#setUp()
      */

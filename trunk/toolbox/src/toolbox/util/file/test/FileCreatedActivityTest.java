@@ -16,9 +16,12 @@ import toolbox.util.file.FileCreatedActivity;
  */
 public class FileCreatedActivityTest extends TestCase
 {
-    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(FileCreatedActivityTest.class);
+
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
         
     /**
      * Entrypoint
@@ -28,20 +31,6 @@ public class FileCreatedActivityTest extends TestCase
     public static void main(String[] args)
     {
         TestRunner.run(FileCreatedActivityTest.class);
-    }
-
-    //--------------------------------------------------------------------------
-    //  Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Constructor for FileCreatedActivityTest.
-     * 
-     * @param  arg0  Test name
-     */
-    public FileCreatedActivityTest(String arg0)
-    {
-        super(arg0);
     }
 
     //--------------------------------------------------------------------------

@@ -16,6 +16,10 @@ public class NullOutputStreamTest extends TestCase
 {
     private static final Logger logger_ =
         Logger.getLogger(NullOutputStreamTest.class);
+
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
         
     /**
      * Entrypoint
@@ -25,20 +29,6 @@ public class NullOutputStreamTest extends TestCase
     public static void main(String[] args)
     {
         TestRunner.run(NullOutputStreamTest.class);
-    }
-
-    //--------------------------------------------------------------------------
-    //  Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Constructor for NullOutputStreamTest.
-     * 
-     * @param arg0 Name
-     */
-    public NullOutputStreamTest(String arg0)
-    {
-        super(arg0);
     }
 
     //--------------------------------------------------------------------------

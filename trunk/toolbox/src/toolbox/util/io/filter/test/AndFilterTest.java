@@ -24,6 +24,10 @@ public class AndFilterTest extends TestCase
      */
     private File testDir_;
         
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+        
     /** 
      * Entrypoint
      * 
@@ -35,21 +39,7 @@ public class AndFilterTest extends TestCase
     }
 
     //--------------------------------------------------------------------------
-    //  Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Constructor for AndFilterTest.
-     * 
-     * @param  arg0  Test name
-     */
-    public AndFilterTest(String arg0)
-    {
-        super(arg0);
-    }
-
-    //--------------------------------------------------------------------------
-    //  Setup/Teardown
+    //  Overridden from junit.framework.TestCase
     //--------------------------------------------------------------------------
     
     /** 
@@ -63,7 +53,6 @@ public class AndFilterTest extends TestCase
         FileUtil.setFileContents(base + "AndFilterTest.txt", "testing", false);
         super.setUp();
     }
-
 
     /**
      * Clean up temporary directory 

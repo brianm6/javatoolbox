@@ -23,6 +23,10 @@ public class RegexFilterTest extends TestCase
      */
     private File testDir_;
     
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+    
     /** 
      * Entrypoint
      * 
@@ -34,21 +38,7 @@ public class RegexFilterTest extends TestCase
     }
 
     //--------------------------------------------------------------------------
-    //  Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Constructor for RegexFilterTest.
-     * 
-     * @param arg0  Name
-     */
-    public RegexFilterTest(String arg0)
-    {
-        super(arg0);
-    }
-
-    //--------------------------------------------------------------------------
-    //  Setup/Teardown
+    // Overridden from TestCase
     //--------------------------------------------------------------------------
     
     /** 

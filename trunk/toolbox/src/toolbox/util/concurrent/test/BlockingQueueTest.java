@@ -17,28 +17,18 @@ public class BlockingQueueTest extends TestCase
     private static final Logger logger_ = 
         Logger.getLogger(BlockingQueueTest.class);
 
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+
     /**
      * Entrypoint
      * 
-     * @param  args  None
+     * @param  args  None recognized
      */    
     public static void main(String[] args)
     {
         TestRunner.run(BlockingQueueTest.class);
-    }
-
-    //--------------------------------------------------------------------------
-    //  Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Constructor for BlockingQueueTest.
-     * 
-     * @param arg0  Name
-     */
-    public BlockingQueueTest(String arg0)
-    {
-        super(arg0);
     }
     
     //--------------------------------------------------------------------------

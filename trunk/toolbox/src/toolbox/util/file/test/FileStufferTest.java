@@ -18,6 +18,10 @@ public class FileStufferTest extends TestCase
 {
     private static final Logger logger_ = 
         Logger.getLogger(FileStufferTest.class);
+
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
         
     /**
      * Entrypoint
@@ -27,20 +31,6 @@ public class FileStufferTest extends TestCase
     public static void main(String[] args)
     {
         TestRunner.run(FileStufferTest.class);
-    }
-    
-    //--------------------------------------------------------------------------
-    //  Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Constructor for FileStufferTest.
-     * 
-     * @param arg0  Name
-     */
-    public FileStufferTest(String arg0)
-    {
-        super(arg0);
     }
     
     //--------------------------------------------------------------------------

@@ -24,6 +24,10 @@ public class EventOutputStreamTest extends TestCase
 {
     private static final Logger logger_ =
         Logger.getLogger(EventOutputStreamTest.class);
+
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
         
     /**
      * Entrypoint   
@@ -33,20 +37,6 @@ public class EventOutputStreamTest extends TestCase
     public static void main(String[] args)
     {
         TestRunner.run(EventOutputStreamTest.class);
-    }
-    
-    //--------------------------------------------------------------------------
-    //  Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Constructor for EventOutputStreamTest
-     * 
-     * @param  arg0  Name
-     */
-    public EventOutputStreamTest(String arg0)
-    {
-        super(arg0);
     }
 
     //--------------------------------------------------------------------------

@@ -16,9 +16,12 @@ import toolbox.util.net.SocketServerConfig;
  */
 public class SocketServerConfigTest extends TestCase
 {
-    /** Logger */
     public static final Logger logger_ =
         Logger.getLogger(SocketServerConfigTest.class);
+
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
 
     /**
      * Entrypoint 
@@ -28,20 +31,6 @@ public class SocketServerConfigTest extends TestCase
     public static void main(String[] args)
     {
         TestRunner.run(SocketServerConfigTest.class);
-    }
-
-    //--------------------------------------------------------------------------
-    // Constructors
-    //--------------------------------------------------------------------------
-            
-    /**
-     * Constructor for SocketServerConfigTest
-     * 
-     * @param  arg0  Name
-     */
-    public SocketServerConfigTest(String arg0)
-    {
-        super(arg0);
     }
     
     //--------------------------------------------------------------------------

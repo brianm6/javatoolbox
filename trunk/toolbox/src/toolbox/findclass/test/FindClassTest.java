@@ -1,9 +1,9 @@
 package toolbox.findclass.test;
 
+import org.apache.log4j.Logger;
+
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
-
-import org.apache.log4j.Logger;
 
 import toolbox.findclass.FindClass;
 import toolbox.findclass.FindClassResult;
@@ -14,34 +14,23 @@ import toolbox.util.ArrayUtil;
  */
 public class FindClassTest extends TestCase
 {
-    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(FindClassTest.class);
-    
+
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+        
     /**
      * Test entry point
      * 
-     * @param  args  Args
+     * @param  args  None recognized
      */
     public static void main(String[] args)
     {
         TestRunner.run(FindClassTest.class);
     }
 
-    //--------------------------------------------------------------------------
-    // Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Arg constructor
-     * 
-     * @param arg  Name
-     */
-    public FindClassTest(String arg)
-    {
-        super(arg);
-    }
-    
     //--------------------------------------------------------------------------
     // Unit Tests
     //--------------------------------------------------------------------------

@@ -15,9 +15,12 @@ import toolbox.junit.JarTestCollector;
  */
 public class JarTestCollectorTest extends TestCase
 {
-    /** Logger */
     private static final Logger logger_ =
         Logger.getLogger(JarTestCollectorTest.class);
+
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
             
     /**
      * Entrypoint
@@ -27,20 +30,6 @@ public class JarTestCollectorTest extends TestCase
     public static void main(String[] args)
     {
         TestRunner.run(JarTestCollectorTest.class);
-    }
-
-    //--------------------------------------------------------------------------
-    // Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Constructor for JarTestCollectorTest
-     * 
-     * @param arg0  Name
-     */
-    public JarTestCollectorTest(String arg0)
-    {
-        super(arg0);
     }
     
     //--------------------------------------------------------------------------

@@ -22,6 +22,10 @@ public class OrFilterTest extends TestCase
      * Test directory for filtering files 
      */
     private File testDir_;
+     
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
         
     /** 
      * Entrypoint
@@ -34,21 +38,7 @@ public class OrFilterTest extends TestCase
     }
 
     //--------------------------------------------------------------------------
-    //  Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Constructor for OrFilterTest.
-     * 
-     * @param  arg0  Test name
-     */
-    public OrFilterTest(String arg0)
-    {
-        super(arg0);
-    }
-
-    //--------------------------------------------------------------------------
-    //  Setup/Teardown
+    // Overridden from TestCase
     //--------------------------------------------------------------------------
     
     /** 
@@ -62,7 +52,6 @@ public class OrFilterTest extends TestCase
         FileUtil.setFileContents(base + "OrFilterTest.txt", "testing", false);
         super.setUp();
     }
-
 
     /**
      * Clean up temporary directory 

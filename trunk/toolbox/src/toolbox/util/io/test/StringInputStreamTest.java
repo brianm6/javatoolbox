@@ -1,9 +1,9 @@
 package toolbox.util.io.test;
 
+import org.apache.log4j.Logger;
+
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
-
-import org.apache.log4j.Logger;
 
 import toolbox.util.ThreadUtil;
 import toolbox.util.io.StringInputStream;
@@ -15,6 +15,10 @@ public class StringInputStreamTest extends TestCase
 {
     private static final Logger logger_ = 
         Logger.getLogger(StringInputStreamTest.class);
+       
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
         
     /**
      * Entrypoint
@@ -24,20 +28,6 @@ public class StringInputStreamTest extends TestCase
     public static void main(String[] args)
     {
         TestRunner.run(StringInputStreamTest.class);
-    }
-    
-    //--------------------------------------------------------------------------
-    //  Constructors
-    //--------------------------------------------------------------------------
-        
-    /**
-     * Constructor for StringInputStreamTest
-     * 
-     * @param  arg0  Name
-     */
-    public StringInputStreamTest(String arg0)
-    {
-        super(arg0);
     }
     
     //--------------------------------------------------------------------------

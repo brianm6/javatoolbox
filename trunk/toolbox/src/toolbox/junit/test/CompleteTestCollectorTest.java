@@ -17,6 +17,10 @@ public class CompleteTestCollectorTest extends TestCase
 {
     private static final Logger logger_ = 
         Logger.getLogger(CompleteTestCollectorTest.class);
+
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
         
     /**
      * Entrypoint
@@ -26,20 +30,6 @@ public class CompleteTestCollectorTest extends TestCase
     public static void main(String[] args)
     {
         TestRunner.run(CompleteTestCollectorTest.class);
-    }
-
-    //--------------------------------------------------------------------------
-    // Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Constructor for CompleteTestCollectorTest
-     * 
-     * @param arg0  Name
-     */
-    public CompleteTestCollectorTest(String arg0)
-    {
-        super(arg0);
     }
     
     //--------------------------------------------------------------------------

@@ -14,6 +14,10 @@ public class StringOutputStreamTest extends TestCase
 {
     private static final Logger logger_ =
         Logger.getLogger(StringOutputStreamTest.class);
+
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
         
     /**
      * Entrypoint   
@@ -23,20 +27,6 @@ public class StringOutputStreamTest extends TestCase
     public static void main(String[] args)
     {
         TestRunner.run(StringOutputStreamTest.class);
-    }
-    
-    //--------------------------------------------------------------------------
-    //  Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Constructor for StringOutputStreamTest
-     * 
-     * @param  arg0  Name
-     */
-    public StringOutputStreamTest(String arg0)
-    {
-        super(arg0);
     }
 
     //--------------------------------------------------------------------------
