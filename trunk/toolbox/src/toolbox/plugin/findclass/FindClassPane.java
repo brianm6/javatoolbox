@@ -130,11 +130,11 @@ public class JFindClass extends JFrame implements IPreferenced
     private IStatusBar           statusBar_;
 
     //--------------------------------------------------------------------------
-    //  Constructors
+    // Constructors
     //--------------------------------------------------------------------------
 
     /**
-     * Default Constructor
+     * Creates a JFindClass
      */
     public JFindClass()
     {
@@ -142,11 +142,13 @@ public class JFindClass extends JFrame implements IPreferenced
     }
 
     //--------------------------------------------------------------------------
-    //  Protected
+    // Protected
     //--------------------------------------------------------------------------
  
     /**
      * Initiailizes the GUI
+     * 
+     * @param params Map of initialization objects
      */
     protected void init(Map params)
     {
@@ -219,6 +221,11 @@ public class JFindClass extends JFrame implements IPreferenced
         searchPanel.add(ignoreCaseCheckBox_);
         searchPanel.add(showPathCheckBox_);
         searchPanel.add(hiliteMatchesCheckBox_);
+     
+        // Make sure table repaints if hilite/show path is toggled
+        Action repaintAction = new TableRepaintAction();
+        showPathCheckBox_.addActionListener(repaintAction);
+        hiliteMatchesCheckBox_.addActionListener(repaintAction);
         
         return searchPanel;
         //getContentPane().add(searchPanel, BorderLayout.NORTH);
@@ -1050,6 +1057,17 @@ public class JFindClass extends JFrame implements IPreferenced
             
             for (int i=0; i<selected.length; i++)
                 searchListModel_.removeElement(selected[i]);
+        }
+    }
+    
+    /**
+     * Forces results table to repaint itself
+     */
+    class TableRepaintAction extends AbstractAction
+    {
+        public void actionPerformed(ActionEvent e)
+        {
+            resultTable_.repaint();
         }
     }
 }
