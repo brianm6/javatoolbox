@@ -25,9 +25,7 @@ import toolbox.util.io.filter.DirectoryFilter;
  */
 public final class FileUtil
 {
-    /** Logger **/
-    private static final Logger logger_ = 
-        Logger.getLogger(FileUtil.class);
+    private static final Logger logger_ = Logger.getLogger(FileUtil.class);
 
     //--------------------------------------------------------------------------
     //  Constructors
@@ -52,7 +50,7 @@ public final class FileUtil
      */
     public static void cleanDir(File dir)
     {
-        if(!dir.isDirectory())
+        if (!dir.isDirectory())
         {
             throw new IllegalArgumentException(
                 "Directory " + dir + " is not a directory.");
@@ -61,17 +59,18 @@ public final class FileUtil
         {
             File[] contents = dir.listFiles();
 
-            for(int i=0; i<contents.length; i++)
+            for (int i = 0; i < contents.length; i++)
             {
                 File sub = contents[i];
-                
-                if(sub.isDirectory())
+
+                if (sub.isDirectory())
                     cleanDir(sub);
-                    
+
                 sub.delete();
             }
         }
     }
+
 
     /**
      * Reads in the contents of a text file into a single string
@@ -81,29 +80,29 @@ public final class FileUtil
      * @throws  FileNotFoundException if file not found
      * @throws  IOException on IO error
      */
-    public static String getFileContents(String filename) 
+    public static String getFileContents(String filename)
         throws FileNotFoundException, IOException
     {
-        Reader br = null; 
+        Reader br = null;
         StringBuffer text = new StringBuffer();
 
-        try 
+        try
         {
             br = new BufferedReader(new FileReader(filename));
             int i;
-            
-            while ((i = br.read()) != -1) 
-                text.append((char)i);
+
+            while ((i = br.read()) != -1)
+                text.append((char) i);
         }
-        finally 
+        finally
         {
             ResourceCloser.close(br);
         }
 
         return text.toString();
     }
-    
-    
+
+
     /**     
      * Writes out the contents to a text file from a single string.     
      *     
@@ -113,25 +112,29 @@ public final class FileUtil
      * @return  Contents of the file as a string
      * @throws  FileNotFoundException if file not found
      * @throws  IOException on IO error
-     */    
-    public static String setFileContents(String filename, String contents, 
-        boolean append) throws FileNotFoundException, IOException    
-    {   
+     */
+    public static String setFileContents(
+        String filename,
+        String contents,
+        boolean append)
+        throws FileNotFoundException, IOException
+    {
 
-        FileWriter file = new FileWriter(filename, append);     
-        
-        if (file == null)       
-        {       
+        FileWriter file = new FileWriter(filename, append);
+
+        if (file == null)
+        {
             logger_.error("File does not exist: " + filename);
-            throw new FileNotFoundException(filename);      
-        }       
-        
+            throw new FileNotFoundException(filename);
+        }
+
         file.write(contents);
         file.close();
 
-        return contents;    
+        return contents;
     }
-    
+
+
     /**     
      * Writes a string to a file
      *     
@@ -141,14 +144,17 @@ public final class FileUtil
      * @return  Contents of the file as a string
      * @throws  FileNotFoundException if file not found
      * @throws  IOException on IO error
-     */    
-    public static String setFileContents(File file, String contents, 
-        boolean append) throws FileNotFoundException, IOException    
-    {   
+     */
+    public static String setFileContents(
+        File file,
+        String contents,
+        boolean append)
+        throws FileNotFoundException, IOException
+    {
         return setFileContents(file.getAbsolutePath(), contents, append);
-    }    
-    
-    
+    }
+
+
     /**
      * Retrieves the System specific temp file directory
      *
@@ -159,7 +165,7 @@ public final class FileUtil
         return new File(System.getProperty("java.io.tmpdir"));
     }
 
-    
+
     /**
      * Creates a temporary directory in the System temporary directory
      * 
@@ -187,6 +193,7 @@ public final class FileUtil
         return getTempFilename(getTempDir());
     }
 
+
     /**
      * Creates a temporary filename for a file in the given directory
      * 
@@ -197,11 +204,12 @@ public final class FileUtil
     public static String getTempFilename(File dir) throws IOException
     {
         // Create temp file, delete it, and return the name 
-        File tmpFile = File.createTempFile("temp","", dir);
+        File tmpFile = File.createTempFile("temp", "", dir);
         String filename = tmpFile.getAbsolutePath();
         tmpFile.delete();
         return filename;
     }
+
 
     /**
      *  Moves a file to a given directory. The destination
@@ -218,32 +226,32 @@ public final class FileUtil
          *       existence that need to be accounted for. 
          */
         String method = "[move  ] ";
-        logger_.debug(method + "Moving " + srcFile + " => " +  destDir);
-        
+        logger_.debug(method + "Moving " + srcFile + " => " + destDir);
+
         InputStream is = null;
         OutputStream os = null;
-        
+
         try
         {
             File destFile = new File(destDir, srcFile.getName());
-            
+
             is = new BufferedInputStream(new FileInputStream(srcFile));
             os = new BufferedOutputStream(new FileOutputStream(destFile));
-            
+
             int c;
-            
+
             // copy contents
-            while(is.available()>0)
+            while (is.available() > 0)
                 os.write(is.read());
-                
+
             // close streams
             is.close();
-            os.close();           
-            
+            os.close();
+
             // delete original
             srcFile.delete();
         }
-        catch(IOException e)
+        catch (IOException e)
         {
             logger_.error(method, e);
         }
@@ -252,7 +260,8 @@ public final class FileUtil
             // cleanup
         }
     }
-    
+
+
     /**
      * Finds files recursively from a given starting directory using the
      * passed in filter as selection criteria.
@@ -261,70 +270,73 @@ public final class FileUtil
      * @param    filter      Filename filter criteria
      * @return   List of filesnames as strings that match the filter 
      *           from the start dir
-     */    
-    public static List findFilesRecursively(String startingDir, 
+     */
+    public static List findFilesRecursively(
+        String startingDir,
         FilenameFilter filter)
     {
         File f = new File(startingDir);
         List basket = new ArrayList(20);
 
-        if (f.exists() && f.isDirectory()) 
-        { 
+        if (f.exists() && f.isDirectory())
+        {
             // smack a trailing / on the start dir 
             if (!startingDir.endsWith(File.separator))
                 startingDir += File.separator;
-            
+
             // process files
             String[] files = f.list(filter);
-            
-            for (int i=0; i<files.length; i++) 
+
+            for (int i = 0; i < files.length; i++)
                 basket.add(startingDir + files[i]);
-            
+
             // process directories
-            String[] dirs  = f.list(new DirectoryFilter());
-                        
-            for(int i=0; i<dirs.length; i++)
+            String[] dirs = f.list(new DirectoryFilter());
+
+            for (int i = 0; i < dirs.length; i++)
             {
-                List subBasket = 
+                List subBasket =
                     findFilesRecursively(startingDir + dirs[i], filter);
-                    
+
                 basket.addAll(subBasket);
             }
         }
-        
+
         return basket;
     }
-    
-    
+
+
     /**
      * Appends the file separator char to the end of a path if it already
      * doesn't exist.
      * 
      * @param  path    Path to append file separator
      * @return Path with suffixed file separator
-     */    
+     */
     public static String trailWithSeparator(String path)
     {
         if (!path.endsWith(File.separator))
             path = path + File.separator;
-            
+
         return path;
     }
- 
+
+
     /**
      * For a given file path, the file separator characters are changed to
      * match the File.separator for the current platform
      * 
      * @param  path  Path to change
      * @return Changed path
-     */    
+     */
     public static String matchPlatformSeparator(String path)
     {
         String newPath = path.replace('\\', File.separatorChar);
         newPath = newPath.replace('/', File.separatorChar);
-        return newPath;    
+        return newPath;
     }
- 
+
+
     /**
      * Chops the extension off of a file's name
      * 
@@ -334,10 +346,10 @@ public final class FileUtil
     public static String dropExtension(String file)
     {
         int dot = file.lastIndexOf(".");
-        
+
         if (dot == -1)
             return file;
         else
             return file.substring(0, dot);
-     }
+    }
 }
