@@ -154,8 +154,6 @@ public class FindClass
         // Search each target
         for (int i=0; i< targets.length; i++) 
         { 
-            //logger_.info("isCancelled = " + isCancelled_ + " for " + targets[i]);
-            
             if (!isCancelled_)
             {
                 String target = targets[i];
@@ -170,7 +168,6 @@ public class FindClass
             else
             {
                 fireSearchCancelled();
-                //isCancelled_ = true;
                 break;                    
             }
         }
@@ -508,8 +505,6 @@ public class FindClass
      */
     protected void fireSearchCancelled()
     {
-        logger_.info(findListeners_.length + " listeners to notify of cancel.");
-        
         for (int i=0; i<findListeners_.length; i++)
             findListeners_[i].searchCancelled();
     }
