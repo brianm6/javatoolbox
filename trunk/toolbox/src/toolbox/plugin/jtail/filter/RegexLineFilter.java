@@ -10,17 +10,17 @@ import org.apache.regexp.RESyntaxException;
 public class RegexLineFilter extends AbstractLineFilter
 {
     /** 
-     * Regular expression 
+     * Regular expression.
      */
     private String strRegExp_;
     
     /** 
-     * Flag to match case 
+     * Flag to match case.
      */
     private boolean matchCase_;
     
     /** 
-     * Regular expression engine 
+     * Regular expression engine. 
      */
     private RE regExp_;
     
@@ -38,6 +38,7 @@ public class RegexLineFilter extends AbstractLineFilter
         this(".*", false);
     }
 
+
     /**
      * Creates a RegexLineFilter with the given regular expression. The match
      * is case insensetive by default. 
@@ -49,6 +50,7 @@ public class RegexLineFilter extends AbstractLineFilter
     {
         this(regularExpression, false);
     }
+
         
     /**
      * Creates a RegexLineFilter with the given regular expression and case
@@ -70,7 +72,7 @@ public class RegexLineFilter extends AbstractLineFilter
     //--------------------------------------------------------------------------
     
     /**
-     * Filters a line based on a regular expression
+     * Filters a line based on a regular expression.
      * 
      * @param line Line to match
      * @return Line if it matched the regular expression, null otherwise
@@ -91,7 +93,7 @@ public class RegexLineFilter extends AbstractLineFilter
     //--------------------------------------------------------------------------
     
     /**
-     * Sets the regular expression
+     * Sets the regular expression.
      * 
      * @param regExp Regular expression
      * @throws RESyntaxException on invalid regular expression
@@ -101,9 +103,10 @@ public class RegexLineFilter extends AbstractLineFilter
         strRegExp_ = regExp;
         regExp_ = new RE(strRegExp_);
     }
-    
+   
+   
     /**
-     * Sets case matching
+     * Sets case matching.
      * 
      * @param matchCase Flag to match case
      */

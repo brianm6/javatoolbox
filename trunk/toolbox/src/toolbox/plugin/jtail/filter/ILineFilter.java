@@ -1,12 +1,12 @@
 package toolbox.jtail.filter;
 
 /**
- * Filter for a single line of text
+ * Filter for a single line of text.
  */
 public interface ILineFilter
 {
     /**
-     * Filters the line of text
+     * Filters the line of text.
      * 
      * @param line  Line of text to filter
      * @return Mutated line of text as processed by the filter.
@@ -23,7 +23,7 @@ public interface ILineFilter
     
     
     /**
-     * Enables/disables the filter
+     * Enables/disables the filter.
      * 
      * @param b True to enable the filter, false to disable the filter
      */

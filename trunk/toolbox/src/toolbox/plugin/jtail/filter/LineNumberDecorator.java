@@ -6,7 +6,7 @@ package toolbox.jtail.filter;
 public class LineNumberDecorator extends AbstractLineFilter
 {
     /**
-     * Current line number
+     * Current line number.
      */
     private int lineNumber_;
     
@@ -15,7 +15,7 @@ public class LineNumberDecorator extends AbstractLineFilter
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a LineNumberDecorator
+     * Creates a LineNumberDecorator.
      */
     public LineNumberDecorator()
     {
@@ -27,7 +27,7 @@ public class LineNumberDecorator extends AbstractLineFilter
     //--------------------------------------------------------------------------
 
     /**
-     * Adds a line number to the beginning of a string
+     * Adds a line number to the beginning of a string.
      * 
      * @param line String to decorate with a line number
      * @return String decorated with a line number
