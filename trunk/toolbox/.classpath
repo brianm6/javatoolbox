@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="var" path="CLOVER_RUNTIME"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="debug"/>
 	<classpathentry sourcepath="JRE_SRC" kind="var" path="JRE_LIB"/>
@@ -50,7 +51,7 @@
 	<classpathentry kind="lib" path="lib/toniclf.jar"/>
 	<classpathentry kind="lib" path="lib/liquidlf.jar"/>
 	<classpathentry kind="lib" path="resources"/>
-	<classpathentry kind="lib" path="lib/javassist.jar"/>
+	<classpathentry sourcepath="lib/src/javassist-src.zip" kind="lib" path="lib/javassist.jar"/>
 	<classpathentry sourcepath="lib/src/junit-addons-src.zip" kind="lib" path="lib/junit-addons.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>
