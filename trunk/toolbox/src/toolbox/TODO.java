@@ -17,6 +17,7 @@ package toolbox;
  * TODO: Add HTTP proxy support to preferences dialog.
  * TODO: Add history to statusbar.
  * TODO: Add icons to statusbar.
+ * TODO: Double click on collapsable panel header should toggle it!
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
