@@ -22,8 +22,8 @@ public class BlockingInvoker implements Invoker
 
     
     /**
-     * @see toolbox.util.invoker.Invoker#invoke(
-     *      java.lang.Object, java.lang.String, java.lang.Object[])
+     * @see toolbox.util.invoker.Invoker#invoke(java.lang.Object, 
+     *      java.lang.String, java.lang.Object[])
      */
     public void invoke(Object target, String method, Object[] params)
         throws Exception

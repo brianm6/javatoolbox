@@ -6,7 +6,7 @@ import java.util.Comparator;
 
 /**
  * A Comparator which compares a properties of objects.
- *
+ * <p>
  * The property returned from each bean must implement Comparable
  * or have a custom Comparator for that object.<p>
  * 
@@ -48,16 +48,17 @@ public class ObjectComparator implements Comparator, Serializable
     //--------------------------------------------------------------------------
     
     /**
-     * Creates an ObjectComparator.
-     *
-     * @param propertyName The property to compare or a period separated list 
-     *                     of properties (e.g. address.line1 )
-     */
+	 * Creates an ObjectComparator.
+	 * 
+	 * @param propertyName The property to compare or a period separated list
+	 *        of properties (e.g. address.line1 )
+	 */
     public ObjectComparator(String propertyName)
     {
         this(new Property(propertyName));
     }
 
+    
     /**
      * Creates an ObjectComparator.
      *
@@ -69,6 +70,7 @@ public class ObjectComparator implements Comparator, Serializable
         this(new Property(propertyName, false, comparator));
     }
 
+    
     /**
      * Creates an ObjectComparator.
      *
@@ -80,6 +82,7 @@ public class ObjectComparator implements Comparator, Serializable
         this(new Property[] { new Property(propertyName, reverseOrder)});
     }
 
+    
     /**
      * Creates an ObjectComparator.
      *
@@ -92,6 +95,7 @@ public class ObjectComparator implements Comparator, Serializable
             { new Property(property1), new Property(property2)});
     }
 
+    
     /**
      * Creates an ObjectComparator.
      *
@@ -107,6 +111,7 @@ public class ObjectComparator implements Comparator, Serializable
                 new Property(property3)});
     }
 
+    
     /**
      * Creates an ObjectComparator.
      *
@@ -117,6 +122,7 @@ public class ObjectComparator implements Comparator, Serializable
         this(new Property[] { prop });
     }
 
+    
     /**
      * Creates an ObjectComparator.
      *
@@ -128,6 +134,7 @@ public class ObjectComparator implements Comparator, Serializable
         this(new Property[] { prop1, prop2 });
     }
 
+    
     /**
      * Creates an ObjectComparator.
      *
@@ -143,7 +150,7 @@ public class ObjectComparator implements Comparator, Serializable
     //--------------------------------------------------------------------------
     
     /**
-     * Compares the objects using the identified Propertys
+     * Compares the objects using the identified Propertys.
      * 
      * @param o1 First object
      * @param o2 Second object
@@ -188,6 +195,7 @@ public class ObjectComparator implements Comparator, Serializable
         return reverseOrder ? -rVal : rVal;
     }
 
+    
     /**
      * Tests for equality.
      * 
@@ -224,27 +232,27 @@ public class ObjectComparator implements Comparator, Serializable
     }
 
     //--------------------------------------------------------------------------
-    // Inner Classes
+    // Property
     //--------------------------------------------------------------------------
 
     /**
-     * A description of the property to compare.  If a Comparator
-     * is not provided, the property should implement Comparable.
-     */
+	 * A description of the property to compare. If a Comparator is not
+	 * provided, the property should implement Comparable.
+	 */
     public static class Property implements Serializable
     {
         /**
-         * Property name
+         * Property name.
          */
         private String name_;
 
         /**
-         * Sort in reverse order
+         * Sort in reverse order.
          */
         private boolean reverseOrder_;
 
         /**
-         * Comparator to use
+         * Comparator to use.
          */
         private Comparator comparator_;
 
@@ -262,6 +270,7 @@ public class ObjectComparator implements Comparator, Serializable
             this(name, false);
         }
 
+        
         /**
          * Creates a Property.
          * 
@@ -273,6 +282,7 @@ public class ObjectComparator implements Comparator, Serializable
             this(name, reverseOrder, null);
         }
 
+        
         /**
          * Creates a Property.
          * 
@@ -284,6 +294,7 @@ public class ObjectComparator implements Comparator, Serializable
             this(name, false, comparator);
         }
 
+        
         /**
          * Creates a Property.
          * 

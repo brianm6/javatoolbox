@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.collections.EvictingList;
 
 /**
- * Unit test for EvictingList 
+ * Unit test for EvictingList. 
  */
 public class EvictingListTest extends TestCase
 {
@@ -20,10 +20,10 @@ public class EvictingListTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Entrypoint
-     * 
-     * @param  args  None recognized
-     */
+	 * Entrypoint.
+	 * 
+	 * @param args None recognized
+	 */
     public static void main(String[] args)
     {
         TestRunner.run(EvictingListTest.class);

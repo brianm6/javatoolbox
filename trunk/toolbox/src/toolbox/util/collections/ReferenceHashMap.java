@@ -11,47 +11,45 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 /**
- * This class is similar to the WeakHashMap, except that the
- * keys used are created by the ReferenceFactory.  A ReferenceFactory
- * that returned a WeakReference would be the equivalent of a
- * WeakHashMap.
+ * This class is similar to the WeakHashMap, except that the keys used are
+ * created by the ReferenceFactory. A ReferenceFactory that returned a
+ * WeakReference would be the equivalent of a WeakHashMap.
  * 
  * @see ReferenceFactory
  */
 public class ReferenceHashMap extends AbstractMap implements Map
 {
     /** 
-     * Hash table mapping WeakKeys to values 
+     * Hash table mapping WeakKeys to values. 
      */
     private Map hash_;
     
     /**
-     *  Reference queue for cleared WeakKeys 
+     * Reference queue for cleared WeakKeys. 
      */
     private ReferenceQueue queue_ = new ReferenceQueue();
 
     /**
-     * Refernce factory
+     * Reference factory.
      */
-    private ReferenceFactory factory_ = null;
+    private ReferenceFactory factory_;
     
     /**
-     * Entry set
+     * Entry set.
      */
-    private Set entrySet_ = null;
-
+    private Set entrySet_;
 
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
     
     /**
-     * Constructor
-     * 
-     * @param  factory          Factory
-     * @param  initialCapacity  Initial capacity
-     * @param  loadFactor       Load factor
-     */
+	 * Constructor.
+	 * 
+	 * @param factory Factory
+	 * @param initialCapacity Initial capacity
+	 * @param loadFactor Load factor
+	 */
     public ReferenceHashMap(ReferenceFactory factory, int initialCapacity,
         float loadFactor)
     {
@@ -59,23 +57,25 @@ public class ReferenceHashMap extends AbstractMap implements Map
         factory_ = factory;
     }
 
+    
     /**
-     * Constructor
-     * 
-     * @param  factory          Factory
-     * @param  initialCapacity  Initial capacity
-     */
+	 * Constructor.
+	 * 
+	 * @param factory Factory
+	 * @param initialCapacity Initial capacity
+	 */
     public ReferenceHashMap(ReferenceFactory factory, int initialCapacity)
     {
         hash_ = new HashMap(initialCapacity);
         factory_ = factory;
     }
 
+    
     /**
-     * Constructor
-     * 
-     * @param  factory          Factory
-     */
+	 * Constructor.
+	 * 
+	 * @param factory Factory
+	 */
     public ReferenceHashMap(ReferenceFactory factory)
     {
         hash_ = new HashMap();
@@ -87,70 +87,80 @@ public class ReferenceHashMap extends AbstractMap implements Map
     //--------------------------------------------------------------------------
 
     /**
-     * @return  Size of map
-     */ 
+	 * Returns the size of the map.
+     * 
+     * @return int
+	 */ 
     public int size()
     {
         return entrySet().size();
     }
 
+    
     /**
-     * @return  True if map is empty, false otherwise
+     * Returns true if map is empty, false otherwise.
+     * 
+     * @return boolean
      */
     public boolean isEmpty()
     {
         return entrySet().isEmpty();
     }
 
+    
     /**
-     * Checks if key is in the map
-     * 
-     * @param   key  Key to check for existence
-     * @return  True if the map contains the key, false otherwise
-     */
+	 * Checks if key is in the map.
+	 * 
+	 * @param key Key to check for existence
+	 * @return True if the map contains the key, false otherwise
+	 */
     public boolean containsKey(Object key)
     {
         return hash_.containsKey(factory_.create(key));
     }
 
+    
     /**
-     * Retrieves an object from the map
-     * 
-     * @param   key  Key of object to retrieve
-     * @return  Object matching key, null if not found
-     */
+	 * Retrieves an object from the map.
+	 * 
+	 * @param key Key of object to retrieve
+	 * @return Object matching key, null if not found
+	 */
     public Object get(Object key)
     {
         return hash_.get(factory_.create(key));
     }
 
+    
     /**
-     * Puts an object in the map
-     * 
-     * @param  key    Key of object
-     * @param  value  Value of object
-     * @return Object
-     */
+	 * Puts an object in the map.
+	 * 
+	 * @param key Key of object
+	 * @param value Value of object
+	 * @return Object
+	 */
     public Object put(Object key, Object value)
     {
         processQueue();
         return hash_.put(factory_.create(key, queue_), value);
     }
 
+    
     /**
-     * Removes an object from the map
-     * 
-     * @param  key  Key of object to remove
-     * @return Removed object
-     */
+	 * Removes an object from the map.
+	 * 
+	 * @param key Key of object to remove
+	 * @return Removed object
+	 */
     public Object remove(Object key)
     {
         processQueue();
         return hash_.remove(factory_.create(key));
     }
 
+    
     /**
-     * Clears the map
+     * Clears the map.
      */
     public void clear()
     {
@@ -158,8 +168,11 @@ public class ReferenceHashMap extends AbstractMap implements Map
         hash_.clear();
     }
 
+    
     /**
-     * @return Set view of the mappings in this map.
+     * Returns set view of the mappings in this map.
+     * 
+     * @return Set
      */
     public Set entrySet()
     {
@@ -174,12 +187,12 @@ public class ReferenceHashMap extends AbstractMap implements Map
     //--------------------------------------------------------------------------
     
     /**
-     * Remove all invalidated entries from the map, that is, remove all entries
-     * whose keys have been discarded.  This method should be invoked once by
-     * each public mutator in this class.  We don't invoke this method in
-     * public accessors because that can lead to surprising
-     * ConcurrentModificationExceptions.
-     */
+	 * Remove all invalidated entries from the map, that is, remove all entries
+	 * whose keys have been discarded. This method should be invoked once by
+	 * each public mutator in this class. We don't invoke this method in public
+	 * accessors because that can lead to surprising
+	 * ConcurrentModificationExceptions.
+	 */
     private void processQueue()
     {
         Object key;
@@ -188,13 +201,12 @@ public class ReferenceHashMap extends AbstractMap implements Map
             hash_.remove(key);
     }
 
-
     //--------------------------------------------------------------------------
-    // Inner Classes
+    // Entry
     //--------------------------------------------------------------------------
 
     /**
-     * Internal class for entries
+     * Internal class for entries.
      */
     private static class Entry implements Map.Entry
     {
@@ -202,10 +214,9 @@ public class ReferenceHashMap extends AbstractMap implements Map
         private Object key_;
 
         /**
-         * Strong reference to key, so that the GC
-         * will leave it alone as long as this Entry
-         * exists
-         */
+		 * Strong reference to key, so that the GC will leave it alone as long
+		 * as this Entry exists.
+		 */
         Entry(Map.Entry ent, Object key)
         {
             ent_ = ent;
@@ -250,8 +261,12 @@ public class ReferenceHashMap extends AbstractMap implements Map
         }
     }
 
+    //--------------------------------------------------------------------------
+    // EntrySet
+    //--------------------------------------------------------------------------
+    
     /**
-     * Internal class for entry sets 
+     * Internal class for entry sets. 
      */
     private class EntrySet extends AbstractSet
     {

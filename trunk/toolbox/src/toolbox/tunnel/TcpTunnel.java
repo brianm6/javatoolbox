@@ -81,66 +81,74 @@ import toolbox.util.io.MulticastOutputStream;
  */
 public class TcpTunnel implements TcpTunnelListener
 {
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
     private static final Logger logger_ = 
         Logger.getLogger(TcpTunnel.class);
 
     /** 
-     * Stream name for event inputstream 
+     * Stream name for event inputstream. 
      */
     private static final String STREAM_IN = "in";
     
     /** 
-     * Stream name for event outputstream 
+     * Stream name for event outputstream. 
      */
     private static final String STREAM_OUT = "out";
 
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /** 
-     * Server socket for tunnel port on localhost 
+     * Server socket for tunnel port on localhost. 
      */
     private ServerSocket ss_;
 
     /** 
-     * Tunnel port on localhost 
+     * Tunnel port on localhost. 
      */
     private int listenPort_;
     
     /** 
-     * Flag to shutdown 
+     * Flag to shutdown. 
      */
-    private boolean stopped_ = false;
+    private boolean stopped_;
 
     /** 
-     * Intended recipient hostname 
+     * Intended recipient hostname. 
      */    
     private String remoteHost_;
     
     /** 
-     * Intended recipient port 
+     * Intended recipient port. 
      */
     private int remotePort_;
     
     /** 
-     * Listeners of tunnel events 
+     * Listeners of tunnel events. 
      */
     private List listeners_;
     
     /** 
-     * Total number of incoming bytes 
+     * Total number of incoming bytes. 
      */
     private int inTotal_;
     
     /** 
-     * Total number of outgoing bytes 
+     * Total number of outgoing bytes. 
      */
     private int outTotal_;
 
     /** 
-     * Sink for incoming data from the remote host 
+     * Sink for incoming data from the remote host. 
      */
     private OutputStream incomingSink_;
     
     /** 
-     * Sink for outgoing data to the remote host 
+     * Sink for outgoing data to the remote host. 
      */
     private OutputStream outgoingSink_;
         
@@ -149,7 +157,7 @@ public class TcpTunnel implements TcpTunnelListener
     //--------------------------------------------------------------------------
     
     /**
-     * Entrypoint 
+     * Entrypoint. 
      * 
      * @param args [0] = listenport
      *             [1] = host to tunnel to
@@ -183,7 +191,7 @@ public class TcpTunnel implements TcpTunnelListener
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a TcpTunnel with incoming/outgoing data echoed to System.out
+     * Creates a TcpTunnel with incoming/outgoing data echoed to System.out.
      * 
      * @param listenPort Local port to listen on
      * @param remoteHost Remote host to connect to
@@ -207,27 +215,29 @@ public class TcpTunnel implements TcpTunnelListener
     //--------------------------------------------------------------------------
 
     /**
-     * Sets the sink for incoming data
+     * Sets the sink for incoming data.
      * 
-     * @param stream Sink for incoming data
+     * @param stream Sink for incoming data.
      */
     public void setIncomingSink(OutputStream stream)
     {
         incomingSink_ = stream;
     }
 
+    
     /**
-     * Sets the sink for outgoing data
+     * Sets the sink for outgoing data.
      * 
-     * @param stream Sink for outgoing data
+     * @param stream Sink for outgoing data.
      */
     public void setOutgoingSink(OutputStream stream)
     {
         outgoingSink_ = stream;
     }
         
+    
     /**
-     * Starts the tunnel
+     * Starts the tunnel.
      */
     public void start()
     {
@@ -324,8 +334,9 @@ public class TcpTunnel implements TcpTunnelListener
         }
     }
     
+    
     /**
-     * Stops the tunnel
+     * Stops the tunnel.
      */              
     public void stop()
     {
@@ -339,14 +350,15 @@ public class TcpTunnel implements TcpTunnelListener
     //--------------------------------------------------------------------------
     
     /**
-     * Adds a TcpTunnelListener
+     * Adds a TcpTunnelListener.
      * 
-     * @param listener TcpTunnelListener to add
+     * @param listener TcpTunnelListener to add.
      */
     public void addTcpTunnelListener(TcpTunnelListener listener)
     {
         listeners_.add(listener);
     }
+    
     
     /**
      * Fires notifcation that the status of the tunnel has changed to all
@@ -360,11 +372,12 @@ public class TcpTunnel implements TcpTunnelListener
             ((TcpTunnelListener) i.next()).statusChanged(this, status);    
     }
 
+    
     /**
      * Fires notifcation that the number of bytes read has changed to all
      * registered listeners.
      * 
-     * @param connRead Bytes read during the life of the last connection
+     * @param connRead Bytes read during the life of the last connection.
      */
     protected void fireBytesRead(int connRead)
     {
@@ -372,11 +385,12 @@ public class TcpTunnel implements TcpTunnelListener
             ((TcpTunnelListener) i.next()).bytesRead(this, connRead, inTotal_);
     }
 
+    
     /**
      * Fires notifcation that the number of bytes written has changed to all
      * registered listeners.
      * 
-     * @param connWritten Bytes written during the life of the last connection
+     * @param connWritten Bytes written during the life of the last connection.
      */
     protected void fireBytesWritten(int connWritten)
     {
@@ -385,6 +399,7 @@ public class TcpTunnel implements TcpTunnelListener
                 this, connWritten, outTotal_);
     }
 
+    
     /**
      * Fires notifcation that the tunnel has started.
      * 
@@ -409,6 +424,7 @@ public class TcpTunnel implements TcpTunnelListener
         System.out.println(status);
     }
     
+    
     /**
      * @see toolbox.tunnel.TcpTunnelListener#bytesRead(
      *      toolbox.tunnel.TcpTunnel, int, int)
@@ -419,6 +435,7 @@ public class TcpTunnel implements TcpTunnelListener
         System.out.println("[Bytes read: " + connBytesRead + "]");
     }
 
+    
     /**
      * @see toolbox.tunnel.TcpTunnelListener#bytesWritten(
      *      toolbox.tunnel.TcpTunnel, int, int)
@@ -429,6 +446,11 @@ public class TcpTunnel implements TcpTunnelListener
         System.out.println("[Bytes written: " + connBytesWritten + "]");
     }
     
+    
+    /**
+	 * @see toolbox.tunnel.TcpTunnelListener#tunnelStarted(
+     *      toolbox.tunnel.TcpTunnel)
+	 */
     public void tunnelStarted(TcpTunnel tunnel)
     {
         System.out.println("Tunnel started");
@@ -438,13 +460,17 @@ public class TcpTunnel implements TcpTunnelListener
     // Inner Classes
     //--------------------------------------------------------------------------
     
+    /**
+     * Listener that reports totla number of bytes written/read from the tunnel
+     * after the connection is closed.
+     */
     class OutputStreamListener implements EventOutputStream.Listener
     {
         /**
-         * Tally up counts and generate bytesRead/Written events when
-         * stream is closed
+         * Tallies up counts and generates bytesRead/Written events when the
+         * stream is closed.
          * 
-         * @param stream Stream that was closed
+         * @param stream Stream that was closed.
          */
         public void streamClosed(EventOutputStream stream)
         {
@@ -468,6 +494,7 @@ public class TcpTunnel implements TcpTunnelListener
             } 
         }
 
+        
         /**
          * @see toolbox.util.io.EventOutputStream.Listener#byteWritten(
          *      toolbox.util.io.EventOutputStream, int)
@@ -476,6 +503,7 @@ public class TcpTunnel implements TcpTunnelListener
         { 
         }
         
+        
         /**
          * @see toolbox.util.io.EventOutputStream.Listener#streamFlushed(
          *      toolbox.util.io.EventOutputStream)
@@ -483,6 +511,7 @@ public class TcpTunnel implements TcpTunnelListener
         public void streamFlushed(EventOutputStream stream)
         {
         }
+        
         
         /**
          * @see toolbox.util.io.EventOutputStream.Listener#streamThroughput(

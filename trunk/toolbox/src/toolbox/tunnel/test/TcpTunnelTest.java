@@ -20,7 +20,7 @@ import toolbox.util.net.SocketServer;
 import toolbox.util.net.SocketServerConfig;
 
 /**
- * Unit test for TcpTunnel
+ * Unit test for TcpTunnel.
  */
 public class TcpTunnelTest extends TestCase
 {
@@ -32,9 +32,9 @@ public class TcpTunnelTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
-     * @param  args  None recognized
+     * @param args None recognized
      */
     public static void main(String[] args)
     {

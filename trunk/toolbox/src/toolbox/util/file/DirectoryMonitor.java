@@ -17,8 +17,7 @@ import toolbox.util.ThreadUtil;
  */
 public class DirectoryMonitor
 {
-    private static Logger logger_ = 
-        Logger.getLogger(DirectoryMonitor.class);
+    private static Logger logger_ =  Logger.getLogger(DirectoryMonitor.class);
 
     /** 
      * Directory listeners. 
@@ -31,8 +30,7 @@ public class DirectoryMonitor
     private List activities_;
 
     /** 
-     * Delay interval in millis used to check for new activity. 
-     * Defaults to 5sec. 
+     * Delay interval in millis used to check for new activity.Defaults to 5 sec 
      */
     private int delay_;
 

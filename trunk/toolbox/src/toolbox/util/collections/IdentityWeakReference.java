@@ -46,7 +46,7 @@ public class IdentityWeakReference extends WeakReference
     //--------------------------------------------------------------------------
 
     /**
-	 * Hashcode of key, stored here since the key may be tossed by the GC
+	 * Hashcode of key, stored here since the key may be tossed by the GC.
 	 * 
 	 * @param k Key
 	 */
@@ -58,7 +58,7 @@ public class IdentityWeakReference extends WeakReference
 
     
     /**
-	 * Creates a new IdentityWeakReference
+	 * Creates a new IdentityWeakReference.
 	 * 
 	 * @param k Key
 	 * @param q Reference queue
@@ -70,7 +70,7 @@ public class IdentityWeakReference extends WeakReference
     }
 
     //--------------------------------------------------------------------------
-    //  Overrides java.lang.Object
+    // Overrides java.lang.Object
     //--------------------------------------------------------------------------
 
     /**

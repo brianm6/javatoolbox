@@ -14,7 +14,7 @@ public class DefaultTcpTunnelListener implements TcpTunnelListener
         Logger.getLogger(DefaultTcpTunnelListener.class);
     
     /**
-     * Queue for started events
+     * Queue for started events.
      */    
     private BlockingQueue started_ = new BlockingQueue();
 
@@ -24,33 +24,36 @@ public class DefaultTcpTunnelListener implements TcpTunnelListener
 
     /**
      * @see toolbox.tunnel.TcpTunnelListener#statusChanged(
-     *          toolbox.tunnel.TcpTunnel, java.lang.String)
+     *      toolbox.tunnel.TcpTunnel, java.lang.String)
      */
     public void statusChanged(TcpTunnel tunnel, String status)
     {
     }
 
+    
     /**
      * @see toolbox.tunnel.TcpTunnelListener#bytesRead(
-     *          toolbox.tunnel.TcpTunnel, int, int)
+     *      toolbox.tunnel.TcpTunnel, int, int)
      */
     public void bytesRead(TcpTunnel tunnel, int connBytesRead, 
         int totalBytesRead)
     {
     }
 
+    
     /**
      * @see toolbox.tunnel.TcpTunnelListener#bytesWritten(
-     *          toolbox.tunnel.TcpTunnel, int, int)
+     *      toolbox.tunnel.TcpTunnel, int, int)
      */
     public void bytesWritten(TcpTunnel tunnel, int connBytesWritten,
         int totalBytesWritten)
     {
     }
     
+    
     /**
      * @see toolbox.tunnel.TcpTunnelListener#tunnelStarted(
-     *          toolbox.tunnel.TcpTunnel)
+     *      toolbox.tunnel.TcpTunnel)
      */
     public void tunnelStarted(TcpTunnel tunnel)
     {
@@ -64,8 +67,8 @@ public class DefaultTcpTunnelListener implements TcpTunnelListener
     /**
      * Blocks indefinitely until a started event is received.
      * 
-     * @return TcpTunnel after it has been started
-     * @throws InterruptedException if interrupted
+     * @return TcpTunnel after it has been started.
+     * @throws InterruptedException if interrupted.
      */
     public TcpTunnel waitForStarted() throws InterruptedException
     {

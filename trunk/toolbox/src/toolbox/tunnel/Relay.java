@@ -7,34 +7,35 @@ import java.io.OutputStream;
 import toolbox.util.StreamUtil;
 
 /**
- * A Relay transfers bytes from an InputStream to an OutputStream.
+ * A Relay transfers bytes from an InputStream to an OutputStream
+ * asynchronously.
  * 
  * @see TcpTunnel
  */
 public class Relay implements Runnable
 {
     /** 
-     * Size of data window 
+     * Size of data window. 
      */
     private static final int BUFFER_SIZE = 1024;
 
     /** 
-     * InputStream data is read from 
+     * InputStream data is read from. 
      */    
     private InputStream in_;
     
     /** 
-     * OutputStream data is forwarded to 
+     * OutputStream data is forwarded to. 
      */
     private OutputStream out_;
     
     /** 
-     * Number of bytes transferred 
+     * Number of bytes transferred. 
      */
     private int count_;
     
     /** 
-     * Copy buffer 
+     * Copy buffer. 
      */    
     private byte[] buffer_;
 
@@ -43,10 +44,10 @@ public class Relay implements Runnable
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a new relay between an input and output stream
+     * Creates a new relay between an input and output stream.
      * 
-     * @param in Input stream to read bytes from
-     * @param out Output stream to write bytes to
+     * @param in Input stream to read bytes from.
+     * @param out Output stream to write bytes to.
      */
     public Relay(InputStream in, OutputStream out)
     {
@@ -61,7 +62,7 @@ public class Relay implements Runnable
     //--------------------------------------------------------------------------
     
     /**
-     * Starts the relay
+     * Starts the relay.
      */
     public void run()
     {
@@ -78,7 +79,7 @@ public class Relay implements Runnable
         }
         catch (IOException e)
         {
-            ;// Ignore
+            ; // Ignore
         }
         finally
         {

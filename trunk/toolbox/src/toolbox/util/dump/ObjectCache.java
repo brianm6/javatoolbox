@@ -16,14 +16,27 @@ import java.util.Map;
 public class ObjectCache
 {
     /** 
-     * Sequence number assigned to objects in the cache 
+     * Sequence number assigned to objects in the cache. 
      */
-    private int label_ = 0;
+    private int label_;
     
     /**  
      * Map of object->objectinfo. 
      */
-    private Map visitedMap_ = new HashMap();
+    private Map visitedMap_;
+    
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Creates an ObjectCache.
+     */
+    public ObjectCache()
+    {
+        label_ = 0;
+        visitedMap_ = new HashMap();
+    }
     
     //--------------------------------------------------------------------------
     // Public

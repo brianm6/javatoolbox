@@ -4,7 +4,7 @@ import org.apache.commons.beanutils.MethodUtils;
 import org.apache.log4j.Logger;
 
 /**
- * Invoker that executes a method on a separate thread resulting in 
+ * Invoker that executes a method on a separate thread resulting in
  * asynchronous execution behavior.
  */
 public class ThreadedInvoker implements Invoker

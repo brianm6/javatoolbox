@@ -8,14 +8,13 @@ import toolbox.util.concurrent.BlockingQueue;
 
 /**
  * Invoker that queues up invocations requests on a queue and executes them in
- * a serial manner. The invoke() method does not wait for the execution to 
+ * a serial manner. The invoke() method does not wait for the execution to
  * complete. Instead, invoke() returns immediately after the request is placed
  * on the queue. The size the queue is not bounded (maybe later).
  */
 public class QueuedInvoker implements Invoker
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(QueuedInvoker.class);
+    private static final Logger logger_ = Logger.getLogger(QueuedInvoker.class);
     
     /** 
      * Queue of Runnables waiting to be invoked. 
@@ -153,17 +152,21 @@ public class QueuedInvoker implements Invoker
     public void shutdown() throws Exception
     {
         if (!isEmpty())
+        {    
             logger_.warn("Shutting down queued invoker  even though there are "+
                 getSize() + " items remaining in the invocation queue.");
+        }
         else if (!isIdle())
+        {    
             logger_.warn("Shutting down queue even though there is still an " +
                 "invocation pending execution.");
+        }
 
         ThreadUtil.stop(consumer_);
     }
 
     //--------------------------------------------------------------------------
-    // Inner Classes
+    // Invokable
     //--------------------------------------------------------------------------
 
     /**

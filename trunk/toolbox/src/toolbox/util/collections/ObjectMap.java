@@ -79,51 +79,52 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
     //--------------------------------------------------------------------------
 
     /**
-     * Constructs a Map which wraps a <tt>bean</tt>.  If an exception is thrown 
-     * by the bean, then a MapInvocationException can be thrown by most of the 
-     * <tt>Map</tt> methods.  The <tt>bean</tt> is held onto by a strong 
-     * reference.
-     * 
-     * @param   bean  Object to convert to a <tt>Map</tt>.
-     * @throws  IntrospectionException on error
-     */
+	 * Constructs a Map which wraps a <tt>bean</tt>. If an exception is
+	 * thrown by the bean, then a MapInvocationException can be thrown by most
+	 * of the <tt>Map</tt> methods. The <tt>bean</tt> is held onto by a
+	 * strong reference.
+	 * 
+	 * @param bean Object to convert to a <tt>Map</tt>.
+	 * @throws IntrospectionException on error
+	 */
     public ObjectMap(Object bean) throws IntrospectionException
     {
         this(bean, false);
     }
 
+    
     /**
-     * Constructs a Map which wraps a <tt>bean</tt>.  If an exception is thrown 
-     * by the bean, then a MapInvocationException can be thrown by most of the 
-     * <tt>Map</tt> methods when silent is false. The <tt>bean</tt> is held 
-     * onto by a strong reference.
-     * 
-     * @param   bean    Object to convert to a <tt>Map</tt>.
-     * @param   silent  true  - exceptions thrown by bean are ignored<br>
-     *                  false - MapInvocationTargetException will be thrown
-     *                          if the bean throws an exception
-     * @throws  IntrospectionException on error
-     */
+	 * Constructs a Map which wraps a <tt>bean</tt>. If an exception is
+	 * thrown by the bean, then a MapInvocationException can be thrown by most
+	 * of the <tt>Map</tt> methods when silent is false. The <tt>bean</tt>
+	 * is held onto by a strong reference.
+	 * 
+	 * @param bean Object to convert to a <tt>Map</tt>.
+	 * @param silent true - exceptions thrown by bean are ignored<br>
+     *               false - MapInvocationTargetException will be thrown if 
+     *                       the bean throws an exception
+	 * @throws IntrospectionException on error
+	 */
     public ObjectMap(Object bean, boolean silent) throws IntrospectionException
     {
         this(bean, silent, true);
     }
 
+    
     /**
-     * Constructs a Map which wraps a <tt>bean</tt>.  If an exception
-     * is thrown by the bean, then a MapInvocationException can
-     * be thrown by most of the <tt>Map</tt> methods when silent is false.  
-     * The <tt>bean</tt> is held onto by a strong reference if
-     * <tt>useWeakRef</tt> is false.
-     * 
-     * @param bean the object to convert to a <tt>Map</tt>.
-     * @param silent true - exceptions thrown by bean are ignored<br>
-     *               false - MapInvocationTargetException will be thrown
-     *                       if the bean throws an exception
-     * @param useWeakRef true - holds onto the bean using a WeakReference
-     *                      false - holds onto the bean using a strong reference
-     * @throws IntrospectionException on error
-     */
+	 * Constructs a Map which wraps a <tt>bean</tt>. If an exception is
+	 * thrown by the bean, then a MapInvocationException can be thrown by most
+	 * of the <tt>Map</tt> methods when silent is false. The <tt>bean</tt>
+	 * is held onto by a strong reference if <tt>useWeakRef</tt> is false.
+	 * 
+	 * @param bean the object to convert to a <tt>Map</tt>.
+	 * @param silent true - exceptions thrown by bean are ignored <br>
+     *               false - MapInvocationTargetException will be thrown if the 
+     *                       bean throws an exception.
+	 * @param useWeakRef true - holds onto the bean using a WeakReference<br> 
+     *                   false - holds onto the bean using a strong reference
+	 * @throws IntrospectionException on error
+	 */
     public ObjectMap(Object bean, boolean silent, boolean useWeakRef)
         throws IntrospectionException
     {
@@ -141,9 +142,9 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
     //--------------------------------------------------------------------------
 
     /**
-     * Checks if a key is in the map
+     * Checks if a key is in the map.
      * 
-     * @param  key  Key
+     * @param key Key
      * @return True if map containts key, false otherwise
      * @throws MapInvocationTargetException on map error
      */
@@ -185,10 +186,11 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
         return super.containsKey(key);
     }
 
+    
     /**
-     * Retrieves an object given its key
+     * Retrieves an object given its key.
      * 
-     * @param  key  Key to find object for
+     * @param key  Key to find object for
      * @return Object for the given key
      * @throws MapInvocationTargetException on map error
      */
@@ -219,19 +221,21 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
         return super.get(key);
     }
 
+    
     /**
-     * Puts an key, value pair in the map
+     * Puts an key, value pair in the map.
      * 
-     * @param  key    Key
-     * @param  value  Value
+     * @param key Key
+     * @param value Value
      * @return Inserted value
      * @throws UnsupportedOperationException if a set method is not found
      * @throws MapInvocationTargetException if an exception is thrown while 
-     *         calling the method
+     *         calling the method.
      * @throws IllegalArgumentException if the property is not found
      */
     public Object put(Object key, Object value) throws
-        UnsupportedOperationException, IllegalArgumentException,
+        UnsupportedOperationException, 
+        IllegalArgumentException,
         MapInvocationTargetException
     {
         String str = key.toString();
@@ -269,8 +273,9 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
         }
     }
 
+    
     /**
-     * @return  Entryset
+     * @return Entryset
      */
     public Set entrySet()
     {
@@ -282,17 +287,18 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
     //--------------------------------------------------------------------------
 
     /**
-     * @return  Bean
+     * @return Bean
      */    
     public Object getBean()
     {
         return isBeanReferenceWeak() ? wBean_.get() : bean_;
     }
 
+    
     /**
-     * Converts map into a string
+     * Converts map into a string.
      *
-     * @return  String
+     * @return String
      */
     public String toString()
     {
@@ -339,7 +345,7 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a clone
+     * Creates a clone.
      * 
      * @return Cloned object
      */
@@ -360,12 +366,12 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
     //--------------------------------------------------------------------------
 
     /**
-     * After Serialization the ObjectMap will not use WeakReferences
-     * if previously used.
-     * 
-     * @param  s  Stream to write serialzed form
-     * @throws IOException
-     */
+	 * After Serialization the ObjectMap will not use WeakReferences if
+	 * previously used.
+	 * 
+	 * @param s Stream to write serialzed form.
+	 * @throws IOException on I/O error.
+	 */
     private void writeObject(ObjectOutputStream s) throws IOException
     {
         WeakReference wBeanSave = wBean_;
@@ -388,12 +394,13 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
         }
     }
 
+    
     /**
-     * Reads in the ObjectMap
+     * Reads in the ObjectMap.
      * 
-     * @param  s  Stream to read serialized objects from
-     * @throws IOException
-     * @throws ClassNotFoundException
+     * @param s Stream to read serialized objects from.
+     * @throws IOException on I/O error.
+     * @throws ClassNotFoundException on missing class.
      */
     private void readObject(ObjectInputStream s)
         throws IOException, ClassNotFoundException
@@ -415,16 +422,34 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
     // Protected
     //--------------------------------------------------------------------------
 
+    /**
+     * Returns true if silent, false otherwise.
+     * 
+     * @param boolean 
+     */
     protected boolean isSilent()
     {
         return silent_;
     }
-
+    
+    
+    /**
+     * Returns true if weak ref, false otherwise.
+     * 
+     * @param boolean 
+     */
     protected boolean isBeanReferenceWeak()
     {
         return wBean_ != null;
     }
 
+    
+    /**
+     * Returns object as map.
+     * 
+     * @param object Object to convert to a map.
+     * @return Map 
+     */
     protected Map asMap(Object object)
     {
         return AsMap.of(object);
@@ -433,17 +458,24 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
     //--------------------------------------------------------------------------
     // Static Methods
     //--------------------------------------------------------------------------
-
+    
+    /**
+     * Returns true if t is a number class, false otherwise.
+     * 
+     * @param t Class to test for number type.
+     * @return boolean
+     */
     protected static boolean isNumberConvertable(Class t)
     {
         return NUMBER_CLASSES.contains(t);
     }
 
+    
     /**
-     * Converts a number of a given class
+     * Converts a number of a given class.
      * 
-     * @param  n  Number
-     * @param  t  Class
+     * @param n Number
+     * @param t Class
      * @return Number 
      */
     public static Number convertNumber(Number n, Class t)
@@ -476,11 +508,12 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
         return n;
     }
 
+    
     /**
-     * Converts a string of a given class
+     * Converts a string of a given class.
      * 
-     * @param  s  String to convert
-     * @param  t  Class
+     * @param s String to convert
+     * @param t Class
      * @return Object
      */
     public static Object convertString(String s, Class t)
@@ -542,13 +575,14 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
         return s;
     }
 
+    
     /**
-     * Uses a cache of <tt>WeakReference</tt>s to hold onto a 
-     * <tt>Class</tt> and <tt>PropertyDescriptor</tt>(s).
-     * 
-     * <tt>WeakReference</tt>s are used so that the garbage collector can
-     * collect a Class and/or it's descriptors when they are no longer used.
-     */
+	 * Uses a cache of <tt>WeakReference</tt> s to hold onto a <tt>Class</tt>
+	 * and <tt>PropertyDescriptor</tt> (s).
+	 * 
+	 * <tt>WeakReference</tt> s are used so that the garbage collector can
+	 * collect a Class and/or it's descriptors when they are no longer used.
+	 */
     protected static PropertyDescriptor[] getPropertyDescriptors(Class aClass)
         throws IntrospectionException
     {
@@ -565,9 +599,12 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
     }
 
     //--------------------------------------------------------------------------
-    // Inner Classes
+    // ObjectEntrySet
     //--------------------------------------------------------------------------
     
+    /**
+     * ObjectEntrySet.
+     */
     class ObjectEntrySet extends AbstractSet
     {
         private PropertyDescriptor[] pds_;
@@ -582,16 +619,19 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
                 mapEntries_[i] = new MapEntry(i);
         }
 
+        
         public int size()
         {
             return pds_.length;
         }
 
+        
         public Iterator iterator()
         {
             return new EntryIterator();
         }
 
+        
         class EntryIterator implements Iterator
         {
             private int i_ = 0;
@@ -610,9 +650,9 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
             {
                 throw new UnsupportedOperationException();
             }
-
         }
 
+        
         class MapEntry implements java.util.Map.Entry
         {
             private int index_;
@@ -622,16 +662,16 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
                 index_ = newIndex;
             }
 
-            // MAPENTRY METHODS
-
+            
             public Object getKey()
             {
                 return pds_[index_].getName();
             }
 
+            
             /**
              * @throws MapInvocationTargetException if an exception is thrown 
-             *         while calling the method
+             *         while calling the method.
              */
             public Object getValue() throws MapInvocationTargetException
             {
@@ -664,16 +704,18 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
                 }
             }
 
+            
             public int hashCode()
             {
                 return getKey().hashCode();
             }
 
+            
             /**
-             * @throws UnsupportedOperationException if a set method 
-             *         is not found
+             * @throws UnsupportedOperationException if a set method is not 
+             *         found.
              * @throws MapInvocationTargetException if an exception is thrown 
-             *         while calling the method
+             *         while calling the method.
              */
             public Object setValue(Object value) throws 
                 MapInvocationTargetException, UnsupportedOperationException
