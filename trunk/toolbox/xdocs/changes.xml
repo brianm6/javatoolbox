@@ -13,7 +13,6 @@
  * TODO: Add detach notification to tail.
  * TODO: Upgrade to CLI2
  * TODO: add .cvspass to conf
- * TODO: Add icons to statusbar.
  * TODO: Add way to copy the current selection from the file explorer dir pane.
  * TODO: Really pick apart JSmartTextArea and figure out a good way optimizing
  *       the addition of large sections of text. Unhook model, insert, rehook 
@@ -22,7 +21,6 @@
  * TODO: Create JSmartDialog - rememver size and position, bind esc to cancel
  * TODO: Writer a proper multisplit pane.
  * TODO: Figure out how to use forms
- * TODO: Add tile and cascade to Desktop plugin host
  * TODO: Integrate new icons from 
  *       http://dev.eclipse.org/viewcvs/index.cgi/~checkout~/jdt-ui-home/r3_0/proposals/icons/
  * TODO: Make plugins detachable
@@ -112,6 +110,7 @@
       <action type="add"   >Added CompoundIcon</action>
       <action type="update">Updated flippanes with icons in various plugins</action>
       <action type="add"   >Added rotate(Image) method to SwingUtil</action>
+      <action type="add"   >Added Window menu to DesktopPluginHost so plugin frames can be tiled or cascaded</action>
     </release>
 
     <release version="2.0" date="June 2004">
