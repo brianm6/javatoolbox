@@ -25,9 +25,7 @@ public class ArrayUtil
      */
     public static double[] init(double[] d, double value)
     {
-        for (int i = 0; i < d.length; d[i++] = value)
-            ;
-
+        for (int i = 0; i < d.length; d[i++] = value);
         return d;
     }
 
@@ -41,9 +39,7 @@ public class ArrayUtil
      */
     public static int[] init(int[] d, int value)
     {
-        for (int i = 0; i < d.length; d[i++] = value)
-            ;
-
+        for (int i = 0; i < d.length; d[i++] = value);
         return d;
     }
 
@@ -292,5 +288,4 @@ public class ArrayUtil
         
         return result;
     } 
-    
 }
