@@ -5,10 +5,18 @@ package toolbox.util.service;
  */
 public interface Enableable
 {
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
     /**
-     * Javabean property name that represents the enabled state.
+     * Javabean property that represents the enabled state.
      */
     static final String PROP_ENABLED = "enabled";
+    
+    //--------------------------------------------------------------------------
+    // Interface
+    //--------------------------------------------------------------------------
     
     /**
      * Sets the enabled state of this object.

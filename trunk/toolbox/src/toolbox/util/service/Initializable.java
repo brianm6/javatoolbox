@@ -14,7 +14,7 @@ public interface Initializable
      * Initializes the service with optional configuration informatin.
      * 
      * @param configuration Configuration information for this service. Use
-     *        {@link Collections#EMPTY_MAP} for no configuration.
+     *        {@link java.util.Collections#EMPTY_MAP} for no configuration.
      * @throws ServiceException if the service encounters problems initializing.
      */
     void initialize(Map configuration) throws ServiceException;

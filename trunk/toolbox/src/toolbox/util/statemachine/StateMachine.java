@@ -78,10 +78,20 @@ public interface StateMachine extends Nameable
      */
     public State getPreviousState();
     
+
+    /**
+     * Resets the state machine to the begin state.
+     */
     public void reset();
+
     
+    /**
+     * Returns true if the given transition exists from the current state to a new
+     * state, false otherwise.
+     */
     public boolean canTransition(Transition transition);
 
+    
     /**
      * Adds a listener to this state machine.
      * 
