@@ -333,6 +333,11 @@ public class ManagePluginsDialog extends JDialog
             legitPlugins.add(new PluginMeta("toolbox.util.ui.plugin.StatcvsPlugin"));
             legitPlugins.add(new PluginMeta("toolbox.util.ui.plugin.TextPlugin"));
             legitPlugins.add(new PluginMeta("toolbox.plugin.pdf.PDFPlugin"));
+            legitPlugins.add(new PluginMeta("toolbox.tunnel.JTcpTunnelPlugin"));
+            legitPlugins.add(new PluginMeta("toolbox.jtail.JTailPlugin"));
+            legitPlugins.add(new PluginMeta("toolbox.jsourceview.JSourceViewPlugin"));
+            legitPlugins.add(new PluginMeta("toolbox.jdbc.QueryPlugin"));
+            legitPlugins.add(new PluginMeta("toolbox.findclass.JFindClassPlugin"));
         }
     
         Collections.sort(legitPlugins, new ObjectComparator("name"));
