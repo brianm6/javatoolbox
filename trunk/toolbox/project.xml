@@ -862,11 +862,14 @@
   
     <unitTest>
       <includes>
+		<!--
         <include>**/PluginWorkspaceTest.java</include>
-        <include>**/JFontChooserDialogTest.java</include>
         <include>**/JSourceViewPluginTest.java</include>
+        <include>toolbox/junit/CloverTestSuite.java</include
+        -->
+        
+        <include>**/JFontChooserDialogTest.java</include>
         <include>**/*Test.java</include>
-        <!--include>toolbox/junit/CloverTestSuite.java</include-->
       </includes>
 
       <!-- Tests that are excluded because they exercise a GUI component or -->
