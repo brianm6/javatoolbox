@@ -1,10 +1,9 @@
-package toolbox.util.ui.textarea;
+package toolbox.util.ui.textarea.action;
 
 import java.awt.event.ActionEvent;
 
 import javax.swing.text.JTextComponent;
 
-import toolbox.util.ui.textarea.action.AbstractTextComponentAction;
 
 /**
  * Selects the entire contents of a text area.

@@ -48,9 +48,9 @@ import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.JSmartToggleButton;
 import toolbox.util.ui.SmartAction;
-import toolbox.util.ui.textarea.AutoScrollAction;
-import toolbox.util.ui.textarea.ClearAction;
-import toolbox.util.ui.textarea.LineWrapAction;
+import toolbox.util.ui.textarea.action.AutoScrollAction;
+import toolbox.util.ui.textarea.action.ClearAction;
+import toolbox.util.ui.textarea.action.LineWrapAction;
 import toolbox.workspace.IStatusBar;
 
 /**

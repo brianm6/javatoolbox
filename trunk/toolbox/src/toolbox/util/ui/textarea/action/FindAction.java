@@ -1,4 +1,4 @@
-package toolbox.util.ui.textarea;
+package toolbox.util.ui.textarea.action;
 
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
@@ -11,7 +11,6 @@ import javax.swing.text.JTextComponent;
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JFindDialog;
-import toolbox.util.ui.textarea.action.AbstractTextComponentAction;
 
 /**
  * Triggers activation of the Find Dialog box.

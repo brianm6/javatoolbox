@@ -16,8 +16,8 @@ import toolbox.util.FontUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.ui.action.AntiAliasAction;
-import toolbox.util.ui.textarea.AutoScrollAction;
-import toolbox.util.ui.textarea.LineWrapAction;
+import toolbox.util.ui.textarea.action.AutoScrollAction;
+import toolbox.util.ui.textarea.action.LineWrapAction;
 import toolbox.workspace.IPreferenced;
 
 /**

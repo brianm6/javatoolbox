@@ -35,8 +35,8 @@ import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.SmartAction;
 import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.util.ui.layout.ParagraphLayout;
-import toolbox.util.ui.textarea.AutoScrollAction;
-import toolbox.util.ui.textarea.LineWrapAction;
+import toolbox.util.ui.textarea.action.AutoScrollAction;
+import toolbox.util.ui.textarea.action.LineWrapAction;
 import toolbox.workspace.IPreferenced;
 import toolbox.workspace.IStatusBar;
 

@@ -64,7 +64,7 @@ import toolbox.util.ui.JSmartPopupMenu;
 import toolbox.util.ui.JSmartSplitPane;
 import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.flippane.JFlipPane;
-import toolbox.util.ui.textarea.ClearAction;
+import toolbox.util.ui.textarea.action.ClearAction;
 import toolbox.workspace.IPlugin;
 import toolbox.workspace.IStatusBar;
 import toolbox.workspace.PluginWorkspace;

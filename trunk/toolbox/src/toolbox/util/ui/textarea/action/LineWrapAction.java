@@ -1,4 +1,4 @@
-package toolbox.util.ui.textarea;
+package toolbox.util.ui.textarea.action;
 
 import java.awt.event.ActionEvent;
 
@@ -6,7 +6,6 @@ import javax.swing.JTextArea;
 
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JSmartTextArea;
-import toolbox.util.ui.textarea.action.AbstractTextComponentAction;
 
 /**
  * Toggles linewrapping in a JSmartTextArea. Comes with an icon associated with

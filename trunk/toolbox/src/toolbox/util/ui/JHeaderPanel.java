@@ -29,9 +29,9 @@ import javax.swing.UIManager;
 import javax.swing.border.AbstractBorder;
 
 import toolbox.util.FontUtil;
-import toolbox.util.ui.textarea.AutoScrollAction;
-import toolbox.util.ui.textarea.ClearAction;
-import toolbox.util.ui.textarea.LineWrapAction;
+import toolbox.util.ui.textarea.action.AutoScrollAction;
+import toolbox.util.ui.textarea.action.ClearAction;
+import toolbox.util.ui.textarea.action.LineWrapAction;
 
 /**
  * A <code>JPanel</code> subclass that has a drop shadow border and that

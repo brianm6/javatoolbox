@@ -5,12 +5,12 @@ import javax.swing.text.JTextComponent;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ui.action.SetFontAction;
-import toolbox.util.ui.textarea.CopyAction;
-import toolbox.util.ui.textarea.FindAction;
-import toolbox.util.ui.textarea.InsertFileAction;
-import toolbox.util.ui.textarea.PasteAction;
-import toolbox.util.ui.textarea.SaveAsAction;
-import toolbox.util.ui.textarea.SelectAllAction;
+import toolbox.util.ui.textarea.action.CopyAction;
+import toolbox.util.ui.textarea.action.FindAction;
+import toolbox.util.ui.textarea.action.InsertFileAction;
+import toolbox.util.ui.textarea.action.PasteAction;
+import toolbox.util.ui.textarea.action.SaveAsAction;
+import toolbox.util.ui.textarea.action.SelectAllAction;
 
 /**
  * Popup menu with commonly used functionality for JTextComponent subclasses.

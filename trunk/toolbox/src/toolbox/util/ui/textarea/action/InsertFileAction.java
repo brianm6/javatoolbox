@@ -1,39 +1,34 @@
-package toolbox.util.ui.textarea;
+package toolbox.util.ui.textarea.action;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
 
-import javax.swing.Action;
 import javax.swing.JFileChooser;
 import javax.swing.text.JTextComponent;
 
-import org.apache.log4j.Logger;
-
 import toolbox.util.FileUtil;
-import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.SmartAction;
 
 /**
- * Saves the contents of the textarea to a file after the user makes a file
- * selection via a file chooser dialog. The action comes prewired with an
- * icon and a shortcut (Alt-A). 
+ * Inserts the text of a file into a textarea at the current cursor location.
+ * 
+ * @see toolbox.util.ui.textarea.action.SaveAsAction
  */
-public class SaveAsAction extends SmartAction
+public class InsertFileAction extends SmartAction
 {
-    private static final Logger logger_ = Logger.getLogger(SaveAsAction.class);
-    
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
 
     /**
-     * Remember last visited directory via the FileChooser so subsequent 
-     * navigations start where the user left off.
+     * Remembers the last selected directory in the FileChooser because its
+     * always annoyed me when software doesn't implement this simple usability
+     * feature!
      */
     private static File lastDir_;
     
     /**
-     * Text component whose contents we're going to save to a file.
+     * Text component to insert the selected file's contents into.
      */
     private JTextComponent textComponent_;
     
@@ -42,16 +37,13 @@ public class SaveAsAction extends SmartAction
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a SaveAsAction.
+     * Creates a InsertFileAction.
      * 
-     * @param textComponent Text component with contents to save.
+     * @param textComponent Text component to insert to.
      */
-    public SaveAsAction(JTextComponent textComponent)
+    public InsertFileAction(JTextComponent textComponent)
     {
-        super("Save As..", true, false, null);
-        putValue(Action.MNEMONIC_KEY, new Integer('A'));
-        putValue(Action.SMALL_ICON, 
-            ImageCache.getIcon(ImageCache.IMAGE_SAVEAS));
+        super("Insert..", true, false, null);
         textComponent_ = textComponent;
     }
 
@@ -60,8 +52,8 @@ public class SaveAsAction extends SmartAction
     //--------------------------------------------------------------------------
 
     /**
-     * Pops up a file chooser dialog and saves the text area contents to the
-     * selected file.
+     * Inserts the selected file into the text area. Keeps track of the last
+     * selected directory.
      * 
      * @see toolbox.util.ui.SmartAction#runAction(
      *      java.awt.event.ActionEvent)
@@ -75,12 +67,14 @@ public class SaveAsAction extends SmartAction
         else
             chooser = new JFileChooser(lastDir_);
 
-        if (chooser.showSaveDialog(textComponent_) == 
+        if (chooser.showOpenDialog(textComponent_) == 
             JFileChooser.APPROVE_OPTION) 
         {
-            String saveFile = chooser.getSelectedFile().getCanonicalPath();
-            logger_.debug("save file=" + saveFile);
-            FileUtil.setFileContents(saveFile, textComponent_.getText(), false);
+            String txt = FileUtil.getFileContents(
+                chooser.getSelectedFile().getCanonicalPath());
+            
+            int curPos = textComponent_.getCaretPosition();    
+            textComponent_.getDocument().insertString(curPos, txt, null);                        
         }
         
         lastDir_ = chooser.getCurrentDirectory();

@@ -1,4 +1,4 @@
-package toolbox.util.ui.textarea;
+package toolbox.util.ui.textarea.action;
 
 import java.awt.event.ActionEvent;
 
@@ -6,13 +6,12 @@ import javax.swing.Action;
 import javax.swing.text.JTextComponent;
 
 import toolbox.util.ui.ImageCache;
-import toolbox.util.ui.textarea.action.AbstractTextComponentAction;
 
 /**
  * Pastes the contents of the clipboard into the text component as the current
  * cursor location.
  * 
- * @see toolbox.util.ui.textarea.CopyAction
+ * @see toolbox.util.ui.textarea.action.CopyAction
  */    
 public class PasteAction extends AbstractTextComponentAction
 {

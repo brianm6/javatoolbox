@@ -1,10 +1,9 @@
-package toolbox.util.ui.textarea;
+package toolbox.util.ui.textarea.action;
 
 import java.awt.event.ActionEvent;
 
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JSmartTextArea;
-import toolbox.util.ui.textarea.action.AbstractTextComponentAction;
 
 /**
  * Toggles autoscrolling in a JSmartTextArea.
