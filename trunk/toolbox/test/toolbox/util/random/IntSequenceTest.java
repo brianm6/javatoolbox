@@ -28,6 +28,27 @@ public class IntSequenceTest extends TestCase
     }
 
     //--------------------------------------------------------------------------
+    // Unit Tests
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Tests the default constructor.
+     */
+    public void testDefaultConstructor()
+    {
+        logger_.info("Running testDefaultConstructor...");
+        
+        IntSequence i = new IntSequence();
+        
+        for (int j = 0; j < 1000; j++)
+        {
+            int k = i.nextInt();
+            assertTrue(k >= 0);
+            assertTrue(k <= Integer.MAX_VALUE - 1);
+        }
+    }
+    
+    //--------------------------------------------------------------------------
     // Non-Repeating Sequence Tests
     //--------------------------------------------------------------------------
     
@@ -185,7 +206,7 @@ public class IntSequenceTest extends TestCase
 
     
     /**
-     * Tests nextValue(high, low, repeating)
+     * Tests nextValue(low, high, repeating)
      */
     public void testNextValueRepeating() throws Exception
     {
@@ -244,6 +265,20 @@ public class IntSequenceTest extends TestCase
             // Success
             logger_.info("SUCCESS: " + iae.getMessage());
         }
+    }
+    
+    
+    /**
+     * Tests a negative integer range. 
+     */
+    public void testNegativeRange()
+    {
+        logger_.info("Running testNegativeRange...");
+        
+        IntSequence neg = new IntSequence(-50, 50, true);
+        
+        while (neg.hasMore())
+            logger_.info("Neg: " + neg.nextInt());
     }
     
     //--------------------------------------------------------------------------
