@@ -61,7 +61,7 @@ import toolbox.util.ui.ThreadSafeTableModel;
  */
 public class JFindClass extends JFrame
 {
-    /** Logger **/
+    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(JFindClass.class);
 
@@ -81,7 +81,6 @@ public class JFindClass extends JFrame
     private JPopupMenu           searchPopupMenu_;
     private JEditorPane          sourceArea_;
     
-
     // Results    
     private JTable               resultTable_;
     private ThreadSafeTableModel resultTableModel_;
@@ -93,7 +92,7 @@ public class JFindClass extends JFrame
     private JStatusPane          statusBar_;
     
     
-    /** Result table columns **/    
+    /** Result table columns */    
     private String[] resultColumns_ = new String[] 
     {
         "Num", 
@@ -103,10 +102,10 @@ public class JFindClass extends JFrame
         "Timestamp"
     };
 
-    private static final int COL_NUM = 0;
-    private static final int COL_SOURCE = 1;
-    private static final int COL_CLASS = 2;
-    private static final int COL_SIZE = 3;
+    private static final int COL_NUM       = 0;
+    private static final int COL_SOURCE    = 1;
+    private static final int COL_CLASS     = 2;
+    private static final int COL_SIZE      = 3;
     private static final int COL_TIMESTAMP = 4;
     
     /**

@@ -195,6 +195,30 @@ public class JSourceView extends JFrame implements ActionListener
         }
     }
 
+	//--------------------------------------------------------------------------
+    // Public 
+    //--------------------------------------------------------------------------
+    
+	/**
+	 * Sets the text of the scan status
+	 * 
+	 * @param  s  Status text
+	 */
+	public void setScanStatus(String s)
+	{
+		scanStatusLabel_.setText(s);
+	}
+
+
+	/**
+	 * Sets the text of the parse status
+	 * 
+	 * @param  s  Parse status text
+	 */
+	public void setParseStatus(String s)
+	{
+		parseStatusLabel_.setText(s);
+	}
 
     //--------------------------------------------------------------------------
     //  Private
@@ -304,27 +328,6 @@ public class JSourceView extends JFrame implements ActionListener
             setScanStatus("Operation canceled");
             setParseStatus("");
         }
-    }
-
-    /**
-     * Sets the text of the scan status
-     * 
-     * @param  s  Status text
-     */
-    public void setScanStatus(String s)
-    {
-        scanStatusLabel_.setText(s);
-    }
-
-
-    /**
-     * Sets the text of the parse status
-     * 
-     * @param  s  Parse status text
-     */
-    public void setParseStatus(String s)
-    {
-        parseStatusLabel_.setText(s);
     }
 
     /**
