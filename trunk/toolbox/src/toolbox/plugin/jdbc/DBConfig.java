@@ -29,7 +29,6 @@ import org.apache.log4j.Logger;
 
 import toolbox.forms.SmartComponentFactory;
 import toolbox.plugin.jdbc.action.BaseAction;
-import toolbox.util.ExceptionUtil;
 import toolbox.util.JDBCSession;
 import toolbox.util.StringUtil;
 import toolbox.util.XOMUtil;
@@ -326,27 +325,20 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
         }
         else
         {
-            try
-            { 
-                Elements dbProfiles = dbConfig.getChildElements(NODE_DBPROFILE);
-                                
-                for (int i = 0, n = dbProfiles.size(); i < n; i++)
-                {
-                    DBProfile profile = new DBProfile();
-                    Element wrapper = new Element("wrapper");
-                    dbProfiles.get(i).detach();
-                    wrapper.appendChild(dbProfiles.get(i));
-                    profile.applyPrefs(wrapper);
-                    addProfile(profile);
-                }
-                    
-                profileCombo_.setSelectedIndex(
-                    XOMUtil.getIntegerAttribute(dbConfig, ATTR_SELECTED, 0));
-            }
-            catch (Exception ioe)
+            Elements dbProfiles = dbConfig.getChildElements(NODE_DBPROFILE);
+                            
+            for (int i = 0, n = dbProfiles.size(); i < n; i++)
             {
-                ExceptionUtil.handleUI(ioe, logger_);
+                DBProfile profile = new DBProfile();
+                Element wrapper = new Element("wrapper");
+                dbProfiles.get(i).detach();
+                wrapper.appendChild(dbProfiles.get(i));
+                profile.applyPrefs(wrapper);
+                addProfile(profile);
             }
+                
+            profileCombo_.setSelectedIndex(
+                XOMUtil.getIntegerAttribute(dbConfig, ATTR_SELECTED, -1));
         }
         
         chooser_.applyPrefs(dbConfig);
