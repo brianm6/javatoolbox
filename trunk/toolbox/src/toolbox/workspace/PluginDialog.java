@@ -8,6 +8,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -26,6 +27,10 @@ import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 
+import nu.xom.Builder;
+import nu.xom.Element;
+import nu.xom.Elements;
+
 import org.apache.log4j.Logger;
 import org.apache.regexp.RESyntaxException;
 
@@ -33,7 +38,10 @@ import toolbox.findclass.FindClass;
 import toolbox.findclass.FindClassResult;
 import toolbox.util.ClassUtil;
 import toolbox.util.ExceptionUtil;
+import toolbox.util.ResourceUtil;
+import toolbox.util.StreamUtil;
 import toolbox.util.SwingUtil;
+import toolbox.util.XOMUtil;
 import toolbox.util.collections.ObjectComparator;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartLabel;
@@ -46,6 +54,25 @@ import toolbox.util.ui.list.JSmartList;
 public class PluginDialog extends JDialog
 {
     private static final Logger logger_ = Logger.getLogger(PluginDialog.class);
+    
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Contains static list of all the plugins.
+     */
+    public static final String FILE_PLUGINS = "/toolbox/workspace/plugins.xml";
+
+    /**
+     * Plugin Node from plugins.xml.
+     */    
+    public static final String NODE_PLUGIN = "Plugin";
+
+    /**
+     * Class Attribute from plugins.xml.
+     */
+    public static final String ATTR_CLASS = "class";
     
     //--------------------------------------------------------------------------
     // Fields
@@ -568,36 +595,7 @@ public class PluginDialog extends JDialog
         public void runAction(ActionEvent e)
         {
             inactiveModel_.clear();
-            List legitPlugins = new ArrayList();
-                    
-            // TODO: move to external file
-            
-            legitPlugins.add(new PluginMeta(
-                "toolbox.util.xslfo.XSLFOPlugin"));
-            legitPlugins.add(new PluginMeta(
-                "toolbox.plugin.statcvs.StatcvsPlugin"));
-            legitPlugins.add(new PluginMeta(
-                "toolbox.plugin.texttools.TextToolsPlugin"));
-            legitPlugins.add(new PluginMeta(
-                "toolbox.plugin.docviewer.DocumentViewerPlugin"));
-            legitPlugins.add(new PluginMeta(
-                "toolbox.plugin.tunnel.TunnelPlugin"));
-            legitPlugins.add(new PluginMeta(
-                "toolbox.jtail.JTailPlugin"));
-            legitPlugins.add(new PluginMeta(
-                "toolbox.jsourceview.JSourceViewPlugin"));
-            legitPlugins.add(new PluginMeta(
-                "toolbox.plugin.jdbc.QueryPlugin"));
-            legitPlugins.add(new PluginMeta(
-                "toolbox.plugin.findclass.FindClassPlugin"));
-            legitPlugins.add(new PluginMeta(
-                "toolbox.plugin.netmeter.NetMeterPlugin"));
-            legitPlugins.add(new PluginMeta(
-                "toolbox.junit.JUnitPlugin"));
-            //legitPlugins.add(new PluginMeta(
-            //    "toolbox.plugin.beanshell.BeanShellPlugin"));
-            legitPlugins.add(new PluginMeta(
-                "toolbox.plugin.uidefaults.UIDefaultsPlugin"));
+            List legitPlugins = getPluginList();
 
             // Exclude the plugins that are already loaded                
             for (int j = 0;
@@ -626,6 +624,45 @@ public class PluginDialog extends JDialog
         
             removeButton_.setEnabled(activeModel_.size() > 0);
             addButton_.setEnabled(inactiveModel_.size() > 0);
+        }
+        
+        
+        /**
+         * Retrusn list of plugins from plugins.xml.
+         * 
+         * @return List of PluginMeta.
+         */
+        public List getPluginList() 
+        {
+            InputStream is = null;
+            List pluginList = new ArrayList();
+            
+            try
+            {
+                is = ResourceUtil.getResource(FILE_PLUGINS);
+                Element root = new Builder().build(is).getRootElement();
+                Elements plugins = root.getChildElements(NODE_PLUGIN);
+                
+                for (int i = 0; i < plugins.size(); i++)
+                {  
+                    String clazz = 
+                        XOMUtil.getStringAttribute(
+                            plugins.get(i), ATTR_CLASS, null);
+
+                    if (clazz != null)
+                        pluginList.add(new PluginMeta(clazz));
+                }
+            }
+            catch (Exception ioe)
+            {
+                ExceptionUtil.handleUI(ioe, logger_);
+            }
+            finally
+            {
+                StreamUtil.close(is);
+            }
+
+            return pluginList;
         }
     }
 }
