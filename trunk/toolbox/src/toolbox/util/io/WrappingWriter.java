@@ -1,7 +1,6 @@
 package toolbox.util.io;
 
 import java.io.IOException;
-import java.io.StringWriter;
 import java.io.Writer;
 
 import toolbox.util.RollingCounter;
@@ -28,8 +27,8 @@ import toolbox.util.RollingCounter;
  * 
  * </pre>
  */
-public class WrappingWriter extends Writer 
-    implements RollingCounter.IRollingCounterListener
+public class WrappingWriter extends Writer implements 
+    RollingCounter.IRollingCounterListener
 {
     /** Default width to wrap at **/
     public static final int    DEFAULT_WIDTH   = 80;
@@ -84,7 +83,7 @@ public class WrappingWriter extends Writer
      * decorators
      * 
      * @param  writer  The writer to decorate
-     * @param  width   Number of characters after which a line will be wrapped     * 
+     * @param  width   Number of characters after which a line will be wrapped
      */ 
     public WrappingWriter(Writer writer, int width)
     {
@@ -100,7 +99,7 @@ public class WrappingWriter extends Writer
      * @param  prefix  Decorator prepended to beginning of each line
      * @param  suffix  Decorator appended to the end of each line
      */ 
-    public WrappingWriter(Writer writer, int width, String prefix, String suffix)
+    public WrappingWriter(Writer writer, int width, String prefix,String suffix)
     {
         writer_    = writer;
         prefix_    = prefix;
@@ -210,11 +209,12 @@ public class WrappingWriter extends Writer
     {
         try 
         {
-			writer_.write(suffix_);
-		} 
+            writer_.write(suffix_);
+        } 
         catch(IOException e) 
         {
-		}
+            // Ignore
+        }
     }
 
 

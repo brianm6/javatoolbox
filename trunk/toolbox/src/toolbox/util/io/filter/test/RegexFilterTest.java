@@ -84,6 +84,8 @@ public class RegexFilterTest extends TestCase
     
     /**
      * Tests accept() for not matching any files
+     * 
+     * @throws Exception on error
      */
     public void testAcceptMatchesZero() throws Exception
     {
@@ -97,6 +99,8 @@ public class RegexFilterTest extends TestCase
 
     /**
      * Tests accept() for not matching one file
+     * 
+     * @throws Exception on error
      */
     public void testAcceptMatchesOne() throws Exception
     {
@@ -111,6 +115,8 @@ public class RegexFilterTest extends TestCase
     
     /**
      * Tests accept() for matching many files
+     * 
+     * @throws Exception on error
      */
     public void testAcceptMatchesMany() throws Exception
     {

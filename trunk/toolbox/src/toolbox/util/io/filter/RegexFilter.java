@@ -37,7 +37,7 @@ public class RegexFilter implements FilenameFilter
      * 
      * @param  regExp     Regular expression to match
      * @param  matchCase  Set to true to observe case sensetivity
-     * @throws RESystaxException if the regular expression is invalid
+     * @throws RESyntaxException if the regular expression is invalid
      */
     public RegexFilter(String regExp, boolean matchCase) 
         throws RESyntaxException

@@ -15,7 +15,9 @@ public class NotFilter implements FilenameFilter
     //--------------------------------------------------------------------------
     
     /**
-     * Constructor
+     * Creates a NotFilter
+     * 
+     * @param  filter  Filter to negate
      */   
     public NotFilter(FilenameFilter filter)
     {
@@ -27,7 +29,7 @@ public class NotFilter implements FilenameFilter
     //--------------------------------------------------------------------------
     
     /**
-     * Not
+     * Negates a filter's accept() method
      * 
      * @param    dir   Directory file is contained in
      * @param    name  Name of file

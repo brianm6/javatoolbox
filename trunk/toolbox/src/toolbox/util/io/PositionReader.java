@@ -3,24 +3,39 @@ package toolbox.util.io;
 import java.io.IOException;
 import java.io.Reader;
 
+/**
+ * Position based reader
+ */
 public class PositionReader extends Reader
 {
-    protected Reader in_;
-    protected long offset_ = 0;
-    protected long markOffset_ = 0;
+    private Reader in_;
+    private long offset_ = 0;
+    private long markOffset_ = 0;
 
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Creates a position reader
+     * 
+     * @param  reader  Reader to chain
+     */
     public PositionReader( Reader reader )
     {
         super( reader );
-        this.in_ = reader;;
+        in_ = reader;;
     }
 
-    // READER METHODS
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
     
     /**
      * Read a single character.
      *
-     * @exception  IOException  If an I/O error occurs
+     * @return     Single character read
+     * @throws     IOException  If an I/O error occurs
      */
     public int read() throws IOException 
     {
@@ -34,7 +49,11 @@ public class PositionReader extends Reader
     /**
       * Read characters into a portion of an array.
       * 
-      * @exception  IOException  If an I/O error occurs
+      * @param      array   Storage for read characters
+      * @param      off     Offset in array to store chars
+      * @param      len     NUmber of chars to read
+      * @return     Number of characters read
+      * @throws  IOException  If an I/O error occurs
       */
     public int read(char[] array, int off, int len) throws IOException
     {
@@ -52,7 +71,9 @@ public class PositionReader extends Reader
     /**
      * Skip characters.
      *
-     * @exception  IOException  If an I/O error occurs
+     * @param   n   Number of characters to skip
+     * @return  Number of characters skipped
+     * @throws  IOException  If an I/O error occurs
      */
     public long skip( long n ) throws IOException 
     {
@@ -66,7 +87,8 @@ public class PositionReader extends Reader
     /**
      * Tell whether this stream is ready to be read.
      *
-     * @exception  IOException  If an I/O error occurs
+     * @return  True if read, false otherwise
+     * @throws  IOException  If an I/O error occurs
      */
     public boolean ready() throws IOException 
     {
@@ -75,6 +97,8 @@ public class PositionReader extends Reader
 
     /**
      * Tell whether this stream supports the mark() operation.
+     * 
+     * @return  True if mark supported, false otherwise
      */
     public boolean markSupported() 
     {
@@ -84,7 +108,8 @@ public class PositionReader extends Reader
     /**
      * Mark the present position in the stream.
      *
-     * @exception  IOException  If an I/O error occurs
+     * @param      readAheadLimit  Read ahead limit
+     * @throws     IOException  If an I/O error occurs
      */
     public void mark( int readAheadLimit ) throws IOException 
     {
@@ -95,7 +120,7 @@ public class PositionReader extends Reader
     /**
      * Reset the stream.
      *
-     * @exception  IOException  If an I/O error occurs
+     * @throws  IOException  If an I/O error occurs
      */
     public void reset() throws IOException 
     {
@@ -106,18 +131,19 @@ public class PositionReader extends Reader
     /**
      * Close the stream.
      *
-     * @exception  IOException  If an I/O error occurs
+     * @throws  IOException  If an I/O error occurs
      */
     public void close() throws IOException 
     {
         in_.close();
     }
 
-    // API - METHODS
 
     /**
+     * @param  stopAt  Character to stop at
      * @return the characters from the current postion
      *         until the stopAt or EOF is found.
+     * @throws IOException on IOError
      */
     public String readUntil( char stopAt ) throws IOException
     {
@@ -134,13 +160,14 @@ public class PositionReader extends Reader
                 if( c == stopAt )
                     break;
             }
-            
         }
         
         return sb.toString();
     }
 
-
+    /**
+     * @return  Offset
+     */
     public long getOffset() 
     { 
         return offset_; 

@@ -40,6 +40,7 @@ public class TokenReader extends LineNumberReader
      * Returns the next batch of tokens parsed from a single line
      *
      * @return  Array of tokens, or null or end of reader reached.
+     * @throws  IOException on IO error
      */
     public String[] readTokens() throws IOException
     {

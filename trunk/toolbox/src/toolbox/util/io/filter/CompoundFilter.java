@@ -15,6 +15,8 @@ public abstract class CompoundFilter implements FilenameFilter
     
     /**
      * Adds a filter
+     * 
+     * @param  filter  Filter to add
      */
     public void addFilter(FilenameFilter filter)
     {

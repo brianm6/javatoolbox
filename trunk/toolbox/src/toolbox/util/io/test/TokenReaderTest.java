@@ -21,6 +21,8 @@ public class TokenReaderTest extends TestCase
         
     /**
      * Entrypoint
+     * 
+     * @param  args  None
      */
     public static void main(String[] args)
     {
@@ -34,7 +36,7 @@ public class TokenReaderTest extends TestCase
     /**
      * Constructor for TokenReaderTest.
      * 
-     * @param arg0
+     * @param arg0  Name
      */
     public TokenReaderTest(String arg0)
     {
@@ -47,6 +49,8 @@ public class TokenReaderTest extends TestCase
         
     /**
      * Tests an empty reader
+     * 
+     * @throws Exception on error
      */    
     public void testEmptyReader() throws Exception
     {
@@ -59,6 +63,8 @@ public class TokenReaderTest extends TestCase
     
     /**
      * Tests a reader with a single line of data
+     * 
+     * @throws Exception on error
      */
     public void testSingleLineReader() throws Exception
     {
@@ -74,6 +80,8 @@ public class TokenReaderTest extends TestCase
     
     /**
      * Tests a reader with multiple lines of multiple tokens
+     * 
+     * @throws Exception on error
      */
     public void testMultiLineReader() throws Exception
     {

@@ -83,6 +83,8 @@ public class StringInputStreamTest extends TestCase
     
     /**
      * Tests available() method
+     * 
+     * @throws Exception on error
      */
     public void testAvailable() throws Exception
     {
@@ -105,6 +107,8 @@ public class StringInputStreamTest extends TestCase
     
     /** 
      * Tests read on an empty stream with ignore EOF set to true
+     * 
+     * @throws Exception on error
      */
     public void testReadEmptyIgnoreEOF() throws Exception
     {
@@ -113,8 +117,9 @@ public class StringInputStreamTest extends TestCase
         StringInputStream sis = new StringInputStream(true);
  
         int iterations = 3;
-        ThreadUtil.run(this, "stuffStream", 
-            new Object[] { sis, new Integer(1000), "x", new Integer(iterations)});
+        
+        ThreadUtil.run(this, "stuffStream", new Object[] 
+            { sis, new Integer(1000), "x", new Integer(iterations)});
         
         for (int i=0; i<iterations; i++)                  
         {
@@ -129,6 +134,8 @@ public class StringInputStreamTest extends TestCase
  
     /**
      * Tests append()
+     * 
+     * @throws Exception on error
      */
     public void testAppend() throws Exception
     {
@@ -150,9 +157,9 @@ public class StringInputStreamTest extends TestCase
  
     //--------------------------------------------------------------------------
     //  Helper Methods
-    //--------------------------------------------------------------------------   
+    //--------------------------------------------------------------------------
     
-    public void stuffStream(StringInputStream sis, int delay, String s, 
+    protected void stuffStream(StringInputStream sis, int delay, String s, 
         int iterations) 
     {
         for (int i=0; i<iterations; i++)

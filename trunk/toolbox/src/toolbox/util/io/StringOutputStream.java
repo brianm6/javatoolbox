@@ -10,7 +10,7 @@ public class StringOutputStream extends OutputStream
     /** 
      * Output buffer 
      */
-    private StringBuffer output;
+    private StringBuffer output_;
 
     //--------------------------------------------------------------------------
     //  Constructors
@@ -21,7 +21,7 @@ public class StringOutputStream extends OutputStream
      */
     public StringOutputStream()
     {
-        output = new StringBuffer();
+        output_ = new StringBuffer();
     }
 
     /**
@@ -31,7 +31,7 @@ public class StringOutputStream extends OutputStream
      */
     public StringOutputStream(int initialBufferSize)
     {
-        output = new StringBuffer(initialBufferSize);
+        output_ = new StringBuffer(initialBufferSize);
     }
 
     //--------------------------------------------------------------------------
@@ -62,7 +62,7 @@ public class StringOutputStream extends OutputStream
     public void write(int outputChar)
     {
         if (outputChar != -1)
-            output.append((char) outputChar);
+            output_.append((char) outputChar);
     }
 
     /**
@@ -70,7 +70,7 @@ public class StringOutputStream extends OutputStream
      */
     public String toString()
     {
-        return output.toString();
+        return output_.toString();
     }
 
     //--------------------------------------------------------------------------
@@ -82,6 +82,6 @@ public class StringOutputStream extends OutputStream
      */
     public StringBuffer getBuffer()
     {
-        return output;
+        return output_;
     }
 }

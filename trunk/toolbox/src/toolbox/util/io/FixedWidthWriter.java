@@ -27,22 +27,52 @@ public class FixedWidthWriter extends FilterWriter
     //  Public
     //--------------------------------------------------------------------------
 
+    /**
+     * Writes right padded
+     * 
+     * @param  str    String to write
+     * @param  width  Max width
+     * @throws IOException on IO error
+     */
     public void writeRPad(String str, int width) throws IOException
     {
         writeRPad(str, width, ' ');
     }
 
+    /**
+     * Writes right padded
+     * 
+     * @param  str     String to write
+     * @param  width   Max width
+     * @param  padChar Pad character
+     * @throws IOException on IO error
+     */
     public void writeRPad(String str, int width, char padChar)
         throws IOException
     {
         write(str, width, padChar, true);
     }
 
+    /**
+     * Writes left padded
+     * 
+     * @param  str    String to write
+     * @param  width  Max width
+     * @throws IOException on IO error
+     */
     public void writeLPad(String str, int width) throws IOException
     {
         writeLPad(str, width, ' ');
     }
 
+    /**
+     * Writes left padded
+     * 
+     * @param  str     String to write
+     * @param  width   Max width
+     * @param  padChar Pad character
+     * @throws IOException on IO error
+     */
     public void writeLPad(String str, int width, char padChar)
         throws IOException
     {
@@ -59,6 +89,7 @@ public class FixedWidthWriter extends FilterWriter
      * @param   width    Width of resulting screen
      * @param   padChar  Character to use for padding
      * @param   padRight if true, pad on the right; if false, pad on the left
+     * @throws  IOException on IO error
      */
     public void write(String str, int width, char padChar, boolean padRight)
         throws IOException

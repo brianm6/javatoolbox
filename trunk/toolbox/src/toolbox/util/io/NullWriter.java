@@ -25,6 +25,10 @@ public class NullWriter extends Writer
 
     /**
      * Eat written characters
+     * 
+     * @param  cbuf  Character buffer to write
+     * @param  off   Offset into character buffer
+     * @param  len   Number of characters to write
      */
     public void write(char[] cbuf, int off, int len)
     {

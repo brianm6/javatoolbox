@@ -105,7 +105,10 @@ public class StringInputStream extends InputStream
                     wait();    
                     c = buffer_.charAt(index_++);
                 }
-                catch (InterruptedException ie) {};
+                catch (InterruptedException ie) 
+                {
+                    // Ignore
+                }
             }
         }
         
@@ -113,10 +116,11 @@ public class StringInputStream extends InputStream
     }
     
     /**
-     * Returns number of bytes available to read from the stream
+     * Returns number of bytes available to read from the stream without 
+     * blocking
      * 
      * @return  Number of bytes available
-     * @throws  IOException
+     * @throws  IOException on IO error
      */
     public int available() throws IOException
     {

@@ -23,11 +23,19 @@ public class MulticastOutputStream extends FilterOutputStream
     //  Constructors
     //--------------------------------------------------------------------------
     
+    /**
+     * Default constructor
+     */
     public MulticastOutputStream()
     {
         this(null);
     }
     
+    /**
+     * Creates a MulticastOutputStream
+     * 
+     * @param out Stream to add to the multicast group
+     */
     public MulticastOutputStream(OutputStream out)
     {
         super(out);
@@ -62,12 +70,26 @@ public class MulticastOutputStream extends FilterOutputStream
     //  Overridden Methods from InputStream
     //--------------------------------------------------------------------------
 
+    /**
+     * Writes integer to each stream in the multicast group
+     * 
+     * @param  b  Integer to write
+     * @throws IOException on IO error
+     */
     public synchronized void write(int b) throws IOException
     {
         for (Iterator e = streams_.iterator(); e.hasNext();)
             ((OutputStream) e.next()).write(b);
     }
 
+    /**
+     * Writes bytes to each stream in the multicast group
+     * 
+     * @param  data    Bytes to write
+     * @param  offset  Offset into data to start from
+     * @param  length  Number of bytes to write from offset
+     * @throws IOException on IO error
+     */
     public synchronized void write(byte[] data, int offset, int length)
         throws IOException
     {
@@ -75,12 +97,22 @@ public class MulticastOutputStream extends FilterOutputStream
             ((OutputStream) e.next()).write(data, offset, length);
     }
 
+    /**
+     * Flushes all streams in the multicast group
+     * 
+     * @throws IOException on IO error
+     */
     public synchronized void flush() throws IOException
     {
         for (Iterator e = streams_.iterator(); e.hasNext();)
             ((OutputStream) e.next()).flush();
     }
 
+    /**
+     * Closes all streams in the multicast group
+     * 
+     * @throws  IOException on IO error
+     */
     public synchronized void close() throws IOException
     {
         for (Iterator e = streams_.iterator(); e.hasNext();)

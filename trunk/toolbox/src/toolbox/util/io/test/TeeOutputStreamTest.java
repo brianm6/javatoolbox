@@ -18,6 +18,8 @@ public class TeeOutputStreamTest extends TestCase
         
     /**
      * Entrypoint
+     * 
+     * @param  args None
      */
     public static void main(String[] args)
     {
@@ -31,7 +33,7 @@ public class TeeOutputStreamTest extends TestCase
     /**
      * Constructor for TeeOutputStreamTest.
      * 
-     * @param arg0
+     * @param arg0  Name
      */
     public TeeOutputStreamTest(String arg0)
     {
@@ -44,6 +46,8 @@ public class TeeOutputStreamTest extends TestCase
     
     /**
      * Tests write()
+     * 
+     * @throws Exception on error
      */
     public void testWrite() throws Exception
     {
