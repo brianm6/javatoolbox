@@ -41,6 +41,7 @@ import toolbox.workspace.IPreferenced;
  *  <li>Append log output to stdout/stderr (console)
  *  <li>Pop up a new window and send logger output to it.
  *  <li>Append log output to a file.
+ *  <li>Saves/restores menu selection state.
  * </ul>
  */
 public class LoggingMenu extends JSmartMenu implements IPreferenced

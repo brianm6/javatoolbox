@@ -38,8 +38,8 @@ import toolbox.util.ui.plaf.LookAndFeelUtil;
  * {@link CloverTestSuite} to exclude unit tests not suitable for unattended
  * execution.
  * 
- * @see CloverTestSuite
- * @see CloverTestFilter
+ * @see toolbox.junit.CloverTestSuite
+ * @see toolbox.junit.CloverTestFilter
  */
 public class UITestCase extends TestCase
 {
