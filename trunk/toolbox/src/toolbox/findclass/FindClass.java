@@ -2,6 +2,7 @@ package toolbox.findclass;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -70,12 +71,16 @@ public class FindClass
     /** Default collector **/
     private FindClassCollector defaultCollector_ = new FindClassCollector();
 
+    /** Holds ordered list of search targets **/
+    private List searchTargets_ = new ArrayList();
+
     /**
      * Constructor
      */
     public FindClass() 
     {
         addFindClassListener(defaultCollector_);
+        buildSearchTargets();
     }
 
     /**
@@ -86,7 +91,7 @@ public class FindClass
      * @return  Array of FindClassResults
      */
     public FindClassResult[] findClass(String classToFind, boolean ignoreCase) 
-        throws RESyntaxException
+        throws RESyntaxException, IOException
     { 
         /* result collector */
         defaultCollector_.clear();
@@ -105,52 +110,50 @@ public class FindClass
         if (ignoreCase)
             regExp_.setMatchFlags(RE.MATCH_CASEINDEPENDENT);        
 
-        /* build list of archives and dirs to search */        
-        List searchList = new ArrayList();
-        searchList.addAll(getClassPathTargets());
-        searchList.addAll(getArchiveTargets());
-
         /* convert search list to an array */
-        classpath_ = (String[]) searchList.toArray(new String[0]);
+        classpath_ = (String[]) getSearchTargets().toArray(new String[0]);
+
+        /* for each search target, search it */
+        for (int i=0; i< classpath_.length; i++) 
+        { 
+            String target = classpath_[i];
+            
+            fireSearchingTarget(target);
+            
+            if (isArchive(target))
+                findInArchive(target);
+            else
+                findInPath(target);
+        }
+
         
+        return defaultCollector_.getResults();
+    }
+
+
+    /**
+     * Builds the list of search targets
+     */
+    protected void buildSearchTargets()
+    {
+        /* build list of archives and dirs to search */        
+        searchTargets_.clear();
+        searchTargets_.addAll(getClassPathTargets());
+        searchTargets_.addAll(getArchiveTargets());
+        
+        /* print out search targets if debub is on */        
         if (logger_.isDebugEnabled())
         {
             logger_.debug("Search targets");
             logger_.debug("==============================");
             
-            for(int i=0; i < classpath_.length; i++)
-                logger_.debug(classpath_[i]);
-
+            for(Iterator i = searchTargets_.iterator(); 
+                i.hasNext(); logger_.debug(i.next()));
+                
             logger_.debug("==============================");                
         }
-
-        findClass();
         
-        return defaultCollector_.getResults();
     }
-
-    /**
-     * Finds given class in archives/paths
-     */
-    protected void findClass() 
-    { 
-        try 
-        { 
-            for (int i=0; i< classpath_.length; i++) 
-            { 
-                if (isArchive(classpath_[i]))
-                    findInArchive(classpath_[i]);
-                else
-                    findInPath(classpath_[i]);
-            }
-        }
-        catch (Exception e) 
-        { 
-            logger_.error("findclass", e);
-        }
-    }
-    
-
     
     /**
      * Retrieves all search targets (archives and directories) on the classpath
@@ -237,7 +240,7 @@ public class FindClass
      * @param   jarName     the name of the jar file to search
      * @throws  Exception on error
      */
-    protected void findInArchive(String jarName) throws Exception 
+    protected void findInArchive(String jarName) throws IOException
     { 
         ZipFile zf = null;
 
@@ -334,6 +337,23 @@ public class FindClass
         
         //System.out.println(clazzSource + " => " + clazz);   
     }
+
+
+    /**
+     * Called when a class is found by the various search methods
+     *
+     * @param  whereFound   Where the class was found (dir, zip, etc)
+     */
+    protected void fireSearchingTarget(String target)
+    {
+        for(int i=0; i<findListeners_.size(); i++)
+        {
+            IFindClassListener listener = 
+                (IFindClassListener)findListeners_.get(i);
+                
+            listener.searchingTarget(target);
+        }
+    }
     
  
     /**
@@ -354,6 +374,27 @@ public class FindClass
     public void removeFindClassListener(IFindClassListener listener)
     {
         findListeners_.remove(listener);
+    }
+    
+    /**
+     * Returns list of targets that will be searched
+     * 
+     * @return  List of targets as strings
+     */
+    public List getSearchTargets()
+    {
+        return searchTargets_;
+    }
+    
+    
+    /**
+     * Adds a target to the search list
+     * 
+     * @param  target  Absolute location of directory or jar/zip file
+     */
+    public void addSearchTarget(String string)
+    {
+        
     }
 }
         
