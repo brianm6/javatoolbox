@@ -14,7 +14,6 @@ import toolbox.jedit.JEditTextArea;
 import toolbox.jedit.JavaDefaults;
 import toolbox.util.FileUtil;
 import toolbox.util.FontUtil;
-import toolbox.util.SwingUtil;
 
 /**
  * A viewer to for text documents.
@@ -78,7 +77,7 @@ public class JEditViewer implements DocumentViewer
             textArea_.scrollTo(0,0);
             
             textArea_.getPainter().setFont(
-                FontUtil.increaseSize(FontUtil.getPreferredMonoFont(), -2));
+                FontUtil.grow(FontUtil.getPreferredMonoFont(), -2));
         }
         catch (FileNotFoundException e)
         {
