@@ -43,11 +43,31 @@ public class MainTest extends TestCase
 
     
     /**
+     * Tests positive launch passing an arg to the program.
+     */
+    public void testMainPassArg()
+    {
+        logger_.info("Running testMainPassArg...");
+        Main.main(new String[] {"banner", "!@#$%"});
+    }
+    
+    
+    /**
+     * Tests printing help.
+     */
+    public void testMainHelp()
+    {
+        logger_.info("Running testMainHelp...");
+        Main.main(new String[0]);
+    }
+    
+    
+    /**
      * Tests failed launch.
      */
     public void testMainNegative()
     {
         logger_.info("Running testMainNegative...");
-        Main.main(new String[] {"bogus_program" });
+        Main.main(new String[] {"bogus_program"});
     }
 }
