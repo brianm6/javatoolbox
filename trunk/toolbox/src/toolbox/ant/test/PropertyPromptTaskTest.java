@@ -1,11 +1,15 @@
 package toolbox.ant.test;
 
+import java.io.File;
+
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
 import org.apache.tools.ant.Main;
 
 import toolbox.junit.StandaloneTestCase;
+import toolbox.util.FileUtil;
+import toolbox.util.ResourceUtil;
 
 /**
  * Unit test for PropertyPromptTask. This test is marked as standalone 
@@ -39,11 +43,16 @@ public class PropertyPromptTaskTest extends TestCase
      */
     public void testPropertyPrompt() throws Exception
     {
+        File f = ResourceUtil.getResourceAsTempFile(
+            "/toolbox/ant/test/PropertyPromptTaskTest.xml");
+        
         Main.main(new String[]{
             "-debug", 
             "-verbose", 
             "-f", 
-            "c:\\workspaces\\workspace-toolbox\\toolbox\\src\\toolbox\\ant\\test\\PropertyPromptTaskTest.xml"
+            f.getCanonicalPath()
         });
+        
+        FileUtil.delete(f);
     }
 }
