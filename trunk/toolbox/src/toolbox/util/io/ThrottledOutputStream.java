@@ -12,6 +12,8 @@ import org.apache.log4j.Logger;
  */
 public class ThrottledOutputStream extends FilterOutputStream
 {
+    // TODO: Write unit test.
+    
     private static final Logger logger_ = Logger.getLogger(
         ThrottledOutputStream.class);
 
@@ -24,22 +26,32 @@ public class ThrottledOutputStream extends FilterOutputStream
      */
     private Bandwidth bandwidth_;
     
-    private int reservedBandwidth_ = 0;
+    /**
+     * Reserved bandwidth.
+     */
+    private int reservedBandwidth_;
 
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
-    
+
+    /**
+     * Creates a ThrottledOutputStream.
+     * 
+     * @param out Outputstream to throttle.
+     */
     public ThrottledOutputStream(OutputStream out)
     {
         super(out);
         
-        //Force the use of a static method that checks if throttling
+        // Force the use of a static method that checks if throttling
         // is on before creating a throttled stream.
         // slow down the creation of new streams if bandwidth is low.
         
         if (bandwidth_ != null && bandwidth_.getBandwidthPerTick() > 0)
-            reservedBandwidth_ = bandwidth_.getBandwidth(10000); 
+            reservedBandwidth_ = bandwidth_.getBandwidth(10000);
+        else
+            reservedBandwidth_ = 0;
     }
     
     //--------------------------------------------------------------------------
@@ -47,9 +59,9 @@ public class ThrottledOutputStream extends FilterOutputStream
     //--------------------------------------------------------------------------
     
     /**
-     * Activate throttling on OutputStreams.
+     * Sets the throttle for this stream.
      * 
-     * @param bandwidth the available bandwidth for OutputStreams.
+     * @param bandwidth Available bandwidth for this stream.
      */
     public void setThrottle(Bandwidth bandwidth)
     {
@@ -98,25 +110,3 @@ public class ThrottledOutputStream extends FilterOutputStream
         }
     }
 }
-
-/**
- * Gets a ThrottledOutputStream based on the given OutputStream. If
- * throttling is turned off (by calling {@ref #setThrottle setThrottle}with
- * a zero or negative argument) then the given OutputStream is simply
- * returned.
- * 
- * @param out the OutputStream to throttle.
- * @return an OutputStream which is either the original OutputStream if
- *         throttling is turned off, or a new ThrottledOutputStream if not.
- */
-//public static OutputStream throttledStream(OutputStream out)
-//{
-//    if (bandwidth_ == null || bandwidth_.getBandwidthPerTick() <= 0)
-//        return out;
-//    
-//    logger_.debug("ThrottledOutput, creating new stream, bpt = "
-//        + bandwidth_.getBandwidthPerTick());
-//
-//    return new ThrottledOutputStream(out);
-//}
-
