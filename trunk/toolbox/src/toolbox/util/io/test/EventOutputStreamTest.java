@@ -5,16 +5,16 @@ import java.io.OutputStream;
 import java.text.DecimalFormat;
 import java.util.Date;
 
-import org.apache.log4j.Logger;
-
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
+
+import org.apache.commons.io.output.NullOutputStream;
+import org.apache.log4j.Logger;
 
 import toolbox.util.DateTimeUtil;
 import toolbox.util.RandomUtil;
 import toolbox.util.concurrent.BlockingQueue;
 import toolbox.util.io.EventOutputStream;
-import toolbox.util.io.NullOutputStream;
 import toolbox.util.io.StringOutputStream;
 
 /**
