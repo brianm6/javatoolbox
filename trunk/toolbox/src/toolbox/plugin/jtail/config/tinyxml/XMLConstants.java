@@ -29,8 +29,11 @@ public interface XMLConstants
     public static final String ATTR_STYLE       = "style";        
     public static final String ATTR_SIZE        = "size";
 
-    // Filter XML element
-    public static final String ELEMENT_FILTER = "Filter";
-    public static final String ATTR_NEGATE    = "negate";
+    // Regular expression XML element
+    public static final String ELEMENT_REGULAR_EXPRESSION = "Regex";
+    public static final String ATTR_EXPRESSION = "expression";
     public static final String ATTR_MATCH_CASE = "matchCase";
+    
+    // Cut expression XML element
+    public static final String ELEMENT_CUT_EXPRESSION = "Cut";
 }

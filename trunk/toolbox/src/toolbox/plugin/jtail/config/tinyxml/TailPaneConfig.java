@@ -25,7 +25,8 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
     private boolean showLineNumbers_;
     private boolean antiAlias_;
     private Font    font_;
-    private String  filter_;
+    private String  regularExpression_;
+    private String  cutExpression_;
 
     //--------------------------------------------------------------------------
     //  Constructors
@@ -42,31 +43,34 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
     /**
      * Creates TailConfig with given parameters
      * 
-     * @param  file             File to tail
-     * @param  autoScroll       Turn on autoscroll
-     * @param  showLineNumbers  Shows line numbers in output
-     * @param  antiAlias        Antialias text in output area
-     * @param  font             Font of display text area
-     * @param  filter           Optional filter (regular expression) 
-     *                          for weeding out junk            
+     * @param  file               File to tail
+     * @param  autoScroll         Turn on autoscroll
+     * @param  showLineNumbers    Shows line numbers in output
+     * @param  antiAlias          Antialias text in output area
+     * @param  font               Font of display text area
+     * @param  regularExpression  Optional filter (regular expression) 
+     *                            for weeding out junk
+     * @param  cutExpression      Optional expression for removing columns
      */
     public TailPaneConfig(String file, boolean autoScroll, 
-        boolean showLineNumbers, boolean antiAlias, Font font, String filter)
+        boolean showLineNumbers, boolean antiAlias, Font font,
+        String regularExpression, String cutExpression)
     {
         setFilename(file);
         setAutoScroll(autoScroll);
         setShowLineNumbers(showLineNumbers);
         setAntiAlias(antiAlias);
         setFont(font);
-        setFilter(filter);
+        setRegularExpression(regularExpression);
+        setCutExpression(cutExpression);
     }
 
     //--------------------------------------------------------------------------
-    //  Implementation
+    //  Public
     //--------------------------------------------------------------------------    
     
     /**
-     * Unmarshals an XML element representing a TailConfig object
+     * XML -> TailConfig
      * 
      * @param   tail  Element representing a TailPaneConfig
      * @return  Fully populated TailPaneConfig
@@ -116,33 +120,42 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
             config.setFont(null);    
         }
         
-        // Handle optional filter element
-        XMLNode filterNode = tail.getNode(ELEMENT_FILTER);
+        // Handle optional regular expression element
+        XMLNode regexNode = tail.getNode(ELEMENT_REGULAR_EXPRESSION);
         
-        if (filterNode != null)
+        if (regexNode != null)
         {
-            config.setFilter(filterNode.getValue());
-
-            // TODO: support negate and case
+            config.setRegularExpression(regexNode.getAttr(ATTR_EXPRESSION));
+            // TODO: support case sensetivity
         }
         else
         {
-            config.setFilter(DEFAULT_FILTER);
+            config.setRegularExpression(DEFAULT_REGEX);
         }
+
+        // Handle optional cut expression element
+        XMLNode cutNode = tail.getNode(ELEMENT_CUT_EXPRESSION);
+        
+        if (cutNode != null)
+            config.setCutExpression(cutNode.getAttr(ATTR_EXPRESSION));
+        else
+            config.setCutExpression(DEFAULT_CUT_EXPRESSION);
             
         return config;
     }
 
 
     /**
-     * Marshals from Java object representation to XML representation
+     * TailConfig -> XML
      * <pre>
      * 
      * Tail
      *   |
      *   +--Font
      *   |
-     *   +--Filter
+     *   +--RegularExpression
+     *   |
+     *   +--CutExpression
      * 
      * </pre>
      * 
@@ -162,18 +175,23 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
         tail.addAttr(ATTR_ANTIALIAS, isAntiAlias() + "");
         
         // Font element    
-        XMLNode font = new XMLNode(ELEMENT_FONT);
-        font.addAttr(ATTR_FAMILY, getFont().getFamily());
-        font.addAttr(ATTR_STYLE, getFont().getStyle() + "");
-        font.addAttr(ATTR_SIZE, getFont().getSize() + "");            
+        XMLNode fontNode = new XMLNode(ELEMENT_FONT);
+        fontNode.addAttr(ATTR_FAMILY, getFont().getFamily());
+        fontNode.addAttr(ATTR_STYLE, getFont().getStyle() + "");
+        fontNode.addAttr(ATTR_SIZE, getFont().getSize() + "");            
         
-        // Filter element
-        XMLNode filter = new XMLNode(ELEMENT_FILTER);
-        filter.setPlaintext(getFilter());
+        // Regex element
+        XMLNode regexNode = new XMLNode(ELEMENT_REGULAR_EXPRESSION);
+        regexNode.addAttr(ATTR_EXPRESSION, getRegularExpression());
+
+        // Cut element
+        XMLNode cutNode = new XMLNode(ELEMENT_CUT_EXPRESSION);
+        cutNode.addAttr(ATTR_EXPRESSION, getCutExpression());
         
         // Add child nodes to tail
-        tail.addNode(font);
-        tail.addNode(filter);
+        tail.addNode(fontNode);        
+        tail.addNode(regexNode);
+        tail.addNode(cutNode);        
         
         return tail;
     }
@@ -284,9 +302,9 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
      * 
      * @return String
      */
-    public String getFilter()
+    public String getRegularExpression()
     {
-        return filter_;
+        return regularExpression_;
     }
 
 
@@ -295,10 +313,27 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
      * 
      * @param filter The filter to set
      */
-    public void setFilter(String filter)
+    public void setRegularExpression(String filter)
     {
-        filter_ = filter;
+        regularExpression_ = filter;
     }
+    
+    /**
+     * @see toolbox.jtail.config.ITailPaneConfig#getCutExpression()
+     */
+    public String getCutExpression()
+    {
+        return cutExpression_;
+    }
+    
+    /**
+     * @see toolbox.jtail.config.ITailPaneConfig#setCutExpression(String)
+     */
+    public void setCutExpression(String cutExpression)
+    {
+        cutExpression_ = cutExpression;
+    }
+    
     
     /**
      * Accessor for the antialias flag

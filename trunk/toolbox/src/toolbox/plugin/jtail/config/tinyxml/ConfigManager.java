@@ -78,13 +78,15 @@ public class ConfigManager implements IConfigManager
         // Create jtailConfig with defaults        
         IJTailConfig jtailConfig = new JTailConfig();
         
-        jtailConfig.setDefaultConfig(new TailPaneConfig(
-            null,
-            ITailPaneConfig.DEFAULT_AUTOSCROLL,
-            ITailPaneConfig.DEFAULT_LINENUMBERS,
-            ITailPaneConfig.DEFAULT_ANTIALIAS,
-            SwingUtil.getPreferredMonoFont(),
-            ITailPaneConfig.DEFAULT_FILTER));
+        jtailConfig.setDefaultConfig(
+            new TailPaneConfig(
+                null,
+                ITailPaneConfig.DEFAULT_AUTOSCROLL,
+                ITailPaneConfig.DEFAULT_LINENUMBERS,
+                ITailPaneConfig.DEFAULT_ANTIALIAS,
+                SwingUtil.getPreferredMonoFont(),
+                ITailPaneConfig.DEFAULT_REGEX,
+                ITailPaneConfig.DEFAULT_CUT_EXPRESSION));
             
         jtailConfig.setTailConfigs(new TailPaneConfig[0]);
                 
