@@ -1,7 +1,12 @@
 package toolbox.plugin.docviewer;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.JComponent;
@@ -13,12 +18,15 @@ import nu.xom.Element;
 
 import org.apache.log4j.Logger;
 
+import toolbox.util.ArrayUtil;
+import toolbox.util.ClassUtil;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.XOMUtil;
-import toolbox.util.ui.explorer.JFileExplorer;
-import toolbox.util.ui.explorer.FileExplorerAdapter;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartSplitPane;
+import toolbox.util.ui.SmartAction;
+import toolbox.util.ui.explorer.FileExplorerAdapter;
+import toolbox.util.ui.explorer.JFileExplorer;
 import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.util.ui.layout.StackLayout;
 import toolbox.workspace.IPlugin;
@@ -45,7 +53,7 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
     /**
      * Node for PDFViewer preferences.
      */
-    private static final String NODE_PDF_VIEWER   = "PDFViewer";
+    private static final String NODE_PDF_VIEWER = "PDFViewer";
     
     //--------------------------------------------------------------------------
     // Fields
@@ -66,17 +74,24 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
      */
     private JPanel outputPanel_;
     
-    /**
-     * Document viewer.
-     */    
-    private DocumentViewer viewer_;
-    
     /** 
-     * File explorer used to open XML files. 
+     * File explorer used to navigate to and select documents for viewing. 
      */
     private JFileExplorer explorer_;
 
-
+    /**
+     * Panel that contains a list of stacked buttons. One button for each
+     * viewer that is capable for viewing the selecting document. 
+     */
+    private JPanel viewerPane_;
+    
+    /**
+     * List of viewers registered to show documents.
+     */
+    private List viewers_;
+    
+    private JComponent lastAdded_;
+    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -126,10 +141,11 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
         //        viewerList.setCellRenderer( new ButtonCellRenderer());
 
         
-        JPanel viewerList = new JPanel(new StackLayout(StackLayout.VERTICAL));
-        viewerList.add("Top Wide Flush", new JSmartButton("One"));
-        viewerList.add("Top Wide Flush", new JSmartButton("Two"));
-        viewerList.add("Top Wide Flush", new JSmartButton("Three"));
+        
+        viewerPane_ = new JPanel(new StackLayout(StackLayout.VERTICAL));
+        viewerPane_.add("Top Wide Flush", new JSmartButton("One"));
+        viewerPane_.add("Top Wide Flush", new JSmartButton("Two"));
+        viewerPane_.add("Top Wide Flush", new JSmartButton("Three"));
         
         
 //        viewerList.setPreferredSize(
@@ -142,7 +158,7 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
             new JSmartSplitPane(
                 JSplitPane.VERTICAL_SPLIT,
                 explorer_,
-                new JScrollPane(viewerList));
+                new JScrollPane(viewerPane_));
         
         flipPane_ = new JFlipPane(JFlipPane.LEFT);
         flipPane_.addFlipper("File Explorer", splitter);
@@ -161,31 +177,125 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
      * @param file File to view with the embedded PDF viewer
      * @throws Exception on error
      */
-    protected void viewPDFEmbedded(File file) throws Exception
+    protected void viewDocument(DocumentViewer dv, File f) throws Exception
     {
-        //viewPDFEmbedded(new FileInputStream(file));
+        //dv.startup(new HashMap());
         
-        if (viewer_ == null)
-        {
-            viewer_ = new MultivalentViewer();
-            //viewer_ = new AcrobatViewer();
-            viewer_.startup(null);
-            outputPanel_.add(BorderLayout.CENTER, viewer_.getComponent());
-        }
-
-        viewer_.view(file);
+        if (lastAdded_ != null)
+            outputPanel_.remove(lastAdded_);
+       
+        dv.view(f);
+        lastAdded_ = dv.getComponent();
+        
+        outputPanel_.add(BorderLayout.CENTER, lastAdded_);
+        outputPanel_.validate();
+        outputPanel_.repaint();
     }
 
+    
+    protected void findViewersForDocument(File file)
+    {
+        viewerPane_.removeAll();
+        
+        
+        for (Iterator i = viewers_.iterator(); i.hasNext(); )
+        {
+            DocumentViewer dv = (DocumentViewer) i.next();
+            
+            if (dv.canView(file))
+            {
+                JSmartButton b = new JSmartButton(new ViewAction(dv, file));
+                viewerPane_.add("Top Wide Flush", b);
+            }
+        }
+        
+        viewerPane_.validate();
+        viewerPane_.repaint();
+    }
+    
+    
+    class ViewAction extends SmartAction
+    {
+        DocumentViewer viewer;
+        File file;
+        
+        public ViewAction(DocumentViewer dv, File f)
+        {
+            super(dv.getName(), true, false, null);
+            viewer = dv;
+            file = f;
+        }
+                
+        public void runAction(ActionEvent e) throws Exception
+        {
+            viewDocument(viewer, file);
+        }
+    }
+    
+    /**
+     * Builds the list of document viewers by scanning the current package for
+     * classes ending in the string "Viewer".
+     */
+    protected void buildViewerList()
+    {
+        String[] classes = 
+            ClassUtil.getClassesInPackage(
+                ClassUtil.stripClass(getClass().getName()));
+       
+        logger_.info("Viewers: " + ArrayUtil.toString(classes, true)); 
+                
+        for (int i=0; i<classes.length; i++)
+        {
+            String fqcn = classes[i];
+            
+            if (fqcn.endsWith("Viewer"))
+            {
+                try
+                {
+                    Class c = Class.forName(fqcn);
+                    
+                    if (!c.isInterface())
+                        if (DocumentViewer.class.isAssignableFrom(c))
+                        {
+                            logger_.info("fcqn is a doc viewer: " + fqcn);
+                            
+                            DocumentViewer viewer = (DocumentViewer) c.newInstance();
+                            viewer.startup(new HashMap());
+                            viewers_.add(viewer);
+                        }
+                }
+                catch (Exception e)
+                {
+                    logger_.warn(e);
+                }
+            }
+        }
+    }
+    
     //--------------------------------------------------------------------------
     // IPlugin Interface
     //--------------------------------------------------------------------------
 
     /**
+     * @see toolbox.workspace.IPlugin#startup(java.util.Map)
+     */
+    public void startup(Map params)
+    {
+        if (params != null)
+            statusBar_= (IStatusBar) params.get(PluginWorkspace.PROP_STATUSBAR);
+        
+        viewers_ = new ArrayList();
+        buildView();
+        buildViewerList();
+    }
+
+    
+    /**
      * @see toolbox.workspace.IPlugin#getPluginName()
      */
     public String getPluginName()
     {
-        return "PDF Viewer";
+        return "Document Viewer";
     }
 
     
@@ -203,19 +313,7 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
      */
     public String getDescription()
     {
-        return "Views PDF documents.";
-    }
-
-    
-    /**
-     * @see toolbox.workspace.IPlugin#startup(java.util.Map)
-     */
-    public void startup(Map params)
-    {
-        if (params != null)
-            statusBar_= (IStatusBar) params.get(PluginWorkspace.PROP_STATUSBAR);
-        
-        buildView();
+        return "Views documents.";
     }
 
     
@@ -224,8 +322,8 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
      */
     public void shutdown()
     {
-        if (viewer_ != null)
-            viewer_.shutdown();
+//        if (viewer_ != null)
+//            viewer_.shutdown();
     }    
 
     //--------------------------------------------------------------------------
@@ -274,7 +372,8 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
         {
             try
             {
-                viewPDFEmbedded(new File(file));
+                //viewDocument(new File(file));
+                findViewersForDocument(new File(file));
             }
             catch (Exception fnfe)
             {
@@ -290,6 +389,16 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
         public void fileSelected(String file)
         {
             logger_.info("File selected: " + file);
+            
+            try
+            {
+                //viewDocument(new File(file));
+                findViewersForDocument(new File(file));
+            }
+            catch (Exception fnfe)
+            {
+                ExceptionUtil.handleUI(fnfe, logger_);
+            }
         }
     }
 }
