@@ -18,6 +18,8 @@ import toolbox.workspace.PluginWorkspace;
 
 /**
  * Plugin host that arranges plugins in a JTabbedPane. One plugin per tab.
+ * 
+ * @see toolbox.workspace.host.DesktopPluginHost
  */
 public class TabbedPluginHost extends AbstractPluginHost
 {
@@ -29,7 +31,7 @@ public class TabbedPluginHost extends AbstractPluginHost
     //--------------------------------------------------------------------------
     
     /**
-     * One plugin per tab.
+     * Tab panel that contains one plugin per tab.
      */
     private JSmartTabbedPane tabPanel_;
     
@@ -42,12 +44,12 @@ public class TabbedPluginHost extends AbstractPluginHost
      * Maps the UI component of a plugin to its associated IPlugin. The UI 
      * component is the actual component that is added to the tab panel.
      */
-    private BidiMap comp2plugin_;
+    private BidiMap uiComponentMap_;
     
     /**
-     * Bidirectional map that maps an IPlugin to its associated UI component.
+     * Maps an IPlugin to its associated UI component.
      */
-    private BidiMap plugin2comp_;
+    private BidiMap pluginMap_;
     
     //--------------------------------------------------------------------------
     // PluginHost Interface
@@ -64,8 +66,8 @@ public class TabbedPluginHost extends AbstractPluginHost
             (PluginWorkspace) props.get(PluginWorkspace.KEY_WORKSPACE);
         
         // Bidirectional hash maps
-        comp2plugin_ = new DualHashBidiMap();
-        plugin2comp_ = comp2plugin_.inverseBidiMap();
+        uiComponentMap_ = new DualHashBidiMap();
+        pluginMap_ = uiComponentMap_.inverseBidiMap();
 
         // Create tab panel and add listener so we know when one of the tabs 
         // is closed via the user clicking the X on the tab.
@@ -113,7 +115,7 @@ public class TabbedPluginHost extends AbstractPluginHost
         
         JComponent comp = plugin.getComponent();
         tabPanel_.addTab(plugin.getPluginName(), comp);
-        comp2plugin_.put(comp, plugin);
+        uiComponentMap_.put(comp, plugin);
         setSelectedPlugin(plugin);
     }    
 
@@ -127,7 +129,7 @@ public class TabbedPluginHost extends AbstractPluginHost
         // make sure component still exists in the tab panel. it could already
         // have been removed by clicking the X on the tab.
         
-        Component c = (Component) plugin2comp_.get(plugin);
+        Component c = (Component) pluginMap_.get(plugin);
         int i = tabPanel_.indexOfComponent(c); 
         
         if (i >= 0)
@@ -135,7 +137,7 @@ public class TabbedPluginHost extends AbstractPluginHost
         else
             logger_.info("Tab component already removed.");
         
-        comp2plugin_.remove(c);
+        uiComponentMap_.remove(c);
         super.exportPlugin(plugin);
     }
     
@@ -146,7 +148,7 @@ public class TabbedPluginHost extends AbstractPluginHost
      */
     public void setSelectedPlugin(IPlugin plugin)
     {
-        tabPanel_.setSelectedComponent((Component) plugin2comp_.get(plugin));
+        tabPanel_.setSelectedComponent((Component) pluginMap_.get(plugin));
     }
     
     
@@ -155,7 +157,7 @@ public class TabbedPluginHost extends AbstractPluginHost
      */
     public IPlugin getSelectedPlugin()
     {
-        return (IPlugin) comp2plugin_.get(tabPanel_.getSelectedComponent());
+        return (IPlugin) uiComponentMap_.get(tabPanel_.getSelectedComponent());
     }
     
     
@@ -185,8 +187,8 @@ public class TabbedPluginHost extends AbstractPluginHost
         tabPanel_.removeAll();
         tabPanel_ = null;
         
-        comp2plugin_.clear();
-        comp2plugin_ = null;
+        uiComponentMap_.clear();
+        uiComponentMap_ = null;
         
         super.shutdown();
     }
@@ -210,7 +212,7 @@ public class TabbedPluginHost extends AbstractPluginHost
             JComponent component = 
                 (JComponent) tabPanel_.getComponentAt(tabIndex);
             
-            IPlugin plugin = (IPlugin) comp2plugin_.get(component);
+            IPlugin plugin = (IPlugin) uiComponentMap_.get(component);
              
             try
             {
