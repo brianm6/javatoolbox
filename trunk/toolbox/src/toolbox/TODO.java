@@ -38,6 +38,7 @@ package toolbox;
  * TODO: Update NetMeter to use MonitoredInput/Output streams.
  * TODO: Upgrade to Maven RC4
  * TODO: Save db profiles to a separate file.
+ * TODO: Add support for maven changes:report
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
@@ -83,6 +84,7 @@ package toolbox;
  *  - Upgraded to commons-collections-3.1
  *  - Introduced JDBCSession (multi client version of JDBCUtil)
  *  - Fix sql history list getting too big
+ *  - Added bunch of shortcut goals for maven generated reports to maven.xml
  *    
  * June 2004
  *  - Updated Jode to 1.1.2-pre1
