@@ -13,19 +13,20 @@ package toolbox.util.typecast;
 public interface IdentityCache
 {
     /**
-     * Gets the value based on <tt>key</tt>'s object reference
+     * Gets the value based on <tt>key</tt>'s object reference.
      * 
-     * @param  key  Key
+     * @param key Key
      * @return Value for given key
      */
-    public Object get(Object key);
+    Object get(Object key);
 
+    
     /**
      * Stores <tt>value</tt> and associates it with the <tt>key</tt>'s
-     * object reference
+     * object reference.
      * 
-     * @param  key    Key for value
-     * @param  value  Value for key
+     * @param key Key for value
+     * @param value Value for key
      */
-    public void put(Object key, Object value);
+    void put(Object key, Object value);
 }

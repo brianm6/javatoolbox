@@ -12,5 +12,5 @@ public interface IThreadable
      *
      * @return Result of the request or null if no result.
      */
-    public Object run();
+    Object run();
 }

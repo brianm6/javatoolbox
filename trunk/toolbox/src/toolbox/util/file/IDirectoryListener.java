@@ -4,18 +4,17 @@ import java.io.File;
 import java.util.EventListener;
 
 /**
- * Listener interface for notification of certain file 
- * activity that meets an IFileActivity criteria
+ * Listener interface for notification of certain file activity that meets an 
+ * IFileActivity criteria.
  */
 public interface IDirectoryListener extends EventListener
 {
     /**
-     * Called when a file has met the criteria for an IFileActivity
+     * Called when a file has met the criteria for a given IFileActivity.
      *
-     * @param  activity  Activity that caused this notification
-     * @param  files     Files that meets activity criteria
+     * @param activity Activity that caused this notification
+     * @param files Files that meets activity criteria
      * @throws Exception on error
      */
-    public void fileActivity(IFileActivity activity, File[] files) 
-        throws Exception;
+    void fileActivity(IFileActivity activity, File[] files) throws Exception;
 }

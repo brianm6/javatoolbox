@@ -18,7 +18,7 @@ public interface IConnectionListener
      * 
      * @param connection Connection about to be closed
      */
-    public void connectionClosing(IConnection connection);
+    void connectionClosing(IConnection connection);
     
     
     /**
@@ -26,7 +26,7 @@ public interface IConnectionListener
      * 
      * @param connection Connection that was closed
      */
-    public void connectionClosed(IConnection connection);
+    void connectionClosed(IConnection connection);
     
     
     /**
@@ -34,7 +34,7 @@ public interface IConnectionListener
      * 
      * @param connection Connection that was interrupted
      */
-    public void connectionInterrupted(IConnection connection);
+    void connectionInterrupted(IConnection connection);
     
     
     /**
@@ -42,5 +42,5 @@ public interface IConnectionListener
      * 
      * @param connection Connection that was started
      */
-    public void connectionStarted(IConnection connection);
+    void connectionStarted(IConnection connection);
 }

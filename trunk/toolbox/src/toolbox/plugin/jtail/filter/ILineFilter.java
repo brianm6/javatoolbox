@@ -11,7 +11,7 @@ public interface ILineFilter
      * @param line  Line of text to filter
      * @return Mutated line of text as processed by the filter.
      */
-    public String filter(String line);
+    String filter(String line);
     
     
     /**
@@ -19,7 +19,7 @@ public interface ILineFilter
      * 
      * @return True if the filter is enabled, false otherwise
      */
-    public boolean isEnabled();
+    boolean isEnabled();
     
     
     /**
@@ -27,5 +27,5 @@ public interface ILineFilter
      * 
      * @param b True to enable the filter, false to disable the filter
      */
-    public void setEnabled(boolean b);
+    void setEnabled(boolean b);
 }

@@ -3,15 +3,22 @@ package toolbox.log4j.im;
 import java.util.Properties;
 
 /**
- * Common instant messgener interface.
+ * Common instant messenger interface.
  */
 public interface InstantMessenger
 {
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
     /**
      * Property for the delay between successive messages.
      */
     public static final String PROP_THROTTLE = "throttle";
     
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
     
     /**
      * Initializes the instant messenger with any properties needed for the
@@ -20,7 +27,7 @@ public interface InstantMessenger
      * @param props Initialization properties
      * @throws InstantMessengerException on initialization error.
      */
-    public void initialize(Properties props)
+    void initialize(Properties props)
         throws InstantMessengerException;
     
     
@@ -31,7 +38,7 @@ public interface InstantMessenger
      * @param password Password in cleartext
      * @throws InstantMessengerException if authentication fails.
      */
-    public void login(String username, String password) 
+    void login(String username, String password) 
         throws InstantMessengerException;
     
     
@@ -42,7 +49,7 @@ public interface InstantMessenger
      * @param message Text of the message
      * @throws InstantMessengerException if sending fails.
      */
-    public void send(String recipient, String message)
+    void send(String recipient, String message)
         throws InstantMessengerException;
     
     
@@ -51,7 +58,7 @@ public interface InstantMessenger
      * 
      * @throws InstantMessengerException if an error occurs
      */
-    public void logout() throws InstantMessengerException;
+    void logout() throws InstantMessengerException;
     
     
     /**
@@ -59,7 +66,7 @@ public interface InstantMessenger
      * 
      * @throws InstantMessengerException if an error occurs during shutdown
      */
-    public void shutdown() throws InstantMessengerException;
+    void shutdown() throws InstantMessengerException;
     
     
     /**
@@ -68,5 +75,5 @@ public interface InstantMessenger
      * 
      * @return True if connected, false otherwise
      */
-    public boolean isConnected();
+    boolean isConnected();
 }

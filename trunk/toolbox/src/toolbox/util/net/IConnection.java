@@ -15,7 +15,7 @@ public interface IConnection
      * 
      * @return Connection name
      */
-    public String getName();
+    String getName();
 
     
     /**
@@ -23,7 +23,7 @@ public interface IConnection
      * 
      * @throws IOException on I/O error
      */
-    public void connect() throws IOException;
+    void connect() throws IOException;
 
 
     /**
@@ -31,7 +31,7 @@ public interface IConnection
      * 
      * @return True if connected, false otherwise
      */
-    public boolean isConnected();
+    boolean isConnected();
     
 
     /**
@@ -39,7 +39,7 @@ public interface IConnection
      * 
      * @throws IOException on I/O error
      */
-    public void close() throws IOException;
+    void close() throws IOException;
 
 
     /**
@@ -48,7 +48,7 @@ public interface IConnection
      * @return InputStream
      * @throws IOException on I/O error
      */
-    public InputStream getInputStream() throws IOException;
+    InputStream getInputStream() throws IOException;
 
 
     /**
@@ -57,7 +57,7 @@ public interface IConnection
      * @return OutputStream
      * @throws IOException on I/O error
      */
-    public OutputStream getOutputStream() throws IOException;
+    OutputStream getOutputStream() throws IOException;
     
     
     /**
@@ -65,7 +65,7 @@ public interface IConnection
      * 
      * @param listener Connection listener to add
      */
-    public void addConnectionListener(IConnectionListener listener);
+    void addConnectionListener(IConnectionListener listener);
 
 
     /**
@@ -73,5 +73,5 @@ public interface IConnection
      * 
      * @param listener Connection listener to remove
      */
-    public void removeConnectionListener(IConnectionListener listener);
+    void removeConnectionListener(IConnectionListener listener);
 }

@@ -4,20 +4,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Counter that wraps around given a finite range [a..b]
+ * Counter that wraps around given a finite range [a..b].
  */
 public class RollingCounter
 {
-    /** Start of range */
+    /** 
+     * Start of range. 
+     */
     private int  start_;
     
-    /** End of range */
+    /** 
+     * End of range. 
+     */
     private int  end_;
     
-    /** Current position in range */
+    /** 
+     * Current position in range. 
+     */
     private int  cnt_; 
     
-    /** List of counter listeners */
+    /** 
+     * List of counter listeners. 
+     */
     private List listeners_;
     
     //--------------------------------------------------------------------------
@@ -25,11 +33,11 @@ public class RollingCounter
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a counter that wraps around
+     * Creates a counter that wraps around.
      * 
-     * @param  start         Starting value of range
-     * @param  end           Ending value of range
-     * @param  initialValue  Initial value of counter 
+     * @param start Starting value of range
+     * @param end Ending value of range
+     * @param initialValue Initial value of counter 
      */        
     public RollingCounter(int start, int end, int initialValue)
     {
@@ -44,9 +52,9 @@ public class RollingCounter
     //--------------------------------------------------------------------------
     
     /**
-     * Increments the counter by 1
+     * Increments the counter by 1.
      *
-     * @return  Counter value after increment
+     * @return Counter value after increment
      */
     public int increment()
     {   
@@ -66,9 +74,9 @@ public class RollingCounter
 
     
     /**
-     * Returns the current counter value
+     * Returns the current counter value.
      * 
-     * @return  Current counter value
+     * @return int
      */
     public int getCount()
     {
@@ -77,7 +85,9 @@ public class RollingCounter
 
 
     /**
-     * @return  True if the counter is at the end of the range
+     * Return true if the counter is at the end of the range.
+     * 
+     * @return boolean
      */
     public boolean isAtEnd()
     {
@@ -86,7 +96,9 @@ public class RollingCounter
 
     
     /**
-     * @return  True if the counter is at the beginning of the range
+     * Returns true if the counter is at the beginning of the range.
+     * 
+     * @return boolean
      */
     public boolean isAtStart()
     {
@@ -118,9 +130,9 @@ public class RollingCounter
 
     
     /**
-     * Adds a listener
+     * Adds a listener.
      *
-     * @param  listener  Listener to add
+     * @param listener Listener to add
      */
     public void addRollingCounterListener(IRollingCounterListener listener)
     {
@@ -132,7 +144,9 @@ public class RollingCounter
     //--------------------------------------------------------------------------
     
     /**
-     * @return Dumps to string
+     * Returns debug friendly dump of this object.
+     * 
+     * @return String
      */
     public String toString()
     {
@@ -144,23 +158,24 @@ public class RollingCounter
     //--------------------------------------------------------------------------
     
     /**
-     * Interface for notification of rolling events
+     * Interface for notification of rolling events.
      */    
     public interface IRollingCounterListener
     {
         /**
-         * Called before a roll is about to happen
+         * Called before a roll is about to happen.
          * 
-         * @param  rc  Counter 
+         * @param rc Counter 
          */
-        public void beforeRoll(RollingCounter rc);
+        void beforeRoll(RollingCounter rc);
+        
         
         /**
-         * Called after a roll has happened
+         * Called after a roll has happened.
          * 
-         * @param  rc  Counter
+         * @param rc Counter
          */
-        public void afterRoll(RollingCounter rc);
+        void afterRoll(RollingCounter rc);
     }
 }
 

@@ -13,7 +13,7 @@ public interface ISocketServerListener
      * @param socket Newly created socket to communicate with the client.
      * @param connection Resulting connection that was created. 
      */
-    public void socketAccepted(Socket socket, IConnection connection);
+    void socketAccepted(Socket socket, IConnection connection);
 
 
     /**
@@ -22,5 +22,5 @@ public interface ISocketServerListener
      * 
      * @param server Server that started up
      */    
-    public void serverStarted(SocketServer server);
+    void serverStarted(SocketServer server);
 }

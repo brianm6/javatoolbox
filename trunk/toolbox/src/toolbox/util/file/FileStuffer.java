@@ -17,33 +17,35 @@ import toolbox.util.ThreadUtil;
  */
 public class FileStuffer implements Runnable
 {
+    // TODO: Refactor as a Service.
+    
     /** 
-     * The output file
+     * The output file.
      */
     private File file_;
     
     /** 
-     * The delay in millis between each write
+     * The delay in millis between each write.
      */
     private int delay_;
     
     /** 
-     * The thread that the stuffer runs on
+     * The thread that the stuffer runs on.
      */
     private Thread thread_;
     
     /** 
-     * Flag to stop the stuffer 
+     * Flag to stop the stuffer.
      */
     private boolean stop_;
     
     /** 
-     * Flag to open/close file instead of append/flush
+     * Flag to open/close file instead of append/flush.
      */
     private boolean openClose_ = false;
 
     /** 
-     * File stuffer
+     * File stuffer.
      */
     private IStuffProvider stuffer_;
     
@@ -82,7 +84,7 @@ public class FileStuffer implements Runnable
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a FileStuffer
+     * Creates a FileStuffer.
      * 
      * @param file File to send output to
      * @param delay Delay between each write
@@ -94,7 +96,7 @@ public class FileStuffer implements Runnable
 
 
     /**
-     * Creates a FileStuffer
+     * Creates a FileStuffer.
      * 
      * @param file File to send output to
      * @param delay Delay between each write
@@ -108,13 +110,13 @@ public class FileStuffer implements Runnable
 
 
     /**
-     * Creates a FileStuffer
+     * Creates a FileStuffer.
      * 
      * @param file File to send output to
      * @param delay Delay between each write
      * @param stuffer Provides contents to stuff file with
      * @param openClose Flag to open/close file between each successive write 
-     *                  instead of the default behavior to just applend/flush.
+     *        instead of the default behavior to just applend/flush.
      */
     public FileStuffer(File file, int delay, IStuffProvider stuffer,
         boolean openClose)
@@ -125,13 +127,12 @@ public class FileStuffer implements Runnable
         openClose_ = openClose;
     }
 
-
     //--------------------------------------------------------------------------
     // Runnable Interface
     //--------------------------------------------------------------------------
     
     /**
-     * Writes out to the file at specified intervals
+     * Writes out to the file at specified intervals.
      */
     public void run()
     {
@@ -177,7 +178,7 @@ public class FileStuffer implements Runnable
     //--------------------------------------------------------------------------
     
     /**
-     * Starts the stuffer
+     * Starts the stuffer.
      */    
     public void start()
     {
@@ -187,7 +188,7 @@ public class FileStuffer implements Runnable
 
 
     /** 
-     * Stops the stuffer 
+     * Stops the stuffer.
      */    
     public void stop()
     {
@@ -253,7 +254,7 @@ public class FileStuffer implements Runnable
     //--------------------------------------------------------------------------
          
     /**
-     * Prints program usage
+     * Prints program usage.
      */ 
     protected static void printUsage()
     {
@@ -269,14 +270,14 @@ public class FileStuffer implements Runnable
     //--------------------------------------------------------------------------
     
     /**
-     * Interface that gets stuff
+     * Interface that gets stuff.
      */
     public interface IStuffProvider
     {
         /**
-         * @return  Stuff
+         * @return Stuff
          */
-        public Object getStuff();
+        Object getStuff();
     }
     
     //--------------------------------------------------------------------------

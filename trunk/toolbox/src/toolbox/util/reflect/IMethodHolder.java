@@ -1,26 +1,25 @@
 package toolbox.util.reflect;
 
 /**
- * IMethodHolder
+ * IMethodHolder.
  */
 public interface IMethodHolder
 {
-
     /**
-     * DOCUMENT ME!
+     * Gets the method given the parameter types.
      * 
-     * @param paramType DOCUMENT ME!
-     * @return DOCUMENT ME! 
-     * @throws NoSuchMethodException DOCUMENT ME!
+     * @param paramType List of parameter types.
+     * @return Matching mehod. 
+     * @throws NoSuchMethodException if no matching methods found.
      */
-    public SmartMethod getMethod(Class[] paramType) 
-        throws NoSuchMethodException;
+    SmartMethod getMethod(Class[] paramType) throws NoSuchMethodException;
 
+    
     /**
-     * DOCUMENT ME!
+     * Adds a method.
      * 
-     * @param method DOCUMENT ME!
-     * @return DOCUMENT ME! 
+     * @param method Method to add
+     * @return IMethodHolder 
      */
-    public IMethodHolder addMethod(SmartMethod method);
+    IMethodHolder addMethod(SmartMethod method);
 }

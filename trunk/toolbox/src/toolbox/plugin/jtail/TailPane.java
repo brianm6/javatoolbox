@@ -520,14 +520,14 @@ public class TailPane extends JPanel
          * 
          * @param tailPane Tailpane
          */
-        public void newDataAvailable(TailPane tailPane);
+        void newDataAvailable(TailPane tailPane);
         
         /**
          * Notification that an existing tail was aggregated with a new tail.
          * 
          * @param tailPane TailPane that houses the aggregate tails.
          */
-        public void tailAggregated(TailPane tailPane);
+        void tailAggregated(TailPane tailPane);
     }
 
     
@@ -579,7 +579,7 @@ public class TailPane extends JPanel
     }
     
     //--------------------------------------------------------------------------
-    //  Inner Classes
+    // TailContext
     //--------------------------------------------------------------------------
 
     /**
@@ -684,6 +684,9 @@ public class TailPane extends JPanel
         }
     } 
 
+    //--------------------------------------------------------------------------
+    // TailListener
+    //--------------------------------------------------------------------------
     
     /**
      * Listener for tail.
@@ -711,6 +714,9 @@ public class TailPane extends JPanel
         }
     }
     
+    //--------------------------------------------------------------------------
+    // TailQueueListener
+    //--------------------------------------------------------------------------
     
     /**
      * Pops groups of messages off the queue (as many as can be read without 
@@ -743,6 +749,9 @@ public class TailPane extends JPanel
         }
     }
 
+    //--------------------------------------------------------------------------
+    // RegexActionListener
+    //--------------------------------------------------------------------------
     
     /**
      * Listens for changes in the regular expression (user must press enter) and
@@ -764,6 +773,9 @@ public class TailPane extends JPanel
         }
     }
 
+    //--------------------------------------------------------------------------
+    // CutActionListener
+    //--------------------------------------------------------------------------
     
     /**
      * Listens for changes in the cut expression (user must press enter) and
@@ -783,7 +795,7 @@ public class TailPane extends JPanel
     }
 
     //--------------------------------------------------------------------------
-    //  Actions
+    // StartStopAction
     //--------------------------------------------------------------------------
     
     /**
@@ -834,6 +846,10 @@ public class TailPane extends JPanel
         }
     }
 
+    //--------------------------------------------------------------------------
+    // PauseUnpauseAction
+    //--------------------------------------------------------------------------
+    
     /**
      * Pauses/unpauses the tail.
      */
@@ -874,6 +890,9 @@ public class TailPane extends JPanel
         }
     }
 
+    //--------------------------------------------------------------------------
+    // CloseAction
+    //--------------------------------------------------------------------------
     
     /**
      * Closes the tail pane.
@@ -905,6 +924,9 @@ public class TailPane extends JPanel
         }
     }
 
+    //--------------------------------------------------------------------------
+    // AutoScrollAction
+    //--------------------------------------------------------------------------
     
     /**
      * Toggles autoscroll of the output text area.
@@ -924,6 +946,9 @@ public class TailPane extends JPanel
         }
     }
 
+    //--------------------------------------------------------------------------
+    // ShowLineNumbersAction
+    //--------------------------------------------------------------------------
     
     /**
      * Toggles line numbers in the output area.
@@ -937,7 +962,7 @@ public class TailPane extends JPanel
             putValue(SHORT_DESCRIPTION, 
                 "Toggles display of line numbers in the output");
         }
-    
+
         public void actionPerformed(ActionEvent e)
         { 
             lineNumberDecorator_.setEnabled(!lineNumberDecorator_.isEnabled());

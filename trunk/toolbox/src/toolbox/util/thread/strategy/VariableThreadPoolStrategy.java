@@ -8,7 +8,6 @@ import toolbox.util.thread.concurrent.BoundedBufferAdapter;
 import toolbox.util.thread.concurrent.IBoundedBuffer;
 import toolbox.util.thread.concurrent.Timeout;
 
-
 /**
  * VariableThreadPoolStrategy implements a variable-thread-strategy that is a 
  * combination of thread-per-request at low request frequencies and a 
@@ -147,7 +146,7 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
     }
 
     //--------------------------------------------------------------------------
-    // Inner Classes
+    // VariableThreadPoolRunnable
     //--------------------------------------------------------------------------
     
     /**
@@ -160,8 +159,7 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
          *
          * @return Next request to proecess.
          */
-        protected Object take()
-                       throws Timeout, InterruptedException
+        protected Object take() throws Timeout, InterruptedException
         {
             return requestQueue_.take(timeout_);
         }
@@ -210,7 +208,10 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
         }
     }
 
-
+    //--------------------------------------------------------------------------
+    // InitVariableThreadPoolRunnable
+    //--------------------------------------------------------------------------
+    
     /**
      * Specialized VariableThreadPool runnable that never times out.
      */
@@ -227,6 +228,9 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
         }
     }
  
+    //--------------------------------------------------------------------------
+    // Task
+    //--------------------------------------------------------------------------
     
     /**
      * A Task encapsulates a request and its result.
@@ -238,8 +242,8 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
 
         public Task(IThreadable request, ReturnValue result)
         {
-            this.request_ = request;
-            this.result_ = result;
+            request_ = request;
+            result_ = result;
         }
     }
 }

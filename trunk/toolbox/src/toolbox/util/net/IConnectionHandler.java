@@ -19,5 +19,5 @@ public interface IConnectionHandler
      * @param conn Connection to service
      * @return An arbitrary object as specified by the implementor
      */
-    public Object handle(IConnection conn);
+    Object handle(IConnection conn);
 }
