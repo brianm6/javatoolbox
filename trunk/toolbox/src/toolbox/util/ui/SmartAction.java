@@ -7,7 +7,6 @@ import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.JComponent;
 
 import org.apache.log4j.Logger;
 
@@ -235,7 +234,7 @@ public abstract class SmartAction extends AbstractAction
     /**
      * Sets the busy cursor on the passed in JComponent
      */
-    public class BusyCursorAction extends AbstractAction
+    class BusyCursorAction extends AbstractAction
     {
         public void actionPerformed(ActionEvent e)
         {
@@ -246,7 +245,7 @@ public abstract class SmartAction extends AbstractAction
     /**
      * Sets the default cursor on the passed in JComponent
      */    
-    public class DefaultCursorAction extends AbstractAction
+    class DefaultCursorAction extends AbstractAction
     {
         public void actionPerformed(ActionEvent e)
         {
@@ -257,7 +256,7 @@ public abstract class SmartAction extends AbstractAction
     /**
      * Logs the exception and displays on the GUI 
      */
-    public class HandleErrorAction extends AbstractAction
+    class HandleErrorAction extends AbstractAction
     {
         public void actionPerformed(ActionEvent e)
         {
