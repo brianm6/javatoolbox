@@ -341,5 +341,25 @@ public final class ClassUtil
     {
         int i = fqcn.lastIndexOf(".");
         return (i >= 0 ? fqcn.substring(0, i) : "");
+    }
+
+    /**
+     * Returns array of Class object matching the types for the passed in params
+     * 
+     * @param   params  Array of objects 
+     * @return  Array of Class objects
+     */    
+    public static final Class[] getMatchingClasses(Object[] params)
+    {
+        Class[] ca = new Class[0];
+            
+        if (params != null && params.length > 0)
+        {
+            ca = new Class[params.length];
+            for (int i=0; i<params.length; i++)
+                ca[i] = params[i].getClass();
+        }
+            
+        return ca;
     }    
 }
