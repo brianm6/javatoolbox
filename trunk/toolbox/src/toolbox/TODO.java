@@ -82,6 +82,7 @@ package toolbox;
  *  - Updated usage template in FindClass
  *  - Updated FileComparator to use static instances
  *  - Relaced ClassUtil.stripClass and stripPackage with commons-lang equivalent
+ *  - Removed toolbox.util.Assert and replaced with Validate from commons-lang
  * 
  * April 2004 
  * 	- Scan source for refactorings to use DisposeAction 
