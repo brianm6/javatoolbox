@@ -16,7 +16,7 @@ import toolbox.util.StringUtil;
  */
 public class RandomUtilTest extends TestCase
 {
-    /** Logger **/
+    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(RandomUtilTest.class);
 
@@ -399,5 +399,32 @@ public class RandomUtilTest extends TestCase
         
         logger_.info("\n" + StringUtil.wrap(sb.toString(), true));
     }
-}
+    
+    
+    /**
+     * Tests nextDouble()
+     */
+    public void testNextDouble()
+    {
+        logger_.info("Running testNextDouble...");
+        logger_.info("nextDouble: " + RandomUtil.nextDouble());
+    }
 
+
+    /**
+     * Tests nextDouble(ceiling)
+     */
+    public void testNextDoubleCeiling()
+    {
+        logger_.info("Running testNextDoubleCeiling...");
+        
+        double ceil = 2000;
+        
+        for (int i=0; i<100; i++)
+        {
+            double rand = RandomUtil.nextDouble(ceil);
+            assertTrue( rand <= ceil);
+            assertTrue( rand >= 0.0);
+        }
+    }
+}
