@@ -1,0 +1,493 @@
+<?xml version="1.0"?>
+
+<!-- build.xml for toolbox -->
+
+<project name="toolbox" default="all" basedir=".">
+
+
+    <!--=============================-->
+    <!--            PREP             -->
+    <!--=============================-->
+    <target name="prep">
+
+        <tstamp/>
+
+        <!-- project properties -->
+        <property name="top"        location="."/>
+        <property name="src"        location="${top}/src"/>
+        <property name="dist"       location="${top}/dist"/>
+        <property name="classes"    location="${top}/classes"/>
+        <property name="resources"  location="${top}/resources"/>
+        <property name="targets"    location="${top}/targets"/>
+        <property name="lib"        location="${top}/lib"/>
+        <property name="test"       location="${top}/test"/>
+        <property name="build"      location="${top}/build"/>
+        <property name="build.lib"  location="${build}/lib"/>
+        <property name="doc"        location="${top}/doc"/>
+        <property name="junit"      location="${doc}/junit"/>
+        <property name="junit.xml"  location="${junit}/xml"/>
+        <property name="junit.html" location="${junit}/html"/>
+        <property name="clover"     location="${doc}/clover"/>
+        
+        <property name="project.init.message" 
+                  value="${ant.project.name} project initialized"/>
+
+        <!-- make common directories -->
+        <mkdir dir="${targets}"/>
+        
+        <!-- OS specific properties -->
+        <property environment="env"/>
+        <condition property="os.type" value="unix">
+            <os family="unix"/>
+        </condition>
+        <property name="os.type" value="windows"/>
+
+        <!-- set standard properties -->
+        <property name="javavm" value="1.2"/>
+        
+        <!-- property name="build.compiler" value="jikes"/ -->
+        <property name="build.compiler.fulldepend" value="true"/>
+        <property name="project.failonerror" value="true"/>
+        <property name="project.debug" value="on"/>
+        <property name="optimize" value="on"/>
+        <property name="toolbox.id" value=""/>
+        <property name="toolbox.rundir" location="."/>
+        <property name="toolbox.junit.log" value="test.log"/>
+        
+        <!-- define project tools classpath -->
+        <path id="project.tools.path">
+            <fileset dir="${top}/lib">
+                <include name="**/*.jar"/>
+                <include name="**/*.zip"/>
+            </fileset>
+        </path>
+
+        <!-- define common build classpath -->
+        <path id="common.class.path">
+            <fileset dir="${targets}">
+                <include name="**/*.jar"/>
+                <include name="**/*.zip"/>
+            </fileset>
+
+            <fileset dir="${lib}">
+                <include name="**/*.jar"/>
+                <include name="**/*.zip"/>
+            </fileset>
+
+
+            <path refid="project.tools.path"/>
+        </path>
+
+        <property name="common.classpath" refid="common.class.path"/>
+
+        <echo message="${os.name} ${os.arch} ${os.version}"/>
+        <echo message="environment prepared on ${os.type} "/>
+    </target>
+
+
+    <!--=============================-->
+    <!--            POST             -->
+    <!--=============================-->
+    <target name="post">
+
+        <!-- define common runtime classpath -->
+        <path id="runtime.class.path">
+            <path refid="common.class.path"/>
+            <pathelement location="${top}/resources"/>
+        </path>
+        
+        <property name="runtime.classpath" refid="runtime.class.path"/>
+
+        <echo message="Environment complete on ${os.type}"/>
+    </target>
+
+
+    <!--=============================-->
+    <!--            ENV              -->
+    <!--=============================-->
+    <target name="env" depends="prep,post">
+        <echo message="${ant.project.name} environment configured"/>
+    </target>
+
+
+    <!--=============================-->
+    <!--            SETUP            -->
+    <!--=============================-->
+    <target name="setup" depends="env">
+        <mkdir dir="${dist}"/>
+        <mkdir dir="${classes}"/>
+        <echo message="${ant.project.name} setup complete"/>
+    </target>
+
+
+    <!--=============================-->
+    <!--             INIT            -->
+    <!--=============================-->
+    <target name="init" depends="setup">
+        <path id="project.class.path">
+            <pathelement location="${src}"/>
+            <pathelement location="${classes}"/>
+            <fileset dir="${build.lib}">
+                <include name="**/*.jar"/>
+                <include name="**/*.zip"/>
+            </fileset>
+            <path refid="common.class.path"/>
+        </path>
+        <echo message="${project.init.message}"/>
+    </target>
+
+
+    <!--=============================-->
+    <!--             ALL             -->
+    <!--=============================-->
+    <target name="all" 
+            depends="init,compile,jar,dist" 
+            description="Builds everything! (init, compile, jar, dist)"/>
+
+
+    <!--=============================-->
+    <!--            CLEAN            -->
+    <!--=============================-->
+    <target name="clean" 
+            depends="env" 
+            description="Removes files generated by the build process">
+            
+        <delete dir="${dist}" verbose="false" quiet="off"/>
+        <delete dir="${classes}" verbose="false" quiet="off"/>
+        
+        <!--antcall target="clover.clean"-->
+        
+    </target>
+
+
+    <!--=============================-->
+    <!--           COMPILE           -->
+    <!--=============================-->
+    <target name="compile" 
+            depends="init" 
+            description="Compiles the source code">
+    
+        <property name="cp" refid="project.class.path"/>
+        <echo message="Classpath=${cp}"/>
+        
+        <javac 
+            srcdir="${src}" 
+            destdir="${classes}" 
+            debug="${project.debug}" 
+            optimize="${optimize}" 
+            target="${javavm}" 
+            fork="no"
+            failonerror="${project.failonerror}">
+            
+            <classpath refid="project.class.path"/>
+        </javac>
+    </target>
+
+
+    <!--=============================-->
+    <!--             JAR             -->
+    <!--=============================-->
+    <target name="jar" 
+            depends="compile" 
+            description="Creates an executable jar">
+
+        <delete verbose="true">
+            <fileset dir="${dist}" includes="**/*.jar"/>
+        </delete>
+
+        <unjar 	
+        	src		 ="${lib}/log4j.jar" 
+        	dest	 ="${classes}" 
+        	overwrite="false" />
+        
+        <unjar 	
+        	src       ="${lib}/jakarta-regexp-1.2.jar" 
+        	dest      ="${classes}" 
+        	overwrite ="false" />
+        	
+        <unjar 
+        	src       ="${lib}/EXML.jar" 
+            dest      ="${classes}" 
+            overwrite ="false" />
+
+        <unjar 
+        	src       ="${lib}/dom.jar" 
+            dest      ="${classes}" 
+            overwrite ="false" />
+                             
+        <jar 
+        	jarfile ="${dist}/toolbox.jar" 
+            manifest="${src}/META-INF/MANIFEST.MF">
+
+            <fileset dir="${classes}" excludes="**/MANIFEST.MF"/>
+            
+            <!-- fileset dir="${top}" includes="lib/*.jar"/-->
+            
+            <fileset 
+            	dir="${resources}"
+				excludes="**/test/**"/>
+        </jar>
+
+    </target>
+
+
+    <!--=============================-->
+    <!--           JAR-SRC           -->
+    <!--=============================-->
+    <target name="jar-src" 
+            depends="init" 
+            description="Creates a jar containing only the source code">
+        
+        <zip zipfile="${dist}/toolbox-src.jar">
+            <fileset dir="${top}" includes="src/**/*.java"/>
+            <fileset dir="${top}" includes="src/**/*.MF"/>
+            <fileset dir="${top}" includes="build.xml"/>
+            <fileset dir="${top}" includes="resources/**/*"/>
+        </zip>
+        
+    </target>
+
+
+
+    <!--=============================-->
+    <!--             DIST            -->
+    <!--=============================-->
+    <target name="dist" depends="jar">
+    
+        <copy todir="${targets}" overwrite="yes">
+            <fileset dir="${dist}" includes="**/*.jar"/>
+        </copy>
+        
+        <copy todir="c:\bin\" overwrite="yes">
+            <fileset dir="${dist}" includes="**/*.jar"/>
+        </copy>
+        
+    </target>
+
+    <!--=============================-->
+    <!--          JAVADOC            -->
+    <!--=============================-->
+    <target name="javadoc" 
+    	    depends="init"
+    	    description="Generates javadocs">
+    
+    	<delete>
+            <fileset dir="${doc}" includes="**/**"/>
+    	</delete>
+    	
+        <javadoc 
+            access="private" 
+            author="true"
+            classpath="${common.classpath}"
+            destdir="${doc}"
+            doctitle="Toolbox" 
+            nodeprecated="false"
+            nodeprecatedlist="false" 
+            noindex="false" 
+            nonavbar="false"
+            notree="false"
+			packagenames="toolbox.*"
+            sourcepath="${src}"
+            splitindex="false" 
+            use="true" 
+            version="true"/>
+            
+    </target>
+
+    <!--=============================-->
+    <!--            JUNIT            -->
+    <!--=============================-->
+    <target name="junit" depends="init"
+            description="Executes JUnit tests and generates report">
+
+        <mkdir dir="${junit}"/>
+        <mkdir dir="${junit.xml}"/>
+        <mkdir dir="${junit.html}"/>
+        
+        <delete>
+            <fileset dir="${junit.xml}" includes="**/TEST*.xml"></fileset>
+        </delete>
+        
+        <!-- <junit printSummary="yes" haltonfailure="no"> -->
+        
+        <junit printSummary="withOutAndErr" haltonfailure="no">
+
+            <classpath>
+                <pathelement path="${classes}" />
+                <pathelement path="${resources}" />
+                <fileset dir="${lib}">
+                    <include name="**/*.jar"/>
+                    <include name="**/*.zip"/>
+                </fileset>
+            </classpath>
+            
+            <formatter type="xml"/>
+            
+            <batchtest fork="no" todir="${junit.xml}">
+                <fileset dir="${src}">
+                
+                    <!-- if junit.class is defined, run only tests that match the class name -->
+                    <include name="**/*Test.java" unless="junit.class"/>                
+		 			<include name="**/test/*${junit.class}Test.java"/>
+		 			
+		 			<!-- exclude the GUI tests -->
+                    <exclude name="**/ui/**/*Test.java" />
+                    
+                </fileset>
+            </batchtest>
+          
+        </junit>
+
+    </target>
+
+
+    <!--=============================-->
+    <!--        JUNIT.REPORT         -->
+    <!--=============================-->
+    <target name="junit.report" depends="init"
+            description="Launches report containing results of the JUnit test cases">
+
+        <junitreport todir="${junit.xml}">
+            <fileset dir="${junit.xml}">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report format="frames" todir="${junit.html}"/>
+        </junitreport>        
+        
+        <echo message="OS=${os.name}"/>
+        
+        <exec executable="cmd.exe">
+        	<!-- os="Windows NT" -->
+            <arg line="/c start ${junit.html}/index.html"/>
+        </exec>            
+            
+    </target>
+
+    <!--=============================-->
+    <!--        CLOVER.INIT          -->
+    <!--=============================-->
+    <target name="clover.init" 
+            depends="init"
+            description="Initalizes clover environment">
+
+        <property name="clover.preserve" value="false"/>
+        <property name="clover.excludes" value="**/test/*"/>
+        
+        <mkdir dir="${clover}"/>
+            
+        <property name="clover.initstring" 
+                  value="${clover}/toolbox_coverage.db"/>
+                  
+        <path id="clover.classpath">
+            <pathelement path="${build.lib}/clover.jar"/>
+            <pathelement path="${build.lib}/velocity.jar"/>
+        </path>
+
+    </target>
+
+    
+    <!--=============================-->
+    <!--        WITH.CLOVER          -->
+    <!--=============================-->
+    <target name="with.clover" 
+            depends="clover.init"
+            description="Turns on use of clover">
+            
+        <property name="build.compiler"
+                  value="org.apache.tools.ant.taskdefs.CloverCompilerAdapter"/>
+    </target>
+
+
+    <!--=============================-->
+    <!--     CLOVER.REPORT.SWING     -->
+    <!--=============================-->
+    <target name="clover.report.swing" 
+            depends="clover.init"
+            description="Launches Swing based clover results viewer">
+            
+        <java classname="com.cortexeb.tools.clover.reporters.jfc.Viewer"
+              fork="yes">
+            <arg line="${clover.initstring}"/>
+            <classpath refid="clover.classpath"/>
+        </java>
+    </target>
+
+
+    <!--=============================-->
+    <!--     CLOVER.REPORT.HTML      -->
+    <!--=============================-->
+    <target name="clover.report.html" 
+            depends="clover.init"
+            description="Generates clover results HTML format">  
+            
+        <java classname="com.cortexeb.tools.clover.reporters.html.HtmlReporter">   
+            <arg line="--outputdir ${clover} --showSrc --initstring ${clover.initstring} --title 'Toolbox'"/>   
+            <classpath refid="clover.classpath"/>  
+        </java>
+        
+        <exec executable="cmd.exe">
+            <arg line="/c start ${clover}/index.html"/>
+        </exec>            
+       
+    </target>
+
+
+    <!--=============================-->
+    <!--    CLOVER.REPORT.CONSOLE    -->
+    <!--=============================-->
+    <target name="clover.report.console" 
+            depends="clover.init"
+            description="Outputs clover results to the console">  
+            
+        <java classname=
+            "com.cortexeb.tools.clover.reporters.emacs.EmacsCloverReporter">   
+            
+            <arg line="--level method --initstring ${clover.initstring} --title 'Toolbox'"/>   
+            <classpath refid="clover.classpath"/>
+        </java>
+    </target>
+    
+    
+    <!--=============================-->
+    <!--    depends="clover.init"     CLOVER.CLEAN         -->
+    <!--=============================-->
+    <target name="clover.clean"
+            description="Removes clover generated files">
+                    
+        <delete dir="${clover}" verbose="false" quiet="off"/>
+        <delete dir="${clover}"/>
+    </target>
+    
+    
+    <!--=============================-->
+    <!--    UPLOAD TO UXSDEV05       -->
+    <!--=============================-->
+	<target name="upload" depends="init" description="Uploads toolbox.jar to uxsdev05">    
+	
+	  <ftp server="uxsdev05"
+	       userid="spatel"
+	       password="jell0zone"
+	       remotedir="/export/home/spatel/bin"
+	       verbose="yes">
+	       
+		<fileset dir="${dist}">
+	    	<include name="toolbox.jar"/>
+    	</fileset>		   
+	  </ftp>	
+	  
+ 	</target>
+    
+    
+    <!--=============================--> 
+    <!--    BACKUP SRC               -->
+    <!--=============================-->
+	<target name="backup-src" depends="init" description="Backs up source code to tmp dir">    
+
+        <property name="backup.dir" value="${java.io.tmpdir}/toolbox-backup"/>
+        <mkdir dir="${backup.dir}"/>        
+        <copy todir="${backup.dir}" >
+            <fileset dir="${src}"/>
+        </copy>
+        
+ 	</target>
+</project>
