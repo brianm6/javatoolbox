@@ -8,12 +8,10 @@ import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
 
-import toolbox.util.AssertionException;
-import toolbox.util.DateTimeUtil;
-import toolbox.util.DateUtil;
-
 /**
  * Unit test for DateUtil.
+ * 
+ * @see toolbox.util.DateUtil
  */
 public class DateUtilTest extends TestCase
 {
@@ -69,7 +67,7 @@ public class DateUtilTest extends TestCase
             DateUtil.getDifferenceInDays(then, now);
             fail("should have failed for dates out of order");
         }
-        catch (AssertionException e)
+        catch (IllegalArgumentException e)
         {
             assertTrue(true);
         }
