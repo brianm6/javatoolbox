@@ -52,6 +52,9 @@ public class SwingUtil
         UIManager.installLookAndFeel("Metouia", 
             "net.sourceforge.mlf.metouia.MetouiaLookAndFeel");
             
+        UIManager.installLookAndFeel("Kunstsoff",    
+            "com.incors.plaf.kunststoff.KunststoffLookAndFeel");
+            
         UIManager.installLookAndFeel("SkinLF", 
             "com.l2fprod.gui.plaf.skin.SkinLookAndFeel");
             
