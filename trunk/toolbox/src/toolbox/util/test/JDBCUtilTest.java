@@ -65,6 +65,16 @@ public class JDBCUtilTest extends TestCase
             fail(e.getMessage());
         }
     }
+
+    /**
+     * Tests init() loading the jdbc driver from a jar file 
+     * 
+     * @throws Exception on error
+     */
+    public void testInitUsingJar() throws Exception
+    {
+        JDBCUtil.init("hqsqldb.jar", DRIVER, URL, USER, PASSWORD);
+    }    
     
     /**
      * Tests getConnection()
@@ -507,7 +517,7 @@ public class JDBCUtilTest extends TestCase
             cleanup(prefix); 
         }
     }
-
+    
     //--------------------------------------------------------------------------
     // Helpers
     //--------------------------------------------------------------------------
