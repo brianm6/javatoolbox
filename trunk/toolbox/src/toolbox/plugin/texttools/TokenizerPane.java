@@ -31,7 +31,7 @@ public class TokenizerPane extends JPanel
     /**
      * Token delimiter field.
      */
-    private JTextField  delimiterField_;
+    private JTextField delimiterField_;
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -65,9 +65,9 @@ public class TokenizerPane extends JPanel
         add(new JSmartButton(new SingleLineAction()));
     }
 
-    //----------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // TokenizeAction
-    //----------------------------------------------------------------------
+    //--------------------------------------------------------------------------
 
     /**
      * Tokenizes the string in the input text area with the entered
@@ -103,9 +103,9 @@ public class TokenizerPane extends JPanel
         }
     }
 
-    //----------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // SingleLineAction
-    //----------------------------------------------------------------------
+    //--------------------------------------------------------------------------
 
     /**
      * Compresses multiple lines in the input text area to a single line in the

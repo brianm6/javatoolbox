@@ -26,7 +26,7 @@ import toolbox.workspace.IPreferenced;
 public class LAFInfo implements IPreferenced
 {
     private static final Logger logger_ = Logger.getLogger(LAFInfo.class);
-    
+
     //--------------------------------------------------------------------------
     // Constants
     //--------------------------------------------------------------------------
@@ -39,32 +39,32 @@ public class LAFInfo implements IPreferenced
     private static final String   NODE_THEME      = "Theme";
     private static final String     NODE_PROPERTY = "Property";
     private static final String     ATTR_VALUE    = "value";
-    
+
     /**
      * This property is embedded in LookAndFeel.getUIDefaults() so that LAFInfo
      * can be accessed easily without any interatction with LookAndFeelUtil.
      */
     public static final String PROP_HIDDEN_KEY = "lookandfeel.info";
-    
+
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
-    
+
     /**
      * Name of the look and feel.
      */
     private String name_;
-    
+
     /**
      * Fully qualified class name of the look and feel.
      */
     private String className_;
-    
+
     /**
      * Fully qualified class name of the activation class for the look and feel.
      */
     private String action_;
-    
+
     /**
      * Map of arbitrary name/value pairs specific to the look and feel.
      */
@@ -73,17 +73,17 @@ public class LAFInfo implements IPreferenced
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
-    
+
     /**
      * Creates a LAFInfo.
      */
-    public LAFInfo() 
+    public LAFInfo()
     {
         // Map has to be sorted since order of keys is not enforced in XML
         props_ = new TreeMap();
     }
-    
-    
+
+
     /**
      * Creates a LAFInfo.
      *
@@ -95,14 +95,14 @@ public class LAFInfo implements IPreferenced
         this();
         applyPrefs(lookAndFeelNode);
     }
-    
+
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
-    
+
     /**
      * Sets the name of the look and feel.
-     * 
+     *
      * @param name Name of the look and feel.
      */
     public void setName(String name)
@@ -110,11 +110,11 @@ public class LAFInfo implements IPreferenced
         name_ = name;
     }
 
-    
+
     /**
      * Returns the name of the look and feel in a form suitable for a menu or
      * other presentation.
-     * 
+     *
      * @return String
      */
     public String getName()
@@ -125,7 +125,7 @@ public class LAFInfo implements IPreferenced
 
     /**
      * Returns the name of the class that implements this look and feel.
-     * 
+     *
      * @return String
      */
     public String getClassName()
@@ -133,10 +133,10 @@ public class LAFInfo implements IPreferenced
         return className_;
     }
 
-    
+
     /**
      * Sets the class name of the look and feel.
-     * 
+     *
      * @param className FQCN class of the look and feel.
      */
     public void setClassName(String className)
@@ -144,7 +144,7 @@ public class LAFInfo implements IPreferenced
         className_ = className;
     }
 
-    
+
     /**
      * Returns the action.
      *
@@ -155,7 +155,7 @@ public class LAFInfo implements IPreferenced
         return action_;
     }
 
-    
+
     /**
      * Sets the action.
      *
@@ -165,11 +165,11 @@ public class LAFInfo implements IPreferenced
     {
         action_ = action;
     }
-    
-    
+
+
     /**
      * Returns the value of the property with the given name.
-     * 
+     *
      * @param name Property name.
      * @return String
      */
@@ -177,23 +177,23 @@ public class LAFInfo implements IPreferenced
     {
         return (String) props_.get(name);
     }
-    
-    
+
+
     /**
      * Returns the look and feel properties map.
-     * 
+     *
      * @return Map
      */
     public Map getProperties()
     {
         return props_;
     }
-    
-    
+
+
     //--------------------------------------------------------------------------
     // IPreferenced Interface
     //--------------------------------------------------------------------------
-    
+
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
@@ -201,26 +201,26 @@ public class LAFInfo implements IPreferenced
     {
         Assert.assertEquals(
                 "Wrong element",
-                NODE_LOOKANDFEEL, 
+                NODE_LOOKANDFEEL,
                 lookAndFeelNode.getLocalName());
-        
+
         setName(lookAndFeelNode.getAttributeValue(ATTR_NAME));
         setClassName(lookAndFeelNode.getAttributeValue(ATTR_CLASS));
         setAction(lookAndFeelNode.getAttributeValue(ATTR_ACTION));
-        
+
         Elements props = lookAndFeelNode.getChildElements(NODE_PROPERTY);
-        
+
         for (int i = 0; i < props.size(); i++)
         {
             Element prop = props.get(i);
-            
+
             props_.put(
-                prop.getAttributeValue(ATTR_NAME), 
+                prop.getAttributeValue(ATTR_NAME),
                 prop.getAttributeValue(ATTR_VALUE));
         }
     }
-    
-    
+
+
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
@@ -230,28 +230,28 @@ public class LAFInfo implements IPreferenced
         laf.addAttribute(new Attribute(ATTR_NAME, getName()));
         laf.addAttribute(new Attribute(ATTR_CLASS, getClassName()));
         laf.addAttribute(new Attribute(ATTR_ACTION, getAction()));
-        
+
         for (Iterator i = props_.entrySet().iterator(); i.hasNext();)
         {
             Map.Entry entry = (Map.Entry) i.next();
             Element prop = new Element(NODE_PROPERTY);
-            
+
             prop.addAttribute(
                 new Attribute(ATTR_NAME, (String) entry.getKey()));
-            
+
             prop.addAttribute(
                 new Attribute(ATTR_VALUE, (String) entry.getValue()));
-            
+
             laf.appendChild(prop);
         }
-        
+
         prefs.appendChild(laf);
     }
-    
+
     //--------------------------------------------------------------------------
     // Overrides java.lang.Object
     //--------------------------------------------------------------------------
-    
+
     /**
      * @see java.lang.Object#equals(java.lang.Object)
      */
@@ -259,19 +259,19 @@ public class LAFInfo implements IPreferenced
     {
         return EqualsBuilder.reflectionEquals(this, obj);
     }
-    
-      
+
+
     /**
      * Returns a string that displays and identifies this object's properties.
-     * 
+     *
      * @return String
      */
     public String toString()
     {
         return StringUtil.addBars(AsMap.of(this).toString());
     }
-    
-    
+
+
     /**
      * @see java.lang.Object#hashCode()
      */

@@ -16,12 +16,12 @@ public class Main extends TailAdapter
     //--------------------------------------------------------------------------
     // Main
     //--------------------------------------------------------------------------
-    
+
     /**
-     * Entrypoint. 
-     * 
+     * Entrypoint.
+     *
      * @param args List of files to tail.
-     */    
+     */
     public static void main(String args[])
     {
         new Main(args);
@@ -30,10 +30,10 @@ public class Main extends TailAdapter
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
-    
+
     /**
      * Creates a Main.
-     * 
+     *
      * @param args Array of files to tail.
      */
     public Main(String args[])
@@ -43,7 +43,7 @@ public class Main extends TailAdapter
             printUsage();
             return;
         }
-            
+
         String files[] = args;
 
         for (int i = 0; i < files.length; i++)
@@ -51,11 +51,11 @@ public class Main extends TailAdapter
             try
             {
                 Tail tail = new Tail();
-                
+
                 tail.follow(
-                    new File(files[i]), 
+                    new File(files[i]),
                     new OutputStreamWriter(System.out));
-                        
+
                 tail.start();
             }
             catch (FileNotFoundException fnfe)
@@ -68,9 +68,9 @@ public class Main extends TailAdapter
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
-    
+
     /**
-     * Prints program usage to standard output. 
+     * Prints program usage to standard output.
      */
     private void printUsage()
     {

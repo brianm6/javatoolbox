@@ -20,16 +20,16 @@ import org.xml.sax.InputSource;
 public class FOPProcessor implements FOProcessor
 {
     //--------------------------------------------------------------------------
-    // Fields 
+    // Fields
     //--------------------------------------------------------------------------
-    
-    /** 
-     * Driver for PDF generation. 
+
+    /**
+     * Driver for PDF generation.
      */
     private Driver pdfDriver_;
-    
-    /** 
-     * Driver for Postscript generation. 
+
+    /**
+     * Driver for Postscript generation.
      */
     private Driver psDriver_;
 
@@ -45,13 +45,13 @@ public class FOPProcessor implements FOProcessor
         // Common
         Logger logger = new ConsoleLogger(ConsoleLogger.LEVEL_INFO);
         MessageHandler.setScreenLogger(logger);
-                
-        // PDF                
+
+        // PDF
         pdfDriver_ = new Driver();
         pdfDriver_.setLogger(logger);
         pdfDriver_.setRenderer(Driver.RENDER_PDF);
 
-        // Postscript        
+        // Postscript
         psDriver_ = new Driver();
         psDriver_.setLogger(logger);
         psDriver_.setRenderer(Driver.RENDER_PS);
@@ -59,7 +59,7 @@ public class FOPProcessor implements FOProcessor
 
 
     /**
-     * @see toolbox.plugin.xslfo.FOProcessor#renderPDF(java.io.InputStream, 
+     * @see toolbox.plugin.xslfo.FOProcessor#renderPDF(java.io.InputStream,
      *      java.io.OutputStream)
      */
     public void renderPDF(InputStream foStream, OutputStream pdfStream)
@@ -76,11 +76,11 @@ public class FOPProcessor implements FOProcessor
         finally
         {
             foStream.close();
-            pdfStream.close();            
+            pdfStream.close();
         }
     }
-    
-    
+
+
     /**
      * @see toolbox.plugin.xslfo.FOProcessor#renderPostscript(
      *      java.io.InputStream, java.io.OutputStream)
@@ -99,7 +99,7 @@ public class FOPProcessor implements FOProcessor
         finally
         {
             foStream.close();
-            psStream.close();            
+            psStream.close();
         }
     }
 }

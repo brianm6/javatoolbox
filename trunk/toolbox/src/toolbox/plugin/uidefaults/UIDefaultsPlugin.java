@@ -44,7 +44,7 @@ import toolbox.workspace.IPlugin;
 /**
  * Shows UIDefaults for each widget in Swing's library for a given Look and
  * Feel.
- * 
+ *
  * @author Unascribed
  */
 public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
@@ -55,7 +55,7 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
-    
+
     /**
      * One tab per Swing component.
      */
@@ -70,14 +70,14 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
      * Look and feel information map.
      */
     private Map infoMap_;
-    
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
 
     /**
      * Creates a UIDefaultsPlugin.
-     */    
+     */
     public UIDefaultsPlugin()
     {
     }
@@ -93,8 +93,8 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
     {
         return "Look & Feel Defaults";
     }
-    
-    
+
+
     /**
      * @see toolbox.workspace.IPlugin#getComponent()
      */
@@ -102,8 +102,8 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
     {
         return this;
     }
-    
-    
+
+
     /**
      * @see toolbox.workspace.IPlugin#getDescription()
      */
@@ -111,8 +111,8 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
     {
         return "Displays UI defaults for the installed Look and Feels.";
     }
-    
-    
+
+
     /**
      * @see toolbox.workspace.IPlugin#startup(java.util.Map)
      */
@@ -120,8 +120,8 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
     {
         buildView();
     }
-    
-    
+
+
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
@@ -129,7 +129,7 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
     {
     }
 
-    
+
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
@@ -137,7 +137,7 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
     {
     }
 
-    
+
     /**
      * @see toolbox.workspace.IPlugin#shutdown()
      */
@@ -156,10 +156,10 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
     public void actionPerformed(ActionEvent e)
     {
         String name = ((JButton) e.getSource()).getText();
-        
-        String clazz = 
+
+        String clazz =
             ((UIManager.LookAndFeelInfo) infoMap_.get(name)).getClassName();
-        
+
         try
         {
             UIManager.setLookAndFeel(clazz);
@@ -190,7 +190,7 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
 
         UIManager.LookAndFeelInfo[] info = UIManager.getInstalledLookAndFeels();
         infoMap_ = new HashMap(info.length);
-        
+
         JPanel buttons = new JPanel();
         buttons.setLayout(new GridLayout(1, info.length));
         add(buttons, BorderLayout.SOUTH);
@@ -198,18 +198,18 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
         for (int i = 0; i < info.length; i++)
         {
             JButton button = new JSmartButton(info[i].getName());
-            button.addActionListener(this);    
+            button.addActionListener(this);
             buttons.add(button);
             infoMap_.put(info[i].getName(), info[i]);
         }
     }
-     
-    
+
+
     /**
      * Returns a component populated tabbed pane.
      *
      * @return JTabbedPane
-     */   
+     */
     private JTabbedPane getTabbedPane()
     {
         Map components = new TreeMap();
@@ -234,7 +234,7 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
         return pane;
     }
 
-    
+
     /**
      * Creates a map of the components.
      *
@@ -271,7 +271,7 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
         return (Map) componentMap;
     }
 
-    
+
     /**
      * Adds components as tabs to the given tabbed pane.
      *
@@ -322,10 +322,10 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
 
             MyTableModel myModel = new MyTableModel(rowData, colName);
             JTable table = new JTable(myModel);
-            
+
             table.setDefaultRenderer(
                 sampleRenderer_.getClass(), sampleRenderer_);
-                
+
             table.getColumnModel().getColumn(0).setPreferredWidth(250);
             table.getColumnModel().getColumn(1).setPreferredWidth(500);
             table.getColumnModel().getColumn(2).setPreferredWidth(50);
@@ -337,15 +337,23 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
     //--------------------------------------------------------------------------
     // MyTableModel
     //--------------------------------------------------------------------------
-    
+
     /**
-     * Custom table model so show components characteristics. 
+     * Custom table model so show components characteristics.
      */
     class MyTableModel extends AbstractTableModel
     {
+        /**
+         * Column names.
+         */
         private String[] columnNames_;
+        
+        /**
+         * Row data.
+         */
         private Object[][] rowData_;
 
+        
         /**
          * Creates a MyTableModel.
          *
@@ -354,11 +362,11 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
          */
         public MyTableModel(Object[][] rowData, String[] columnNames)
         {
-            rowData_     = rowData;
+            rowData_ = rowData;
             columnNames_ = columnNames;
         }
 
-        
+
         /**
          * @see javax.swing.table.TableModel#getColumnCount()
          */
@@ -367,7 +375,7 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
             return columnNames_.length;
         }
 
-        
+
         /**
          * @see javax.swing.table.TableModel#getRowCount()
          */
@@ -376,7 +384,7 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
             return rowData_.length;
         }
 
-        
+
         /**
          * @see javax.swing.table.TableModel#getColumnName(int)
          */
@@ -385,7 +393,7 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
             return columnNames_[col];
         }
 
-        
+
         /**
          * @see javax.swing.table.TableModel#getValueAt(int, int)
          */
@@ -394,7 +402,7 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
             return rowData_[row][col];
         }
 
-        
+
         /**
          * @see javax.swing.table.TableModel#getColumnClass(int)
          */
@@ -410,7 +418,7 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
             return o.getClass();
         }
 
-        
+
         /**
          * @see javax.swing.table.TableModel#setValueAt(
          *      java.lang.Object, int, int)
@@ -425,9 +433,9 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
     //--------------------------------------------------------------------------
     // SampleRenderer
     //--------------------------------------------------------------------------
-    
+
     /**
-     * Custom table cell renderer for showing text/colors/icons. 
+     * Custom table cell renderer for showing text/colors/icons.
      */
     class SampleRenderer extends JSmartLabel implements TableCellRenderer
     {
@@ -440,10 +448,10 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
             setOpaque(true); // MUST do this for background to show up.
         }
 
-        
+
         /**
          * @see javax.swing.table.TableCellRenderer
-         *      #getTableCellRendererComponent(javax.swing.JTable, 
+         *      #getTableCellRendererComponent(javax.swing.JTable,
          *      java.lang.Object, boolean, boolean, int, int)
          */
         public Component getTableCellRendererComponent(
@@ -458,7 +466,7 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
             setIcon(null);
             setText("");
             String sampleName = sample.getClass().getName();
-            
+
             //
             // Handle colors
             //
@@ -466,7 +474,7 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
             {
                 setBackground((Color) sample);
             }
-            
+
             //
             // Handle fonts
             //
@@ -475,7 +483,7 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
                 setText("Sample");
                 setFont((Font) sample);
             }
-            
+
             //
             // Skip over private classes
             //
@@ -483,7 +491,7 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
             {
                 ;
             }
-            
+
             //
             // Some Icons just don't play nice
             //
@@ -494,7 +502,7 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
             {
                 ; // No op
             }
-            
+
             //
             //  Handle icons
             //
@@ -504,7 +512,7 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
                 setIcon(icon);
                 setText(icon.getIconWidth() + "x" + icon.getIconHeight());
             }
-            
+
             return this;
         }
     }

@@ -13,39 +13,39 @@ public class Main
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
-    
-    /** 
-     * List of paths remembered so dupes can be flagged. 
+
+    /**
+     * List of paths remembered so dupes can be flagged.
      */
     private List checkList_;
 
     //--------------------------------------------------------------------------
     // Main
     //--------------------------------------------------------------------------
-    
+
     /**
      * Entrypoint for showclasspath.
-     * 
-     * @param args None recognized. 
+     *
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
         new Main();
     }
-    
+
     //--------------------------------------------------------------------------
-    // Constructors 
+    // Constructors
     //--------------------------------------------------------------------------
-    
+
     /**
      * Creates a Main.
      */
     public Main()
     {
         checkList_ = new ArrayList();
-        
+
         StringTokenizer st = new StringTokenizer(
-            System.getProperty("java.library.path"), 
+            System.getProperty("java.library.path"),
                 System.getProperty("path.separator"));
 
         // Find longest for formatting
@@ -62,15 +62,15 @@ public class Main
             System.out.println();
         }
     }
-    
+
     //--------------------------------------------------------------------------
-    // Private 
+    // Private
     //--------------------------------------------------------------------------
-    
+
     /**
      * Checks if a path is a duplicate by checking the existing list. The
      * comparison is case-insensetive.
-     * 
+     *
      * @param dupe Path to check for duplicate.
      * @return True if duplicate, flase otherwise.
      */

@@ -32,30 +32,30 @@ public class FilterPane extends JPanel
      * Reference to the parent plugin.
      */
     private TextToolsPlugin plugin_;
-    
+
     /**
      * Text field to specify filter contents.
      */
     private JTextField filterField_;
-    
+
     /**
      * Cache of the filter field contents as it changes character by character.
      */
     private String[] cache_;
-    
+
     /**
      * Enables listening to filter field so that the filter can be applied
      * in real-time.
      */
     private TextChangedListener docListener_;
-    
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
-    
+
     /**
      * Creates a FilterPane.
-     * 
+     *
      * @param plugin Parent TextToolsPlugin.
      */
     FilterPane(TextToolsPlugin plugin)
@@ -63,11 +63,11 @@ public class FilterPane extends JPanel
         plugin_ = plugin;
         buildView();
     }
-    
+
     //--------------------------------------------------------------------------
     // Protected
     //--------------------------------------------------------------------------
-    
+
     /**
      * Constructs the user interface.
      */
@@ -80,54 +80,54 @@ public class FilterPane extends JPanel
         filterField_.addKeyListener(new FilterKeyListener());
         docListener_ = new TextChangedListener();
     }
-    
-    
+
+
     /**
      * Filters text based on a regular expression.
-     * 
+     *
      * @param regex Regular expression.
      */
     protected void filter(String regex)
     {
-        plugin_.getStatusBar().setInfo("RE: '" + regex + "'");
-        
+        plugin_.getStatusBar().setInfo("Regex = '" + regex + "'");
+
         if (cache_ == null)
             cache_ = StringUtil.tokenize(plugin_.getInputText(), StringUtil.NL);
 
-        String[] lines = cache_;                
-        
+        String[] lines = cache_;
+
         StringBuffer sb = new StringBuffer();
         RegexLineFilter filter = null;
-        
+
         try
         {
             filter = new RegexLineFilter(regex);
             filter.setEnabled(true);
-            
+
             for (int i = 0; i < lines.length; i++)
             {
                 String passed = filter.filter(lines[i]);
-                
+
                 if (passed != null)
                 {
                     sb.append(passed);
                     sb.append(StringUtil.NL);
                 }
             }
-            
+
             // Want to ignore document change events while the filter is
             // updating the text area. Just detach and reattach after
             // mutations are done.
-            
+
             JTextArea area = plugin_.getOutputArea();
-            area.getDocument().removeDocumentListener(docListener_);            
-            
+            area.getDocument().removeDocumentListener(docListener_);
+
             area.setText(sb.toString());
             area.moveCaretPosition(0);
-            
+
             area.getDocument().
             addDocumentListener(docListener_);
-            
+
         }
         catch (RESyntaxException e)
         {
@@ -136,20 +136,21 @@ public class FilterPane extends JPanel
             plugin_.getStatusBar().setError(e.getMessage());
         }
     }
-    
+
     //--------------------------------------------------------------------------
     // FilterKeyListener
     //--------------------------------------------------------------------------
-    
+
     /**
      * Enabled dynamic filtering  of regex as it is typed.
-     */    
+     */
     class FilterKeyListener extends KeyAdapter
     {
         /**
          * Remebers the previous contents of the filter.
          */
         private String oldValue_ = "";
+
         
         /**
          * @see java.awt.event.KeyListener#keyReleased(
@@ -158,22 +159,22 @@ public class FilterPane extends JPanel
         public void keyReleased(KeyEvent e)
         {
             super.keyReleased(e);
-            
+
             String newValue = filterField_.getText().trim();
-            
-            // Only refresh if the filter has changed           
+
+            // Only refresh if the filter has changed
             if (!newValue.equals(oldValue_))
-            {                
+            {
                 oldValue_ = newValue;
-                filter(newValue);            
+                filter(newValue);
             }
         }
     }
-    
+
     //--------------------------------------------------------------------------
     // TextChangedListener
     //--------------------------------------------------------------------------
-    
+
     /**
      * Catchs modifications to the original document so that we know when to
      * throw away our cached copy of the text currently being regex'ed.
@@ -185,11 +186,11 @@ public class FilterPane extends JPanel
          *      javax.swing.event.DocumentEvent)
          */
         public void changedUpdate(DocumentEvent e)
-        { 
+        {
             crud("changed ");
         }
 
-        
+
         /**
          * @see javax.swing.event.DocumentListener#insertUpdate(
          *      javax.swing.event.DocumentEvent)
@@ -198,8 +199,8 @@ public class FilterPane extends JPanel
         {
             crud("insert ");
         }
-        
-        
+
+
         /**
          * @see javax.swing.event.DocumentListener#removeUpdate(
          *      javax.swing.event.DocumentEvent)
@@ -208,11 +209,11 @@ public class FilterPane extends JPanel
         {
             crud("remove ");
         }
-        
-        
+
+
         /**
          * Resets the cache.
-         * 
+         *
          * @param s String
          */
         protected void crud(String s)
