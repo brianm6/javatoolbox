@@ -21,7 +21,8 @@ package toolbox;
  *       the addition of large sections of text. Unhook model, insert, rehook 
  *       model is a possiblity.
  * TODO: Convert all gifs to pngs.
- *  * =============================================================================
+ * TODO: Make plugin dialog double click automatically add plugin.
+ * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
  * TODO: FindClass: Reduce startup time.
