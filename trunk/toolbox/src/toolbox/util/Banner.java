@@ -2374,7 +2374,7 @@ public class Banner
                             sb.append(" ");
                     }
                     
-                    String banner = convert(
+                    String banner = getBanner(
                         sb.toString(), splitWords, leftJustify, lineWidth);
                     
                     System.out.println(banner);
@@ -2408,9 +2408,9 @@ public class Banner
      * @param   message         Message
      * @return  Banner as a string
      */
-    public static String convert(String message)
+    public static String getBanner(String message)
     {
-        return convert(message, false, true, Integer.MAX_VALUE);
+        return getBanner(message, false, true, Integer.MAX_VALUE);
     }
 
     /**
@@ -2423,10 +2423,10 @@ public class Banner
      * @param   splitWidth      Width of split
      * @return  Banner as a string
      */
-    public static String convert(String message, boolean splitAtWord,
+    public static String getBanner(String message, boolean splitAtWord,
         boolean leftJustify, int splitWidth)
     {
-        return convert(message, FONT_STANDARD, splitAtWord, leftJustify,
+        return getBanner(message, FONT_STANDARD, splitAtWord, leftJustify,
                     splitWidth);
     }
     
@@ -2441,7 +2441,7 @@ public class Banner
      * @param   splitWidth      Width of split
      * @return  Banner as a string
      */
-    public static String convert(String message, BannerFont figletFont,
+    public static String getBanner(String message, BannerFont figletFont,
         boolean splitAtWord, boolean leftJustify, int splitWidth)
     {
         String result = "";
@@ -2474,7 +2474,7 @@ public class Banner
                 //System.out.println("word:\n" + word + "line:" + 
                 //                  line + "new line: newLine);
                 
-                if ((width(newLine) > splitWidth) && (line != ""))
+                if ((getBannerWidth(newLine) > splitWidth) && (line != ""))
                 {
                     result =
                         addLine(result, line + '\n', leftJustify, splitWidth);
@@ -2500,7 +2500,7 @@ public class Banner
      * @param   message  Message
      * @return  Width of text
      */
-    public static int width(String message)
+    public static int getBannerWidth(String message)
     {
         int w = 0;
         
@@ -2556,7 +2556,7 @@ public class Banner
         if (leftJustify)
             result += line;
         else
-            result += scroll(line, (int) (splitWidth / 2 - width(line) / 2));
+            result += scroll(line, (int) (splitWidth / 2 - getBannerWidth(line) / 2));
             
         return result;
     }
