@@ -19,7 +19,6 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -59,8 +58,8 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
         Logger.getLogger(TextPlugin.class);   
     
     private IStatusBar statusBar_;    
-    private JTextArea  textArea_;
-    private JFlipPane  topFlipPane_;
+    private JSmartTextArea textArea_;
+    private JFlipPane topFlipPane_;
    
     //--------------------------------------------------------------------------
     //  Constructors
@@ -91,7 +90,7 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
             
         buttonPanel.add(new JButton(new SortAction()));
         buttonPanel.add(new JButton(new BannerAction()));
-        buttonPanel.add(new JButton(new ClearAction()));
+        buttonPanel.add(new JButton(textArea_.new ClearAction()));
         
         // Root 
         setLayout(new BorderLayout());
@@ -154,7 +153,7 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
     /**
      * Sorts the contents of the text area
      */
-    private class SortAction extends AbstractAction
+    class SortAction extends AbstractAction
     {
         public SortAction()
         {
@@ -191,7 +190,7 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
     /**
      * Creates a banner of the text
      */
-    private class BannerAction extends AbstractAction
+    class BannerAction extends AbstractAction
     {
         public BannerAction()
         {
@@ -213,24 +212,6 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
         }
     }
     
-    /**
-     * Clears the output
-     */
-    private class ClearAction extends AbstractAction
-    {
-        public ClearAction()
-        {
-            super("Clear");
-            putValue(MNEMONIC_KEY, new Integer('C'));
-            putValue(SHORT_DESCRIPTION, "Clears the output");
-        }
-    
-        public void actionPerformed(ActionEvent e)
-        {
-            textArea_.setText("");            
-        }
-    }
-    
     //--------------------------------------------------------------------------
     // Flippers
     //--------------------------------------------------------------------------
@@ -240,7 +221,7 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
      * expression is typed in, the matching set is updated accordingly with
      * each keystroke.
      */
-    private class RegexFlipper extends JPanel
+    class RegexFlipper extends JPanel
     {
         private JTextField filterField_;
         private String[] cache_;
@@ -359,6 +340,7 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
             
             protected void crud(String s)
             {
+                s.toString();
                 cache_ = null;
             }
         }
@@ -368,16 +350,16 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
      * Flipper that allows the user to tokenize strings by providing the 
      * token delimiter. Multiline strings can also be merged into one line. 
      */
-    private class TokenizerFlipper extends JPanel
+    class TokenizerFlipper extends JPanel
     {
         private JTextField  delimiterField_;
         
-        public TokenizerFlipper()
+        TokenizerFlipper()
         {
             buildView();
         }
         
-        protected void buildView()
+        void buildView()
         {
             setLayout(new FlowLayout());
             
