@@ -1,16 +1,16 @@
 package toolbox.jsourceview;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.io.LineNumberReader;
+
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -24,33 +24,67 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
+import toolbox.util.ArrayUtil;
+import toolbox.util.Queue;
+import toolbox.util.SwingUtil;
+import toolbox.util.io.CompoundFilter;
+import toolbox.util.io.DirectoryFilter;
+import toolbox.util.io.ExtensionFilter;
+import toolbox.util.ui.JSmartOptionPane;
+import toolbox.util.ui.ThreadSafeTableModel;
+
 /**
  * JSourceView
  */
-public class JSourceView extends JFrame 
-    implements ActionListener, FilenameFilter, Runnable
+public class JSourceView extends JFrame implements ActionListener
 {
-    JTextField dirField;
-    JButton goButton;
-    JPanel topPanel;
-    JLabel scanStatusLabel;
-    JLabel parseStatusLabel;
-    JMenuBar menuBar;
-    JMenuItem saveMenuItem;
-    JMenuItem exitMenuItem;
-    JMenuItem aboutMenuItem;
-    JTable table;
-    ThreadSafeTableModel model;
-    Queue workQueue;
-    String colNames[] = {
-        "Directory", "File", "Code", "Comments", "Blank", "Total", "Percentage"
+    private static FilenameFilter sourceFilter_;
+    
+    private JTextField dirField_;
+    private JButton goButton_;
+    private JLabel scanStatusLabel_;
+    private JLabel parseStatusLabel_;
+    
+    private JMenuBar menuBar_;
+    private JMenuItem saveMenuItem_;
+    private JMenuItem exitMenuItem_;
+    private JMenuItem aboutMenuItem_;
+    
+    private JTable table_;
+    private ThreadSafeTableModel tableModel_;
+    private Queue workQueue_;
+
+    /** Table column names **/    
+    private String colNames[] = 
+    {
+        "Num",
+        "Directory", 
+        "File", 
+        "Code", 
+        "Comments", 
+        "Blank", 
+        "Total", 
+        "Percentage"
     };
     
     /** Thread to scan directories **/
-    private Thread scanDirThread;
+    private Thread scanDirThread_;
     
     /** Platform path separator **/
-    private String pathSeparator;
+    private String pathSeparator_;
+
+    static
+    {
+        /* create filter to flesh out source files */
+        sourceFilter_ = 
+            new CompoundFilter(
+                new CompoundFilter(
+                    new ExtensionFilter("c"),
+                    new ExtensionFilter("cpp")),
+                new CompoundFilter(
+                    new ExtensionFilter("java"),
+                    new ExtensionFilter("h")));
+    }
 
     /**
      * Entrypoint
@@ -60,6 +94,53 @@ public class JSourceView extends JFrame
     public static void main(String args[])
     {
         new JSourceView().setVisible(true);
+    }
+
+
+    /**
+     * Constructs JSourceview
+     */    
+    public JSourceView()
+    {
+        super("JSourceView v1.1");
+        
+        dirField_ = new JTextField(12);
+        dirField_.setFont(SwingUtil.getPreferredFont());
+        dirField_.addActionListener(this);
+        
+        goButton_ = new JButton("Go!");
+        JPanel topPanel = new JPanel();
+        scanStatusLabel_ = new JLabel(" ");
+        parseStatusLabel_ = new JLabel(" ");
+        menuBar_ = new JMenuBar();
+        workQueue_ = new Queue();
+        pathSeparator_ = System.getProperty("file.separator");
+        
+        topPanel.setLayout(new FlowLayout());
+        topPanel.add(new JLabel("Directory"));
+        topPanel.add(dirField_);
+        topPanel.add(goButton_);
+        
+        goButton_.addActionListener(this);
+        tableModel_ = new ThreadSafeTableModel(colNames, 0);
+        table_ = new JTable(tableModel_);
+        table_.setFont(SwingUtil.getPreferredFont());
+        
+        getContentPane().add(topPanel, BorderLayout.NORTH);
+        getContentPane().add(new JScrollPane(table_), BorderLayout.CENTER);
+        
+        JPanel jpanel = new JPanel();
+        jpanel.setLayout(new BorderLayout());
+        jpanel.add(scanStatusLabel_, BorderLayout.NORTH);
+        jpanel.add(parseStatusLabel_, BorderLayout.SOUTH);
+        getContentPane().add(jpanel, BorderLayout.SOUTH);
+        
+        setJMenuBar(makeMenuBar());
+        
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        pack();
+        SwingUtil.centerWindow(this);
     }
 
     
@@ -87,77 +168,43 @@ public class JSourceView extends JFrame
          */
         public void run()
         {
-            Thread thread = new Thread(JSourceView.this);
+            Thread thread = new Thread(new ParserWorker());
             thread.start();
             findJavaFiles(file);
             setScanStatus("Done scanning.");
         }
     }
 
-    /**
-     * Constructs JSourceview
-     */    
-    public JSourceView()
-    {
-        super("JSourceView v1.1");
-        dirField = new JTextField(12);
-        goButton = new JButton("Go!");
-        topPanel = new JPanel();
-        scanStatusLabel = new JLabel(" ");
-        parseStatusLabel = new JLabel(" ");
-        menuBar = new JMenuBar();
-        workQueue = new Queue();
-        pathSeparator = System.getProperty("file.separator");
-        topPanel.setLayout(new FlowLayout());
-        topPanel.add(new JLabel("Directory"));
-        topPanel.add(dirField);
-        topPanel.add(goButton);
-        goButton.addActionListener(this);
-        model = new ThreadSafeTableModel(colNames, 0);
-        table = new JTable(model);
-        getContentPane().add(topPanel, "North");
-        getContentPane().add(new JScrollPane(table), "Center");
-        JPanel jpanel = new JPanel();
-        jpanel.setLayout(new BorderLayout());
-        jpanel.add(scanStatusLabel, "North");
-        jpanel.add(parseStatusLabel, "South");
-        getContentPane().add(jpanel, "South");
-        setJMenuBar(makeMenuBar());
-        setSize(500, 500);
-        setDefaultCloseOperation(2);
-        addWindowListener(new WindowAdapter() {
-    
-            public void windowClosing(WindowEvent windowevent)
-            {
-                dispose();
-                System.exit(0);
-            }
-    
-        });
-    }
 
     /**
      * Creates the menu bar 
      * 
      * @return  Menubar
      */
-    private JMenuBar makeMenuBar()
+    protected JMenuBar makeMenuBar()
     {
         JMenu jmenu = new JMenu("File");
         JMenu jmenu1 = new JMenu("Help");
-        saveMenuItem = new JMenuItem("Save");
-        saveMenuItem.addActionListener(this);
-        exitMenuItem = new JMenuItem("Exit");
-        exitMenuItem.addActionListener(this);
-        jmenu.add(saveMenuItem);
+        
+        saveMenuItem_ = new JMenuItem("Save");
+        saveMenuItem_.addActionListener(this);
+        
+        exitMenuItem_ = new JMenuItem("Exit");
+        exitMenuItem_.addActionListener(this);
+        
+        jmenu.add(saveMenuItem_);
         jmenu.addSeparator();
-        jmenu.add(exitMenuItem);
-        aboutMenuItem = new JMenuItem("About");
-        aboutMenuItem.addActionListener(this);
-        jmenu1.add(aboutMenuItem);
-        menuBar.add(jmenu);
-        menuBar.add(jmenu1);
-        return menuBar;
+        jmenu.add(exitMenuItem_);
+        
+        aboutMenuItem_ = new JMenuItem("About");
+        aboutMenuItem_.addActionListener(this);
+        
+        jmenu1.add(aboutMenuItem_);
+        
+        menuBar_.add(jmenu);
+        menuBar_.add(jmenu1);
+        
+        return menuBar_;
     }
 
     
@@ -169,42 +216,45 @@ public class JSourceView extends JFrame
     public void actionPerformed(ActionEvent actionevent)
     {
         Object obj = actionevent.getSource();
-        if(obj == goButton)
+        
+        try
         {
-            goButtonPressed();
-            return;
+            if (obj == goButton_)
+                goButtonPressed();
+            else if (obj == dirField_)
+                goButtonPressed();
+            else if (obj == saveMenuItem_)
+                saveResults();
+            else if (obj == aboutMenuItem_)
+                showAbout();
+            else if (obj == exitMenuItem_)
+            {
+                dispose();
+                System.exit(0);
+            }
         }
-        if(obj == exitMenuItem)
+        catch (Exception e)
         {
-            dispose();
-            System.exit(0);
-            return;
+            JSmartOptionPane.showExceptionMessageDialog(this, e);
         }
-        if(obj == saveMenuItem)
-        {
-            saveResults();
-            return;
-        }
-        if(obj == aboutMenuItem)
-            showAbout();
     }
 
 
     /**
      * Saves the results to a file
      */
-    void saveResults()
+    protected void saveResults() throws IOException
     {
         String s = JOptionPane.showInputDialog("Save to file");
         if(s.length() > 0)
-            model.saveToFile(s);
+            tableModel_.saveToFile(s);
     }
 
     
     /**
      * Shows About dialog box
      */
-    void showAbout()
+    protected void showAbout()
     {
         JOptionPane.showMessageDialog(null, 
             "E-mail: analogue@yahoo.com\n" + 
@@ -222,14 +272,14 @@ public class JSourceView extends JFrame
     /** 
      * Starts the scanning
      */
-    void goButtonPressed()
+    protected void goButtonPressed()
     {
-        goButton.setEnabled(false);
-        String s = dirField.getText();
-        workQueue.removeAllElements();
-        table.setModel(model = new ThreadSafeTableModel(colNames, 0));
-        scanDirThread = new Thread(new ScanDirWorker(new File(s)));
-        scanDirThread.start();
+        goButton_.setEnabled(false);
+        String s = dirField_.getText();
+        workQueue_ = new Queue();
+        table_.setModel(tableModel_ = new ThreadSafeTableModel(colNames, 0));
+        scanDirThread_ = new Thread(new ScanDirWorker(new File(s)));
+        scanDirThread_.start();
     }
 
     /**
@@ -239,7 +289,7 @@ public class JSourceView extends JFrame
      */
     public void setScanStatus(String s)
     {
-        scanStatusLabel.setText(s);
+        scanStatusLabel_.setText(s);
     }
 
 
@@ -250,59 +300,76 @@ public class JSourceView extends JFrame
      */
     public void setParseStatus(String s)
     {
-        parseStatusLabel.setText(s);
+        parseStatusLabel_.setText(s);
     }
-
 
     /**
-     * Runs the doohickey
+     * Parser that implements runnable
      */
-    public void run()
+    class ParserWorker implements Runnable
     {
-        FileStats filestats = new FileStats();
-        while(!workQueue.empty() || scanDirThread.isAlive()) 
+        /**
+         * Parses each file on the workqueue and adds the statistics to the
+         * table.
+         */
+        public void run()
         {
-            String s = (String)workQueue.dequeue();
-            if(s != null)
+            FileStats totalStats = new FileStats();
+            int fileCount = 0;
+            
+            while(!workQueue_.isEmpty() || scanDirThread_.isAlive()) 
             {
-                setParseStatus("Parsing " + s + " ...");
-                FileStats filestats1 = scanFile(s);
-                filestats.add(filestats1);
-                String as1[] = new String[colNames.length];
-                as1[0] = getDirectoryOnly(s);
-                as1[1] = getFileOnly(s);
-                as1[2] = String.valueOf(filestats1.codeLines);
-                as1[3] = String.valueOf(filestats1.commentLines);
-                as1[4] = String.valueOf(filestats1.blankLines);
-                as1[5] = String.valueOf(filestats1.totalLines);
-                as1[6] = filestats1.getPercent() + "%";
-                model.addRow(as1);
+                /* pop file of the queue */
+                String filename = (String)workQueue_.dequeue();
+                
+                if(filename != null)
+                {
+                    setParseStatus("Parsing [" + workQueue_.size() + "] " + 
+                        filename + " ...");
+                     
+                    /* parse file and add to totals */
+                    FileStats fileStats = scanFile(filename);
+                    totalStats.add(fileStats);
+                    ++fileCount;
+                    
+                    String tableRow[] = new String[colNames.length];
+                    tableRow[0] = fileCount+"";
+                    tableRow[1] = getDirectoryOnly(filename);
+                    tableRow[2] = getFileOnly(filename);
+                    tableRow[3] = String.valueOf(fileStats.codeLines);
+                    tableRow[4] = String.valueOf(fileStats.commentLines);
+                    tableRow[5] = String.valueOf(fileStats.blankLines);
+                    tableRow[6] = String.valueOf(fileStats.totalLines);
+                    tableRow[7] = fileStats.getPercent() + "%";
+                    
+                    tableModel_.addRow(tableRow);
+                }
+                
+                Thread.currentThread().yield();
             }
-            try
-            {
-                Thread.currentThread();
-                Thread.yield();
-            }
-            catch(Exception ex) {}
+        
+            /* make separator row */
+            String rulerRow[] = new String[colNames.length];
+            for(int i = 0; i < rulerRow.length; i++)
+                rulerRow[i] =  "========";
+            tableModel_.addRow(rulerRow);
+            
+     
+            String totalRow[] = new String[colNames.length];       
+            totalRow[0] = "";
+            totalRow[1] = "Grand";
+            totalRow[2] = "Total";
+            totalRow[3] = String.valueOf(totalStats.codeLines);
+            totalRow[4] = String.valueOf(totalStats.commentLines);
+            totalRow[5] = String.valueOf(totalStats.blankLines);
+            totalRow[6] = String.valueOf(totalStats.totalLines);
+            totalRow[7] = totalStats.getPercent() + "%";
+            tableModel_.addRow(totalRow);
+            
+            setParseStatus("Done parsing.");
+            goButton_.setEnabled(true);
         }
-    
-        String as[] = new String[colNames.length];
-        for(int i = 0; i < as.length; i++)
-            as[i] = "--------";
-    
-        model.addRow(as);
-        as[0] = "Grand";
-        as[1] = "Total";
-        as[2] = String.valueOf(filestats.codeLines);
-        as[3] = String.valueOf(filestats.commentLines);
-        as[4] = String.valueOf(filestats.blankLines);
-        as[5] = String.valueOf(filestats.totalLines);
-        as[6] = filestats.getPercent() + "%";
-        model.addRow(as);
-        setParseStatus("Done parsing.");
-        goButton.setEnabled(true);
     }
-
 
     /**
      * Returns directory portion only of a path
@@ -310,9 +377,9 @@ public class JSourceView extends JFrame
      * @param  s  Path 
      * @return Directory portion of the path
      */
-    public String getDirectoryOnly(String s)
+    protected String getDirectoryOnly(String s)
     {
-        return s.substring(0, s.lastIndexOf(pathSeparator));
+        return s.substring(0, s.lastIndexOf(pathSeparator_));
     }
 
 
@@ -322,52 +389,57 @@ public class JSourceView extends JFrame
      * @param  s  Path
      * @return File portion of a path
      */
-    public String getFileOnly(String s)
+    protected String getFileOnly(String s)
     {
-        return s.substring(s.lastIndexOf(pathSeparator) + 1, s.length());
+        return s.substring(s.lastIndexOf(pathSeparator_) + 1, s.length());
     }
 
     
     /**
      * Scans a given file and generates statistics
      * 
-     * @param   s  Name of the file
+     * @param   filename  Name of the file
      * @return  Stats of the file
      */
-    public FileStats scanFile(String s)
+    protected FileStats scanFile(String filename)
     {
-        Object obj = null;
         FileStats filestats = new FileStats();
+        
         try
         {
-            LineNumberReader linenumberreader = 
-                new LineNumberReader(new BufferedReader(new FileReader(s)));
+            LineNumberReader lineReader = 
+                new LineNumberReader(
+                    new BufferedReader(
+                        new FileReader(filename)));
                 
             LineStatus linestatus = new LineStatus();
-            String s1;
-            while((s1 = linenumberreader.readLine()) != null) 
+            
+            String line;
+            
+            while((line = lineReader.readLine()) != null) 
             {
                 filestats.totalLines++;
-                if(s1.trim().length() == 0)
+                
+                if (line.trim().length() == 0)
                 {
                     filestats.blankLines++;
                 }
                 else
                 {
-                    Machine.scanLine(new Line(s1), linestatus);
-                    if(linestatus.countLine)
+                    Machine.scanLine(new LineScanner(line), linestatus);
+                    
+                    if(linestatus.getCountLine())
                         filestats.codeLines++;
                     else
                         filestats.commentLines++;
                 }
             }
     
-            linenumberreader.close();
+            lineReader.close();
         }
-        catch(Exception exception)
+        catch (Exception e)
         {
-            System.out.println(exception.toString());
-            exception.printStackTrace();
+            JSmartOptionPane.showExceptionMessageDialog(this, e);
         }
         finally
         {
@@ -375,46 +447,33 @@ public class JSourceView extends JFrame
         }
     }
 
-    void findJavaFiles(File file)
-    {
-        try
-        {
-            Thread.currentThread();
-            Thread.yield();
-        }
-        catch(Exception ex) {}
-        String as[] = file.list(this);
-        if(as != null && as.length > 0)
-        {
-            for(int i = 0; i < as.length; i++)
-            {
-                File file1 = new File(file, as[i]);
-                if(file1.isDirectory())
-                {
-                    setScanStatus("Scanning " + file1 + " ...");
-                    findJavaFiles(file1);
-                }
-            }
-    
-        }
-    }
 
-    public boolean accept(File file, String s)
+    /**
+     * Finds all java files in the given directory
+     * 
+     * @param  file  Directory to scan for files
+     */
+    protected void findJavaFiles(File file)
     {
-        if(new File(file, s).isDirectory())
-            return true;
-            
-        if (s.toUpperCase().endsWith(".CPP") || 
-            s.toUpperCase().endsWith(".C")   || 
-            s.toUpperCase().endsWith(".H")   || 
-            s.toUpperCase().endsWith(".JAVA"))
+        Thread.currentThread().yield();
+        
+        /* process files in current directory */
+        File srcFiles[] = file.listFiles(sourceFilter_);
+        if (!ArrayUtil.isNullOrEmpty(srcFiles))
         {
-            workQueue.enqueue(file + pathSeparator + s);
-            return true;
+            for (int i = 0; i < srcFiles.length; i++)
+                workQueue_.enqueue(srcFiles[i].getAbsolutePath());                                        
         }
-        else
+        
+        /* process dirs in current directory */
+        File dirs[] = file.listFiles(new DirectoryFilter());
+        if (!ArrayUtil.isNullOrEmpty(dirs))
         {
-            return false;
+            for (int i=0; i<dirs.length; i++)
+            {
+                setScanStatus("Scanning " + dirs[i] + " ...");
+                findJavaFiles(dirs[i]);
+            }    
         }
     }
 }
