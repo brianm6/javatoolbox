@@ -9,6 +9,8 @@ import java.beans.PropertyDescriptor;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.Icon;
+
 import com.l2fprod.common.propertysheet.Property;
 import com.l2fprod.common.propertysheet.PropertyEditorRegistry;
 import com.l2fprod.common.propertysheet.PropertySheetPanel;
@@ -37,6 +39,16 @@ public class SQLFormatterView extends JHeaderPanel
         Logger.getLogger(SQLFormatterView.class);
 
     //--------------------------------------------------------------------------
+    // Icons
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Icon for header and flipper.
+     */
+    public static final Icon ICON_SQLFORMATTER =
+        ImageCache.getIcon(ImageCache.IMAGE_CONFIG);
+        
+    //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
     
@@ -61,10 +73,7 @@ public class SQLFormatterView extends JHeaderPanel
      */
     public SQLFormatterView(SQLFormatter formatter)
     {
-        super(
-            ImageCache.getIcon(ImageCache.IMAGE_CONFIG), 
-            "SQL Formatter Properties");
-        
+        super(ICON_SQLFORMATTER, "SQL Formatter Properties");
         buildView();
         setFormatter(formatter);
     }

@@ -8,6 +8,7 @@ import java.sql.SQLException;
 
 import javax.swing.AbstractAction;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
@@ -45,6 +46,16 @@ import toolbox.workspace.IStatusBar;
 public class DBConfig extends JHeaderPanel implements IPreferenced
 {
     private static final Logger logger_ = Logger.getLogger(DBConfig.class);
+    
+    //--------------------------------------------------------------------------
+    // Icons
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Icon for header and flipper.
+     */
+    public static final Icon ICON_DBCONFIG =
+        ImageCache.getIcon(ImageCache.IMAGE_DATASOURCE);
     
     //--------------------------------------------------------------------------
     // XML Constants
@@ -121,7 +132,7 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
      */
     public DBConfig(QueryPlugin plugin)
     {
-        super(ImageCache.getIcon(ImageCache.IMAGE_DATASOURCE), "Databases");
+        super(ICON_DBCONFIG, "Databases");
         plugin_ = plugin;
         statusBar_ = plugin.getStatusBar();
         buildView();
