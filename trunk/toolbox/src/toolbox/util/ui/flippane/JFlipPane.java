@@ -240,9 +240,7 @@ public class JFlipPane extends JPanel
         if (!isCollapsed())
             setActiveFlipper(flipper);
         
-        // TODO: find proper way to do this
         revalidate();
-        repaint();
     } 
 
 
@@ -263,7 +261,6 @@ public class JFlipPane extends JPanel
         // Remove from internal table
         flippers_.remove(flipper.getName());
 
-        // TODO: find proper way to do this               
         revalidate();
     } 
 
@@ -298,9 +295,7 @@ public class JFlipPane extends JPanel
             flipCardPanel_.setBorder(null);
         }
 
-        // TODO: find proper way to do this
         revalidate();
-        flipCardPanel_.repaint();
     } 
 
 
@@ -820,9 +815,7 @@ public class JFlipPane extends JPanel
                     setActiveFlipper(flipper);
                 }
      
-                // TODO: find correct way to do this           
                 revalidate();
-                repaint();
             }
         }
     } 
