@@ -236,7 +236,7 @@ public class CVSCommand {
         GetOpt go = new GetOpt(args, getOptString);
         int ch = -1;
         boolean usagePrint = false;
-        while ((ch = go.getopt()) != go.optEOF) {
+        while ((ch = go.getopt()) != GetOpt.optEOF) {
             if ((char)ch == 'H')
                 usagePrint = true;
             else if ((char)ch == 'r')
