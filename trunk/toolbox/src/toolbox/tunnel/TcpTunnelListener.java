@@ -17,11 +17,11 @@ public interface TcpTunnelListener
      * Notification of the number of bytes read over the last connection and
      * the number of bytes read over the life of the tunnel.
      * 
-     * @param  tunnel         TCP tunnel
-     * @param  connBytesRead  Number of bytes read through the duration of the     
-     *                        most recent connection.
-     * @param  bytesRead      Total number of bytes read over the life of the
-     *                        tunnel
+     * @param  tunnel          TCP tunnel
+     * @param  connBytesRead   Number of bytes read through the duration of the
+     *                         most recent connection.
+     * @param  totalBytesRead  Total number of bytes read over the life of the
+     *                         tunnel
      */
     public void bytesRead(TcpTunnel tunnel, int connBytesRead, 
                           int totalBytesRead);
