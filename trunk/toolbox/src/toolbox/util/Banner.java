@@ -20,6 +20,20 @@ import org.apache.log4j.Logger;
 /**
  * Banner converts a text string into a banner using ASCII characters to form
  * larger versions of the letters.
+ * <p>
+ * <b>Example:</b>
+ * <pre class="snippet">
+ * System.out.println(Banner.getBanner("Banner")); 
+ * </pre>
+ * 
+ * <b>Output:</b>
+ * <pre class="snippet">
+ *   ____                                        
+ *  | __ )    __ _   _ __    _ __     ___   _ __ 
+ *  |  _ \   / _` | | '_ \  | '_ \   / _ \ | '__|
+ *  | |_) | | (_| | | | | | | | | | |  __/ | |   
+ *  |____/   \__,_| |_| |_| |_| |_|  \___| |_|   
+ * </pre>
  */ 
 public class Banner
 {
