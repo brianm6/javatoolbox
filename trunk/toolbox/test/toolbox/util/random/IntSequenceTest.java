@@ -8,8 +8,12 @@ import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
 
+import toolbox.util.ElapsedTime;
+
 /**
  * Unit test for IntSequence.
+ * 
+ * @see toolbox.util.random.IntSequence
  */
 public class IntSequenceTest extends TestCase
 {
@@ -26,21 +30,46 @@ public class IntSequenceTest extends TestCase
     }
 
     //--------------------------------------------------------------------------
-    // Unit Tests
+    // Non-Repeating Unit Tests
     //--------------------------------------------------------------------------
     
     /**
-     * Tests nextValue(high, low, nonrepeating)
+     * Tests nextValue(1, 1, nonrepeating)
      */
-    public void testNextValueNonRepeating() throws Exception
+    public void testNextValueNonRepeatingOne() throws Exception
     {
-        logger_.info("Running testNextValueNonRepeating...");
+        logger_.info("Running testNextValueNonRepeatingOne...");
+        
+        IntSequence gen = new IntSequence(1, 1, true);
+        List nums = new ArrayList();
+        
+        while (gen.hasMore())
+        {
+            Object next = gen.nextValue();
+            logger_.info("next = " + next);
+            nums.add(next);
+        }
+        
+        logger_.debug("Numbers: " + nums);
+        
+        assertEquals(1, nums.size());
+        assertEquals(new Integer(1), nums.get(0));
+    }
+
+    
+    /**
+     * Tests nextValue(low, high, nonrepeating) where the range is a small
+     * interval. 
+     */
+    public void testNextValueNonRepeatingSome() throws Exception
+    {
+        logger_.info("Running testNextValueNonRepeatingSome...");
         
         int low = 1;
         int high = 20;
         int size = high - low + 1;
         
-        IntSequence gen = new IntSequence(low, high, false);
+        IntSequence gen = new IntSequence(low, high, true);
         List nums = new ArrayList();
         
         while (gen.hasMore())
@@ -58,7 +87,86 @@ public class IntSequenceTest extends TestCase
         assertTrue(nums.isEmpty());
     }
 
+    
+    /**
+     * Tests nextValue(low, high, nonrepeating) where the range is a large
+     * interval.
+     * 
+     * TODO: This method needs serious optimization!
+     */
+    public void testNextValueNonRepeatingMany() throws Exception
+    {
+        logger_.info("Running testNextValueNonRepeatingMany...");
+        
+        int low = 1000;
+        int high = 9999;
+        int size = high - low + 1;
+        
+        IntSequence gen = new IntSequence(low, high, true);
+        List nums = new ArrayList();
+        
+        ElapsedTime et = new ElapsedTime();
+        
+        while (gen.hasMore())
+        {
+            Object next = gen.nextValue();
+            nums.add(next);
+        }
+        
+        et.setEndTime();
+        logger_.info("Elapsed time = " + et);
+        
+        assertEquals(size, nums.size());
+        
+        for (int i = low; i <= high; i++)
+            nums.remove(new Integer(i));
+        
+        assertTrue(nums.isEmpty());
+    }    
 
+    
+    /**
+     * Tests hasMore() for a non-repeating sequence.
+     */
+    public void testHasMoreNonRepeating() throws Exception
+    {
+        logger_.info("Running testHasMoreNonRepeating...");
+
+        IntSequence sequence = new IntSequence(1, 1, true);
+
+        assertTrue(sequence.hasMore());
+        sequence.nextValue();
+        assertFalse(sequence.hasMore());
+        sequence = new IntSequence(1, 10, true);
+
+        for(int i = 0; i < 10; i++)
+        {
+            assertTrue(sequence.hasMore());
+            sequence.nextValue();
+        }
+        
+        assertFalse(sequence.hasMore());
+    }
+    
+    //--------------------------------------------------------------------------
+    // Repeating Unit Tests
+    //--------------------------------------------------------------------------
+
+    /**
+     * Tests nextValue(1, 1, repeating)
+     */
+    public void testNextValueRepeatingOne() throws Exception
+    {
+        logger_.info("Running testNextValueRepeatingOne...");
+
+        int numIterations = 100;
+        IntSequence gen = new IntSequence(1, 1, false);
+        
+        for (int i = 0; i < numIterations; i++)
+            assertEquals(new Integer(1), (Integer) gen.nextValue());
+    }
+
+    
     /**
      * Tests nextValue(high, low, repeating)
      */
@@ -66,21 +174,39 @@ public class IntSequenceTest extends TestCase
     {
         logger_.info("Running testNextValueRepeating...");
         
-        int low = 1;
-        int high = 20;
-        int size = high - low + 1;
+        int low = 0;
+        int high = 30;
+        int numIterations = 1000;
         
-        IntSequence gen = new IntSequence(low, high, true);
+        IntSequence gen = new IntSequence(low, high, false);
         
-        for (int j = 0; j <= size; j++)
+        for (int j = 0; j <= numIterations; j++)
         {
             Object next = gen.nextValue();
-            logger_.info("next = " + next);
+            //logger_.info("next = " + next);
             int i = ((Integer) next).intValue();
             assertTrue(i >= low && i <= high);
         }
     }
+
     
+    /**
+     * Tests hasMore(x, y, repeating) should always return true.
+     */
+    public void testHasMoreRepeating() throws Exception
+    {
+        logger_.info("Running testHasMoreRepeating...");
+
+        int numIterations = 100;
+        IntSequence sequence = new IntSequence(1, 100, false);
+        
+        for (int i = 0; i < numIterations; i++)
+            assertTrue(sequence.hasMore());
+    }
+    
+    //--------------------------------------------------------------------------
+    // Negative Unit Tests
+    //--------------------------------------------------------------------------
     
     /**
      * Test invalid bounds.
@@ -94,7 +220,7 @@ public class IntSequenceTest extends TestCase
 
         try
         {
-            IntSequence gen = new IntSequence(low, high, false);
+            IntSequence gen = new IntSequence(low, high, true);
         }
         catch (IllegalArgumentException iae)
         {
@@ -102,5 +228,4 @@ public class IntSequenceTest extends TestCase
             logger_.info("SUCCESS: " + iae.getMessage());
         }
     }
-
 }
