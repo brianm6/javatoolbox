@@ -469,12 +469,16 @@ public class QueryPlugin extends AbstractPlugin implements QueryPluginConstants
         {
             metaResults = 
                 JDBCSession.executeUpdate(session, sql) + " rows affected.";
+            
+            resultsArea_.append(metaResults);
         }
         else
         {
             // Everything else is processed as an update
             metaResults = 
                 JDBCSession.executeUpdate(session, sql) + " rows affected.";
+            
+            resultsArea_.append(metaResults);
         }
 
         addToHistory(sql);
