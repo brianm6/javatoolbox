@@ -83,7 +83,11 @@ class PropertyDescriptorAdapter extends AbstractProperty {
   public void readFromObject(Object object) {
     try {
       Method method = descriptor.getReadMethod();
-      setValue(method.invoke(object, null));
+      
+      // OVERRIDE: Added null check.
+      if (method != null)
+          setValue(method.invoke(object, null));
+      
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
