@@ -186,6 +186,31 @@ public class ClassUtilTest extends TestCase
 
     
     /**
+     * Tests pathToPackage()
+     */
+    public void testPathToPackage()
+    {
+        logger_.info("Running testPathToPackage...");
+        
+        assertEquals("", ClassUtil.pathToPackage(""));
+        assertEquals("  ", ClassUtil.pathToPackage("  "));
+        assertEquals("", ClassUtil.pathToPackage("\\"));
+        assertEquals("", ClassUtil.pathToPackage("/"));
+        assertEquals("a", ClassUtil.pathToPackage("a"));
+        assertEquals("a.b", ClassUtil.pathToPackage("a\\b"));
+        assertEquals("a.b", ClassUtil.pathToPackage("a/b"));
+        assertEquals("a.b", ClassUtil.pathToPackage("/a/b/"));
+        assertEquals("a.b", ClassUtil.pathToPackage("\\a\\b\\"));
+        
+        String s = File.separator;
+        
+        assertEquals(
+            "a.b.c.d", 
+            ClassUtil.pathToPackage("a" + s + "b" + s + "c" + s + "d"));
+    }
+
+    
+    /**
      * Tests stripPackage()
      */
     public void testStripPackage()
