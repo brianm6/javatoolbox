@@ -85,8 +85,9 @@ public class JarTestCollector implements TestCollector
     {
         for(Iterator i=archives.iterator(); i.hasNext(); )
         {
-            String archive = (String)i.next();    
-            System.out.println("Archive=" + archive);
+            String archive = (String)i.next();
+                
+            //System.out.println("Archive=" + archive);
             
             try
             {
@@ -116,6 +117,21 @@ public class JarTestCollector implements TestCollector
         try 
         { 
             zf = new ZipFile(jarName);
+            
+            for (Enumeration e = zf.entries(); e.hasMoreElements();) 
+            { 
+                ZipEntry ze = (ZipEntry) e.nextElement();
+
+                if (!ze.isDirectory() &&  ze.getName().endsWith("Test.class")) 
+                { 
+                    String classname = ze.getName().replace('/', '.');
+                
+                    classname = classname.substring(0, 
+                        classname.length() - ".class".length());
+
+                    result.add(classname);                
+                }
+            }
         }
         catch (Exception e) 
         { 
@@ -123,22 +139,10 @@ public class JarTestCollector implements TestCollector
             e.printStackTrace();
             return;
         }
-        
-        for (Enumeration e = zf.entries(); e.hasMoreElements();) 
-        { 
-            ZipEntry ze = (ZipEntry) e.nextElement();
-
-            if (!ze.isDirectory() &&  ze.getName().endsWith("Test.class")) 
-            { 
-                String classname = ze.getName().replace('/', '.');
-                
-                classname = classname.substring(0, 
-                    classname.length() - ".class".length());
-
-                result.add(classname);                
-            }
+        finally 
+        {        
+            if (zf != null)
+                zf.close();
         }
-        
-        zf.close();
     }
 }
