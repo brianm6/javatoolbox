@@ -3,7 +3,7 @@ package toolbox.util.xslfo;
 /**
  * Factory class that creates implementations of the FOProcessor interface
  */
-public class FOProcessorFactory
+public final class FOProcessorFactory
 {
     /** 
      * Apache FOP http://xml.apache.org 
@@ -14,6 +14,21 @@ public class FOProcessorFactory
      * RenderX XEP http://www.renderx.com 
      */
     public static final String FO_IMPL_RENDERX  = "xep";
+    
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Static class..disallow construction
+     */
+    private FOProcessorFactory()
+    {
+    }
+    
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
     
     /**
      * Creates a FOProcessor
