@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
+import toolbox.util.ui.plaf.LookAndFeelPrefsView;
 import toolbox.workspace.IPreferenced;
 
 /**
@@ -47,9 +48,14 @@ public class PreferencesManager implements IPreferenced
     public PreferencesManager()
     {
         nodeMap_ = new HashMap();
-        PreferencesView view = new ProxyView();
-        nodeMap_.put(ProxyView.NODE_HTTP_PROXY, view);
-        SwingUtil.attachPhantom(view.getView());
+        
+        PreferencesView proxyView = new ProxyView();
+        nodeMap_.put(ProxyView.NODE_HTTP_PROXY, proxyView);
+        SwingUtil.attachPhantom(proxyView.getView());
+        
+        PreferencesView lafView = new LookAndFeelPrefsView();
+        nodeMap_.put(LookAndFeelPrefsView.NODE_LOOK_AND_FEEL, lafView);
+        SwingUtil.attachPhantom(lafView.getView());
     }
 
     //--------------------------------------------------------------------------
