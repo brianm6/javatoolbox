@@ -11,6 +11,7 @@ import org.apache.commons.lang.math.RandomUtils;
  * covered by the commons-lang library.
  * 
  * @see org.apache.commons.lang.math.RandomUtils
+ * @see toolbox.util.random.RandomSequence
  */
 public final class RandomUtil
 {
@@ -19,7 +20,7 @@ public final class RandomUtil
     //--------------------------------------------------------------------------
 
     /**
-     * Prevent construction.
+     * Prevent construction of this static singleton.
      */
     private RandomUtil()
     {
@@ -32,9 +33,9 @@ public final class RandomUtil
     /**
      * Generates a random integer in the range [floor..ceiling].
      * 
-     * @param floor Lower boundary.
-     * @param ceiling Upper boundary.
-     * @return Random int.
+     * @param floor Lower boundary of the range.
+     * @param ceiling Upper boundary of the range.
+     * @return int
      * @throws IllegalArgumentException if floor is greater than ceiling.
      */
     public static int nextInt(int floor, int ceiling)
@@ -50,7 +51,7 @@ public final class RandomUtil
     /**
      * Generates a random lowercase alpha character in the range [a..z].
      * 
-     * @return Random lowercase car.
+     * @return char
      */
     public static char nextLowerAlpha()
     {
@@ -61,7 +62,7 @@ public final class RandomUtil
     /**
      * Generates a random uppercase alpha character in the range [A..Z].
      * 
-     * @return Random uppercase char.
+     * @return char
      */
     public static char nextUpperAlpha()
     {
@@ -72,7 +73,7 @@ public final class RandomUtil
     /**
      * Generates a random alpha character in the range [a..z, A..Z].
      * 
-     * @return Random case-agnostic char.
+     * @return char
      */
     public static char nextAlpha()
     {
@@ -88,7 +89,7 @@ public final class RandomUtil
     /**
      * Generates a random double.
      * 
-     * @return Random double.
+     * @return double
      */
     public static double nextDouble()
     {
@@ -99,10 +100,10 @@ public final class RandomUtil
 
     
     /**
-     * Generates a random double with a maximum value.
+     * Generates a random double in the range [0.0..ceiling]
      * 
-     * @param ceiling Maximum value of double to generate.
-     * @return A random signed double from 0.0 to ceiling.
+     * @param ceiling Maximum value to generate.
+     * @return double
      */
     public static double nextDouble(double ceiling)
     {
@@ -152,8 +153,7 @@ public final class RandomUtil
      * Returns a randomly chosen element from the passed in array.
      * 
      * @param pickList Array of objects to pick from.
-     * @return Randomly chosen element from the pickList. Null if array is
-     *         empty.
+     * @return Object or null if pickList is empty
      */
     public static Object nextElement(Object[] pickList)
     {
@@ -168,7 +168,7 @@ public final class RandomUtil
      * Returns a randomly chosen element from the passed in list.
      * 
      * @param list List to pick random element from.
-     * @return Randomly chosen element from the list. Null if list is empty.
+     * @return Object or null if the list is empty.
      */
     public static Object nextElement(List list)
     {
