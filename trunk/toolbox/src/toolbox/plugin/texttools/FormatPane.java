@@ -10,9 +10,12 @@ import javax.swing.JPanel;
 
 import org.w3c.tidy.Tidy;
 
+import toolbox.util.XMLUtil;
 import toolbox.util.io.StringInputStream;
 import toolbox.util.io.StringOutputStream;
 import toolbox.util.ui.JSmartButton;
+import toolbox.util.ui.flippane.JFlipPane;
+import toolbox.workspace.WorkspaceAction;
 
 /**
  * Flipper for formatting various text formats.
@@ -27,6 +30,11 @@ public class FormatPane extends JPanel
      * Reference to the parent plugin.
      */
     private final TextToolsPlugin plugin_;
+    
+    /**
+     * Flipper for the preferences.
+     */
+    private JFlipPane flipper_;
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -54,6 +62,7 @@ public class FormatPane extends JPanel
     {
         setLayout(new FlowLayout());
         add(new JSmartButton(new FormatHTMLAction()));
+        add(new JSmartButton(new FormatXMLAction()));
     }
 
     //----------------------------------------------------------------------
@@ -99,6 +108,35 @@ public class FormatPane extends JPanel
             OutputStream output = new StringOutputStream();
             tidy.parse(input, output);
             plugin_.getOutputArea().setText(output.toString());
+        }
+    }
+
+    //--------------------------------------------------------------------------
+    // FormatXMLAction
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Formats the XML with correct indentation and spacing.
+     */
+    class FormatXMLAction extends WorkspaceAction 
+    {
+        /**
+         * Creates a FormatXMLAction. 
+         */
+        FormatXMLAction()
+        {
+            super("Format XML", false, null, null);
+        }
+    
+        
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
+        public void runAction(ActionEvent e) throws Exception
+        {
+            plugin_.getOutputArea().setText(
+                XMLUtil.format(plugin_.getInputText()));
         }
     }
 }
