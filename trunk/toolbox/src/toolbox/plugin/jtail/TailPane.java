@@ -30,12 +30,13 @@ public class TailPane extends JPanel implements ActionListener
 	private static final Category logger_ = 
 		Category.getInstance(TailPane.class);
 	
-	private JButton clearButton_;
-	private JButton pauseButton_;
-	private JButton runButton_;
-    private JCheckBox autoScrollBox_;
+	private JButton        clearButton_;
+	private JButton        pauseButton_;
+	private JButton        startButton_;
+    private JCheckBox      autoScrollBox_;
+    
     private BlockingQueue    queue_;
-    private BatchQueueReader reader_;
+    private BatchQueueReader queueReader_;
     
     /** Output for tail **/
 	private JSmartTextArea tailArea_;
@@ -65,26 +66,26 @@ public class TailPane extends JPanel implements ActionListener
     {
         queue_ = new BlockingQueue();
         
-        
         tail_ = new Tail();
         tail_.addTailListener(new TailListener());
+        tail_.setTailFile(file);
+        tail_.start();
         
-        // Start is implicit
-        tail_.tail(file.getAbsolutePath());
-        
-        
-        reader_ = new FastQueueConsumer(queue_);
-        Thread consumer = new Thread(reader_);
+        queueReader_ = new FastQueueConsumer(queue_);
+        Thread consumer = new Thread(queueReader_);
         consumer.start();
         
         logger_.debug("tail and reader started");
     }
+
 
     /**
      * Pops thingies off the queue
      */
     class FastQueueConsumer extends BatchQueueReader
     {
+        int lineNumber = 0;
+        
         public FastQueueConsumer(BlockingQueue queue)
         {
             super(queue);
@@ -98,13 +99,14 @@ public class TailPane extends JPanel implements ActionListener
             logger_.debug("Lines popped: " + objs.length);
             
             StringBuffer sb = new StringBuffer();
-            
+
             for(int i=0; i<objs.length; i++)
-                sb.append(objs[i]);
+                sb.append(lineNumber++ + ": " + objs[i] + "\n");
             
             tailArea_.append(sb.toString()); 
         }
     }
+    
     
     /**
      * Listener for tail
@@ -125,6 +127,44 @@ public class TailPane extends JPanel implements ActionListener
                 JSmartOptionPane.showExceptionMessageDialog(null, ie);
             }
         }
+
+        
+        /**
+         * @see toolbox.tail.TailAdapter#tailPaused()
+         */
+        public void tailPaused()
+        {
+            pauseButton_.setText("Unpause");
+        }
+
+
+        /**
+         * @see toolbox.tail.TailAdapter#tailUnpaused()
+         */
+        public void tailUnpaused()
+        {
+            pauseButton_.setText("Pause");            
+        }
+
+
+        /**
+         * @see toolbox.tail.TailAdapter#tailStarted()
+         */
+        public void tailStarted()
+        {
+            startButton_.setText("Stop");
+            pauseButton_.setEnabled(true);
+        }
+
+
+        /**
+         * @see toolbox.tail.TailAdapter#tailStopped()
+         */
+        public void tailStopped()
+        {
+            startButton_.setText("Start");
+            pauseButton_.setEnabled(false);
+        }
     }
 
     
@@ -138,16 +178,16 @@ public class TailPane extends JPanel implements ActionListener
         
 		clearButton_   = new JButton("Clear");
 		pauseButton_   = new JButton("Pause");
-		runButton_     = new JButton("Run");
+		startButton_     = new JButton("Start");
         autoScrollBox_ = new JCheckBox("Autoscroll");
         
 		JPanel buttonPanel = new JPanel(new FlowLayout());
-		buttonPanel.add(runButton_);
+		buttonPanel.add(startButton_);
 		buttonPanel.add(pauseButton_);
 		buttonPanel.add(clearButton_);
         buttonPanel.add(autoScrollBox_);
 
-		runButton_.addActionListener(this);
+		startButton_.addActionListener(this);
 		pauseButton_.addActionListener(this);
 		clearButton_.addActionListener(this);
         autoScrollBox_.addActionListener(this);
@@ -167,26 +207,37 @@ public class TailPane extends JPanel implements ActionListener
 	{
 		Object obj = e.getSource();
 		
-		if (obj == runButton_)
-			runButtonClicked();
-		else if (obj == pauseButton_)
-			pauseButtonClicked();
-		else if (obj == clearButton_)
-			clearButtonClicked();
-        else if (obj == autoScrollBox_)
-            autoScrollBoxChanged();
-		else        
-			logger_.warn("No action handler for " + e);
+        try
+        {
+    		if (obj == startButton_)
+    			startButtonClicked();
+    		else if (obj == pauseButton_)
+    			pauseButtonClicked();
+    		else if (obj == clearButton_)
+    			clearButtonClicked();
+            else if (obj == autoScrollBox_)
+                autoScrollBoxChanged();
+    		else        
+    			logger_.warn("No action handler for " + e);
+        }
+        catch (Exception ee)
+        {
+            JSmartOptionPane.showExceptionMessageDialog(null, ee);
+        }
 	}
 	
     
 	/**
 	 * Starts the tail
 	 */
-	protected void runButtonClicked()
+	protected void startButtonClicked() throws FileNotFoundException
 	{
-		logger_.info("run");
-        tail_.start();
+		logger_.info("start");
+        
+        if (tail_.isAlive())
+            tail_.stop();
+        else
+            tail_.start();
 	}
 	
     
@@ -196,7 +247,11 @@ public class TailPane extends JPanel implements ActionListener
 	protected void pauseButtonClicked()
 	{
 		logger_.info("pause");
-        tail_.pause();
+        
+        if (tail_.isPaused())
+            tail_.unpause();
+        else
+            tail_.pause();
 	}
 	
     
