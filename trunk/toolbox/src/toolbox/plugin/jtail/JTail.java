@@ -350,14 +350,9 @@ public class JTail extends JFrame implements IPreferenced
      */
     public void applyPrefs(Element prefs) throws Exception
     {
-        if (prefs == null)
-            return;
-            
-        Element root = prefs.getFirstChildElement(NODE_JTAIL_PLUGIN);
+        Element root = XOMUtil.getFirstChildElement(
+            prefs, NODE_JTAIL_PLUGIN, new Element(NODE_JTAIL_PLUGIN));
 
-        if (root == null)
-            return;
-        
         jtailConfig_.applyPrefs(root);
         
         // Tails left running since last save
