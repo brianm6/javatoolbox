@@ -129,8 +129,8 @@ public abstract class Console
     /**
      * Create an InteractiveConsole with the given streams.
      * 
-     * @param is Input stream to read commands from
-     * @param os Output stream to write command results to
+     * @param is Input stream to read commands from.
+     * @param os Output stream to write command results to.
      */
     public Console(InputStream is, PrintStream os)
     {
@@ -147,7 +147,7 @@ public abstract class Console
     /**
      * Accessor for the command prompt.
      * 
-     * @return Command prompt
+     * @return Command prompt.
      */
     public abstract String getPrompt();
  
@@ -172,7 +172,7 @@ public abstract class Console
     /**
      * Accessor for the print stream that all output is sent to.
      * 
-     * @return PrintStream
+     * @return PrintStream.
      */
     public PrintStream getPrintStream()
     {
@@ -183,7 +183,7 @@ public abstract class Console
     /**
      * Retrieves the next command from the input stream. 
      * 
-     * @return Next command
+     * @return Next command.
      */
     public String getNextCommand()
     {
@@ -207,7 +207,7 @@ public abstract class Console
     /**
      * Handles the command. 
      * 
-     * @param cmd Command to handle
+     * @param cmd Command to handle.
      */
     public void handleCommand(String cmd)
     {
@@ -240,7 +240,7 @@ public abstract class Console
     /**
      * Adds/sets a property to system properties. 
      * 
-     * @param cmd Original command so we can extract prop name/value
+     * @param cmd Original command so we can extract prop name/value.
      */
     protected void commandSetProp(String cmd)
     {
@@ -259,7 +259,7 @@ public abstract class Console
     /**
      * Removes a system property.
      * 
-     * @param cmd Original command so we can extract prop name
+     * @param cmd Original command so we can extract prop name.
      */
     protected void commandDelProp(String cmd)
     {

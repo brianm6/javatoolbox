@@ -101,8 +101,8 @@ public class XOMUtil
      *   <li>attribute's value is not a valid integer 
      * <ul>
      * 
-     * @param node Node containing the attribute
-     * @param attribute Name of the attribute
+     * @param node Node containing the attribute.
+     * @param attribute Name of the attribute.
      * @param defaultValue Value to return if the attribute does not exist or 
      *        does not contain a value.
      * @return int
@@ -131,10 +131,10 @@ public class XOMUtil
     /**
      * Gets a node's attribute as a boolean.
      * 
-     * @param node Node containing the attribute
-     * @param attribute Name of the attribute
+     * @param node Node containing the attribute.
+     * @param attribute Name of the attribute.
      * @param defaultValue Value to return if the attribute does not exist
-     *        or does not contain a value
+     *        or does not contain a value.
      * @return boolean
      */
     public static boolean getBooleanAttribute(
@@ -153,8 +153,8 @@ public class XOMUtil
     /**
      * Gets a node's attribute as a string.
      * 
-     * @param node Node containing the attribute
-     * @param attribute Name of the attribute
+     * @param node Node containing the attribute.
+     * @param attribute Name of the attribute.
      * @param defaultValue Value to return if the attribute does not exist
      *        or does not contain a value.
      * @return String
@@ -180,8 +180,8 @@ public class XOMUtil
      * an IllegalArgumentException is throw. This method is only meant to 
      * replace or insert a single node.
      * 
-     * @param parent Parent node
-     * @param child Child node
+     * @param parent Parent node.
+     * @param child Child node.
      */
     public static void insertOrReplace(Element parent, Element child)
     {
@@ -206,9 +206,9 @@ public class XOMUtil
     /**
      * Converts a XOM DOM node into its XML equivalent.
      * 
-     * @param node Node to convert to XML
-     * @return Node as XML
-     * @throws IOException on I/O error
+     * @param node Node to convert to XML.
+     * @return Node as XML.
+     * @throws IOException on I/O error.
      */
     public static String toXML(Node node) throws IOException
     {    
@@ -241,10 +241,10 @@ public class XOMUtil
      * null or the child does not exist, then the defaultNode is returned 
      * instead.
      * 
-     * @param node Node to retrieve child element from
-     * @param elementName Name of child element
-     * @param defaultNode Returned if child element is not found
-     * @return First child element if it exists, or defaultNode otherwise
+     * @param node Node to retrieve child element from.
+     * @param elementName Name of child element.
+     * @param defaultNode Returned if child element is not found.
+     * @return First child element if it exists, or defaultNode otherwise.
      */    
     public static Element getFirstChildElement(
         Element node, 

@@ -477,12 +477,12 @@ public final class ResourceUtil
     /**
      * Exports a resource to bytes and encapsulates in a class.
      * 
-     * @param resource Name of resource
-     * @param packageName Name of package to create object in
-     * @param className Name of class to assign to created object
-     * @param destDir Directory that generated file should be placed in
-     * @return Generated java file as a string
-     * @throws IOException if an I/O error occurs
+     * @param resource Name of resource.
+     * @param packageName Name of package to create object in.
+     * @param className Name of class to assign to created object.
+     * @param destDir Directory that generated file should be placed in.
+     * @return Generated java file as a string.
+     * @throws IOException if an I/O error occurs.
      */
     public static String exportToClass(
         String resource, 

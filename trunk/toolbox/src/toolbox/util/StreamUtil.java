@@ -17,8 +17,7 @@ import org.apache.log4j.Logger;
  */
 public final class StreamUtil
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(StreamUtil.class);
+    private static final Logger logger_ = Logger.getLogger(StreamUtil.class);
 
     // Clover private constructor workaround
     static { new StreamUtil(); }
@@ -41,9 +40,9 @@ public final class StreamUtil
     /**
      * Converts the contents of an character input stream to a string.
      * 
-     * @param inputStream Input stream to read from
+     * @param inputStream Input stream to read from.
      * @return String representation of the input stream contents.
-     * @throws IOException on IO error
+     * @throws IOException on I/O error.
      */
     public static String asString(InputStream inputStream) throws IOException
     {
@@ -54,9 +53,9 @@ public final class StreamUtil
     /**
      * Converts the remaining contents of an InputStream to a byte array.
      * 
-     * @param is InputStream to convert
-     * @return Contents of the stream as a byte array
-     * @throws IOException on IO error
+     * @param is InputStream to convert.
+     * @return Contents of the stream as a byte array.
+     * @throws IOException on I/O error.
      */    
     public static byte[] toBytes(InputStream is) throws IOException
     {

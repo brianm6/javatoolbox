@@ -45,7 +45,7 @@ public class EvictingList
     /**
      * Adds to the list.
      * 
-     * @param element Element to add
+     * @param element Element to add.
      */    
     public void add(Object element)
     {

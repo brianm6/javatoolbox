@@ -51,7 +51,7 @@ public class ObjectComparator implements Comparator, Serializable
      * Creates an ObjectComparator.
      * 
      * @param propertyName The property to compare or a period separated list
-     *        of properties (e.g. address.line1 )
+     *        of properties (e.g. address.line1 ).
      */
     public ObjectComparator(String propertyName)
     {
@@ -62,8 +62,8 @@ public class ObjectComparator implements Comparator, Serializable
     /**
      * Creates an ObjectComparator.
      *
-     * @param propertyName Property name
-     * @param comparator Comparator
+     * @param propertyName Property name.
+     * @param comparator Comparator.
      */
     public ObjectComparator(String propertyName, Comparator comparator)
     {
@@ -74,8 +74,8 @@ public class ObjectComparator implements Comparator, Serializable
     /**
      * Creates an ObjectComparator.
      *
-     * @param propertyName Property name
-     * @param reverseOrder Reverses the order
+     * @param propertyName Property name.
+     * @param reverseOrder Reverses the order.
      */
     public ObjectComparator(String propertyName, boolean reverseOrder)
     {
@@ -86,8 +86,8 @@ public class ObjectComparator implements Comparator, Serializable
     /**
      * Creates an ObjectComparator.
      *
-     * @param property1 Property one
-     * @param property2 Property two
+     * @param property1 Property one.
+     * @param property2 Property two.
      */
     public ObjectComparator(String property1, String property2)
     {
@@ -99,9 +99,9 @@ public class ObjectComparator implements Comparator, Serializable
     /**
      * Creates an ObjectComparator.
      *
-     * @param property1 Property 1
-     * @param property2 Property 2
-     * @param property3 Property 3
+     * @param property1 Property 1.
+     * @param property2 Property 2.
+     * @param property3 Property 3.
      */
     public ObjectComparator(
         String property1,
@@ -119,7 +119,7 @@ public class ObjectComparator implements Comparator, Serializable
     /**
      * Creates an ObjectComparator.
      *
-     * @param prop Property
+     * @param prop Property.
      */
     public ObjectComparator(Property prop)
     {
@@ -130,8 +130,8 @@ public class ObjectComparator implements Comparator, Serializable
     /**
      * Creates an ObjectComparator.
      *
-     * @param prop1 Property 1
-     * @param prop2 Property 2
+     * @param prop1 Property 1.
+     * @param prop2 Property 2.
      */
     public ObjectComparator(Property prop1, Property prop2)
     {
@@ -142,7 +142,7 @@ public class ObjectComparator implements Comparator, Serializable
     /**
      * Creates an ObjectComparator.
      *
-     * @param properties Properties
+     * @param properties Properties.
      */
     public ObjectComparator(Property[] properties)
     {
@@ -156,8 +156,8 @@ public class ObjectComparator implements Comparator, Serializable
     /**
      * Compares the objects using the identified Propertys.
      * 
-     * @param o1 First object
-     * @param o2 Second object
+     * @param o1 First object.
+     * @param o2 Second object.
      * @return Zero if equals, -1 
      *         -1   if o1 lessthan o2 
      *          1   if o1 greaterthan o2
@@ -203,8 +203,8 @@ public class ObjectComparator implements Comparator, Serializable
     /**
      * Tests for equality.
      * 
-     * @param obj Object to test
-     * @return True if equal, false otherwise
+     * @param obj Object to test.
+     * @return True if equal, false otherwise.
      */
     public boolean equals(Object obj)
     {
@@ -226,9 +226,9 @@ public class ObjectComparator implements Comparator, Serializable
     /**
      * Gets a property from an object.
      *
-     * @param obj Object to retrieve the property from
-     * @param property Property to retrieve
-     * @return Value of the property
+     * @param obj Object to retrieve the property from.
+     * @param property Property to retrieve.
+     * @return Value of the property.
      */
     protected Object getProperty(Object obj, Object property)
     {
@@ -267,7 +267,7 @@ public class ObjectComparator implements Comparator, Serializable
         /**
          * Creates a Property.
          *
-         * @param name Property name
+         * @param name Property name.
          */
         public Property(String name)
         {
@@ -278,8 +278,8 @@ public class ObjectComparator implements Comparator, Serializable
         /**
          * Creates a Property.
          * 
-         * @param name Property name
-         * @param reverseOrder Flip order
+         * @param name Property name.
+         * @param reverseOrder Flip order.
          */
         public Property(String name, boolean reverseOrder)
         {
@@ -290,8 +290,8 @@ public class ObjectComparator implements Comparator, Serializable
         /**
          * Creates a Property.
          * 
-         * @param name Name
-         * @param comparator Comparator
+         * @param name Name.
+         * @param comparator Comparator.
          */
         public Property(String name, Comparator comparator)
         {
@@ -302,9 +302,9 @@ public class ObjectComparator implements Comparator, Serializable
         /**
          * Creates a Property.
          * 
-         * @param name Property name
-         * @param reverseOrder Flip order
-         * @param comparator Comparator
+         * @param name Property name.
+         * @param reverseOrder Flip order.
+         * @param comparator Comparator.
          */
         public Property(
             String name,
@@ -323,8 +323,8 @@ public class ObjectComparator implements Comparator, Serializable
         /**
          * Tests for equality.
          * 
-         * @param obj Object
-         * @return True or false
+         * @param obj Object.
+         * @return True or false.
          */
         public boolean equals(Object obj)
         {

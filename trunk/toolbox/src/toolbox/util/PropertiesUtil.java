@@ -35,12 +35,14 @@ public final class PropertiesUtil
      * 
      * @param props Properties to retrieve boolean from.
      * @param name Name of the property.
-     * @param defaultValue Default value if property is not present or invalid
+     * @param defaultValue Default value if property is not present or invalid.
      * @return True if property represents the string "true". False if the
      *         property represents the string "false". Default value if the
      *         property is non-existant or an error is encountered.
      */
-    public static boolean getBoolean(Properties props, String name, 
+    public static boolean getBoolean(
+        Properties props,
+        String name,
         boolean defaultValue)
     {
         boolean b = defaultValue;
@@ -68,8 +70,7 @@ public final class PropertiesUtil
      * @param name Name of the property.
      * @param value Value to set.
      */
-    public static void setBoolean(Properties props, String name, 
-        boolean value)
+    public static void setBoolean(Properties props, String name, boolean value)
     {
         props.setProperty(name, value + "");   
     }
@@ -113,7 +114,7 @@ public final class PropertiesUtil
      * 
      * @param props Properties to retrieve long from.
      * @param name Name of the property.
-     * @param defaultValue Default value if property is not present or invalid
+     * @param defaultValue Default value if property is not present or invalid.
      * @return Long if property exists and is a valid long, default value
      *         otherwise.
      */

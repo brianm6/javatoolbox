@@ -31,8 +31,8 @@ public final class AsMap
     /**
      * Maps an object.
      * 
-     * @param object Object to map
-     * @return Map of object
+     * @param object Object to map.
+     * @return Map of object.
      */
     public static Map of(Object object)
     {
@@ -43,9 +43,9 @@ public final class AsMap
     /**
      * Maps an object.
      * 
-     * @param object Object to map
-     * @param policy Mapping policy
-     * @return Map of object
+     * @param object Object to map.
+     * @param policy Mapping policy.
+     * @return Map of object.
      */
     public static Map of(Object object, String policy)
     {

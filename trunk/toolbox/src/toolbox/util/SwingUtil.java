@@ -31,8 +31,7 @@ import toolbox.util.ui.AntiAliased;
  */
 public final class SwingUtil
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(SwingUtil.class);
+    private static final Logger logger_ = Logger.getLogger(SwingUtil.class);
 
     /**
      * Global antialias flag that all 'smart' components are aware of.

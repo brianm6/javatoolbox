@@ -13,8 +13,7 @@ import toolbox.util.collections.AsMap;
  */
 public final class ThreadUtil
 {
-    protected static final Logger logger_ = 
-        Logger.getLogger(ThreadUtil.class);
+    protected static final Logger logger_ = Logger.getLogger(ThreadUtil.class);
 
     // Clover private constructor workaround
     static { new ThreadUtil(); }

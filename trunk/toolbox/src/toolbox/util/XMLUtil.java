@@ -20,8 +20,7 @@ import org.xml.sax.SAXException;
  */
 public class XMLUtil
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(XMLUtil.class);
+    private static final Logger logger_ = Logger.getLogger(XMLUtil.class);
         
     /**
      * Formats and indents XML. 

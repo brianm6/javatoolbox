@@ -7,6 +7,10 @@ import java.io.File;
  */
 public final class Platform
 {
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
     private static final int UNIX = 0x31337;
     private static final int WINDOWS_9X = 0x640;
     private static final int WINDOWS_NT = 0x666;
@@ -18,7 +22,7 @@ public final class Platform
     private static boolean java14;
 
     //--------------------------------------------------------------------------
-    // Static Block
+    // Static
     //--------------------------------------------------------------------------
 
     // Clover private constructor workaround

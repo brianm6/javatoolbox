@@ -31,7 +31,7 @@ public final class StringUtil
     /** 
      * New line.
      */
-    public static final String NL = "\n";
+    public static final String NL = "\n"; 
     //System.getProperty("line.separator");
     
     /** 
@@ -289,8 +289,8 @@ public final class StringUtil
      *                  111 <- read upwards
      * </pre> 
      * 
-     * @param s String to generate a ruler for
-     * @return String containing the original string with the ruler appended
+     * @param s String to generate a ruler for.
+     * @return String containing the original string with the ruler appended.
      */
     public static String getStringRuler(String s)
     {

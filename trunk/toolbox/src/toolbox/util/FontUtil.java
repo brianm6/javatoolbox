@@ -20,6 +20,10 @@ public final class FontUtil
 {
     private static final Logger logger_ = Logger.getLogger(FontUtil.class);
     
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /** 
      * Preferred monospaced font.
      */
@@ -64,7 +68,7 @@ public final class FontUtil
     /**
      * Serializes a font to its XML representation.
      * 
-     * @param f Font to serialze
+     * @param f Font to serialze.
      * @return Element that captures the fonts characteristics.
      */
     public static Element toElement(Font f)
@@ -83,8 +87,8 @@ public final class FontUtil
     /**
      * Hydrates a font from its XML representation.
      * 
-     * @param e Element containing the font specification
-     * @return Font
+     * @param e Element containing the font specification.
+     * @return Font.
      */
     public static Font toFont(Element e)
     {
