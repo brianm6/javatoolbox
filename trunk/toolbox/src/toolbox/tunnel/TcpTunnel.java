@@ -15,7 +15,9 @@ import org.apache.log4j.Logger;
 
 import toolbox.util.ExceptionUtil;
 import toolbox.util.ResourceCloser;
+import toolbox.util.io.EventOutputStream;
 import toolbox.util.io.MulticastOutputStream;
+import toolbox.util.io.NullOutputStream;
 
 /**
  * A TcpTunnel serves as a transparent intermediary between a TCP conection on 
@@ -42,7 +44,11 @@ public class TcpTunnel implements TcpTunnelListener
     private static final Logger logger_ = 
         Logger.getLogger(TcpTunnel.class);
 
-    private ServerSocket ss;
+    // Stream names used with EventOutputStream
+    private static final String STREAM_IN  = "in";
+    private static final String STREAM_OUT = "out";
+
+    private ServerSocket ss_;
     private boolean      stop_ = false;
     private int          listenPort_;
     private String       remoteHost_;
@@ -50,6 +56,9 @@ public class TcpTunnel implements TcpTunnelListener
     private List         outgoingStreams_;
     private List         incomingStreams_;
     private List         listeners_;
+    
+    private int inTotal_;
+    private int outTotal_;
     
     /**
      * Entrypoint 
@@ -103,7 +112,9 @@ public class TcpTunnel implements TcpTunnelListener
         
         incomingStreams_ = new ArrayList();
         outgoingStreams_ = new ArrayList();
-        listeners_ = new ArrayList();
+        listeners_       = new ArrayList();
+        inTotal_         = 0;
+        outTotal_        = 0;
     }    
        
     //--------------------------------------------------------------------------
@@ -142,15 +153,15 @@ public class TcpTunnel implements TcpTunnelListener
         try
         {
             // Server socket on listenPort
-            ss = new ServerSocket(listenPort_);
-            ss.setSoTimeout(5000);
+            ss_ = new ServerSocket(listenPort_);
+            ss_.setSoTimeout(5000);
             stop_ = false;
             
             while (!stop_)
             {
                 try
                 {
-                    if (!ss.isClosed())
+                    if (!ss_.isClosed())
                     {
                         if (!alreadyListened)
                             fireStatusChanged(
@@ -158,7 +169,7 @@ public class TcpTunnel implements TcpTunnelListener
                                     listenPort_);
 
                         // Client socket
-                        Socket cs = ss.accept();
+                        Socket cs = ss_.accept();
     
                         // Remote socket
                         Socket rs = new Socket(remoteHost_,remotePort_);
@@ -177,6 +188,14 @@ public class TcpTunnel implements TcpTunnelListener
                             
                         outStreams.addStream(rs.getOutputStream());
                         
+                        EventOutputStream eos = 
+                            new EventOutputStream(
+                                STREAM_OUT, new NullOutputStream());
+                                
+                        eos.addListener(new OutputStreamListener());
+                            
+                        outStreams.addStream(eos);
+                        
                         for (Iterator i = outgoingStreams_.iterator(); 
                             i.hasNext();)
                                 outStreams.addStream((OutputStream)i.next());    
@@ -185,6 +204,14 @@ public class TcpTunnel implements TcpTunnelListener
                             new MulticastOutputStream();
                             
                         inStreams.addStream(cs.getOutputStream());
+                        
+                        EventOutputStream eis = 
+                            new EventOutputStream(
+                                STREAM_IN, new NullOutputStream());
+                        
+                        eis.addListener(new OutputStreamListener());    
+                        
+                        inStreams.addStream(eis);
                         
                         for (Iterator i = incomingStreams_.iterator(); 
                             i.hasNext();)
@@ -224,7 +251,7 @@ public class TcpTunnel implements TcpTunnelListener
     public void stop()
     {
         stop_ = true;
-        ResourceCloser.close(ss);    
+        ResourceCloser.close(ss_);    
         fireStatusChanged("Tunnel stopped");
     }
     
@@ -254,6 +281,20 @@ public class TcpTunnel implements TcpTunnelListener
             ((TcpTunnelListener) i.next()).statusChanged(this, status);    
     }
     
+    protected void fireBytesRead(int connRead)
+    {
+        for (Iterator i=listeners_.iterator(); i.hasNext(); )
+            ((TcpTunnelListener) i.next()).bytesRead(this, connRead, inTotal_);
+    }
+
+    protected void fireBytesWritten(int connWritten)
+    {
+        for (Iterator i=listeners_.iterator(); i.hasNext(); )
+            ((TcpTunnelListener) i.next()).bytesWritten(
+                this, connWritten, outTotal_);
+    }
+
+    
     //--------------------------------------------------------------------------
     // Interface TcpTunnelListener
     //--------------------------------------------------------------------------
@@ -265,5 +306,66 @@ public class TcpTunnel implements TcpTunnelListener
     public void statusChanged(TcpTunnel tunnel, String status)
     {
         System.out.println(status);
+    }
+    
+    /**
+     * @see toolbox.tunnel.TcpTunnelListener#bytesRead(
+     *      toolbox.tunnel.TcpTunnel, int, int)
+     */
+    public void bytesRead(TcpTunnel tunnel, int connBytesRead, 
+                          int totalBytesRead)
+    {
+        System.out.println("[Bytes read: " + connBytesRead + "]");
+    }
+
+    /**
+     * @see toolbox.tunnel.TcpTunnelListener#bytesWritten(
+     *      toolbox.tunnel.TcpTunnel, int, int)
+     */
+    public void bytesWritten(TcpTunnel tunnel, int connBytesWritten, 
+                             int totalBytesWritten)
+    {
+        System.out.println("[Bytes written: " + connBytesWritten + "]");
+    }
+    
+    //--------------------------------------------------------------------------
+    // Inner Classes
+    //--------------------------------------------------------------------------
+    
+    class OutputStreamListener implements EventOutputStream.Listener
+    {
+        public void byteWritten(EventOutputStream stream, int b)
+        { 
+        }
+        
+        /**
+         * Tally up counts and generate bytesRead/Written events when
+         * stream is closed
+         */
+        public void streamClosed(EventOutputStream stream)
+        {
+            String name = stream.getName();
+            int count = stream.getCount();
+            
+            if (name.equals(STREAM_IN))
+            {
+                inTotal_ += count;
+                fireBytesRead(count);
+            }
+            else if (name.equals(STREAM_OUT))
+            {
+                outTotal_ += count;
+                fireBytesWritten(count);
+            }
+            else
+            {
+                throw new IllegalArgumentException(
+                    "Invalid stream name:" + name);
+            } 
+        }
+        
+        public void streamFlushed(EventOutputStream stream)
+        {
+        }
     }
 }
