@@ -13,12 +13,12 @@ import toolbox.util.Figlet;
  * <pre class="snippet">
  * 
  *   &lt;taskdef 
- *     name=&quot;banner&quot; 
+ *     name=&quot;figlet&quot; 
  *     classname=&quot;toolbox.ant.FigletTask
  *     classpath=&quot;/path/to/toolbox-ant.jar&quot; /&gt;
  *   
  *   &lt;target name=&quot;testFigletTask&quot;&gt;
- *     &lt;banner message=&quot;Yippee!&quot; /&gt;
+ *     &lt;figlet message=&quot;Yippee!&quot; /&gt;
  *   &lt;/target&gt;
  * 
  * </pre>
