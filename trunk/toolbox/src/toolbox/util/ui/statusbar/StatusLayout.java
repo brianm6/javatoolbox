@@ -5,13 +5,20 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
- * Layout for the statusbar
+ * Layout for the statusbar.
+ * <p> 
+ * Originally created by Claude Duguay<br>
+ * Copyright (c) 2000<br>
  */
 public class StatusLayout extends AbstractLayout
 {
-    private HashMap table_ = new HashMap();
+    /**
+     * Table of component -> constraints
+     */
+    private Map table_ = new HashMap();
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -172,9 +179,3 @@ public class StatusLayout extends AbstractLayout
         }
     }
 }
-
-/*
-Originally created by Claude Duguay
-Copyright (c) 2000
-*/
-
