@@ -8,6 +8,8 @@ import java.util.Date;
 /**
  * Utility class that deals with both the DATE and TIME portions of the 
  * java.util.Date object
+ * 
+ * TODO: Revisit chaining vs. confusing
  */
 public final class DateTimeUtil
 {
@@ -36,10 +38,9 @@ public final class DateTimeUtil
         return df.format(d);
     }
     
-    
     /**
-     * Adds individual time components to a date. 
-     * The original date is returned for chaining.
+     * Adds individual time components to a date. The original date is returned 
+     * for chaining.
      * 
      * @param   date     Date to modify
      * @param   years    Number of years to add
@@ -65,7 +66,6 @@ public final class DateTimeUtil
         return date;
     }
     
-    
     /**
      * Gets the date/time of the beginning of the current day
      * 
@@ -75,7 +75,6 @@ public final class DateTimeUtil
     {
         return getBeginningOfDay(new Date());
     }
-    
     
     /**
      * Convenience method to get the time of day immediately after is rolled 
@@ -96,7 +95,6 @@ public final class DateTimeUtil
         return c.getTime();
     }
 
-
     /**
      * Get earliest notion of java time
      * 
@@ -106,7 +104,6 @@ public final class DateTimeUtil
     {
         return new Date(0);
     }
-    
     
     /**
      * Convenience method to get the time of the current day preset to 
@@ -118,7 +115,6 @@ public final class DateTimeUtil
     {
         return getEndOfDay(new Date());
     }
-
 
     /**
      * Convenience method to get the time of the given day immediately 
@@ -138,7 +134,6 @@ public final class DateTimeUtil
         c.set(Calendar.MILLISECOND, 999);
         return c.getTime();
     }
-
     
     /**
      * Gets a date far out in the future
@@ -151,7 +146,6 @@ public final class DateTimeUtil
         c.set(99999, 1, 1);
         return c.getTime();
     }
-    
 }
 
 /*
