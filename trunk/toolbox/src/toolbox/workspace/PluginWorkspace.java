@@ -120,7 +120,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     private Element prefs_;
     
     /** 
-     * Map of plugin names -> plugins 
+     * Map of (pluginName:String, pluginInstance:IPlugin) 
      */
     private Map plugins_ = new SequencedHashMap();
     
@@ -129,6 +129,9 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      */
     private Map bootstrapMap_;
     
+    /**
+     * Unloaded preferences
+     */
     private Element unloadedPrefs_;
         
     //--------------------------------------------------------------------------
@@ -209,13 +212,11 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         for (int i=0; i<pluginWrappers.size(); i++)
         {
             pluginWrapper = pluginWrappers.get(i);
-                
-            Element pluginNode = 
-                pluginWrapper.getFirstChildElement(plugin.getName());
-                    
-            if (pluginNode != null)
+            
+            if (pluginWrapper.getAttributeValue(ATTR_CLASS).equals(
+                plugin.getClass().getName()))
             {
-                unloadedPrefs_.removeChild(pluginWrapper);
+                pluginWrapper.detach();
                 workspaceNode.appendChild(pluginWrapper);
                 break;    
             }
@@ -278,15 +279,19 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      *                      interface
      * @throws Exception on instantiation error
      */
-    public void registerPlugin(String pluginClass, Element prefs) throws Exception
+    public void registerPlugin(String pluginClass, Element prefs) 
+        throws Exception
     {
         // Make sure this plugin hasn't already been loaded
-        for (Iterator i = plugins_.values().iterator(); i.hasNext(); )
-            if (i.next().getClass().getName().equals(pluginClass))
-                return;                
-    
-        IPlugin plugin = (IPlugin) Class.forName(pluginClass).newInstance();
-        registerPlugin(plugin, prefs);
+        if (hasPlugin(pluginClass))
+        {
+            IPlugin plugin = (IPlugin) Class.forName(pluginClass).newInstance();
+            registerPlugin(plugin, prefs);
+        }
+        else
+        {
+            logger_.warn("Plugin " + pluginClass + "has already ");
+        }                
     }
 
     /**
@@ -297,45 +302,19 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      */
     public void deregisterPlugin(String pluginClass) throws Exception
     {
-        // Make sure plugin is registered
         if (hasPlugin(pluginClass))
         {
             IPlugin plugin = getPluginByClass(pluginClass);
 
-            // Move prefs of soon to be unloaded plugin from the prefs_ DOM to
-            // the unloadedPrefs_ DOM so that they don't get thrown away and
-            // can be picked up later by savePrefs() for saving
-            
-            Element workspaceNode = 
-                prefs_.getFirstChildElement(NODE_WORKSPACE);
-                
-            Elements pluginWrappers = 
-                workspaceNode.getChildElements(NODE_PLUGIN);
-            
-            Element pluginWrapper = null;
-                
-            for (int i=0; i<pluginWrappers.size(); i++)
-            {
-                pluginWrapper = pluginWrappers.get(i);
-                
-                String pluginClazz = 
-                    XOMUtil.getStringAttribute(pluginWrapper, ATTR_CLASS, "");
-                    
-                if (pluginClazz.equals(pluginClass))
-                {
-                    workspaceNode.removeChild(pluginWrapper);
-                    unloadedPrefs_.appendChild(pluginWrapper);
-                    break;    
-                }
-            }
-
-            pluginWrapper.addAttribute(new Attribute(ATTR_LOADED, "false"));
+            Element pluginNode = new Element(NODE_PLUGIN);
+            pluginNode.addAttribute(new Attribute(ATTR_CLASS, pluginClass));
+            pluginNode.addAttribute(new Attribute(ATTR_LOADED, "false"));
+            plugin.savePrefs(pluginNode);
+            unloadedPrefs_.appendChild(pluginNode);
             
             tabbedPane_.remove(tabbedPane_.indexOfTab(plugin.getName()));
             plugins_.remove(plugin.getName());
             plugin.shutdown();
-            
-            logger_.debug("\n\nUNLOADED\n\n" + XOMUtil.toXML(unloadedPrefs_));
         }
         else
         {
