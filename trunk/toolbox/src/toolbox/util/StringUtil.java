@@ -609,4 +609,33 @@ public final class StringUtil
     {
         return new Boolean(s).booleanValue();        
     }
+    
+    
+    /**
+     * Encloses a string in horizontal bars for easier identification when
+     * printing out. Example:
+     * <pre>
+     * 
+     * =========================================================================
+     * Your text goes here
+     * =========================================================================
+     * 
+     * </pre>
+     * 
+     * @param s String to enclose in bars.
+     * @return String
+     */
+    public static String bars(String s)
+    {
+        StringBuffer sb = new StringBuffer();
+        String bar = StringUtil.repeat("=", 80);
+        sb.append(bar);
+        sb.append("\n");
+        sb.append(s);
+        sb.append("\n");
+        sb.append(bar);
+        sb.append("\n");
+        
+        return sb.toString();
+    }
 }
