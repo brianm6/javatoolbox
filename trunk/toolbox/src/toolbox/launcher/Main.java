@@ -32,6 +32,7 @@ public class Main
         programMap.put("tail",          "toolbox.tail.Main");
         programMap.put("jtcptunnel",    "toolbox.tunnel.JTcpTunnel");
         programMap.put("tcptunnel",     "toolbox.tunnel.TcpTunnel");
+        programMap.put("tree",          "toolbox.tree.Tree");
     }
     
     /**
@@ -141,14 +142,16 @@ public class Main
             "       where program is:                               \n" +
             "                                                       \n" +
             "       findclass     => find a java class file         \n" + 
+            "       showclasspath => show detailed classpath info   \n" +            
+            "       showpath      => show detailed path info        \n" +            
+            "       tail          => tails a file with follow       \n" +
+            "       tcptunnel     => tcp tunnel                     \n" +
+            "       tree          => prints directory as tree       \n" +
+            "                                                       \n" +                        
             "       jfindclass    => gui version of findclass       \n" +
-            "       showclasspath => show detailed classpath info   \n" +
-            "       showpath      => show detailed path info        \n" +
             "       jsourceview   => java code counter              \n" +
             "       jtail         => java tailer (GUI)              \n" +
-            "       tail          => java tail   (console)          \n" +
-            "       jtcptunnel    => tcp tunnel  (GUI)              \n" +
-            "       tcptunnel     => tcp tunnel  (console)          \n" );
+            "       jtcptunnel    => tcp tunnel  (GUI)              \n" );
     }
     
 }
