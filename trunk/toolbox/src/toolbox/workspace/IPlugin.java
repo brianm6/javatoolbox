@@ -3,7 +3,7 @@ package toolbox.util.ui.plugin;
 import java.awt.Component;
 import java.util.Properties;
 
-import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 
 /**
  * GUI component plugin interface for the PluginWorkspace
@@ -30,12 +30,12 @@ public interface IPlugin
 
     
     /**
-     * Optional menu items
-     * 
-     * @return Plugin specific menu that is added to the application menubar
+     * Optional menu bar
+     *
+     * @return  Plugin specific menu bar
      */
-    public JMenu getMenu();
-
+    public JMenuBar getMenuBar();
+    
     
     /**
      * Initializes the plugin
