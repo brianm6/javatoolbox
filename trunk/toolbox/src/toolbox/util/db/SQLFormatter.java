@@ -55,7 +55,7 @@ public class SQLFormatter
         {"'", "'", "" }, 
         {"\"", "\"", ""}, 
         {"/*", "*/", "1"}, 
-        {"--", "\r\n", "2"}
+        {"--", "\n" /*"\r\n"*/, "2"}
     };
     
     //--------------------------------------------------------------------------
@@ -67,7 +67,7 @@ public class SQLFormatter
      */
     public SQLFormatter()
     {
-        newLine_     = System.getProperty("line.separator");
+        newLine_     = "\n"; //System.getProperty("line.separator");
         indent_      = "    ";
         capMajor_    = false;
         capMinor_    = false;
