@@ -8,21 +8,20 @@ import org.apache.log4j.Logger;
 import toolbox.util.XMLUtil;
 
 /**
- * Unit test for XMLUtil
+ * Unit test for XMLUtil.
  */
 public class XMLUtilTest extends TestCase
 {
-    private static final Logger logger_ =
-        Logger.getLogger(XMLUtilTest.class);
+    private static final Logger logger_ = Logger.getLogger(XMLUtilTest.class);
 
     //--------------------------------------------------------------------------
     // Main
     //--------------------------------------------------------------------------
             
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -36,7 +35,7 @@ public class XMLUtilTest extends TestCase
     /**
      * Tests format()
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testFormat() throws Exception
     {
@@ -112,11 +111,12 @@ public class XMLUtilTest extends TestCase
         
     }
     
+    
     /**
      * Tests format() with XML containing a declaration. The formatter should
      * preserve the presence of the declaration.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testFormatWithDeclaration() throws Exception
     {

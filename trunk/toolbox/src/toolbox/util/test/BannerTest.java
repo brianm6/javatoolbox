@@ -8,21 +8,20 @@ import org.apache.log4j.Logger;
 import toolbox.util.Banner;
 
 /**
- * Unit test for Banner
+ * Unit test for Banner.
  */
 public class BannerTest extends TestCase
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(BannerTest.class);
+    private static final Logger logger_ = Logger.getLogger(BannerTest.class);
 
     //--------------------------------------------------------------------------
     // Main
     //--------------------------------------------------------------------------
     
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -34,9 +33,9 @@ public class BannerTest extends TestCase
     //--------------------------------------------------------------------------
         
     /**
-     * Tests figlet
+     * Tests figlet.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testFiglet() throws Exception
     {
@@ -46,8 +45,9 @@ public class BannerTest extends TestCase
         logger_.info("\n" + s);
     }
     
+    
     /**
-     * Tests main()
+     * Tests main().
      */
     public void testMain()
     {

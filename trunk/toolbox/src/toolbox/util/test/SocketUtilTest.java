@@ -15,7 +15,7 @@ import toolbox.util.SocketUtil;
 import toolbox.util.ThreadUtil;
 
 /**
- * Unit test for SocketUtil
+ * Unit test for SocketUtil.
  */
 public class SocketUtilTest extends TestCase
 {
@@ -27,9 +27,9 @@ public class SocketUtilTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Entrypoint
+     * Entrypoint.
      *
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -53,6 +53,7 @@ public class SocketUtilTest extends TestCase
         assertTrue(SocketUtil.isReasonAcceptTimeout(iioe));
     }
     
+    
     /**
      * Tests isReasonSocketClosed()
      */
@@ -71,10 +72,11 @@ public class SocketUtilTest extends TestCase
         assertTrue(SocketUtil.isReasonSocketClosed(se2));
     }
     
+    
     /**
-     * Tests connectWithRetry() for failure scenario
+     * Tests connectWithRetry() for failure scenario.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testConnectWithRetryFailure() throws Exception
     {
@@ -86,10 +88,11 @@ public class SocketUtilTest extends TestCase
             55555, 1, 5);
     }
     
+    
     /**
-     * Tests connectWithRetry() for success scenario
+     * Tests connectWithRetry() for success scenario.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testConnectWithRetrySuccess() throws Exception
     {
@@ -112,10 +115,11 @@ public class SocketUtilTest extends TestCase
         SocketUtil.close(socket);
     }
     
+    
     /**
-     * Tests getFreePort()
+     * Tests getFreePort().
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */ 
     public void testGetFreePort() throws Exception
     {
@@ -129,10 +133,11 @@ public class SocketUtilTest extends TestCase
         }
     }
     
+    
     /**
      * Tests close(Socket)
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testCloseSocket() throws Exception
     {
@@ -156,10 +161,11 @@ public class SocketUtilTest extends TestCase
         serverThread.join();
     }
     
+    
     /**
      * Tests close(ServerSocket)
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testCloseServerSocket() throws Exception
     {
@@ -186,7 +192,4 @@ public class SocketUtilTest extends TestCase
         
         //serverThread.join();
     }
-    
-    
-    
 }

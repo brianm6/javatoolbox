@@ -12,7 +12,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.CollectionUtil;
 
 /**
- * Unit test for CollectionUtil 
+ * Unit test for CollectionUtil. 
  */
 public class CollectionUtilTest extends TestCase
 {
@@ -24,9 +24,9 @@ public class CollectionUtilTest extends TestCase
     //--------------------------------------------------------------------------
             
     /**
-     * Entrypoint
+     * Entrypoint.
      *
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {

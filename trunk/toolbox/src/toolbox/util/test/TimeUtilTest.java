@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.TimeUtil;
 
 /**
- * Unit test for TimeUtil
+ * Unit test for TimeUtil.
  */
 public class TimeUtilTest extends TestCase
 {
@@ -22,9 +22,9 @@ public class TimeUtilTest extends TestCase
     //--------------------------------------------------------------------------
             
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {

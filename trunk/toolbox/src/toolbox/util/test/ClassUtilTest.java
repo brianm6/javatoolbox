@@ -15,21 +15,20 @@ import toolbox.util.ClassUtil;
 import toolbox.util.StringUtil;
 
 /**
- * Unit test for ClassUtil
+ * Unit test for ClassUtil.
  */
 public class ClassUtilTest extends TestCase
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(ClassUtilTest.class);
+    private static final Logger logger_ = Logger.getLogger(ClassUtilTest.class);
 
     //--------------------------------------------------------------------------
     // Main
     //--------------------------------------------------------------------------
         
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -41,7 +40,7 @@ public class ClassUtilTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Tests getClassesInPackage() for a package in a file system directory
+     * Tests getClassesInPackage() for a package in a file system directory.
      */
     public void testGetClassesInPackageDirectory()
     {
@@ -61,8 +60,9 @@ public class ClassUtilTest extends TestCase
         //    ArrayUtil.contains(classes, StringUtil.class.getName()));
     }
     
+    
     /**
-     * Tests getClassesInPackage() for a package in a jar file
+     * Tests getClassesInPackage() for a package in a jar file.
      */
     public void testGetClassesInPackageArchive()
     {
@@ -74,8 +74,9 @@ public class ClassUtilTest extends TestCase
             ArrayUtil.contains(classes, TestRunner.class.getName()));
     }
     
+    
     /**
-     * Tests getClassesInPackage() for a package in the boot classpath
+     * Tests getClassesInPackage() for a package in the boot classpath.
      */
     public void testGetClassesInPackageBoot()
     {
@@ -88,8 +89,9 @@ public class ClassUtilTest extends TestCase
             ArrayUtil.contains(classes, String.class.getName()));
     }
     
+    
     /**
-     * Tests getPackagesInClasspath() 
+     * Tests getPackagesInClasspath(). 
      */
     public void testGetPackagesInClasspath()
     {   
@@ -100,6 +102,7 @@ public class ClassUtilTest extends TestCase
         assertTrue("tgpic1", ArrayUtil.contains(packages, "java.lang"));
         assertTrue("tgpic3", ArrayUtil.contains(packages, "junit.textui"));
     }
+    
     
     /**
      * Tests getClasspath()
@@ -113,6 +116,7 @@ public class ClassUtilTest extends TestCase
         String[] paths = StringUtil.tokenize(classpath, File.pathSeparator);
         SmartLogger.info(logger_, ArrayUtil.toString(paths, true));
     }
+    
     
     /**
      * Tests isArchive()
@@ -137,7 +141,8 @@ public class ClassUtilTest extends TestCase
         assertTrue("tar11", !ClassUtil.isArchive("df.jarx"));
         assertTrue("tar12", !ClassUtil.isArchive("df.zipo"));
     }
-     
+    
+    
     /**
      * Tests isClassFile()
      */ 
@@ -160,6 +165,7 @@ public class ClassUtilTest extends TestCase
         assertTrue(!ClassUtil.isArchive("X.CLASS.X"));
     }
     
+    
     /**
      * Tests packageToPath()
      */
@@ -171,13 +177,13 @@ public class ClassUtilTest extends TestCase
 
         assertEquals("a" + File.separatorChar + "b" , 
             ClassUtil.packageToPath("a.b"));
-
                 
         assertEquals("a" + File.separatorChar + 
                      "b" + File.separatorChar +
                      "c" + File.separatorChar + 
                      "d", ClassUtil.packageToPath("a.b.c.d"));
     }
+
     
     /**
      * Tests stripPackage()
@@ -196,6 +202,7 @@ public class ClassUtilTest extends TestCase
             ClassUtil.stripPackage("NoPackage"));
     }
     
+    
     /**
      * Tests stripClass()
      */
@@ -213,8 +220,9 @@ public class ClassUtilTest extends TestCase
             ClassUtil.stripClass("")); 
     }
     
+    
     /**
-     * Tests getMatchingClasses() for null, zero, one, and > 1 as input
+     * Tests getMatchingClasses() for null, zero, one, and > 1 as input.
      */
     public void testGetMatchingClasses()
     {
@@ -239,6 +247,7 @@ public class ClassUtilTest extends TestCase
         assertEquals(Integer.class, many[1]);
         assertEquals(ArrayList.class, many[2]);
     }
+    
     
     /**
      * Tests getClassLocation()

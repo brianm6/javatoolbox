@@ -13,7 +13,7 @@ import toolbox.util.ElapsedTime;
 import toolbox.util.ThreadUtil;
 
 /**
- * Unit test for ThreadUtil
+ * Unit test for ThreadUtil.
  */
 public class ThreadUtilTest extends TestCase
 {
@@ -25,9 +25,9 @@ public class ThreadUtilTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -49,6 +49,7 @@ public class ThreadUtilTest extends TestCase
         ThreadUtil.sleep(500);
     }
     
+    
     /**
      * Tests join(Thread)
      */
@@ -64,6 +65,7 @@ public class ThreadUtilTest extends TestCase
         ThreadUtil.join(null);
     }
 
+    
     /**
      * Tests join(Thread, millis)
      */
@@ -80,6 +82,7 @@ public class ThreadUtilTest extends TestCase
         ThreadUtil.join(null, 1000);
     }
 
+    
     /**
      * Tests join()
      */
@@ -90,10 +93,11 @@ public class ThreadUtilTest extends TestCase
         ThreadUtil.join(1000);
     }
 
+    
     /**
-     * Tests run() on a method with no args
+     * Tests run() on a method with no args.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testRunSimple() throws Exception
     {
@@ -104,10 +108,11 @@ public class ThreadUtilTest extends TestCase
         assertTrue("ping was not executed", target.pingSimpleCalled_);
     }
 
+    
     /**
-     * Tests run() on a method with a single arg
+     * Tests run() on a method with a single arg.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testRunOneArg() throws Exception
     {
@@ -118,10 +123,11 @@ public class ThreadUtilTest extends TestCase
         assertTrue("ping was not executed", target.pingOneArgCalled_);
     }
 
+    
     /**
-     * Tests run() on a method with simple args and arrays
+     * Tests run() on a method with simple args and arrays.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testRunArgs() throws Exception
     {
@@ -140,10 +146,11 @@ public class ThreadUtilTest extends TestCase
         assertTrue("pingArgs was not executed", target.pingArgsCalled_);
     }
  
+    
     /**
-     * Tests run() on a method with complex arg types
+     * Tests run() on a method with complex arg types.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testRunComplex() throws Exception
     {
@@ -165,10 +172,11 @@ public class ThreadUtilTest extends TestCase
         assertTrue("pingComplex was not executed", target.pingComplexCalled_);
     } 
 
+    
     /**
      * Tests run() on a method with ???
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testRunAssignable() throws Exception
     {
@@ -189,10 +197,11 @@ public class ThreadUtilTest extends TestCase
         
     } 
 
+    
     /**
-     * Tests run() on a method with primitive args
+     * Tests run() on a method with primitive args.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testRunPrimitive() throws Exception
     {
@@ -214,10 +223,11 @@ public class ThreadUtilTest extends TestCase
             target.pingPrimitiveCalled_);
     } 
 
+    
     /**
-     * Tests run() with a bogus method
+     * Tests run() with a bogus method.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testRunBogusMethod() throws Exception
     {
@@ -236,10 +246,11 @@ public class ThreadUtilTest extends TestCase
         }
     } 
 
+    
     /**
-     * Tests run() with a bogus parameter
+     * Tests run() with a bogus parameter.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testRunBogusParameter() throws Exception
     {
@@ -258,10 +269,11 @@ public class ThreadUtilTest extends TestCase
         }
     } 
 
+    
     /**
-     * Tests run() with a bogus target
+     * Tests run() with a bogus target.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testRunBogusTarget() throws Exception
     {
@@ -278,10 +290,11 @@ public class ThreadUtilTest extends TestCase
         }
     } 
 
+    
     /**
-     * Tests run() using the full signature with Class[]
+     * Tests run() using the full signature with Class[].
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testRunWithClassesIncluded() throws Exception
     {
@@ -298,10 +311,11 @@ public class ThreadUtilTest extends TestCase
         assertTrue("ping was not executed", target.pingOneArgCalled_);
     }
  
+    
     /**
-     * Tests from an inner class
+     * Tests from an inner class.
      * 
-     * @throws  Exception on error
+     * @throws Exception on error.
      */
     public void testInner() throws Exception
     {
@@ -311,10 +325,11 @@ public class ThreadUtilTest extends TestCase
         target.testFromInnerClass();
     }  
 
+    
     /**
-     * Tests stop() 
+     * Tests stop(). 
      * 
-     * @throws Exception
+     * @throws Exception on error
      */
     public void testStop() throws Exception
     {
@@ -328,8 +343,9 @@ public class ThreadUtilTest extends TestCase
         logger_.info(et);
     }
 
+    
     /**
-     * Tests stop() with a timeout 
+     * Tests stop() with a timeout. 
      * 
      * @throws Exception on error
      */
@@ -345,10 +361,11 @@ public class ThreadUtilTest extends TestCase
         logger_.info(et);
     }
 
+    
     /**
-     * Tests toString() 
+     * Tests toString(). 
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testToString() throws Exception
     {
@@ -367,7 +384,7 @@ public class ThreadUtilTest extends TestCase
     //--------------------------------------------------------------------------
      
     /**
-     * Test class for testRun()
+     * Test class for testRun().
      */   
     public class Tester
     {
@@ -379,6 +396,9 @@ public class ThreadUtilTest extends TestCase
         private boolean pingPrimitiveCalled_;
         private boolean pingInnerCalled_;
                
+        /**
+         * Creates a new Tester. 
+         */
         public Tester()
         {
             pingSimpleCalled_    = false;
@@ -389,8 +409,9 @@ public class ThreadUtilTest extends TestCase
             pingInnerCalled_     = false;
         }
         
+        
         /**
-         * Simplest method - no args 
+         * Simplest method - no args. 
          */
         public void pingSimple()
         {
@@ -398,8 +419,9 @@ public class ThreadUtilTest extends TestCase
             logger_.info("Called ping()");
         }
         
+        
         /**
-         * Method with a single arg
+         * Method with a single arg.
          */
         public void pingOneArg(String str)
         {
@@ -407,8 +429,9 @@ public class ThreadUtilTest extends TestCase
             logger_.info("Called pingOneArg(" + str + ", " + str + ")");
         }
         
+        
         /**
-         * Method with args of complex type
+         * Method with args of complex type.
          */
         public void pingArgs(String str, String[] strArray)
         {
@@ -417,8 +440,9 @@ public class ThreadUtilTest extends TestCase
                 ArrayUtil.toString(strArray, false) + ")");
         }
  
+        
         /**
-         * Test method with complex args
+         * Test method with complex args.
          */       
         public void pingComplex(Writer pw,  Integer i, Integer i2, String s)
         {
@@ -427,8 +451,9 @@ public class ThreadUtilTest extends TestCase
                 pw + i + " " + i2 + " " + s);
         }
         
+        
         /**
-         * Test method method with primitive args
+         * Test method method with primitive args.
          */
         public void pingPrimitive(int a, /*char c,*/ boolean b, long l, float f)
         {
@@ -439,8 +464,9 @@ public class ThreadUtilTest extends TestCase
                 a + " " + b + " " + l + " " + f);
         }
         
+        
         /**
-         * Test method which will accept Writer/PrintWriter
+         * Test method which will accept Writer/PrintWriter.
          */
         public void pingAssignable(Writer w)
         {
@@ -448,8 +474,9 @@ public class ThreadUtilTest extends TestCase
             pingAssignableCalled_ = true;        
         }
         
+        
         /**
-         * Simplest method - no args 
+         * Simplest method - no args. 
          */
         public void pingInner()
         {
@@ -457,8 +484,9 @@ public class ThreadUtilTest extends TestCase
             logger_.info("Called pingInner()");
         }
         
+        
         /**
-         * Test calling a method from in innerclass on itself
+         * Test calling a method from in innerclass on itself.
          */
         public void testFromInnerClass() throws Exception
         {
@@ -466,10 +494,11 @@ public class ThreadUtilTest extends TestCase
             assertTrue("pingInner() not called", pingInnerCalled_);
         }
         
+        
         /**
          * Returns the pingArgsCalled.
          * 
-         * @return boolean
+         * @return boolean.
          */
         public boolean isPingArgsCalled()
         {
@@ -486,6 +515,7 @@ public class ThreadUtilTest extends TestCase
             return pingComplexCalled_;
         }
 
+        
         /**
          * Returns the pingInnerCalled.
          * 
@@ -496,6 +526,7 @@ public class ThreadUtilTest extends TestCase
             return pingInnerCalled_;
         }
 
+        
         /**
          * Returns the pingPrimitiveCalled.
          * 
@@ -506,6 +537,7 @@ public class ThreadUtilTest extends TestCase
             return pingPrimitiveCalled_;
         }
 
+        
         /**
          * Returns the pingSimpleCalled.
          * 
@@ -516,50 +548,55 @@ public class ThreadUtilTest extends TestCase
             return pingSimpleCalled_;
         }
 
+        
         /**
          * Sets the pingArgsCalled.
          * 
-         * @param pingArgsCalled The pingArgsCalled to set
+         * @param pingArgsCalled The pingArgsCalled to set.
          */
         public void setPingArgsCalled(boolean pingArgsCalled)
         {
             this.pingArgsCalled_ = pingArgsCalled;
         }
 
+        
         /**
          * Sets the pingComplexCalled.
          * 
-         * @param pingComplexCalled The pingComplexCalled to set
+         * @param pingComplexCalled The pingComplexCalled to set.
          */
         public void setPingComplexCalled(boolean pingComplexCalled)
         {
             this.pingComplexCalled_ = pingComplexCalled;
         }
 
+        
         /**
          * Sets the pingInnerCalled.
          * 
-         * @param pingInnerCalled The pingInnerCalled to set
+         * @param pingInnerCalled The pingInnerCalled to set.
          */
         public void setPingInnerCalled(boolean pingInnerCalled)
         {
             this.pingInnerCalled_ = pingInnerCalled;
         }
 
+        
         /**
          * Sets the pingPrimitiveCalled.
          * 
-         * @param pingPrimitiveCalled The pingPrimitiveCalled to set
+         * @param pingPrimitiveCalled The pingPrimitiveCalled to set.
          */
         public void setPingPrimitiveCalled(boolean pingPrimitiveCalled)
         {
             this.pingPrimitiveCalled_ = pingPrimitiveCalled;
         }
 
+        
         /**
          * Sets the pingSimpleCalled.
          * 
-         * @param pingSimpleCalled The pingSimpleCalled to set
+         * @param pingSimpleCalled The pingSimpleCalled to set.
          */
         public void setPingSimpleCalled(boolean pingSimpleCalled)
         {
@@ -567,18 +604,31 @@ public class ThreadUtilTest extends TestCase
         }
     }
 
+    //--------------------------------------------------------------------------
+    // DelayedRunner 
+    //--------------------------------------------------------------------------
+    
     /**
-     * Delays execution for a number of milliseconds
+     * Delays execution for a number of milliseconds.
      */    
     class DelayedRunner implements Runnable
     {
         private int delay_;
         
+        /**
+         * Creates a DelayedRunner
+         * 
+         * @param delay Delay in milliseconds.
+         */
         public DelayedRunner(int delay)
         {
             delay_ = delay;           
         }
      
+        
+        /**
+         * @see java.lang.Runnable#run()
+         */
         public void run()
         {
             ThreadUtil.sleep(delay_);
