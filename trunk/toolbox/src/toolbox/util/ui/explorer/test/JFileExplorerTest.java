@@ -16,6 +16,7 @@ import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
 
+import toolbox.util.SwingUtil;
 import toolbox.util.ui.JFileExplorer;
 import toolbox.util.ui.JFileExplorerListener;
 
@@ -27,6 +28,10 @@ public class JFileExplorerTest extends TestCase
     private static final Logger logger_ = 
         Logger.getLogger(JFileExplorerTest.class);
         
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+            
     /**
      * Entrypoint
      * 
@@ -35,6 +40,18 @@ public class JFileExplorerTest extends TestCase
     public static void main(String[] args)
     {
         TestRunner.run(JFileExplorerTest.class);
+    }
+    
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+
+    /**
+     * Default constructor
+     */
+    public JFileExplorerTest() throws Exception
+    {
+        SwingUtil.setPreferredLAF();
     }
     
     //--------------------------------------------------------------------------
@@ -49,6 +66,7 @@ public class JFileExplorerTest extends TestCase
         // Just launch the file explorer in a jframe..nuttin else
         JFrame testFrame = new TestFrame();
         testFrame.pack();
+        SwingUtil.centerWindow(testFrame);
         testFrame.setVisible(true);
     }
     
