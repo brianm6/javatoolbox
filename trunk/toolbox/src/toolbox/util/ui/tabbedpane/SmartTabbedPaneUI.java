@@ -18,7 +18,11 @@ public class SmartTabbedPaneUI extends BasicTabbedPaneUI
 {
     private static final Logger logger_ =
         Logger.getLogger(SmartTabbedPaneUI.class);
-        
+    
+    //--------------------------------------------------------------------------
+    // Fields 
+    //--------------------------------------------------------------------------
+    
     /**
      * Bounds of the selected icon.
      */
@@ -71,10 +75,9 @@ public class SmartTabbedPaneUI extends BasicTabbedPaneUI
     //--------------------------------------------------------------------------
 
     /**
-     * @see javax.swing.plaf.basic.BasicTabbedPaneUI#layoutLabel(
-     *          int, java.awt.FontMetrics, int, java.lang.String, 
-     *          javax.swing.Icon, java.awt.Rectangle, java.awt.Rectangle, 
-     *          java.awt.Rectangle, boolean)
+     * @see javax.swing.plaf.basic.BasicTabbedPaneUI#layoutLabel(int, 
+     *      java.awt.FontMetrics, int, java.lang.String, javax.swing.Icon, 
+     *      java.awt.Rectangle, java.awt.Rectangle, java.awt.Rectangle, boolean)
      */
     protected void layoutLabel(
         int tabPlacement,

@@ -21,9 +21,9 @@ import toolbox.util.ui.ImageCache;
  * JSmartTabbedPane adds the following behavior to the default JTabbedPane.
  * <p>
  * <ul>
- *   <li>Support for antialiased text
- *   <li>Close icon on the tab itself
- *   <li>Notification the tab is about to removed
+ *   <li>Support for antialiased text.
+ *   <li>Icon on the tab itself that removes the tab.
+ *   <li>Notification the tab is about to removed.
  * </ul>
  * 
  * @see SmartTabbedPaneListener
@@ -47,17 +47,17 @@ public class JSmartTabbedPane extends JTabbedPane implements AntiAliased
     private boolean antiAliased_ = SwingUtil.getDefaultAntiAlias();
 
     /**
-     * Listeners.
+     * Array of listeners interested in JSmartTabbedPane generated events.
      */
     private SmartTabbedPaneListener[] listeners_;
 
     /**
-     * If true, an icon will appear on each tab allowing the tab to be closed.
+     * If true, an icon will appear on each tab allowing the tab to be removed.
      */
     private boolean closeable_;
 
     /**
-     * X icon that shows up on tabs if the tab is closeable.
+     * X icon that shows up on the tabs if the tab is removable.
      */
     private Icon closeIcon_;
     
@@ -66,7 +66,8 @@ public class JSmartTabbedPane extends JTabbedPane implements AntiAliased
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a JSmartTabbedPane that is not closeable.
+     * Creates a JSmartTabbedPane whose tabs are not removable via an icon on
+     * the tab.
      */
     public JSmartTabbedPane()
     {
@@ -77,7 +78,7 @@ public class JSmartTabbedPane extends JTabbedPane implements AntiAliased
     /**
      * Creates a JSmartTabbedPane.
      *
-     * @param closeable True to make tabs closable via an icon on the tab
+     * @param closeable True to make tabs removable via an icon on the tab
      *        itself or false otherwise.
      */
     public JSmartTabbedPane(boolean closeable)
@@ -89,7 +90,7 @@ public class JSmartTabbedPane extends JTabbedPane implements AntiAliased
     /**
      * Creates a JSmartTabbedPane.
      * 
-     * @param tabPlacement Tab placement
+     * @param tabPlacement Tab placement.
      */
     public JSmartTabbedPane(int tabPlacement)
     {
@@ -100,8 +101,8 @@ public class JSmartTabbedPane extends JTabbedPane implements AntiAliased
     /**
      * Creates a JSmartTabbedPane.
      * 
-     * @param tabPlacement Tab placement
-     * @param closeable True to make tabs closable via an icon on the tab
+     * @param tabPlacement Tab placement.
+     * @param closeable True to make tabs removable via an icon on the tab
      *        itself or false otherwise.
      */
     public JSmartTabbedPane(int tabPlacement, boolean closeable)
@@ -123,8 +124,8 @@ public class JSmartTabbedPane extends JTabbedPane implements AntiAliased
     /**
      * Creates a JSmartTabbedPane.
      * 
-     * @param tabPlacement Tab placement
-     * @param tabLayoutPolicy Tab layout policy
+     * @param tabPlacement Tab placement.
+     * @param tabLayoutPolicy Tab layout policy.
      */
     public JSmartTabbedPane(int tabPlacement, int tabLayoutPolicy)
     {
@@ -153,9 +154,9 @@ public class JSmartTabbedPane extends JTabbedPane implements AntiAliased
     /***
      * Adds a tab to the last position in the tabbed pane.
      * 
-     * @param title Tab title
-     * @param component Component to embed in the tab panel
-     * @param extraIcon Icon for display on the tab that will close the tab
+     * @param title Tab title.
+     * @param component Component to embed in the tab panel.
+     * @param extraIcon Icon for display on the tab that will close the tab.
      */
     protected void addTab(String title, Component component, Icon extraIcon)
     {
@@ -172,7 +173,7 @@ public class JSmartTabbedPane extends JTabbedPane implements AntiAliased
     /**
      * Adds a tabbed pane listener.
      * 
-     * @param listener Listener to add
+     * @param listener Listener to add.
      */
     public void addSmartTabbedPaneListener(SmartTabbedPaneListener listener)
     {
@@ -185,7 +186,7 @@ public class JSmartTabbedPane extends JTabbedPane implements AntiAliased
     /**
      * Removes a tabbed pane listener.
      * 
-     * @param listener Listener to remove
+     * @param listener Listener to remove.
      */
     public void removeSmartTabbedPaneListener(SmartTabbedPaneListener listener)
     {
@@ -199,7 +200,7 @@ public class JSmartTabbedPane extends JTabbedPane implements AntiAliased
      * Fires notification to all listeners that a tab is about to be close
      * via the close icon on the tab.
      * 
-     * @param tabIndex Zero based index of tab being closed
+     * @param tabIndex Zero based index of tab being closed.
      */
     protected void fireTabClosing(int tabIndex)
     {
