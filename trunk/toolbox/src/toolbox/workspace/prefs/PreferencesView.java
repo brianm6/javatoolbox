@@ -22,6 +22,7 @@ import toolbox.util.ui.JSmartCheckBox;
 import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartTextField;
 
+
 /**
  * Workspace preferences dialog box.
  */
@@ -50,7 +51,6 @@ public class PreferencesView extends JDialog implements ActionListener
      * Constructor for PreferencesView.
      *
      * @param parent Parent frame.
-     * @param config Configuration.
      */
     public PreferencesView(Frame parent)
     {
