@@ -62,7 +62,6 @@
  * TODO: icons for execute all, execute selected, execute current
  * TODO: Ctrl-Up/Down should scroll through query history
  * TODO: Lift more stuff from hsqldb manager
- * TODO: Add time elapsed to "x statemnts executed succ. in y seconds"
  * TODO: Execute statements in batch mode
  * =============================================================================
  *                              FindClassPlugin
@@ -164,6 +163,15 @@
           <tr>
             <td width="20%">QueryPlugin</td>
             <td>SQL statements are now displayed along with a SQLException's error message and stacktrace</td>
+          </tr>
+        </table>
+      </action>
+
+      <action type="update">
+        <table>
+          <tr>
+            <td width="20%">QueryPlugin</td>
+            <td>Query execution times now shown on the status bar after</td>
           </tr>
         </table>
       </action>
