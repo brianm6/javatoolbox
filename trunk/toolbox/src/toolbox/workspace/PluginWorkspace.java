@@ -145,11 +145,11 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         // Add to registry    
         plugins_.put(plugin.getName(), plugin);
 
-        // Give plugin's its status bar
-        plugin.setStatusBar(statusBar_);
-
         // Init plugin
         plugin.init();
+
+        // Give plugin's its status bar
+        plugin.setStatusBar(statusBar_);
         
         // Create tab
         JPanel pluginPanel = new JPanel(new BorderLayout());
