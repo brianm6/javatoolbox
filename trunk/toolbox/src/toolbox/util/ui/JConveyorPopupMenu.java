@@ -4,6 +4,8 @@ import javax.swing.Action;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
+import toolbox.util.Assert;
+
 /**
  * JPopupMenu that works like a conveyor belt. New items get inserted at the top
  * of the menu and items get pushed off the bottom of the menu when the 
@@ -17,6 +19,14 @@ public class JConveyorPopupMenu extends JPopupMenu
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
+    
+    /**
+     * Creates a JConveyorPopupMenu with a default max capacity of 10
+     */
+    public JConveyorPopupMenu()
+    {
+        this(10);
+    }
     
     /**
      * Creates a JConveyorPopupMenu
@@ -41,6 +51,21 @@ public class JConveyorPopupMenu extends JPopupMenu
     public JConveyorPopupMenu(String title, int capacity)
     {
         super(title);
+        setCapacity(capacity);
+    }
+    
+    //--------------------------------------------------------------------------
+    // Public 
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Sets the max capacity of the popup menu
+     * 
+     * @param  capacity  Capacity > 0
+     */
+    public void setCapacity(int capacity)
+    {
+        Assert.isTrue(capacity > 0, "Capacity must be > 0");
         capacity_ = capacity;    
     }
     
