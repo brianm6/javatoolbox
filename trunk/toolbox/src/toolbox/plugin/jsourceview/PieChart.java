@@ -20,10 +20,18 @@ import toolbox.util.FontUtil;
  */
 public class PieChart extends JPanel 
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
-     * Total statistics for all source files.
+     * Statistics to visualize.
      */
-    private FileStats totals_;
+    private FileStats stats_;
+    
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
     
     /**
      * Creates a PieChart.
@@ -31,7 +39,7 @@ public class PieChart extends JPanel
     public PieChart(FileStats totals) 
     {
         super(new BorderLayout());
-        totals_ = totals;
+        stats_ = totals;
         
         // create a dataset...
         PieDataset dataset = createDataset();
@@ -41,10 +49,14 @@ public class PieChart extends JPanel
         
         // add the chart to a panel...
         ChartPanel chartPanel = new ChartPanel(chart);
+        
         //chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
         add(chartPanel, BorderLayout.CENTER);
     }
 
+    //--------------------------------------------------------------------------
+    // Protected
+    //--------------------------------------------------------------------------
     
     /**
      * Creates a dataset with the source code statistics.
@@ -55,16 +67,17 @@ public class PieChart extends JPanel
     {
         DefaultPieDataset result = new DefaultPieDataset();
         
-        int total = totals_.getTotalLines();
+        int total = stats_.getTotalLines();
         
-        result.setValue("Comments", percent(totals_.getCommentLines(), total));
-        result.setValue("Source code", percent(totals_.getCodeLines(), total));
-        result.setValue("Thrown out", percent(totals_.getThrownOutLines(), 
+        result.setValue("Comments", percent(stats_.getCommentLines(), total));
+        result.setValue("Source code", percent(stats_.getCodeLines(), total));
+        result.setValue("Thrown out", percent(stats_.getThrownOutLines(), 
             total));
-        result.setValue("Blank Lines", percent(totals_.getBlankLines(), total));
+        result.setValue("Blank Lines", percent(stats_.getBlankLines(), total));
         return result;
     }
 
+    
     /**
      * Calcs percentage given a part and a whole.
      * 
@@ -84,27 +97,32 @@ public class PieChart extends JPanel
      * @param dataset The dataset.
      * @return JFreeChart
      */
-    private JFreeChart createChart(PieDataset dataset) 
+    protected JFreeChart createChart(PieDataset dataset) 
     {
         JFreeChart chart = ChartFactory.createPieChart3D(
             "Source Code Categories",  // chart title
-            dataset,                // data
-            true,                   // include legend
+            dataset,                   // data
+            true,                      // include legend
             true,
             false);
 
         // set the background color for the chart...
         //chart.setBackgroundPaint(Colors.getColor("light steel blue"));
+        
         chart.setBackgroundPaint(UIManager.getColor("JOptionFrame.background"));
         Pie3DPlot plot = (Pie3DPlot) chart.getPlot();
+        
         //plot.setStartAngle(270);
         //plot.setDirection(Rotation.CLOCKWISE);
+        
         plot.setForegroundAlpha(0.5f);
         plot.setSectionLabelType(PiePlot.NAME_AND_PERCENT_LABELS);
         plot.setSectionLabelFont(FontUtil.getPreferredSerifFont());
+        
         //plot.setExplodePercent(1, 20.0);
         //plot.setCircular(true);
         plot.setNoDataMessage("No data to display");
+        
         return chart;
     }
 }
