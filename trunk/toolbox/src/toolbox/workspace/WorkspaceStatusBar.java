@@ -4,6 +4,7 @@ import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 import javax.swing.UIManager;
 
+import toolbox.util.ui.JMemoryMonitor;
 import toolbox.util.ui.statusbar.JStatusBar;
 
 /**
@@ -13,10 +14,14 @@ import toolbox.util.ui.statusbar.JStatusBar;
  */
 public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
 {
-    /** Progress bar for indicating execution is in progress */
+    /** 
+     * Progress bar for indicating execution is in progress 
+     */
     private JProgressBar progressBar_;
     
-    /** Label for displaying status text */
+    /** 
+     * Label for displaying status text 
+     */
     private JLabel status_;
     
     //--------------------------------------------------------------------------
@@ -24,7 +29,7 @@ public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
     //--------------------------------------------------------------------------
     
     /**
-     * Default constructor
+     * Creates a WorkspaceStatusBar
      */
     public WorkspaceStatusBar()
     {
@@ -44,6 +49,7 @@ public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
         status_ = new JLabel("Howdy pardner!");
 
         addStatusComponent(status_, RELATIVE, 1);
+        addStatusComponent(new JMemoryMonitor(), FIXED, 100);
         addStatusComponent(progressBar_, FIXED, 100);    
         
         // Repaint interval.
