@@ -8,7 +8,6 @@ import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 
@@ -35,12 +34,12 @@ import toolbox.workspace.WorkspaceAction;
  */
 public class PluginHostManager
 {
+    private static final Logger logger_ = 
+        Logger.getLogger(PluginHostManager.class);
+    
     //--------------------------------------------------------------------------
     // Constants
     //--------------------------------------------------------------------------
-    
-    private static final Logger logger_ = 
-        Logger.getLogger(PluginHostManager.class);
     
     /**
      * Tab panel plugin host.
@@ -88,6 +87,8 @@ public class PluginHostManager
     
     /**
      * Creates a PluginHostManager for the given workspace.
+     * 
+     * @param workspace Parent workspace.
      */
     public PluginHostManager(PluginWorkspace workspace)
     {
@@ -132,7 +133,6 @@ public class PluginHostManager
     public void setPluginHost(String pluginHostClass, Map props) 
         throws PluginException
     {
-
         boolean firstTime = (current_ == null);
         PluginHost previous = current_;
         
@@ -157,25 +157,6 @@ public class PluginHostManager
         if (firstTime)
         {
             current_.startup(props);
-            
-            SwingUtilities.invokeLater(new Runnable()
-            { 
-                /**
-                 * @see java.lang.Runnable#run()
-                 */
-                public void run()
-                {
-                    try
-                    {
-                        current_.applyPrefs(workspace_.getPreferences());
-                    }
-                    catch (Exception e1)
-                    {
-                        logger_.error(e1);
-                    }
-                }
-            });
-            
         }
         else
         {
@@ -251,7 +232,7 @@ public class PluginHostManager
         }
 
         //
-        // Transfer over the plugin host listeners
+        // Transfer over the pluginost's listeners
         //
         PluginHostListener[] listeners = source.getPluginHostListeners();
         
