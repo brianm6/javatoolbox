@@ -132,7 +132,7 @@ public class TcpTunnelTest extends TestCase
             new DefaultTcpTunnelListener();
         
         tunnel.addTcpTunnelListener(tunnelListener);
-        ThreadUtil.run(tunnel, "start", null);
+        tunnel.start();
         tunnelListener.waitForStarted();
     
         logger_.info("Tunnel started!");
@@ -264,7 +264,7 @@ public class TcpTunnelTest extends TestCase
             new DefaultTcpTunnelListener();
         
         tunnel.addTcpTunnelListener(tunnelListener);
-        ThreadUtil.run(tunnel, "start", null);
+        tunnel.start();
         tunnelListener.waitForStarted();
     
         logger_.info("Tunnel started!");
