@@ -8,9 +8,15 @@ import toolbox.util.ThreadUtil;
  */
 public abstract class BatchQueueReader implements Runnable
 {
+    /** Queue to read from **/
     private BlockingQueue queue_;
+    
+    /** Exit flag **/
     private boolean continue_ = true;
+    
+    /** Delay **/
     private int delay_ = 1000;
+    
     
     /**
      * Constructor for MultiLinePopper.
@@ -19,6 +25,7 @@ public abstract class BatchQueueReader implements Runnable
     {
         queue_ = queue;
     }
+
 
     /**
      * Execute for each object in queue
@@ -40,11 +47,11 @@ public abstract class BatchQueueReader implements Runnable
      */
     public void run()
     {
-        while (!Thread.currentThread().isInterrupted())
+        while (continue_)
         {
             try
             {
-                ThreadUtil.sleep(delay_);
+                //ThreadUtil.sleep(delay_);
                 
                 Object first = queue_.pull();
                 
