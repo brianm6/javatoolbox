@@ -2,6 +2,10 @@ package toolbox.util;
 
 import java.util.Date;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.log4j.Logger;
+
 /**
  * Represents the time elapsed between two instances in time. Useful for 
  * determining the time elapsed for any given method call/operation/unit of
@@ -26,6 +30,8 @@ import java.util.Date;
  */
 public class ElapsedTime
 {
+    private static final Logger logger_ = Logger.getLogger(ElapsedTime.class);
+
     //--------------------------------------------------------------------------
     // Constants
     //--------------------------------------------------------------------------
@@ -142,6 +148,13 @@ public class ElapsedTime
     {
         startTime_ = startTime;
         endTime_   = endTime;
+
+        days_    = 0;
+        hours_   = 0;
+        minutes_ = 0;
+        seconds_ = 0;        
+        millis_  = 0;
+ 
         recalc();
     }
     
@@ -393,26 +406,29 @@ public class ElapsedTime
      * 
      * @param obj Elapsed time to compare.
      * @return True if elapsed time is equals, false otherwise.
+     * @see java.lang.Object#equals(java.lang.Object)
      */    
     public boolean equals(Object obj)
     {
-        if (obj == null)
-            return false;
-        else if (obj == this)
-            return true;
-        else 
-            return (obj instanceof ElapsedTime && 
-                    toString().equals(obj.toString()));
+        boolean result = false;
+
+        if ((obj != null) && (obj instanceof ElapsedTime))
+        {
+            ElapsedTime rhs = (ElapsedTime) obj;
+
+            result = new EqualsBuilder().append(
+                        getTotalMillis(), rhs.getTotalMillis()).isEquals();
+        }
+ 
+        return result;
     }
     
     
     /**
-     * Override hashcode implementation to match equals().
-     * 
-     * @return Unique hashcode.
+     * @see java.lang.Object#hashCode()
      */
     public int hashCode()
     {
-        return toString().hashCode();
+        return new HashCodeBuilder().append(getTotalMillis()).toHashCode();
     }
 }
