@@ -15,6 +15,16 @@ import toolbox.util.net.StringConnection;
 public class StringConnectionTest extends TestCase
 {
     /**
+     * Entrypoint
+     *
+     * @param  args  Arguments
+     */
+    public static void main(String[] args)
+    {
+        TestRunner.run(StringConnectionTest.class);
+    }
+    
+    /**
      * Constructor for StringConnectionTest.
      * @param name
      */
@@ -23,16 +33,6 @@ public class StringConnectionTest extends TestCase
         super(name);
     }
 
-    /**
-	 * Entrypoint
-	 *
-	 * @param  args  Arguments
-	 */
-    public static void main(String[] args)
-    {
-        TestRunner.run(StringConnectionTest.class);
-    }
-    
     /**
      * Tests getInputStream()
      */
@@ -51,5 +51,19 @@ public class StringConnectionTest extends TestCase
         IConnection conn = new StringConnection("abcd");
         OutputStream os = conn.getOutputStream();
         assertNotNull(os);
+    }
+    
+    /**
+     * Tests the isConnected() method
+     */
+    public void testIsConnected() throws Exception
+    {
+        IConnection conn = new StringConnection("ping");
+        assertTrue(!conn.isConnected());
+        conn.close();
+        assertTrue(!conn.isConnected());
+        conn.connect();
+        assertTrue(conn.isConnected());
+        conn.close();
     }
 }
