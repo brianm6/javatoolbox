@@ -724,7 +724,7 @@ public class JFileExplorer extends JPanel
             }
             else if ((evt.getModifiers() & InputEvent.BUTTON3_MASK) != 0)
             {
-                // nothing tied to right mouse button click
+                ;// nothing tied to right mouse button click
             }
         }
     }
