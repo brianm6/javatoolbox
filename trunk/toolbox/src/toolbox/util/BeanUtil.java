@@ -7,52 +7,53 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 
 /**
- * BeanUtil is responsible for ___.
+ * Javabean Utilities.
  */
 public class BeanUtil
 {
     /**
-     * dumps the properties names and values of a bean into a string
+     * Dumps the properties names and values of a bean into a string.
      * 
-     * @param bean the JavaBean to be intropected
-     * @return String a dump of the property names and values
+     * @param bean JavaBean to be introspected.
+     * @return String dump of the property names and values.
      */
     public static String toString(Object bean)
     {
         StringBuffer sb = new StringBuffer();
         
-        if (bean != null)
+        if (bean == null)
+            return sb.toString();
+        
+        try
         {
-            try
+            BeanInfo info = Introspector.getBeanInfo(bean.getClass());
+            PropertyDescriptor[] props = info.getPropertyDescriptors();
+            
+            if (props == null)
+                return sb.toString();
+            
+            for (int i = 0; i < props.length; i++)
             {
-                BeanInfo info = Introspector.getBeanInfo(bean.getClass());
-                PropertyDescriptor[] properties = info.getPropertyDescriptors();
-                if (properties != null)
+                Method readMethod = props[i].getReadMethod();
+                
+                if (readMethod != null)
                 {
-                    for (int i = 0; i < properties.length; i++)
-                    {
-                        Method readMethod = properties[i].getReadMethod();
-                        
-                        if (readMethod != null)
-                        {
-                            sb.append(properties[i].getName());
-                            sb.append(" = ");
-                            Object obj = readMethod.invoke(bean, null);
-                            
-                            if (obj != null)
-                                sb.append(obj.toString());
-                            else
-                                sb.append("[empty]");
-                            
-                            sb.append("\n");
-                        }
-                    }
+                    sb.append(props[i].getName());
+                    sb.append(" = ");
+                    Object obj = readMethod.invoke(bean, null);
+                    
+                    if (obj != null)
+                        sb.append(obj.toString());
+                    else
+                        sb.append("[empty]");
+                    
+                    sb.append("\n");
                 }
             }
-            catch (Exception e)
-            {
-                ; // ignore
-            }
+        }
+        catch (Exception e)
+        {
+            ; // ignore
         }
         
         return sb.toString();
