@@ -69,20 +69,19 @@ public class XSLFOPlugin extends JPanel implements IPlugin
 {
     // TODO: Create XMLDefaults ala JavaDefaults for JEditTextArea and refactor
 
+    private static final Logger logger_ = Logger.getLogger(XSLFOPlugin.class);
+
     //--------------------------------------------------------------------------
-    // Constants
+    // XML Constants
     //--------------------------------------------------------------------------
-    
-    private static final Logger logger_ = 
-        Logger.getLogger(XSLFOPlugin.class);
     
     /** 
-     * XML: Root preferences node for this plugin.
+     * Root preferences node for this plugin.
      */
     private static final String NODE_XSLFO_PLUGIN = "XSLFOPlugin";
     
     /**
-     * XML: Node for PDFViewer preferences.
+     * Node for PDFViewer preferences.
      */
     private static final String NODE_PDF_VIEWER = "PDFViewer";
     
@@ -246,10 +245,9 @@ public class XSLFOPlugin extends JPanel implements IPlugin
         setLayout(new BorderLayout());
         explorer_ = new JFileExplorer(false);
         explorer_.addFileExplorerListener(new FileSelectionListener());
-                
+        
         flipPane_ = new JFlipPane(JFlipPane.LEFT);
-        flipPane_.addFlipper("File Explorer", explorer_);
-
+        flipPane_.addFlipper(JFileExplorer.ICON, "File Explorer", explorer_);
         outputPanel_ = new JPanel(new BorderLayout());
         
         splitPane_ = 

@@ -45,8 +45,8 @@ public class SQLFormatterView extends JHeaderPanel
     /**
      * Icon for header and flipper.
      */
-    public static final Icon ICON_SQLFORMATTER =
-        ImageCache.getIcon(ImageCache.IMAGE_CONFIG);
+    public static final Icon ICON =
+        ImageCache.getIcon(ImageCache.IMAGE_BRACES);
         
     //--------------------------------------------------------------------------
     // Fields
@@ -73,7 +73,7 @@ public class SQLFormatterView extends JHeaderPanel
      */
     public SQLFormatterView(SQLFormatter formatter)
     {
-        super(ICON_SQLFORMATTER, "SQL Formatter Properties");
+        super(ICON, "SQL Formatter Properties");
         buildView();
         setFormatter(formatter);
     }

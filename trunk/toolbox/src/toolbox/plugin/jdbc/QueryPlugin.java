@@ -475,7 +475,7 @@ public class QueryPlugin extends JPanel implements IPlugin
         formatter_ = new SQLFormatter();
         
         leftFlipPane_.addFlipper(
-            SQLFormatterView.ICON_SQLFORMATTER, 
+            SQLFormatterView.ICON, 
             "Formatter", 
             formatterView_ = new SQLFormatterView(formatter_));
 
@@ -580,7 +580,7 @@ public class QueryPlugin extends JPanel implements IPlugin
             new ExecuteCurrentAction(this));
         
         JButton format = JHeaderPanel.createButton(
-            ImageCache.getIcon(ImageCache.IMAGE_BRACES),
+            SQLFormatterView.ICON,
             "Format",
             new FormatSQLAction(this));
 

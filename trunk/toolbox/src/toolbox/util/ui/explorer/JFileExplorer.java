@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.Enumeration;
 
 import javax.swing.DefaultListModel;
+import javax.swing.Icon;
 import javax.swing.JComboBox;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -79,6 +80,16 @@ public class JFileExplorer extends JPanel implements IPreferenced
 {
     private static final Logger logger_ = Logger.getLogger(JFileExplorer.class);
 
+    //--------------------------------------------------------------------------
+    // Icons
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Icon suitable for display in tabs that contain a JFileExplorer.
+     */
+    public static final Icon ICON = 
+        ImageCache.getIcon(ImageCache.IMAGE_TREE_CLOSED);
+    
     //--------------------------------------------------------------------------
     // XML Constants
     //--------------------------------------------------------------------------

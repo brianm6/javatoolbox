@@ -42,6 +42,7 @@ import toolbox.util.ui.JSmartMenu;
 import toolbox.util.ui.JSmartMenuItem;
 import toolbox.util.ui.SmartAction;
 import toolbox.util.ui.explorer.FileExplorerAdapter;
+import toolbox.util.ui.explorer.JFileExplorer;
 import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.util.ui.font.FontChooserException;
 import toolbox.util.ui.font.IFontChooserDialogListener;
@@ -251,13 +252,14 @@ public class JTail extends JPanel implements IPreferenced
     protected void buildView()
     {
         setLayout(new BorderLayout());
-        
         fileSelectionPane_ = new FileSelectionPane();
-        
         flipPane_ = new JFlipPane(JFlipPane.LEFT);
-        flipPane_.addFlipper("File Explorer", fileSelectionPane_);
+        
+        flipPane_.addFlipper(
+            JFileExplorer.ICON, "File Explorer", fileSelectionPane_);
+        
         tabbedPane_ = new JTailTabbedPane();
-
+        
         add(BorderLayout.WEST, flipPane_);
         add(BorderLayout.CENTER, tabbedPane_);
         add(BorderLayout.NORTH, buildMenuBar());

@@ -152,7 +152,7 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
         splitter.add(viewerButtons_, BorderLayout.SOUTH);
         
         flipPane_ = new JFlipPane(JFlipPane.LEFT);
-        flipPane_.addFlipper("File Explorer", splitter);
+        flipPane_.addFlipper(JFileExplorer.ICON, "File Explorer", splitter);
         
         outputPanel_ = new JPanel(new BorderLayout());
         

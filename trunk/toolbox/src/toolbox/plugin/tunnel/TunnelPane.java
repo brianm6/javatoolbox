@@ -297,9 +297,11 @@ public class TunnelPane extends JPanel implements IPreferenced
 
         configFlipPane_ = new JFlipPane(JFlipPane.LEFT);
 
-        configFlipPane_.addFlipper("Config",
+        configFlipPane_.addFlipper(
+            ImageCache.getIcon(ImageCache.IMAGE_CONFIG),
+            "Config",
             new JHeaderPanel(
-                //ImageCache.getIcon(ImageCache.IMAGE_CONFIG),
+                ImageCache.getIcon(ImageCache.IMAGE_CONFIG),
                 "Config",
                 null,
                 configPanel));

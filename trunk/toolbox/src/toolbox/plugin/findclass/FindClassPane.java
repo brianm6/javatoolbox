@@ -260,8 +260,17 @@ public class FindClassPane extends JPanel implements IPreferenced
     {
         searchTargetPanel_ = new SearchTargetPanel();
         topFlipPane_ = new JFlipPane(JFlipPane.TOP);
-        topFlipPane_.addFlipper("Search Targets", searchTargetPanel_);
-        topFlipPane_.addFlipper("Decompiler", new DecompilerPanel(resultTable_));
+        
+        topFlipPane_.addFlipper(
+            ImageCache.getIcon(ImageCache.IMAGE_FIND),
+            "Search Targets", 
+            searchTargetPanel_);
+        
+        topFlipPane_.addFlipper(
+            ImageCache.getIcon(ImageCache.IMAGE_SPANNER), 
+            "Decompiler", 
+            new DecompilerPanel(resultTable_));
+        
         topFlipPane_.setActiveFlipper(searchTargetPanel_);
         return topFlipPane_;
     }
@@ -333,7 +342,10 @@ public class FindClassPane extends JPanel implements IPreferenced
         fileExplorer_ = new JFileExplorer(false);
         fileExplorer_.addFileExplorerListener(new FileExplorerListener());
         leftFlipPane_ = new JFlipPane(JFlipPane.LEFT);
-        leftFlipPane_.addFlipper("File Explorer", fileExplorer_);
+        
+        leftFlipPane_.addFlipper(
+            JFileExplorer.ICON, "File Explorer", fileExplorer_);
+        
         leftFlipPane_.setExpanded(false);
         add(leftFlipPane_, BorderLayout.WEST);
     }
