@@ -1,10 +1,5 @@
 package toolbox.findclass;
 
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Vector;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -12,6 +7,9 @@ import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Vector;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -29,6 +27,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+
 import org.apache.log4j.Category;
 
 import toolbox.util.DateTimeUtil;
@@ -415,31 +414,32 @@ public class JFindClass extends JFrame
         }
     }
  
+ 
     /**
-     * Alternating color cellrenderer
+     * Alternating color cell renderer to make the results table easier on
+     * the eyes
      */   
     class AlternatingCellRenderer extends DefaultTableCellRenderer
     {
         /**
-         *
          * Returns the default table cell renderer.
          *
-         * @param table  the <code>JTable</code>
-         * @param value  the value to assign to the cell at
-         *          <code>[row, column]</code>
-         * @param isSelected true if cell is selected
-         * @param isFocus true if cell has focus
-         * @param row  the row of the cell to render
-         * @param column the column of the cell to render
-         * @return the default table cell renderer
+         * @param   table       JTable
+         * @param   value       Value to assign to the cell at [row, column]
+         * @param   isSelected  True if the cell is selected
+         * @param   isFocus     True if cell has focus
+         * @param   row         Row of the cell to render
+         * @param   column      Column of the cell to render
+         * 
+         * @return  Ddfault table cell renderer
          */
         public Component getTableCellRendererComponent(
-            JTable table,
-            Object value,
+            JTable  table,
+            Object  value,
             boolean isSelected,
             boolean hasFocus,
-            int row,
-            int column)
+            int     row,
+            int     column)
         {
 
             if (isSelected)
@@ -450,15 +450,12 @@ public class JFindClass extends JFrame
             else
             {
                 super.setForeground(table.getForeground());
-                
-                super.setBackground(
-                    MathUtil.isEven(row) 
-                        ? table.getBackground()
-                        //: table.getBackground().brighter());
-                        : Color.lightGray);
-                    
-//                super.setBackground(
-//                    (unselectedBackground != null) ? unselectedBackground : table.getBackground());
+
+                // Alternate colors                
+                if (MathUtil.isEven(row))
+                    super.setBackground(table.getBackground());
+                else
+                    super.setBackground(new Color(240,240,240));
             }
 
             setFont(table.getFont());
@@ -478,9 +475,7 @@ public class JFindClass extends JFrame
                 }
             }
             else
-            {
                 setBorder(noFocusBorder);
-            }
 
             setValue(value);
 
