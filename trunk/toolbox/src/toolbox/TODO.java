@@ -11,19 +11,17 @@ package toolbox;
  * TODO: Integrate automatic build number generation into the build process.
  * TODO: Get PropertyPrompt working properly
  * TODO: Fix tailing of Log4j in JTail
- * TODO: Fix SkinLF resource loading
  * TODO: Add detach notification to tail.
  * TODO: Upgrade to CLI2
  * TODO: add .cvspass to conf
  * TODO: Add sql helpers to jdbc plugin
  * 
- * TODO: Add option to have decompiler dump to one textarea or multiple tabs
- * TODO: Have decompiler text area rembember font setting if dump to tabs
- * TODO: Add a way to close all tabs in the decompiler 
- * TODO: Add toggle for tab heading to be FQCN or just the class name
- * TODO: Add decompile on select
- * 
- * TODO: Update PDF viewer to also use acrobat
+ * TODO: FindClass: Add option to have decompiler dump to one textarea or multiple tabs
+ * TODO: FindClass: Have decompiler text area rembember font setting if dump to tabs
+ * TODO: FindClass: Add a way to close all tabs in the decompiler 
+ * TODO: FindClass: Add toggle for tab heading to be FQCN or just the class name
+ * TODO: FindClass: Add decompile on select
+ * TODO: FindClass: Add additional search criteria: A extends B, A implements C.
  * </pre>
  */
 public class TODO
