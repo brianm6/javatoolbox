@@ -154,13 +154,12 @@ public class TailTest extends TestCase
             ThreadUtil.sleep(1000);
             
             Tail tail = new Tail();
-            //Writer sink = new StringWriter();
             sink = new OutputStreamWriter(System.out);
             tail.follow(ffile, sink);
             tail.setBacklog(4);
             tail.start();
             
-            ThreadUtil.sleep(500);
+            ThreadUtil.sleep(1000);
             
             tail.stop();
             
@@ -168,7 +167,6 @@ public class TailTest extends TestCase
         }
         finally
         {
-            sink.close();
             stuffer.stop();
             FileUtil.delete(file);
         }
