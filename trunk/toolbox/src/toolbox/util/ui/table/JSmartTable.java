@@ -193,11 +193,13 @@ public class JSmartTable extends JTable implements AntiAliased, IPreferenced
     {
         setTableHeader(new JSmartTableHeader(getColumnModel()));
         followTracker_ = new FollowTracker();
-        autoTail_ = false;
-        
+        setAutoTail(false);
+
         addPropertyChangeListener(
             "model", 
             tableModelTracker_ = new TableModelTracker());
+        
+        getModel().addTableModelListener(followTracker_);
     }
 
     //--------------------------------------------------------------------------
