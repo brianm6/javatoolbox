@@ -186,25 +186,34 @@ public class ArrayUtil
                                            array.length + 
                                            "]{");
 
-        if (array.length > 0)
+
+        switch (array.length)
         {
-            for (int i = 0; i < array.length - 1; i++)
-            {
-                if (i != 0)
-                    sb.append(", ");
-
-                if (onePerLine)
-                    sb.append("\n");
-
-                sb.append(array[i].toString());
-            }
-
-            sb.append(", ");
-
-            if (onePerLine)
-                sb.append("\n");
-
-            sb.append(array[array.length - 1].toString());
+            case 0  : break;
+                      
+            case 1  : sb.append(array[0].toString());
+                      break;
+                      
+            default: 
+                        for (int i = 0; i < array.length - 1; i++)
+                        {
+                            if (i != 0)
+                                sb.append(", ");
+            
+                            if (onePerLine)
+                                sb.append("\n");
+            
+                            sb.append(array[i].toString());
+                        }
+            
+                        if (array.length > 1)
+                            sb.append(", ");
+            
+                        if (onePerLine)
+                            sb.append("\n");
+            
+                        sb.append(array[array.length - 1].toString());
+                        break;
         }
 
         sb.append("}");
