@@ -10,10 +10,18 @@ import nu.xom.Serializer;
 import toolbox.util.io.StringOutputStream;
 
 /**
- * 
+ * XOM Utility Class
  */
 public class XOMUtil
 {
+    /**
+     * Gets the integer value from a node
+     * 
+     * @param   node          Node containing value
+     * @param   defaultValue  Value to return if the node is null or does not
+     *                        contain a value
+     * @return  int
+     */
     public static int getInteger(Element node, int defaultValue)
     {
         int intValue = defaultValue;
@@ -24,6 +32,15 @@ public class XOMUtil
         return intValue;
     }
     
+    
+    /**
+     * Gets the string value from a node
+     * 
+     * @param   node          Node containing value
+     * @param   defaultValue  Value to return if the node is null or does not
+     *                        contain a value
+     * @return  String
+     */
     public static String getString(Element node, String defaultValue)
     {
         String stringValue = defaultValue;
@@ -34,6 +51,15 @@ public class XOMUtil
         return stringValue;
     }
 
+
+    /**
+     * Gets the boolean value from a node
+     * 
+     * @param   node          Node containing value
+     * @param   defaultValue  Value to return if the node is null or does not
+     *                        contain a value
+     * @return  boolean
+     */
     public static boolean getBoolean(Element node, boolean defaultValue)
     {
         boolean booleanValue = defaultValue;
@@ -43,9 +69,21 @@ public class XOMUtil
             
         return booleanValue;
     }
-        
-    public static int getIntegerAttribute(Element node, String attribute, 
-        int defaultValue)
+
+
+    /**
+     * Gets a node's attribute as an integer
+     * 
+     * @param   node          Node containing the attribute
+     * @param   attribute     Name of the attribute
+     * @param   defaultValue  Value to return if the attribute does not exist
+     *                        or does not contain a value
+     * @return  int
+     */
+    public static int getIntegerAttribute(
+        Element node, 
+        String  attribute, 
+        int     defaultValue)
     {
         int intValue = defaultValue;
         
@@ -54,9 +92,19 @@ public class XOMUtil
             
         return intValue;
     }
-        
-    public static boolean getBooleanAttribute(Element node, String attribute,
-        boolean defaultValue)
+
+
+    /**
+     * Gets a node's attribute as a boolean
+     * 
+     * @param   node          Node containing the attribute
+     * @param   attribute     Name of the attribute
+     * @param   defaultValue  Value to return if the attribute does not exist
+     *                        or does not contain a value
+     * @return  boolean
+     */
+    public static boolean getBooleanAttribute(
+        Element node, String attribute, boolean defaultValue)
     {
         boolean booleanValue = defaultValue;
         
@@ -67,8 +115,18 @@ public class XOMUtil
         return booleanValue;
     }
 
-    public static String getStringAttribute(Element node, String attribute, 
-        String defaultValue)
+
+    /**
+     * Gets a node's attribute as a string
+     * 
+     * @param   node          Node containing the attribute
+     * @param   attribute     Name of the attribute
+     * @param   defaultValue  Value to return if the attribute does not exist
+     *                        or does not contain a value
+     * @return  String
+     */
+    public static String getStringAttribute(
+        Element node, String attribute, String defaultValue)
     {
         String stringValue = defaultValue;
         
@@ -77,8 +135,21 @@ public class XOMUtil
             
         return stringValue;
     }
+
     
-    public static void injectChild(Element parent, Element child)
+    /**
+     * If the parent node does not already contain a child node witht the same
+     * name, the child node is appended to the parent node. If the parent 
+     * already contains a child node with the same name, then the existing 
+     * child node is replaced by the newer child node. If the parent contains
+     * more than one child node with the same name as the newer child node then
+     * an IllegalArgumentException is throw. This method is only meant to 
+     * replace or insert a single node.
+     * 
+     * @param parent Parent node
+     * @param child  Child node
+     */
+    public static void insertOrReplace(Element parent, Element child)
     {
         String childName = child.getLocalName();
         
@@ -91,13 +162,21 @@ public class XOMUtil
             case 1 : parent.replaceChild(existing.get(0), child); break;
             
             default: throw new IllegalArgumentException(
-                "Cannot inject child if there are " + existing.size() + 
+                "Cannot replace child if there are " + existing.size() + 
                 " existing children with the same name: " + 
                 child.getLocalName());
         }
     }
 
-    public static String toString(Element node) throws IOException
+
+    /**
+     * Converts a XOM DOM node into its XML equivalent.
+     * 
+     * @param  node Node to convert to XML
+     * @return Node as XML
+     * @throws IOException on I/O error
+     */
+    public static String toXML(Element node) throws IOException
     {    
         StringOutputStream sos = new StringOutputStream();
         Serializer serializer = new Serializer(sos);

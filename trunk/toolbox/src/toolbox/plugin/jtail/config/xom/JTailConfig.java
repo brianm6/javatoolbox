@@ -116,6 +116,6 @@ public class JTailConfig implements IJTailConfig, XMLConstants, IPreferenced
             root.appendChild(tail);
         }
         
-        XOMUtil.injectChild(prefs, root);
+        XOMUtil.insertOrReplace(prefs, root);
     }
 }

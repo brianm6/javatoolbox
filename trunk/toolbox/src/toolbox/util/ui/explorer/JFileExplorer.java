@@ -324,7 +324,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
         root.addAttribute(new Attribute(
               ATTR_DIVIDER, ""+splitPane_.getDividerLocation()));
             
-        XOMUtil.injectChild(prefs, root);
+        XOMUtil.insertOrReplace(prefs, root);
     }
     
     /**

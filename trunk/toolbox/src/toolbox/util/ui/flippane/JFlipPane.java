@@ -462,7 +462,7 @@ public class JFlipPane extends JPanel
             flipPane.addAttribute(
                 new Attribute(ATTR_ACTIVE, getActiveFlipper().getName()));
 
-        XOMUtil.injectChild(prefs, flipPane);
+        XOMUtil.insertOrReplace(prefs, flipPane);
     }
 
 

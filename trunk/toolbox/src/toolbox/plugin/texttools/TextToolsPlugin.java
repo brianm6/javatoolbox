@@ -163,7 +163,7 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
         Element root = new Element(NODE_TEXTTOOLS_PLUGIN);
         topFlipPane_.savePrefs(root);
         textArea_.savePrefs(root);
-        XOMUtil.injectChild(prefs, root);
+        XOMUtil.insertOrReplace(prefs, root);
     }
 
     public void shutdown()

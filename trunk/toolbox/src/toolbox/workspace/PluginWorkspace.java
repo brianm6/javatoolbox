@@ -335,7 +335,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
             plugins_.remove(plugin.getName());
             plugin.shutdown();
             
-            logger_.debug("\n\nUNLOADED\n\n" + XOMUtil.toString(unloadedPrefs_));
+            logger_.debug("\n\nUNLOADED\n\n" + XOMUtil.toXML(unloadedPrefs_));
         }
         else
         {

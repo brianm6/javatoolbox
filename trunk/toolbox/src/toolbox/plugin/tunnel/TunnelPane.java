@@ -228,7 +228,7 @@ public class JTcpTunnelPane extends JPanel implements IPreferenced
         outgoingTextArea_.savePrefs(outgoing);
         root.appendChild(outgoing);
         
-        XOMUtil.injectChild(prefs, root);
+        XOMUtil.insertOrReplace(prefs, root);
     }
 
     //--------------------------------------------------------------------------

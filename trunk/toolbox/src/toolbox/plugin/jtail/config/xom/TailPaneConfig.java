@@ -163,7 +163,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
         root.appendChild(regexNode);
         root.appendChild(cutNode);        
         
-        XOMUtil.injectChild(prefs, root);
+        XOMUtil.insertOrReplace(prefs, root);
     }
 
 

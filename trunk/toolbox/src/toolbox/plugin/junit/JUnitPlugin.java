@@ -188,7 +188,7 @@ public class JUnitPlugin extends JPanel implements IPlugin
     {
         Element root = new Element(NODE_JUNIT_PLUGIN);
         root.addAttribute(new Attribute(ATTR_FILTER, filterField_.getText()));
-        XOMUtil.injectChild(prefs, root);    
+        XOMUtil.insertOrReplace(prefs, root);    
     }
 
     /**

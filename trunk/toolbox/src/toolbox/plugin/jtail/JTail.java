@@ -369,7 +369,7 @@ public class JTail extends JFrame implements IPreferenced
         }
         
         root.appendChild(recent);
-        XOMUtil.injectChild(prefs, root);
+        XOMUtil.insertOrReplace(prefs, root);
     }
 
     

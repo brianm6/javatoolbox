@@ -257,7 +257,7 @@ public class JSourceView extends JFrame implements ActionListener, IPreferenced
         root.addAttribute(
             new Attribute(ATTR_LAST_DIR, dirField_.getText().trim()));
             
-        XOMUtil.injectChild(prefs, root);
+        XOMUtil.insertOrReplace(prefs, root);
     }
 
 

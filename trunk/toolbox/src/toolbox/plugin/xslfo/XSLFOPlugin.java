@@ -409,7 +409,7 @@ public class XSLFOPlugin extends JPanel implements IPlugin
             root.appendChild(pdf);
         }
         
-        XOMUtil.injectChild(prefs, root);
+        XOMUtil.insertOrReplace(prefs, root);
     }
 
     public void shutdown()

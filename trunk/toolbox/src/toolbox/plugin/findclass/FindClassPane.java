@@ -18,7 +18,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -440,7 +439,7 @@ public class JFindClass extends JFrame implements IPreferenced
         root.addAttribute(new Attribute(
             ATTR_SEARCH, searchField_.getText().trim()));
             
-        XOMUtil.injectChild(prefs, root);
+        XOMUtil.insertOrReplace(prefs, root);
     }
 
     //--------------------------------------------------------------------------

@@ -364,7 +364,7 @@ public class QueryPlugin extends JPanel implements IPlugin
         dbConfigPane_.savePrefs(root);
         resultsArea_.savePrefs(root);
 
-        XOMUtil.injectChild(prefs, root);
+        XOMUtil.insertOrReplace(prefs, root);
     }
     
     //--------------------------------------------------------------------------

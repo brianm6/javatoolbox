@@ -513,7 +513,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         root.appendChild(projects);
         outputArea_.savePrefs(root);
         
-        XOMUtil.injectChild(prefs, root);
+        XOMUtil.insertOrReplace(prefs, root);
     }
  
  
@@ -980,7 +980,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
                 //"-debug",
                 "-output-dir", cvsBaseDir + "statcvs",
                 "-nocredits",
-                cvsModuleField_.getText(),
+                //"-title " + cvsModuleField_.getText(),
                 getCVSLogFile(),
                 cvsBaseDir
             };
