@@ -81,6 +81,7 @@ package toolbox;
  *  - Added a tree based DTD DocumentViewer
  *  - Updated usage template in FindClass
  *  - Updated FileComparator to use static instances
+ *  - Relaced ClassUtil.stripClass and stripPackage with commons-lang equivalent
  * 
  * April 2004 
  * 	- Scan source for refactorings to use DisposeAction 
