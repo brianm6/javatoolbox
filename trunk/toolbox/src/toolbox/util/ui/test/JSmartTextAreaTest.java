@@ -5,9 +5,9 @@ import java.awt.Container;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
+
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
-
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.JSmartTextArea;
 
@@ -26,6 +26,10 @@ public class JSmartTextAreaTest extends TestCase
         TestRunner.run(JSmartTextAreaTest.class);
     }
 
+	//--------------------------------------------------------------------------
+    // Constructors 
+    //--------------------------------------------------------------------------
+    
     /**
      * Constructor for JSmartTextAreaTest.
      * 
@@ -35,6 +39,10 @@ public class JSmartTextAreaTest extends TestCase
     {
         super(arg0);
     }
+    
+    //--------------------------------------------------------------------------
+    // Unit Tests 
+    //--------------------------------------------------------------------------
     
     /**
      * Tests autoscroll feature
@@ -48,5 +56,6 @@ public class JSmartTextAreaTest extends TestCase
         frame.pack();
         frame.setVisible(true);
         SwingUtil.centerWindow(frame);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 }
