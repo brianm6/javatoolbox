@@ -17,8 +17,7 @@ import toolbox.util.XOMUtil;
  */
 public class XOMUtilTest extends TestCase
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(XOMUtilTest.class);
+    private static final Logger logger_ = Logger.getLogger(XOMUtilTest.class);
     
     //--------------------------------------------------------------------------
     // Main
@@ -27,7 +26,7 @@ public class XOMUtilTest extends TestCase
     /**
      * Entrypoint.
      *
-     * @param args None
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
