@@ -90,7 +90,7 @@ public class Server implements Startable, Initializable, ObservableService
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a Server with the default NetmeterPlugin.DEFAULT_PORT.
+     * Creates a Server with the default NetmeterPlugin.DEFAULT_PORT of 9999.
      */
     public Server()
     {

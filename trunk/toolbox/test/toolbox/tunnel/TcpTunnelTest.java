@@ -50,7 +50,14 @@ public class TcpTunnelTest extends TestCase
     // Fields
     //--------------------------------------------------------------------------
     
+    /**
+     * Redirected stdio.
+     */
     private PrintStream os_;
+    
+    /**
+     * Redirected stderr.
+     */
     private PrintStream es_;
     
     //--------------------------------------------------------------------------
@@ -79,6 +86,7 @@ public class TcpTunnelTest extends TestCase
         os_ = System.out;
         es_ = System.err;
     }
+    
     
     /**
      * @see junit.framework.TestCase#tearDown()
@@ -316,8 +324,7 @@ public class TcpTunnelTest extends TestCase
 
     
     /**
-     * Tests the TcpTunnel for an end to end scenario of sending/receiving
-     * data though the tunnel.
+     * Stress tests throughput of the tunnel.
      * 
      * @throws Exception on error.
      */
@@ -412,7 +419,7 @@ public class TcpTunnelTest extends TestCase
                 new InputStreamReader(
                     socket.getInputStream()));
 
-        final String message = RandomUtil.nextString(100000); //"Hello";
+        final String message = RandomUtil.nextString(100000);
         
         // Send some data
         write(pw, message);
@@ -424,19 +431,23 @@ public class TcpTunnelTest extends TestCase
         String response = read(br);
         assertEquals(message, response);
         
+        // Writer ==============================================================
+        
         class WriterThread implements Runnable {
             
             public void run()
             {
                 for (int i = 1; i < 100; i++) 
                 {
-                    writeStress(pw, message);//RandomUtil.nextString(100000));
+                    writeStress(pw, message);
                 }
                 
                 logger_.debug("Writer thread done.");
             }
         }
 
+        // Reader ==============================================================
+        
         class ReaderThread implements Runnable {
             
             public void run()
@@ -458,6 +469,8 @@ public class TcpTunnelTest extends TestCase
             }
         }
 
+        // All Systems Go ======================================================
+        
         Thread w = new Thread(new WriterThread());
         Thread r = new Thread(new ReaderThread());
         
@@ -465,33 +478,14 @@ public class TcpTunnelTest extends TestCase
         r.start();
         w.join();
         write(pw, "terminate");
-        
         r.join();
         
-        //for (int i = 1; i < 20; i++) {
-        //    writeStress(pw, RandomUtil.nextString(100000));
-        //    response = read(br);
-        //}
-        
         // Tear down
-        
-
-        //logger_.info(StringUtil.addBars("a->b:\n" + ab));
-        //logger_.info(StringUtil.addBars("b->a:\n" + ba));
-        
         tunnel.stop();
         server.stop();
         
-        // Make sure count of bytes send/received adds up
-        //int r = tunnelListener.getTotalBytesRead();
-        //int w = tunnelListener.getTotalBytesWritten();
-        
         logger_.info("Bytes read   : " + tunnelListener.getTotalBytesRead());
         logger_.info("Bytes written: " + tunnelListener.getTotalBytesWritten());
-        
-        //int len = message.length() + "terminate".length() + "\r\n".length() * 2;
-        //assertEquals(len, r);
-        //assertEquals(len, w);
     }
     
     
@@ -513,13 +507,17 @@ public class TcpTunnelTest extends TestCase
         ThreadUtil.sleep(1000);
     }
     
-
+    
+    /**
+     * Write without delay used by stress test.
+     * 
+     * @param pw Destination writer.
+     * @param msg Message.
+     */
     private void writeStress(PrintWriter pw, String msg)
     {
-        //logger_.info("a->b " + msg);
         pw.println(msg);
         pw.flush();
-        //ThreadUtil.sleep(1000);
     }
     
     
