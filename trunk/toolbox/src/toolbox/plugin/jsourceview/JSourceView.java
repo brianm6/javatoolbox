@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.JToolBar;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
@@ -27,8 +28,11 @@ import org.apache.log4j.Logger;
 import toolbox.util.Queue;
 import toolbox.util.StringUtil;
 import toolbox.util.XOMUtil;
+import toolbox.util.ui.ImageCache;
+import toolbox.util.ui.JHeaderPanel;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartLabel;
+import toolbox.util.ui.JSmartOptionPane;
 import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.SmartAction;
 import toolbox.util.ui.table.JSmartTable;
@@ -396,7 +400,30 @@ public class JSourceView extends JPanel implements IPreferenced
         tweakTable();
         
         add(topPanel, BorderLayout.NORTH);
-        add(new JScrollPane(table_), BorderLayout.CENTER);
+        
+        JButton pieChart = 
+            JHeaderPanel.createButton(
+                ImageCache.getIcon(ImageCache.IMAGE_DATASOURCE),
+                "Show Pie Chart", 
+                new ShowPieChartAction());
+        
+        JButton save =
+            JHeaderPanel.createButton(
+                ImageCache.getIcon(ImageCache.IMAGE_SAVEAS),
+                "Save results",
+                new SaveResultsAction());
+        
+        JToolBar tb = JHeaderPanel.createToolBar();
+        tb.add(pieChart);
+        tb.add(save);
+        
+        JHeaderPanel header = 
+            new JHeaderPanel(
+                "Results", 
+                tb, 
+                new JScrollPane(table_));
+        
+        add(header, BorderLayout.CENTER);
         
         JPanel jpanel = new JPanel();
         jpanel.setLayout(new BorderLayout());
@@ -576,8 +603,6 @@ public class JSourceView extends JPanel implements IPreferenced
     
     /**
      * Saves the results table to a file.
-     * 
-     * TODO: Add a UI hook for this.
      */
     class SaveResultsAction extends SmartAction
     {
@@ -596,10 +621,40 @@ public class JSourceView extends JPanel implements IPreferenced
          */
         public void runAction(ActionEvent e) throws Exception
         {
-            String s = JOptionPane.showInputDialog("Save to file");
+            String s = JOptionPane.showInputDialog(
+                JSourceView.this,
+                "Save to file",
+                "Save to file",
+                JOptionPane.QUESTION_MESSAGE);
         
-            if (s.length() > 0)
+            if (!StringUtil.isNullOrBlank(s))
                 tableModel_.saveToFile(s);
+        }
+    }
+    
+    
+    /**
+     * Shows a pie chart of the statistics results.
+     */
+    class ShowPieChartAction extends SmartAction
+    {
+        /**
+         * Creates a ShowPieChartAction.
+         */
+        ShowPieChartAction()
+        {
+            super("Show Pie Chart", true, false, null);
+        }
+        
+        
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
+        public void runAction(ActionEvent e) throws Exception
+        {
+            PieChart pieChart = new PieChart(parserWorker_.getTotals());
+            JSmartOptionPane.showMessageDialog(JSourceView.this, pieChart);
         }
     }
 }
