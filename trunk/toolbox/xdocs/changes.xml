@@ -37,7 +37,7 @@
  * TODO: Get jode decompiler to work on File input.
  * TODO: Fix broken stop on JTail
  * TODO: Find out why Tiny LAFs are not working
- * TODO: Add a way to search the system path to see if an executable exists.
+ * TODO: Checkout SIGAR http://www.hyperic.net/downloads/sigar-download.htm
  * =============================================================================
  *                              Build
  * =============================================================================
@@ -114,18 +114,8 @@
 
 	<release version="2.0" date="October 2004">
 	
-      <action type="add">
-        <table>
-          <tr>
-            <td width="100">Util</td>
-            <td>Added ClassUtils.findInPath() to find executables on the system path</td>
-          </tr>
-        </table>
-      </action>
-
-	  <action type="add"   ><code>XYZ            : </code>Nother</action>              
-	  <action type="fix"   ></action>              
-	  <action type="remove"></action>
+      <action type="add">Util - Added ClassUtils.findInPath() to find executables on the system path</action>
+      
 	</release>
 
     <!-- =================================================================== -->
