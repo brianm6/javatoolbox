@@ -22,16 +22,40 @@ public class GridLayoutPlus extends BasicGridLayout
         super(0, 1, 2, 2);
     }
 
+    /**
+     * Creates a GridLayoutPlus
+     * 
+     * @param  rows     Number of rows
+     * @param  cols     Number of columns
+     */
     public GridLayoutPlus(int rows, int cols)
     {
         super(rows, cols, 2, 2);
     }
 
+    /**
+     * Creates a GridLayoutPlus
+     * 
+     * @param  rows     Number of rows
+     * @param  cols     Number of columns
+     * @param  hGap     Horizontal gap
+     * @param  vGap     Vertical gap
+     */
     public GridLayoutPlus(int rows, int cols, int hGap, int vGap)
     {
         super(rows, cols, hGap, vGap, 0, 0);
     }
 
+    /**
+     * Creates a GridLayoutPlus
+     * 
+     * @param  rows     Number of rows
+     * @param  cols     Number of columns
+     * @param  hGap     Horizontal gap
+     * @param  vGap     Vertical gap
+     * @param  hMargin  Horizontal margin
+     * @param  vMargin  Vertical margin
+     */
     public GridLayoutPlus(
         int rows,
         int cols,
@@ -46,27 +70,45 @@ public class GridLayoutPlus extends BasicGridLayout
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
-    
+
+    /**
+     * Sets the row weight
+     * 
+     * @param  row      Row number
+     * @param  weight   Row weight
+     */
     public void setRowWeight(int row, int weight)
     {
         rowWeights_ = setWeight(rowWeights_, row, weight);
     }
 
+    /**
+     * Sets the column weight
+     * 
+     * @param  col      Column number
+     * @param  weight   Column weight
+     */
     public void setColWeight(int col, int weight)
     {
         colWeights_ = setWeight(colWeights_, col, weight);
     }
 
+    /**
+     * Sets column alignment
+     * 
+     * @param  col      Column number
+     * @param  v        Alignment
+     */
     public void setColAlignment(int col, int v)
     {
         colFlags_ = setWeight(colFlags_, col, v);
     }
 
-
     /**
      * Adds the specified named component to the layout.
-     * @param name the String name
-     * @param comp the component to be added
+     * 
+     * @param   name    String name
+     * @param   comp    Component to be added
      */
     public void addLayoutComponent(String name, Component comp)
     {
@@ -74,13 +116,12 @@ public class GridLayoutPlus extends BasicGridLayout
 
     /**
      * Removes the specified component from the layout.
-     * @param comp the component to be removed
+     * 
+     * @param   comp    Component to be removed
      */
     public void removeLayoutComponent(Component comp)
     {
     }
-
-
 
     //--------------------------------------------------------------------------
     // Private
@@ -118,7 +159,8 @@ public class GridLayoutPlus extends BasicGridLayout
     {
         if (colFlags_ != null && col < colFlags_.length)
             return colFlags_[col];
-        return alignment_;
+            
+        return getAlignment();
     }
 
     protected int alignmentFor(Component c, int row, int col)
@@ -128,7 +170,7 @@ public class GridLayoutPlus extends BasicGridLayout
 
     protected int fillFor(Component c, int row, int col)
     {
-        return fill_;
+        return getFill();
     }
 
     protected int weightForColumn(int col)

@@ -118,7 +118,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
         }
         else
         {
-            // TODO: what is the default font?
+            // NOTE: what is the default font?
             config.setFont(null);    
         }
         
@@ -129,7 +129,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
         {
             config.setRegularExpression(filterNode.getTextString());
 
-            // TODO: support negate and case
+            // NOTE: support negate and case
         }
         else
         {

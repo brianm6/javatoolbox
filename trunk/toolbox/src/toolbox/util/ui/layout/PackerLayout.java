@@ -6,9 +6,11 @@ import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.Rectangle;
 
+/**
+ * PackerLayout
+ */
 public class PackerLayout extends ConstraintLayout implements Direction
 {
-
     public static final Integer LEFT_TOP =
         new Integer((Direction.LEFT << 8) | Alignment.TOP);
     public static final Integer LEFT_CENTER =
@@ -67,11 +69,22 @@ public class PackerLayout extends ConstraintLayout implements Direction
     // Constructors
     //--------------------------------------------------------------------------
 
+    /**
+     * Default constructor
+     */
     public PackerLayout()
     {
         this(0, 0, 0, 0);
     }
 
+    /**
+     * Creates a PackerLayout
+     *
+     * @param   hGap        Horizontal gap
+     * @param   vGap        Vertical gap
+     * @param   hMargin     Horizontal margin
+     * @param   vMargin     Vertical margin
+     */
     public PackerLayout(int hGap, int vGap, int hMargin, int vMargin)
     {
         hGap_ = hGap;
@@ -84,6 +97,13 @@ public class PackerLayout extends ConstraintLayout implements Direction
     // Public
     //--------------------------------------------------------------------------
     
+    /**
+     * Measures layout
+     * 
+     * @param  target       Target container
+     * @param  dimension    Dimension
+     * @param  type         Type
+     */
     public void measureLayout(Container target, Dimension dimension, int type)
     {
         int count = target.getComponentCount();
@@ -223,5 +243,4 @@ public class PackerLayout extends ConstraintLayout implements Direction
         }
 
     }
-
 }
