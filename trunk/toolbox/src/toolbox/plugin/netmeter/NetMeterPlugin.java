@@ -6,7 +6,11 @@ import java.util.Map;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
+import com.jgoodies.forms.builder.DefaultFormBuilder;
+import com.jgoodies.forms.layout.FormLayout;
+
 import nu.xom.Element;
+
 import toolbox.util.ui.layout.GridLayoutPlus;
 import toolbox.workspace.IPlugin;
 
@@ -87,16 +91,13 @@ public class NetMeterPlugin extends JPanel implements IPlugin
     {
         setLayout(new BorderLayout());
         
-        JComponent clientFactory = new ClientFactoryView(this);
-        JComponent serverFactory = new ServerFactoryView(this);
-        
-        JComponent factoryPanel = new JPanel(new GridLayoutPlus(2, 1));
-        factoryPanel.add(clientFactory);
-        factoryPanel.add(serverFactory);
+        FormLayout layout = new FormLayout("f:p:g","f:p:n");
+        DefaultFormBuilder builder = new DefaultFormBuilder(layout);
+        builder.append(new ClientFactoryView(this));
+        builder.append(new ServerFactoryView(this));
         
         grid_ = new JPanel(new GridLayoutPlus(2, 2));
-        
-        add(factoryPanel, BorderLayout.WEST);
+        add(builder.getPanel(), BorderLayout.WEST);
         add(grid_, BorderLayout.CENTER);
     }
     
