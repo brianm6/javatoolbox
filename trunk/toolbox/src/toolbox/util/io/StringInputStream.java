@@ -10,20 +10,33 @@ import toolbox.util.StringUtil;
 import toolbox.util.Stringz;
 
 /**
- * StringInputStream is an input stream sourced from a String
+ * StringInputStream is an input stream sourced from a String.
+ * <p>
+ * The following behavior is not supported:
+ * <ul>
+ *   <li>mark()
+ *   <li>reset()
+ *   <li>skip()
+ * </ul>
  */
 public class StringInputStream extends InputStream implements Stringz  
 {
     private static final Logger logger_ = 
         Logger.getLogger(StringInputStream.class);
     
-    /** Current position in stream */
+    /** 
+     * Current position in stream 
+     */
     private int index_;
 
-    /** Stream buffer */
+    /** 
+     * Stream buffer 
+     */
     private StringBuffer buffer_;
 
-    /** Flag to ignore the EOF */
+    /** 
+     * Flag to ignore the EOF 
+     */
     private boolean ignoreEOF_;
 
     //--------------------------------------------------------------------------
