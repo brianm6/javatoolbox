@@ -8,6 +8,8 @@ import org.apache.log4j.Logger;
 
 import toolbox.util.io.throughput.DefaultThroughputMonitor;
 import toolbox.util.io.throughput.ThroughputMonitor;
+import toolbox.util.io.transferred.DefaultTransferredMonitor;
+import toolbox.util.io.transferred.TransferredMonitor;
 
 /**
  * MonitoredOutputStream supports the following features.
@@ -37,11 +39,10 @@ public class MonitoredOutputStream extends FilterOutputStream
      */
     private ThroughputMonitor throughputMonitor_;
 
-    /** 
-     * Total number of bytes written to the stream. 
+    /**
+     * Bytes transferred monitor.
      */
-//    private int count_;
-    
+    private TransferredMonitor transferredMonitor_;
 
     //--------------------------------------------------------------------------
     // Constructors 
@@ -70,6 +71,7 @@ public class MonitoredOutputStream extends FilterOutputStream
         super(out);
         setName(name);
         setThroughputMonitor(new DefaultThroughputMonitor());
+        setTransferredMonitor(new DefaultTransferredMonitor());
     }
     
     //--------------------------------------------------------------------------
@@ -86,6 +88,7 @@ public class MonitoredOutputStream extends FilterOutputStream
     {
         super.write(b);
         throughputMonitor_.newBytesTransferred(1);
+        transferredMonitor_.newBytesTransferred(1);
         //transferredProxy_.bytesTransferred(1);
         //fireByteWritten(b);
     }
@@ -119,60 +122,6 @@ public class MonitoredOutputStream extends FilterOutputStream
 //            fireStreamClosed();
         }
     }
-    
-//    //--------------------------------------------------------------------------
-//    // ThroughputMonitor Interface
-//    //--------------------------------------------------------------------------
-//    
-//    /**
-//     * Adds a Listener to the list of registered stream listeners.
-//     * 
-//     * @param listener Listener to register.
-//     */
-//    public void addThroughputListener(ThroughputListener listener)
-//    {
-//        throughputMonitor_.addThroughputListener(listener);
-//    }
-//
-//    /**
-//	 * @see toolbox.util.io.throughput.ThroughputMonitor#removeThroughputListener(
-//     *      toolbox.util.io.throughput.ThroughputListener)
-//	 */
-//	public void removeThroughputListener(ThroughputListener listener) 
-//    {
-//        throughputMonitor_.removeThroughputListener(listener);
-//	}
-//    
-//    /**
-//	 * @see toolbox.util.io.throughput.ThroughputMonitor#setSampleInterval()
-//	 */
-//	public int getSampleInterval() {
-//        return throughputMonitor_.getSampleInterval();
-//	}
-//    
-//    /**
-//	 * @see toolbox.util.io.throughput.ThroughputMonitor#setSampleInterval(int)
-//	 */
-//	public void setSampleInterval(int millis) {
-//        throughputMonitor_.setSampleInterval(millis);
-//	}
-//    
-//    /**
-//     * @see toolbox.util.io.throughput.ThroughputMonitor
-//     *      #setMonitoringThroughput(boolean)
-//     */
-//    public void setMonitoringThroughput(boolean monitor)
-//    {
-//        throughputMonitor_.setMonitoringThroughput(monitor);
-//    }
-//    
-//    /**
-//     * @see toolbox.util.io.throughput.ThroughputMonitor#isMonitoringThroughput()
-//     */
-//    public boolean isMonitoringThroughput()
-//    {
-//        return throughputMonitor_.isMonitoringThroughput();
-//    }
     
     //--------------------------------------------------------------------------
     // ThroughputMonitor Interface
@@ -307,22 +256,13 @@ public class MonitoredOutputStream extends FilterOutputStream
     /**
      * Returns the number of bytes written to the stream.
      * 
-     * @return int
+     * @return long
      */
-//    public int getCount()
-//    {
-//        return count_;
-//    }
+    public long getCount()
+    {
+        return getTransferredMonitor().getBytesTransferred();
+    }
         
-    
-    /**
-     * Resets the number of bytes written back to zero.
-     */
-//    public void resetCount()
-//    {
-//        count_ = 0;
-//    }    
-    
     
     /**
      * Returns the stream name.
@@ -343,6 +283,7 @@ public class MonitoredOutputStream extends FilterOutputStream
         name_ = name;
     }
     
+    
     /**
      * @return Returns the throughputMonitor.
      */
@@ -358,6 +299,24 @@ public class MonitoredOutputStream extends FilterOutputStream
     public void setThroughputMonitor(DefaultThroughputMonitor throughputMonitor)
     {
         throughputMonitor_ = throughputMonitor;
+    }
+
+    
+    /**
+     * @return Returns the transferredMonitor.
+     */
+    public TransferredMonitor getTransferredMonitor()
+    {
+        return transferredMonitor_;
+    }
+    
+    
+    /**
+     * @param transferredMonitor The transferredMonitor to set.
+     */
+    public void setTransferredMonitor(TransferredMonitor transferredMonitor)
+    {
+        transferredMonitor_ = transferredMonitor;
     }
     
     //--------------------------------------------------------------------------
@@ -404,9 +363,4 @@ public class MonitoredOutputStream extends FilterOutputStream
          */
         void streamThroughput(MonitoredOutputStream stream, float bytesPerPeriod);
     }
-    
-    //--------------------------------------------------------------------------
-    // Inner Classes
-    //--------------------------------------------------------------------------
-    
 }
