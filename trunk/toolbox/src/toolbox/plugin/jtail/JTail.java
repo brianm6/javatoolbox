@@ -29,11 +29,13 @@ import javax.swing.KeyStroke;
 
 import org.apache.log4j.Logger;
 
+import nu.xom.Builder;
+
 import toolbox.jtail.config.IConfigManager;
 import toolbox.jtail.config.IJTailConfig;
 import toolbox.jtail.config.ITailPaneConfig;
 import toolbox.jtail.config.tinyxml.ConfigManager;
-import toolbox.jtail.config.tinyxml.TailPaneConfig;
+import toolbox.jtail.config.xom.TailPaneConfig;
 import toolbox.util.ArrayUtil;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
@@ -49,7 +51,6 @@ import toolbox.util.ui.font.JFontChooser;
 import toolbox.util.ui.font.JFontChooserDialog;
 import toolbox.util.ui.plugin.IPreferenced;
 import toolbox.util.ui.plugin.IStatusBar;
-import toolbox.util.xml.XMLParser;
 
 /**
  * JTail is a GUI front end for {@link toolbox.tail.Tail}.
@@ -106,24 +107,6 @@ public class JTail extends JFrame implements IPreferenced
      */
     private IJTailConfig jtailConfig_;            
         
-    //--------------------------------------------------------------------------
-    // Main
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Entry point 
-     * 
-     * @param  args  None recognized
-     * @throws Exception on error
-     */
-    public static void main(String[] args) throws Exception
-    {
-        SwingUtil.setPreferredLAF();        
-        JTail jtail = new JTail();
-        jtail.setVisible(true);
-        jtail.applyPrefs(null);
-    }
-
     //--------------------------------------------------------------------------
     //  Constructors
     //--------------------------------------------------------------------------
@@ -321,14 +304,6 @@ public class JTail extends JFrame implements IPreferenced
     {
         try
         {
-            // Size and location
-            jtailConfig_.setSize(getSize());
-            jtailConfig_.setLocation(getLocation());
-            
-            // Last selected directory
-            String path = fileSelectionPane_.getFileExplorer().getCurrentPath();
-            jtailConfig_.setDirectory(path);
-            
             // Since each of the ITailPaneConfigs are maintained inside the 
             // TailPane itself, gather them up and update jtailConfig before
             // saving. Essentially, do the reverse of applyConfiguration(). 
@@ -338,9 +313,9 @@ public class JTail extends JFrame implements IPreferenced
             for (Iterator i = tailMap_.entrySet().iterator(); i.hasNext(); )
             {
                 Map.Entry entry = (Map.Entry) i.next();
-                TailPane tailPane = (TailPane)entry.getValue();            
+                TailPane tailPane = (TailPane) entry.getValue();            
                 ITailPaneConfig config = tailPane.getConfiguration();
-                configs = (ITailPaneConfig[])ArrayUtil.add(configs, config);    
+                configs = (ITailPaneConfig[]) ArrayUtil.add(configs, config);    
             }
             
             jtailConfig_.setTailConfigs(configs);
@@ -405,27 +380,8 @@ public class JTail extends JFrame implements IPreferenced
      * 
      * @param  props  File explorer and flip pane properties read from here
      */
-    public void applyPrefs(Properties props)
+    public void applyPrefs(Properties props) throws Exception
     {
-        // Window size
-        if (jtailConfig_.getSize() != null)
-            setSize(jtailConfig_.getSize());
-        else
-            setSize(800,400);
-        
-        // Window location    
-        if (jtailConfig_.getLocation() != null)
-            setLocation(jtailConfig_.getLocation());
-        else
-            SwingUtil.centerWindow(this);
-        
-        // Last selected directory
-        if (jtailConfig_.getDirectory() != null)
-        {
-            fileSelectionPane_.getFileExplorer().selectFolder(
-                jtailConfig_.getDirectory());
-        }
-        
         // Tails left running since last save
         ITailPaneConfig[] tailPaneConfigs = jtailConfig_.getTailConfigs();
         
@@ -449,28 +405,19 @@ public class JTail extends JFrame implements IPreferenced
         
         int numRecent = PropertiesUtil.getInteger(props, "jtail.recent.num", 0);
 
-        XMLParser parser = new XMLParser();
-
         for (int i=0; i<numRecent; i++)
         {
             String xmlConfig = props.getProperty("jtail.recent.tail." + i);
             TailPaneConfig config = null;
             
-            try
-            {
-                logger_.debug("tailnum=" + i + " xml=" + xmlConfig);
-                
-                config = TailPaneConfig.unmarshal(
-                    parser.parseXML(new StringReader(xmlConfig)));
+            logger_.debug("tailnum=" + i + " xml=" + xmlConfig);
+            
+            config = 
+                TailPaneConfig.unmarshal(new Builder().build(
+                    new StringReader(xmlConfig)).getRootElement());
 
-                recentMenu_.add(new TailRecentAction(config));
-            }
-            catch (IOException ioe)
-            {
-                
-                ExceptionUtil.handleUI(ioe, logger_);
-            }
-        }        
+            recentMenu_.add(new TailRecentAction(config));
+        }
     }    
     
     //--------------------------------------------------------------------------
