@@ -34,6 +34,7 @@ import toolbox.util.Stringz;
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.JTextComponentPopupMenu;
+import toolbox.util.ui.SmartAction;
 import toolbox.util.ui.flippane.JFlipPane;
 
 /**
@@ -190,25 +191,21 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
     /**
      * Creates a banner of the text
      */
-    class BannerAction extends AbstractAction
+    class BannerAction extends SmartAction
     {
         public BannerAction()
         {
-            super("Banner");
+            super("Banner", true, false, null);
             putValue(MNEMONIC_KEY, new Integer('B'));
             putValue(SHORT_DESCRIPTION, "Creates an ascii text banner");
         }
-    
-        public void actionPerformed(ActionEvent e)
+
+        public void runAction(ActionEvent e) throws Exception
         {
-            try
-            {
-                textArea_.append(NL + Banner.getBanner(textArea_.getText()));
-            }
-            catch (Throwable t)
-            {
-                ExceptionUtil.handleUI(t, logger_);
-            }
+            String[] lines = StringUtil.tokenize(textArea_.getText(), "\n");
+            
+            for (int i=0; i<lines.length; i++)
+                textArea_.append(NL + Banner.getBanner(lines[i]));
         }
     }
     
