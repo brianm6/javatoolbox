@@ -417,23 +417,6 @@ public final class FileUtil
 
     
     /**
-     * Chops the extension off of a file's name.
-     * 
-     * @param file File name.
-     * @return File name without the extension.
-     */
-    public static String dropExtension(String file)
-    {
-        int dot = file.lastIndexOf(".");
-
-        if (dot == -1)
-            return file;
-        else
-            return file.substring(0, dot);
-    }
-
-    
-    /**
      * Deletes a file quietly. If the file can be deleted, ok. If not, 
      * does not cause a fuss.
      * 

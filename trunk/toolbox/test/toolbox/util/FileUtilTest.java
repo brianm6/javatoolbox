@@ -655,19 +655,6 @@ public class FileUtilTest extends TestCase
     
     
     /**
-     * Tests dropExtension().
-     */
-    public void testDropExtension()
-    {
-        logger_.info("Running testDropExtension...");
- 
-        assertEquals("foobar", FileUtil.dropExtension("foobar"));
-        assertEquals("foobar", FileUtil.dropExtension("foobar.txt"));
-        assertEquals("foobar.old", FileUtil.dropExtension("foobar.old.txt"));
-    }
-    
-    
-    /**
      * Tests createTempDir().
      * 
      * @throws Exception on error

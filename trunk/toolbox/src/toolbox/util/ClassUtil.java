@@ -19,6 +19,7 @@ import java.util.StringTokenizer;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -108,7 +109,7 @@ public final class ClassUtil
                         {
                             // Replace slashes and trunc .class
                             filename = pathToPackage(filename);
-                            filename = FileUtil.dropExtension(filename);
+                            filename = FilenameUtils.removeExtension(filename);
                                     
                             // Add to collector    
                             //logger_.info("Added " + filename + "from zip " + 
@@ -145,7 +146,7 @@ public final class ClassUtil
                             packageName + "." + classnames[j].getName();
                             
                         classname = pathToPackage(classname);
-                        classname = FileUtil.dropExtension(classname);
+                        classname = FilenameUtils.removeExtension(classname);
                         
                         //logger_.info(
                         //  "Added " + classname + "from path " + pathElement);
@@ -200,7 +201,7 @@ public final class ClassUtil
                         if (!zipEntry.isDirectory() && isClassFile(entryName))
                         {
                             String packageName = 
-                                FileUtil.dropExtension(entryName);
+                                FilenameUtils.removeExtension(entryName);
                                 
                             packageName = pathToPackage(packageName);
                             
