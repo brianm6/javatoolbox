@@ -5,13 +5,8 @@ import java.awt.Frame;
 import java.awt.Point;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.util.Vector;
 
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
@@ -21,9 +16,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 import javax.swing.UIManager;
 
+import org.apache.commons.collections.buffer.CircularFifoBuffer;
 import org.apache.log4j.Logger;
 
-import toolbox.util.RandomUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JHeaderPanel;
@@ -64,6 +59,15 @@ public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
 {
     private static final Logger logger_ = 
         Logger.getLogger(WorkspaceStatusBar.class);
+
+    //--------------------------------------------------------------------------
+    // Defaults
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Default number of status history to retain.
+     */
+    private static final int MAX_HISTORY = 100;
     
     //--------------------------------------------------------------------------
     // Fields 
@@ -80,6 +84,11 @@ public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
      */
     private JSmartLabel status_;
     
+    /**
+     * Keeps a running history of the past x number of status messages.
+     */
+    private CircularFifoBuffer history_;
+    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -89,6 +98,7 @@ public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
      */
     public WorkspaceStatusBar()
     {
+        history_ = new CircularFifoBuffer(MAX_HISTORY);
         buildView();
     }
     
@@ -134,130 +144,7 @@ public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
         //UIManager.put("ProgressBar.cellSpacing", new Integer(5));
     }
     
-    class StatusMouseListener extends MouseAdapter
-    {
-        /**
-         * @see java.awt.event.MouseListener#mousePressed(
-         *      java.awt.event.MouseEvent)
-         */
-        public void mousePressed(MouseEvent e)
-        {
-            maybeShowPopup(e);
-        }
 
-
-        /**
-         * @see java.awt.event.MouseListener#mouseReleased(
-         *      java.awt.event.MouseEvent)
-         */
-        public void mouseReleased(MouseEvent e)
-        {
-            maybeShowPopup(e);
-        }
-
-        //----------------------------------------------------------------------
-        //  Private
-        //----------------------------------------------------------------------
-        
-        /**
-         * Determines if the popupmenu should be made visible.
-         * 
-         * @param e Mouse event.
-         */
-        private void maybeShowPopup(MouseEvent e)
-        {
-            if (e.isPopupTrigger())
-            {
-                Window w = new StatusHistoryWindow(
-                    SwingUtil.getFrameAncestor(WorkspaceStatusBar.this));
-                
-                w.setVisible(true);
-            }
-            
-            //showHistory();
-            //.show(e.getComponent(), e.getX(), e.getY());
-        }        
-    }
-
-    public class StatusHistoryWindow extends Window
-    {
-        public StatusHistoryWindow(Frame frame)
-        {
-            super(frame);
-            
-            
-            int fh = frame.getHeight();
-            int h = fh / 3;
-            Point fl = frame.getLocationOnScreen();
-            setSize(status_.getWidth(), h);
-            
-            Point s = new Point(fl.x, fl.y + fh - h - status_.getHeight());
-            
-            setLocation(s);
-            
-            logger_.debug("status location = " + status_.getLocation());
-            
-            setLayout(new BorderLayout());
-            
-//            add(new JSmartButton(
-//                new AbstractAction("close") 
-//                {
-//                    public void actionPerformed(ActionEvent e)
-//                    {
-//                        dispose();
-//                    } 
-//                }), BorderLayout.SOUTH);
-            
-            Vector v = new Vector();
-            for (int i=0; i<100; i++)
-                v.add(RandomUtil.nextString());
-            
-            JHeaderPanel hp = new JHeaderPanel("Status History");
-            JToolBar tb = JHeaderPanel.createToolBar();
-            
-            tb.add(JHeaderPanel.createButton(new AbstractAction(
-                null, ImageCache.getIcon(ImageCache.IMAGE_CROSS)) 
-            {
-                public void actionPerformed(ActionEvent e)
-                {
-                    dispose();
-                }
-            }));
-            
-            hp.setToolBar(tb);
-            
-            JSmartList list = new JSmartList(v);
-            hp.setContent(new JScrollPane(list));
-            
-            add(hp, BorderLayout.CENTER);
-            
-            addFocusListener(new FocusListener()
-            {
-                public void focusGained(FocusEvent e)
-                {
-                }
-
-
-                public void focusLost(FocusEvent e)
-                {
-                    dispose();
-                }
-            });
-            
-            addPropertyChangeListener(new PropertyChangeListener()
-            {
-                public void propertyChange(PropertyChangeEvent evt)
-                {
-                    logger_.debug("propchange - " + evt);
-                }
-            });
-        }
-    }
-    
-    protected void showHistory()
-    {
-    }
-    
     /**
      * Sets the status text and icon.
      * 
@@ -269,6 +156,7 @@ public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
         //setStatus(status);
         status_.setText(status);
         status_.setIcon(icon);
+        history_.add(status);
     }
     
     //--------------------------------------------------------------------------
@@ -327,5 +215,101 @@ public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
     public String getStatus()
     {
         return status_.getText();
+    }
+    
+    //--------------------------------------------------------------------------
+    // StatusMouseListener
+    //--------------------------------------------------------------------------
+    
+    /**
+     * StatusMouseListener is responsible for activating the popup window with
+     * status history on a RMB click on the status bar.
+     */
+    class StatusMouseListener extends MouseAdapter
+    {
+        /**
+         * @see java.awt.event.MouseListener#mousePressed(
+         *      java.awt.event.MouseEvent)
+         */
+        public void mousePressed(MouseEvent e)
+        {
+            maybeShowPopup(e);
+        }
+
+
+        /**
+         * @see java.awt.event.MouseListener#mouseReleased(
+         *      java.awt.event.MouseEvent)
+         */
+        public void mouseReleased(MouseEvent e)
+        {
+            maybeShowPopup(e);
+        }
+
+        //----------------------------------------------------------------------
+        //  Private
+        //----------------------------------------------------------------------
+        
+        /**
+         * Determines if the popupmenu should be made visible.
+         * 
+         * @param e Mouse event.
+         */
+        private void maybeShowPopup(MouseEvent e)
+        {
+            if (e.isPopupTrigger())
+            {
+                Window w = new StatusHistoryWindow(
+                    SwingUtil.getFrameAncestor(WorkspaceStatusBar.this));
+                
+                w.setVisible(true);
+            }
+        }        
+    }
+
+    //--------------------------------------------------------------------------
+    // StatusHistoryWindow
+    //--------------------------------------------------------------------------
+    
+    /**
+     * StatusHistoryWindow is responsible for displaying the last x number of 
+     * status messages in a listbox that hover directly above the status bar
+     * in a Window.
+     */
+    public class StatusHistoryWindow extends Window
+    {
+        public StatusHistoryWindow(Frame frame)
+        {
+            super(frame);
+            
+            int fh = frame.getHeight();
+            int h = fh / 3;
+            Point fl = frame.getLocationOnScreen();
+            setSize(status_.getWidth(), h);
+            Point s = new Point(fl.x, fl.y + fh - h - status_.getHeight());
+            setLocation(s);
+            setLayout(new BorderLayout());
+            
+            JHeaderPanel hp = new JHeaderPanel("Status History");
+            JToolBar tb = JHeaderPanel.createToolBar();
+            
+            tb.add(JHeaderPanel.createButton(new AbstractAction(
+                null, ImageCache.getIcon(ImageCache.IMAGE_CROSS)) 
+            {
+                public void actionPerformed(ActionEvent e)
+                {
+                    dispose();
+                }
+            }));
+            
+            hp.setToolBar(tb);
+            
+            JSmartList list = new JSmartList(history_.toArray());
+            hp.setContent(new JScrollPane(list));
+            
+            list.scrollToBottom();
+            
+            add(hp, BorderLayout.CENTER);
+        }
     }
 }
