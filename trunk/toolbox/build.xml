@@ -249,6 +249,7 @@
                 <include name="kunststoff.jar"/>
                 <include name="xplookandfeel.jar"/>
                 <include name="metouia.jar"/>
+                <include name="tinylaf.jar"/>
 
             </fileset>
         </unjar>    
@@ -780,9 +781,7 @@
     <!--=============================-->
     <taskdef name      = "banner" 
              classname = "toolbox.ant.BannerTask"
-             classpath = "build/lib/toolbox-ant.jar;
-                          build/lib/commons-cli.jar;
-                          build/lib/log4j.jar"/>
+             classpath = "build/lib/toolbox-ant.jar;build/lib/commons-cli.jar;build/lib/log4j.jar"/>
                           
     <taskdef resource="clovertasks" classpath="build/lib/clover.jar"/>
     <typedef resource="clovertypes" classpath="build/lib/clover.jar"/>
