@@ -1,4 +1,4 @@
-package toolbox.util.ui.plugin;
+package toolbox.plugin.texttools;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -58,7 +58,7 @@ import toolbox.workspace.PluginWorkspace;
  *   <li>Escapes/unescapes XML and HTML
  * </ul>
  */ 
-public class TextPlugin extends JPanel implements IPlugin, Stringz
+public class TextToolsPlugin extends JPanel implements IPlugin, Stringz
 { 
     // TODO: Add checkbox/combo to set type of text (xml, java) and syntax 
     //       hilite as appropriate.
@@ -68,7 +68,7 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
     //--------------------------------------------------------------------------
     
     public static final Logger logger_ =
-        Logger.getLogger(TextPlugin.class);   
+        Logger.getLogger(TextToolsPlugin.class);   
     
     // XML Preferences
     private static final String NODE_TEXTTOOLS_PLUGIN   = "TextToolsPlugin";
@@ -110,9 +110,9 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a TextPlugin.
+     * Creates a TextToolsPlugin.
      */
-    public TextPlugin()
+    public TextToolsPlugin()
     {
     }
     
