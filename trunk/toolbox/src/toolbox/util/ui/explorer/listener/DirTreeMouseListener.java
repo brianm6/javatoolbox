@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.ui.JSmartPopupMenu;
 import toolbox.util.ui.explorer.JFileExplorer;
 import toolbox.util.ui.explorer.action.CreateDirAction;
+import toolbox.util.ui.explorer.action.DeleteDirAction;
 import toolbox.util.ui.explorer.action.RenameDirAction;
 
 /**
@@ -53,8 +54,9 @@ public class DirTreeMouseListener extends AbstractListener
             if (popup == null)
             {
                 popup = new JSmartPopupMenu("DirPopup");
-                popup.add(new CreateDirAction(getProxy()));
-                popup.add(new RenameDirAction(getProxy()));
+                popup.add(new CreateDirAction(getExplorer()));
+                popup.add(new DeleteDirAction(getExplorer()));
+                popup.add(new RenameDirAction(getExplorer()));
                 getProxy().setFolderPopup(popup);
             }
             
@@ -66,18 +68,43 @@ public class DirTreeMouseListener extends AbstractListener
         }
     }
     
+    
+    /**
+     * No op.
+     * 
+     * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
+     */
     public void mouseEntered(MouseEvent e)
     {
     }
     
+    
+    /**
+     * No op.
+     * 
+     * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
+     */
     public void mouseExited(MouseEvent e)
     {
     }
     
+    
+    /**
+     * No op.
+     * 
+     * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
+     */
     public void mousePressed(MouseEvent e)
     {
     }
     
+    
+    /**
+     * No op.
+     * 
+     * @see java.awt.event.MouseListener#mouseReleased(
+     *      java.awt.event.MouseEvent)
+     */
     public void mouseReleased(MouseEvent e)
     {
     }
