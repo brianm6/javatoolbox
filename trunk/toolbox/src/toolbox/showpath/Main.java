@@ -1,9 +1,11 @@
 package toolbox.showpath;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.StringTokenizer;
+
+import toolbox.util.Platform;
+import toolbox.util.collections.CaseInsensetiveSet;
 
 /**
  * Print out the contents of the system path environemnt variable.
@@ -15,9 +17,9 @@ public class Main
     //--------------------------------------------------------------------------
 
     /**
-     * List of paths remembered so dupes can be flagged.
+     * Set of paths to recognize dupes.
      */
-    private List checkList_;
+    private Set pathSet_;
 
     //--------------------------------------------------------------------------
     // Main
@@ -42,48 +44,28 @@ public class Main
      */
     public Main()
     {
-        checkList_ = new ArrayList();
-
+        pathSet_ = new HashSet();
+        
+        // Make sure paths are treated as case-insensetive when not on a unix
+        // platform.
+        if (!Platform.isUnix())
+            pathSet_ = new CaseInsensetiveSet(pathSet_);
+        
         StringTokenizer st = new StringTokenizer(
             System.getProperty("java.library.path"),
                 System.getProperty("path.separator"));
 
-        // Find longest for formatting
         while (st.hasMoreElements())
         {
             String path = st.nextToken();
             System.out.print(path);
 
-            if (isDupe(path))
+            if (pathSet_.contains(path))
                 System.out.print("\t** DUPLICATE **");
             else
-                checkList_.add(path);
+                pathSet_.add(path);
 
             System.out.println();
         }
-    }
-
-    //--------------------------------------------------------------------------
-    // Private
-    //--------------------------------------------------------------------------
-
-    /**
-     * Checks if a path is a duplicate by checking the existing list. The
-     * comparison is case-insensetive.
-     *
-     * @param dupe Path to check for duplicate.
-     * @return True if duplicate, flase otherwise.
-     */
-    private boolean isDupe(String dupe)
-    {
-        for (Iterator i = checkList_.iterator(); i.hasNext();)
-        {
-            String check = (String) i.next();
-
-            if (dupe.equalsIgnoreCase(check))
-                return true;
-        }
-
-        return false;
     }
 }
