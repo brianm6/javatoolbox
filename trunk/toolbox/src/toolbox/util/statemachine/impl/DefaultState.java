@@ -1,7 +1,5 @@
 package toolbox.util.statemachine.impl;
 
-import java.util.List;
-
 import toolbox.util.statemachine.State;
 
 /**
@@ -32,27 +30,6 @@ public class DefaultState implements State
         setName(name);
     }
 
-    //--------------------------------------------------------------------------
-    // State Interface
-    //--------------------------------------------------------------------------
-    
-    /**
-     * @see toolbox.util.statemachine.State#getTransitions()
-     */
-    public List getTransitions()
-    {
-        throw new IllegalArgumentException("TODO");
-    }
-    
-    
-    /**
-     * @see toolbox.util.statemachine.State#isTerminal()
-     */
-    public boolean isTerminal()
-    {
-        return getTransitions().isEmpty();
-    }
-    
     //--------------------------------------------------------------------------
     // Nameable Interface
     //--------------------------------------------------------------------------
