@@ -14,7 +14,7 @@ package toolbox;
  * TODO: Add detach notification to tail.
  * TODO: Upgrade to CLI2
  * TODO: add .cvspass to conf
- * 
+ * TODO: Add HTTP proxy support to preferences dialog.
  * TODO: Add history to statusbar.
  * TODO: Add icons to statusbar.
  * =============================================================================
