@@ -137,7 +137,7 @@ public abstract class AbstractMessenger extends AbstractService
     {
         try
         {
-            invoker_.shutdown();
+            invoker_.destroy();
             
             // Honor strict state transitions
             super.stop();
