@@ -17,7 +17,7 @@ public class FileCreatedActivity implements IFileActivity
     /** 
      * Map of directories with their associated snapshot 
      */   
-    private Map snapshots_ = new HashMap();
+    private Map snapshots_;
 
     //--------------------------------------------------------------------------
     //  Constructors
@@ -28,6 +28,7 @@ public class FileCreatedActivity implements IFileActivity
      */
     public FileCreatedActivity()
     {
+        snapshots_ = new HashMap();
     }
 
     //--------------------------------------------------------------------------
