@@ -6,8 +6,6 @@ import java.awt.FlowLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import org.apache.log4j.Logger;
-
 import toolbox.util.ui.JFileExplorer;
 
 /**
@@ -16,11 +14,18 @@ import toolbox.util.ui.JFileExplorer;
  */
 public class FileSelectionPane extends JPanel
 {
-    private static final Logger logger_ =
-        Logger.getLogger(FileSelectionPane.class);
+    //private static final Logger logger_ =
+    //    Logger.getLogger(FileSelectionPane.class);
+
+    /**
+     * File explorer used to select the file to tail
+     */    
+    private JFileExplorer fileExplorer_;
     
-    private JFileExplorer  fileExplorer_;
-    private JButton        tailButton_;
+    /**
+     * Button that will tail the currently selected file in the file explorer
+     */
+    private JButton tailButton_;
     
     //--------------------------------------------------------------------------
     //  Constructors
@@ -73,6 +78,8 @@ public class FileSelectionPane extends JPanel
     //--------------------------------------------------------------------------
         
     /**
+     * Returns the file explorer.
+     * 
      * @return File explorer
      */
     public JFileExplorer getFileExplorer()
@@ -81,6 +88,8 @@ public class FileSelectionPane extends JPanel
     }
 
     /**
+     * Returns the tail button.
+     * 
      * @return Tail button
      */
     public JButton getTailButton()
