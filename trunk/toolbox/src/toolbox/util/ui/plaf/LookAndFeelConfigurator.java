@@ -26,15 +26,17 @@ import toolbox.util.ui.font.JFontChooser;
 import toolbox.workspace.prefs.IConfigurator;
 
 /**
- * Configures Look and Feel related preferences.
+ * Configures Look and Feel related preferences. Rendered as a panel in the
+ * Workspace Preferences dialog box.
  */
-public class LookAndFeelConfigurator extends JHeaderPanel implements IConfigurator
+public class LookAndFeelConfigurator extends JHeaderPanel 
+    implements IConfigurator
 {
     private static final Logger logger_ = 
         Logger.getLogger(LookAndFeelConfigurator.class);
     
     //--------------------------------------------------------------------------
-    // XML Constants
+    // IPreferened Constants
     //--------------------------------------------------------------------------
 
     public static final String NODE_LOOK_AND_FEEL = "LookAndFeel";
@@ -92,7 +94,7 @@ public class LookAndFeelConfigurator extends JHeaderPanel implements IConfigurat
     }
 
     //--------------------------------------------------------------------------
-    // Preferences Interface
+    // IConfigurator Interface
     //--------------------------------------------------------------------------
 
     /**
@@ -294,6 +296,10 @@ public class LookAndFeelConfigurator extends JHeaderPanel implements IConfigurat
      */
     class OverrideEnabledAction extends AbstractAction
     {
+        //----------------------------------------------------------------------
+        // ActionListener Interface
+        //----------------------------------------------------------------------
+        
         /**
          * @see java.awt.event.ActionListener#actionPerformed(
          *      java.awt.event.ActionEvent)
@@ -303,14 +309,17 @@ public class LookAndFeelConfigurator extends JHeaderPanel implements IConfigurat
             actionPerformed();
         }
 
+        //----------------------------------------------------------------------
+        // Public
+        //----------------------------------------------------------------------
         
         /**
          * Non-event triggered execution.
          */
         public void actionPerformed()
         {
-            boolean enabled = fontOverrideCheckBox_.isSelected();
-            fontOverrideChooser_.setEnabled(enabled);
+            boolean isEnabled = fontOverrideCheckBox_.isSelected();
+            fontOverrideChooser_.setEnabled(isEnabled);
         }
     }
 }
