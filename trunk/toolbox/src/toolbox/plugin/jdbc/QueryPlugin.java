@@ -316,7 +316,10 @@ public class QueryPlugin extends JPanel implements IPlugin
      */
     public void applyPrefs(Element prefs)
     {
-        Element queryPlugin = prefs.getFirstChildElement(NODE_QUERY_PLUGIN);
+        Element queryPlugin = null;
+        
+        if (prefs != null)
+            queryPlugin = prefs.getFirstChildElement(NODE_QUERY_PLUGIN);
         
         if (queryPlugin != null)
         {

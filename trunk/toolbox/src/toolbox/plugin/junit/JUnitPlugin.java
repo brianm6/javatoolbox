@@ -175,7 +175,10 @@ public class JUnitPlugin extends JPanel implements IPlugin
      */
     public void applyPrefs(Element prefs) throws Exception
     {
-        Element root = prefs.getFirstChildElement(NODE_JUNIT_PLUGIN);
+        Element root = null;
+        
+        if (prefs != null)
+            root = prefs.getFirstChildElement(NODE_JUNIT_PLUGIN);
         
         filterField_.setText(
             XOMUtil.getStringAttribute(root, ATTR_FILTER, ".*test"));

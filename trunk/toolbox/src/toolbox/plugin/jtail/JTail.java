@@ -284,39 +284,41 @@ public class JTail extends JFrame implements IPreferenced
      */
     public void applyPrefs(Element prefs) throws Exception
     {
-        Element root = prefs.getFirstChildElement(NODE_JTAIL_PLUGIN);
-
-        if (root != null)
+        if (prefs != null)
         {
-            
-            jtailConfig_.applyPrefs(root);
-            
-            // Tails left running since last save
-            ITailPaneConfig[] tailPaneConfigs = jtailConfig_.getTailConfigs();
-            
-            for (int i=0; i< tailPaneConfigs.length; i++)
-            {
-                ITailPaneConfig config = tailPaneConfigs[i];
-                
-                // Apply defaults if any
-                if (config.getFont() == null)
-                    config.setFont(jtailConfig_.getDefaultConfig().getFont());
-                
-                addTail(config);
-            }
-        
-            fileSelectionPane_.getFileExplorer().applyPrefs(root);
-            flipPane_.applyPrefs(root);
+            Element root = prefs.getFirstChildElement(NODE_JTAIL_PLUGIN);
 
-            Element recent = root.getFirstChildElement(NODE_RECENT);
-            Elements recentTails = recent.getChildElements(NODE_RECENT_TAIL);
-                
-            for (int i=0, n=recentTails.size(); i<n; i++)
+            if (root != null)
             {
-                Element recentTail = recentTails.get(i);
-                TailPaneConfig config = new TailPaneConfig();
-                config.applyPrefs(recentTail);
-                recentMenu_.add(new TailRecentAction(config));
+                jtailConfig_.applyPrefs(root);
+                
+                // Tails left running since last save
+                ITailPaneConfig[] tailPaneConfigs = jtailConfig_.getTailConfigs();
+                
+                for (int i=0; i< tailPaneConfigs.length; i++)
+                {
+                    ITailPaneConfig config = tailPaneConfigs[i];
+                    
+                    // Apply defaults if any
+                    if (config.getFont() == null)
+                        config.setFont(jtailConfig_.getDefaultConfig().getFont());
+                    
+                    addTail(config);
+                }
+            
+                fileSelectionPane_.getFileExplorer().applyPrefs(root);
+                flipPane_.applyPrefs(root);
+    
+                Element recent = root.getFirstChildElement(NODE_RECENT);
+                Elements recentTails = recent.getChildElements(NODE_RECENT_TAIL);
+                    
+                for (int i=0, n=recentTails.size(); i<n; i++)
+                {
+                    Element recentTail = recentTails.get(i);
+                    TailPaneConfig config = new TailPaneConfig();
+                    config.applyPrefs(recentTail);
+                    recentMenu_.add(new TailRecentAction(config));
+                }
             }
         }
     }

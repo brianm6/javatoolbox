@@ -149,12 +149,15 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
 
     public void applyPrefs(Element prefs) 
     {
-        Element root = prefs.getFirstChildElement(NODE_TEXTTOOLS_PLUGIN);
-        
-        if (root != null)
+        if (prefs != null)
         {
-            topFlipPane_.applyPrefs(root);
-            textArea_.applyPrefs(root);
+            Element root = prefs.getFirstChildElement(NODE_TEXTTOOLS_PLUGIN);
+            
+            if (root != null)
+            {
+                topFlipPane_.applyPrefs(root);
+                textArea_.applyPrefs(root);
+            }
         }
     }
 

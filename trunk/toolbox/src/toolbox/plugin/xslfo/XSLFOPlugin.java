@@ -367,7 +367,10 @@ public class XSLFOPlugin extends JPanel implements IPlugin
     
     public void applyPrefs(Element prefs) throws Exception
     {
-        Element root = prefs.getFirstChildElement(NODE_XSLFO_PLUGIN);
+        Element root = null;
+        
+        if (prefs != null)
+            root = prefs.getFirstChildElement(NODE_XSLFO_PLUGIN);
         
         if (root != null)
         {

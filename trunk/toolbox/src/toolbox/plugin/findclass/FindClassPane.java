@@ -384,30 +384,35 @@ public class JFindClass extends JFrame implements IPreferenced
      */
     public void applyPrefs(Element prefs) throws Exception
     {
-        Element root = prefs.getFirstChildElement(NODE_JFINDCLASS_PLUGIN);
-
-        ignoreCaseCheckBox_.setSelected(
-            XOMUtil.getBooleanAttribute(root, ATTR_IGNORECASE, true));
-            
-        showPathCheckBox_.setSelected(
-            XOMUtil.getBooleanAttribute(root, ATTR_SHOWPATH, true));
-
-        hiliteMatchesCheckBox_.setSelected(
-            XOMUtil.getBooleanAttribute(root, ATTR_HILITE_MATCHES, false));
-            
-        searchField_.setText(
-            XOMUtil.getStringAttribute(root, ATTR_SEARCH, ""));
+        Element root = null;
         
-        if (root != null)
+        if (prefs != null)
         {
-            leftFlipPane_.applyPrefs(
-                root.getFirstChildElement(NODE_LEFT_FLIPPANE));
+            root = prefs.getFirstChildElement(NODE_JFINDCLASS_PLUGIN);
                 
-            topFlipPane_.applyPrefs(
-                root.getFirstChildElement(NODE_TOP_FLIPPANE));
-        }
+            ignoreCaseCheckBox_.setSelected(
+                XOMUtil.getBooleanAttribute(root, ATTR_IGNORECASE, true));
+                
+            showPathCheckBox_.setSelected(
+                XOMUtil.getBooleanAttribute(root, ATTR_SHOWPATH, true));
+    
+            hiliteMatchesCheckBox_.setSelected(
+                XOMUtil.getBooleanAttribute(root, ATTR_HILITE_MATCHES, false));
+                
+            searchField_.setText(
+                XOMUtil.getStringAttribute(root, ATTR_SEARCH, ""));
             
-        fileExplorer_.applyPrefs(root);
+            if (root != null)
+            {
+                leftFlipPane_.applyPrefs(
+                    root.getFirstChildElement(NODE_LEFT_FLIPPANE));
+                    
+                topFlipPane_.applyPrefs(
+                    root.getFirstChildElement(NODE_TOP_FLIPPANE));
+            }
+                
+            fileExplorer_.applyPrefs(root);
+        }
     }
     
     /**

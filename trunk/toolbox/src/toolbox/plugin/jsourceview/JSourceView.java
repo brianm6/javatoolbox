@@ -241,7 +241,10 @@ public class JSourceView extends JFrame implements ActionListener, IPreferenced
      */
     public void applyPrefs(Element prefs) throws Exception
     {
-        Element root = prefs.getFirstChildElement(NODE_JSOURCEVIEW_PLUGIN);
+        Element root = null;
+        
+        if (prefs != null)
+            root = prefs.getFirstChildElement(NODE_JSOURCEVIEW_PLUGIN);
         
         dirField_.setText(XOMUtil.getStringAttribute(root, ATTR_LAST_DIR, ""));
         dirField_.setCaretPosition(0);

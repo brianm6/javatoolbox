@@ -183,7 +183,10 @@ public class JTcpTunnelPane extends JPanel implements IPreferenced
      */
     public void applyPrefs(Element prefs) throws Exception
     {
-        Element root = prefs.getFirstChildElement(NODE_TCPTUNNEL_PLUGIN);
+        Element root = null;
+        
+        if (prefs != null) 
+            root = prefs.getFirstChildElement(NODE_TCPTUNNEL_PLUGIN);
         
         remotePortField_.setText(
             XOMUtil.getStringAttribute(root, ATTR_REMOTE_PORT, ""));
