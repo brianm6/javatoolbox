@@ -16,6 +16,7 @@ import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.io.filter.ExtensionFilter;
@@ -315,6 +316,17 @@ public final class ClassUtil
             classpath = bootpath + File.pathSeparator + classpath;
         
         return classpath;           
+    }
+
+    
+    /**
+     * Returns an array of all elements on the current classpath.
+     * 
+     * @return String[]
+     */
+    public static String[] getClassPathElements()
+    {
+        return StringUtils.split(getClasspath(), File.pathSeparator);
     }
     
     
