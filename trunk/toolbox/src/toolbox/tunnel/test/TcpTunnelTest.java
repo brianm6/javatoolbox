@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 
@@ -29,6 +30,13 @@ public class TcpTunnelTest extends TestCase
     private static final Logger logger_ = Logger.getLogger(TcpTunnelTest.class);
     
     //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
+    private PrintStream os_;
+    private PrintStream es_;
+    
+    //--------------------------------------------------------------------------
     // Main
     //--------------------------------------------------------------------------
     
@@ -40,6 +48,28 @@ public class TcpTunnelTest extends TestCase
     public static void main(String[] args)
     {
         TestRunner.run(TcpTunnelTest.class);
+    }
+    
+    //--------------------------------------------------------------------------
+    // Overrides TestCase
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see junit.framework.TestCase#setUp()
+     */
+    protected void setUp() throws Exception
+    {
+        os_= System.out;
+        es_ = System.err;
+    }
+    
+    /**
+     * @see junit.framework.TestCase#tearDown()
+     */
+    protected void tearDown() throws Exception
+    {
+        System.setOut(os_);
+        System.setErr(es_);
     }
     
     //--------------------------------------------------------------------------
