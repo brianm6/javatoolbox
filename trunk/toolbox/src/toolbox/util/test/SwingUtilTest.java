@@ -26,6 +26,7 @@ import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.JSmartMenu;
 import toolbox.util.ui.JSmartMenuItem;
+import toolbox.util.ui.plaf.LookAndFeelUtil;
 
 /**
  * Unit test for SwingUtil.
@@ -47,7 +48,7 @@ public class SwingUtilTest extends UITestCase
      */
     public static void main(String[] args) throws Exception
     {
-    	SwingUtil.setPreferredLAF();
+    	LookAndFeelUtil.setPreferredLAF();
         TestRunner.run(SwingUtilTest.class);
     }
 
@@ -75,7 +76,7 @@ public class SwingUtilTest extends UITestCase
     {
         logger_.info("Running testGetLAFs...");
         
-        UIManager.LookAndFeelInfo[] lafs = SwingUtil.getLAFs();
+        UIManager.LookAndFeelInfo[] lafs = UIManager.getInstalledLookAndFeels();
         logger_.debug(StringUtil.addBars(ArrayUtil.toString(lafs, true)));
     }
     
