@@ -25,6 +25,7 @@ import toolbox.graph.GraphLib;
 import toolbox.graph.GraphView;
 import toolbox.graph.Vertex;
 import toolbox.graph.jung.JungGraphLib;
+import toolbox.graph.prefuse.PrefuseGraphLib;
 import toolbox.util.FileUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.service.ServiceException;
@@ -86,7 +87,7 @@ public class JarDepsPlugin extends AbstractPlugin
 
     private GraphView graphView_;
     private Graph graph_;
-    private GraphLib graphFactory_ = new JungGraphLib();
+    private GraphLib graphFactory_ = new PrefuseGraphLib();
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -226,6 +227,7 @@ public class JarDepsPlugin extends AbstractPlugin
                 if (!nodes.containsKey(fromLabel))
                 {
                     fromVertex = graphFactory_.createVertex(graph_, fromLabel);
+                    graph_.addVertex(fromVertex);
                     nodes.put(fromLabel, fromVertex);
                 }
                 else
@@ -237,6 +239,7 @@ public class JarDepsPlugin extends AbstractPlugin
                 if (!nodes.containsKey(toLabel))
                 {
                     toVertex = graphFactory_.createVertex(graph_, toLabel);
+                    graph_.addVertex(toVertex);
                     nodes.put(toLabel, toVertex);
                 }
                 else
@@ -245,6 +248,7 @@ public class JarDepsPlugin extends AbstractPlugin
                 }
                 
                 Edge edge = graphFactory_.createEdge(fromVertex, toVertex);
+                graph_.addEdge(edge);
             }
             
             graphView_ = graphFactory_.createView(graph_);
@@ -378,7 +382,7 @@ public class JarDepsPlugin extends AbstractPlugin
      */
     public String getPluginName()
     {
-        return "Jar Deps 2";
+        return "Jar Deps";
     }
 
     
