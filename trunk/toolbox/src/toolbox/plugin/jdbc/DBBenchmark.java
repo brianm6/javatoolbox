@@ -11,15 +11,22 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.collections.MapUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.NullOutputStream;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
+import toolbox.util.JDBCUtil;
+import toolbox.util.MemoryWatcher;
 import toolbox.util.RandomUtil;
+import toolbox.util.StringUtil;
+import toolbox.util.service.ServiceException;
 
 /**
  * This is a sample implementation of the Transaction Processing Performance
@@ -38,6 +45,8 @@ public class DBBenchmark
     public final static int BRANCH = 1;
     public final static int ACCOUNT = 2;
     
+    private static final NumberFormat FMT = DecimalFormat.getNumberInstance();
+    
     //--------------------------------------------------------------------------
     // Static
     //--------------------------------------------------------------------------
@@ -45,27 +54,27 @@ public class DBBenchmark
     // tpc bm b scaling rules
     
     /**
-     * the tps scaling factor: here it is 1 
+     * The tps scaling factor: here it is 1. 
      */
     private static int tps_ = 1;      
     
     /**
-     * number of branches in 1 tps db       
+     * Number of branches in 1 tps db.       
      */
     private static int numBranches_ = 1;
     
     /** 
-     * number of tellers in  1 tps db       
+     * Number of tellers in  1 tps db.       
      */
     private static int numTellers_ = 10;
     
     /**
-     * number of accounts in 1 tps db       
+     * Number of accounts in 1 tps db.       
      */
     private static int numAccounts_ = 100000;
     
     /** 
-     * number of history recs in 1 tps db   
+     * Number of history recs in 1 tps db.   
      */
     private static int numHistory_  = 864000; 
     
@@ -137,7 +146,7 @@ public class DBBenchmark
     /**
      * Tracks memory usage while the test is running.
      */
-    private MemoryWatcherThread memoryWatcher_;
+    private MemoryWatcher memoryWatcher_;
     
     /**
      * Reports on the results are sent here.
@@ -347,10 +356,8 @@ public class DBBenchmark
         PrintWriter writer)
     {
         writer_ = writer;
-        List clients = new ArrayList();
-        Thread client = null;
-        Iterator it = null;
-
+        //memoryWatcher_ = new MemoryWatcher();
+        
         try
         {
             if (init)
@@ -363,104 +370,11 @@ public class DBBenchmark
             }
 
             writer_.println("* Starting Benchmark Run *");
-            memoryWatcher_ = new MemoryWatcherThread();
-            memoryWatcher_.start();
 
-            transactions_ = false;
-            preparedStmt_ = false;
-            startTime_ = System.currentTimeMillis();
-
-            for (int i = 0; i < numClients_; i++)
-            {
-                client = new ClientThread(numTxPerClient_, url, user, password);
-                client.start();
-                clients.add(client);
-            }
-            
-            // Barrier to complete this test session
-            
-            it = clients.iterator();
-
-            while (it.hasNext())
-            {
-                client = (Thread) it.next();
-                client.join();
-            }
-
-            clients.clear();
-            reportDone();
-
-            transactions_ = true;
-            preparedStmt_ = false;
-            startTime_ = System.currentTimeMillis();
-
-            for (int i = 0; i < numClients_; i++)
-            {
-                client = new ClientThread(numTxPerClient_, url, user, password);
-                client.start();
-                clients.add(client);
-            }
-
-            // Barrier to complete this test session
-            
-            it = clients.iterator();
-
-            while (it.hasNext())
-            {
-                client = (Thread) it.next();
-                client.join();
-            }
-
-            clients.clear();
-            reportDone();
-
-            transactions_ = false;
-            preparedStmt_ = true;
-            startTime_ = System.currentTimeMillis();
-
-            for (int i = 0; i < numClients_; i++)
-            {
-                client = new ClientThread(numTxPerClient_, url, user, password);
-                client.start();
-                clients.add(client);
-            }
-
-            // Barrier to complete this test session
-            
-            it = clients.iterator();
-
-            while (it.hasNext())
-            {
-                client = (Thread) it.next();
-                client.join();
-            }
-
-            clients.clear();
-            reportDone();
-
-            transactions_ = true;
-            preparedStmt_ = true;
-            startTime_ = System.currentTimeMillis();
-
-            for (int i = 0; i < numClients_; i++)
-            {
-                client = new ClientThread(numTxPerClient_, url, user, password);
-                client.start();
-                clients.add(client);
-            }
-
-            // Barrier to complete this test session
-            
-            it = clients.iterator();
-
-            while (it.hasNext())
-            {
-                client = (Thread) it.next();
-                client.join();
-            }
-
-            clients.clear();
-            reportDone();
+            runBenchmark(false, false, url, user, password);
+            runBenchmark(true, false, url, user, password);
+            runBenchmark(false, true, url, user, password);
+            runBenchmark(true, true, url, user, password);
         }
         catch (Exception ex)
         {
@@ -469,26 +383,26 @@ public class DBBenchmark
         }
         finally
         {
-            memoryWatcher_.end();
-
             try
             {
-                memoryWatcher_.join();
-
+                /*
+                 * Skip shutdown sequence
+                 * 
                 if (shutdownCommand_.length() > 0)
                 {
                     Connection conn = connect(url, user, password);
                     Statement stmt = conn.createStatement();
                     stmt.execute(shutdownCommand_);
-                    stmt.close();
-                    connectClose(conn);
+                    JDBCUtil.close(stmt);
+                    JDBCUtil.releaseConnection(conn);
                 }
-
-                if (tabFile_ != null)
-                    tabFile_.close();
+                */
+                
+                IOUtils.closeQuietly(tabFile_);
             }
             catch (Exception ex2)
             {
+                logger_.error(ex2);
             }
         }
     }
@@ -498,17 +412,75 @@ public class DBBenchmark
     //--------------------------------------------------------------------------
     
     /**
-     * Report done. 
+     * Runs the benchmark.
+     * 
+     * @param useTransactions Use transactions in the benchmark.
+     * @param usePreparedStatements Use prepared statements in the benchmark.
+     * @param url URL of the JDBC driver.
+     * @param user User to login to the database.
+     * @param password Password to login to the database.
+     * @throws InterruptedException on interruption.
      */
-    protected void reportDone()
+    protected void runBenchmark(
+        boolean useTransactions, 
+        boolean usePreparedStatements, 
+        String url, 
+        String user, 
+        String password) throws InterruptedException, ServiceException
+    {
+        memoryWatcher_ = new MemoryWatcher();
+        memoryWatcher_.initialize(MapUtils.EMPTY_MAP);
+        memoryWatcher_.start();
+        
+        try
+        {
+            transactions_ = useTransactions;
+            preparedStmt_ = usePreparedStatements;
+            Thread client;
+            
+            List clients = new ArrayList();            
+            startTime_ = System.currentTimeMillis();
+    
+            for (int i = 0; i < numClients_; i++)
+            {
+                client = new ClientThread(numTxPerClient_, url, user, password);
+                client.start();
+                clients.add(client);
+            }
+            
+            // Barrier to complete this test session
+            
+            Iterator it = clients.iterator();
+    
+            while (it.hasNext())
+            {
+                client = (Thread) it.next();
+                client.join();
+            }
+    
+            clients.clear();
+        }
+        finally 
+        {
+            memoryWatcher_.stop();
+            memoryWatcher_.destroy();
+        }
+        
+        generateReport();
+        memoryWatcher_ = null;
+    }
+
+    
+    /**
+     * Generates a report containing statistics from the last executed 
+     * benchmark. 
+     */
+    protected void generateReport() throws ServiceException
     {
         long endTime = System.currentTimeMillis();
         double completionTime = ((double) endTime - (double) startTime_) / 1000;
 
         tabFile_.print(tps_ + ";" + numClients_ + ";" + numTxPerClient_ + ";");
-
-        //writer_.println("\n* Benchmark Report *");
-        //writer_.print("* Featuring ");
 
         writer_.println();
         writer_.print("Benchmark: ");
@@ -535,13 +507,10 @@ public class DBBenchmark
             tabFile_.print("<auto-commit>;");
         }
 
-        writer_.println("\n================================================");
+        writer_.println("\n" + StringUtil.BR);
         
         writer_.println(
-            //"Time for " + txCount_ + " transactions: " +
-            "Time        " +
-            DecimalFormat.getNumberInstance().format(completionTime) + 
-            " sec(s)");
+            "Time        " + FMT.format(completionTime) + " sec(s)");
 
         writer_.println(
             "Passed      " +
@@ -550,34 +519,32 @@ public class DBBenchmark
         double rate = (txCount_ - failedTx_) / completionTime;
         
         writer_.println(
-            "Throughput  " + 
-            DecimalFormat.getNumberInstance().format(rate) + 
-            " transactions/sec.");
+            "Throughput  " + FMT.format(rate) + " transactions/sec.");
         
         writer_.println(
-            "Min memory  " + 
-            DecimalFormat.getIntegerInstance().format(memoryWatcher_.min_) +
-            " KB");
+            "Min memory  " + FMT.format(memoryWatcher_.getMin()) +  " KB");
         
         writer_.println(
-            "Max memory  " + 
-            DecimalFormat.getIntegerInstance().format(memoryWatcher_.max_) +
-            " KB");
-        
-        //    + " / " + memoryWatcher_.min + " kb");
-        
+            "Max memory  " + FMT.format(memoryWatcher_.getMax()) + " KB");
 
-        tabFile_.print(memoryWatcher_.max_ + ";" + memoryWatcher_.min_ + ";" + 
-            failedTx_ + ";" + rate + "\n");
+        tabFile_.print(
+            memoryWatcher_.getMax() 
+            + ";" 
+            + memoryWatcher_.getMin() 
+            + ";" 
+            + failedTx_ 
+            + ";" 
+            + rate 
+            + "\n");
 
         txCount_ = 0;
         failedTx_ = 0;
-        memoryWatcher_.reset();
+        //memoryWatcher_.initialize(MapUtils.EMPTY_MAP);
     }
 
     
     /**
-     * Bump up tx count.
+     * Bump up the transaction count.
      */
     protected synchronized void incrementTransactionCount()
     {
@@ -586,7 +553,7 @@ public class DBBenchmark
 
 
     /**
-     * Bump up failed tx count.
+     * Bump up failed transaction count.
      */
     protected synchronized void incrementFailedTransactionCount()
     {
@@ -638,12 +605,12 @@ public class DBBenchmark
             if (transactions_)
                 conn.commit();
 
-            stmt.close();
+            JDBCUtil.close(stmt);
 
             if (accountsnb == (numAccounts_ * tps_))
             {
                 writer_.println("Tables already initialized");
-                connectClose(conn);
+                JDBCUtil.releaseConnection(conn);
                 return;
             }
         }
@@ -677,9 +644,9 @@ public class DBBenchmark
             if (transactions_)
                 conn.commit();
 
-            stmt.close();
+            JDBCUtil.close(stmt);
         }
-        catch (Exception ex2)
+        finally
         {
         }
 
@@ -758,7 +725,7 @@ public class DBBenchmark
             if (transactions_)
                 conn.commit();
 
-            stmt.close();
+            JDBCUtil.close(stmt);
         }
         catch (Exception ex2)
         {
@@ -838,7 +805,7 @@ public class DBBenchmark
             }
 
             if (preparedStmt_)
-                pstmt.close();
+                JDBCUtil.close(stmt);
 
             if (transactions_)
                 conn.commit();
@@ -873,7 +840,7 @@ public class DBBenchmark
             }
 
             if (preparedStmt_)
-                pstmt.close();
+                JDBCUtil.close(pstmt);
 
             if (transactions_)
                 conn.commit();
@@ -911,7 +878,7 @@ public class DBBenchmark
             }
 
             if (preparedStmt_)
-                pstmt.close();
+                JDBCUtil.close(pstmt);
 
             if (transactions_)
                 conn.commit();
@@ -919,7 +886,7 @@ public class DBBenchmark
             writer_.println(
                 "\t" + (numAccounts_ * tps_) + "\t records inserted");
             
-            stmt.close();
+            JDBCUtil.close(stmt);
         }
         catch (Exception ex)
         {
@@ -927,7 +894,7 @@ public class DBBenchmark
             ex.printStackTrace(writer_);
         }
 
-        connectClose(conn);
+        JDBCUtil.releaseConnection(conn);
     }
  
     
@@ -993,28 +960,7 @@ public class DBBenchmark
 
         return conn;
     }
-
     
-    /**
-     * Closes a connection.
-     * 
-     * @param c Connection to close
-     */
-    protected static void connectClose(Connection c)
-    {
-        if (c == null)
-            return;
-
-        try
-        {
-            c.close();
-        }
-        catch (Exception ex)
-        {
-            logger_.error(ex);
-        }
-    }
-
     //--------------------------------------------------------------------------
     // ClientThread
     //--------------------------------------------------------------------------
@@ -1118,20 +1064,11 @@ public class DBBenchmark
             {
                 try
                 {
-                    if (pstmt1_ != null)
-                        pstmt1_.close();
-
-                    if (pstmt2_ != null)
-                        pstmt2_.close();
-
-                    if (pstmt3_ != null)
-                        pstmt3_.close();
-
-                    if (pstmt4_ != null)
-                        pstmt4_.close();
-
-                    if (pstmt5_ != null)
-                        pstmt5_.close();
+                    JDBCUtil.close(pstmt1_);
+                    JDBCUtil.close(pstmt2_);
+                    JDBCUtil.close(pstmt3_);
+                    JDBCUtil.close(pstmt4_);
+                    JDBCUtil.close(pstmt5_);
                 }
                 catch (Exception ex)
                 {
@@ -1140,8 +1077,7 @@ public class DBBenchmark
                 }
             }
 
-            connectClose(conn_);
-            conn_ = null;
+            JDBCUtil.releaseConnection(conn_);
         }
 
         //----------------------------------------------------------------------
@@ -1151,10 +1087,10 @@ public class DBBenchmark
         /**
          * Executes a single TPC BM B transaction.
          *
-         * @param bid B id
-         * @param tid t id
-         * @param aid A id
-         * @param delta Delta 
+         * @param bid B id.
+         * @param tid t id.
+         * @param aid A id.
+         * @param delta Delta. 
          * @return int
          */
         protected int doOne(int bid, int tid, int aid, int delta)
@@ -1245,7 +1181,7 @@ public class DBBenchmark
 
                     stmt.executeUpdate(query);
                     stmt.clearWarnings();
-                    stmt.close();
+                    JDBCUtil.close(stmt); 
                 }
 
                 if (transactions_)
@@ -1276,64 +1212,6 @@ public class DBBenchmark
             }
 
             return 0;
-        }
-    }
-    
-    //--------------------------------------------------------------------------
-    // MemoryWatcherThread
-    //--------------------------------------------------------------------------
-    
-    class MemoryWatcherThread extends Thread
-    {
-        private long min_ = 0;
-        private long max_ = 0;
-        private boolean keepRunning_ = true;
-
-
-        public MemoryWatcherThread()
-        {
-            reset();
-            keepRunning_ = true;
-        }
-
-
-        public void reset()
-        {
-            System.gc();
-            long currentFree = Runtime.getRuntime().freeMemory();
-            long currentAlloc = Runtime.getRuntime().totalMemory();
-            min_ = max_ = (currentAlloc - currentFree);
-        }
-
-
-        public void end()
-        {
-            keepRunning_ = false;
-        }
-
-
-        public void run()
-        {
-            while (keepRunning_)
-            {
-                long currentFree = Runtime.getRuntime().freeMemory();
-                long currentAlloc = Runtime.getRuntime().totalMemory();
-                long used = currentAlloc - currentFree;
-
-                if (used < min_)
-                    min_ = used;
-
-                if (used > max_)
-                    max_ = used;
-
-                try
-                {
-                    sleep(100);
-                }
-                catch (InterruptedException E)
-                {
-                }
-            }
         }
     }
 }
