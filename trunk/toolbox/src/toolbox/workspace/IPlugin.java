@@ -1,7 +1,8 @@
 package toolbox.util.ui.plugin;
 
-import java.awt.Component;
 import java.util.Map;
+
+import javax.swing.JComponent;
 
 /**
  * IPlugin defines the interface for any plugins that can hosted by the 
@@ -32,7 +33,7 @@ public interface IPlugin extends IPreferenced
      * 
      * @return GUI component of the plugin
      */
-    public Component getComponent();
+    public JComponent getComponent();
     
     /**
      * Returns a short description of the plugin
