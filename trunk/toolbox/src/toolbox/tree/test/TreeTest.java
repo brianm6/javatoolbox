@@ -12,6 +12,7 @@ import junit.textui.TestRunner;
 import toolbox.tree.Tree;
 import toolbox.util.FileUtil;
 import toolbox.util.StreamUtil;
+import toolbox.util.StringUtil;
 
 /**
  * Unit test for Tree
@@ -51,6 +52,7 @@ public class TreeTest extends TestCase
      */
     public void setUp() throws IOException
     {
+        System.out.println(StringUtil.repeat("=",80));
         rootDir_ = FileUtil.createTempDir();
     }
 
@@ -301,11 +303,13 @@ public class TreeTest extends TestCase
      */
     public void printNativeTree(File dir) throws IOException
     {
+        /*
         Process p = Runtime.getRuntime().exec("tree.com /a " + dir.getAbsolutePath());
         InputStream is = p.getInputStream();
         String output = StreamUtil.asString(is);
         output = output.substring(output.indexOf("\n", output.indexOf("\n") + 1));
         System.out.println(output);
+        */
     }
 
     /**
@@ -313,11 +317,13 @@ public class TreeTest extends TestCase
      */
     public void printNativeFileTree(File dir) throws IOException
     {
+        /*
         Process p = Runtime.getRuntime().exec("tree.com /a /f " + dir.getAbsolutePath());
         InputStream is = p.getInputStream();
         String output = StreamUtil.asString(is);
         output = output.substring(output.indexOf("\n", output.indexOf("\n") + 1));
         System.out.println(output);
+        */
     }
     
 }

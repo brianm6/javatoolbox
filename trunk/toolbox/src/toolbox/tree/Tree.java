@@ -10,11 +10,41 @@ import toolbox.util.ArrayUtil;
 import toolbox.util.args.ArgumentParser;
 import toolbox.util.args.Option;
 import toolbox.util.args.OptionException;
-import toolbox.util.io.DirectoryFilter; 
+import toolbox.util.io.DirectoryFilter;
+import toolbox.util.io.FileFilter; 
 
 /**
- * Tree provides the equivalent functionality of the Window 2000 tree.exe
- * command.
+ * Generates a text representation of a directory tree with the option to
+ * include files. Example:
+ * <pre>
+ *
+ *   apache
+ *   |
+ *   |
+ *   +---org
+ *   |   +---apache
+ *   |       +---log4j
+ *   |       |   +---config
+ *   |       |   |
+ *   |       |   +---helpers
+ *   |       |   |
+ *   |       |   +---net
+ *   |       |   |
+ *   |       |   +---nt
+ *   |       |   |
+ *   |       |   +---or
+ *   |       |   |
+ *   |       |   +---spi
+ *   |       |   |
+ *   |       |   +---varia
+ *   |       |   |
+ *   |       |   +---xml
+ *   |       |
+ *   |       +---regexp
+ *   |
+ *   +---META-INF
+ * 
+ * </pre>
  */
 public class Tree
 {
@@ -28,6 +58,7 @@ public class Tree
     
     private PrintWriter writer_;
     private FilenameFilter dirFilter_;
+    private FilenameFilter fileFilter_;
     private boolean showFiles_;
     private File rootDir_;
         
@@ -62,24 +93,31 @@ public class Tree
             System.exit(2);
         }
 
-        // Show files option
-        showFiles = ((Boolean) 
-            parser.getOptionValue(showFilesOption)).booleanValue();        
+        // Extract option to show files
+        showFiles = parser.getBooleanValue(showFilesOption, DEFAULT_SHOWFILES);
 
         String[] otherArgs = parser.getRemainingArgs();
-
+        
         // Root directory argument        
-        switch (args.length)
+        switch (otherArgs.length)
         {
             case 0  :  rootDir = System.getProperty("user.dir"); break;
             case 1  :  rootDir = otherArgs[0]; break;
-            default :  printUsage(); System.exit(2);
+            default :  System.err.println("ERROR: Invalid arguments");
+                       printUsage(); System.exit(2);
                        break;
         }
         
         // Create us a tree and let it ride..
-		Tree t = new Tree(new File(rootDir), showFiles);
-        t.showTree();
+        try
+        {
+            Tree t = new Tree(new File(rootDir), showFiles);
+            t.showTree();
+        }
+        catch (IllegalArgumentException e)
+        {
+            System.err.println("ERROR: " + e.getMessage());
+        }
 	}
 
 
@@ -136,13 +174,32 @@ public class Tree
      * @param  showFiles  Set to true if you want file info in the tree,
      *                    false otherwise
      * @param  writer     Output destination
+     * @throws IllegalArgumentException if rootDir invalid
      */
     public Tree(File rootDir, boolean showFiles, Writer writer)
     {
         rootDir_ = rootDir;
+
+        // Make sure directory is legit        
+        if (!rootDir_.exists())
+            throw new IllegalArgumentException("Directory " + rootDir + 
+                " does not exist.");
+                
+        if (!rootDir_.isDirectory())
+            throw new IllegalArgumentException(rootDir + 
+                " is not a directory.");
+
+        if (!rootDir_.canRead())
+            throw new IllegalArgumentException("Cannot read from " + 
+                rootDir_);
+        
+        
         showFiles_ = showFiles;
         writer_ = new PrintWriter(writer, true);
         dirFilter_ = new DirectoryFilter();
+        
+        if (showFiles_)
+            fileFilter_ = new FileFilter();
     }
 
 
@@ -157,10 +214,10 @@ public class Tree
     
     /**
      * Recurses the directory structure of the given rootDir and generates
-     * a hierarchical representation.
+     * a hierarchical text representation.
      * 
      * @param  rootDir   Root diretory
-     * @param  level     Current level of indentation
+     * @param  level     Current level of decorated indentation
      */
 	protected boolean showTree(File rootDir, String level)
 	{
@@ -170,17 +227,33 @@ public class Tree
             writer_.println(rootDir.getAbsolutePath());
             
         // Get list of directories in root
-		File[] files = rootDir.listFiles(dirFilter_);
+		File[] dirs = rootDir.listFiles(dirFilter_);
 
+        // Print files
+        if (showFiles_)
+        {
+            File[] files = rootDir.listFiles(fileFilter_);
+            
+            for (int i = 0; i < files.length; i++)
+            {
+                String filler = (dirs.length == 0 ? SPACER : BAR);
+                writer_.println(level + filler + files[i].getName());
+            }
+    
+            // Extra line after last file in a dir        
+            if (dirs.length > 0)
+                writer_.println(level + BAR);
+        }
+        
         // Bow out if nothing todo
-		if (ArrayUtil.isNullOrEmpty(files))
+		if (ArrayUtil.isNullOrEmpty(dirs))
         {
             if (atRoot)
                 writer_.println("No subfolders exist");
             return false;
         }
 
-        int len = files.length; 
+        int len = dirs.length; 
 
         // we know theres at least one child so go ahead and print a BAR
         if (atRoot)
@@ -189,7 +262,7 @@ public class Tree
         // Process each directory    
 		for (int i=0; i<len; i++)
 		{
-			File current = files[i];
+			File current = dirs[i];
 
 			writer_.print(level);
 			writer_.print(JUNCTION);
