@@ -20,7 +20,6 @@ import toolbox.util.ArrayUtil;
 import toolbox.util.ClassUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.StringUtil;
-import toolbox.util.io.filter.DirectoryFilter;
 import toolbox.util.io.filter.ExtensionFilter;
 import toolbox.util.io.filter.OrFilter;
 
@@ -100,11 +99,6 @@ public class FindClass
      */
     private OrFilter archiveFilter_; 
     
-    /** 
-     * Filter for directories. 
-     */
-    private FilenameFilter directoryFilter_;
-    
     //--------------------------------------------------------------------------
     //  Constructors
     //--------------------------------------------------------------------------
@@ -115,7 +109,6 @@ public class FindClass
     public FindClass() 
     {
         classFileFilter_ = new ExtensionFilter(".class");
-        directoryFilter_ = new DirectoryFilter();
         
         archiveFilter_ = new OrFilter();
         archiveFilter_.addFilter(new ExtensionFilter(".jar"));
@@ -238,7 +231,7 @@ public class FindClass
     {
         if (target.isDirectory())
         {
-            searchTargets_.addAll(findFilesRecursively(
+            searchTargets_.addAll(FileUtil.find(
                 target.getAbsolutePath(), archiveFilter_));
         }
         else
@@ -277,7 +270,7 @@ public class FindClass
      */
     public List getArchivesInDir(File dir)
     {
-        return findFilesRecursively(dir.getAbsolutePath(), archiveFilter_);    
+        return FileUtil.find(dir.getAbsolutePath(), archiveFilter_);    
     }
     
     //--------------------------------------------------------------------------
@@ -312,49 +305,9 @@ public class FindClass
      */
     protected List getArchiveTargets()
     {
-        return findFilesRecursively(".", archiveFilter_);        
+        return FileUtil.find(".", archiveFilter_);        
     }
 
-    
-    /**
-     * Finds files recursively from a given starting directory using the
-     * passed in filter as selection criteria.
-     * 
-     * @param startingDir Start directory for the search.
-     * @param filter Filename filter criteria.
-     * @return List of files that match the filter from the start dir.
-     */    
-    protected List findFilesRecursively(String startingDir, 
-        FilenameFilter filter)
-    {
-        File f = new File(startingDir);
-        ArrayList basket = new ArrayList(20);
-
-        if (f.exists() && f.isDirectory()) 
-        { 
-            // Smack a trailing / on the start dir
-            startingDir = FileUtil.trailWithSeparator(startingDir);
-            
-            // Process files in the current dir and throw them is the basked
-            String[] files = f.list(filter);
-            for (int i = 0; i < files.length; i++) 
-                basket.add(startingDir + files[i]);
-            
-            // Process immediate child directories
-            String[] dirs  = f.list(directoryFilter_);
-                        
-            for (int i = 0; i < dirs.length; i++)
-            {
-                List subBasket = 
-                    findFilesRecursively(startingDir + dirs[i], filter);
-                    
-                basket.addAll(subBasket);
-            }
-        }
-        
-        return basket;
-    }
-    
     
     /**
      * Finds a class in a given jar file.
@@ -419,7 +372,7 @@ public class FindClass
         dirPath = FileUtil.trailWithSeparator(dirPath);
         
         // Regular expression search
-        List classFiles = findFilesRecursively(dirPath, classFileFilter_);
+        List classFiles = FileUtil.find(dirPath, classFileFilter_);
         
         for (Iterator i = classFiles.iterator(); i.hasNext();)
         {
