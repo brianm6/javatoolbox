@@ -12,6 +12,7 @@ import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.zip.ZipEntry;
@@ -458,15 +459,37 @@ public final class ClassUtil
         // TODO: Move to a more system related utility class
         
         File result = null;
+        String path = null;
         
-        StringTokenizer st = new StringTokenizer(
-            System.getProperty("java.library.path"),
+        if (Platform.isUnix())
+        {
+            Properties env = new Properties();
+            
+            try
+            {
+                env.load(Runtime.getRuntime().exec("env").getInputStream());
+            }
+            catch (IOException e)
+            {
+                logger_.error(e);
+            }
+            
+            path = env.getProperty("PATH");
+        }
+        else
+        {
+            path = System.getProperty("java.library.path");
+        }
+        
+        StringTokenizer st = 
+            new StringTokenizer(
+                path, 
                 System.getProperty("path.separator"));
 
         while (st.hasMoreElements())
         {
-            String path = st.nextToken();
-            String trying = FileUtil.trailWithSeparator(path) + file;
+            String pathElement = st.nextToken();
+            String trying = FileUtil.trailWithSeparator(pathElement) + file;
             
             //logger_.debug("Trying " + trying);
             
