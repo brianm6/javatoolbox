@@ -422,7 +422,8 @@ public class QueryPlugin extends JPanel implements IPlugin
     {
         String metaResults = null;
         String lower = sql.trim().toLowerCase();
-
+        String session = dbConfigPane_.getSession();
+        
         if (lower.startsWith("select"))
         {
             // Execute select statement
@@ -431,7 +432,6 @@ public class QueryPlugin extends JPanel implements IPlugin
             Connection conn = null;
             PreparedStatement stmt = null;
             ResultSet resultSet = null;
-            String session = dbConfigPane_.getSession();
             
             try
             {
@@ -474,12 +474,14 @@ public class QueryPlugin extends JPanel implements IPlugin
                  lower.startsWith("drop")   ||
                  lower.startsWith("alter"))
         {
-            metaResults = JDBCUtil.executeUpdate(sql) + " rows affected.";
+            metaResults = 
+                JDBCSession.executeUpdate(session, sql) + " rows affected.";
         }
         else
         {
             // Everything else is processed as an update
-            metaResults = JDBCUtil.executeUpdate(sql) + " rows affected.";
+            metaResults = 
+                JDBCSession.executeUpdate(session, sql) + " rows affected.";
         }
 
         addToHistory(sql);
