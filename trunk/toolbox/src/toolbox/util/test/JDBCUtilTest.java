@@ -11,12 +11,15 @@ import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
 
+import toolbox.showclasspath.Main;
 import toolbox.util.FileUtil;
 import toolbox.util.JDBCUtil;
 import toolbox.util.RandomUtil;
+import toolbox.util.StringUtil;
+import toolbox.util.io.StringOutputStream;
 
 /**
- * Unit test for JDBCUtil
+ * Unit test for JDBCUtil.
  */
 public class JDBCUtilTest extends TestCase
 {
@@ -25,17 +28,18 @@ public class JDBCUtilTest extends TestCase
     
     private static String FS = File.separator;
     
-    private static String DRIVER   = "org.hsqldb.jdbcDriver";
-    private static String USER     = "SA";
-    private static String PASSWORD = "";
-    private static String URL      = "jdbc:hsqldb:" + FileUtil.getTempDir()+FS; 
+    private static String DB_JAR = "hsqldb.jar";
+    private static String DB_DRIVER = "org.hsqldb.jdbcDriver";
+    private static String DB_USER = "SA";
+    private static String DB_PASSWORD = "";
+    private static String DB_URL = "jdbc:hsqldb:" + FileUtil.getTempDir()+FS; 
     
     //--------------------------------------------------------------------------
     // Main
     //--------------------------------------------------------------------------
     
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
      * @param args None recognized
      */
@@ -51,30 +55,45 @@ public class JDBCUtilTest extends TestCase
     /**
      * Tests init()
      */
-    public void testInit()
+    public void testInit() throws Exception
     {
         logger_.info("Running testInit...");
         
         try
         {
-            JDBCUtil.init(DRIVER, URL, USER, PASSWORD);
+            JDBCUtil.init(DB_DRIVER, DB_URL, DB_USER, DB_PASSWORD);
             // No exception thrown = test passed
         }
         catch (Exception e)
         {
             fail(e.getMessage());
         }
+        finally
+        {
+            JDBCUtil.shutdown();
+        }
     }
 
+
     /**
-     * Tests init() loading the jdbc driver from a jar file 
+     * Tests init() loading the jdbc driver from a jar file. 
      * 
      * @throws Exception on error
      */
     public void testInitUsingJar() throws Exception
     {
-        JDBCUtil.init("hqsqldb.jar", DRIVER, URL, USER, PASSWORD);
+        logger_.info("Running testInitUsingJar...");
+        
+        try
+        {                
+            JDBCUtil.init(getDBJar(), DB_DRIVER, DB_URL, DB_USER, DB_PASSWORD);
+        }
+        finally
+        {
+            JDBCUtil.shutdown();
+        }
     }    
+    
     
     /**
      * Tests getConnection()
@@ -90,7 +109,7 @@ public class JDBCUtilTest extends TestCase
         
         try
         {    
-            JDBCUtil.init(DRIVER, URL + prefix, USER, PASSWORD);
+            JDBCUtil.init(DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD);
             
             Connection conn = JDBCUtil.getConnection();
             logger_.info("Connection: " + conn);
@@ -100,13 +119,14 @@ public class JDBCUtilTest extends TestCase
         }
         finally
         {
+            JDBCUtil.shutdown();
             cleanup(prefix);
         }
-        
     }
 
+
     /**
-     * Tests executeQuery() on an empty table
+     * Tests executeQuery() on an empty table.
      * 
      * @throws Exception on error
      */
@@ -116,7 +136,7 @@ public class JDBCUtilTest extends TestCase
         
         String prefix = "JDBCUtilTest_testQueryExecuteZero_" + 
             RandomUtil.nextInt(1000);
-        JDBCUtil.init(DRIVER, URL + prefix, USER, PASSWORD);
+        JDBCUtil.init(DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD);
         String table = "table_zero";
         
         try
@@ -129,12 +149,14 @@ public class JDBCUtilTest extends TestCase
         finally
         {
             JDBCUtil.dropTable(table);
+            JDBCUtil.shutdown();
             cleanup(prefix);
         }  
     }
     
+    
     /**
-     * Tests executeQuery() on table with only one row of data
+     * Tests executeQuery() on table with only one row of data.
      * 
      * @throws Exception on error
      */
@@ -144,7 +166,7 @@ public class JDBCUtilTest extends TestCase
         
         String prefix = "JDBCUtilTest_testQueryExecuteOne_" + 
             RandomUtil.nextInt(1000);
-        JDBCUtil.init(DRIVER, URL + prefix, USER, PASSWORD);
+        JDBCUtil.init(DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD);
         String table = "table_one";
         
         try
@@ -159,12 +181,14 @@ public class JDBCUtilTest extends TestCase
         finally
         {
             JDBCUtil.dropTable(table);
+            JDBCUtil.shutdown();
             cleanup(prefix);
         }  
     }
 
+
     /**
-     * Tests executeQuery() on table with many rows of data
+     * Tests executeQuery() on table with many rows of data.
      * 
      * @throws Exception on error
      */
@@ -174,30 +198,35 @@ public class JDBCUtilTest extends TestCase
         
         String prefix = "JDBCUtilTest_testQueryExecuteMany_" + 
             RandomUtil.nextInt(1000);
-        JDBCUtil.init(DRIVER, URL + prefix, USER, PASSWORD);
+        JDBCUtil.init(DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD);
         String table = "table_many";
         
         try
         {
             JDBCUtil.executeUpdate("create table " + table + "(id integer)");
             
-            for(int i=0; i<100; i++)
+            for (int i=0; i<100; i++)
+            {
                 JDBCUtil.executeUpdate(
-                    "insert into " +table + "(id) values (" + i + ")");
+                    "insert into " + table + "(id) " + 
+                    "values (" + i + ")");
+            }
                     
             String results = JDBCUtil.executeQuery("select * from " + table);            
             assertTrue(results.indexOf("100 rows") >= 0);
-            logger_.info("\n" + results);
+            logger_.info("\n" + StringUtil.wrap(results.replace('\n', ' ')));
         }
         finally
         {
             JDBCUtil.dropTable(table);
+            JDBCUtil.shutdown();
             cleanup(prefix);
         }  
     }
 
+
     /**
-     * Tests executeQueryArray() on an empty table
+     * Tests executeQueryArray() on an empty table.
      * 
      * @throws Exception on error
      */
@@ -207,7 +236,7 @@ public class JDBCUtilTest extends TestCase
         
         String prefix = "JDBCUtilTest_testQueryExecuteArrayZero_" + 
             RandomUtil.nextInt(1000);
-        JDBCUtil.init(DRIVER, URL + prefix, USER, PASSWORD);
+        JDBCUtil.init(DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD);
         String table = "table_zero";
         
         try
@@ -223,12 +252,14 @@ public class JDBCUtilTest extends TestCase
         finally
         {
             JDBCUtil.dropTable(table);
+            JDBCUtil.shutdown();
             cleanup(prefix);
         }  
     }
 
+
     /**
-     * Tests executeQueryArray() on table with only one row of data
+     * Tests executeQueryArray() on table with only one row of data.
      * 
      * @throws Exception on error
      */
@@ -238,7 +269,8 @@ public class JDBCUtilTest extends TestCase
         
         String prefix = "JDBCUtilTest_testQueryExecuteArrayOne_" + 
             RandomUtil.nextInt(1000);
-        JDBCUtil.init(DRIVER, URL + prefix, USER, PASSWORD);
+            
+        JDBCUtil.init(DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD);
         String table = "table_one";
         
         try
@@ -256,12 +288,14 @@ public class JDBCUtilTest extends TestCase
         finally
         {
             JDBCUtil.dropTable(table);
+            JDBCUtil.shutdown();
             cleanup(prefix);
         }  
     }
 
+
     /**
-     * Tests executeQueryArray() on table with many rows of data
+     * Tests executeQueryArray() on table with many rows of data.
      * 
      * @throws Exception on error
      */
@@ -271,7 +305,7 @@ public class JDBCUtilTest extends TestCase
         
         String prefix = "JDBCUtilTest_testExecuteQueryArrayMany_" + 
             RandomUtil.nextInt(1000);
-        JDBCUtil.init(DRIVER, URL + prefix, USER, PASSWORD);
+        JDBCUtil.init(DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD);
         String table = "table_many";
         
         try
@@ -294,12 +328,14 @@ public class JDBCUtilTest extends TestCase
         finally
         {
             JDBCUtil.dropTable(table);
+            JDBCUtil.shutdown();
             cleanup(prefix);
         }  
     }
 
+
     /**
-     * Tests executeUpdate() for INSERT, UPDATE, and DELETE
+     * Tests executeUpdate() for INSERT, UPDATE, and DELETE.
      * 
      * @throws Exception on error
      */
@@ -310,7 +346,7 @@ public class JDBCUtilTest extends TestCase
         String prefix = "JDBCUtilTest_testExecuteUpdate_" + 
             RandomUtil.nextInt(1000);
             
-        JDBCUtil.init(DRIVER, URL + prefix, USER, PASSWORD);
+        JDBCUtil.init(DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD);
         String table = "table_execute_update";
         
         try
@@ -336,12 +372,14 @@ public class JDBCUtilTest extends TestCase
         finally
         {
             JDBCUtil.dropTable(table);
+            JDBCUtil.shutdown();
             cleanup(prefix);
         }  
     }
 
+
     /**
-     * Tests getSize() on an empty table
+     * Tests getSize() on an empty table.
      * 
      * @throws Exception on error
      */
@@ -351,7 +389,7 @@ public class JDBCUtilTest extends TestCase
         
         String prefix = "JDBCUtilTest_testGetSizeZero_" + 
             RandomUtil.nextInt(1000);
-        JDBCUtil.init(DRIVER, URL + prefix, USER, PASSWORD);
+        JDBCUtil.init(DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD);
         String table = "table_zero";
         Connection conn = null;
         ResultSet results = null;
@@ -378,12 +416,14 @@ public class JDBCUtilTest extends TestCase
             JDBCUtil.close(results);
             JDBCUtil.releaseConnection(conn);
             JDBCUtil.dropTable(table);
+            JDBCUtil.shutdown();
             cleanup(prefix); 
         }
     }
 
+
     /**
-     * Tests getSize() on a table with one row
+     * Tests getSize() on a table with one row.
      * 
      * @throws Exception on error
      */
@@ -393,7 +433,7 @@ public class JDBCUtilTest extends TestCase
         
         String prefix = "JDBCUtilTest_testGetSizeOne_" + 
             RandomUtil.nextInt(1000);
-        JDBCUtil.init(DRIVER, URL + prefix, USER, PASSWORD);
+        JDBCUtil.init(DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD);
         String table = "table_one";
         Connection conn = null;
         ResultSet results = null;
@@ -426,13 +466,14 @@ public class JDBCUtilTest extends TestCase
             JDBCUtil.close(results);
             JDBCUtil.releaseConnection(conn);
             JDBCUtil.dropTable(table);
+            JDBCUtil.shutdown();
             cleanup(prefix); 
         }
     }
 
 
     /**
-     * Tests getSize() on a table with one row
+     * Tests getSize() on a table with one row.
      * 
      * @throws Exception on error
      */
@@ -442,7 +483,7 @@ public class JDBCUtilTest extends TestCase
         
         String prefix = "JDBCUtilTest_testGetSizeMany_" + 
             RandomUtil.nextInt(1000);
-        JDBCUtil.init(DRIVER, URL + prefix, USER, PASSWORD);
+        JDBCUtil.init(DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD);
         String table = "table_many";
         Connection conn = null;
         ResultSet results = null;
@@ -471,9 +512,11 @@ public class JDBCUtilTest extends TestCase
             JDBCUtil.close(results);
             JDBCUtil.releaseConnection(conn);
             JDBCUtil.dropTable(table);
+            JDBCUtil.shutdown();
             cleanup(prefix); 
         }
     }
+
 
     /**
      * Tests dropTable()
@@ -485,7 +528,7 @@ public class JDBCUtilTest extends TestCase
         logger_.info("Running testDropTable...");
         
         String prefix = "JDBCUtilTest_testDropTable_" + RandomUtil.nextInt(999);
-        JDBCUtil.init(DRIVER, URL + prefix, USER, PASSWORD);
+        JDBCUtil.init(DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD);
         String table = "user";
         
         try
@@ -514,8 +557,21 @@ public class JDBCUtilTest extends TestCase
         }
         finally
         {
+            JDBCUtil.shutdown();
             cleanup(prefix); 
         }
+    }
+    
+    
+    /**
+     * Tests shutdown()
+     */
+    public void testShutdown() throws Exception
+    {
+        logger_.info("Running testShutdown...");
+        
+        JDBCUtil.init(DB_DRIVER, DB_URL, DB_USER, DB_PASSWORD);
+        JDBCUtil.shutdown();
     }
     
     //--------------------------------------------------------------------------
@@ -531,4 +587,30 @@ public class JDBCUtilTest extends TestCase
         (new File(FileUtil.getTempDir() + FS + prefix +".data")).delete();
         (new File(FileUtil.getTempDir() + FS + prefix +".script")).delete();
     }
+    
+    
+    /**
+     * Returns the absolute path of the test db driver jar file we're using.
+     * 
+     * @return String
+     */
+    protected String getDBJar()
+    {
+        String jarFile = null;
+        StringOutputStream sos = new StringOutputStream();
+        Main.showPath(sos);
+        String[] lines = StringUtil.tokenize(sos.toString(), "\n");
+        
+        for (int i=0; i<lines.length; i++)
+        {
+            if (lines[i].indexOf(DB_JAR) >= 0)
+            {
+                jarFile = StringUtil.tokenize(lines[i], " ")[0];
+                logger_.info("Found file: " + jarFile);
+                break;
+            }
+        }
+        
+        return jarFile;
+    }    
 }
