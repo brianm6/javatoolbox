@@ -27,8 +27,7 @@ package toolbox;
  *       http://dev.eclipse.org/viewcvs/index.cgi/~checkout~/jdt-ui-home/r3_0/proposals/icons/
  * TODO: Make plugins detachable
  * TODO: Write log4j pattern layout that combines class name and method
- * TODO: Lift icons from DbVisualizer
- * TODO: Automatically flushing Writer/OutputStream
+ * TODO: Investigate JModalWindow
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
