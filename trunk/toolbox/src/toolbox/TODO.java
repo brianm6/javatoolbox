@@ -36,10 +36,8 @@ package toolbox;
  * =============================================================================
  * TODO: TCPTunnel: Add toggle button for wrap lines on toolbar
  * TODO: TCPTunnel: Add toggle button for binary char filter on toolbar
- * TODO: TCPTunnel: Fix total connection byte count on the text area title
  * TODO: TCPTunnel: Add option just to monitor the count and not output data.
  * TODO: TCPTunnel: Figure out why it freezes up
- * TODO: TCPTunnel: Make sure the textarea are the rigth way around.
  * =============================================================================
  * </pre>
  */
