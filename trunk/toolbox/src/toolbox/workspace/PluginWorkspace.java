@@ -30,9 +30,6 @@ import javax.swing.UIManager;
 import com.jgoodies.plaf.plastic.PlasticLookAndFeel;
 import com.jgoodies.plaf.plastic.PlasticTheme;
 
-import org.apache.commons.collections.SequencedHashMap;
-import org.apache.log4j.Logger;
-
 import nu.xom.Attribute;
 import nu.xom.Builder;
 import nu.xom.Document;
@@ -41,6 +38,9 @@ import nu.xom.Elements;
 import nu.xom.Node;
 import nu.xom.ParseException;
 import nu.xom.Serializer;
+
+import org.apache.commons.collections.SequencedHashMap;
+import org.apache.log4j.Logger;
 
 import toolbox.log4j.SmartLogger;
 import toolbox.util.ElapsedTime;
@@ -86,6 +86,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     private static final String   ATTR_YCOORD       = "ycoord";
     private static final String   ATTR_LAF          = "lookandfeel";
     private static final String   ATTR_SELECTED_TAB = "selectedtab";
+    private static final String   ATTR_SMOOTH_FONTS = "smoothfonts";
     
     private static final String   NODE_PLUGIN       = "Plugin";
     private static final String     ATTR_CLASS      = "class";
@@ -147,6 +148,11 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      */
     private Element unloadedPrefs_;
         
+    /**
+     * Smooth fonts check box
+     */
+    private JCheckBoxMenuItem smoothFontsCheckBoxItem_;
+
     //--------------------------------------------------------------------------
     // Main 
     //--------------------------------------------------------------------------
@@ -393,17 +399,27 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      */
     protected JMenuBar createMenuBar()
     {
+        JMenuBar menubar = new JMenuBar();
+        menubar.add(createFileMenu());
+        menubar.add(createPreferencesMenu());
+        return menubar;
+    }
+
+    /**
+     * Creates the File menu 
+     * 
+     * @return JMenu
+     */
+    protected JMenu createFileMenu()
+    {
         JMenu fileMenu = new JSmartMenu("File");
         fileMenu.setMnemonic('F');        
         fileMenu.add(new JSmartMenuItem(new PluginsAction()));
         fileMenu.add(new JSmartMenuItem(new SavePreferencesAction()));
         fileMenu.add(createLookAndFeelMenu());
         fileMenu.add(new JSmartMenuItem(new GarbageCollectAction()));
-        fileMenu.add(new JSmartMenuItem(new ExitAction()));            
-        
-        JMenuBar menubar = new JMenuBar();
-        menubar.add(fileMenu);
-        return menubar;
+        fileMenu.add(new JSmartMenuItem(new ExitAction()));
+        return fileMenu;            
     }
 
     /**
@@ -448,6 +464,23 @@ public class PluginWorkspace extends JFrame implements IPreferenced
             menu.add(new JSmartMenuItem(
                 new SetThemeAction((PlasticTheme) themes.get(i))));
         
+        return menu;
+    }
+
+    /**
+     * Creates the preferences menu
+     * 
+     * @return JMenu 
+     */
+    protected JMenu createPreferencesMenu()
+    {
+        JMenu menu = new JSmartMenu("Preferences");
+        menu.setMnemonic('P');
+
+        smoothFontsCheckBoxItem_ = 
+            new JSmartCheckBoxMenuItem(new AntiAliasAction());
+
+        menu.add(smoothFontsCheckBoxItem_);
         return menu;
     }
 
@@ -601,6 +634,12 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         // Save currently selected tab
         root.addAttribute(
             new Attribute(ATTR_SELECTED_TAB,tabbedPane_.getSelectedIndex()+""));
+
+        // Save smooth fonts flag
+        root.addAttribute(
+            new Attribute(
+                ATTR_SMOOTH_FONTS, 
+                smoothFontsCheckBoxItem_.isSelected()+""));
                 
         // Save loaded plugin prefs
         for (Iterator i = plugins_.values().iterator(); i.hasNext();)
@@ -668,6 +707,12 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     public void applyPrefs(Element prefs)
     {
         Element root = prefs.getFirstChildElement(NODE_WORKSPACE);
+
+        smoothFontsCheckBoxItem_.setSelected(
+            XOMUtil.getBooleanAttribute(root, ATTR_SMOOTH_FONTS, false));
+        
+        new AntiAliasAction().actionPerformed(
+            new ActionEvent(smoothFontsCheckBoxItem_, -1, null));
         
         boolean maxxed = XOMUtil.getBooleanAttribute(root, ATTR_MAXXED, false);
         
@@ -767,7 +812,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
                     unloadedPrefs_.appendChild(pluginNode.copy());
                 }
             }
-            
+
             // Restore last selected tab
             tabbedPane_.setSelectedIndex(
                 XOMUtil.getIntegerAttribute(root, ATTR_SELECTED_TAB, -1));
@@ -876,7 +921,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     {
         PluginsAction()
         {
-            super("Plugins ...");
+            super("Plugins..");
             putValue(Action.MNEMONIC_KEY, new Integer('P'));
         }
 
@@ -988,6 +1033,24 @@ public class PluginWorkspace extends JFrame implements IPreferenced
                   "Max: "         + maxMem/1000   + "K   " +
                   "</font>" +
                 "</html>");
+        }
+    }
+    
+    /**
+     * Toggles smooth fonts  
+     */
+    class AntiAliasAction extends AbstractAction
+    {
+        public AntiAliasAction()
+        {
+            super("Smooth Fonts");
+        }
+
+        public void actionPerformed(ActionEvent e)
+        {
+            JCheckBoxMenuItem cb = (JCheckBoxMenuItem) e.getSource();
+            SwingUtil.setAntiAliased(cb.isSelected());
+            PluginWorkspace.this.repaint();
         }
     }
 }
