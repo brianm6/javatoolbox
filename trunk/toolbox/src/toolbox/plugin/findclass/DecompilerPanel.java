@@ -1,4 +1,4 @@
-package toolbox.findclass;
+package toolbox.plugin.findclass;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;

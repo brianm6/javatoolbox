@@ -1,4 +1,4 @@
-package toolbox.findclass;
+package toolbox.plugin.findclass;
 
 import java.util.Map;
 
@@ -12,17 +12,17 @@ import toolbox.util.ExceptionUtil;
 import toolbox.workspace.IPlugin;
 
 /**
- * Plugin wrapper for JFindClass.
+ * Plugin wrapper for FindClassPane.
  */
-public class JFindClassPlugin implements IPlugin
+public class FindClassPlugin implements IPlugin
 {
     public static final Logger logger_ =
-        Logger.getLogger(JFindClassPlugin.class);
+        Logger.getLogger(FindClassPlugin.class);
         
     /** 
      * Delegate JFindClass. 
      */    
-    private JFindClass delegate_;
+    private FindClassPane delegate_;
     
     //--------------------------------------------------------------------------
     // Constructors
@@ -31,9 +31,9 @@ public class JFindClassPlugin implements IPlugin
     /** 
      * Creates a JFindClassPlugin. 
      */
-    public JFindClassPlugin()
+    public FindClassPlugin()
     {
-        delegate_ = new JFindClass();
+        delegate_ = new FindClassPane();
     }
     
     //--------------------------------------------------------------------------

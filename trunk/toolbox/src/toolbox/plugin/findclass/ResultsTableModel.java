@@ -1,4 +1,4 @@
-package toolbox.findclass;
+package toolbox.plugin.findclass;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.table.AbstractTableModel;
+
+import toolbox.findclass.FindClassResult;
 
 /**
  * Table model for the search results.

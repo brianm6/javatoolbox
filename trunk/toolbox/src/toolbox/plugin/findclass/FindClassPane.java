@@ -1,4 +1,4 @@
-package toolbox.findclass;
+package toolbox.plugin.findclass;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -42,6 +42,9 @@ import nu.xom.Element;
 import org.apache.log4j.Logger;
 import org.apache.regexp.RESyntaxException;
 
+import toolbox.findclass.FindClass;
+import toolbox.findclass.FindClassAdapter;
+import toolbox.findclass.FindClassResult;
 import toolbox.util.ClassUtil;
 import toolbox.util.DateTimeUtil;
 import toolbox.util.FileUtil;
@@ -73,14 +76,16 @@ import toolbox.workspace.WorkspaceAction;
  * UI for finding class files by regular expression from the classpath or any 
  * arbitrary java archive or directory.
  */
-public class JFindClass extends JFrame implements IPreferenced
+public class FindClassPane extends JFrame implements IPreferenced
 {
+    // TODO: Remove extends from frame
+    
     //--------------------------------------------------------------------------
     // Constants
     //--------------------------------------------------------------------------
     	
     private static final Logger logger_ = 
-        Logger.getLogger(JFindClass.class);
+        Logger.getLogger(FindClassPane.class);
 
     // XML stuff for preferences
     private static final String NODE_JFINDCLASS_PLUGIN = "JFindClassPlugin";
@@ -202,11 +207,11 @@ public class JFindClass extends JFrame implements IPreferenced
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a JFindClass.
+     * Creates a FindClassPane.
      */
-    public JFindClass()
+    public FindClassPane()
     {
-        super("JFindClass");
+        super("FindClassPane");
     }
 
     //--------------------------------------------------------------------------
