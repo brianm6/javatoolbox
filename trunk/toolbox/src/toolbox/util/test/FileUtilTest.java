@@ -37,7 +37,7 @@ public class FileUtilTest extends TestCase
     /**
      * Constructor for FileUtilTest.
      * 
-     * @param arg0  Name
+     * @param  arg0  Test name
      */
     public FileUtilTest(String arg0)
     {
@@ -349,12 +349,17 @@ public class FileUtilTest extends TestCase
             String[] beforeMoveSrc = srcDir.list();
             String[] beforeMoveDest= destDir.list();
             
-            logger_.info("Before move:  src=" + ArrayUtil.toString(beforeMoveSrc));
-            logger_.info("Before move: dest=" + ArrayUtil.toString(beforeMoveDest));
+            logger_.info(
+                "Before move:  src=" + ArrayUtil.toString(beforeMoveSrc));
+                
+            logger_.info(
+                "Before move: dest=" + ArrayUtil.toString(beforeMoveDest));
             
-            assertEquals("should be one file in src dir", 1, beforeMoveSrc.length);
-            assertEquals("should be zero files in dest dir", 
-                0, beforeMoveDest.length);
+            assertEquals(
+                "should be one file in src dir", 1, beforeMoveSrc.length);
+                
+            assertEquals(
+                "should be zero files in dest dir", 0, beforeMoveDest.length);
     
             // Move file
             FileUtil.moveFile(srcFile, destDir);
@@ -363,15 +368,22 @@ public class FileUtilTest extends TestCase
             String[] afterMoveSrc = srcDir.list();
             String[] afterMoveDest= destDir.list();
     
-            logger_.info("After move:  src=" + ArrayUtil.toString(afterMoveSrc));
-            logger_.info("After move: dest=" + ArrayUtil.toString(afterMoveDest));
+            logger_.info(
+                "After move:  src=" + ArrayUtil.toString(afterMoveSrc));
+                
+            logger_.info(
+                "After move: dest=" + ArrayUtil.toString(afterMoveDest));
                     
-            assertEquals("should be zero files in src dir", 0, afterMoveSrc.length);
-            assertEquals("should be one file in dest dir", 1, afterMoveDest.length);
+            assertEquals(
+                "should be zero files in src dir", 0, afterMoveSrc.length);
+                
+            assertEquals(
+                "should be one file in dest dir", 1, afterMoveDest.length);
     
             // Compare contents of moved file
             String destContents = 
-                FileUtil.getFileContents(destDir.listFiles()[0].getAbsolutePath());
+                FileUtil.getFileContents(
+                    destDir.listFiles()[0].getAbsolutePath());
                 
             assertEquals("contents of moved file should be the same", 
                 srcContents, destContents);

@@ -184,6 +184,7 @@ public final class ThreadUtil
      * @param   target  Object to invoke method upon
      * @param   method  Name of the method to execute
      * @param   params  Methods arguments
+     * @param   clazzes Parameter class types
      * @return  Started thread of execution 
      */
     public static Thread run(Object target, String method, Object[] params, 
@@ -222,9 +223,9 @@ public final class ThreadUtil
          * Parameters to pass on the method invocation 
          */
         private Object[] params_;
-    
-    	/**
-    	 * Parameter types
+
+        /**
+         * Parameter types
     	 */
         private Class[] clazzes_;
             
