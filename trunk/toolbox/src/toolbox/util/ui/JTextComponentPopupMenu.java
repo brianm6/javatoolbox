@@ -90,9 +90,9 @@ public class JTextComponentPopupMenu extends JPopupMenu
     /**
      * Copies the contents of the currently selected indices to the clipboard
      */    
-    protected class CopyAction extends AbstractAction
+    class CopyAction extends AbstractAction
     {
-        public CopyAction()
+        CopyAction()
         {
             super("Copy");
             putValue(Action.MNEMONIC_KEY, new Integer('C'));
@@ -109,9 +109,9 @@ public class JTextComponentPopupMenu extends JPopupMenu
     /**
      * Pastes the contents of the clipboard into the text component
      */    
-    protected class PasteAction extends AbstractAction
+    class PasteAction extends AbstractAction
     {
-        public PasteAction()
+        PasteAction()
         {
             super("Paste");
             putValue(Action.MNEMONIC_KEY, new Integer('P'));
@@ -128,9 +128,9 @@ public class JTextComponentPopupMenu extends JPopupMenu
     /**
      * Selects all items in the list box 
      */
-    protected class SelectAllAction extends AbstractAction
+    class SelectAllAction extends AbstractAction
     {
-        public SelectAllAction()
+        SelectAllAction()
         {
             super("Select All");
         }
@@ -144,9 +144,9 @@ public class JTextComponentPopupMenu extends JPopupMenu
     /**
      * Sets the font in the text component
      */
-    protected class SetFontAction extends AbstractAction
+    class SetFontAction extends AbstractAction
     {
-        public SetFontAction()
+        SetFontAction()
         {
             super("Set font..");
         }
@@ -213,9 +213,9 @@ public class JTextComponentPopupMenu extends JPopupMenu
     /**
      * Triggers activation of the Find Dialog box
      */    
-    protected class FindAction extends AbstractAction
+    class FindAction extends AbstractAction
     {
-        public FindAction(JTextComponent textComp)
+        FindAction(JTextComponent textComp)
         {
             super("Find..");
             putValue(Action.MNEMONIC_KEY, new Integer('F'));
@@ -250,12 +250,12 @@ public class JTextComponentPopupMenu extends JPopupMenu
     /**
      * Inserts the text of a file at the currnet cursor location
      */
-    protected static class InsertFileAction extends SmartAction
+    static class InsertFileAction extends SmartAction
     {
         private static File lastDir_;
         private JTextComponent jtc_;
         
-        public InsertFileAction(JTextComponent jtc)
+        InsertFileAction(JTextComponent jtc)
         {
             super("Insert..", true, false, null);
             jtc_ = jtc;
@@ -289,12 +289,12 @@ public class JTextComponentPopupMenu extends JPopupMenu
     /**
      * Inserts the text of a file at the currnet cursor location
      */
-    protected static class SaveAsAction extends SmartAction
+    static class SaveAsAction extends SmartAction
     {
         private static File lastDir_;
         private JTextComponent jtc_;
         
-        public SaveAsAction(JTextComponent jtc)
+        SaveAsAction(JTextComponent jtc)
         {
             super("Save As..", true, false, null);
             putValue(Action.MNEMONIC_KEY, new Integer('A'));
