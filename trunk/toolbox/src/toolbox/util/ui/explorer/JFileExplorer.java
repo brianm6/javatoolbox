@@ -11,6 +11,7 @@ import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -30,6 +31,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTree;
 import javax.swing.ListCellRenderer;
+import javax.swing.SwingConstants;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -38,10 +42,10 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
-import org.apache.log4j.Logger;
-
 import nu.xom.Attribute;
 import nu.xom.Element;
+
+import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
 import toolbox.util.DateTimeUtil;
@@ -54,17 +58,13 @@ import toolbox.util.ui.plugin.IPreferenced;
 import toolbox.util.ui.statusbar.JStatusBar;
 
 /**
- * Tree based file browser widget based on an open-source project and heavily 
- * updated.
- * 
- * <pre>
- * TODO: Add filter for file list
- * TODO: Add refresh button
- * TODO: Add file size and timestamp info somewhere
- * </pre>
+ * Explorer like tree based file browser component.
  */
 public class JFileExplorer extends JPanel implements IPreferenced
 {
+    // TODO: Add filter for file list
+    // TODO: Add refresh button
+    
     private static final Logger logger_ = 
         Logger.getLogger(JFileExplorer.class);
 
@@ -332,7 +332,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
             root.addAttribute(new Attribute(ATTR_FILE, file));
             
         root.addAttribute(new Attribute(
-              ATTR_DIVIDER, ""+splitPane_.getDividerLocation()));
+              ATTR_DIVIDER, splitPane_.getDividerLocation() + ""));
             
         XOMUtil.insertOrReplace(prefs, root);
     }
@@ -462,6 +462,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
         fileList_ = new JList();
         fileList_.setModel(listModel_ = new DefaultListModel());
         fileList_.addMouseListener(new FileListMouseListener());
+        fileList_.addListSelectionListener(new FileListSelectionListener());
         setFileList(getDefaultRoot());
         fileList_.setFixedCellHeight(15);
         JScrollPane filesScrollPane = new JScrollPane(fileList_);
@@ -687,36 +688,18 @@ public class JFileExplorer extends JPanel implements IPreferenced
     /**
      * FileNode used to represent directories in the directory tree
      */
-    public class FileNode extends DefaultMutableTreeNode
+    class FileNode extends DefaultMutableTreeNode
     {
         /**
-         * Constructor for FileNode.
-         */
-        public FileNode()
-        {
-        }
-    
-        /**
-         * Constructor for FileNode.
+         * Creates a FileNode
          * 
          * @param  userObject  Object to associate with the file node
          */
-        public FileNode(Object userObject)
+        FileNode(Object userObject)
         {
             super(userObject);
         }
     
-        /**
-         * Constructor for FileNode.
-         * 
-         * @param  userObject      User object
-         * @param  allowsChildren  Should node allow children
-         */
-        public FileNode(Object userObject, boolean allowsChildren)
-        {
-            super(userObject, allowsChildren);
-        }
-        
         /**
          * Compares based on directory/file name. Is sensetive to the host
          * platform w.r.t. case sensetivity
@@ -731,8 +714,8 @@ public class JFileExplorer extends JPanel implements IPreferenced
             
             DefaultMutableTreeNode node = (DefaultMutableTreeNode)obj;
             
-            String file1 = (String)getUserObject();
-            String file2 = (String)node.getUserObject();
+            String file1 = (String) getUserObject();
+            String file2 = (String) node.getUserObject();
             
             if (Platform.isUnix())
                 return file1.equals(file2);
@@ -759,11 +742,15 @@ public class JFileExplorer extends JPanel implements IPreferenced
      */
     class DriveIconCellRenderer extends JLabel implements ListCellRenderer
     {
-        public DriveIconCellRenderer()
+        DriveIconCellRenderer()
         {
             this.setOpaque(true);
         }
 
+        /**
+         * @see javax.swing.ListCellRenderer#getListCellRendererComponent(
+         *      javax.swing.JList, java.lang.Object, int, boolean, boolean)
+         */
         public Component getListCellRendererComponent(
             JList list,
             Object value, 
@@ -803,9 +790,24 @@ public class JFileExplorer extends JPanel implements IPreferenced
     }
 
     /**
+     * Listens for selection changes in the file list, and fires events
+     * accordingly.
+     */
+    class FileListSelectionListener implements ListSelectionListener
+    {
+        public void valueChanged(ListSelectionEvent e)
+        {
+            if (e.getValueIsAdjusting())
+                return;
+                
+            fireFileSelected();
+        }
+    }
+    
+    /**
      * Inner class for handling click event on the JTree.
      */
-    private class DirTreeMouseListener extends MouseAdapter
+    class DirTreeMouseListener extends MouseAdapter
     {
         public void mouseClicked(MouseEvent evt)
         {
@@ -831,14 +833,6 @@ public class JFileExplorer extends JPanel implements IPreferenced
             if (ie.getStateChange() == ItemEvent.SELECTED)
             {
                 String fileRoot = rootsComboBox_.getSelectedItem().toString();
-                
-                //logger_.debug("new drive = " + fileRoot);
-                //logger_.debug(Stringz.BR);            
-                //logger_.debug(Dumper.dump(ie,5)); 
-                //logger_.debug(Stringz.BR);
-                //logger_.debug("$$", new Exception("From itemStateChanged()"));
-                //logger_.debug(Stringz.BR);
-                 
                 setFileList(fileRoot);
                 clear();
                 setTreeRoot(fileRoot);
@@ -887,22 +881,41 @@ public class JFileExplorer extends JPanel implements IPreferenced
      */    
     class InfoBar extends JStatusBar
     {
-        // TODO: Add as 4 little compartments instead
-        private JLabel label_;
+        private JLabel sizeLabel_;
+        private JLabel modifiedLabel_;
+        private JLabel attribLabel_;
+        private DecimalFormat df_;
         
         InfoBar()
         {
-            label_ = new JLabel("InfoBar!");
-            addStatusComponent(label_, true);
+            df_ = new DecimalFormat();
+            
+            sizeLabel_ = new JLabel();
+            sizeLabel_.setHorizontalAlignment(SwingConstants.CENTER);
+            
+            modifiedLabel_ = new JLabel();
+            modifiedLabel_.setHorizontalAlignment(SwingConstants.CENTER);
+            
+            attribLabel_ = new JLabel();
+            
+            addStatusComponent(sizeLabel_, false);
+            addStatusComponent(modifiedLabel_, true);
+            addStatusComponent(attribLabel_, false);
         }
         
         public void showInfo(File file)
         {
-            label_.setText(
-                "Size " + file.length() + " " + 
-                "Mod " + DateTimeUtil.format(new Date(file.lastModified())) +
-                (file.canRead() ? " R " : "") +
-                (file.canWrite() ? " W " : ""));
+            String size = df_.format(file.length()) + " bytes";
+            sizeLabel_.setText(size);
+            sizeLabel_.setToolTipText(size);
+            
+            String date = DateTimeUtil.format(new Date(file.lastModified()));
+            modifiedLabel_.setText(date);
+            modifiedLabel_.setToolTipText(date);
+                
+            attribLabel_.setText(
+                (file.canRead() ? "R" : "") +
+                (file.canWrite() ? "W" : ""));
         }
     }
     
