@@ -43,8 +43,6 @@
  * TODO: StatCVS: Create output directory if it doesn't already exist
  * TODO: Figure out how to use JGoodies data binding framework 
  * TODO: Integrate automatic build number generation into the build process. 
- * TODO: Update PluginWorkspace to accept a command line flag to load
- *       preferences from a different file.
  * TODO: Add a way to change the lookand feel font globally
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
@@ -101,6 +99,7 @@
       <action type="add   ">Test - Jemmified JFontChooserDialog test and createed JemmyUtil in the process</action>
       <action type="update">Workspace - Updated PluginWorkspace to extend JSmartFrame and delegated save/apply of prefs to superclass</action>
       <action type="update">Util- Updated TableSorter so that auto-resize and sort don't conflict when mouse is clicked near the column dividers</action>
+      <action type="update">Worksapce - Updated to accept a preferences filename on the command line which overrides the default</action>
     </release>
     
     <release version="2.0" date="July 2004">
