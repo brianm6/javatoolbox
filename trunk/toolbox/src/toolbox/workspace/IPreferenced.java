@@ -3,8 +3,8 @@ package toolbox.workspace;
 import nu.xom.Element;
 
 /**
- * IPreferenced provides a simple interface for saveing and restoring
- * preferences between application instances.
+ * IPreferenced provides a simple interface for saving and restoring
+ * preferences to and from an XML document.
  */
 public interface IPreferenced
 {

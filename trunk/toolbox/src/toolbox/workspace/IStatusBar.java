@@ -1,7 +1,8 @@
 package toolbox.workspace;
 
 /**
- * Statusbar Interface.
+ * An IStatusbar is capable of displaying an arbitrary sized status message 
+ * along with a visual cue to indicate the nature of the message. 
  */
 public interface IStatusBar
 {
