@@ -46,23 +46,6 @@ public interface TransferredMonitor extends MonitoredChannel {
     
     
     /**
-     * Turns monitoring of the channel for transferred bytes on/off.
-     * 
-     * @param monitor True to activate monitoring, false otherwise.
-     */
-    void setMonitoringTransferred(boolean monitor);
-    
-    
-    /**
-     * Returns true if the channel is being monitored for transferred bytes. 
-     * False otherwise.
-     * 
-     * @return boolean
-     */
-    boolean isMonitoringTransferred();
-    
-    
-    /**
      * Notifies this monitor that a given number of bytes have been transferred
      * across the channel.
      * 
