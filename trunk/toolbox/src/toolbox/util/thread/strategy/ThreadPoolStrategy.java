@@ -1,6 +1,7 @@
 package toolbox.util.thread.strategy;
 
-import EDU.oswego.cs.dl.util.concurrent.BoundedBuffer;
+import edu.emory.mathcs.util.concurrent.ArrayBlockingQueue;
+import edu.emory.mathcs.util.concurrent.BlockingQueue;
 
 import org.apache.log4j.Logger;
 
@@ -58,7 +59,7 @@ public class ThreadPoolStrategy extends ThreadedDispatcherStrategy
     /**
      * Queue for requests.
      */
-    private BoundedBuffer requestQueue_;
+    private BlockingQueue requestQueue_;
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -84,7 +85,7 @@ public class ThreadPoolStrategy extends ThreadedDispatcherStrategy
     {
         poolSize_ = poolSize;
         runnable_ = new ThreadPoolRunnable();
-        requestQueue_ = new BoundedBuffer(queueSize); 
+        requestQueue_ = new ArrayBlockingQueue(queueSize); 
         createThreads(poolSize_, runnable_);
     }
 

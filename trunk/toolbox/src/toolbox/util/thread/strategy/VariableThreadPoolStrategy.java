@@ -1,7 +1,8 @@
 package toolbox.util.thread.strategy;
 
-import EDU.oswego.cs.dl.util.concurrent.BoundedBuffer;
-import EDU.oswego.cs.dl.util.concurrent.TimeoutException;
+import edu.emory.mathcs.util.concurrent.ArrayBlockingQueue;
+import edu.emory.mathcs.util.concurrent.BlockingQueue;
+import edu.emory.mathcs.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 
@@ -20,6 +21,8 @@ import toolbox.util.thread.ReturnValue;
  */
 public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
 {
+    // TODO: Write unit test.
+    
     private static final Logger logger_ = 
         Logger.getLogger(VariableThreadPoolStrategy.class);
     
@@ -93,7 +96,7 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
     private int busySize_;
     
     /**
-     * Timeout for requests.
+     * Timeout in milliseconds for requests.
      */
     private int timeout_;
     
@@ -105,7 +108,7 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
     /**
      * Request queue.
      */
-    private BoundedBuffer requestQueue_;
+    private BlockingQueue requestQueue_;
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -147,7 +150,7 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
      * @param growSize Number of threads per increment.
      * @param poolSize Maximum number threads createable.
      * @param queueSize Maximum number of buffered requests.
-     * @param timeout Timeout period to pickup pending requests.
+     * @param timeout Timeout period to pickup pending requests in millis.
      */
     public VariableThreadPoolStrategy(
         int initSize,
@@ -163,7 +166,7 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
         poolSize_ = poolSize;
         timeout_ = timeout;
         runnable_ = new VariableThreadPoolRunnable();
-        requestQueue_ = new BoundedBuffer(queueSize);
+        requestQueue_ = new ArrayBlockingQueue(queueSize);
 
         // Create the initial threads with a runnable that never times out.
         Runnable initRunnable = new InitVariableThreadPoolRunnable();
@@ -233,12 +236,11 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
          * Returns the next request or times out.
          *
          * @return Next request to proecess.
-         * @throws TimeoutException on timeout.
          * @throws InterruptedException on interruption.
          */
-        protected Object take() throws TimeoutException, InterruptedException
+        protected Object take() throws InterruptedException
         {
-            return requestQueue_.poll(timeout_);
+            return requestQueue_.poll(timeout_, TimeUnit.MILLISECONDS);
         }
 
 
@@ -294,10 +296,9 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
          * Returns the next request.
          *
          * @return Next request to proecess.
-         * @throws TimeoutException on timeout.
          * @throws InterruptedException when interrupted.
          */
-        protected Object take() throws TimeoutException, InterruptedException
+        protected Object take() throws InterruptedException
         {
             return requestQueue_.take();
         }

@@ -35,7 +35,6 @@
  * TODO: apache geronimo twiddle = Console
  * TODO: Write a CVS log formatter to append logs to bottom of a file.
  * TODO: Add class file DocumentViewer
- * TODO: Remove dependency on concurrent.jar
  * TODO: Fix broken stop on JTail
  * TODO: Find out why Tiny LAFs are not working
  * =============================================================================
@@ -244,9 +243,17 @@
           </tr>
         </table>
       </action>
-      
-    </release>
 
+      <action type="Update">
+        <table>
+          <tr>
+            <td width="20%">Util</td>
+            <td>Remove dependency on concurrent.jar</td>
+          </tr>
+        </table>
+      </action>
+
+    </release>
     
     <release version="2.0" date="August 2004">
       <action type="Util">Added FontUtil.isMonospaced()</action>
