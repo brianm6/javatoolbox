@@ -16,7 +16,6 @@ package toolbox;
  * TODO: Upgrade to CLI2
  * TODO: add .cvspass to conf
  * TODO: Add sql helpers to jdbc plugin
- * TODO: Add rest of menu to jdbc plugin input area
  * 
  * </pre>
  */
