@@ -73,6 +73,7 @@ public class JFindClassPlugin implements IPlugin
      */
     public void savePrefs(Properties prefs)
     {
+        jfindClass_.savePrefs(prefs);
     }
 
     /**
@@ -80,6 +81,7 @@ public class JFindClassPlugin implements IPlugin
      */
     public void applyPrefs(Properties prefs)
     {
+        jfindClass_.applyPrefs(prefs);
     }
 
     /**
