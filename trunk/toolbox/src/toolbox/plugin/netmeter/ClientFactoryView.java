@@ -7,6 +7,10 @@ import java.awt.event.ActionEvent;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import com.jgoodies.forms.builder.DefaultFormBuilder;
+import com.jgoodies.forms.layout.FormLayout;
+
+import toolbox.forms.SmartComponentFactory;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JHeaderPanel;
 import toolbox.util.ui.JSmartButton;
@@ -16,13 +20,15 @@ import toolbox.util.ui.SmartAction;
 import toolbox.util.ui.layout.ParagraphLayout;
 
 /**
- * ClientFactoryView concepts.
+ * ClientFactoryView is a user interface component that exposes the 
+ * functionality provided by a ClientFactory.
+ * <p>
+ * A ClientFactory view:
  * <ul>
- *  <li>ClientFactoryView is a UI component.
- *  <li>ClientFactoryView fields input from the user to configure a ClientView.
- *  <li>ClientFactoryView can create any number of ClientViews.
- *  <li>ClientFactoryView hands newly created ClientViews back to the 
- *      NetMeterPlugin.
+ *  <li>Is a UI component.
+ *  <li>Accepts input to configure a ClientView.
+ *  <li>Can create any number of ClientViews.
+ *  <li>Hands newly created ClientViews back to the NetMeterPlugin.
  * </ul>
  */
 public class ClientFactoryView extends JHeaderPanel
@@ -58,10 +64,11 @@ public class ClientFactoryView extends JHeaderPanel
     public ClientFactoryView(NetMeterPlugin plugin)
     {
         super(ImageCache.getIcon(
-            ImageCache.IMAGE_HARD_DRIVE), "Client Factory");
+            ImageCache.IMAGE_HARD_DRIVE), 
+            "Client Factory");
         
         plugin_ = plugin;
-        buildView();
+        buildFormsView();
     }
     
     //--------------------------------------------------------------------------
@@ -74,7 +81,6 @@ public class ClientFactoryView extends JHeaderPanel
     protected void buildView()
     {
         JPanel content = new JPanel(new BorderLayout());
-        
         JPanel inputPanel = new JPanel(new ParagraphLayout());
         
         inputPanel.add(new JSmartLabel("Server Hostname"), 
@@ -101,10 +107,53 @@ public class ClientFactoryView extends JHeaderPanel
         content.add(buttonPanel, BorderLayout.SOUTH);
         setContent(content);
     }
+
     
-    //--------------------------------------------------------------------------
-    // CreateAction
-    //--------------------------------------------------------------------------
+    /**
+     * Constructs the user interface.
+     */
+    protected void buildFormsView()
+    {
+        JPanel content = new JPanel(new BorderLayout());
+
+        serverHostnameField_ = new JSmartTextField(12);
+        serverHostnameField_.setText(NetMeterPlugin.DEFAULT_HOSTNAME);
+        
+        serverPortField_ = new JSmartTextField(6);
+        serverPortField_.setText(NetMeterPlugin.DEFAULT_PORT + "");
+        
+        FormLayout layout = new FormLayout(
+            //"right:pref, 4dlu, left:pref",
+            "right:pref, pref, pref",
+            "pref, pref, 100px, pref, pref"); 
+        
+        layout.setRowGroups(new int[][] {{1,3}});
+        
+        DefaultFormBuilder builder = new DefaultFormBuilder(layout);
+        builder.setComponentFactory(SmartComponentFactory.getInstance());
+        builder.setDefaultDialogBorder();
+        
+        builder.append("&Server Hostname");
+        //builder.appendLabelComponentsGapColumn();
+        builder.append(serverHostnameField_);
+        builder.nextLine();
+        
+        builder.append("Server &Port");
+        //builder.appendLabelComponentsGapColumn();
+        builder.append(serverPortField_);
+        builder.nextLine();
+        
+        builder.nextColumn();
+        builder.nextColumn();
+        builder.append(new JSmartButton(new CreateAction()));
+        
+        //JPanel buttonPanel = new JPanel(new FlowLayout());
+        //buttonPanel.add(new JSmartButton(new CreateAction()));
+        
+        //content.add(builder.getPanel(), BorderLayout.NORTH);
+        //content.add(buttonPanel, BorderLayout.SOUTH);
+        setContent(builder.getPanel());
+    }
     
     /**
      * CreateAction creates the actual ClientView component and hands it back
