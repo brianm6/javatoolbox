@@ -14,7 +14,7 @@ import toolbox.util.ui.layout.Direction;
 import toolbox.util.ui.layout.StackLayout;
 
 /**
- * StackLayout unit test
+ * Unit test for StackLayout
  */
 public class StackLayoutTest extends TestCase
 {

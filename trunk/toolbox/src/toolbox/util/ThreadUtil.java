@@ -177,6 +177,7 @@ public final class ThreadUtil
         return thread; 
     }
 
+
     /**
      * Runs an object's method in a separate thread 
      * 
@@ -185,10 +186,13 @@ public final class ThreadUtil
      * @param   params  Methods arguments
      * @return  Started thread of execution 
      */
-    public static Thread run(Object target, String method, Object[] params, Class[] clazzes)
+    public static Thread run(Object target, String method, Object[] params, 
+        Class[] clazzes)
     {
         // create thread with a MethodRunner and start
-        Runnable runnable = new ThreadUtil.MethodRunner(target, method, params, clazzes);
+        Runnable runnable = 
+            new ThreadUtil.MethodRunner(target, method, params, clazzes);
+            
         Thread thread = new Thread(runnable);
         thread.start();
         return thread;
@@ -249,6 +253,7 @@ public final class ThreadUtil
          * @param  newTarget   Target object of method invocation
          * @param  newMethod   Method name on target object
          * @param  newParams   List of parameters to the method
+         * @param  newClazzes  List of classes for parameter types
          */
         public MethodRunner(Object newTarget, String newMethod, 
             Object[] newParams, Class[] newClazzes)
@@ -258,6 +263,7 @@ public final class ThreadUtil
             params_  = newParams;
             clazzes_ = newClazzes;
         }        
+        
         
         /**
          * Executes the method provided at time of construction
@@ -269,7 +275,8 @@ public final class ThreadUtil
                 if (clazzes_ == null)
                     MethodUtils.invokeMethod(target_, method_, params_);    
                 else
-                    MethodUtils.invokeMethod(target_, method_, params_, clazzes_);    
+                    MethodUtils.invokeMethod(target_, method_, params_, 
+                        clazzes_);    
             }
             catch (NoSuchMethodException nsme)
             {

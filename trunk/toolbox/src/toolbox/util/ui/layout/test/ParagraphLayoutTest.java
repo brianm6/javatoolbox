@@ -16,7 +16,7 @@ import toolbox.util.SwingUtil;
 import toolbox.util.ui.layout.ParagraphLayout;
 
 /**
- * ParagraphLayout unit test
+ * Unit test for ParagraphLayout
  */
 public class ParagraphLayoutTest extends TestCase
 {
@@ -37,7 +37,7 @@ public class ParagraphLayoutTest extends TestCase
     /**
      * Constructor for ParagraphLayoutTest.
      * 
-     * @param arg0 Name
+     * @param  arg0  Test name
      */
     public ParagraphLayoutTest(String arg0)
     {

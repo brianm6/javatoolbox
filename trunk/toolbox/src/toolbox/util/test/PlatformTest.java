@@ -1,16 +1,11 @@
 package toolbox.util.test;
 
-import java.util.Calendar;
-import java.util.Date;
-
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
 
-import toolbox.util.DateTimeUtil;
 import toolbox.util.Platform;
-import toolbox.util.TimeUtil;
 
 /**
  * Unit test for Platform
@@ -38,7 +33,7 @@ public class PlatformTest extends TestCase
     /**
      * Constructor for PlatformTest
      * 
-     * @param  arg  Name
+     * @param  arg  Test name
      */
     public PlatformTest(String arg)
     {

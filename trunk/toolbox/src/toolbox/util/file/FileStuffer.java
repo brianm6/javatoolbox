@@ -274,6 +274,9 @@ public class FileStuffer implements Runnable
     // Interfaces
     //--------------------------------------------------------------------------
     
+    /**
+     * Interface that gets stuff
+     */
     public interface IStuffProvider
     {
         public Object getStuff();
@@ -283,6 +286,9 @@ public class FileStuffer implements Runnable
     // Inner Classes
     //--------------------------------------------------------------------------
  
+    /**
+     * Default implementation of IStuffProvider interface
+     */
     static class DefaultStuffProvider implements IStuffProvider
     {
         private int cnt_ = 0;

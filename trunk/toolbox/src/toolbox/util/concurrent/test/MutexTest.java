@@ -47,7 +47,7 @@ public class MutexTest extends TestCase
     /**
      * Tests acquire()
      * 
-     * @throws Exception on error
+     * @throws InterruptedException on error
      */
     public void testAcquire() throws InterruptedException
     {
@@ -62,7 +62,7 @@ public class MutexTest extends TestCase
     /**
      * Tests release()
      * 
-     * @throws Exception on error
+     * @throws InterruptedException on error
      */
     public void testRelease() throws InterruptedException
     {
@@ -77,7 +77,7 @@ public class MutexTest extends TestCase
     /**
      * Tests attempt()
      * 
-     * @throws Exception on error
+     * @throws InterruptedException on error
      */
     public void testAttempt() throws InterruptedException
     {

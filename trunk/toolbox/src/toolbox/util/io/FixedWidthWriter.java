@@ -5,7 +5,8 @@ import java.io.IOException;
 import java.io.Writer;
 
 /**
- * FixedWidthWriter
+ * FixedWidthWriter enables writing of strings of a fixed lengh with padding on
+ * either the left of the right.
  */
 public class FixedWidthWriter extends FilterWriter
 {
@@ -82,7 +83,7 @@ public class FixedWidthWriter extends FilterWriter
         write(str, width, padChar, false);
     }
 
-
+    
     /**
      * Helps in the formatting of of FixedWidth Data. Left/Right pad a string 
      * to a given width using a pad character. Strings longer than the width 
