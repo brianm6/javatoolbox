@@ -28,8 +28,10 @@ import toolbox.workspace.IPreferenced;
  *   <li>Popup menu with cut/copy/paste/save/insert
  *   <li>Capacity limit with the automatic pruning of text to a given percentage
  *       when the capacity is reached.
- *   <li>Support to save/restore preferences to XML including font
- *   <li>Makes sure all appends are executed on the event dispatch thread
+ *   <li>Support to save/restore preferences to XML including font, autotail, 
+ *       capacity, and linewrap
+ *   <li>Option to make sure all appends are executed on the event dispatch 
+ *       thread
  *   <li>Popupmenu access to toggle the built in line wrapping
  * </ul>
  */
@@ -54,6 +56,8 @@ public class JSmartTextArea extends JTextArea
     public static final String PROP_CAPACITY = "capacity";
     public static final String PROP_LINEWRAP = "lineWrap";
     public static final String PROP_PRUNING_FACTOR = "pruningFactor";
+    public static final String PROP_USE_EVENT_DISPATCH_THREAD = 
+        "useEventDispatchThread";
 
     /**
      * List of properties that are saved via the IPreferenced interface.
@@ -63,7 +67,8 @@ public class JSmartTextArea extends JTextArea
         PROP_CAPACITY,
         PROP_PRUNING_FACTOR,
         PROP_LINEWRAP,
-        AntiAliased.PROP_ANTIALIAS
+        AntiAliased.PROP_ANTIALIAS,
+        PROP_USE_EVENT_DISPATCH_THREAD
     };
     
     //--------------------------------------------------------------------------
@@ -97,6 +102,12 @@ public class JSmartTextArea extends JTextArea
      * are in the range [1..100].
      */
     private int pruningFactor_;
+    
+    /**
+     * Flag to make sure updates to the UI are made on the event dispatch 
+     * thread.
+     */
+    private boolean useEventDispatchThread_;
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -298,6 +309,35 @@ public class JSmartTextArea extends JTextArea
         firePropertyChange(PROP_PRUNING_FACTOR, old, pruningFactor_);
     }
 
+
+    /**
+     * Returns true if updates to the UI are made on the event dispatch thread,
+     * false otherwise.
+     * 
+     * @return boolean
+     */
+    public boolean isUseEventDispatchThread()
+    {
+        return useEventDispatchThread_;
+    }
+
+
+    /**
+     * Sets the flag to make sure updates to the UI take place on the event
+     * dispatch thread.
+     * 
+     * @param useEventDispatchThread True to use dispatch thread, false 
+     *        otherwise
+     */
+    public void setUseEventDispatchThread(boolean useEventDispatchThread)
+    {
+        boolean old = useEventDispatchThread_;
+        useEventDispatchThread_ = useEventDispatchThread;
+        
+        firePropertyChange(
+            PROP_USE_EVENT_DISPATCH_THREAD, old, useEventDispatchThread_);
+    }
+    
     //--------------------------------------------------------------------------
     // Protected
     //--------------------------------------------------------------------------
