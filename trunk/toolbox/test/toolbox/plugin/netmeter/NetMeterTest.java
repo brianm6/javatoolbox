@@ -3,6 +3,9 @@ package toolbox.plugin.netmeter;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import org.apache.commons.collections.MapUtils;
+import org.apache.log4j.Logger;
+
 import toolbox.util.ThreadUtil;
 
 /**
@@ -11,6 +14,8 @@ import toolbox.util.ThreadUtil;
  */
 public class NetMeterTest extends TestCase
 {
+    private static final Logger logger_ = Logger.getLogger(NetMeterTest.class);
+    
     //--------------------------------------------------------------------------
     // Main 
     //--------------------------------------------------------------------------
@@ -36,10 +41,14 @@ public class NetMeterTest extends TestCase
      */
     public void testNetMeter() throws Exception
     {
+        logger_.info("Running testNetMeter...");
+        
         Server server = new Server();
+        server.initialize(MapUtils.EMPTY_MAP);
         server.start();
         
         Client client = new Client();
+        client.initialize(MapUtils.EMPTY_MAP);
         client.start();
         
         ThreadUtil.sleep(10000);
