@@ -107,16 +107,6 @@ public class PluginDialog extends JSmartDialog
      */
     private JList inactiveList_;
 
-    /**
-     * List model for the list of active plugins.
-     */
-    private DefaultListModel activeModel_;
-
-    /**
-     * List model for the list of inactive plugins.
-     */
-    private DefaultListModel inactiveModel_;
-
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -153,8 +143,7 @@ public class PluginDialog extends JSmartDialog
 
         // List of active plugins
         activeList_ = new JSmartList();
-        activeModel_ = new DefaultListModel();
-        activeList_.setModel(activeModel_);
+        activeList_.setModel(new DefaultListModel());
         new JListPopupMenu(activeList_);
 
         JScrollPane activeScroller = new JScrollPane(activeList_);
@@ -163,8 +152,7 @@ public class PluginDialog extends JSmartDialog
 
         // List of found/removed plugins
         inactiveList_ = new JSmartList();
-        inactiveModel_ = new DefaultListModel();
-        inactiveList_.setModel(inactiveModel_);
+        inactiveList_.setModel(new DefaultListModel());
         new JListPopupMenu(inactiveList_);
 
         JScrollPane inactiveScroller = new JScrollPane(inactiveList_);
@@ -249,28 +237,50 @@ public class PluginDialog extends JSmartDialog
      */
     protected void populateActive()
     {
-        activeModel_.clear();
+        getActiveModel().clear();
 
         for (int i = 0; i < workspace_.getPluginHost().getPlugins().length; i++)
         {
             IPlugin plugin = workspace_.getPluginHost().getPlugins()[i];
             PluginMeta meta = new PluginMeta(plugin);
-            activeModel_.addElement(meta);
+            getActiveModel().addElement(meta);
         }
 
-        removeButton_.setEnabled(!activeModel_.isEmpty());
-        addButton_.setEnabled(!inactiveModel_.isEmpty());
+        removeButton_.setEnabled(!getActiveModel().isEmpty());
+        addButton_.setEnabled(!getInactiveModel().isEmpty());
         activeList_.setSelectedIndex(0);
     }
 
+    
+    /**
+     * Returns the model for the inactive plugin list.
+     * 
+     * @return DefaultListModel
+     */
+    protected DefaultListModel getInactiveModel()
+    {
+        return (DefaultListModel) inactiveList_.getModel();
+    }
 
+    
+    /**
+     * Returns the model for the active plugin list.
+     * 
+     * @return DefaultListModel
+     */
+    protected DefaultListModel getActiveModel()
+    {
+        return (DefaultListModel) activeList_.getModel();
+    }
+    
+    
     /**
      * Populates the inactive plugins list based on currently available
      * plugins visible on the classpath.
      */
     protected void populateInactive()
     {
-        inactiveModel_.clear();
+        getInactiveModel().clear();
         FindClass fc = new FindClass();
         FindClassResult[] candidatePlugins = new FindClassResult[0];
         List legitPlugins = new ArrayList();
@@ -366,10 +376,10 @@ public class PluginDialog extends JSmartDialog
         Collections.sort(legitPlugins, new ObjectComparator("name"));
 
         for (int i = 0; i < legitPlugins.size(); i++)
-            inactiveModel_.addElement(legitPlugins.get(i));
+            getInactiveModel().addElement(legitPlugins.get(i));
 
-        removeButton_.setEnabled(!activeModel_.isEmpty());
-        addButton_.setEnabled(!inactiveModel_.isEmpty());
+        removeButton_.setEnabled(!getActiveModel().isEmpty());
+        addButton_.setEnabled(!getInactiveModel().isEmpty());
     }
 
     //--------------------------------------------------------------------------
@@ -441,7 +451,7 @@ public class PluginDialog extends JSmartDialog
          */
         public void actionPerformed(ActionEvent e)
         {
-            int sizeBefore = inactiveModel_.size();
+            int sizeBefore = getInactiveModel().size();
             int[] selectedIdx = inactiveList_.getSelectedIndices();
             Object[] selected = inactiveList_.getSelectedValues();
 
@@ -452,7 +462,7 @@ public class PluginDialog extends JSmartDialog
                     workspace_.registerPlugin(
                         ((PluginMeta) selected[i]).getClassName());
 
-                    inactiveModel_.removeElement(selected[i]);
+                    getInactiveModel().removeElement(selected[i]);
                 }
                 catch (Exception ex)
                 {
@@ -472,7 +482,7 @@ public class PluginDialog extends JSmartDialog
             // Active list selection
             int[] selectedActive = new int[selected.length];
 
-            for (int i = 0, n = activeModel_.size() - selected.length;
+            for (int i = 0, n = getActiveModel().size() - selected.length;
                 i < selected.length; i++, n++)
             {
                 selectedActive[i] = n;
@@ -508,7 +518,7 @@ public class PluginDialog extends JSmartDialog
          */
         public void actionPerformed(ActionEvent e)
         {
-            int sizeBefore = activeModel_.size();
+            int sizeBefore = getActiveModel().size();
             int[] selectedIdx = activeList_.getSelectedIndices();
             Object[] selected = activeList_.getSelectedValues();
 
@@ -520,7 +530,7 @@ public class PluginDialog extends JSmartDialog
                     workspace_.deregisterPlugin(
                         ((PluginMeta) selected[i]).getClassName(), true);
 
-                    inactiveModel_.addElement(selected[i]);
+                    getInactiveModel().addElement(selected[i]);
                 }
             }
             catch (Exception ex)
@@ -539,7 +549,7 @@ public class PluginDialog extends JSmartDialog
             // Inactive list selection
             int[] selectedInactive = new int[selected.length];
 
-            for (int i = 0, n = inactiveModel_.size() - selected.length;
+            for (int i = 0, n = getInactiveModel().size() - selected.length;
                 i < selected.length; i++, n++)
             {
                 selectedInactive[i] = n;
@@ -612,7 +622,7 @@ public class PluginDialog extends JSmartDialog
          */
         public void runAction(ActionEvent e)
         {
-            inactiveModel_.clear();
+            getInactiveModel().clear();
             List legitPlugins = getPluginList();
 
             // Exclude the plugins that are already loaded
@@ -638,10 +648,10 @@ public class PluginDialog extends JSmartDialog
             Collections.sort(legitPlugins, new ObjectComparator("name"));
 
             for (int i = 0; i < legitPlugins.size(); i++)
-                inactiveModel_.addElement(legitPlugins.get(i));
+                getInactiveModel().addElement(legitPlugins.get(i));
 
-            removeButton_.setEnabled(!activeModel_.isEmpty());
-            addButton_.setEnabled(!inactiveModel_.isEmpty());
+            removeButton_.setEnabled(!getActiveModel().isEmpty());
+            addButton_.setEnabled(!getInactiveModel().isEmpty());
         }
     }
 }
