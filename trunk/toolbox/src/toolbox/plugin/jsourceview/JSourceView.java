@@ -1,7 +1,10 @@
 package toolbox.jsourceview;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -11,6 +14,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -32,11 +36,11 @@ import toolbox.util.ElapsedTime;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.Queue;
-import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.io.filter.DirectoryFilter;
 import toolbox.util.io.filter.ExtensionFilter;
 import toolbox.util.io.filter.OrFilter;
+import toolbox.util.ui.SmartAction;
 import toolbox.util.ui.plugin.IPreferenced;
 import toolbox.util.ui.plugin.IStatusBar;
 import toolbox.util.ui.plugin.WorkspaceAction;
@@ -49,16 +53,13 @@ import toolbox.util.ui.table.TableSorter;
  */
 public class JSourceView extends JFrame implements ActionListener, IPreferenced
 {
-    /*
-    * TODO: Added explorer to pick directory
-    * TODO: Update Queue to BlockingQueue
-    * TODO: Figure out how to save table column sizes
-    * TODO: Convert actionPerformed() to Actions
-    * TODO: Add chart for visualization
-    * TODO: Custom table cell renders to align cell contents/color code unusually
-    *       high or low numbers, etc
-    * TODO: Add regex filter to include/exclude files
-    */
+    // TODO: Update Queue to BlockingQueue
+    // TODO: Figure out how to save table column sizes
+    // TODO: Convert actionPerformed() to Actions
+    // TODO: Add chart for visualization
+    // TODO: Custom table cell renders to align cell contents/color code unusually
+    //       high or low numbers, etc
+    // TODO: Add regex filter to include/exclude files
         
     private static final Logger logger_ = 
         Logger.getLogger(JSourceView.class);
@@ -78,6 +79,7 @@ public class JSourceView extends JFrame implements ActionListener, IPreferenced
     
     private JTextField  dirField_;
     private JButton     goButton_;
+    private JButton     pickDirButton_;
     private JLabel      scanStatusLabel_;
     private JLabel      parseStatusLabel_;
     
@@ -126,76 +128,17 @@ public class JSourceView extends JFrame implements ActionListener, IPreferenced
      */
     private static OrFilter sourceFilter_;
     
-    static
-    {
-        sourceFilter_ = new OrFilter();
-        sourceFilter_.addFilter(new ExtensionFilter("c"));
-        sourceFilter_.addFilter(new ExtensionFilter("cpp"));
-        sourceFilter_.addFilter(new ExtensionFilter("java"));
-        sourceFilter_.addFilter(new ExtensionFilter("h"));
-    }
-
     //--------------------------------------------------------------------------
-    // Main
+    // Constructors
     //--------------------------------------------------------------------------
     
     /**
-     * Entrypoint
-     * 
-     * @param  args  None recognized 
-     * @throws Exception on error
-     */
-    public static void main(String args[]) throws Exception
-    {
-        SwingUtil.setPreferredLAF();
-        new JSourceView().setVisible(true);
-    }
-
-    //--------------------------------------------------------------------------
-    //  Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Constructs JSourceview
+     * Creates a JSourceView
      */    
     public JSourceView()
     {
         super("JSourceView");
-        
-        dirField_ = new JTextField(25);
-        goButton_ = new JButton();
-        
-        JPanel topPanel = new JPanel();
-        scanStatusLabel_ = new JLabel(" ");
-        parseStatusLabel_ = new JLabel(" ");
-        menuBar_ = new JMenuBar();
-        pathSeparator_ = System.getProperty("file.separator");
-        
-        topPanel.setLayout(new FlowLayout());
-        topPanel.add(new JLabel("Directory"));
-        topPanel.add(dirField_);
-        topPanel.add(goButton_);
-
-        // Setup sortable table
-        tableModel_  = new SmartTableModel(colNames_, 0);
-        tableSorter_ = new TableSorter(tableModel_);
-        table_       = new JTable(tableSorter_);
-        tableSorter_.addMouseListenerToHeaderInTable(table_);
-        
-        getContentPane().add(topPanel, BorderLayout.NORTH);
-        getContentPane().add(new JScrollPane(table_), BorderLayout.CENTER);
-        
-        JPanel jpanel = new JPanel();
-        jpanel.setLayout(new BorderLayout());
-        jpanel.add(scanStatusLabel_, BorderLayout.NORTH);
-        jpanel.add(parseStatusLabel_, BorderLayout.SOUTH);
-        getContentPane().add(jpanel, BorderLayout.SOUTH);
-        
-        setJMenuBar(createMenuBar());
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        pack();
-        SwingUtil.centerWindow(this);
+        buildView();
     }
 
 	//--------------------------------------------------------------------------
@@ -238,7 +181,7 @@ public class JSourceView extends JFrame implements ActionListener, IPreferenced
     }
 
     //--------------------------------------------------------------------------
-    //  ActionListener Interface
+    // ActionListener Interface
     //--------------------------------------------------------------------------
 
     /**
@@ -297,6 +240,70 @@ public class JSourceView extends JFrame implements ActionListener, IPreferenced
     //--------------------------------------------------------------------------
     
     /**
+     * Builds the GUI
+     */
+    protected void buildView()
+    {
+        dirField_ = new JTextField(25);
+        goButton_ = new JButton();
+        pickDirButton_ = new JButton(new PickDirectoryAction());
+        
+        JPanel topPanel = new JPanel();
+        scanStatusLabel_ = new JLabel(" ");
+        parseStatusLabel_ = new JLabel(" ");
+        menuBar_ = new JMenuBar();
+        pathSeparator_ = System.getProperty("file.separator");
+        
+        topPanel.setLayout(new FlowLayout());
+        topPanel.add(new JLabel("Directory"));
+        
+        GridBagLayout gbl = new GridBagLayout();
+        GridBagConstraints gbc = new GridBagConstraints();
+        
+        Dimension d = new Dimension(12, dirField_.getPreferredSize().height);
+        pickDirButton_.setPreferredSize(d);
+        
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        gbc.weightx = 9;
+        JPanel p = new JPanel(gbl);
+        p.add(dirField_, gbc);
+        gbc.gridx = 2;
+        gbc.weightx = 1;
+        p.add(pickDirButton_, gbc);
+        topPanel.add(p);
+        topPanel.add(goButton_);
+
+        // Setup sortable table
+        tableModel_  = new SmartTableModel(colNames_, 0);
+        tableSorter_ = new TableSorter(tableModel_);
+        table_       = new JTable(tableSorter_);
+        tableSorter_.addMouseListenerToHeaderInTable(table_);
+        
+        getContentPane().add(topPanel, BorderLayout.NORTH);
+        getContentPane().add(new JScrollPane(table_), BorderLayout.CENTER);
+        
+        JPanel jpanel = new JPanel();
+        jpanel.setLayout(new BorderLayout());
+        jpanel.add(scanStatusLabel_, BorderLayout.NORTH);
+        jpanel.add(parseStatusLabel_, BorderLayout.SOUTH);
+        getContentPane().add(jpanel, BorderLayout.SOUTH);
+        
+        setJMenuBar(createMenuBar());
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        sourceFilter_ = new OrFilter();
+        sourceFilter_.addFilter(new ExtensionFilter("c"));
+        sourceFilter_.addFilter(new ExtensionFilter("cpp"));
+        sourceFilter_.addFilter(new ExtensionFilter("java"));
+        sourceFilter_.addFilter(new ExtensionFilter("h"));
+    }
+    
+    /**
+     * Returns the menubar
+     * 
      * @return  Menubar
      */
     protected JMenuBar createMenuBar()
@@ -355,6 +362,10 @@ public class JSourceView extends JFrame implements ActionListener, IPreferenced
     // Actions
     //--------------------------------------------------------------------------
 
+    /**
+     * Action that triggers the search/scanning/parsing process to produce
+     * source code statistics.
+     */
     class SearchAction extends WorkspaceAction
     {
         public SearchAction()
@@ -412,6 +423,28 @@ public class JSourceView extends JFrame implements ActionListener, IPreferenced
         }
     }
 
+    /**
+     * Allows user to pick a source directory through the file chooser instead 
+     * of typing one in.
+     */
+    class PickDirectoryAction extends SmartAction
+    {
+        PickDirectoryAction()
+        {
+            super("...", true, false, null);
+        }
+        
+        public void runAction(ActionEvent e) throws Exception
+        {
+            JFileChooser chooser = new JFileChooser();
+            chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            
+            if (chooser.showDialog(getContentPane(), "Select Directory") == 
+                JFileChooser.APPROVE_OPTION)
+                dirField_.setText(chooser.getSelectedFile().getCanonicalPath());
+        }
+    }
+
     //--------------------------------------------------------------------------
     //  ScanDirWorker Inner Class
     //--------------------------------------------------------------------------
@@ -421,13 +454,19 @@ public class JSourceView extends JFrame implements ActionListener, IPreferenced
      */
     private class ScanDirWorker implements Runnable
     {
-        /** Directory to scan recursively for source files */
+        /** 
+         * Directory to scan recursively for source files 
+         */
         private File dir_;
 
-        /** Cancel flag */
+        /** 
+         * Cancel flag 
+         */
         private boolean cancel_;
         
-        /** Filter for list on directories */
+        /** 
+         * Filter for list on directories 
+         */
         private FilenameFilter dirFilter_;
         
         //----------------------------------------------------------------------
