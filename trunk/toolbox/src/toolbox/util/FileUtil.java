@@ -419,8 +419,14 @@ public final class FileUtil
 
     
     /**
-     * Appends the file separator char to the end of a path if it already
-     * doesn't exist.
+     * Appends the file separator char for the current system to the end of a 
+     * path if it already doesn't exist.
+     * <p>
+     * <b>Example:</b>
+     * <pre class="snippet">
+     * c:\java\lib   ==>  c:\java\lib\
+     * c:\java\lib\  ==>  c:\java\lib\
+     * </pre>
      * 
      * @param path Path to append file separator.
      * @return Path with suffixed file separator.
