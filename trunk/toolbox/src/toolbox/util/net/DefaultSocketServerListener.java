@@ -2,9 +2,10 @@ package toolbox.util.net;
 
 import java.net.Socket;
 
-import org.apache.log4j.Logger;
+import edu.emory.mathcs.util.concurrent.BlockingQueue;
+import edu.emory.mathcs.util.concurrent.LinkedBlockingQueue;
 
-import toolbox.util.concurrent.BlockingQueue;
+import org.apache.log4j.Logger;
 
 /**
  * Default listener that allows a client to "wait" for things to happen instead
@@ -48,10 +49,10 @@ public class DefaultSocketServerListener implements ISocketServerListener
      */
     public DefaultSocketServerListener()
     {
-        accepted_ = new BlockingQueue();
-        started_  = new BlockingQueue();
-        handled_  = new BlockingQueue();
-        stopped_  = new BlockingQueue();
+        accepted_ = new LinkedBlockingQueue();
+        started_  = new LinkedBlockingQueue();
+        handled_  = new LinkedBlockingQueue();
+        stopped_  = new LinkedBlockingQueue();
     }
     
     //--------------------------------------------------------------------------
@@ -66,7 +67,7 @@ public class DefaultSocketServerListener implements ISocketServerListener
      */
     public IConnection waitForAccept() throws InterruptedException
     {
-        return (IConnection) accepted_.pull();
+        return (IConnection) accepted_.take();
     }
     
     
@@ -78,7 +79,7 @@ public class DefaultSocketServerListener implements ISocketServerListener
      */
     public SocketServer waitForStart() throws InterruptedException
     {
-        return (SocketServer) started_.pull();
+        return (SocketServer) started_.take();
     }
 
     
@@ -90,7 +91,7 @@ public class DefaultSocketServerListener implements ISocketServerListener
      */
     public SocketServer waitForStop() throws InterruptedException
     {
-        return (SocketServer) stopped_.pull();
+        return (SocketServer) stopped_.take();
     }
 
     
@@ -102,7 +103,7 @@ public class DefaultSocketServerListener implements ISocketServerListener
      */
     public IConnectionHandler waitForHandled() throws InterruptedException
     {
-        return (IConnectionHandler) handled_.pull();
+        return (IConnectionHandler) handled_.take();
     }
     
     //--------------------------------------------------------------------------
@@ -115,7 +116,14 @@ public class DefaultSocketServerListener implements ISocketServerListener
      */
     public void socketAccepted(Socket socket, IConnection connection)
     {
-        accepted_.push(connection);
+        try
+        {
+            accepted_.put(connection);
+        }
+        catch (InterruptedException e)
+        {
+            logger_.error(e);
+        }
     }
 
     
@@ -125,7 +133,14 @@ public class DefaultSocketServerListener implements ISocketServerListener
      */
     public void serverStarted(SocketServer server)
     {
-        started_.push(server);            
+        try
+        {
+            started_.put(server);
+        }
+        catch (InterruptedException e)
+        {
+            logger_.error(e);
+        }            
     }
     
     
@@ -135,7 +150,14 @@ public class DefaultSocketServerListener implements ISocketServerListener
      */
     public void connectionHandled(IConnectionHandler connectionHandler)
     {
-        handled_.push(connectionHandler);
+        try
+        {
+            handled_.put(connectionHandler);
+        }
+        catch (InterruptedException e)
+        {
+            logger_.error(e);
+        }
     }
     
     
@@ -145,6 +167,13 @@ public class DefaultSocketServerListener implements ISocketServerListener
      */
     public void serverStopped(SocketServer server)
     {
-        stopped_.push(server);
+        try
+        {
+            stopped_.put(server);
+        }
+        catch (InterruptedException e)
+        {
+            logger_.error(e);
+        }
     }
 }

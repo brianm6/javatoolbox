@@ -1,8 +1,9 @@
 package toolbox.util.net;
 
-import org.apache.log4j.Logger;
+import edu.emory.mathcs.util.concurrent.BlockingQueue;
+import edu.emory.mathcs.util.concurrent.LinkedBlockingQueue;
 
-import toolbox.util.concurrent.BlockingQueue;
+import org.apache.log4j.Logger;
 
 /**
  * Default implementation of an IConnectionListener that enables synchronous 
@@ -20,22 +21,22 @@ public class DefaultConnectionListener implements IConnectionListener
     /**
      * Queue for connection closed events.
      */    
-    private BlockingQueue closed_ = new BlockingQueue();
+    private BlockingQueue closed_ = new LinkedBlockingQueue();
     
     /**
      * Queue for connection closing events.
      */
-    private BlockingQueue closing_ = new BlockingQueue();
+    private BlockingQueue closing_ = new LinkedBlockingQueue();
     
     /**
      * Queue for connection interrupted events.
      */
-    private BlockingQueue interrupted_ = new BlockingQueue();
+    private BlockingQueue interrupted_ = new LinkedBlockingQueue();
     
     /**
      * Queue for connection started events.
      */
-    private BlockingQueue started_ = new BlockingQueue(); 
+    private BlockingQueue started_ = new LinkedBlockingQueue(); 
     
     //--------------------------------------------------------------------------
     // IConnectionListener Interface
@@ -49,7 +50,14 @@ public class DefaultConnectionListener implements IConnectionListener
     {
         logger_.info("Notification: Connection closed " + connection);
         
-        closed_.push(connection);
+        try
+        {
+            closed_.put(connection);
+        }
+        catch (InterruptedException e)
+        {
+            logger_.error(e);
+        }
     }
     
     
@@ -61,7 +69,14 @@ public class DefaultConnectionListener implements IConnectionListener
     {
         logger_.info("Notification: Connection closing " + connection);
         
-        closing_.push(connection);
+        try
+        {
+            closing_.put(connection);
+        }
+        catch (InterruptedException e)
+        {
+            logger_.error(e);
+        }
     }
     
     
@@ -72,7 +87,15 @@ public class DefaultConnectionListener implements IConnectionListener
     public void connectionInterrupted(IConnection connection)
     {
         logger_.info("Notification: Connection interrupted" + connection);
-        interrupted_.push(connection);
+        
+        try
+        {
+            interrupted_.put(connection);
+        }
+        catch (InterruptedException e)
+        {
+            logger_.error(e);
+        }
     }
     
     
@@ -83,7 +106,15 @@ public class DefaultConnectionListener implements IConnectionListener
     public void connectionStarted(IConnection connection)
     {
         logger_.info("Notification: Connection started" + connection);
-        started_.push(connection);
+        
+        try
+        {
+            started_.put(connection);
+        }
+        catch (InterruptedException e)
+        {
+            logger_.error(e);
+        }
     }
     
     //--------------------------------------------------------------------------
@@ -98,7 +129,7 @@ public class DefaultConnectionListener implements IConnectionListener
      */
     public IConnection waitForClose() throws InterruptedException
     {
-        return (IConnection) closed_.pull();
+        return (IConnection) closed_.take();
     }
 
 
@@ -110,7 +141,7 @@ public class DefaultConnectionListener implements IConnectionListener
      */
     public IConnection waitForClosing() throws InterruptedException
     {
-        return (IConnection) closing_.pull();
+        return (IConnection) closing_.take();
     }
     
     
@@ -122,7 +153,7 @@ public class DefaultConnectionListener implements IConnectionListener
      */
     public IConnection waitForInterrupted() throws InterruptedException
     {
-        return (IConnection) interrupted_.pull();
+        return (IConnection) interrupted_.take();
     }
 
 
@@ -134,6 +165,6 @@ public class DefaultConnectionListener implements IConnectionListener
      */
     public IConnection waitForStarted() throws InterruptedException
     {
-        return (IConnection) started_.pull();
+        return (IConnection) started_.take();
     }
 }
