@@ -168,6 +168,12 @@ public final class JDBCUtil
         Driver d = (Driver) Class.forName(driver, true, ucl).newInstance();
         driver_ = new JDBCUtil.DriverProxy(d);
         DriverManager.registerDriver(driver_);
+
+        // Blah
+        driver_.acceptsURL("jdbc");
+        driver_.getMajorVersion();
+        driver_.getMinorVersion();
+        driver_.jdbcCompliant();
         
         connProps_ = new Properties();
         connProps_.put("user", user);
@@ -564,13 +570,15 @@ public final class JDBCUtil
     
     
     /**
-     * Deregisters the current driver.
+     * Deregisters the current driver. Must call init() to use again.
      * 
      * @throws SQLException on SQL error.
      */
     public static void shutdown() throws SQLException
     {
         DriverManager.deregisterDriver(driver_);
+        driver_ = null;
+        connProps_ = null;        
     }
     
     //--------------------------------------------------------------------------
