@@ -205,7 +205,8 @@ public class SocketServer implements Runnable
 
         // Create thread pool
         ThreadedDispatcherStrategy strategy =
-            new ThreadPoolStrategy(config_.getActiveConnections(),
+            new ThreadPoolStrategy(
+                config_.getActiveConnections(),
                 config_.getHandlerQueueSize());
 
         // Init thread pool with strategy
