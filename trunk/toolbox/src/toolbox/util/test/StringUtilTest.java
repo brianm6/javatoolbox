@@ -11,11 +11,12 @@ import org.apache.log4j.Logger;
 
 import toolbox.log4j.SmartLogger;
 import toolbox.util.StringUtil;
+import toolbox.util.Stringz;
 
 /**
  * Unit test for StringUtil
  */
-public class StringUtilTest extends TestCase
+public class StringUtilTest extends TestCase implements Stringz
 {
     private static Logger logger_ = 
         Logger.getLogger(StringUtilTest.class);
@@ -498,5 +499,70 @@ public class StringUtilTest extends TestCase
             assertEquals("two",   StringUtil.tokenize(m, "Z", true)[2]);
             assertEquals("Z",     StringUtil.tokenize(m, "Z", true)[3]);            
             assertEquals("three", StringUtil.tokenize(m, "Z", true)[4]);
+    }
+    
+    /**
+     * Tests getLine()
+     */
+    public void testGetLine()
+    {
+        logger_.info("Running testGetLine...");
+        
+        // Test string
+        String s = null;
+        
+        // Empty string with no newline
+        assertNull(StringUtil.getLine("", 0));
+        assertNull(StringUtil.getLine("", 1));
+        assertNull(StringUtil.getLine("", 500));
+        
+        // String with only newline
+        assertEquals("", StringUtil.getLine(NL, 0));
+        assertNull(StringUtil.getLine(NL, 1));
+        assertNull(StringUtil.getLine(NL, 500));
+        
+        // String with one char + newline
+        s = "a" + NL;
+        assertEquals("a", StringUtil.getLine(s, 0));
+        assertNull(StringUtil.getLine(s, 1));
+        assertNull(StringUtil.getLine(s, 500));
+
+        // String with multiple chars + newline
+        s = "abc" + NL;
+        assertEquals("abc", StringUtil.getLine(s, 0));
+        assertNull(StringUtil.getLine(s, 1));
+        assertNull(StringUtil.getLine(s, 500));
+        
+        // String with multiple newlines
+        int cnt = 10;
+        s = StringUtil.repeat(NL, cnt);
+        for (int i=0; i<cnt; i++)
+            assertEquals("", StringUtil.getLine(s, i));
+        assertNull(StringUtil.getLine(s, 500));
+
+        // String with multiple newlines w/ single chars
+        s = "a" + NL + "b" + NL + "c" + NL + "d" + NL;
+        assertEquals("a", StringUtil.getLine(s, 0));
+        assertEquals("b", StringUtil.getLine(s, 1));
+        assertEquals("c", StringUtil.getLine(s, 2));
+        assertEquals("d", StringUtil.getLine(s, 3));                        
+        assertNull(StringUtil.getLine(s, 500));
+        
+        // String with multiple newlines w/ multiple chars
+        s = "abc" + NL + "def" + NL + "ghi" + NL + "jkl" + NL;
+        assertEquals("abc", StringUtil.getLine(s, 0));
+        assertEquals("def", StringUtil.getLine(s, 1));
+        assertEquals("ghi", StringUtil.getLine(s, 2));
+        assertEquals("jkl", StringUtil.getLine(s, 3));                        
+        assertNull(StringUtil.getLine(s, 500));
+        
+        // String with multiple newlines w/ multiple chars. The last line does
+        // not have a terminating newline
+        s = "abc" + NL + "def" + NL + "ghi" + NL + "jkl";
+        assertEquals("abc", StringUtil.getLine(s, 0));
+        assertEquals("def", StringUtil.getLine(s, 1));
+        assertEquals("ghi", StringUtil.getLine(s, 2));
+        assertEquals("jkl", StringUtil.getLine(s, 3));                        
+        assertNull(StringUtil.getLine(s, 500));
     }
 }
