@@ -20,10 +20,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.apache.log4j.Priority;
 import org.apache.log4j.TTCCLayout;
 import org.apache.log4j.WriterAppender;
 import org.apache.regexp.RESyntaxException;
@@ -453,8 +453,13 @@ public class TailPane extends JPanel
         String files[] = new String[0];
         
         for (int i=0; i<contexts_.length; i++)
-            files = (String[]) ArrayUtil.add(
-                files, contexts_[i].getTail().getFile().getCanonicalPath());
+        {    
+            File f = contexts_[i].getTail().getFile();
+            
+            // TODO: Fix me. Temp fix for handlding non-file based tails
+            files = (String[]) ArrayUtil.add(files, 
+                (f == null) ? "[Log4J]" : f.getCanonicalPath());
+        }
                 
         config_.setFilenames(files);
         
@@ -620,16 +625,32 @@ public class TailPane extends JPanel
                 
                 WriterAppender appender = 
                     new WriterAppender(new TTCCLayout(), pos);
-                    
-                appender.setImmediateFlush(true);
-                appender.setThreshold(Priority.DEBUG);
+                
+                
+                //appender.setImmediateFlush(true);
+                //appender.setThreshold(Priority.DEBUG);
                 appender.setName("toolbox-stream-appender");
                 LogManager.getLogger("toolbox").addAppender(appender);
                 
                 tail_.follow(
                     new InputStreamReader(pis), new NullWriter(), filename_);
                     
-                logger_.debug("Tailing Log4J...");                
+                logger_.debug("Tailing Log4J...");
+                
+                SwingUtilities.invokeLater(new Runnable() 
+                {
+                    public void run()
+                    { 
+                        try
+                        {
+                            logger_.info("Testing tailing of log4j from another thread...");
+                        }
+                        catch (Exception e)
+                        {
+                            logger_.error(e);
+                        }
+                    }
+                });
             }
             else
             {
