@@ -107,6 +107,15 @@ public class DefaultTransferredMonitor implements TransferredMonitor {
         }
     }
     
+    
+    /**
+     * @see toolbox.util.io.transferred.TransferredMonitor#getBytesTransferred()
+     */
+    public long getBytesTransferred()
+    {
+        return totalTransferred_;
+    }
+    
     //--------------------------------------------------------------------------
     // Protected
     //--------------------------------------------------------------------------

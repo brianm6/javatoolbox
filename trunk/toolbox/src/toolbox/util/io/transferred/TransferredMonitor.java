@@ -51,5 +51,13 @@ public interface TransferredMonitor extends MonitoredChannel {
      * 
      * @param count Number of bytes transferred.
      */
-    public void newBytesTransferred(long count); 
+    public void newBytesTransferred(long count);
+
+
+    /**
+     * Polling interface to access the total number of bytes transferred.
+     * 
+     * @return long
+     */
+    long getBytesTransferred();
 }
