@@ -38,9 +38,21 @@ import toolbox.util.ui.AntiAliased;
 
 /**
  * Swing Utility Class.
+ * <br>
+ * Swing Properties:
+ * <ul>
+ *  <li>swing.useSystemFontSettings
+ *  <li>sun.java2d.noddraw
+ *  <li>javaws.cfg.jauthenticator
+ *  <li>swing.metalTheme
+ *  <li>http.agent
+ *  <li>http.keepAlive
+ * </ul>
  */
 public final class SwingUtil
 {
+    
+    
     private static final Logger logger_ = Logger.getLogger(SwingUtil.class);
 
     //--------------------------------------------------------------------------
