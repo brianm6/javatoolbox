@@ -205,6 +205,10 @@
                 <include name="metouia.jar"/>
                 <include name="tinylaf.jar"/>
 
+		        <!-- ===== Log4j IM Appenders ==== -->
+		        <include name="hamsam.jar"/>
+		        <include name="jaimlib.jar"/>
+		        
             </fileset>
         </unjar>    
 
