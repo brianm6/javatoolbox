@@ -596,6 +596,16 @@ public class StatcvsPlugin extends JPanel implements IPlugin
                 PROP_STATCVS_ENGINE));
 
             projectCombo_.addItem(new CVSProject(
+                "java.dev.net",
+                "<module>",
+                ":pserver:<username>@cvs.dev.java.net:/cvs",
+                "",
+                FileUtil.getTempDir().getCanonicalPath(),
+                false,
+                "",
+                PROP_STATCVS_ENGINE));
+
+            projectCombo_.addItem(new CVSProject(
                 "Apache",
                 "<module>",
                 ":pserver:anoncvs@cvs.apache.org:/home/cvspublic",
