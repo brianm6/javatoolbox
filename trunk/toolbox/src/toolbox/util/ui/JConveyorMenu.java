@@ -6,9 +6,9 @@ import javax.swing.JMenuItem;
 import toolbox.util.Assert;
 
 /**
- * JMenu that works like a conveyor belt. New items get inserted at the top
- * of the menu and items get pushed off the bottom of the menu when the 
- * capacity is reached.
+ * JMenu that works like a conveyor belt. New items get inserted at the top of
+ * the menu and items get pushed off the bottom of the menu when the capacity
+ * is reached.
  */
 public class JConveyorMenu extends JSmartMenu
 {
@@ -70,7 +70,16 @@ public class JConveyorMenu extends JSmartMenu
      */
     public JMenuItem add(Action action)
     {
-        insert(new JSmartMenuItem(action), 0);
+        return add(new JSmartMenuItem(action));
+    }
+    
+    
+    /**
+     * @see javax.swing.JMenu#add(javax.swing.JMenuItem)
+     */
+    public JMenuItem add(JMenuItem menuItem)
+    {
+        insert(menuItem, 0);
         
         if (getItemCount() > capacity_)
             remove(capacity_);
