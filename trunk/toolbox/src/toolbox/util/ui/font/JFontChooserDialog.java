@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Frame;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -12,20 +13,49 @@ import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
 /**
- * Simple font selection dialog
+ * Simple font selection dialog. Includes ability to view fonts anti-aliased
+ * and also to apply font selection changes on the fly.
  */
 public class JFontChooserDialog extends JDialog
 {
-    private  JFontChooser fontChooser_;
-    private  JButton      okButton_;
-    private  JButton      cancelButton_;
-    private  JButton      applyButton_;
-    private  List         listeners_;
+    /**
+     * UI component used to perform the font selection.
+     */
+    private JFontChooser fontChooser_;
+    
+    /**
+     * Button which sets the currently selected font and dismisses the dialog 
+     * box.
+     */
+    private JButton okButton_;
+    
+    /**
+     * Button which cancels the dialog box without changing the font.
+     */
+    private JButton cancelButton_;
+    
+    /**
+     * Button which notifies listeners that the user wants the currently
+     * selected font applied to their view.
+     */
+    private JButton applyButton_;
+    
+    /**
+     * List of font chooser dialog listeners
+     */
+    private List listeners_;
+    
+    /**
+     * Checkbox that toggles automatic applying of the font on selection changes
+     */
+    private JCheckBox autoApplyCheckBox_;
+    
     
     //--------------------------------------------------------------------------
     //  Constructors
@@ -123,16 +153,26 @@ public class JFontChooserDialog extends JDialog
     {
         getContentPane().setLayout(new BorderLayout());
         fontChooser_ = new JFontChooser();
+        fontChooser_.addFontSelectionListener(new FontSelectionListener());
         getContentPane().add(BorderLayout.CENTER, fontChooser_);
 
         okButton_     = new JButton(new OKAction());
         cancelButton_ = new JButton(new CancelAction());
         applyButton_  = new JButton(new ApplyAction());
         JPanel buttonPanel = new JPanel(new FlowLayout());
+        
         buttonPanel.add(okButton_);
         buttonPanel.add(applyButton_);        
         buttonPanel.add(cancelButton_);
-        getContentPane().add(BorderLayout.SOUTH, buttonPanel);
+        
+        JPanel p = new JPanel(new GridLayout(2, 1));
+        JPanel a = new JPanel(new FlowLayout());
+        autoApplyCheckBox_ = new JCheckBox("Apply on selection change");
+        a.add(autoApplyCheckBox_);
+        p.add(a);
+        p.add(buttonPanel);
+        
+        getContentPane().add(BorderLayout.SOUTH, p);
 
         listeners_ = new ArrayList();
        
@@ -161,6 +201,24 @@ public class JFontChooserDialog extends JDialog
     public void removeFontDialogListener(IFontChooserDialogListener listener)
     {
         listeners_.remove(listener);
+    }
+
+    //--------------------------------------------------------------------------
+    // Inner Classes
+    //--------------------------------------------------------------------------
+    
+    /**
+     * If auto apply check box is selected, propogate all font selection changes
+     * to trigger the ApplyAction.
+     */
+    class FontSelectionListener implements IFontChooserListener
+    {
+        public void fontChanged()
+        {
+            if (autoApplyCheckBox_.isSelected())
+                new ApplyAction().actionPerformed(
+                    new ActionEvent(this,0,"apply"));
+        }
     }
 
     //--------------------------------------------------------------------------
