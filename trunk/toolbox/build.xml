@@ -266,6 +266,11 @@
             overwrite ="false" />
 
         <unjar 
+        	src       ="${lib}/plastic.jar" 
+            dest      ="${classes}" 
+            overwrite ="false" />
+
+        <unjar 
         	src       ="${lib}/junit.jar" 
             dest      ="${classes}" 
             overwrite ="false" />
@@ -307,7 +312,9 @@
     <!--=============================-->
     <!--             DIST            -->
     <!--=============================-->
-    <target name="dist" depends="jar">
+    <target name="dist" 
+            depends="jar"
+            description="Distributes jar">
     
         <copy todir="${targets}" overwrite="yes">
             <fileset dir="${dist}" includes="**/*.jar"/>
