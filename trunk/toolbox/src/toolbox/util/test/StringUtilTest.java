@@ -160,6 +160,29 @@ public class StringUtilTest extends TestCase implements Stringz
     }
     
     /**
+     * Tests isNullOrBlank()
+     */
+    public void testIsNullOrBlank()
+    {
+        logger_.info("Running testIsNullOrBlank...");
+        
+        assertTrue("pass in null should return true", 
+            StringUtil.isNullOrEmpty(null));
+            
+        assertTrue("pass in empty should return true", 
+            StringUtil.isNullOrEmpty(""));
+            
+        assertTrue("pass in space should return true", 
+            !StringUtil.isNullOrEmpty(" "));
+
+        assertTrue("pass in lotsa spaces should return true", 
+            !StringUtil.isNullOrEmpty("                   "));
+            
+        assertTrue("pass in string should return false", 
+            !StringUtil.isNullOrEmpty("howdy"));
+    }
+
+    /**
      * Tests isNullOrEmpty()
      */
     public void testIsNullOrEmpty()
@@ -176,7 +199,7 @@ public class StringUtilTest extends TestCase implements Stringz
             !StringUtil.isNullOrEmpty(" "));
             
         assertTrue("pass in string should return false", 
-            !StringUtil.isNullOrEmpty("turbo"));
+            !StringUtil.isNullOrEmpty("howdy"));
     }
     
     /**
