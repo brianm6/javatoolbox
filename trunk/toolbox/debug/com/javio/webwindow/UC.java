@@ -1,8 +1,21 @@
 package com.javio.webwindow;
 
-import D.*;
-import java.awt.*;
-import java.util.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Insets;
+import java.awt.Rectangle;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Vector;
+
+import D.B;
+import D.C;
+import D.D;
+import D.J;
+import D.S;
+
+import toolbox.util.StringUtil;
+import toolbox.util.SwingUtil;
 
 // Referenced classes of package com.javio.webwindow:
 //            K, ZC, G, RZ, 
@@ -11,7 +24,12 @@ import java.util.*;
 
 public abstract class UC
 {
-
+    static
+    {
+        System.out.println(StringUtil.addBars(
+            "Loaded debug com.javio.webwindow.UC"));
+    }
+    
     protected Rectangle G;
     protected Insets H;
     protected int K;
@@ -121,7 +139,7 @@ public abstract class UC
         f.B.m_thickness = i1;
     }
 
-    protected final D s()
+    public D s()
     {
         return V.getStyle();
     }
@@ -152,11 +170,11 @@ public abstract class UC
     protected final D e()
     {
         S s1 = ((ZC)R).getStyleSheet();
-        J j1 = D.C.getContextStyle(V.getName(), this, s1);
+        J j1 = C.getContextStyle(V.getName(), this, s1);
         if (j1 != null)
         {
-            com.javio.webwindow.B b1 = D.C.parseStyleAttributes(j1.m_props);
-            return D.B.createInstance(b1);
+            com.javio.webwindow.B b1 = C.parseStyleAttributes(j1.m_props);
+            return B.createInstance(b1);
         } else
         {
             return null;
@@ -232,7 +250,7 @@ public abstract class UC
         String s1 = I("margin", d1, d2, d3, null);
         if (s1 != null)
         {
-            Hashtable hashtable = D.C.parseBlockSideProperty("margin", s1);
+            Hashtable hashtable = C.parseBlockSideProperty("margin", s1);
             get = Math.max(0, getBorderSideProperties("top", hashtable));
             forceLayout = Math.max(0, getBorderSideProperties("right", hashtable));
             getBorderSideProperties = Math.max(0, getBorderSideProperties("bottom", hashtable));
@@ -341,7 +359,7 @@ public abstract class UC
         {
             String s1 = (String)d1.getAttribute("border");
             if (s1 != null)
-                return D.C.parseBorderProperty(s1);
+                return C.parseBorderProperty(s1);
         }
         return null;
     }
@@ -413,19 +431,19 @@ public abstract class UC
         {
             String s2 = (String)d1.getAttribute(s1);
             if (s2 != null)
-                contains(l1, D.C.getBorderSideProperties(s2));
+                contains(l1, C.getBorderSideProperties(s2));
         }
         if (d2 != null)
         {
             String s3 = (String)d2.getAttribute(s1);
             if (s3 != null)
-                contains(l1, D.C.getBorderSideProperties(s3));
+                contains(l1, C.getBorderSideProperties(s3));
         }
         if (d3 != null)
         {
             String s4 = (String)d3.getAttribute(s1);
             if (s4 != null)
-                contains(l1, D.C.getBorderSideProperties(s4));
+                contains(l1, C.getBorderSideProperties(s4));
         }
     }
 
@@ -682,7 +700,7 @@ public abstract class UC
         if (s1 != null)
         {
             Insets insets = new Insets(-1, -1, -1, -1);
-            Hashtable hashtable = D.C.parseBlockSideProperty("padding", s1);
+            Hashtable hashtable = C.parseBlockSideProperty("padding", s1);
             insets.top = Math.max(0, getBorderSideProperties("top", hashtable));
             insets.left = Math.max(0, getBorderSideProperties("left", hashtable));
             insets.bottom = Math.max(0, getBorderSideProperties("bottom", hashtable));
@@ -708,18 +726,46 @@ public abstract class UC
         return b;
     }
 
+//    protected final int m()
+//    {
+//        String s1;
+//        s1 = V.resolveStyleValue("z-index");
+//        if (s1 == null)
+//            break MISSING_BLOCK_LABEL_22;
+//        return Integer.parseInt(s1);
+//        NumberFormatException numberformatexception;
+//        numberformatexception;
+//        return 0;
+//    }
+
     protected final int m()
     {
-        String s1;
-        s1 = V.resolveStyleValue("z-index");
-        if (s1 == null)
-            break MISSING_BLOCK_LABEL_22;
-        return Integer.parseInt(s1);
-        NumberFormatException numberformatexception;
-        numberformatexception;
+        String string = V.resolveStyleValue("z-index");
+
+        do
+           {
+            if (string != null)
+               {
+                int i;
+
+                try
+                {
+                    i = Integer.parseInt(string);
+                }
+                catch (NumberFormatException numberformatexception)
+                {
+                    break;
+                }
+                return i;
+            }
+        }
+
+        while (false);
         return 0;
     }
 
+    
+    
     public final HTMLPane getHTMLPane()
     {
         return W;
@@ -1158,6 +1204,13 @@ public abstract class UC
 
     public void paint(Graphics g1, Rectangle rectangle, int i1)
     {
+        // =====================================================================
+        // OVERRIDE: Replaced empty method body with antialiasing code that all
+        //           superclasses can just call super to inherit smooting of
+        //           fonts.
+        // System.out.println("UC.paint() called from " + getClass().getName());
+        SwingUtil.makeAntiAliased(g1, true);
+        // =====================================================================
     }
 
     protected final boolean GI()
