@@ -9,8 +9,8 @@ import java.sql.Statement;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import org.apache.commons.lang.math.RandomUtils;
 import org.apache.log4j.Logger;
-import org.apache.log4j.NDC;
 
 import toolbox.showclasspath.Main;
 import toolbox.util.io.StringOutputStream;
@@ -89,9 +89,12 @@ public class JDBCUtilTest extends TestCase
     {
         logger_.info("Running testInitWithPooling...");
 
+        String prefix = "initWithPooling" + RandomUtils.nextInt();
         try 
         {
-            JDBCUtil.init(DB_DRIVER, DB_URL, DB_USER, DB_PASSWORD, true);
+            JDBCUtil.init(
+                DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD, true);
+            
             // No exception thrown = test passed
         }
         catch (Exception e) 
@@ -101,6 +104,7 @@ public class JDBCUtilTest extends TestCase
         finally 
         {
             JDBCUtil.shutdown();
+            cleanup(prefix);
         }
     }
     
@@ -112,15 +116,14 @@ public class JDBCUtilTest extends TestCase
      */
     public void testStressInitShutdownWithPooling() throws Exception 
     {
-        NDC.push("wooha!");
-        
         logger_.info("Running testInitShutdWithPooling...");
 
         int max = 100;
         
-        for (int i = 0; i < max; i++) {
+        for (int i = 0; i < max; i++) 
+        {
             String table = "table99";
-            String prefix = "JDBCUtilTest-StressInit-" + RandomUtil.nextInt();
+            String prefix = "JDBCUtilTest-StressInit-" + RandomUtils.nextInt();
             
             JDBCUtil.init(DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD, true);
             JDBCUtil.executeUpdate("create table " + table + "(id integer)");
@@ -133,8 +136,6 @@ public class JDBCUtilTest extends TestCase
             cleanup(prefix);
             logger_.info("Stress loop : " + i);
         }
-        
-        NDC.pop();
     }
     
     
@@ -147,13 +148,17 @@ public class JDBCUtilTest extends TestCase
     {
         logger_.info("Running testInitUsingJar...");
 
+        String prefix = "initUsingJar" + RandomUtils.nextInt();
+        
         try
         {
-            JDBCUtil.init(getDBJar(), DB_DRIVER, DB_URL, DB_USER, DB_PASSWORD);
+            JDBCUtil.init(
+                getDBJar(), DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD);
         }
         finally
         {
             JDBCUtil.shutdown();
+            cleanup(prefix);
         }
     }
 
@@ -167,7 +172,7 @@ public class JDBCUtilTest extends TestCase
     {
         logger_.info("Running testGetConnection...");
 
-        String prefix = "JDBCUtilTest_GetConnection" + RandomUtil.nextInt(1000);
+        String prefix = "JDBCUtilTest_GetConnection" + RandomUtils.nextInt(1000);
 
         try
         {
@@ -220,7 +225,7 @@ public class JDBCUtilTest extends TestCase
     {
         logger_.info("Running testExecuteQueryZero...");
 
-        String prefix = "JDBCUtilTest_QueryExecZero" + RandomUtil.nextInt(1000);
+        String prefix = "JDBCUtilTest_QueryExecZero" + RandomUtils.nextInt(1000);
         JDBCUtil.init(DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD);
         String table = "table_zero";
 
@@ -249,7 +254,7 @@ public class JDBCUtilTest extends TestCase
     {
         logger_.info("Running testExecuteQueryOne...");
 
-        String prefix = "JDBCUtilTest_QueryExecOne_" + RandomUtil.nextInt(1000);
+        String prefix = "JDBCUtilTest_QueryExecOne_" + RandomUtils.nextInt(1000);
         JDBCUtil.init(DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD);
         String table = "table_one";
 
@@ -280,7 +285,7 @@ public class JDBCUtilTest extends TestCase
     {
         logger_.info("Running testExecuteQueryMany...");
 
-        String prefix = "JDBCUtilTest_QueryExecMany" + RandomUtil.nextInt(1000);
+        String prefix = "JDBCUtilTest_QueryExecMany" + RandomUtils.nextInt(1000);
         JDBCUtil.init(DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD);
         String table = "table_many";
 
@@ -314,7 +319,7 @@ public class JDBCUtilTest extends TestCase
     {
         logger_.info("Running testExecuteQueryArrayZero...");
 
-        String pre = "JDBCUtilTest_QryExecAryZero" + RandomUtil.nextInt(1000);
+        String pre = "JDBCUtilTest_QryExecAryZero" + RandomUtils.nextInt(1000);
             
         JDBCUtil.init(DB_DRIVER, DB_URL + pre, DB_USER, DB_PASSWORD);
         String table = "table_zero";
@@ -347,7 +352,7 @@ public class JDBCUtilTest extends TestCase
     {
         logger_.info("Running testExecuteQueryArrayOne...");
 
-        String prefix = "JDBCUtilTest_QryExecAryOne" + RandomUtil.nextInt(1000);
+        String prefix = "JDBCUtilTest_QryExecAryOne" + RandomUtils.nextInt(1000);
         JDBCUtil.init(DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD);
         String table = "table_one";
 
@@ -383,7 +388,7 @@ public class JDBCUtilTest extends TestCase
     {
         logger_.info("Running testExecuteQueryArrayMany...");
 
-        String prefix = "JDBCUtilTest_ExecQryAryMny" + RandomUtil.nextInt(1000);
+        String prefix = "JDBCUtilTest_ExecQryAryMny" + RandomUtils.nextInt(1000);
         JDBCUtil.init(DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD);
         String table = "table_many";
 
@@ -422,7 +427,7 @@ public class JDBCUtilTest extends TestCase
     {
         logger_.info("Running testExecuteUpdate...");
 
-        String prefix = "JDBCUtilTest_ExecUpdates" + RandomUtil.nextInt(1000);
+        String prefix = "JDBCUtilTest_ExecUpdates" + RandomUtils.nextInt(1000);
 
         JDBCUtil.init(DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD);
         String table = "table_execute_update";
@@ -467,7 +472,7 @@ public class JDBCUtilTest extends TestCase
     {
         logger_.info("Running testGetSizeZero...");
 
-        String prefix = "JDBCUtilTest_GetSizeZero_" + RandomUtil.nextInt(1000);
+        String prefix = "JDBCUtilTest_GetSizeZero_" + RandomUtils.nextInt(1000);
         JDBCUtil.init(DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD);
         String table = "table_zero";
         Connection conn = null;
@@ -510,7 +515,7 @@ public class JDBCUtilTest extends TestCase
     {
         logger_.info("Running testExecuteCount...");
 
-        String prefix = "JDBCUtilTest_ExecuteCount" + RandomUtil.nextInt(1000);
+        String prefix = "JDBCUtilTest_ExecuteCount" + RandomUtils.nextInt(1000);
         JDBCUtil.init(DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD);
         String table = "table_exec_cnt";
 
@@ -529,13 +534,13 @@ public class JDBCUtilTest extends TestCase
                 1, JDBCUtil.executeCount("select count(*) from " + table));                
 
             // Count == many
-            int many = RandomUtil.nextInt(1000);
+            int many = RandomUtils.nextInt(1000);
             
             for (int i = 0; i < many; i++) 
             {
                 JDBCUtil.executeUpdate(
                     "insert into " + table + "(id) " + 
-                    "values(" + RandomUtil.nextInt(many) + ")");
+                    "values(" + RandomUtils.nextInt(many) + ")");
             }
             
             assertEquals(
@@ -559,7 +564,7 @@ public class JDBCUtilTest extends TestCase
     {
         logger_.info("Running testGetSizeMany...");
 
-        String prefix = "JDBCUtilTest_GetSizeMany" + RandomUtil.nextInt(1000);
+        String prefix = "JDBCUtilTest_GetSizeMany" + RandomUtils.nextInt(1000);
             
         JDBCUtil.init(DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD);
         String table = "table_many";
@@ -615,7 +620,7 @@ public class JDBCUtilTest extends TestCase
     {
         logger_.info("Running testGetSizeOne...");
 
-        String prefix = "JDBCUtilTest_GetSizeOne" + RandomUtil.nextInt(1000);
+        String prefix = "JDBCUtilTest_GetSizeOne" + RandomUtils.nextInt(1000);
             
         JDBCUtil.init(DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD);
         String table = "table_one";
@@ -669,7 +674,7 @@ public class JDBCUtilTest extends TestCase
 
         String prefix = 
             "JDBCUtilTest_GetSizeNonZeroCursorPos" + 
-            RandomUtil.nextInt(1000);
+            RandomUtils.nextInt(1000);
             
         JDBCUtil.init(DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD);
         String table = "table_size";
@@ -723,7 +728,7 @@ public class JDBCUtilTest extends TestCase
     {
         logger_.info("Running testDropTable...");
 
-        String prefix = "JDBCUtilTest_DropTable" + RandomUtil.nextInt(999);
+        String prefix = "JDBCUtilTest_DropTable" + RandomUtils.nextInt(999);
         JDBCUtil.init(DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD);
         String table = "user";
 
@@ -770,7 +775,7 @@ public class JDBCUtilTest extends TestCase
     {
         logger_.info("Running testDropTableFailure...");
 
-        String prefix = "JDBCUtilTest_DropTblFailure" + RandomUtil.nextInt(999);
+        String prefix = "JDBCUtilTest_DropTblFailure" + RandomUtils.nextInt(999);
         JDBCUtil.init(DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD);
 
         try
@@ -802,9 +807,17 @@ public class JDBCUtilTest extends TestCase
     {
         logger_.info("Running testShutdown...");
 
-        // Had to make url different because of HSQLDB file mode sharing
-        JDBCUtil.init(DB_DRIVER, DB_URL + "shutdown", DB_USER, DB_PASSWORD);
-        JDBCUtil.shutdown();
+        String prefix = "shutdown" + RandomUtils.nextInt();
+        
+        try
+        {
+            JDBCUtil.init(DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD);
+            JDBCUtil.shutdown();
+        }
+        finally
+        {
+            cleanup(prefix);
+        }
     }
 
 
@@ -886,7 +899,7 @@ public class JDBCUtilTest extends TestCase
     {
         logger_.info("Running testGetTableNames...");
 
-        String prefix = "JDBCUtilTest_GetTableNames" + RandomUtil.nextInt(1000);
+        String prefix = "JDBCUtilTest_GetTableNames" + RandomUtils.nextInt();
         JDBCUtil.init(DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD);
         String table = "table_gettablenames";
 
