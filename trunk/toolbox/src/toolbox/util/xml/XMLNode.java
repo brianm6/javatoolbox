@@ -5,21 +5,20 @@ import java.util.Hashtable;
 import java.util.Vector;
 
 /**
- * An xml tag. It can be a processing instructon, an empty tag or 
- * a normal tag. Currently, if the tag is inside a namespace then 
- * that is a part of the name. That is, all names of tags are 
- * fully qualified by the namespace.
+ * An xml tag. It can be a processing instructon, an empty tag or a normal tag. 
+ * Currently, if the tag is inside a namespace then that is a part of the name. 
+ * That is, all names of tags are fully qualified by the namespace.
  */
 public class XMLNode
 {
     private Hashtable attrs_;
-    private Hashtable nodes_; // allows quick lookup
-    private Vector nodelist_; // maintains order of myNodes
-    private String name_;
-    private String value_;
-    private boolean procInstr_;
-    private boolean comment_;
-    private boolean doctype_;
+    private Hashtable nodes_;     // allows quick lookup
+    private Vector    nodelist_;  // maintains order of myNodes
+    private String    name_;
+    private String    value_;
+    private boolean  procInstr_;
+    private boolean  comment_;
+    private boolean  doctype_;
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -34,7 +33,7 @@ public class XMLNode
     }
 
     /**
-     * Create a new node with this name.
+     * Creates a new node with the given name
      * 
      * @param  name  Name
      */
@@ -48,9 +47,9 @@ public class XMLNode
     //--------------------------------------------------------------------------
     
     /**
-     * Add a child node to this node.
+     * Add a child node to this node
      * 
-     * @param node  Child node
+     * @param  node  Child node
      */
     public void addNode(XMLNode node)
     {
@@ -82,11 +81,11 @@ public class XMLNode
     }
 
     /**
-     * Enumerates a child node. Possibly needs renaming.
-     * That is, it enumerates a child nodes value.
+     * Enumerates a child node. Possibly needs renaming. That is, it enumerates 
+     * a child nodes value.
      * 
-     * @param  name  Name of node to enumerate
-     * @return Enumeration 
+     * @param   name  Name of node to enumerate
+     * @return  Enumeration 
      */
     public Enumeration enumerateNode(String name)
     {
@@ -125,8 +124,8 @@ public class XMLNode
     /**
      * Get the attribute with the specified name.
      * 
-     * @param  name  Name of attribute to get
-     * @return Value of attribute
+     * @param   name  Name of attribute to get
+     * @return  Value of attribute
      */
     public String getAttr(String name)
     {
@@ -139,8 +138,8 @@ public class XMLNode
     }
 
     /**
-     * Enumerate over all the attributes of this node.
-     * In the order they were added.
+     * Enumerate over all the attributes of this node. In the order they were 
+     * added.
      * 
      * @return Enumeration over this nodes attributes
      */
@@ -159,8 +158,8 @@ public class XMLNode
     /**
      * Get the node with the specified name.
      * 
-     * @param  name  Name of node to get
-     * @return Node with given name
+     * @param   name  Name of node to get
+     * @return  Node with given name
      */
     public XMLNode getNode(String name)
     {
@@ -242,8 +241,8 @@ public class XMLNode
     }
 
     /**
-     * Get the appended toString's of the children of this node.
-     * For a text node, it will print out the plaintext.
+     * Get the appended toString's of the children of this node. For a text 
+     * node, it will print out the plaintext.
      * 
      * @return  This nodes value
      */
@@ -288,7 +287,7 @@ public class XMLNode
     /**
      * Set the plaintext contained in this node.
      * 
-     * @param str Text of node
+     * @param  str  Text of node
      */
     public void setPlaintext(String str)
     {
@@ -296,8 +295,7 @@ public class XMLNode
     }
 
     /**
-     * Is this a normal tag?
-     * That is, not plaintext, not comment and not a pi.
+     * Is this a normal tag? That is, not plaintext, not comment and not a pi.
      * 
      * @return  True of this node is a tag
      */
@@ -307,7 +305,7 @@ public class XMLNode
     }
 
     /**
-     * @return Is it invisible
+     * @return  Is it invisible
      */
     public boolean isInvisible()
     {
@@ -328,7 +326,7 @@ public class XMLNode
     }
 
     /**
-     * @return Is it a doctype
+     * @return  Is it a doctype
      */
     public boolean isDocType()
     {
@@ -338,7 +336,7 @@ public class XMLNode
     /**
      * Set whether this node is a doctype or not.
      * 
-     * @param b Set doc type
+     * @param  b  Set doc type
      */
     public void setDocType(boolean b)
     {
@@ -346,7 +344,7 @@ public class XMLNode
     }
 
     /**
-     * @return Is it a comment
+     * @return  Is it a comment
      */
     public boolean isComment()
     {
@@ -364,7 +362,7 @@ public class XMLNode
     }
 
     /**
-     * @return Is it a processing instruction    
+     * @return  Is it a processing instruction    
      */
     public boolean isPI()
     {
@@ -382,11 +380,11 @@ public class XMLNode
     }
 
     // IMPL: Assumes that you're unable to remove nodes from 
-    //          a parent node. removeNode and removeAttr is likely to 
-    //          become a needed functionality.
+    //       a parent node. removeNode and removeAttr is likely to 
+    //       become a needed functionality.
     
     /**
-     * @return Is this node empty.
+     * @return  Is this node empty.
      */
     public boolean isEmpty()
     {
@@ -394,7 +392,7 @@ public class XMLNode
     }
 
     /**
-     * @return Is this a text node.
+     * @return  Is this a text node.
      */
     public boolean isTextNode()
     {
@@ -406,10 +404,10 @@ public class XMLNode
     // Probably wants some indentation handling?
     
     /**
-     * Turn this node into a String. Outputs the node as 
-     * XML. So a large amount of output.
+     * Turn this node into a String. Outputs the node as XML. So a large amount 
+     * of output.
      * 
-     * @return Node as a string
+     * @return  Node as a string
      */
     public String toString()
     {
@@ -540,8 +538,7 @@ public class XMLNode
         private boolean notdone_ = true;
 
         /**
-         * Construct with the object that is to be returned by 
-         * this Enumeration.
+         * Construct with the object that is to be returned by this Enumeration.
          */
         public SingletonEnumeration(Object obj)
         {
