@@ -144,6 +144,15 @@
         </table>
       </action>
 
+      <action type="update">
+        <table>
+          <tr>
+            <td width="20%">DocViewerPlugin</td>
+            <td>JavaViewer now support quick nav to methods via a method list</td>
+          </tr>
+        </table>
+      </action>
+
     </release>
     
     <release version="2.0" date="July 2004">
