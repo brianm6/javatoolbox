@@ -53,14 +53,18 @@ public class JEditViewer implements DocumentViewer
     {
         EXT_MAP = new HashMap();
         EXT_MAP.put("java", JavaTokenMarker.class);
-        EXT_MAP.put("xml", XMLTokenMarker.class);
-        EXT_MAP.put("xsl", XMLTokenMarker.class);
-        EXT_MAP.put("xslt", XMLTokenMarker.class);
+        EXT_MAP.put("groovy", JavaTokenMarker.class);
+        
+        // XML
+        for (int i = 0; i < FileTypes.XML.length; i++)
+            EXT_MAP.put(FileTypes.XML[i], XMLTokenMarker.class);
+        
         EXT_MAP.put("bat", BatchFileTokenMarker.class);
         EXT_MAP.put("properties", PropsTokenMarker.class);
         EXT_MAP.put("props", PropsTokenMarker.class);
         EXT_MAP.put("sh", ShellScriptTokenMarker.class);
         EXT_MAP.put("sql", SQLTokenMarker.class);
+        EXT_MAP.put("ddl", SQLTokenMarker.class);
         EXT_MAP.put("html", HTMLTokenMarker.class);
         EXT_MAP.put("htm", HTMLTokenMarker.class);
         EXT_MAP.put("pl", PerlTokenMarker.class);

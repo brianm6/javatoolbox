@@ -112,7 +112,7 @@ public class PolloViewer implements DocumentViewer
      */
     public String[] getViewableFileTypes()
     {
-        return new String[] {"xml", "xsl", "xslt", "fo", "jnlp"};
+        return FileTypes.XML;
     }
     
     
@@ -123,7 +123,7 @@ public class PolloViewer implements DocumentViewer
     {
         return ArrayUtil.contains(
                 getViewableFileTypes(), 
-                FileUtil.getExtension(file));
+                FileUtil.getExtension(file).toLowerCase());
     }
 
     

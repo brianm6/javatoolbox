@@ -136,7 +136,7 @@ public class CalphaViewer implements DocumentViewer
     public boolean canView(File file)
     {
         return ArrayUtil.contains(
-                getViewableFileTypes(), FileUtil.getExtension(file));
+            getViewableFileTypes(), FileUtil.getExtension(file).toLowerCase());
     }
 
     
@@ -145,7 +145,7 @@ public class CalphaViewer implements DocumentViewer
      */
     public String[] getViewableFileTypes()
     {
-        return new String[] {"html", "htm"};
+        return FileTypes.HTML;
     }
 
     

@@ -148,7 +148,8 @@ public class WebWindowViewer implements DocumentViewer
     public boolean canView(File file)
     {
         return ArrayUtil.contains(
-                getViewableFileTypes(), FileUtil.getExtension(file));
+            getViewableFileTypes(), 
+            FileUtil.getExtension(file).toLowerCase());
     }
 
     
@@ -157,7 +158,7 @@ public class WebWindowViewer implements DocumentViewer
      */
     public String[] getViewableFileTypes()
     {
-        return new String[] {"html", "htm", "HTML", "HTM"};
+        return FileTypes.HTML;
     }
 
     
