@@ -5,10 +5,10 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-import org.apache.log4j.Logger;
-
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
+
+import org.apache.log4j.Logger;
 
 import toolbox.util.ThreadUtil;
 import toolbox.util.concurrent.BlockingQueue;
@@ -228,6 +228,8 @@ public class SocketServerTest extends TestCase
         
         // Race condition between accept() and handle()
         ThreadUtil.sleep(2000);
+        
+        logger_.info(server.toString());
         
         // Cleanup
         server.removeSocketServerListener(listener);
