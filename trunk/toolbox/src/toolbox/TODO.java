@@ -78,6 +78,9 @@ package toolbox;
  *  - Updated Jode to 1.1.2-pre1
  *  - Added StringUtil.indent()
  *  - Imported ThrottledInput/OutputSream
+ *  - Added ThroughputMonitor component
+ *  - Added TransferredMonitor component
+ *  - Added MonitoredInput/OutputStream
  * 
  * May 2004
  *  - Added JDBC benchmark to JDBC plugin
