@@ -36,9 +36,7 @@ public class JTextComponentPopupMenu extends JPopupMenu
     private static final Logger logger_ =
         Logger.getLogger(JTextComponentPopupMenu.class); 
         
-    /**
-     * Text component to associate this popup menu with
-     */
+    /** Text component to associate this popup menu with */
     private JTextComponent textComponent_;
 
     //--------------------------------------------------------------------------
@@ -59,18 +57,6 @@ public class JTextComponentPopupMenu extends JPopupMenu
      */
     public JTextComponentPopupMenu(JTextComponent textComponent)
     {
-        this("", textComponent);
-    }
-
-    /**
-     * Constructor for JTextComponentPopupMenu.
-     * 
-     * @param  label          Popupmenu label
-     * @param  textComponent  JTextComponent to add popup to
-     */
-    public JTextComponentPopupMenu(String label, JTextComponent textComponent)
-    {
-        super(label);
         textComponent_ = textComponent;
         buildView();
     }
@@ -230,7 +216,9 @@ public class JTextComponentPopupMenu extends JPopupMenu
         
         public void actionPerformed(ActionEvent e)
         {
-            JFindDialog findDialog = new JFindDialog(textComponent_);
+            JFindDialog findDialog = 
+                new JFindDialog(new SearchInitiator(textComponent_));
+                
             findDialog.setVisible(true);
         }
     }
@@ -336,5 +324,43 @@ public class JTextComponentPopupMenu extends JPopupMenu
                 ExceptionUtil.handleUI(ioe, logger_);
             }
         }
-    }    
+    }
+
+    //--------------------------------------------------------------------------
+    // Inner Classes
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Search initiator for JTextComponents
+     */    
+    class SearchInitiator implements JFindDialog.SearchInitiator
+    {
+        private JTextComponent jtc_;
+        
+        public SearchInitiator(JTextComponent jtc)
+        {
+            jtc_ = jtc;
+        }
+        
+        public Frame getFrame()
+        {
+            return SwingUtil.getFrameAncestor(jtc_);
+        }
+
+        public String getSearchString()
+        {
+            return "";
+        }
+
+        public String getText()
+        {
+            return jtc_.getText();
+        }
+
+        public void selectText(int start, int end)
+        {
+            jtc_.setSelectionStart(start);
+            jtc_.setSelectionEnd(end);
+        }
+    }
 }
