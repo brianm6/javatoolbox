@@ -79,7 +79,7 @@ public class ExecuteAllAction extends BaseAction
                     }
                     else
                     {
-                        plugin.getResultsArea().append("\n");
+                        // plugin.getResultsArea().append("\n");
                         
                         //resultsArea_.append(
                         //    "Multline found..skipping command : " + 
@@ -87,7 +87,7 @@ public class ExecuteAllAction extends BaseAction
                     }
                     
                     //resultsArea_.append(StringUtil.addBars(results) + "\n");
-                    plugin.getResultsArea().append(results + "\n");
+                    //plugin.getResultsArea().append(results + "\n");
                     
                     //StringOutputStream sos = new StringOutputStream();
                     //HexDump.dump(results.getBytes(), 0, sos, 0);
