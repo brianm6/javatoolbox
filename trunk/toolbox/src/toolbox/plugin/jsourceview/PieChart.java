@@ -9,15 +9,20 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.Pie3DPlot;
+import org.jfree.chart.plot.PiePlot;
 import org.jfree.data.DefaultPieDataset;
 import org.jfree.data.PieDataset;
-import org.jfree.util.Rotation;
+
+import toolbox.util.FontUtil;
 
 /**
  * Pie chart that visualizes source code categories.
  */
 public class PieChart extends JPanel 
 {
+    /**
+     * Total statistics for all source files.
+     */
     private FileStats totals_;
     
     /**
@@ -49,16 +54,32 @@ public class PieChart extends JPanel
     protected PieDataset createDataset() 
     {
         DefaultPieDataset result = new DefaultPieDataset();
-        result.setValue("Comments", totals_.getCommentLines());
-        result.setValue("Source code", totals_.getCodeLines());
-        result.setValue("Thrown out", totals_.getThrownOutLines());
-        result.setValue("Blank Lines", totals_.getBlankLines());
+        
+        int total = totals_.getTotalLines();
+        
+        result.setValue("Comments", percent(totals_.getCommentLines(), total));
+        result.setValue("Source code", percent(totals_.getCodeLines(), total));
+        result.setValue("Thrown out", percent(totals_.getThrownOutLines(), 
+            total));
+        result.setValue("Blank Lines", percent(totals_.getBlankLines(), total));
         return result;
     }
 
+    /**
+     * Calcs percentage given a part and a whole.
+     * 
+     * @param top Part of whole.
+     * @param bottom Whole.
+     * @return float
+     */
+    protected float percent(float top, float bottom)
+    {
+        return (top/bottom * 100);
+    }
+    
     
     /**
-     * Creates a  chart.
+     * Creates a chart.
      * 
      * @param dataset The dataset.
      * @return JFreeChart
@@ -76,9 +97,12 @@ public class PieChart extends JPanel
         //chart.setBackgroundPaint(Colors.getColor("light steel blue"));
         chart.setBackgroundPaint(UIManager.getColor("JOptionFrame.background"));
         Pie3DPlot plot = (Pie3DPlot) chart.getPlot();
-        //plot.setStartAngle(0);
-        plot.setDirection(Rotation.CLOCKWISE);
+        //plot.setStartAngle(270);
+        //plot.setDirection(Rotation.CLOCKWISE);
         plot.setForegroundAlpha(0.5f);
+        plot.setSectionLabelType(PiePlot.NAME_AND_PERCENT_LABELS);
+        plot.setSectionLabelFont(FontUtil.getPreferredSerifFont());
+        //plot.setExplodePercent(1, 20.0);
         //plot.setCircular(true);
         plot.setNoDataMessage("No data to display");
         return chart;
