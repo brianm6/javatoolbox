@@ -12,7 +12,15 @@ import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.layout.ParagraphLayout;
 
 /**
- * ClientView.
+ * ClientView concepts.
+ * <ul>
+ * <li>ClientView is a read-only UI component that displays throughput stats.
+ * <li>ClientView is a view and controller in MVC terms.
+ * <li>ClientView contains a non-UI embedded Client which serves as the MVC 
+ *     Model
+ * <li>ClientView contains an embedded ServiceView UI component that allows
+ *     manipulation of the service state.
+ * </ul>
  */
 public class ClientView extends JPanel implements ServiceListener, StatsListener
 {
@@ -150,6 +158,7 @@ public class ClientView extends JPanel implements ServiceListener, StatsListener
         statusField_.setText("Running...");
     }
     
+    
     /**
      * @see toolbox.plugin.netmeter.ServiceListener#servicePaused(
      *      toolbox.plugin.netmeter.Service)
@@ -159,6 +168,7 @@ public class ClientView extends JPanel implements ServiceListener, StatsListener
         statusField_.setText("Paused");
     }
     
+    
     /**
      * @see toolbox.plugin.netmeter.ServiceListener#serviceResumed(
      *      toolbox.plugin.netmeter.Service)
@@ -167,6 +177,7 @@ public class ClientView extends JPanel implements ServiceListener, StatsListener
     {
         statusField_.setText("Running...");
     }
+    
     
     /**
      * @see toolbox.plugin.netmeter.ServiceListener#serviceStopped(

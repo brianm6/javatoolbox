@@ -6,12 +6,12 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 /**
- * Shows system path
+ * Print out the contents of the system path environemnt variable.
  */
 public class Main
 {
     /** 
-     * List of paths remembered so dupes can be flagged 
+     * List of paths remembered so dupes can be flagged. 
      */
     private List checkList_;
 
@@ -20,7 +20,7 @@ public class Main
     //--------------------------------------------------------------------------
     
     /**
-     * Entrypoint for showclasspath
+     * Entrypoint for showclasspath.
      * 
      * @param args None recognized 
      */
@@ -34,7 +34,7 @@ public class Main
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a Main
+     * Creates a Main.
      */
     public Main()
     {
@@ -64,7 +64,8 @@ public class Main
     //--------------------------------------------------------------------------
     
     /**
-     * Checks if a path is a duplicate by checking the existing list
+     * Checks if a path is a duplicate by checking the existing list. The
+     * comparison is case-insensetive.
      * 
      * @param dupe Path to check for duplicate
      * @return True if duplicate, flase otherwise

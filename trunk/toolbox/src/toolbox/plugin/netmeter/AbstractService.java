@@ -8,7 +8,7 @@ import toolbox.util.ArrayUtil;
 public abstract class AbstractService implements Service
 {
     /**
-     * Server listeners.
+     * Array of listeners interested in events that this service generates.
      */
     private ServiceListener[] listeners_;
 
@@ -16,6 +16,9 @@ public abstract class AbstractService implements Service
     // Constructors
     //--------------------------------------------------------------------------
     
+    /**
+     * Default constructor.
+     */
     public AbstractService()
     {
         listeners_ = new ServiceListener[0];
@@ -33,6 +36,7 @@ public abstract class AbstractService implements Service
         fireServiceStarted();
     }
 
+    
     /**
      * @see toolbox.plugin.netmeter.Service#stop()
      */
@@ -41,6 +45,7 @@ public abstract class AbstractService implements Service
         fireServiceStopped();
     }
 
+    
     /**
      * @see toolbox.plugin.netmeter.Service#pause()
      */
@@ -49,6 +54,7 @@ public abstract class AbstractService implements Service
         fireServicePaused();
     }
 
+    
     /**
      * @see toolbox.plugin.netmeter.Service#resume()
      */
@@ -57,6 +63,7 @@ public abstract class AbstractService implements Service
         fireServiceResumed();
     }
 
+    
     /**
      * @see toolbox.plugin.netmeter.Service#isRunning()
      */
@@ -65,6 +72,7 @@ public abstract class AbstractService implements Service
         return false;
     }
 
+    
     /**
      * @see toolbox.plugin.netmeter.Service#isPaused()
      */
@@ -73,6 +81,7 @@ public abstract class AbstractService implements Service
         return false;
     }
 
+    
     /**
      * @see toolbox.plugin.netmeter.Service#addServiceListener(
      *      toolbox.plugin.netmeter.ServiceListener)
@@ -86,21 +95,44 @@ public abstract class AbstractService implements Service
     // Protected
     //--------------------------------------------------------------------------
     
+    /**
+     * Notifies registered listeners that the service has started.
+     * 
+     * @throws ServiceException on service related error.
+     */
     protected void fireServiceStarted() throws ServiceException
     {
         for (int i=0; i<listeners_.length;listeners_[i++].serviceStarted(this));
     }
 
+    
+    /**
+     * Notifies registered listeners that the service has stopped.
+     * 
+     * @throws ServiceException on service related error.
+     */
     protected void fireServiceStopped() throws ServiceException
     {
         for (int i=0; i<listeners_.length;listeners_[i++].serviceStopped(this));
     }
 
+    
+    /**
+     * Notifies registered listeners that the service has been paused.
+     * 
+     * @throws ServiceException on service related error.
+     */
     protected void fireServicePaused() throws ServiceException
     {
         for (int i=0; i<listeners_.length;listeners_[i++].servicePaused(this));
     }
 
+    
+    /**
+     * Notifies registered listeners that the service has been resumed.
+     * 
+     * @throws ServiceException on service related error.
+     */
     protected void fireServiceResumed() throws ServiceException
     {
         for (int i=0; i<listeners_.length;listeners_[i++].serviceResumed(this));

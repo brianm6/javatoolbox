@@ -18,7 +18,14 @@ import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.layout.ParagraphLayout;
 
 /**
- * ClientFactoryView.
+ * ClientFactoryView concepts.
+ * <ul>
+ * <li>ClientFactoryView is a UI component.
+ * <li>ClientFactoryView fields input from the user to configure a ClientView.
+ * <li>ClientFactoryView can create any number of ClientViews
+ * <li>ClientFactoryView hands newly created ClientViews back to the 
+ *     NetMeterPlugin.
+ * </ul>
  */
 public class ClientFactoryView extends JPanel
 {
@@ -101,6 +108,10 @@ public class ClientFactoryView extends JPanel
     // CreateAction
     //--------------------------------------------------------------------------
     
+    /**
+     * CreateAction creates the actual ClientView component and hands it back
+     * to the plugin.
+     */
     class CreateAction extends AbstractAction
     {
         public CreateAction()

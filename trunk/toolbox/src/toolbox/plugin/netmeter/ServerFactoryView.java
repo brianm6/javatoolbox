@@ -15,7 +15,14 @@ import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.layout.ParagraphLayout;
 
 /**
- * ServerFactoryView. 
+ * ServerFactoryView concepts.
+ * <ul>
+ * <li>ServerFactoryView is a UI component.
+ * <li>ServerFactoryView fields input from the user to configure a ServerView.
+ * <li>ServerFactoryView can create any number of ServerViews
+ * <li>ServerFactoryView hands newly created ServerViews back to the 
+ *     NetMeterPlugin.
+ * </ul>
  */
 public class ServerFactoryView extends JPanel
 {
@@ -74,6 +81,9 @@ public class ServerFactoryView extends JPanel
     // CreateAction
     //--------------------------------------------------------------------------
     
+    /**
+     * CreateAction create a ServerView.
+     */
     class CreateAction extends AbstractAction
     {
         public CreateAction()

@@ -6,7 +6,7 @@ import junit.textui.TestRunner;
 import toolbox.showclasspath.Main;
 
 /**
- * Unit test for Main
+ * Unit test for Main.
  */
 public class MainTest extends TestCase
 {
@@ -15,7 +15,7 @@ public class MainTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
      * @param args None recognized
      */    
@@ -29,12 +29,11 @@ public class MainTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Tests the main entry point
+     * Tests the main entry point.
      */
     public void testMain()
     {
         // Just run main..can't do much else
-        
         Main.main(new String[0]);
     }
 }

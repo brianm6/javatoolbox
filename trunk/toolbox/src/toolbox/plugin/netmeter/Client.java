@@ -14,34 +14,37 @@ import toolbox.util.io.EventOutputStream;
 import toolbox.util.net.SocketConnection;
 
 /**
- * NetMeter Client. 
+ * Client is a non-UI component that behaves as a Service. Its sole purpose is
+ * to connect to well known Servers and initiate data transfer in order to 
+ * measure throughput. Interested listeners can be notified of the statistics
+ * as they are gathered.
  */
 public class Client extends AbstractService
 {
     private static final Logger logger_ = Logger.getLogger(Client.class);
     
     /**
-     * Client socket connection to the server.
+     * Client side socket connection to the server.
      */
     private SocketConnection conn_;
     
     /**
-     * Hostname of the server.
+     * Hostname of the server we intend to connect to.
      */
     private String hostname_;
     
     /**
-     * Server port.
+     * Port on the server we intend to connect to.
      */
     private int port_;
     
     /**
-     * Stream that can meter the data throughput.
+     * Stream that can measure data throughput.
      */
     private EventOutputStream os_;
     
     /**
-     * Flag for when the client is stopped.
+     * Internal flag used to terminate the connection.
      */
     private boolean stopped_;
 
@@ -52,7 +55,8 @@ public class Client extends AbstractService
     private Thread clientThread_;
     
     /**
-     * Timer that gathers throughput statistics every second.
+     * Timer that triggers the gathering of throughput statistics once per
+     * second.
      */
     private Timer timer_;
     
@@ -66,10 +70,14 @@ public class Client extends AbstractService
     //--------------------------------------------------------------------------
     
     /**
-     * Entrypoint.
+     * Launches the standalone console based client.<br>
+     * Example:<br> 
+     * <code>
+     * java toolbox.plugin.netmeter.Client localhost 9999
+     * </code>
      * 
-     * @param args First arg is the server hostname. Second arg is the port
-     *        number.
+     * @param args Server hostname or IP address. 
+     *             Second arg is the port number.
      * @throws Exception on error.
      */
     public static void main(String args[]) throws Exception
@@ -101,7 +109,7 @@ public class Client extends AbstractService
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a loopback Client attached to Server.DEFAULT_PORT
+     * Creates a loopback Client attached to NetMeter.DEFAULT_PORT
      */
     public Client()
     {

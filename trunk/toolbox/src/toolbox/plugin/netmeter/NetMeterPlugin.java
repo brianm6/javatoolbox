@@ -12,6 +12,14 @@ import toolbox.workspace.IPlugin;
 
 /**
  * NetMeter Plugin.
+ * <br>
+ * <ul>
+ * <li>NetMeterPlugin contains one and only one ClientFactoryView.
+ * <li>NetMeterPlugin contains one and only one ServerFactoryView.
+ * <li>NetMeterPlugin handles presentation and layout of ClientViews.
+ * <li>NetMeterPlugin handles presentation and layout of ServerViews.
+ * <li>NetmeterPlugin arranges ClientViews and ServerViews in a stacked grid.
+ * <ul>
  */
 public class NetMeterPlugin extends JPanel implements IPlugin
 {
@@ -134,6 +142,7 @@ public class NetMeterPlugin extends JPanel implements IPlugin
     {
     }
 
+    
     /**
      * @see toolbox.util.ui.plugin.IPreferenced#savePrefs(nu.xom.Element)
      */

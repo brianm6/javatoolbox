@@ -16,6 +16,11 @@ public class NetMeterTest extends TestCase
     // Main 
     //--------------------------------------------------------------------------
     
+    /**
+     * Entrypoint. 
+     * 
+     * @param args None recognized.
+     */
     public static void main(String args[])
     {
         TestRunner.run(NetMeterTest.class);
@@ -25,6 +30,11 @@ public class NetMeterTest extends TestCase
     // Unit Tests
     //--------------------------------------------------------------------------
     
+    /**
+     * Simple test of non-UI Client connecting to a non-UI server.
+     * 
+     * @throws Exception on error.
+     */
     public void testNetMeter() throws Exception
     {
         Server server = new Server();

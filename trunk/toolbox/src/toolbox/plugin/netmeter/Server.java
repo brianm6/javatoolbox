@@ -6,12 +6,13 @@ import toolbox.util.net.SocketServer;
 import toolbox.util.net.SocketServerConfig;
 
 /**
- * NetMeter Server.
+ * Server is a non-UI component that is used to collect data throughput
+ * statistics when connected to by a Client.
  */
 public class Server extends AbstractService
 {
     /**
-     * Server socket.
+     * Server socket which sits and waits for client connections.
      */
     private SocketServer server_;
     
@@ -25,7 +26,7 @@ public class Server extends AbstractService
     //--------------------------------------------------------------------------
     
     /**
-     * Entrypoint.
+     * Launches the console base Server. The only argument is the port number.
      * 
      * @param args First arg is the server port number.
      * @throws Exception on error.
@@ -52,7 +53,7 @@ public class Server extends AbstractService
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a Server.
+     * Creates a Server with the default NetmeterPlugin.DEFAULT_PORT.
      */
     public Server()
     {
@@ -75,7 +76,9 @@ public class Server extends AbstractService
     //--------------------------------------------------------------------------
     
     /**
-     * @return Returns the port.
+     * Return the server port number.
+     * 
+     * @return int
      */
     public int getPort()
     {
@@ -84,7 +87,9 @@ public class Server extends AbstractService
 
     
     /**
-     * @param port The port to set.
+     * Sets the server port number.
+     * 
+     * @param port Port number
      */
     public void setPort(int port)
     {
