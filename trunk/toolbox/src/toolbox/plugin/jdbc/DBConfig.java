@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 
@@ -102,7 +103,7 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
     /**
      * JDBC password. This is in clear text.
      */
-    private JTextField passwordField_;
+    private JPasswordField passwordField_;
     
     /**
      * Reference to the workspace statusbar.
@@ -221,7 +222,7 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
         content.add(userField_ = new JSmartTextField(15));
      
         content.add(new JSmartLabel("Password"), ParagraphLayout.NEW_PARAGRAPH);
-        content.add(passwordField_ = new JSmartTextField(15));
+        content.add(passwordField_ = new JPasswordField(15));
 
         content.add(new JSmartLabel(""), ParagraphLayout.NEW_PARAGRAPH);
         content.add(new JSmartButton(

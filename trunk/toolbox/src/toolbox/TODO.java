@@ -71,6 +71,7 @@ package toolbox;
  *  - Added JDBC benchmark to JDBC plugin
  *  - Added NapkinLookAndFeel to the Look and Feel menu
  *  - Upgraded to commons-net-1.2.1
+ *  - Encoded passwords in JDBC plugin
  * 
  * April 2004 
  * 	- Scan source for refactorings to use DisposeAction 
