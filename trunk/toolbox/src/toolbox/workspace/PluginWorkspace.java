@@ -95,7 +95,7 @@ public class PluginWorkspace extends JFrame implements IStatusBar
     {
         try
         {
-            PluginWorkspace frame = new PluginWorkspace(args);
+            PluginWorkspace frame = new PluginWorkspace();
             frame.setVisible(true);
         }
         catch(Exception e)
@@ -115,7 +115,7 @@ public class PluginWorkspace extends JFrame implements IStatusBar
      *                  IPlugin interface
      * @throws Exception on error
      */
-    public PluginWorkspace(String[] plugins) throws Exception
+    public PluginWorkspace() throws Exception
     {
         super("Toolbox");
             
