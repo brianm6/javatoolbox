@@ -70,7 +70,24 @@ public class MultivalentViewer extends JPanel implements DocumentViewer
     {
         extensions_ = new CaseInsensetiveSet(new HashSet());
         extensions_.addAll(Arrays.asList(
-            new String[] {"pdf", "html", "htm", "dvi", "xml"}));
+            new String[] {
+                "pdf", 
+                "html", 
+                "htm", 
+                "dvi", 
+                "xml", 
+                "zip", 
+                "jar", 
+                "ear", 
+                "war",
+                "class",
+                "man",
+                "png",
+                "jpeg",
+                "jpg",
+                "gif",
+                "xbm"
+            }));
     }
     
     
