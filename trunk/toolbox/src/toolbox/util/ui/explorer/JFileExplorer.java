@@ -174,7 +174,11 @@ public class JFileExplorer extends JPanel
             logger.info("folder " + folder + " selected");
         }
         
-        
+        public void folderDoubleClicked(String folder)
+        {
+            logger.info("folder " + folder + " double clicked");    
+        }
+                
         /**
          * @param  e  Action performed
          */
@@ -600,6 +604,10 @@ public class JFileExplorer extends JPanel
             {
                 folderPopup.show(tree, evt.getX(), evt.getY());
             }
+            else if (evt.getClickCount() == 2)
+            {
+                fireFolderDoubleClicked(getCurrentPath());
+            }
         }
     }
 
@@ -737,7 +745,22 @@ public class JFileExplorer extends JPanel
              listener.folderSelected(folder);
         }
     }
+
     
+    /**
+     * Fire an event when a directory is double clicked
+     * 
+     * @param  folder  Folder that was double clicked
+     */
+    protected void fireFolderDoubleClicked(String folder)
+    {
+        for(Iterator i = fileExplorerListeners.iterator(); i.hasNext(); )
+        {
+             JFileExplorerListener listener = (JFileExplorerListener)i.next();
+             listener.folderDoubleClicked(folder); 
+        }
+    }
+
     
     /**
      * Selects the given folder. Folder is a fully qualified directory structure
