@@ -34,7 +34,9 @@ public interface IPlugin extends IPreferenced
     public Component getComponent();
     
     /**
-     * @return  Short description of the plugin
+     * Returns a short description of the plugin
+     * 
+     * @return Short description of the plugin
      */
     public String getDescription();
     
