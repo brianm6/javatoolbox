@@ -9,35 +9,36 @@ import java.util.Hashtable;
  */
 public class NumberParamPattern extends ParamPattern
 {
-    protected static Hashtable PrimitiveNumbers;
-    protected static Hashtable WrapperNumbers;
-    protected Method convertMethod;
+    private static Hashtable PrimitiveNumbers_;
+    private static Hashtable WrapperNumbers_;
+    private Method convertMethod_;
 
     // STATIC INITIALIZER
     static 
     {
-        PrimitiveNumbers = new Hashtable(20);
-        WrapperNumbers = new Hashtable(20);
+        PrimitiveNumbers_ = new Hashtable(20);
+        WrapperNumbers_ = new Hashtable(20);
 
         Method[] methods = NumberParamPattern.class.getDeclaredMethods();
 
         try
         {
             for (int i = 0; i < methods.length; i++)
-                if (Modifier.isStatic(methods[i].getModifiers())
-                    && methods[i].getName().startsWith("to"))
+                if (Modifier.isStatic(methods[i].getModifiers())  && 
+                   methods[i].getName().startsWith("to"))
                 {
                     Class c = Class.forName(
                         "java.lang." + methods[i].getName().substring(2));
                         
-                    WrapperNumbers.put(c, methods[i]);
+                    WrapperNumbers_.put(c, methods[i]);
                     
-                    PrimitiveNumbers.put(
+                    PrimitiveNumbers_.put(
                         c.getField("TYPE").get(null), methods[i]);
                 }
         }
         catch (Exception ex)
         {
+            // Ignore
         }
     }
 
@@ -78,7 +79,7 @@ public class NumberParamPattern extends ParamPattern
     protected boolean isApplicable(Class aClass)
     {
         return Number.class.isAssignableFrom(aClass) || 
-            PrimitiveNumbers.get(aClass) != null;
+            PrimitiveNumbers_.get(aClass) != null;
     }
 
     /**
@@ -118,7 +119,7 @@ public class NumberParamPattern extends ParamPattern
     {
         try
         {
-            return convertMethod.invoke(null, new Object[] { object });
+            return convertMethod_.invoke(null, new Object[] { object });
         }
         catch (Exception ex)
         {
@@ -131,10 +132,10 @@ public class NumberParamPattern extends ParamPattern
      */
     protected void initializeConvertMethod()
     {
-        convertMethod =
-            (Method) (Number.class.isAssignableFrom(paramType)
-                ? WrapperNumbers.get(paramType)
-                : PrimitiveNumbers.get(paramType));
+        convertMethod_ =
+            (Method) (Number.class.isAssignableFrom(getParamType()) ? 
+                WrapperNumbers_.get(getParamType()) : 
+                PrimitiveNumbers_.get(getParamType()));
     }
 
     // CONVERSION METHODS

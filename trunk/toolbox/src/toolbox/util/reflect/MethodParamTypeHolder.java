@@ -9,9 +9,9 @@ import java.util.Vector;
  */
 public class MethodParamTypeHolder implements IMethodHolder
 {
-    protected int paramCount = -1;
-    protected Vector holders = new Vector(5);
-    protected Vector patterns = new Vector(5);
+    private int paramCount_ = -1;
+    private Vector holders_ = new Vector(5);
+    private Vector patterns_ = new Vector(5);
 
     // CONSTRUCTORS
 
@@ -23,11 +23,11 @@ public class MethodParamTypeHolder implements IMethodHolder
      */
     public MethodParamTypeHolder(SmartMethod method1, SmartMethod method2)
     {
-        paramCount = method1.getParameterTypes().length;
-        holders.add(new MethodHolder(method1));
-        holders.add(new MethodHolder(method2));
-        patterns.add(method1.getParameterPatterns());
-        patterns.add(method2.getParameterPatterns());
+        paramCount_ = method1.getParameterTypes().length;
+        holders_.add(new MethodHolder(method1));
+        holders_.add(new MethodHolder(method2));
+        patterns_.add(method1.getParameterPatterns());
+        patterns_.add(method2.getParameterPatterns());
     }
 
     // METHODHOLDER METHODS
@@ -42,15 +42,15 @@ public class MethodParamTypeHolder implements IMethodHolder
     {
 
         // Check if we have the same number of parameters
-        if (paramCount != method.getParameterTypes().length
-            || method.getParameterTypes().length == 0)
+        if (paramCount_ != method.getParameterTypes().length || 
+            method.getParameterTypes().length == 0)
             
             return (IMethodHolder) 
-                new MethodParamCountHolder(method, this, paramCount);
+                new MethodParamCountHolder(method, this, paramCount_);
 
         // Add the information
-        patterns.add(method.getParameterPatterns());
-        holders.add(new MethodHolder(method));
+        patterns_.add(method.getParameterPatterns());
+        holders_.add(new MethodHolder(method));
 
         return this;
     }
@@ -69,12 +69,12 @@ public class MethodParamTypeHolder implements IMethodHolder
         TreeMap map = new TreeMap(IntegerComparator.getComparator());
 
         // Check all the patters until we find the appropiate
-        for (int i = 0; i < patterns.size(); i++)
+        for (int i = 0; i < patterns_.size(); i++)
         {
             total = 0;
 
             ParamPattern[] testPatterns = 
-                (ParamPattern[]) patterns.elementAt(i);
+                (ParamPattern[]) patterns_.elementAt(i);
 
             for (int j = 0; j < testPatterns.length; j++)
             {
@@ -102,7 +102,7 @@ public class MethodParamTypeHolder implements IMethodHolder
         Integer key = (Integer) map.get(last);
         
         IMethodHolder holderRes = 
-            (IMethodHolder) holders.elementAt(key.intValue());
+            (IMethodHolder) holders_.elementAt(key.intValue());
 
         return holderRes.getMethod(paramTypes);
     }
@@ -110,7 +110,7 @@ public class MethodParamTypeHolder implements IMethodHolder
     // COMPARATOR
     protected static class IntegerComparator implements Comparator
     {
-        protected static final IntegerComparator defComparator = 
+        protected static final IntegerComparator defComparator_ = 
             new IntegerComparator();
 
         public int compare(Object obj1, Object obj2)
@@ -120,7 +120,7 @@ public class MethodParamTypeHolder implements IMethodHolder
 
         protected static Comparator getComparator()
         {
-            return defComparator;
+            return defComparator_;
         }
     }
 }

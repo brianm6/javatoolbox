@@ -10,18 +10,26 @@ import java.util.Vector;
  */
 public class ParamPattern
 {
-    
-    
+    /** Not match */
     public static final int MATCH_NOT = Integer.MIN_VALUE;
+    
+    /** Convert match */
     public static final int MATCH_CONVERT = 50;
+    
+    /** Primitive match */
     public static final int MATCH_PRIMITIVE = 70;
+    
+    /** Superclass match */
     public static final int MATCH_SUPERCLASS = 80;
+    
+    /** Exact match */
     public static final int MATCH_EXACT = 100;
-    protected static Hashtable CachedPatterns = new Hashtable(50);
-    protected static Vector RegisteredPatterns = new Vector(10);
-    protected static Hashtable Wrappers = new Hashtable(15);
-    protected Class paramType;
-    protected Constructor patternConstructor;
+    
+    private static Hashtable CachedPatterns = new Hashtable(50);
+    private static Vector RegisteredPatterns = new Vector(10);
+    private static Hashtable Wrappers = new Hashtable(15);
+    private Class paramType_;
+    private Constructor patternConstructor_;
 
     // STATIC INITIALIZER
     static 
@@ -61,7 +69,7 @@ public class ParamPattern
      */
     protected ParamPattern(Class paramType)
     {
-        this.paramType = paramType;
+        this.paramType_ = paramType;
     }
 
     // FACTORY METHODS
@@ -137,9 +145,9 @@ public class ParamPattern
      */
     public int getMatchingFactor(Class aClass)
     {
-        if (aClass == paramType
-            || (aClass.isPrimitive() && isWrapperFor(paramType, aClass))
-            || (paramType.isPrimitive() && isWrapperFor(aClass, paramType)))
+        if (aClass == paramType_ || (aClass.isPrimitive() && 
+            isWrapperFor(paramType_, aClass)) || 
+            (paramType_.isPrimitive() && isWrapperFor(aClass, paramType_)))
             return MATCH_EXACT;
         else if (isApplicable(aClass))
             return getFactor(aClass);
@@ -168,7 +176,7 @@ public class ParamPattern
      */
     public Object convert(Object object)
     {
-        if (object == null || paramType.isAssignableFrom(object.getClass()))
+        if (object == null || paramType_.isAssignableFrom(object.getClass()))
             return object;
         else
             return advancedConvert(object);
@@ -184,7 +192,7 @@ public class ParamPattern
      */
     public boolean isLike(ParamPattern pattern)
     {
-        return pattern.paramType == paramType;
+        return pattern.paramType_ == paramType_;
     }
 
     /**
@@ -195,7 +203,7 @@ public class ParamPattern
      */
     protected boolean isApplicable(Class aClass)
     {
-        return paramType.isAssignableFrom(aClass);
+        return paramType_.isAssignableFrom(aClass);
     }
 
     /**
@@ -235,7 +243,7 @@ public class ParamPattern
             return object;
 
         throw new ClassCastException(
-            "Cannot convert " + object.getClass() + " to " + paramType);
+            "Cannot convert " + object.getClass() + " to " + paramType_);
     }
 
     /**
@@ -246,11 +254,11 @@ public class ParamPattern
      */
     protected boolean validPrimitiveTypes(Object object)
     {
-        if (paramType.isPrimitive())
+        if (paramType_.isPrimitive())
         {
             Class aClass = (Class) Wrappers.get(object.getClass());
 
-            return aClass.isAssignableFrom(paramType);
+            return aClass.isAssignableFrom(paramType_);
         }
 
         return false;
@@ -266,12 +274,12 @@ public class ParamPattern
     {
         try
         {
-            if (patternConstructor == null)
-                patternConstructor = 
+            if (patternConstructor_ == null)
+                patternConstructor_ = 
                     getClass().getConstructor(new Class[] { Class.class });
 
             return (ParamPattern) 
-                patternConstructor.newInstance(new Object[] { aClass });
+                patternConstructor_.newInstance(new Object[] { aClass });
         }
         catch (Exception ex)
         {
@@ -280,4 +288,14 @@ public class ParamPattern
             return null;
         }
     }
+    
+    /**
+     * Returns the paramType.
+     * @return Class
+     */
+    public Class getParamType()
+    {
+        return paramType_;
+    }
+
 }

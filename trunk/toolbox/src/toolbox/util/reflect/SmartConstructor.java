@@ -31,7 +31,7 @@ public class SmartConstructor extends SmartMethod
      */
     public final Constructor getConstructor()
     {
-        return (Constructor) method;
+        return (Constructor) method_;
     }
 
     /**
@@ -77,9 +77,8 @@ public class SmartConstructor extends SmartMethod
         {
             if (parameters != null)
                 for (int i = 0; i < parameters.length; i++)
-                    parameters[i] = patterns[i] == null 
-                        ? parameters[i] 
-                        : patterns[i].convert(parameters[i]);
+                    parameters[i] = patterns_[i] == null ? 
+                    parameters[i] : patterns_[i].convert(parameters[i]);
         }
         catch (Exception ex)
         {

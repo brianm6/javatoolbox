@@ -10,9 +10,9 @@ import java.util.Hashtable;
  */
 public class SmartClass
 {
-    protected Class javaClass;
-    protected Hashtable methods;
-    protected IMethodHolder constructors;
+    private Class javaClass_;
+    private Hashtable methods_;
+    private IMethodHolder constructors_;
 
     // CONSTRUCTORS
 
@@ -23,39 +23,38 @@ public class SmartClass
      */
     protected SmartClass(Class aClass)
     {
-        javaClass = aClass;
+        javaClass_ = aClass;
     }
 
     // ACCESSING
 
     /**
+     * Gets method
      * 
-     * 
-     * @param selector 
-     * @param parameterTypes 
-     * @return  
-     * @throws NoSuchMethodException 
+     * @param selector          Selector
+     * @param parameterTypes    Param types
+     * @return                  Smart method
+     * @throws                  NoSuchMethodException on no method
      */
     public SmartMethod getMethod(Symbol selector, Class[] parameterTypes)
         throws NoSuchMethodException
     {
-        IMethodHolder method = (IMethodHolder) methods.get(selector);
+        IMethodHolder method = (IMethodHolder) methods_.get(selector);
 
         if (method == null)
             throw new NoSuchMethodException();
 
-        return method.getMethod(parameterTypes == null ? new Class[] {
-        }
-        : parameterTypes);
+        return method.getMethod(parameterTypes == null ? 
+            new Class[] { } : parameterTypes);
     }
 
     /**
+     * Gets method
      * 
-     * 
-     * @param selector 
-     * @param parameters 
-     * @return  
-     * @throws NoSuchMethodException 
+     * @param selector      Selector 
+     * @param parameters    Params 
+     * @return              Smart method
+     * @throws              NoSuchMethodException on no method
      */
     public SmartMethod getMethod(Symbol selector, Object[] parameters)
         throws NoSuchMethodException
@@ -72,12 +71,12 @@ public class SmartClass
     }
 
     /**
+     * Gets method
      * 
-     * 
-     * @param name 
-     * @param parameterTypes 
-     * @return  
-     * @throws NoSuchMethodException 
+     * @param name              Name
+     * @param parameterTypes    Param types
+     * @return                  Smart method
+     * @throws                  NoSuchMethodException on no method
      */
     public SmartMethod getMethod(String name, Class[] parameterTypes)
         throws NoSuchMethodException
@@ -86,12 +85,12 @@ public class SmartClass
     }
 
     /**
+     * Gets method
      * 
-     * 
-     * @param name 
-     * @param parameters 
-     * @return  
-     * @throws NoSuchMethodException 
+     * @param name              Name
+     * @param parameters        Parameters
+     * @return                  Smart method
+     * @throws                  NoSuchMethodException on no method
      */
     public SmartMethod getMethod(String name, Object[] parameters) 
         throws NoSuchMethodException
@@ -100,19 +99,18 @@ public class SmartClass
     }
 
     /**
+     * Gets constructor
      * 
-     * 
-     * @param parameterTypes 
-     * @return  
-     * @throws NoSuchMethodException 
+     * @param parameterTypes    Param types
+     * @return                  Smart constructor
+     * @throws                  NoSuchMethodException on no method
      */
     public SmartConstructor getConstructor(Class[] parameterTypes) 
         throws NoSuchMethodException
     {
         return (SmartConstructor) 
-            constructors.getMethod(parameterTypes == null 
-                ? new Class[] {}
-                : parameterTypes);
+            constructors_.getMethod(parameterTypes == null ? 
+                new Class[] {} : parameterTypes);
     }
 
     /**
@@ -282,20 +280,19 @@ public class SmartClass
      */
     protected void cacheMethods()
     {
-        Method[] javaMethods = javaClass.getMethods();
-        methods = new Hashtable(javaMethods.length * 2);
+        Method[] javaMethods = javaClass_.getMethods();
+        methods_ = new Hashtable(javaMethods.length * 2);
 
         for (int i = 0; i < javaMethods.length; i++)
         {
             SmartMethod method = new SmartMethod(javaMethods[i]);
             Object selector = method.getSelector();
-            IMethodHolder holder = (IMethodHolder) methods.get(selector);
+            IMethodHolder holder = (IMethodHolder) methods_.get(selector);
             
-            holder = holder == null 
-                ? new MethodHolder(method) 
-                : holder.addMethod(method);
+            holder = holder == null ? new MethodHolder(method)  : 
+                holder.addMethod(method);
                 
-            methods.put(selector, holder);
+            methods_.put(selector, holder);
         }
     }
 
@@ -304,12 +301,13 @@ public class SmartClass
      */
     protected void cacheConstructors()
     {
-        Constructor[] cs = javaClass.getConstructors();
+        Constructor[] cs = javaClass_.getConstructors();
 
         if (cs.length > 0)
-            constructors = new MethodHolder(new SmartConstructor(cs[0]));
+            constructors_ = new MethodHolder(new SmartConstructor(cs[0]));
 
         for (int i = 1; i < cs.length; i++)
-            constructors = constructors.addMethod(new SmartConstructor(cs[i]));
+            constructors_ = 
+                constructors_.addMethod(new SmartConstructor(cs[i]));
     }
 }

@@ -10,8 +10,8 @@ import java.io.ObjectOutput;
  */
 public class Symbol implements Externalizable
 {
-    protected int hashCode;
-    protected String string;
+    private int hashCode_;
+    private String string_;
 
     // CONSTRUCTORS
 
@@ -34,7 +34,7 @@ public class Symbol implements Externalizable
      */
     public int hashCode()
     {
-        return hashCode;
+        return hashCode_;
     }
 
     /**
@@ -50,7 +50,7 @@ public class Symbol implements Externalizable
         else if (another == null || another.getClass() != getClass())
             return false;
 
-        return string == another.toString();
+        return string_ == another.toString();
     }
 
     /**
@@ -60,7 +60,7 @@ public class Symbol implements Externalizable
      */
     public String toString()
     {
-        return string;
+        return string_;
     }
 
     // ACCESSING METHODS
@@ -72,8 +72,8 @@ public class Symbol implements Externalizable
      */
     protected final void setString(String string)
     {
-        this.string = string.intern();
-        this.hashCode = string.hashCode();
+        this.string_ = string.intern();
+        this.hashCode_ = string.hashCode();
     }
 
     // EXTERNALIZABLE METHODS
@@ -102,7 +102,7 @@ public class Symbol implements Externalizable
      */
     public void writeExternal(ObjectOutput out) throws IOException
     {
-        byte[] buf = string.getBytes();
+        byte[] buf = string_.getBytes();
         out.writeInt(buf.length);
         out.write(buf);
     }

@@ -83,7 +83,7 @@ public class CollectionParamPattern extends ParamPattern
         try
         {
             return convertMethod_.invoke(
-                null, new Object[] { paramType, object });
+                null, new Object[] { getParamType(), object });
         }
         catch (Exception ex)
         {
@@ -98,7 +98,7 @@ public class CollectionParamPattern extends ParamPattern
     {
         try
         {
-            convertMethod_ = paramType.isArray() ? 
+            convertMethod_ = getParamType().isArray() ? 
                 getClass().getMethod("toArray", 
                     new Class[] { Class.class, Vector.class }) : 
                 getClass().getMethod("toVector", 

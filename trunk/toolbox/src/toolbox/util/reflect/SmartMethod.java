@@ -9,9 +9,9 @@ import java.lang.reflect.Method;
  */
 public class SmartMethod
 {
-    protected Member method;
-    protected ParamPattern[] patterns;
-    protected Symbol selector;
+    protected Member method_;
+    protected ParamPattern[] patterns_;
+    private Symbol selector_;
 
     // CONSTRUCTORS
 
@@ -22,8 +22,8 @@ public class SmartMethod
      */
     protected SmartMethod(Member member)
     {
-        this.method = member;
-        selector = new Symbol(method.getName());
+        this.method_ = member;
+        selector_ = new Symbol(method_.getName());
         cachePatterns();
     }
 
@@ -45,9 +45,9 @@ public class SmartMethod
      */
     public SmartMethod(Method method, ParamPattern[] patterns)
     {
-        this.method = method;
-        this.selector = new Symbol(method.getName());
-        this.patterns = patterns;
+        this.method_ = method;
+        this.selector_ = new Symbol(method.getName());
+        this.patterns_ = patterns;
     }
 
     // STANDARD METHODS
@@ -59,7 +59,7 @@ public class SmartMethod
      */
     public int hashCode()
     {
-        return method.hashCode();
+        return method_.hashCode();
     }
 
     /**
@@ -73,7 +73,7 @@ public class SmartMethod
         if (another == null || another.getClass() != getClass())
             return false;
 
-        return method == ((SmartMethod) another).method;
+        return method_ == ((SmartMethod) another).method_;
     }
 
     /**
@@ -83,7 +83,7 @@ public class SmartMethod
      */
     public String toString()
     {
-        return method.toString();
+        return method_.toString();
     }
 
     // ACCESSING
@@ -105,7 +105,7 @@ public class SmartMethod
      */
     public Class getDeclaringClass()
     {
-        return method.getDeclaringClass();
+        return method_.getDeclaringClass();
     }
 
     /**
@@ -115,7 +115,7 @@ public class SmartMethod
      */
     public final Method getMethod()
     {
-        return (Method) method;
+        return (Method) method_;
     }
 
     /**
@@ -125,7 +125,7 @@ public class SmartMethod
      */
     public String getName()
     {
-        return method.getName();
+        return method_.getName();
     }
 
     /**
@@ -135,7 +135,7 @@ public class SmartMethod
      */
     public Symbol getSelector()
     {
-        return selector;
+        return selector_;
     }
 
     /**
@@ -155,7 +155,7 @@ public class SmartMethod
      */
     public ParamPattern[] getParameterPatterns()
     {
-        return patterns;
+        return patterns_;
     }
 
     /**
@@ -175,7 +175,7 @@ public class SmartMethod
      */
     public int getModifiers()
     {
-        return method.getModifiers();
+        return method_.getModifiers();
     }
 
     // INVOKATION METHODS
@@ -198,9 +198,8 @@ public class SmartMethod
         {
             if (parameters != null)
                 for (int i = 0; i < parameters.length; i++)
-                    parameters[i] = patterns[i] == null 
-                        ? parameters[i] 
-                        : patterns[i].convert(parameters[i]);
+                    parameters[i] = patterns_[i] == null ? 
+                    parameters[i] : patterns_[i].convert(parameters[i]);
         }
         catch (Exception ex)
         {
@@ -237,9 +236,9 @@ public class SmartMethod
     protected void cachePatterns()
     {
         Class[] types = getParameterTypes();
-        patterns = new ParamPattern[types.length];
+        patterns_ = new ParamPattern[types.length];
 
         for (int i = 0; i < types.length; i++)
-            patterns[i] = ParamPattern.createPattern(types[i]);
+            patterns_[i] = ParamPattern.createPattern(types[i]);
     }
 }

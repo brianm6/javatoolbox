@@ -37,11 +37,11 @@ public class CompoundPattern extends ParamPattern
      */
     public CompoundPattern(ParamPattern pp1, ParamPattern pp2)
     {
-        this(pp1.paramType);
+        this(pp1.getParamType());
 
         if (pp1 instanceof CompoundPattern && 
-            ((CompoundPattern) pp1).pattern2_.getFactor(paramType) < 
-                pp2.getFactor(paramType))
+            ((CompoundPattern) pp1).pattern2_.getFactor(getParamType()) < 
+                pp2.getFactor(getParamType()))
         {
             CompoundPattern cp1 = (CompoundPattern) pp1;
             this.pattern1_ = new CompoundPattern(cp1.pattern1_, pp2);

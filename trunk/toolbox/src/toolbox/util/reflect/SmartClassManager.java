@@ -8,10 +8,10 @@ import java.util.Map;
  */
 public class SmartClassManager
 {
-    protected static SmartClassManager DefaultClassManager = 
+    private static SmartClassManager DefaultClassManager = 
         new SmartClassManager();
         
-    protected Map cache;
+    private Map cache_;
 
     // CONSTRUCTORS
 
@@ -30,7 +30,7 @@ public class SmartClassManager
      */
     public SmartClassManager(Map cache)
     {
-        this.cache = cache;
+        this.cache_ = cache;
     }
 
     // API
@@ -43,13 +43,16 @@ public class SmartClassManager
      */
     public SmartClass getClass(Class javaClass)
     {
-        SmartClass siClass = (SmartClass) cache.get(javaClass.getName());
+        SmartClass siClass = (SmartClass) cache_.get(javaClass.getName());
 
         if (siClass == null)
         {
 
             //System.out.println( "SmartClassManager: " + javaClass.getName() );
-            cache.put(javaClass.getName(), siClass = new SmartClass(javaClass));
+            
+            cache_.put(javaClass.getName(), 
+                siClass = new SmartClass(javaClass));
+                
             siClass.constructClass();
         }
 
