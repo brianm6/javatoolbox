@@ -3,6 +3,9 @@ package toolbox.util;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import toolbox.util.reflect.SmartClassManager;
+import toolbox.util.reflect.SmartClass;
+
 import org.apache.log4j.Category;
 
 /**
@@ -97,13 +100,15 @@ class MethodRunner implements Runnable
                 paramTypes[i] = params[i].getClass();
             
             /* get method and invoke */
-            Method m = 
-                target.getClass().getMethod(method, paramTypes);
-            m.invoke(target, params);    
+            //Method m = target.getClass().getMethod(method, paramTypes);
+            //m.invoke(target, params);    
+            
+            SmartClass clazz = SmartClassManager.forClass(target.getClass());
+            clazz.invoke(target, method, params);
         }
         catch (NoSuchMethodException nsme)
         {
-            ThreadUtil.logger.error("run", nsme);
+            ThreadUtil.logger.error(toString(), nsme);
         }        
         catch (IllegalAccessException iae)
         {
@@ -113,5 +118,23 @@ class MethodRunner implements Runnable
         {
             ThreadUtil.logger.error("run", ite);
         }
+        catch (Exception e)
+        {
+            ThreadUtil.logger.error("run", e);
+        }
+        
+    }
+    
+    /**
+     * Dump to string
+     * 
+     * @return  Object state as a string
+     */
+    public String toString()
+    {
+        return "\n" +
+               "target=" + target.getClass().getName() + "\n" +
+               "method=" + method + "\n" +
+               "params=" + ArrayUtil.toString(params);
     }
 }
