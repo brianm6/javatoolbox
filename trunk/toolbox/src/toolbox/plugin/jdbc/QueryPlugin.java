@@ -984,6 +984,12 @@ public class QueryPlugin extends JPanel implements IPlugin
         {
             super(sql);
             sql_ = sql;
+            SQLFormatter sf = new SQLFormatter();
+            sf.setIndent(2);
+            sf.setNewLine("<br>");
+            sql = sf.format(sql);
+            sql = "<html>" + sql + "</html>";
+            putValue(NAME, sql);
             putValue(SHORT_DESCRIPTION, "Executes the SQL statement");
         }
 
