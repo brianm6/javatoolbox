@@ -22,6 +22,7 @@ package toolbox;
  * TODO: Add a filled bar mode to JSourceView
  * TODO: Create JSmartDialog - rememver size and position, bind esc to cancel
  * TODO: Writer a proper multisplit pane.
+ * TODO: Scan source for uses of DisposeAction
  * =============================================================================
  * TODO: StatCVS: Integrate statcvs-xml from berlios
  * =============================================================================
