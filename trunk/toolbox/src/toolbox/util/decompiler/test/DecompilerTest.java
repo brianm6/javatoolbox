@@ -1,7 +1,7 @@
 package toolbox.util.decompiler.test;
 
 import java.io.File;
-import java.net.URL;
+import java.io.InputStream;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
@@ -9,7 +9,10 @@ import junit.textui.TestRunner;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ClassUtil;
+import toolbox.util.FileUtil;
 import toolbox.util.ResourceUtil;
+import toolbox.util.StreamUtil;
+import toolbox.util.StringUtil;
 import toolbox.util.decompiler.Decompiler;
 import toolbox.util.decompiler.DecompilerFactory;
 
@@ -69,21 +72,31 @@ public class DecompilerTest extends TestCase
         
         for (int i=0; i<decompilers_.length; i++)
         {
+            String tmpClass = null;
+            
             try
             {
-                URL url = ResourceUtil.getClassResourceURL(
-                    getClass(), "DecompilerTestA.class");
+                InputStream is = 
+                    ResourceUtil.getResource("java/lang/Object.class");
                 
-                String source = 
-                    decompilers_[i].decompile(new File(url.getFile()));
+                tmpClass = FileUtil.generateTempFilename() + ".class";
                 
-                logger_.debug("\n" + source);
+                FileUtil.setFileContents(
+                        tmpClass, StreamUtil.toBytes(is), false);
+                
+                String source = decompilers_[i].decompile(new File(tmpClass));
+                
+                logger_.debug(StringUtil.addBars(source));
             }
             catch (IllegalArgumentException iae)
             {
                 logger_.info("Decompiler " + 
                     decompilers_[i].getClass().getName() + 
                     " does not support this method.");                
+            }
+            finally
+            {
+                FileUtil.delete(tmpClass);
             }
         }
     }
@@ -103,9 +116,10 @@ public class DecompilerTest extends TestCase
             try
             {
                 String source = decompilers_[i].decompile(
-                    "java.lang.Object", ClassUtil.getClasspath());
+                                    "java.lang.Object", 
+                                    ClassUtil.getClasspath());
                 
-                logger_.debug("\n" + source);
+                logger_.debug(StringUtil.addBars(source));
             }
             catch (IllegalArgumentException iae)
             {
