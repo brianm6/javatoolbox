@@ -33,10 +33,12 @@ public class JSmartTextArea extends JTextArea implements AntiAliased
     private static final Logger logger_ =
         Logger.getLogger(JSmartTextArea.class);
 
-    private static final String NODE_JSMARTTEXTAREA = "JSmartTextArea";
-    private static final String   ATTR_AUTOSCROLL   = "autoscroll";
-    private static final String   ATTR_ANTIALIAS    = "antialias";
-    private static final String NODE_FONT           = "Font";
+    private static final String NODE_JSMARTTEXTAREA   = "JSmartTextArea";
+    private static final String   ATTR_AUTOSCROLL     = "autoscroll";
+    private static final String   ATTR_ANTIALIAS      = "antialias";
+    private static final String   ATTR_CAPACITY       = "capacity";
+    private static final String   ATTR_PRUNING_FACTOR = "pruningFactor";
+    private static final String NODE_FONT             = "Font";
     
     /** 
      * Popup menu for this component 
@@ -121,30 +123,40 @@ public class JSmartTextArea extends JTextArea implements AntiAliased
     // IPreferenced Interface 
     //--------------------------------------------------------------------------
     
-    public void applyPrefs(Element fromNode)
+    public void applyPrefs(Element prefs)
     {
-        if (fromNode != null)
-        {
-            Element prefs = fromNode.getFirstChildElement(NODE_JSMARTTEXTAREA);
-            
-            setAutoScroll(
-                XOMUtil.getBooleanAttribute(prefs, ATTR_AUTOSCROLL, false));
-                    
-            setAntiAlias(
-                XOMUtil.getBooleanAttribute(prefs, ATTR_ANTIALIAS, false));
-            
-            if (XOMUtil.getFirstChildElement(prefs, NODE_FONT, null) != null)        
-                setFont(FontUtil.toFont(prefs.getFirstChildElement(NODE_FONT)));
-        }
+    
+        Element root = XOMUtil.getFirstChildElement(
+            prefs, NODE_JSMARTTEXTAREA, new Element(NODE_JSMARTTEXTAREA));
+        
+        setAutoScroll(XOMUtil.getBooleanAttribute(
+            root, ATTR_AUTOSCROLL, true));
+                
+        setAntiAlias(XOMUtil.getBooleanAttribute(
+            root, ATTR_ANTIALIAS, true));
+        
+        setCapacity(XOMUtil.getIntegerAttribute(
+            root, ATTR_CAPACITY, Integer.MAX_VALUE));
+
+        setPruneFactor(XOMUtil.getIntegerAttribute(
+            root, ATTR_PRUNING_FACTOR, 0));
+                        
+        if (XOMUtil.getFirstChildElement(root, NODE_FONT, null) != null)        
+            setFont(FontUtil.toFont(root.getFirstChildElement(NODE_FONT)));
     }
     
-    public void savePrefs(Element inNode)
+    public void savePrefs(Element prefs)
     {
-        Element prefs = new Element(NODE_JSMARTTEXTAREA);
-        prefs.addAttribute(new Attribute(ATTR_AUTOSCROLL, isAutoScroll()+""));
-        prefs.addAttribute(new Attribute(ATTR_ANTIALIAS, isAntiAlias()+""));
-        prefs.appendChild(FontUtil.toElement(getFont()));
-        inNode.appendChild(prefs);
+        Element root = new Element(NODE_JSMARTTEXTAREA);
+        root.addAttribute(new Attribute(ATTR_AUTOSCROLL, isAutoScroll()+""));
+        root.addAttribute(new Attribute(ATTR_ANTIALIAS, isAntiAlias()+""));
+        root.addAttribute(new Attribute(ATTR_CAPACITY, getCapacity()+""));
+        
+        root.addAttribute(
+            new Attribute(ATTR_PRUNING_FACTOR,getPruneFactor()+""));
+        
+        root.appendChild(FontUtil.toElement(getFont()));
+        prefs.appendChild(root);
     }
 
     //--------------------------------------------------------------------------
