@@ -39,10 +39,6 @@ import toolbox.util.SwingUtil;
 /**
  * JSmartOptionPane (mutated JOptionPane to support dialogs with a flippable 
  * detailed message area)
- * 
- * <pre>
- * TODO: Control size of dialog box on resize
- * </pre>
  */
 public class JSmartOptionPane extends JOptionPane implements ActionListener
 {
