@@ -9,7 +9,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -43,7 +43,7 @@ import toolbox.util.ui.font.JFontChooserDialog;
 import toolbox.util.ui.plugin.IStatusBar;
 
 /**
- * GUI front end to the tail
+ * JTail is a GUI front end for toolbox.tail.Tail
  */
 public class JTail extends JFrame
 {
@@ -205,9 +205,9 @@ public class JTail extends JFrame
         fileMenu.setMnemonic('F');
         fileMenu.add(new PreferencesAction());
         fileMenu.add(new SetFontAction());
+        fileMenu.add(new TailSystemOut());
         fileMenu.addSeparator();
         fileMenu.add(new SaveAction());
-        fileMenu.add(new ExitAction());
         
         if (testMode_)
         {
@@ -230,7 +230,7 @@ public class JTail extends JFrame
         {
             logger_.debug("\n" + config);
             TailPane tailPane = new TailPane(config, statusBar_);
- 
+    
             JButton closeButton = tailPane.getCloseButton();
             
             // Create map of (closeButton, tailPane) so that the 
@@ -245,28 +245,17 @@ public class JTail extends JFrame
                 
             tabbedPane_.setToolTipTextAt(
                 tabbedPane_.getTabCount()-1, config.getFilename());
-            
                 
             tabbedPane_.setSelectedComponent(tailPane);
             
             statusBar_.setStatus("Added tail for " + config.getFilename());
         }
-        catch (FileNotFoundException e)
+        catch (IOException e)
         {
             ExceptionUtil.handleUI(e, logger_);
         }
     }
-         
-    /**
-     * Loads properties (delegated to configuration manager)
-     * 
-     * @throws  IOException on I/O error
-     */
-    protected void loadConfiguration()
-    {
-        jtailConfig_ = configManager_.load();
-    }    
-    
+            
     /**
      * Saves the current configuration of all tail instances (delegated to 
      * configuration manager).
@@ -304,7 +293,19 @@ public class JTail extends JFrame
         // Save file explorer settings
         if (props != null)
             fileSelectionPane_.getFileExplorer().savePrefs(props, "jtail");
-    }
+    }            
+    
+
+         
+    /**
+     * Loads properties (delegated to configuration manager)
+     * 
+     * @throws  IOException on I/O error
+     */
+    protected void loadConfiguration()
+    {
+        jtailConfig_ = configManager_.load();
+    }    
     
     /**
      * Applies configurations
@@ -349,7 +350,8 @@ public class JTail extends JFrame
         // Apply saved file explorer settings
         if (props != null)
             fileSelectionPane_.getFileExplorer().applyPrefs(props, "jtail");
-    }    
+    }
+    
 
     /**
      * Adds listeners
@@ -387,7 +389,7 @@ public class JTail extends JFrame
     //--------------------------------------------------------------------------
     
     /**
-     * Adds a tail for a file double clicked by the user via the file explorer
+     * Listener for the file explorer
      */
     private class FileSelectionListener extends JFileExplorerAdapter
     {
@@ -437,7 +439,7 @@ public class JTail extends JFrame
     }
     
     /**
-     * Removes a tail once the close button is clicked on the tail pane
+     * Tail button listener
      */
     private class CloseButtonListener implements ActionListener
     {
@@ -520,7 +522,7 @@ public class JTail extends JFrame
             statusBar_.setStatus("Saved configuration");
         }
     }
-    
+
     /**
      * Generates a file with intermittent output so that the file can be
      * tailed for testing purposes. The file is created is $user.home
@@ -674,6 +676,37 @@ public class JTail extends JFrame
                 
             SwingUtil.centerWindow(pd);
             pd.setVisible(true);
+        }
+    }
+    
+    /**
+     * Adds a tail of the System.out stream
+     */
+    private class TailSystemOut extends AbstractAction
+    {
+        public TailSystemOut()
+        {
+            super("Tail System.out");
+            putValue(MNEMONIC_KEY, new Integer('o'));
+            
+            putValue(ACCELERATOR_KEY, 
+                KeyStroke.getKeyStroke(
+                    KeyEvent.VK_O, 
+                    Event.CTRL_MASK));
+        }
+        
+        public void actionPerformed(ActionEvent e)
+        {
+            ITailPaneConfig config = configManager_.createTailPaneConfig();
+            config.setAntiAlias(false);
+            config.setAutoScroll(true);
+            config.setAutoStart(true);
+            config.setCutExpression("");
+            config.setFilename("System.out");
+            config.setFont(SwingUtil.getPreferredMonoFont());
+            config.setRegularExpression("");
+            config.setShowLineNumbers(false);
+            addTail(config);
         }
     }
 }
