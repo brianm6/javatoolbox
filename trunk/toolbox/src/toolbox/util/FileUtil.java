@@ -17,6 +17,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -121,7 +122,7 @@ public final class FileUtil
         }
         finally
         {
-            StreamUtil.close(br);
+            IOUtils.closeQuietly(br);
         }
 
         return text.toString();
@@ -152,7 +153,7 @@ public final class FileUtil
         }
         finally
         {
-            StreamUtil.close(is);
+            IOUtils.closeQuietly(is);
         }
 
         byte[] buffer = new byte[byteBuffer.size()];

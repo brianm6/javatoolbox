@@ -13,6 +13,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import org.apache.commons.io.CopyUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
 /**
@@ -234,8 +235,8 @@ public final class ResourceUtil
         }
         finally
         {
-            StreamUtil.close(is);
-            StreamUtil.close(os);
+            IOUtils.closeQuietly(is);
+            IOUtils.closeQuietly(os);
         }
         
         return f;

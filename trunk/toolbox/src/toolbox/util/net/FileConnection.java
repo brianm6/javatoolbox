@@ -9,8 +9,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.apache.commons.io.IOUtils;
+
 import toolbox.util.Assert;
-import toolbox.util.StreamUtil;
 
 /**
  * Concrete implementation of an IConnection that uses one file to read input
@@ -131,13 +132,8 @@ public class FileConnection extends AbstractConnection implements IConnection
     public void close() throws IOException
     {
         fireConnectionClosing(this);
-        
-        if (inputStream_ != null)
-            StreamUtil.close(inputStream_);
-            
-        if (outputStream_ != null)
-            StreamUtil.close(outputStream_);
-            
+        IOUtils.closeQuietly(inputStream_);
+        IOUtils.closeQuietly(outputStream_);
         fireConnectionClosed(this);
     }
 

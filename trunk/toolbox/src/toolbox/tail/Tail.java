@@ -219,7 +219,7 @@ public class Tail
                 // Change of plans..when the tail is stopped,
                 // don't close the stream.
 
-                //StreamUtil.close(reader_);
+                //IOUtils.closeQuietly(reader_);
             }
             finally
             {

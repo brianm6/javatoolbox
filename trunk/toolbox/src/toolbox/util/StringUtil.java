@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -555,7 +556,7 @@ public final class StringUtil
         }
         finally
         {
-            StreamUtil.close(lnr);
+            IOUtils.closeQuietly(lnr);
         }
         
         return lineString;

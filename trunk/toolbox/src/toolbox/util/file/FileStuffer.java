@@ -6,10 +6,11 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.Date;
 
+import org.apache.commons.io.IOUtils;
+
 import toolbox.util.DateTimeUtil;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.RandomUtil;
-import toolbox.util.StreamUtil;
 import toolbox.util.ThreadUtil;
 
 /**
@@ -174,7 +175,7 @@ public class FileStuffer implements Runnable
         }
         finally
         {
-            StreamUtil.close(pw);
+            IOUtils.closeQuietly(pw);
         }
     }
 

@@ -11,11 +11,11 @@ import java.io.Writer;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.FileUtil;
 import toolbox.util.RandomUtil;
-import toolbox.util.StreamUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.ThreadUtil;
 import toolbox.util.concurrent.BlockingQueue;
@@ -173,7 +173,7 @@ public class TailTest extends TestCase
         finally
         {
             tmpFileStuffer.stop();
-            StreamUtil.close(sink);
+            IOUtils.closeQuietly(sink);
             FileUtil.delete(tmpFile);
         }
     }

@@ -29,7 +29,7 @@ import toolbox.util.ArrayUtil;
  * }
  * finally
  * {
- *      StreamUtil.close(mos);
+ *      IOUtils.closeQuietly(mos);
  * }
  * </pre>
  *

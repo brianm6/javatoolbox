@@ -9,7 +9,7 @@ import java.util.Date;
 
 import junit.framework.Assert;
 
-import toolbox.util.StreamUtil;
+import org.apache.commons.io.IOUtils;
 
 /**
  * A {@link java.io.File} comparator that can compare files by a number of file
@@ -197,8 +197,8 @@ public class FileComparator implements Comparator
             }
             finally
             {
-                StreamUtil.close(is1);
-                StreamUtil.close(is2);
+                IOUtils.closeQuietly(is1);
+                IOUtils.closeQuietly(is2);
             }
             
             return 0;

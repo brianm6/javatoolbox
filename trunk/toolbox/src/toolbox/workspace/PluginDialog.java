@@ -31,6 +31,7 @@ import nu.xom.Builder;
 import nu.xom.Element;
 import nu.xom.Elements;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.apache.regexp.RESyntaxException;
 
@@ -39,7 +40,6 @@ import toolbox.findclass.FindClassResult;
 import toolbox.util.ClassUtil;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.ResourceUtil;
-import toolbox.util.StreamUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.collections.ObjectComparator;
@@ -405,7 +405,7 @@ public class PluginDialog extends JDialog
         }
         finally
         {
-            StreamUtil.close(is);
+            IOUtils.closeQuietly(is);
         }
 
         return pluginList;

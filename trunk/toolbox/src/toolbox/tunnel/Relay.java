@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import toolbox.util.StreamUtil;
+import org.apache.commons.io.IOUtils;
 
 /**
  * A Relay transfers bytes from an InputStream to an OutputStream
@@ -91,8 +91,8 @@ public class Relay implements Runnable
         }
         finally
         {
-            StreamUtil.close(in_);
-            StreamUtil.close(out_);
+            IOUtils.closeQuietly(in_);
+            IOUtils.closeQuietly(out_);
         }
     }
 }

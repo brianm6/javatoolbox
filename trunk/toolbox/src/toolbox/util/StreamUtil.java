@@ -4,9 +4,7 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InterruptedIOException;
-import java.io.OutputStream;
 import java.io.Reader;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -193,91 +191,5 @@ public final class StreamUtil
         is.skip(avl);
 
         return avl;
-    }
-
-    
-    /**
-     * Closes an inputstream quitely.
-     * 
-     * @param inputStream Inputstream to close.
-     */    
-    public static void close(InputStream inputStream)
-    {
-        if (inputStream != null)
-        {
-            try
-            {
-                inputStream.close();
-            }
-            catch (IOException e)
-            {
-                logger_.warn(
-                    "An error occurred while closing an InputStream.", e);
-            }
-        }
-    }
-
-    
-    /**
-     * Closes an outputstream quitely.
-     * 
-     * @param outputStream Output stream to close.
-     */    
-    public static void close(OutputStream outputStream)
-    {
-        if (outputStream != null)
-        {
-            try
-            {
-                outputStream.close();
-            }
-            catch (Exception e)
-            {
-                logger_.warn(
-                    "An error occurred while closing an OutputStream.", e);
-            }
-        }
-    }
-
-    
-    /**
-     * Closes a writer quietly.
-     * 
-     * @param writer Writer to close.
-     */    
-    public static void close(Writer writer)
-    {
-        if (writer != null)
-        {
-            try
-            {
-                writer.close();
-            }
-            catch (IOException e)
-            {
-                logger_.warn("An error occurred while closing a Writer.", e);
-            }
-        }
-    }
-
-    
-    /**
-     * Closes a reader quietly.
-     * 
-     * @param reader Reader to close.
-     */    
-    public static void close(Reader reader)
-    {
-        if (reader != null)
-        {
-            try
-            {
-                reader.close();
-            }
-            catch (Exception e)
-            {
-                logger_.warn("An error occurred while closing a Reader.", e);
-            }
-        }
     }
 }

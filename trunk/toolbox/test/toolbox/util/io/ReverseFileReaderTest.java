@@ -5,11 +5,11 @@ import java.io.File;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.FileUtil;
-import toolbox.util.StreamUtil;
 
 /**
  * Unit test for ReverseFileReader.
@@ -67,7 +67,7 @@ public class ReverseFileReaderTest extends TestCase
      */
     protected void tearDown() throws Exception
     {
-        StreamUtil.close(reader_);   
+        IOUtils.closeQuietly(reader_);   
         FileUtil.delete(file_);
     }
     

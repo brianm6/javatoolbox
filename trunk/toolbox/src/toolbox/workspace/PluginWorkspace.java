@@ -36,6 +36,7 @@ import nu.xom.Node;
 import nu.xom.ParsingException;
 import nu.xom.Serializer;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -45,7 +46,6 @@ import toolbox.log4j.SmartLogger;
 import toolbox.util.ElapsedTime;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
-import toolbox.util.StreamUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
@@ -898,7 +898,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         }
         finally
         {
-            StreamUtil.close(writer);
+            IOUtils.closeQuietly(writer);
         }
 
         SmartLogger.debug(logger_, xml);
