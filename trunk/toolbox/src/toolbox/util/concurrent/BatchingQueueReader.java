@@ -5,8 +5,11 @@ import java.util.Iterator;
 import java.util.List;
 
 import edu.emory.mathcs.util.concurrent.BlockingQueue;
+import edu.emory.mathcs.util.concurrent.TimeUnit;
 
-import toolbox.util.ThreadUtil;
+import org.apache.log4j.Logger;
+
+import toolbox.util.StringUtil;
 import toolbox.util.service.Nameable;
 import toolbox.util.service.ServiceState;
 import toolbox.util.service.ServiceTransition;
@@ -20,6 +23,9 @@ import toolbox.util.statemachine.StateMachine;
  */
 public class BatchingQueueReader implements Startable, Nameable
 {
+    private static final Logger logger_ = 
+        Logger.getLogger(BatchingQueueReader.class);
+    
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
@@ -105,9 +111,20 @@ public class BatchingQueueReader implements Startable, Nameable
      */
     public synchronized void stop() throws IllegalStateException
     {
+        logger_.debug(StringUtil.banner("BatchingQueueReader.stop enter"));
         machine_.checkTransition(ServiceTransition.STOP);
-        ThreadUtil.stop(worker_, 2000);
         machine_.transition(ServiceTransition.STOP);
+        
+        try
+        {
+            worker_.join(5000);
+        }
+        catch (InterruptedException e)
+        {
+            logger_.error(e);
+        }
+        
+        logger_.debug(StringUtil.banner("BatchingQueueReader.stop exit"));
     }
 
     
@@ -219,27 +236,31 @@ public class BatchingQueueReader implements Startable, Nameable
             {
                 try
                 {
-                    Object first = queue_.take();
+                    Object first = queue_.poll(500, TimeUnit.MILLISECONDS);
+                    //take();
 
-                    int size = queue_.size();
-
-                    if (size > 0)
+                    if (first != null)
                     {
-                        // Create array with one extra slot for the first
-                        Object[] objs = new Object[size + 1];
-
-                        // Place first elemnt in array
-                        objs[0] = first;
-
-                        // Read the rest from the queue
-                        for (int i = 1; i <= size; i++)
-                            objs[i] = queue_.take();
-
-                        fireNextBatch(objs);
-                    }
-                    else
-                    {
-                        fireNextBatch(new Object[] {first});
+                        int size = queue_.size();
+    
+                        if (size > 0)
+                        {
+                            // Create array with one extra slot for the first
+                            Object[] objs = new Object[size + 1];
+    
+                            // Place first elemnt in array
+                            objs[0] = first;
+    
+                            // Read the rest from the queue
+                            for (int i = 1; i <= size; i++)
+                                objs[i] = queue_.take();
+    
+                            fireNextBatch(objs);
+                        }
+                        else
+                        {
+                            fireNextBatch(new Object[] {first});
+                        }
                     }
                 }
                 catch (InterruptedException e)
@@ -247,6 +268,8 @@ public class BatchingQueueReader implements Startable, Nameable
                     break;
                 }
             }
+            
+            //logger_.debug(StringUtil.banner("exiting polling loop in queue reader.."));
         }
     }
 }
