@@ -150,32 +150,7 @@ public class JarDepsPlugin extends AbstractPlugin
         graphConfigurator_.addListener(new ConfiguratorListener());
     }
 
-    //--------------------------------------------------------------------------
-    // ConfiguratorListener
-    //--------------------------------------------------------------------------
-    
-    class ConfiguratorListener implements GraphConfigurator.Listener
-    {
-        /**
-         * @see toolbox.graph.GraphConfigurator.Listener#graphLibChanged(
-         *      toolbox.graph.GraphLib)
-         */
-        public void graphLibChanged(GraphLib graphLib)
-        {
-        }
-        
-        
-        /**
-         * @see toolbox.graph.GraphConfigurator.Listener#layoutChanged(
-         *      toolbox.graph.Layout)
-         */
-        public void layoutChanged(Layout layout)
-        {
-            graphView_.setLayout(layout);
-        }
-    }
-    
-    
+
     /**
      * Views a jar dependencies.
      * 
@@ -518,6 +493,35 @@ public class JarDepsPlugin extends AbstractPlugin
             
             viewDependencies2(Arrays.asList(files));
             workArea_.add(BorderLayout.CENTER, graphView_.getComponent());
+        }
+    }
+    
+    //--------------------------------------------------------------------------
+    // ConfiguratorListener
+    //--------------------------------------------------------------------------
+
+    /**
+     * Listens for changes in the graph configuration UI and applies the changes
+     * to the current graph.
+     */
+    class ConfiguratorListener implements GraphConfigurator.Listener
+    {
+        /**
+         * @see toolbox.graph.GraphConfigurator.Listener#graphLibChanged(
+         *      toolbox.graph.GraphLib)
+         */
+        public void graphLibChanged(GraphLib graphLib)
+        {
+        }
+        
+        
+        /**
+         * @see toolbox.graph.GraphConfigurator.Listener#layoutChanged(
+         *      toolbox.graph.Layout)
+         */
+        public void layoutChanged(Layout layout)
+        {
+            graphView_.setLayout(layout);
         }
     }
 }
