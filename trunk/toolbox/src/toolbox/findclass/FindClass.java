@@ -64,18 +64,12 @@ public class FindClass
     /** 
      * Filter for archives 
      */
-    private FilenameFilter archiveFilter_ = new OrFilter(jarFilter_, zipFilter_);
+    private FilenameFilter archiveFilter_ =new OrFilter(jarFilter_, zipFilter_);
     
     /** 
      * Filter for directories 
      */
     private FilenameFilter directoryFilter_ = new DirectoryFilter();
-
-    /** 
-     * if this system property is set to anything, 
-     * then debug output will be generated 
-     */    
-    private static final String debugProp_ = "findclass.debug";
 
     /** 
      * Regular expression matcher 
@@ -111,10 +105,6 @@ public class FindClass
      */
     public FindClass() 
     {
-        // enable debug if findclass.debug found 
-        //if (System.getProperty(debugProp_) == null)
-        //    Logger.getDefaultHierarchy().disableDebug();
-        
         addFindClassListener(defaultCollector_);
     }
 
@@ -202,7 +192,7 @@ public class FindClass
      * Adds a search target to the front of the search target list.
      * A search target is a valid directory or java archive.
      * 
-     * @param  target  Absolute location of directory or jar/zip file
+     * @param  searchTarget  Absolute location of directory or jar/zip file
      */
     public void addSearchTarget(String searchTarget)
     {
@@ -233,7 +223,7 @@ public class FindClass
     /**
      * Removes a search target from the list of search targets
      *
-     * @param  target  Search Target to remove
+     * @param  searchTarget  Search Target to remove
      */
     public void removeSearchTarget(String searchTarget)
     {
@@ -270,10 +260,10 @@ public class FindClass
             logger_.debug(method + "Search targets");
             logger_.debug(method + "==============================");
             
-            for(Iterator i = searchTargets_.iterator(); 
+            for (Iterator i = searchTargets_.iterator(); 
                 i.hasNext(); logger_.debug(method + i.next()));
                 
-            logger_.debug(method + "==============================");                
+            logger_.debug(method + "==============================");
         }
     }
     

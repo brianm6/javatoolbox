@@ -42,6 +42,8 @@ public class FindClassResult
      * @param  searchString   Original search string
      * @param  classLocation  Location where class was found (jar/path)
      * @param  classFQN       Fully qualified name of the class found
+     * @param  fileSize       Size of the class file in bytes
+     * @param  timestamp      Timestamp on classfile
      */
     public FindClassResult(String searchString, String classLocation, 
         String classFQN, long fileSize, Date timestamp)
