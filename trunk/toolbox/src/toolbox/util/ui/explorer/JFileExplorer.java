@@ -18,6 +18,7 @@ import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
@@ -45,13 +46,13 @@ import toolbox.util.Platform;
 import toolbox.util.ResourceUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.io.filter.DirectoryFilter;
+import toolbox.util.io.filter.FileFilter;
 
 /**
  * Tree based file browser widget based on an open-source project and heavily 
  * updated.
  * 
  * <pre>
- * TODO: Save/Restore state to/from properties
  * TODO: Update scrollToVisible() to not hide the parent
  * </pre>
  */
@@ -261,6 +262,42 @@ public class JFileExplorer extends JPanel
         }
         else
             throw new IllegalArgumentException("Root didnt match in model!");
+    }
+
+    /**
+     * Saves preferences to a properties object
+     * 
+     * @param props   Properties to save preferences to
+     * @param prefix  Prefix to tack onto the beginning of each property name
+     *                to allow for uniqueness if more than one JFileExplorer is
+     *                saves to the same properties object.
+     */
+    public void savePrefs(Properties props, String prefix)
+    {
+        String path = getCurrentPath();
+        if (!StringUtil.isNullOrEmpty(path))
+            props.setProperty(prefix + ".explorer.path", path);
+            
+        String file = (String) fileList_.getSelectedValue();
+        if (!StringUtil.isNullOrEmpty(file))
+            props.setProperty(prefix + ".explorer.file", file);
+    }
+    
+    /**
+     * Restores preferences from a properties object and applies them.
+     * 
+     * @param props   Properties to read preferences from  
+     * @param prefix  Prefix to tack onto the beginning of each property name
+     */    
+    public void applyPrefs(Properties props, String prefix)
+    {
+        String path = props.getProperty(prefix + ".explorer.path");
+        if (!StringUtil.isNullOrEmpty(path))
+            selectFolder(path);
+            
+        String file = props.getProperty(prefix + ".explorer.file");
+        if (!StringUtil.isNullOrEmpty(file))
+            fileList_.setSelectedValue(file, true);
     }
 
     //--------------------------------------------------------------------------
@@ -485,7 +522,7 @@ public class JFileExplorer extends JPanel
         setCurrentPath(path);
         listModel_.clear();
         File f = new File(path);
-        File[] files = f.listFiles(new toolbox.util.io.filter.FileFilter());
+        File[] files = f.listFiles(new FileFilter());
         Arrays.sort(files, new FileComparator());
         
         for (int i = 0; i < files.length; i++)
