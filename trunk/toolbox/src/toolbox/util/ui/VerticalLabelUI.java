@@ -22,12 +22,17 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 import javax.swing.plaf.basic.BasicLabelUI;
 
+import org.apache.log4j.Logger;
+
 
 // This code uses Graphics2D which is supported only on Java 2
 
 
 public class VerticalLabelUI extends BasicLabelUI
 {
+    private static final Logger logger_ = 
+        Logger.getLogger(VerticalLabelUI.class);
+    
     static {
         labelUI = new VerticalLabelUI(false);
     }
@@ -79,6 +84,7 @@ public class VerticalLabelUI extends BasicLabelUI
     public Dimension getPreferredSize(JComponent c) 
     {
         Dimension dim = super.getPreferredSize(c);
+        logger_.debug("Dim = " + dim);
         return new Dimension(dim.height, dim.width);
     }   
 
