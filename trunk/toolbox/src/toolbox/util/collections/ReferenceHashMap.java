@@ -1,8 +1,14 @@
 package toolbox.util.collections;
 
-import java.util.*;
 import java.lang.ref.Reference;
 import java.lang.ref.ReferenceQueue;
+import java.util.AbstractMap;
+import java.util.AbstractSet;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Set;
 
 /**
  * This class is similar to the WeakHashMap, except that the
@@ -14,14 +20,141 @@ import java.lang.ref.ReferenceQueue;
  */
 public class ReferenceHashMap extends AbstractMap implements Map
 {
-    /** Hash table mapping WeakKeys to values */
-    private Map hash;
-    /** Reference queue for cleared WeakKeys */
-    private ReferenceQueue queue = new ReferenceQueue();
+    /** 
+     * Hash table mapping WeakKeys to values 
+     */
+    private Map hash_;
+    
+    /**
+     *  Reference queue for cleared WeakKeys 
+     */
+    private ReferenceQueue queue_ = new ReferenceQueue();
 
-    private ReferenceFactory factory = null;
-    private Set entrySet = null;
+    /**
+     * Refernce factory
+     */
+    private ReferenceFactory factory_ = null;
+    
+    /**
+     * Entry set
+     */
+    private Set entrySet_ = null;
 
+
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
+    public ReferenceHashMap(ReferenceFactory factory, int initialCapacity,
+        float loadFactor)
+    {
+        hash_ = new HashMap(initialCapacity, loadFactor);
+        factory_ = factory;
+    }
+
+    public ReferenceHashMap(ReferenceFactory factory, int initialCapacity)
+    {
+        hash_ = new HashMap(initialCapacity);
+        factory_ = factory;
+    }
+
+    public ReferenceHashMap(ReferenceFactory factory)
+    {
+        hash_ = new HashMap();
+        factory_ = factory;
+    }
+
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+
+    /**
+     * @return  Size of map
+     */ 
+    public int size()
+    {
+        return entrySet().size();
+    }
+
+    /**
+     * @return  True if map is empty, false otherwise
+     */
+    public boolean isEmpty()
+    {
+        return entrySet().isEmpty();
+    }
+
+    /**
+     * Checks if key is in the map
+     * 
+     * @param   key  Key to check for existence
+     * @return  True if the map contains the key, false otherwise
+     */
+    public boolean containsKey(Object key)
+    {
+        return hash_.containsKey(factory_.create(key));
+    }
+
+    /**
+     * Retrieves an object from the map
+     * 
+     * @param   key  Key of object to retrieve
+     * @return  Object matching key, null if not found
+     */
+    public Object get(Object key)
+    {
+        return hash_.get(factory_.create(key));
+    }
+
+    /**
+     * Puts an object in the map
+     * 
+     * @param  key    Key of object
+     * @param  value  Value of object
+     * @return Object
+     */
+    public Object put(Object key, Object value)
+    {
+        processQueue();
+        return hash_.put(factory_.create(key, queue_), value);
+    }
+
+    /**
+     * Removes an object from the map
+     * 
+     * @param  key  Key of object to remove
+     * @return Removed object
+     */
+    public Object remove(Object key)
+    {
+        processQueue();
+        return hash_.remove(factory_.create(key));
+    }
+
+    /**
+     * Clears the map
+     */
+    public void clear()
+    {
+        processQueue();
+        hash_.clear();
+    }
+
+    /**
+     * @return Set view of the mappings in this map.
+     */
+    public Set entrySet()
+    {
+        if (entrySet_ == null)
+            entrySet_ = new EntrySet();
+
+        return entrySet_;
+    }
+
+    //--------------------------------------------------------------------------
+    // Private
+    //--------------------------------------------------------------------------
+    
     /**
      * Remove all invalidated entries from the map, that is, remove all entries
      * whose keys have been discarded.  This method should be invoked once by
@@ -32,78 +165,19 @@ public class ReferenceHashMap extends AbstractMap implements Map
     private void processQueue()
     {
         Object key;
-        while ((key = queue.poll()) != null)
-            hash.remove(key);
+        
+        while ((key = queue_.poll()) != null)
+            hash_.remove(key);
     }
 
-    /* -- Constructors -- */
-    public ReferenceHashMap(
-        ReferenceFactory factory,
-        int initialCapacity,
-        float loadFactor)
-    {
-        hash = new HashMap(initialCapacity, loadFactor);
-        this.factory = factory;
-    }
 
-    public ReferenceHashMap(ReferenceFactory factory, int initialCapacity)
-    {
-        hash = new HashMap(initialCapacity);
-        this.factory = factory;
-    }
+    //--------------------------------------------------------------------------
+    // Inner Classes
+    //--------------------------------------------------------------------------
 
-    public ReferenceHashMap(ReferenceFactory factory)
-    {
-        hash = new HashMap();
-        this.factory = factory;
-    }
-
-    // Simple queries
-
-    public int size()
-    {
-        return entrySet().size();
-    }
-
-    public boolean isEmpty()
-    {
-        return entrySet().isEmpty();
-    }
-
-    public boolean containsKey(Object key)
-    {
-        return hash.containsKey(factory.create(key));
-    }
-
-    // Lookup and modification operations
-
-    public Object get(Object key)
-    {
-        return hash.get(factory.create(key));
-    }
-
-    public Object put(Object key, Object value)
-    {
-        processQueue();
-        return hash.put(factory.create(key, queue), value);
-    }
-
-    public Object remove(Object key)
-    {
-        processQueue();
-        return hash.remove(factory.create(key));
-    }
-
-    public void clear()
-    {
-        processQueue();
-        hash.clear();
-    }
-
-    // INNER CLASSES
-
-    /* Internal class for entries */
-
+    /**
+     * Internal class for entries
+     */
     static private class Entry implements Map.Entry
     {
         private Map.Entry ent;
@@ -161,10 +235,12 @@ public class ReferenceHashMap extends AbstractMap implements Map
 
     }
 
-    /* Internal class for entry sets */
+    /**
+     * Internal class for entry sets 
+     */
     private class EntrySet extends AbstractSet
     {
-        Set hashEntrySet = hash.entrySet();
+        Set hashEntrySet = hash_.entrySet();
 
         public Iterator iterator()
         {
@@ -236,14 +312,14 @@ public class ReferenceHashMap extends AbstractMap implements Map
 
             Map.Entry e = (Map.Entry) o;
             Object ev = e.getValue();
-            Reference key = factory.create(e.getKey());
-            Object hv = hash.get(key);
+            Reference key = factory_.create(e.getKey());
+            Object hv = hash_.get(key);
 
             if ((hv == null)
-                ? ((ev == null) && hash.containsKey(key))
+                ? ((ev == null) && hash_.containsKey(key))
                 : hv.equals(ev))
             {
-                hash.remove(key);
+                hash_.remove(key);
                 return true;
             }
 
@@ -272,16 +348,4 @@ public class ReferenceHashMap extends AbstractMap implements Map
         }
 
     }
-
-    /**
-     * Returns a <code>Set</code> view of the mappings in this map.
-     */
-    public Set entrySet()
-    {
-        if (entrySet == null)
-            entrySet = new EntrySet();
-
-        return entrySet;
-    }
-
 }
