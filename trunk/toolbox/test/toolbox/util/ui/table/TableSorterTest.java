@@ -25,14 +25,14 @@ public class TableSorterTest extends UITestCase
         Logger.getLogger(TableSorterTest.class);
 
     private static boolean DEBUG = true;
-            
+
     //--------------------------------------------------------------------------
     // Main
     //--------------------------------------------------------------------------
-    
-    /** 
+
+    /**
      * Entry point.
-     * 
+     *
      * @param args None recognized
      */
     public static void main(String[] args)
@@ -41,42 +41,42 @@ public class TableSorterTest extends UITestCase
     }
 
     //--------------------------------------------------------------------------
-    // Unit Tests 
+    // Unit Tests
     //--------------------------------------------------------------------------
-    
+
     /**
      * Tests the features of the TableSorter.
      */
     public void testTableSorter()
     {
         logger_.info("Running testTableSorter...");
-    
+
         TestTableModel myModel = new TestTableModel();
         TableSorter sorter = new TableSorter(myModel);
         JTable table = new JSmartTable(sorter);
-        sorter.addMouseListenerToHeaderInTable(table);
+        sorter.setTableHeader(table.getTableHeader());
         table.setPreferredScrollableViewportSize(new Dimension(500, 70));
-        
+
         JPanel p = new JPanel(new BorderLayout());
         p.add(new JScrollPane(table), BorderLayout.CENTER);
-        
+
         launchInDialog(p);
     }
 
     //--------------------------------------------------------------------------
     // TestTableModel
     //--------------------------------------------------------------------------
-    
+
     /**
      * TestTableModel.
      */
     class TestTableModel extends AbstractTableModel
     {
-        private final String[] columnNames_ = 
-        { 
-            "First Name", "Last Name", "Sport", "# of Years", "Vegetarian" 
+        private final String[] columnNames_ =
+        {
+            "First Name", "Last Name", "Sport", "# of Years", "Vegetarian"
         };
-            
+
         private final Object[][] data_ =
         {
             {
@@ -116,7 +116,7 @@ public class TableSorterTest extends UITestCase
             }
         };
 
-        
+
         /**
          * @see javax.swing.table.TableModel#getColumnCount()
          */
@@ -125,7 +125,7 @@ public class TableSorterTest extends UITestCase
             return columnNames_.length;
         }
 
-        
+
         /**
          * @see javax.swing.table.TableModel#getRowCount()
          */
@@ -134,7 +134,7 @@ public class TableSorterTest extends UITestCase
             return data_.length;
         }
 
-        
+
         /**
          * @see javax.swing.table.TableModel#getColumnName(int)
          */
@@ -143,7 +143,7 @@ public class TableSorterTest extends UITestCase
             return columnNames_[col];
         }
 
-        
+
         /**
          * @see javax.swing.table.TableModel#getValueAt(int, int)
          */
@@ -152,13 +152,13 @@ public class TableSorterTest extends UITestCase
             return data_[row][col];
         }
 
-        
+
         /**
          * JTable uses this method to determine the default renderer/
          * editor for each cell.  If we didn't implement this method,
          * then the last column would contain text ("true"/"false"),
          * rather than a check box.
-         * 
+         *
          * @see javax.swing.table.TableModel#getColumnClass(int)
          */
         public Class getColumnClass(int c)
@@ -166,25 +166,25 @@ public class TableSorterTest extends UITestCase
             return getValueAt(0, c).getClass();
         }
 
-        
+
         /**
          * Don't need to implement this method unless your table's editable.
-         * 
+         *
          * @see javax.swing.table.TableModel#isCellEditable(int, int)
          */
         public boolean isCellEditable(int row, int col)
         {
             //Note that the data/cell address is constant,
             //no matter where the cell appears onscreen.
-            
+
             return (!(col < 2));
         }
 
-        
+
         /**
          * Don't need to implement this method unless your table's data can
          * change.
-         * 
+         *
          * @see javax.swing.table.TableModel#setValueAt(
          *      java.lang.Object, int, int)
          */
@@ -192,21 +192,21 @@ public class TableSorterTest extends UITestCase
         {
             if (DEBUG)
             {
-                System.out.println("Setting value at " + row + "," + col + 
-                    " to " + value + " (an instance of " + 
+                System.out.println("Setting value at " + row + "," + col +
+                    " to " + value + " (an instance of " +
                         value.getClass() + ")");
             }
 
-            if (data_[0][col] instanceof Integer && 
+            if (data_[0][col] instanceof Integer &&
                 !(value instanceof Integer))
             {
                 //With JFC/Swing 1.1 and JDK 1.2, we need to create
                 //an Integer from the value; otherwise, the column
-                //switches to contain Strings.  Starting with v 1.3, 
+                //switches to contain Strings.  Starting with v 1.3,
                 //the table automatically converts value to an Integer,
                 //so you only need the code in the 'else' part of this
                 //'if' block.
-                
+
                 try
                 {
                     data_[row][col] = new Integer(value.toString());
@@ -216,7 +216,7 @@ public class TableSorterTest extends UITestCase
                 catch (NumberFormatException e)
                 {
                     JOptionPane.showMessageDialog(new JLabel(),
-                        "The \"" + getColumnName(col) + 
+                        "The \"" + getColumnName(col) +
                             "\" column accepts only integer values.");
                 }
             }
@@ -234,9 +234,9 @@ public class TableSorterTest extends UITestCase
             }
         }
 
-        
+
         /**
-         * Debug 
+         * Debug
          */
         private void printDebugData()
         {
@@ -246,13 +246,13 @@ public class TableSorterTest extends UITestCase
             for (int i = 0; i < numRows; i++)
             {
                 System.out.print("    row " + i + ":");
-                
+
                 for (int j = 0; j < numCols; j++)
                     System.out.print("  " + data_[i][j]);
-                    
+
                 System.out.println();
             }
-            
+
             System.out.println("--------------------------");
         }
     }
