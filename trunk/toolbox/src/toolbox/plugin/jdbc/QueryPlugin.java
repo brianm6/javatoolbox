@@ -41,7 +41,6 @@ import toolbox.util.ui.JSmartMenuItem;
 import toolbox.util.ui.JSmartSplitPane;
 import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.SmartAction;
-import toolbox.util.ui.JSmartTextArea.ClearAction;
 import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.workspace.IPlugin;
 import toolbox.workspace.IStatusBar;
