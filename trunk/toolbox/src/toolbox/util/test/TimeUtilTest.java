@@ -1,6 +1,5 @@
 package toolbox.util.test;
 
-import java.util.Calendar;
 import java.util.Date;
 
 import junit.framework.TestCase;
@@ -8,7 +7,6 @@ import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
 
-import toolbox.util.DateTimeUtil;
 import toolbox.util.TimeUtil;
 
 /**
