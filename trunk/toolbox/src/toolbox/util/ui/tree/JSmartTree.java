@@ -1,37 +1,94 @@
-package toolbox.util.ui;
+package toolbox.util.ui.tree;
 
 import java.awt.Graphics;
+import java.util.Hashtable;
+import java.util.Vector;
 
-import javax.swing.DefaultListCellRenderer;
+import javax.swing.JTree;
+import javax.swing.tree.TreeCellRenderer;
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreeNode;
 
 import toolbox.util.SwingUtil;
+import toolbox.util.ui.AntiAliased;
 
 /**
- * SmartListCellRenderer adds the following behavior.
+ * JSmartTtree adds the following behavior.
  * <p>
  * <ul>
  *   <li>Support for antialised text
  * </ul>
+ * 
+ * @see SmartTreeCellRender
  */
-public class SmartListCellRenderer extends DefaultListCellRenderer
-    implements AntiAliased
+public class JSmartTree extends JTree implements AntiAliased
 {
     /**
      * Antialiased flag
      */
     private boolean antiAliased_ = SwingUtil.getDefaultAntiAlias();
-
+    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a SmartListCellRenderer 
+     * 
      */
-    public SmartListCellRenderer()
+    public JSmartTree()
     {
+        super();
     }
-    
+
+    /**
+     * @param value
+     */
+    public JSmartTree(Object[] value)
+    {
+        super(value);
+    }
+
+    /**
+     * @param value
+     */
+    public JSmartTree(Hashtable value)
+    {
+        super(value);
+    }
+
+    /**
+     * @param value
+     */
+    public JSmartTree(Vector value)
+    {
+        super(value);
+    }
+
+    /**
+     * @param newModel
+     */
+    public JSmartTree(TreeModel newModel)
+    {
+        super(newModel);
+    }
+
+    /**
+     * @param root
+     */
+    public JSmartTree(TreeNode root)
+    {
+        super(root);
+    }
+
+    /**
+     * @param root
+     * @param asksAllowsChildren
+     */
+    public JSmartTree(TreeNode root, boolean asksAllowsChildren)
+    {
+        super(root, asksAllowsChildren);
+    }
+
     //--------------------------------------------------------------------------
     // AntiAliased Interface
     //--------------------------------------------------------------------------
@@ -50,6 +107,10 @@ public class SmartListCellRenderer extends DefaultListCellRenderer
     public void setAntiAliased(boolean b)
     {
         antiAliased_ = b;
+        TreeCellRenderer renderer = getCellRenderer();
+        
+        if (renderer != null && renderer instanceof AntiAliased)
+            ((AntiAliased) renderer).setAntiAliased(b); 
     }
 
     //--------------------------------------------------------------------------

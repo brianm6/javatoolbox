@@ -6,6 +6,8 @@ import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.JMenuItem;
 
+import org.apache.log4j.Logger;
+
 import toolbox.util.SwingUtil;
 
 /**
@@ -17,6 +19,14 @@ import toolbox.util.SwingUtil;
  */
 public class JSmartMenuItem extends JMenuItem implements AntiAliased
 {
+    private static final Logger logger_ =
+        Logger.getLogger(JSmartMenuItem.class);
+        
+    /**
+     * Antialiased flag
+     */
+    private boolean antiAliased_ = SwingUtil.getDefaultAntiAlias();
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -89,7 +99,7 @@ public class JSmartMenuItem extends JMenuItem implements AntiAliased
      */
     public boolean isAntiAliased()
     {
-        return SwingUtil.isAntiAliased();
+        return antiAliased_;
     }
 
     /**
@@ -97,6 +107,8 @@ public class JSmartMenuItem extends JMenuItem implements AntiAliased
      */
     public void setAntiAliased(boolean b)
     {
+        logger_.debug("AA set to " + b + " on menuItem " + getText());
+        antiAliased_ = b;
     }
     
     //--------------------------------------------------------------------------

@@ -70,7 +70,7 @@ public class JEditTextArea extends org.jedit.syntax.JEditTextArea
     /**
      * Antialias flag
      */
-    private boolean antiAlias_ = false;
+    private boolean antiAlias_ = SwingUtil.getDefaultAntiAlias();
 
     //--------------------------------------------------------------------------
     // Constructors 

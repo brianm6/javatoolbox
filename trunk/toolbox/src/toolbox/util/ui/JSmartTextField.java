@@ -16,6 +16,11 @@ import toolbox.util.SwingUtil;
  */
 public class JSmartTextField extends JTextField implements AntiAliased
 {
+    /**
+     * Antialiased flag
+     */
+    private boolean antiAliased_ = SwingUtil.getDefaultAntiAlias();
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -79,7 +84,7 @@ public class JSmartTextField extends JTextField implements AntiAliased
      */
     public boolean isAntiAliased()
     {
-        return SwingUtil.isAntiAliased();
+        return antiAliased_;
     }
 
     /**
@@ -87,6 +92,7 @@ public class JSmartTextField extends JTextField implements AntiAliased
      */
     public void setAntiAliased(boolean b)
     {
+        antiAliased_ = b;
     }
 
     //--------------------------------------------------------------------------

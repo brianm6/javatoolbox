@@ -53,6 +53,7 @@ import toolbox.util.ui.SmartAction;
 import toolbox.util.ui.plugin.IPreferenced;
 import toolbox.util.ui.plugin.IStatusBar;
 import toolbox.util.ui.plugin.WorkspaceAction;
+import toolbox.util.ui.table.JSmartTable;
 import toolbox.util.ui.table.JSmartTableHeader;
 import toolbox.util.ui.table.SmartTableCellRenderer;
 import toolbox.util.ui.table.SmartTableModel;
@@ -276,7 +277,7 @@ public class JSourceView extends JPanel implements IPreferenced
         // Setup sortable table
         tableModel_  = new SmartTableModel(colNames_, 0);
         tableSorter_ = new TableSorter(tableModel_);
-        table_       = new JTable(tableSorter_);
+        table_       = new JSmartTable(tableSorter_);
         tableSorter_.addMouseListenerToHeaderInTable(table_);
         
         // Set alternating row renderer

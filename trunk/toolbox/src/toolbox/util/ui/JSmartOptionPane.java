@@ -164,6 +164,12 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener,
      */
     private Icon reverseIcon_;
 
+    /**
+     * Antialiased flag
+     */
+    private boolean antiAliased_ = SwingUtil.getDefaultAntiAlias();
+
+
     //--------------------------------------------------------------------------
     //  Constructors
     //--------------------------------------------------------------------------
@@ -1323,7 +1329,7 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener,
     {
         if (detailArea_ == null)
         {
-            detailArea_ = new JSmartTextArea(false, SwingUtil.isAntiAliased());
+            detailArea_ = new JSmartTextArea(false, SwingUtil.getDefaultAntiAlias());
             detailArea_.setFont(SwingUtil.getPreferredMonoFont());
             detailScroller_ = new JScrollPane(detailArea_);
 
@@ -1407,7 +1413,7 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener,
      */
     public boolean isAntiAliased()
     {
-        return SwingUtil.isAntiAliased();
+        return antiAliased_;
     }
 
     /**
@@ -1415,6 +1421,7 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener,
      */
     public void setAntiAliased(boolean b)
     {
+        antiAliased_ = b;
     }
 
     //--------------------------------------------------------------------------

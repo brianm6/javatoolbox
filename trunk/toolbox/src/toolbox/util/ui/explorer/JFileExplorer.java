@@ -54,6 +54,7 @@ import toolbox.util.io.filter.DirectoryFilter;
 import toolbox.util.io.filter.FileFilter;
 import toolbox.util.ui.plugin.IPreferenced;
 import toolbox.util.ui.statusbar.JStatusBar;
+import toolbox.util.ui.tree.JSmartTree;
 
 /**
  * Explorer like tree based file browser component.
@@ -479,7 +480,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
 
         // Directory tree
         treeModel_ = new DefaultTreeModel(rootNode_);
-        tree_ = new JTree(treeModel_);
+        tree_ = new JSmartTree(treeModel_);
         tree_.setEditable(false);
         
         tree_.getSelectionModel().setSelectionMode(

@@ -5,6 +5,8 @@ import java.util.Vector;
 
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
@@ -24,6 +26,11 @@ import toolbox.util.ui.AntiAliased;
  */
 public class JSmartTable extends JTable implements AntiAliased
 {
+    /**
+     * Antialiased flag
+     */
+    private boolean antiAliased_ = SwingUtil.getDefaultAntiAlias();
+    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -132,7 +139,7 @@ public class JSmartTable extends JTable implements AntiAliased
      */
     public boolean isAntiAliased()
     {
-        return SwingUtil.isAntiAliased();
+        return antiAliased_;
     }
 
     /**
@@ -140,6 +147,20 @@ public class JSmartTable extends JTable implements AntiAliased
      */
     public void setAntiAliased(boolean b)
     {
+        antiAliased_ = b;
+        
+        JTableHeader header = getTableHeader();
+        
+        if ((header != null) && (header instanceof AntiAliased))
+            ((AntiAliased) header).setAntiAliased(b); 
+            
+        for (int i=0, c = getColumnCount(); i<c; i++)
+        {
+            TableCellRenderer tcr = getCellRenderer(0, i);
+            
+            if (tcr != null && tcr instanceof AntiAliased)
+                ((AntiAliased) tcr).setAntiAliased(b);
+        }            
     }
 
     //--------------------------------------------------------------------------

@@ -28,6 +28,8 @@ import javax.swing.UIManager;
 
 import org.apache.log4j.Logger;
 
+import toolbox.util.ui.AntiAliased;
+
 /**
  * Swing Utility Class
  */
@@ -49,7 +51,7 @@ public final class SwingUtil
     /**
      * Global antialias flag that all 'smart' components are aware of
      */
-    private static boolean antiAliased_ = false;
+    private static boolean defaultAntiAlias_ = false;
     
     //--------------------------------------------------------------------------
     // Static Block
@@ -203,7 +205,6 @@ public final class SwingUtil
             Component[] comps = ((Container) c).getComponents();
             for (int i=0; i<comps.length; setDefaultCursor(comps[i++]));
         }
-        
     }
 
     /**
@@ -242,7 +243,7 @@ public final class SwingUtil
         if (Platform.isUnix())
             favoredFont = "Monospaced";
         else
-            favoredFont = "Lucida Console";
+            favoredFont = "Lucida Typewriter";
             
         String backupFont  = "mono";
         
@@ -643,15 +644,19 @@ public final class SwingUtil
                        : RenderingHints.VALUE_TEXT_ANTIALIAS_OFF));
     }
     
+    //--------------------------------------------------------------------------
+    // AntiAliased
+    //--------------------------------------------------------------------------
+    
     /**
      * Returns true if antialiasing for all 'smart' components is enabled, false
      * otherwise.
      * 
      * @return boolean
      */
-    public static final boolean isAntiAliased()
+    public static final boolean getDefaultAntiAlias()
     {
-        return antiAliased_;
+        return defaultAntiAlias_;
     }
     
     /**
@@ -659,8 +664,32 @@ public final class SwingUtil
      * 
      * @param b Antialias flag
      */
-    public static final void setAntiAliased(boolean b)
+    public static final void setDefaultAntiAlias(boolean b)
     {
-        antiAliased_ = b; 
+        defaultAntiAlias_ = b; 
+    }
+    
+    /**
+     * Sets the antialiased flag on a tree of components.
+     * 
+     * @param c Root component
+     * @param b Antialias flag
+     */
+    public static final void setAntiAliased(Component c, boolean b)
+    {
+        if (c instanceof AntiAliased)
+        {
+            logger_.debug(
+                "AA set to " + b + " on component " + 
+                    ClassUtil.stripPackage(c.getClass().getName()));
+
+            ((AntiAliased) c).setAntiAliased(b);
+        }
+            
+        if (c instanceof Container)
+        {
+            Component[] comps = ((Container) c).getComponents();
+            for (int i=0; i<comps.length; setAntiAliased(comps[i++],b));
+        }
     }
 }

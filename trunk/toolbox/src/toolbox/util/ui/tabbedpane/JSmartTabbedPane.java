@@ -37,6 +37,11 @@ public class JSmartTabbedPane extends JTabbedPane implements AntiAliased
      */
     private SmartTabbedPaneListener[] listeners_;
 
+    /**
+     * Antialiased flag
+     */
+    private boolean antiAliased_ = SwingUtil.getDefaultAntiAlias();
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -154,7 +159,7 @@ public class JSmartTabbedPane extends JTabbedPane implements AntiAliased
      */
     public boolean isAntiAliased()
     {
-        return SwingUtil.isAntiAliased();
+        return antiAliased_;
     }
 
     /**
@@ -162,6 +167,7 @@ public class JSmartTabbedPane extends JTabbedPane implements AntiAliased
      */
     public void setAntiAliased(boolean b)
     {
+        antiAliased_ = b;
     }
     
     //--------------------------------------------------------------------------

@@ -1049,7 +1049,12 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         public void actionPerformed(ActionEvent e)
         {
             JCheckBoxMenuItem cb = (JCheckBoxMenuItem) e.getSource();
-            SwingUtil.setAntiAliased(cb.isSelected());
+            boolean b = cb.isSelected();
+            SwingUtil.setDefaultAntiAlias(b);
+            Component[] comps = PluginWorkspace.this.getComponents();
+            for (int i=0; i<comps.length; 
+                SwingUtil.setAntiAliased(comps[i++], b));
+            SwingUtil.setAntiAliased(PluginWorkspace.this.getJMenuBar(), b);
             PluginWorkspace.this.repaint();
         }
     }

@@ -16,6 +16,11 @@ import toolbox.util.SwingUtil;
 public class SmartTreeCellRenderer extends DefaultTreeCellRenderer
     implements AntiAliased
 {
+    /**
+     * Antialiased flag
+     */
+    private boolean antiAliased_ = SwingUtil.getDefaultAntiAlias();
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -36,7 +41,7 @@ public class SmartTreeCellRenderer extends DefaultTreeCellRenderer
      */
     public boolean isAntiAliased()
     {
-        return SwingUtil.isAntiAliased();
+        return antiAliased_;
     }
 
     /**
@@ -44,6 +49,7 @@ public class SmartTreeCellRenderer extends DefaultTreeCellRenderer
      */
     public void setAntiAliased(boolean b)
     {
+        antiAliased_ = b;
     }
 
     //--------------------------------------------------------------------------

@@ -17,6 +17,15 @@ import toolbox.util.ui.AntiAliased;
 public class SmartTableCellRenderer extends DefaultTableCellRenderer
     implements AntiAliased
 {
+    /**
+     * Antialiased flag
+     */
+    private boolean antiAliased_ = SwingUtil.getDefaultAntiAlias();
+
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+
     /** 
      * Creates a SmartTableCellRenderer 
      */
@@ -33,7 +42,7 @@ public class SmartTableCellRenderer extends DefaultTableCellRenderer
      */
     public boolean isAntiAliased()
     {
-        return SwingUtil.isAntiAliased();
+        return antiAliased_;
     }
 
     /**
@@ -41,6 +50,7 @@ public class SmartTableCellRenderer extends DefaultTableCellRenderer
      */
     public void setAntiAliased(boolean b)
     {
+        antiAliased_ = b;
     }
     
     //--------------------------------------------------------------------------

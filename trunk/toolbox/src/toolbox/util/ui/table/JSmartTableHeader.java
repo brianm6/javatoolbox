@@ -17,6 +17,11 @@ import toolbox.util.ui.AntiAliased;
  */
 public class JSmartTableHeader extends JTableHeader implements AntiAliased
 {
+    /**
+     * Antialiased flag
+     */
+    private boolean antiAliased_ = SwingUtil.getDefaultAntiAlias();
+    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -47,7 +52,7 @@ public class JSmartTableHeader extends JTableHeader implements AntiAliased
      */
     public boolean isAntiAliased()
     {
-        return SwingUtil.isAntiAliased();
+        return antiAliased_;
     }
 
     /**
@@ -55,6 +60,7 @@ public class JSmartTableHeader extends JTableHeader implements AntiAliased
      */
     public void setAntiAliased(boolean b)
     {
+        antiAliased_ = b;
     }
     
     //--------------------------------------------------------------------------
