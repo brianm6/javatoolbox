@@ -46,12 +46,11 @@ import toolbox.util.ui.JSmartPopupMenu;
  */
 public class JFlipPane extends JPanel
 {
+    private static final Logger logger_ = Logger.getLogger(JFlipPane.class);
+    
     //--------------------------------------------------------------------------
     // Constants
     //--------------------------------------------------------------------------
-    
-    private static final Logger logger_ =
-        Logger.getLogger(JFlipPane.class);
 
     /**
      * Root node for preferences.
@@ -181,8 +180,8 @@ public class JFlipPane extends JPanel
     /**
      * Adds the given flipper to the JFlipPane.
      * 
-     * @param name Name of the flipper
-     * @param flipper Flipper to add
+     * @param name Name of the flipper.
+     * @param flipper Flipper to add.
      */
     public void addFlipper(String name, JComponent flipper)
     {
@@ -249,7 +248,7 @@ public class JFlipPane extends JPanel
     /**
      * Removes the given flipper from the flipPane.
      * 
-     * @param flipper Flipper to remove
+     * @param flipper Flipper to remove.
      */
     public void removeFlipper(JComponent flipper)
     {
@@ -271,7 +270,7 @@ public class JFlipPane extends JPanel
     /**
      * Sets the currently selected flipper.
      * 
-     * @param flipper Flipper to select
+     * @param flipper Flipper to select.
      */
     public void setActiveFlipper(JComponent flipper)
     {
@@ -307,7 +306,7 @@ public class JFlipPane extends JPanel
     /**
      * Sets the active flipper by name.
      * 
-     * @param name Name of the flipper to activate
+     * @param name Name of the flipper to activate.
      */
     public void setActiveFlipper(String name)
     {
@@ -318,7 +317,7 @@ public class JFlipPane extends JPanel
     /**
      * Returns the currently active flipper.
      * 
-     * @return Currently active flipper
+     * @return Currently active flipper.
      */
     public JComponent getActiveFlipper()
     {
@@ -329,8 +328,8 @@ public class JFlipPane extends JPanel
     /**
      * Determines if a flipper is selected.
      * 
-     * @param flipper Flipper to test if selected
-     * @return True if the given flipper is selected, false otherwise
+     * @param flipper Flipper to test if selected.
+     * @return True if the given flipper is selected, false otherwise.
      */
     public boolean isFlipperActive(JComponent flipper)
     {
@@ -366,7 +365,7 @@ public class JFlipPane extends JPanel
     /**
      * Sets the flip pane to its expanded state.
      * 
-     * @param b True to expand, false to collapse
+     * @param b True to expand, false to collapse.
      */
     public void setExpanded(boolean b)
     {
@@ -491,7 +490,7 @@ public class JFlipPane extends JPanel
     /**
      * Adds a flip pane listener.
      * 
-     * @param listener Listener to add
+     * @param listener Listener to add.
      */
     public void addFlipPaneListener(FlipPaneListener listener)
     {
@@ -502,7 +501,7 @@ public class JFlipPane extends JPanel
     /**
      * Removes a flip pane listener.
      * 
-     * @param listener Listener to remove
+     * @param listener Listener to remove.
      */
     public void removeFlipPaneListener(FlipPaneListener listener)
     {
@@ -544,7 +543,7 @@ public class JFlipPane extends JPanel
     //--------------------------------------------------------------------------
 
     /**
-     * Builds the GUI.
+     * Constructs the user interface.
      */
     protected void buildView()
     {
@@ -607,7 +606,7 @@ public class JFlipPane extends JPanel
     /**
      * Mutator for the dimension.
      * 
-     * @param dimension New dimension
+     * @param dimension New dimension.
      */
     protected void setDimension(int dimension)
     {
@@ -624,7 +623,7 @@ public class JFlipPane extends JPanel
     /**
      * Returns flippane's collapsed state.
      * 
-     * @return True if the flipPane is collapsed, false otherwise
+     * @return True if the flipPane is collapsed, false otherwise.
      */    
     protected boolean isCollapsed()
     {
@@ -635,8 +634,8 @@ public class JFlipPane extends JPanel
     /**
      * Returns the button wired to the given flipper.
      * 
-     * @param flipper Flipper to find button for
-     * @return Button that activates the flipper 
+     * @param flipper Flipper to find button for.
+     * @return Button that activates the flipper. 
      */
     protected JToggleButton getButtonFor(JComponent flipper)
     {
@@ -667,8 +666,8 @@ public class JFlipPane extends JPanel
      * implements precisely defined behavior, as opposed to 
      * MouseEvent.isPopupTrigger().
      * 
-     * @param evt Event
-     * @return True if popup trigger, false otherwise
+     * @param evt Event.
+     * @return True if popup trigger, false otherwise.
      */
     protected boolean isPopupTrigger(MouseEvent evt)
     {
@@ -680,10 +679,10 @@ public class JFlipPane extends JPanel
      * Shows the specified popup menu, ensuring it is displayed within the 
      * bounds of the screen.
      * 
-     * @param popup Popup menu
-     * @param comp Component to show it for
-     * @param x X coordinate
-     * @param y Y coordinate
+     * @param popup Popup menu.
+     * @param comp Component to show it for.
+     * @param x X coordinate.
+     * @param y Y coordinate.
      */
     protected void showPopupMenu(
         JPopupMenu popup, 
@@ -734,7 +733,7 @@ public class JFlipPane extends JPanel
      * Returns flippane dimension. 
      * 
      * @return Dimension (width if position is left/right  or height if 
-     *         position is top/bottom)
+     *         position is top/bottom).
      */
     protected int getDimension()
     {
@@ -783,6 +782,10 @@ public class JFlipPane extends JPanel
      */
     class FlipperHandler implements ActionListener
     {
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent evt)
         {
             if (evt.getSource() == closeButton_)
@@ -828,6 +831,10 @@ public class JFlipPane extends JPanel
      */
     class PopupHandler extends MouseAdapter
     {
+        /**
+         * @see java.awt.event.MouseListener#mousePressed(
+         *      java.awt.event.MouseEvent)
+         */
         public void mousePressed(MouseEvent evt)
         {
             if (evt.getSource() == popupButton_ || isPopupTrigger(evt))

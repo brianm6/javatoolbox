@@ -14,10 +14,33 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
  */
 public class FlipPaneBorder implements Border
 {
+    //--------------------------------------------------------------------------
+    // Fields 
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Position of the flippane. BOTTOM|RIGHT|TOP|LEFT
+     */
     private String position_;
+    
+    /**
+     * Insets of the border.
+     */
     private Insets insets_;
+    
+    /**
+     * Border color 1.
+     */
     private Color color1_;
+    
+    /**
+     * Border color 2.
+     */
     private Color color2_;
+    
+    /**
+     * Border color 3.
+     */
     private Color color3_;
 
     //--------------------------------------------------------------------------
@@ -46,12 +69,12 @@ public class FlipPaneBorder implements Border
     /**
      * Paints the border.
      * 
-     * @param c Component to paint
-     * @param g Graphics device
-     * @param x X coord
-     * @param y Y coord
-     * @param width Width
-     * @param height Height
+     * @param c Component to paint border on.
+     * @param g Graphics context.
+     * @param x X coord.
+     * @param y Y coord.
+     * @param width Width.
+     * @param height Height.
      */
     public void paintBorder(Component c, Graphics g, int x, int y, 
         int width, int height)
@@ -77,8 +100,8 @@ public class FlipPaneBorder implements Border
     /**
      * Retrieves border insets.
      * 
-     * @param c Component
-     * @return Border insets
+     * @param c Component to get border insets for.
+     * @return Border insets.
      */
     public Insets getBorderInsets(Component c)
     {
@@ -102,6 +125,11 @@ public class FlipPaneBorder implements Border
     
     /**
      * Paints horizontal border.
+     * 
+     * @param g Graphics context.
+     * @param x X coord.
+     * @param y Y coord.
+     * @param width Width.
      */
     private void paintHorizBorder(Graphics g, int x, int y, int width)
     {
@@ -124,9 +152,14 @@ public class FlipPaneBorder implements Border
     
     /**
      * Paints vertical border.
+     * 
+     * @param g Graphics context.
+     * @param x X coord.
+     * @param y Y cord.
+     * @param height Height.
      */
     private void paintVertBorder(Graphics g, int x, int y, int height)
-    {
+    { 
         g.setColor(color3_);
         g.fillRect(x, y, JFlipPane.SPLITTER_WIDTH, height);
 
@@ -145,7 +178,7 @@ public class FlipPaneBorder implements Border
 
 
     /**
-     * Updates colors.
+     * Updates colors to match bumps on metal look and feel.
      */
     private void updateColors()
     {

@@ -13,20 +13,66 @@ import java.awt.geom.AffineTransform;
 import javax.swing.Icon;
 
 /**
- * FlipIcon.
+ * FlipIcon is the icon that holds the rotated text name of the flipper.
  */
 public class FlipIcon implements Icon
 {
-    static final int NONE = 0;
-    static final int CW = 1;
-    static final int CCW = 2;
-
+    //--------------------------------------------------------------------------
+    // Constants 
+    //--------------------------------------------------------------------------
+    
+    /** 
+     * No rotation of text.
+     */
+    public static final int NONE = 0;
+    
+    /**
+     * Clockwise rotation of text.
+     */
+    public static final int CW = 1;
+    
+    /**
+     * Counter-clockwise rotation of text.
+     */
+    public static final int CCW = 2;
+    
+    //--------------------------------------------------------------------------
+    // Fields 
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Direction in which to rotate the text.
+     */
     private int rotate_;
+    
+    /**
+     * Font to use for rendering the text.
+     */
     private Font font_;
+    
+    /**
+     * Glyph vector.
+     */
     private GlyphVector glyphs_;
+    
+    /**
+     * Width of the text.
+     */
     private float width_;
+    
+    /**
+     * Height of the text.
+     */
     private float height_;
+    
+    /**
+     * Ascent of the text.
+     */
     private float ascent_;
+    
+    /**
+     * Rendering hints for antialiasing.
+     */
     private RenderingHints renderHints_;
 
     //--------------------------------------------------------------------------
@@ -37,8 +83,8 @@ public class FlipIcon implements Icon
      * Creates a FlipIcon.
      * 
      * @param rotate [NONE|CW|CCW]
-     * @param font Font to use for rendering
-     * @param text Text of icon
+     * @param font Font to use for rendering.
+     * @param text Text of icon.
      */
     public FlipIcon(int rotate, Font font, String text)
     {
@@ -69,7 +115,7 @@ public class FlipIcon implements Icon
     } 
 
     //--------------------------------------------------------------------------
-    // javax.swing.Icon Interface
+    // Icon Interface
     //--------------------------------------------------------------------------
     
     /**
@@ -97,10 +143,10 @@ public class FlipIcon implements Icon
     /**
      * Renders the icon on the graphics object.
      * 
-     * @param c Component
-     * @param g Graphics
-     * @param x X coord
-     * @param y y coord
+     * @param c Component on which to paint the icon.
+     * @param g Graphics context.
+     * @param x X coord.
+     * @param y y coord.
      */
     public void paintIcon(Component c, Graphics g, int x, int y)
     {

@@ -8,7 +8,7 @@ public interface FlipPaneListener
     /**
      * Called when a flippane is collapsed.
      * 
-     * @param flipPane Flip pane that was collapsed
+     * @param flipPane Flip pane that was collapsed.
      */
     void collapsed(JFlipPane flipPane);
     
@@ -16,7 +16,7 @@ public interface FlipPaneListener
     /**
      * Called when a flippane is expanded.
      * 
-     * @param flipPane Flip pane that was expanded
+     * @param flipPane Flip pane that was expanded.
      */
     void expanded(JFlipPane flipPane);
 }

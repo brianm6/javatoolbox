@@ -17,6 +17,10 @@ import javax.swing.border.Border;
  */
 public class FlipCardPanel extends JPanel
 {
+    //--------------------------------------------------------------------------
+    // Fields 
+    //--------------------------------------------------------------------------
+    
     /** 
      * Flippane encompassing this panel. 
      */
@@ -29,7 +33,7 @@ public class FlipCardPanel extends JPanel
     /**
      * Creates a FlipCardPanel.
      * 
-     * @param flipPane Enclosing JFlipPane
+     * @param flipPane Enclosing JFlipPane.
      */
     public FlipCardPanel(JFlipPane flipPane)
     {
@@ -47,7 +51,7 @@ public class FlipCardPanel extends JPanel
     /**
      * Shows the card with the given name.
      * 
-     * @param name Name of the card
+     * @param name Name of the card.
      */
     void showCard(String name)
     {
@@ -74,7 +78,7 @@ public class FlipCardPanel extends JPanel
      * button bar and the current width of the flipper (assuming its LEFT or
      * RIGHT), adds them together and thats it.
      * 
-     * @return Preferred size of the flippane
+     * @return Preferred size of the flippane.
      */
     public Dimension getPreferredSize()
     {
@@ -129,7 +133,7 @@ public class FlipCardPanel extends JPanel
          * Takes an image of the flip pane dimension (height or width) and 
          * the point that the mouse started to be dragged.
          * 
-         * @param evt Mouse pressed event
+         * @param evt Mouse pressed event.
          */
         public void mousePressed(MouseEvent evt)
         {
@@ -144,7 +148,7 @@ public class FlipCardPanel extends JPanel
          * Changes mouse cursor based on location over the draggable part of 
          * the border.
          * 
-         * @param evt Mouse moved event
+         * @param evt Mouse moved event.
          */
         public void mouseMoved(MouseEvent evt)
         {
@@ -205,7 +209,7 @@ public class FlipCardPanel extends JPanel
          * Sets dimension on flippane if the mouse is dragged. This causes
          * the flippane to resize dynamically with the drag.
          * 
-         * @param evt Mouse dragged event
+         * @param evt Mouse dragged event.
          */
         public void mouseDragged(MouseEvent evt)
         {
@@ -259,7 +263,7 @@ public class FlipCardPanel extends JPanel
          * Reset the mouse cursor to the normal cursor once dragging is
          * is completed.
          * 
-         * @param evt Mouse exited event 
+         * @param evt Mouse exited event.
          */
         public void mouseExited(MouseEvent evt)
         {

@@ -10,6 +10,10 @@ import java.awt.LayoutManager;
  */
 public class FlipButtonLayout implements LayoutManager
 {
+    //--------------------------------------------------------------------------
+    // Fields 
+    //--------------------------------------------------------------------------
+    
     /** 
      * Flippane to layout. 
      */
@@ -22,7 +26,7 @@ public class FlipButtonLayout implements LayoutManager
     /**
      * Creates a button layout.
      * 
-     * @param flipPane Enclosing flip pane
+     * @param flipPane Enclosing flip pane.
      */    
     public FlipButtonLayout(JFlipPane flipPane)
     {
@@ -36,8 +40,8 @@ public class FlipButtonLayout implements LayoutManager
     /**
      * Adds component to be layed out.
      * 
-     * @param name Name of component
-     * @param comp Component to layout
+     * @param name Name of component.
+     * @param comp Component to layout.
      */
     public void addLayoutComponent(String name, Component comp) 
     {
@@ -47,7 +51,7 @@ public class FlipButtonLayout implements LayoutManager
     /**
      * Removes component to be layed out.
      * 
-     * @param comp Component to remove from the layout
+     * @param comp Component to remove from the layout.
      */
     public void removeLayoutComponent(Component comp) 
     {
@@ -57,8 +61,8 @@ public class FlipButtonLayout implements LayoutManager
     /**
      * Gets preferred layout size.
      * 
-     * @param parent Parent container
-     * @return Preferred layout size
+     * @param parent Parent container.
+     * @return Preferred layout size.
      */
     public Dimension preferredLayoutSize(Container parent)
     {
@@ -83,8 +87,8 @@ public class FlipButtonLayout implements LayoutManager
     /**
      * Retrieves min layout size.
      * 
-     * @param parent Parent container
-     * @return Minimum layout size
+     * @param parent Parent container.
+     * @return Minimum layout size.
      */
     public Dimension minimumLayoutSize(Container parent)
     {
@@ -108,7 +112,7 @@ public class FlipButtonLayout implements LayoutManager
     /**
      * Lays out the container.
      * 
-     * @param parent Container to layout
+     * @param parent Container to layout.
      */
     public void layoutContainer(Container parent)
     {
