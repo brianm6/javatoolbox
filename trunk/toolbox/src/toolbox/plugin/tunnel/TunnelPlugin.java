@@ -85,6 +85,7 @@ public class JTcpTunnelPlugin implements IPlugin
      */
     public void setStatusBar(IStatusBar statusBar)
     {
+        jtcpTunnelPane_.setStatusBar(statusBar);
     }
 
     /**
