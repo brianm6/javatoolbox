@@ -582,7 +582,9 @@ public class StatcvsPlugin extends JPanel implements IPlugin
 
 
         /**
-         * @return
+         * Returns directory that files will be checked out to.
+         * 
+         * @return Checkout directory 
          */
         public String getCheckoutDir()
         {
@@ -590,7 +592,9 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         }
 
         /**
-         * @return
+         * Returns the CVS module name that will be analyzed.
+         * 
+         * @return CVS module name
          */
         public String getCVSModule()
         {
@@ -598,7 +602,9 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         }
 
         /**
-         * @return
+         * Returns the CVS password used for authentication.
+         * 
+         * @return CVS password
          */
         public String getCVSPassword()
         {
@@ -606,7 +612,9 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         }
 
         /**
-         * @return
+         * Returns the CVSROOT for the cvs module.
+         * 
+         * @return CVSROOT
          */
         public String getCVSRoot()
         {
@@ -614,7 +622,9 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         }
 
         /**
-         * @return
+         * Returns the debug flag for the CVS library.
+         * 
+         * @return Debug flag
          */
         public boolean isDebug()
         {
@@ -622,7 +632,9 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         }
 
         /**
-         * @return
+         * Returns the URL that points to the generated statistics in HTML.
+         * 
+         * @return URL to generated statistics
          */
         public String getLaunchURL()
         {
@@ -630,7 +642,10 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         }
 
         /**
-         * @return
+         * Returns the project name used to identify the set of configuration
+         * values.
+         * 
+         * @return Project name
          */
         public String getProject()
         {
@@ -638,7 +653,8 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         }
 
         /**
-         * @param string
+         * @param string  Path to existing directory that cvs files will be
+         *                checked out to.
          */
         public void setCheckoutDir(String string)
         {
@@ -646,7 +662,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         }
 
         /**
-         * @param string
+         * @param string  CVS module name
          */
         public void setCVSModule(String string)
         {
@@ -654,7 +670,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         }
 
         /**
-         * @param string
+         * @param string  CVS authentication password
          */
         public void setCVSPassword(String string)
         {
@@ -662,7 +678,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         }
 
         /**
-         * @param string
+         * @param string  CVSROOT 
          */
         public void setCVSRoot(String string)
         {
@@ -670,7 +686,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         }
 
         /**
-         * @param b
+         * @param b  Debug flag
          */
         public void setDebug(boolean b)
         {
@@ -678,7 +694,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         }
 
         /**
-         * @param string
+         * @param string  URL to the generated statistics
          */
         public void setLaunchURL(String string)
         {
@@ -686,13 +702,19 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         }
 
         /**
-         * @param string
+         * @param string  Project name
          */
         public void setProject(String string)
         {
             project_ = string;
         }
 
+        /**
+         * Returns the project name so it is displayed by the renderer for
+         * the comboxbox.
+         * 
+         * @see java.lang.Object#toString()
+         */
         public String toString()
         {
             return getProject();
