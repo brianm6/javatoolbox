@@ -181,6 +181,8 @@
 
             <fileset dir="${lib}">
                 <include name="log4j.jar"/>
+                <include name="jcommon.jar"/>
+                <include name="jfreechart.jar"/>
                 <include name="jode.jar"/>
                 <include name="jreversepro.jar"/>
                 <include name="junit.jar"/>
