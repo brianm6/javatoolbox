@@ -18,6 +18,7 @@ import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
+import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
@@ -42,6 +43,20 @@ public class SwingUtil
      * Preferred serif font 
      */
     private static Font serifFont_;
+
+    //--------------------------------------------------------------------------
+    // Static Block
+    //--------------------------------------------------------------------------
+    
+    static
+    {
+        // Install additional look and feels
+        UIManager.installLookAndFeel("Metouia", 
+            "net.sourceforge.mlf.metouia.MetouiaLookAndFeel");
+            
+        UIManager.installLookAndFeel("SkinLF", 
+            "com.l2fprod.gui.plaf.skin.SkinLookAndFeel");
+    }
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -295,7 +310,8 @@ public class SwingUtil
      */
     public static void setMetouiaLAF() throws Exception
     { 
-        UIManager.setLookAndFeel(new MetouiaLookAndFeel());
+        UIManager.setLookAndFeel(
+            "net.sourceforge.mlf.metouia.MetouiaLookAndFeel");
     }
 
 
@@ -317,8 +333,16 @@ public class SwingUtil
      */
     public static void setPreferredLAF() throws Exception
     { 
-        //setSkinLAF();
         setMetouiaLAF();
+    }
+
+
+    /**
+     * Retrieves list of availble look and feels available
+     */
+    public static UIManager.LookAndFeelInfo[] getLAFs()
+    {
+        return UIManager.getInstalledLookAndFeels();
     }
     
     //--------------------------------------------------------------------------
