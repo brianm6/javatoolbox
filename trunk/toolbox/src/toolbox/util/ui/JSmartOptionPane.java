@@ -53,10 +53,10 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
     private JButton[] buttons_;
 
     /** Icon used in pane. **/
-    transient protected Icon icon_;
-
+    private transient Icon icon_;
+    
     /** Message to display. **/
-    transient protected Object message_;
+    private transient Object message_;
 
     /** Message details **/
     private Object details_;
@@ -64,13 +64,13 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
     private Window parent_;
 
     /** Options to display to the user. */
-    transient protected Object[] options_;
+    private transient Object[] options_;
 
     /** Value that should be initially selected in <code>options</code>. */
-    transient protected Object initialValue_;
+    private transient Object initialValue_;
 
     /** Message type. */
-    protected int messageType_;
+    private int messageType_;
 
     /**
      * Option type, one of <code>DEFAULT_OPTION</code>,
@@ -78,28 +78,28 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
      * <code>YES_NO_CANCEL_OPTION</code> or
      * <code>OK_CANCEL_OPTION</code>.
      */
-    protected int optionType_;
+    private int optionType_;
 
     /** 
      * Currently selected value, will be a valid option, or
      * <code>UNINITIALIZED_VALUE</code> or <code>null</code>. 
      */
-    protected Object value_;
+    private Object value_;
 
     /** 
      * Array of values the user can choose from. Look and feel will
      * provide the UI component to choose this from. 
      */
-    protected Object[] selectionValues_;
+    private Object[] selectionValues_;
 
     /** Value the user has input. */
-    protected Object inputValue_;
-
+    private Object inputValue_;
+    
     /** Initial value to select in <code>selectionValues</code>. */
-    protected Object initialSelectionValue_;
+    private Object initialSelectionValue_;
 
     /** If true, a UI widget will be provided to the user to get input. */
-    protected boolean wantsInput_;
+    private boolean wantsInput_;
 
     //--------------------------------------------------------------------------
     //  Constructors
@@ -120,7 +120,8 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
      * plain-message message type and the default options delivered by
      * the UI.
      *
-     * @param message the <code>Object</code> to display
+     * @param  message  <code>Object</code> to display
+     * @param  details  Message Details
      */
     public JSmartOptionPane(Object message, Object details)
     {
@@ -132,13 +133,14 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
      * Creates an instance of <code>JOptionPane</code> to display a message
      * with the specified message type and the default options,
      *
-     * @param message the <code>Object</code> to display
-     * @param messageType the type of message to be displayed:
-     *                  <code>ERROR_MESSAGE</code>,
-     *          <code>INFORMATION_MESSAGE</code>,
-     *          <code>WARNING_MESSAGE</code>,
-     *                  <code>QUESTION_MESSAGE</code>,
-     *          or <code>PLAIN_MESSAGE</code>
+     * @param message       the <code>Object</code> to display
+     * @param details       Message details
+     * @param messageType   the type of message to be displayed:
+     *                      <code>ERROR_MESSAGE</code>,
+     *                      <code>INFORMATION_MESSAGE</code>,
+     *                      <code>WARNING_MESSAGE</code>,
+     *                      <code>QUESTION_MESSAGE</code>,
+     *                      or <code>PLAIN_MESSAGE</code>
      */
     public JSmartOptionPane(Object message, Object details, int messageType)
     {
@@ -150,17 +152,19 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
      * Creates an instance of <code>JOptionPane</code> to display a message
      * with the specified message type and options.
      *
-     * @param message the <code>Object</code> to display
-     * @param messageType the type of message to be displayed:
-     *                  <code>ERROR_MESSAGE</code>,
-     *          <code>INFORMATION_MESSAGE</code>,
-     *          <code>WARNING_MESSAGE</code>,
-     *                  <code>QUESTION_MESSAGE</code>,
-     *          or <code>PLAIN_MESSAGE</code>
-     * @param optionType the options to display in the pane:
-     *                  <code>DEFAULT_OPTION</code>, <code>YES_NO_OPTION</code>,
-     *          <code>YES_NO_CANCEL_OPTION</code>,
-     *                  <code>OK_CANCEL_OPTION</code>
+     * @param message       the <code>Object</code> to display
+     * @param details       Message details
+     * @param messageType   the type of message to be displayed:
+     *                      <code>ERROR_MESSAGE</code>,
+     *                      <code>INFORMATION_MESSAGE</code>,
+     *                      <code>WARNING_MESSAGE</code>,
+     *                      <code>QUESTION_MESSAGE</code>,
+     *                      or <code>PLAIN_MESSAGE</code>
+     * @param optionType    the options to display in the pane:
+     *                      <code>DEFAULT_OPTION</code>, 
+     *                      <code>YES_NO_OPTION</code>,
+     *                      <code>YES_NO_CANCEL_OPTION</code>,
+     *                      <code>OK_CANCEL_OPTION</code>
      */
     public JSmartOptionPane(
         Object message,
@@ -215,6 +219,7 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
      * in the created <code>JOptionPane</code>.
      *
      * @param message the <code>Object</code> to display
+     * @param details       Message details
      * @param messageType the type of message to be displayed:
      *                  <code>ERROR_MESSAGE</code>, 
      *          <code>INFORMATION_MESSAGE</code>,
@@ -247,6 +252,7 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
      * initially-selected option specified.
      *
      * @param message the <code>Object</code> to display
+     * @param details       Message details
      * @param messageType the type of message to be displayed:
      *                  <code>ERROR_MESSAGE</code>,
      *          <code>INFORMATION_MESSAGE</code>,
@@ -302,6 +308,7 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
      *          or if the <code>parentComponent</code> has no
      *          <code>Frame</code>, a default <code>Frame</code> is used
      * @param message   the <code>Object</code> to display
+     * @param details       Message details
      * @param title     the title string for the dialog
      * @param messageType the type of message to be displayed:
      *                  <code>ERROR_MESSAGE</code>,
@@ -342,6 +349,7 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
       *      or if the <code>parentComponent</code> has no
       *      <code>Frame</code>, a default <code>Frame</code> is used
       * @param message   the <code>Object</code> to display
+      * @param details       Message details
       * @param title     the title string for the dialog
       * @param messageType the type of message to be displayed:
       *                  <code>ERROR_MESSAGE</code>,
@@ -375,6 +383,7 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
      *      or if the <code>parentComponent</code> has no
      *      <code>Frame</code>, a default <code>Frame</code> is used
      * @param message   the <code>Object</code> to display
+     * @param details   Message details
      */
     public static void showDetailedMessageDialog(
         Component parentComponent,
@@ -393,6 +402,9 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
     /**
      * Shows an error message dialog box with with the exception stack trace
      * as the message detail
+     * 
+     * @param  parentComponent  Parent component
+     * @param  exception        Exception
      */
     public static void showExceptionMessageDialog(Component parentComponent,
         Throwable exception)
@@ -425,6 +437,7 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
      *          <code>Frame</code>, a 
      *                  default <code>Frame</code> is used
      * @param message   the <code>Object</code> to display
+     * @param details   Message details
      * @param title     the title string for the dialog
      * @param optionType an integer designating the options available on the
      *          dialog: <code>YES_NO_OPTION</code>,
@@ -633,11 +646,12 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
                 // Let the defaultCloseOperation handle the closing
                 // if the user closed the window without selecting a button
                 // (newValue = null in that case).  Otherwise, close the dialog.
-                if (dialog.isVisible()
-                    && event.getSource() == JSmartOptionPane.this
-                    && (event.getPropertyName().equals(JOptionPane.VALUE_PROPERTY))
-                    && event.getNewValue() != null
-                    && event.getNewValue() != JOptionPane.UNINITIALIZED_VALUE)
+                if (dialog.isVisible() && 
+                    event.getSource() == JSmartOptionPane.this && 
+                    (event.getPropertyName().
+                        equals(JOptionPane.VALUE_PROPERTY))    && 
+                    event.getNewValue() != null                && 
+                    event.getNewValue() != JOptionPane.UNINITIALIZED_VALUE)
                 {
                     dialog.setVisible(false);
                 }
@@ -675,9 +689,13 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
     {
         if (parentComponent == null)
             return getRootFrame();
-        if (parentComponent instanceof Frame || parentComponent instanceof Dialog)
+            
+        if (parentComponent instanceof Frame || 
+            parentComponent instanceof Dialog)
             return (Window) parentComponent;
-        return JSmartOptionPane.getWindowForComponent2(parentComponent.getParent());
+            
+        return JSmartOptionPane.getWindowForComponent2(
+                    parentComponent.getParent());
     }
 
 
@@ -818,15 +836,17 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
      *                legal values listed above
      * @see           #getMessageType
      */
-    public void setMessageType(int newType)
+    public void setMessageType(int newType) throws RuntimeException
     {
-        if (newType != JOptionPane.ERROR_MESSAGE
-            && newType != JOptionPane.INFORMATION_MESSAGE
-            && newType != JOptionPane.WARNING_MESSAGE
-            && newType != JOptionPane.QUESTION_MESSAGE
-            && newType != JOptionPane.PLAIN_MESSAGE)
+        if (newType != JOptionPane.ERROR_MESSAGE && 
+            newType != JOptionPane.INFORMATION_MESSAGE && 
+            newType != JOptionPane.WARNING_MESSAGE && 
+            newType != JOptionPane.QUESTION_MESSAGE && 
+            newType != JOptionPane.PLAIN_MESSAGE)
             throw new RuntimeException(
-                "JOptionPane: type must be one of JOptionPane.ERROR_MESSAGE, JOptionPane.INFORMATION_MESSAGE, JOptionPane.WARNING_MESSAGE, JOptionPane.QUESTION_MESSAGE or JOptionPane.PLAIN_MESSAGE");
+                "JOptionPane: type must be one of JOptionPane.ERROR_MESSAGE, "+
+                "JOptionPane.INFORMATION_MESSAGE, JOptionPane.WARNING_MESSAGE,"+
+                "JOptionPane.QUESTION_MESSAGE or JOptionPane.PLAIN_MESSAGE");
 
         int oldType = messageType_;
 
@@ -865,12 +885,12 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
      * @see           #getOptionType
      * @see           #setOptions
       */
-    public void setOptionType(int newType)
+    public void setOptionType(int newType)  throws RuntimeException
     {
-        if (newType != JOptionPane.DEFAULT_OPTION
-            && newType != JOptionPane.YES_NO_OPTION
-            && newType != JOptionPane.YES_NO_CANCEL_OPTION
-            && newType != JOptionPane.OK_CANCEL_OPTION)
+        if (newType != JOptionPane.DEFAULT_OPTION && 
+            newType != JOptionPane.YES_NO_OPTION  && 
+            newType != JOptionPane.YES_NO_CANCEL_OPTION && 
+            newType != JOptionPane.OK_CANCEL_OPTION)
             throw new RuntimeException(
                 "JOptionPane: option type must be one of " + 
                 "JOptionPane.DEFAULT_OPTION, JOptionPane.YES_NO_OPTION, " +
@@ -880,7 +900,9 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
         int oldType = optionType_;
 
         optionType_ = newType;
-        firePropertyChange(JOptionPane.OPTION_TYPE_PROPERTY, oldType, optionType_);
+        
+        firePropertyChange(
+            JOptionPane.OPTION_TYPE_PROPERTY, oldType, optionType_);
     }
 
 
@@ -943,7 +965,7 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
 
 
     /**
-     * Sets the input value that is initially displayed as selected to the user. 
+     * Sets the input value that is initially displayed as selected to the user.
      * Only used if <code>wantsInput</code> is true.
      * 
      * @param  newValue  The initially selected value
@@ -1031,6 +1053,7 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
      * <p>
      * This is a bound property.
      *
+     * @param  newValue  New wants input flag
      * @see #setSelectionValues
      * @see #setInputValue
      */
@@ -1188,7 +1211,8 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
     /**
      * Wraps a component in a flow layout
      * 
-     * @param  c  Component to wrap
+     * @param   c  Component to wrap
+     * @return  Jpanel
      */
     public static JPanel wrapInFlowLayout(Component c)
     {
