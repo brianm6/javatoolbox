@@ -1,7 +1,6 @@
 package toolbox.plugin.jdbc;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.sql.Connection;
@@ -47,7 +46,6 @@ import toolbox.util.db.SQLFormatter;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JConveyorMenu;
 import toolbox.util.ui.JHeaderPanel;
-import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartMenuItem;
 import toolbox.util.ui.JSmartOptionPane;
 import toolbox.util.ui.JSmartPopupMenu;
@@ -102,15 +100,13 @@ import toolbox.workspace.WorkspaceAction;
 public class QueryPlugin extends JPanel implements IPlugin
 {
     // TODO: Ctrl-Up/Down should scroll through query history
+    // TODO: Replace icons with valid ones.
      
+    public static final Logger logger_ = Logger.getLogger(QueryPlugin.class);
+    
     //--------------------------------------------------------------------------
     // Constants
     //--------------------------------------------------------------------------
-    
-    /**
-     * Logger.
-     */
-    public static final Logger logger_ = Logger.getLogger(QueryPlugin.class);   
 
     /**
      * XML: Root preferences element for the query plugin.
@@ -218,20 +214,12 @@ public class QueryPlugin extends JPanel implements IPlugin
                 buildSQLEditor(),
                 buildResultsArea());
 
-        // Buttons 
-        JPanel buttonPanel = new JPanel(new FlowLayout());
-        buttonPanel.add(new JSmartButton(new ExecuteAction()));
-
-        // Root 
         setLayout(new BorderLayout());
-        
         dbConfigPane_ = new DBConfig(this);
         leftFlipPane_ = new JFlipPane(JFlipPane.LEFT);
         leftFlipPane_.addFlipper("Databases", dbConfigPane_);
-
         add(leftFlipPane_, BorderLayout.WEST);
         add(areaSplitPane_, BorderLayout.CENTER);                
-        add(buttonPanel, BorderLayout.SOUTH);
     }
   
     
@@ -274,17 +262,23 @@ public class QueryPlugin extends JPanel implements IPlugin
             "CS+F", new FormatSQLAction());
 
         // Build toolbar for SQL editor
+        JButton execute = JHeaderPanel.createButton(
+            ImageCache.getIcon(ImageCache.IMAGE_REFRESH),
+            "Execute SQL",
+            new ExecuteAction());
+        
+        JButton clear = JHeaderPanel.createButton(
+            ImageCache.getIcon(ImageCache.IMAGE_CLEAR),
+            "Clear",
+            new JEditActions.ClearAction(sqlEditor_));
+        
         JButton help = JHeaderPanel.createButton(
             ImageCache.getIcon(ImageCache.IMAGE_QUESTION_MARK),
             "SQL Reference",
             new SQLReferenceAction());
-
-        JButton clear = JHeaderPanel.createButton(
-            ImageCache.getIcon(ImageCache.IMAGE_CLEAR),
-            "Clear",
-            new JEditActions.ClearAction(sqlEditor_)); 
         
         JToolBar toolbar = JHeaderPanel.createToolBar();
+        toolbar.add(execute);
         toolbar.add(clear);
         toolbar.add(help);
         
@@ -332,7 +326,7 @@ public class QueryPlugin extends JPanel implements IPlugin
      * Runs a query against the database and returns the results as a nicely 
      * formatted string.
      * 
-     * @param sql SQL query,
+     * @param sql SQL query.
      * @return Formatted results.
      * @see JDBCUtil#format(ResultSet)
      */
@@ -376,7 +370,7 @@ public class QueryPlugin extends JPanel implements IPlugin
     /**
      * Adds a sql statement to the popup menu history.
      * 
-     * @param sql SQL statement to add to the history,
+     * @param sql SQL statement to add to the history.
      */
     protected void addToHistory(String sql)
     {
@@ -506,8 +500,8 @@ public class QueryPlugin extends JPanel implements IPlugin
     public void startup(Map params)
     {
         if (params != null)
-            statusBar_ = 
-                (IStatusBar) params.get(PluginWorkspace.PROP_STATUSBAR);
+            statusBar_ = (IStatusBar) 
+                params.get(PluginWorkspace.PROP_STATUSBAR);
             
         buildView();
     }
@@ -556,8 +550,11 @@ public class QueryPlugin extends JPanel implements IPlugin
      */
     public void applyPrefs(Element prefs)
     {
-        Element root = XOMUtil.getFirstChildElement(
-            prefs, NODE_QUERY_PLUGIN, new Element(NODE_QUERY_PLUGIN));
+        Element root = 
+            XOMUtil.getFirstChildElement(
+                prefs, 
+                NODE_QUERY_PLUGIN, 
+                new Element(NODE_QUERY_PLUGIN));
         
         sqlMenu_.setCapacity(XOMUtil.getInteger(
             root.getFirstChildElement(ATTR_HISTORY_MAX), 10));
