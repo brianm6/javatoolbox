@@ -2,11 +2,16 @@ package toolbox.util.formatter;
 
 import java.util.Map;
 
+import toolbox.util.io.StringInputStream;
+import toolbox.util.io.StringOutputStream;
 import toolbox.util.service.ServiceException;
 
 /**
  * Abstract formatter that takes care of non-formatter related housekeeping 
- * stuff.
+ * stuff. This base class requires that only the 
+ * <code>format(InputStream, OutputStream)<code> be implemented by subclasses.
+ * The other various signatures are implemented here and all funnel to the
+ * <code>format(InputStream, OutputStream)<code> implementation.
  */
 public abstract class AbstractFormatter implements Formatter
 {
@@ -72,5 +77,24 @@ public abstract class AbstractFormatter implements Formatter
     public void setName(String name)
     {
         name_ = name;
+    }
+    
+    //--------------------------------------------------------------------------
+    // Formatter Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Delegates to method signature that takes an InputStream and OutputStream.
+     * 
+     * @see toolbox.util.formatter.Formatter#format(
+     *      java.io.InputStream, java.io.OutputStream)
+     * @see toolbox.util.formatter.Formatter#format(java.lang.String)
+     */
+    public String format(String input) throws Exception
+    {
+        StringInputStream sis = new StringInputStream(input);
+        StringOutputStream sos = new StringOutputStream();
+        format(sis, sos);
+        return sos.toString();
     }
 }
