@@ -27,6 +27,13 @@ public class XMLParser
     static final private int IN_DOCTYPE = 12;
     static final private int IN_DTD = 13;
 
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Default constructor
+     */
     public XMLParser()
     {
     }
@@ -34,6 +41,10 @@ public class XMLParser
     /**
      * Parse an XML text read in from a Reader.
      * Returns the root node of the xml text.
+     * 
+     * @param  reader  Reader that supplies data
+     * @return Root xml node
+     * @throws IOException on IO error
      */
     public XMLNode parseXML(Reader reader) throws IOException
     {
@@ -44,9 +55,9 @@ public class XMLParser
         char ch;
         boolean pi = false;
 
-        StringBuffer tag_name = new StringBuffer();
-        StringBuffer attr_name = new StringBuffer();
-        StringBuffer attr_value = new StringBuffer();
+        StringBuffer tagName = new StringBuffer();
+        StringBuffer attrName = new StringBuffer();
+        StringBuffer attrValue = new StringBuffer();
         StringBuffer value = new StringBuffer();
 
         XMLNode root = null;
@@ -74,14 +85,13 @@ public class XMLParser
             switch (state)
             {
                 case VACUUM :
-                    {
                         if (ch == '<')
                         {
                             pi = false;
                             state = IN_TAG_NAME;
                             if (value.length() != 0)
                             {
-                                node = new XMLNode(tag_name.toString());
+                                node = new XMLNode(tagName.toString());
                                 node.setPlaintext(value.toString().trim());
                                 parent.addNode(node);
                                 value.setLength(0);
@@ -90,36 +100,26 @@ public class XMLParser
                         else if ((ch == ' ') || (ch == '\t'))
                         {
                             if (value.length() != 0)
-                            {
                                 value.append(ch);
-                            }
                             continue;
                         }
                         else if (ch == '\r')
                         { // part of a newline.
                             if (value.length() != 0)
-                            {
                                 value.append(ch);
-                            }
                             continue;
                         }
                         else
-                        {
                             value.append(ch);
-                        }
-                    }
-                    break;
+                        break;
 
                 case START_COMMENT :
-                    {
                         if (ch == '-')
                         {
                             // feels bad to do this here.
                             ch = (char) reader.read();
                             if (ch == '-')
-                            {
                                 state = IN_COMMENT;
-                            }
                             else
                             {
                                 value.append("!-");
@@ -128,15 +128,13 @@ public class XMLParser
                         }
                         else
                         {
-                            tag_name.append('!');
-                            tag_name.append(ch);
+                            tagName.append('!');
+                            tagName.append(ch);
                             state = IN_TAG_NAME;
                         }
-                    }
-                    break;
+                        break;
 
                 case IN_COMMENT :
-                    {
                         if (ch == '-')
                         {
                             // feels bad to do this here.
@@ -172,14 +170,10 @@ public class XMLParser
                             }
                         }
                         else
-                        {
                             value.append(ch);
-                        }
-                    }
-                    break;
+                        break;
 
                 case IN_DOCTYPE :
-                    {
                         if (ch == '[')
                         {
                             value.append(ch);
@@ -201,53 +195,36 @@ public class XMLParser
                             state = VACUUM;
                         }
                         else
-                        {
                             value.append(ch);
-                        }
-                    }
-                    break;
+                        break;
 
                 case IN_DTD :
-                    {
                         if (ch == ']')
                         {
                             value.append(ch);
                             state = IN_DOCTYPE;
                         }
                         else
-                        {
                             value.append(ch);
-                        }
-                    }
 
                 case IN_TAG_NAME :
-                    {
-                        if ((ch == '!') && (tag_name.length() == 0))
-                        {
+                        if ((ch == '!') && (tagName.length() == 0))
                             state = START_COMMENT;
-                        }
-                        else if (
-                            !pi && (ch == '?') && (tag_name.length() == 0))
-                        {
+                        else if (!pi && (ch == '?') && (tagName.length() == 0))
                             pi = true;
-                        }
-                        else if ((ch == '/') && (tag_name.length() == 0))
+                        else if ((ch == '/') && (tagName.length() == 0))
                         {
                             // closing tag
                             parent = (XMLNode) stack.pop();
                             state = CLOSING_TAG;
                         }
-                        else if (
-                            ((ch == ' ')
-                                || (ch == '\t')
-                                || (ch == '>')
-                                || (ch == '/'))
-                                || (ch == '?'))
+                        else if (((ch == ' ') || (ch == '\t') || (ch == '>') || 
+                                (ch == '/'))  || (ch == '?'))
                         {
-                            if ("!DOCTYPE".equals(tag_name.toString()))
+                            if ("!DOCTYPE".equals(tagName.toString()))
                             {
                                 state = IN_DOCTYPE;
-                                tag_name.setLength(0);
+                                tagName.setLength(0);
                                 continue;
                             }
                             if (pi)
@@ -259,22 +236,16 @@ public class XMLParser
                                     root = parent;
                                 }
                             }
-                            node = new XMLNode(tag_name.toString());
+                            node = new XMLNode(tagName.toString());
                             node.setPI(pi);
                             pi = false;
                             if (root == null)
-                            {
                                 root = node;
-                            }
                             if (parent != null)
-                            {
                                 parent.addNode(node);
-                            }
-                            tag_name.setLength(0);
+                            tagName.setLength(0);
                             if ((ch == '/') || (ch == '?'))
-                            {
                                 state = SLASH;
-                            }
                             else if (ch == '>')
                             {
                                 state = VACUUM;
@@ -282,23 +253,15 @@ public class XMLParser
                                 parent = node;
                             }
                             else
-                            {
                                 state = IN_TAG;
-                            }
                         }
                         else
-                        {
-                            tag_name.append(ch);
-                        }
-                    }
-                    break;
+                            tagName.append(ch);
+                        break;
 
                 case IN_TAG :
-                    {
                         if ((ch == ' ') || (ch == '\t'))
-                        {
                             continue;
-                        }
                         else if (ch == '>')
                         {
                             state = VACUUM;
@@ -313,87 +276,59 @@ public class XMLParser
                         else
                         {
                             state = ATTR_NAME;
-                            attr_name.setLength(1);
-                            attr_name.setCharAt(0, ch);
+                            attrName.setLength(1);
+                            attrName.setCharAt(0, ch);
                         }
-                    }
-                    break;
+                        break;
 
                 case SLASH :
-                    {
                         if (ch == '>')
-                        {
                             state = VACUUM;
-                        }
                         else
-                        {
                             state = IN_TAG;
-                        }
-                    }
-                    break;
+                        break;
 
                 case CLOSING_TAG :
-                    {
                         if (ch == '>')
-                        {
                             state = VACUUM;
-                        }
                         else
-                        {
                             continue;
-                        }
-                    }
-                    break;
+                        break;
 
                 case ATTR_NAME :
-                    {
                         if ((ch == ' ') || (ch == '\t'))
                         {
-                            node.addAttr(
-                                attr_name.toString(),
-                                attr_name.toString());
+                            node.addAttr(attrName.toString(), 
+                                attrName.toString());
                             state = IN_TAG;
                         }
                         else if (ch == '=')
-                        {
                             state = END_ATTR_NAME;
-                        }
                         else
-                        {
-                            attr_name.append(ch);
-                        }
-                    }
-                    break;
+                            attrName.append(ch);
+                       break;
 
                 case END_ATTR_NAME :
-                    {
                         if (ch == '"')
                         {
                             state = ATTR_VALUE;
-                            attr_value.setLength(0);
+                            attrValue.setLength(0);
                         }
                         else
-                        {
                             state = ATTR_NAME;
-                        }
-                    }
-                    break;
+                        break;
 
                 case ATTR_VALUE :
-                    {
                         if (ch == '"')
                         {
                             node.addAttr(
-                                attr_name.toString(),
-                                attr_value.toString());
+                                attrName.toString(),
+                                attrValue.toString());
                             state = IN_TAG;
                         }
                         else
-                        {
-                            attr_value.append(ch);
-                        }
-                    }
-                    break;
+                            attrValue.append(ch);
+                        break;
             }
         }
         return root;

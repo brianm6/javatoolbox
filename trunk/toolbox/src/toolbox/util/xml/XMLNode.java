@@ -1,7 +1,7 @@
 package toolbox.util.xml;
 
-import java.util.Hashtable;
 import java.util.Enumeration;
+import java.util.Hashtable;
 import java.util.Vector;
 
 /**
@@ -21,8 +21,12 @@ public class XMLNode
     private boolean comment_;
     private boolean doctype_;
 
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
-     * Empty Constructor.
+     * Default Constructor.
      */
     public XMLNode()
     {
@@ -31,14 +35,22 @@ public class XMLNode
 
     /**
      * Create a new node with this name.
+     * 
+     * @param  name  Name
      */
     public XMLNode(String name)
     {
         name_ = name;
     }
 
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
     /**
      * Add a child node to this node.
+     * 
+     * @param node  Child node
      */
     public void addNode(XMLNode node)
     {
@@ -67,10 +79,12 @@ public class XMLNode
         }
     }
 
-    // Enumerates a child node. Possibly needs renaming.
-    // That is, it enumerates a child nodes value.
     /**
-     *
+     * Enumerates a child node. Possibly needs renaming.
+     * That is, it enumerates a child nodes value.
+     * 
+     * @param  name  Name of node to enumerate
+     * @return Enumeration 
      */
     public Enumeration enumerateNode(String name)
     {
@@ -91,6 +105,9 @@ public class XMLNode
 
     /**
      * Add an attribute with specified name and value.
+     * 
+     * @param  name  Name of attribute
+     * @param  value Value of attribute
      */
     public void addAttr(String name, String value)
     {
@@ -103,6 +120,9 @@ public class XMLNode
 
     /**
      * Get the attribute with the specified name.
+     * 
+     * @param  name  Name of attribute to get
+     * @return Value of attribute
      */
     public String getAttr(String name)
     {
@@ -116,6 +136,8 @@ public class XMLNode
     /**
      * Enumerate over all the attributes of this node.
      * In the order they were added.
+     * 
+     * @return Enumeration over this nodes attributes
      */
     public Enumeration enumerateAttr()
     {
@@ -131,6 +153,9 @@ public class XMLNode
 
     /**
      * Get the node with the specified name.
+     * 
+     * @param  name  Name of node to get
+     * @return Node with given name
      */
     public XMLNode getNode(String name)
     {
@@ -148,6 +173,8 @@ public class XMLNode
 
     /**
      * Enumerate over all of this node's children nodes.
+     * 
+     * @return  Enumeration over this nodes kids
      */
     public Enumeration enumerateNode()
     {
@@ -164,6 +191,8 @@ public class XMLNode
 
     /**
      * Get the name of this node. Includes the namespace.
+     * 
+     * @return  Name of this node
      */
     public String getName()
     {
@@ -172,6 +201,8 @@ public class XMLNode
 
     /**
      * Get the namespace of this node.
+     * 
+     * @return This node's namespace
      */
     public String getNamespace()
     {
@@ -187,6 +218,8 @@ public class XMLNode
 
     /**
      * Get the tag name of this node. Doesn't include namespace.
+     * 
+     * @return This nodes tag name
      */
     public String getTagName()
     {
@@ -203,6 +236,8 @@ public class XMLNode
     /**
      * Get the appended toString's of the children of this node.
      * For a text node, it will print out the plaintext.
+     * 
+     * @return  This nodes value
      */
     public String getValue()
     {
@@ -238,6 +273,8 @@ public class XMLNode
 
     /**
      * Set the plaintext contained in this node.
+     * 
+     * @param str Text of node
      */
     public void setPlaintext(String str)
     {
@@ -247,6 +284,8 @@ public class XMLNode
     /**
      * Is this a normal tag?
      * That is, not plaintext, not comment and not a pi.
+     * 
+     * @return  True of this node is a tag
      */
     public boolean isTag()
     {
@@ -254,7 +293,7 @@ public class XMLNode
     }
 
     /**
-     * Is it invisible
+     * @return Is it invisible
      */
     public boolean isInvisible()
     {
@@ -263,6 +302,8 @@ public class XMLNode
 
     /**
      * Set whether this node is invisible or not.
+     * 
+     * @param  b  Set invisible
      */
     public void setInvisible(boolean b)
     {
@@ -273,7 +314,7 @@ public class XMLNode
     }
 
     /**
-     * Is it a doctype
+     * @return Is it a doctype
      */
     public boolean isDocType()
     {
@@ -282,6 +323,8 @@ public class XMLNode
 
     /**
      * Set whether this node is a doctype or not.
+     * 
+     * @param b Set doc type
      */
     public void setDocType(boolean b)
     {
@@ -289,7 +332,7 @@ public class XMLNode
     }
 
     /**
-     * Is it a comment
+     * @return Is it a comment
      */
     public boolean isComment()
     {
@@ -298,6 +341,8 @@ public class XMLNode
 
     /**
      * Set whether this node is a comment or not.
+     * 
+     * @param  b  Set is comment
      */
     public void setComment(boolean b)
     {
@@ -305,7 +350,7 @@ public class XMLNode
     }
 
     /**
-     * Is it a processing instruction    
+     * @return Is it a processing instruction    
      */
     public boolean isPI()
     {
@@ -314,6 +359,8 @@ public class XMLNode
 
     /**
      * Set whether this node is a processing instruction or not.
+     * 
+     * @param  b  Set PI
      */
     public void setPI(boolean b)
     {
@@ -323,8 +370,9 @@ public class XMLNode
     // IMPL: Assumes that you're unable to remove nodes from 
     //          a parent node. removeNode and removeAttr is likely to 
     //          become a needed functionality.
+    
     /**
-     * Is this node empty.
+     * @return Is this node empty.
      */
     public boolean isEmpty()
     {
@@ -332,7 +380,7 @@ public class XMLNode
     }
 
     /**
-     * Is this a text node.
+     * @return Is this a text node.
      */
     public boolean isTextNode()
     {
@@ -342,9 +390,12 @@ public class XMLNode
     // not entirely necessary, but allows XMLNode's to be output 
     // int XML by calling .toString() on the root node.
     // Probably wants some indentation handling?
+    
     /**
      * Turn this node into a String. Outputs the node as 
      * XML. So a large amount of output.
+     * 
+     * @return Node as a string
      */
     public String toString()
     {
@@ -436,7 +487,7 @@ public class XMLNode
     /**
      * A null implementation of an Enumeration. It contains nothing.
      */
-    public class NullEnumeration implements Enumeration
+    class NullEnumeration implements Enumeration
     {
 
         public Object nextElement()
@@ -454,7 +505,7 @@ public class XMLNode
     /**
      * An enumeration that contains a single instance.
      */
-    public class SingletonEnumeration implements Enumeration
+    class SingletonEnumeration implements Enumeration
     {
 
         private Object obj_;
