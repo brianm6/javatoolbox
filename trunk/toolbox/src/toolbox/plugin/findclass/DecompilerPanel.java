@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JToolBar;
 
+import org.apache.commons.lang.ClassUtils;
 import org.apache.log4j.Logger;
 
 import org.jedit.syntax.JavaTokenMarker;
@@ -236,7 +237,7 @@ public class DecompilerPanel extends JHeaderPanel
                         // can get to it.
                         File tempClassFile = 
                             new File(FileUtil.getTempDir(), 
-                                ClassUtil.stripPackage(clazz) + ".class");
+                                ClassUtils.getShortClassName(clazz) + ".class");
                         
                         FileUtil.setFileContents(
                             tempClassFile.getCanonicalPath(), bytecode, false);

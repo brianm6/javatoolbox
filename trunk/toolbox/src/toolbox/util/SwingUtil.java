@@ -508,9 +508,9 @@ public final class SwingUtil
     {
         if (c instanceof AntiAliased)
         {
-            logger_.debug(
-                "AA set to " + b + " on component " +
-                    ClassUtil.stripPackage(c.getClass().getName()));
+            //logger_.debug(
+            //    "AA set to " + b + " on component " +
+            //        ClassUtils.getShortClassName(c.getClass()));
 
             ((AntiAliased) c).setAntiAliased(b);
         }

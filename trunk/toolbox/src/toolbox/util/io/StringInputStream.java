@@ -3,10 +3,10 @@ package toolbox.util.io;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
-import toolbox.util.ClassUtil;
 import toolbox.util.StringUtil;
 
 /**
@@ -191,7 +191,7 @@ public class StringInputStream extends InputStream
         
         StringBuffer sb = new StringBuffer();
         sb.append(StringUtil.NL + StringUtil.BRNL);
-        sb.append(ClassUtil.stripPackage(getClass().getName()));
+        sb.append(ClassUtils.getShortClassName(getClass()));
         sb.append(" (" + super.toString() + ")" + StringUtil.NL);
         sb.append(StringUtils.repeat("-", 80) + StringUtil.NL);        
         sb.append("index     = " + index_ + StringUtil.NL);

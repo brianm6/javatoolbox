@@ -1,6 +1,6 @@
 package toolbox.util.thread;
 
-import toolbox.util.ClassUtil;
+import org.apache.commons.lang.ClassUtils;
 
 /**
  * ThreadContainer groups related threads.
@@ -34,7 +34,6 @@ public class ThreadContainer extends ThreadGroup
         return new Thread(
             this, 
             runnable, 
-            ClassUtil.stripPackage(
-                runnable.getClass().getName()));
+            ClassUtils.getShortClassName(runnable.getClass()));
     }
 }

@@ -6,11 +6,11 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.Stack;
 
+import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.regexp.RESyntaxException;
 
-import toolbox.util.ClassUtil;
 import toolbox.util.StringUtil;
 
 /**
@@ -373,7 +373,7 @@ public class Dumper
                         Collection c = (Collection) value;
                         
                         buffer.append(
-                            ClassUtil.stripPackage(value.getClass().getName()));
+                            ClassUtils.getShortClassName(value.getClass().getName()));
                             
                         buffer.append("[" + c.size() + "]"); 
                         buffer.append(StringUtil.NL);
@@ -467,7 +467,7 @@ public class Dumper
         {
             String toString = obj.toString();
             String name = obj.getClass().getName();
-            String stripped = ClassUtil.stripPackage(name);
+            String stripped = ClassUtils.getShortClassName(name);
             
             if (toString == null)
             {

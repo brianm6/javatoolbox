@@ -28,6 +28,7 @@ import javax.swing.JToolBar;
 import nu.xom.Element;
 import nu.xom.Elements;
 
+import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.lang.math.IntRange;
@@ -389,10 +390,8 @@ public class QueryPlugin extends JPanel implements IPlugin
 
         String sqlRef =
             File.separator +
-            FileUtil.trailWithSeparator(
-                ClassUtil.packageToPath(
-                    ClassUtil.stripClass(
-                        QueryPlugin.class.getName()))) + "sqlref.txt";
+            FileUtil.trailWithSeparator(ClassUtil.packageToPath(
+                ClassUtils.getPackageName(QueryPlugin.class))) + "sqlref.txt";
 
         sqlRef = sqlRef.replace(File.separatorChar, '/');
 

@@ -16,6 +16,7 @@ import nu.xom.Builder;
 import nu.xom.Element;
 import nu.xom.Elements;
 
+import org.apache.commons.lang.ClassUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
@@ -220,9 +221,8 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
         // The blessed list of doc viewer classes
         List classList = new ArrayList();
         
-        String[] classes = 
-            ClassUtil.getClassesInPackage(
-                ClassUtil.stripClass(getClass().getName()));
+        String[] classes = ClassUtil.getClassesInPackage(
+            ClassUtils.getPackageName(getClass().getName()));
        
         logger_.info("Viewers: " + ArrayUtil.toString(classes, true)); 
         

@@ -5,6 +5,8 @@ import java.io.File;
 
 import javax.swing.AbstractAction;
 
+import org.apache.commons.lang.ClassUtils;
+
 import toolbox.plugin.jdbc.QueryPlugin;
 import toolbox.util.ClassUtil;
 import toolbox.util.FileUtil;
@@ -51,11 +53,8 @@ public class SQLReferenceAction extends AbstractAction
     public void actionPerformed(ActionEvent e)
     {
         String sqlRef = File.separator +
-            FileUtil.trailWithSeparator(
-                ClassUtil.packageToPath(
-                    ClassUtil.stripClass(
-                        QueryPlugin.class.getName()))) +
-                            "sqlref.txt";
+            FileUtil.trailWithSeparator(ClassUtil.packageToPath(
+                ClassUtils.getPackageName(QueryPlugin.class))) + "sqlref.txt";
 
         sqlRef = sqlRef.replace(File.separatorChar, '/');
 

@@ -19,9 +19,9 @@ import nu.xom.Elements;
 
 import org.apache.commons.collections.BidiMap;
 import org.apache.commons.collections.bidimap.DualHashBidiMap;
+import org.apache.commons.lang.ClassUtils;
 import org.apache.log4j.Logger;
 
-import toolbox.util.ClassUtil;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.ui.JSmartInternalFrame;
@@ -314,7 +314,7 @@ public class DesktopPluginHost extends AbstractPluginHost
             if (pluginClass != null)
             {
                 logger_.debug("Found plugin class " + 
-                    ClassUtil.stripPackage(pluginClass));
+                    ClassUtils.getShortClassName(pluginClass));
                 
                 JSmartInternalFrame sif = 
                     (JSmartInternalFrame) class2Frame.get(pluginClass);

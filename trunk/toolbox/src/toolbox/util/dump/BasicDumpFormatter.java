@@ -6,11 +6,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.regexp.RE;
 import org.apache.regexp.RESyntaxException;
-
-import toolbox.util.ClassUtil;
 
 /**
  * Basic implementation of the {@link DumpFormatter} interface.
@@ -188,7 +187,7 @@ public class BasicDumpFormatter implements DumpFormatter
      */
     public String formatClassName(String className)
     {
-        return (stripPackage_ ? ClassUtil.stripPackage(className) : className);
+        return (stripPackage_ ? ClassUtils.getShortClassName(className) : className);
     }
 
     

@@ -6,20 +6,21 @@ import javassist.NotFoundException;
 
 import junitx.util.BasicTestFilter;
 
+import org.apache.commons.lang.ClassUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
-import toolbox.util.ClassUtil;
 
 /**
  * Filter that identifies only those tests suitable for execution under Clover.
  * Uses the javaassist library to do additional class inheritance and interface
  * implementation checks.
- * 
+ * <p> 
  * <ul>
- * <li>Rejects classes that extends UITestCase(can't run swing tests unattended)
- * <li>Rejects classes that implement StandAloneTestCase (tests which advertise
- *     that they like to be run standalone or in an attended manner).
+ *   <li>Rejects classes that extends UITestCase (can't run swing tests 
+ *       unattended)
+ *   <li>Rejects classes that implement StandAloneTestCase (tests which 
+ *       advertise that they like to be run standalone or in an attended manner)
  * </ul>
  */
 public class CloverTestFilter extends BasicTestFilter
@@ -88,14 +89,14 @@ public class CloverTestFilter extends BasicTestFilter
                 b = false;
 
                 logger_.debug("Rejecting UITestCase " +
-                    ClassUtil.stripPackage(clazz));
+                    ClassUtils.getShortClassName(clazz));
             }
             else if (ArrayUtil.contains(c.getInterfaces(), standAloneTestCase_))
             {
                 b = false;
 
                 logger_.debug("Rejecting StandAloneTestCase " +
-                    ClassUtil.stripPackage(clazz));
+                    ClassUtils.getShortClassName(clazz));
             }
         }
         catch (NotFoundException e)
@@ -107,7 +108,7 @@ public class CloverTestFilter extends BasicTestFilter
             if (b)
             {
                 logger_.debug("Accepted unit test " +
-                    ClassUtil.stripPackage(clazz));
+                    ClassUtils.getShortClassName(clazz));
             }
         }
 

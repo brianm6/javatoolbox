@@ -6,10 +6,10 @@ import java.util.Map;
 
 import nu.xom.Element;
 
+import org.apache.commons.lang.ClassUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
-import toolbox.util.ClassUtil;
 import toolbox.workspace.IPlugin;
 import toolbox.workspace.IPreferenced;
 
@@ -53,7 +53,7 @@ public abstract class AbstractPluginHost implements PluginHost, IPreferenced
      */
     public void startup(Map props)
     {
-        logger_.debug("Starting up " + ClassUtil.stripPackage(getClass()));
+        logger_.debug("Starting up " + ClassUtils.getShortClassName(getClass()));
         
         // Make sure map is ordered by insertion.
         plugins_ = new LinkedHashMap();
@@ -71,11 +71,10 @@ public abstract class AbstractPluginHost implements PluginHost, IPreferenced
     public void addPlugin(IPlugin plugin)
     {
         logger_.debug("Adding plugin " + 
-            ClassUtil.stripPackage(plugin.getClass()));
+            ClassUtils.getShortClassName(plugin.getClass()));
         
         plugin.startup(init_);
         importPlugin(plugin);
-        
         firePluginAdded(plugin);
     }
 
@@ -89,11 +88,10 @@ public abstract class AbstractPluginHost implements PluginHost, IPreferenced
     public void removePlugin(IPlugin plugin)
     {
         logger_.debug("Removing plugin " + 
-            ClassUtil.stripPackage(plugin.getClass()));
+            ClassUtils.getShortClassName(plugin.getClass()));
         
         exportPlugin(plugin);
         plugin.shutdown();
-        
         firePluginRemoved(plugin);
     }
 
@@ -105,7 +103,7 @@ public abstract class AbstractPluginHost implements PluginHost, IPreferenced
     public void importPlugin(IPlugin plugin)
     {
         logger_.debug("Importing plugin " + 
-            ClassUtil.stripPackage(plugin.getClass()));
+            ClassUtils.getShortClassName(plugin.getClass()));
         
         plugins_.put(plugin.getClass().getName(), plugin);
     }
@@ -118,7 +116,7 @@ public abstract class AbstractPluginHost implements PluginHost, IPreferenced
     public void exportPlugin(IPlugin plugin)
     {
         logger_.debug("Exporting plugin " + 
-            ClassUtil.stripPackage(plugin.getClass().getName()));
+            ClassUtils.getShortClassName(plugin.getClass()));
         
         plugins_.remove(plugin.getClass().getName());        
     }    
@@ -184,7 +182,8 @@ public abstract class AbstractPluginHost implements PluginHost, IPreferenced
      */
     public void shutdown()
     {
-        logger_.debug("Shutting down " + ClassUtil.stripPackage(getClass()));
+        logger_.debug(
+            "Shutting down " + ClassUtils.getShortClassName(getClass()));
         
         plugins_.clear();
         plugins_ = null;

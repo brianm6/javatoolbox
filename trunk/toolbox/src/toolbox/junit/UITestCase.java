@@ -23,9 +23,9 @@ import com.l2fprod.common.propertysheet.PropertySheetPanel;
 
 import junit.framework.TestCase;
 
+import org.apache.commons.lang.ClassUtils;
 import org.apache.log4j.Logger;
 
-import toolbox.util.ClassUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.JHeaderPanel;
 import toolbox.util.ui.JSmartButton;
@@ -122,7 +122,7 @@ public class UITestCase extends TestCase
      */
     protected JFrame launchInFrame(JComponent c)
     {
-        JFrame frame = new JFrame(ClassUtil.stripPackage(getClass().getName()));
+        JFrame frame = new JFrame(ClassUtils.getShortClassName(getClass()));
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.getContentPane().setLayout(new BorderLayout());
         frame.getContentPane().add(c, BorderLayout.CENTER);
@@ -161,7 +161,7 @@ public class UITestCase extends TestCase
         JFrame parent = new JFrame();
         
         JDialog dlg = new JDialog(parent, 
-            ClassUtil.stripPackage(getClass().getName()), true);
+            ClassUtils.getShortClassName(getClass().getName()), true);
         
         dlg.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         dlg.getContentPane().setLayout(new BorderLayout());

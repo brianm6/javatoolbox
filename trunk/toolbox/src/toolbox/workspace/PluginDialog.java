@@ -32,12 +32,12 @@ import nu.xom.Element;
 import nu.xom.Elements;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.ClassUtils;
 import org.apache.log4j.Logger;
 import org.apache.regexp.RESyntaxException;
 
 import toolbox.findclass.FindClass;
 import toolbox.findclass.FindClassResult;
-import toolbox.util.ClassUtil;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.ResourceUtil;
 import toolbox.util.SwingUtil;
@@ -291,7 +291,7 @@ public class PluginDialog extends JDialog
         for (int i = 0; i < candidatePlugins.length; i++)
         {
             String clazz     = candidatePlugins[i].getClassFQN();
-            String clazzOnly = ClassUtil.stripPackage(clazz);
+            String clazzOnly = ClassUtils.getShortClassName(clazz);
 
             logger_.debug(clazzOnly + " : Inspecting...");
 

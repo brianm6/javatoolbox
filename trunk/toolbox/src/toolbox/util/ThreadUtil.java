@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.apache.commons.beanutils.MethodUtils;
+import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -47,7 +48,7 @@ public final class ThreadUtil
         }
         catch (Exception e)
         {
-            ;// Ignore
+            ; // Ignore
         }
     }
     
@@ -202,9 +203,9 @@ public final class ThreadUtil
         // Create thread with a MethodRunner and start
         Runnable runnable = new MethodRunner(target, methodName, params);
         
-        Thread thread = 
-            new Thread(runnable, ClassUtil.stripPackage(
-                  target.getClass().getName()) + ":" + methodName);
+        Thread thread = new Thread(
+            runnable, ClassUtils.getShortClassName(
+                target.getClass().getName()) + ":" + methodName);
 
         thread.start(); 
         return thread; 
@@ -228,8 +229,9 @@ public final class ThreadUtil
             new ThreadUtil.MethodRunner(target, method, params, clazzes);
             
         Thread thread = 
-            new Thread(runnable, ClassUtil.stripPackage(
-                target.getClass().getName()) + ":" + method);
+            new Thread(
+                runnable, 
+                ClassUtils.getShortClassName(target.getClass()) + ":" + method);
                 
         thread.start();
         return thread;
