@@ -27,22 +27,34 @@ import toolbox.util.FileUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.collections.AsMap;
 import toolbox.util.file.FileComparator;
+import toolbox.util.io.filter.AndFilter;
 import toolbox.util.io.filter.DirectoryFilter;
 import toolbox.util.io.filter.FileFilter;
+import toolbox.util.io.filter.RegexFilter;
 
 /**
  * Generates a graphical representation of a directory structure using ascii
  * characters. 
  * <p>
- * The listing per directory can include and be sorted on any of the following
- * file attributes.
- *
+ * The listing per directory can:
  * <ul>
- *   <li>File name
- *   <li>File size
- *   <li>File date/time
+ *   <li>Include
+ *     <ul>
+ *       <li>File name
+ *       <li>File size
+ *       <li>File date/time
+ *     </ul>
+ *   <li>Be filtered by regular expression on the file name.
+ *   <li>Sorted by
+ *     <ul>
+ *       <li>File name
+ *       <li>File size
+ *       <li>File date/time
+ *     </ul>
+ *   </li>
  * </ul>
  * <p>
+ * 
  * Example: tree  (with no arguments the current working directory is the root
  *                 and no file information is included)
  * <pre>
@@ -154,6 +166,11 @@ public class Tree
      */
     private static final String DEFAULT_SORT = SORT_NONE;
 
+    /**
+     * Default regular expression is to match all.
+     */
+    private static final String DEFAULT_REGEX = null;
+
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
@@ -202,6 +219,11 @@ public class Tree
      * Maps from SORT_* option to a Comparator
      */
     private Map sortByMap_;
+
+    /**
+     * Regular expression for filtering files.
+     */
+    private String regex_;
     
     /**
      * Formatter for file sizes, etc.
@@ -222,40 +244,75 @@ public class Tree
     {
         // command line options and arguments
         String rootDir = null;
-        boolean showFiles = false;
-        boolean showSize = false;
-        boolean showDate = false;
+        boolean showFiles = DEFAULT_SHOWFILES;
+        boolean showSize = DEFAULT_SHOWSIZE;
+        boolean showDate = DEFAULT_SHOWDATE;
         String sortBy = DEFAULT_SORT;
+        String regex = DEFAULT_REGEX;
                 
         CommandLineParser parser = new PosixParser();
         Options options = new Options();
         
         Option fileOption = new Option(
-            "f", "files", false, "Includes files in the output");
+            "f", 
+            "files", 
+            false, 
+            "Includes files in the output");
             
         Option sizeOption = new Option(
-            "s", "size", false, "Includes file sizes in the output");
+            "s", 
+            "size", 
+            false, 
+            "Includes file sizes in the output");
        
         Option dateOption = new Option(
-            "d", "date/time", false, "Includes file date/time in the output");
+            "d", 
+            "date/time", 
+            false, 
+            "Includes file date/time in the output");
         
-        Option sortOption = new Option("o", "sort", true, "Sort order");
+        Option sortOption = new Option(
+            "o", 
+            "sort", 
+            true, 
+            "Sort order");
+        
         sortOption.setArgs(1);
         sortOption.setArgName("sort by [n=name|s=size]");
+        
         //sortOption.setOptionalArg(true);
         //sortOption.setRequired(false);
         //sortOption.setValueSeparator('=');
         
-        Option helpOption = new Option("h", "help", false, "Prints usage");
-        Option helpOption2 = new Option("?", "?", false, "Prints usage");
+        Option regexOption = new Option(
+            "r", 
+            "regexp", 
+            true, 
+            "Only shows files matching a regular expression");
+        
+        regexOption.setArgs(1);
+        regexOption.setArgName("regular expression");
+        
+        Option helpOption = new Option(
+            "h", 
+            "help", 
+            false, 
+            "Prints usage");
+        
+        Option helpOption2 = new Option(
+            "?", 
+            "?", 
+            false, 
+            "Prints usage");
         
         options.addOption(helpOption2);
         options.addOption(helpOption);
+        options.addOption(regexOption);
         options.addOption(fileOption);
         options.addOption(sizeOption);
         options.addOption(dateOption);
         options.addOption(sortOption);
-    
+
         CommandLine cmdLine = parser.parse(options, args, true);
     
         for (Iterator i = cmdLine.iterator(); i.hasNext();)
@@ -278,6 +335,10 @@ public class Tree
             else if (opt.equals(sortOption.getOpt()))
             {
                 sortBy = sortOption.getValue(DEFAULT_SORT);
+            }
+            else if (opt.equals(regexOption.getOpt()))
+            {
+                regex = regexOption.getValue();
             }
             else if (opt.equals(helpOption.getOpt())  ||
                      opt.equals(helpOption2.getOpt()))
@@ -303,6 +364,7 @@ public class Tree
             
             default : System.err.println("ERROR: Invalid arguments " + 
                           ArrayUtil.toString(cmdLine.getArgs()));
+            
                       printUsage(options); 
                       return;
         }
@@ -316,7 +378,8 @@ public class Tree
                                   showFiles, 
                                   showSize,
                                   showDate,
-                                  sortBy);
+                                  sortBy,
+                                  regex);
                 t.showTree();
             }
         }
@@ -339,8 +402,14 @@ public class Tree
      */
     public Tree(File rootDir)
     {
-        this(rootDir, DEFAULT_SHOWFILES, DEFAULT_SHOWSIZE, DEFAULT_SHOWDATE,
-             DEFAULT_SORT, DEFAULT_WRITER);
+        this(
+            rootDir, 
+            DEFAULT_SHOWFILES, 
+            DEFAULT_SHOWSIZE, 
+            DEFAULT_SHOWDATE,
+            DEFAULT_SORT,
+            DEFAULT_REGEX,
+            DEFAULT_WRITER);
     }
 
 
@@ -353,8 +422,14 @@ public class Tree
      */
     public Tree(File rootDir, Writer writer)
     {
-        this(rootDir, DEFAULT_SHOWFILES, DEFAULT_SHOWSIZE, DEFAULT_SHOWDATE, 
-             DEFAULT_SORT, writer);    
+        this(
+            rootDir, 
+            DEFAULT_SHOWFILES, 
+            DEFAULT_SHOWSIZE, 
+            DEFAULT_SHOWDATE, 
+            DEFAULT_SORT, 
+            DEFAULT_REGEX,
+            writer);    
     }
 
 
@@ -367,8 +442,14 @@ public class Tree
      */
     public Tree(File rootDir, boolean showFiles)
     {
-        this(rootDir, showFiles, DEFAULT_SHOWSIZE, DEFAULT_SHOWDATE, 
-             DEFAULT_SORT, DEFAULT_WRITER);
+        this(
+            rootDir, 
+            showFiles, 
+            DEFAULT_SHOWSIZE, 
+            DEFAULT_SHOWDATE, 
+            DEFAULT_SORT, 
+            DEFAULT_REGEX,
+            DEFAULT_WRITER);
     }
 
 
@@ -382,8 +463,14 @@ public class Tree
      */
     public Tree(File rootDir, boolean showFiles, boolean showSize)
     {
-        this(rootDir, showFiles, showSize, DEFAULT_SHOWDATE, DEFAULT_SORT, 
-             DEFAULT_WRITER);
+        this(
+            rootDir, 
+            showFiles, 
+            showSize, 
+            DEFAULT_SHOWDATE, 
+            DEFAULT_SORT,
+            DEFAULT_REGEX,
+            DEFAULT_WRITER);
     }
 
 
@@ -396,11 +483,20 @@ public class Tree
      * @param showSize If true, shows the size of the file.
      * @param sortBy File attribute to use for sorting.
      */
-    public Tree(File rootDir, boolean showFiles, boolean showSize, 
-                String sortBy)
+    public Tree(
+        File rootDir, 
+        boolean showFiles, 
+        boolean showSize, 
+        String sortBy)
     {
-        this(rootDir, showFiles, showSize, DEFAULT_SHOWDATE, sortBy, 
-             DEFAULT_WRITER);
+        this(
+            rootDir, 
+            showFiles, 
+            showSize, 
+            DEFAULT_SHOWDATE, 
+            sortBy, 
+            DEFAULT_REGEX,
+            DEFAULT_WRITER);
     }
 
     
@@ -414,10 +510,22 @@ public class Tree
      * @param showDate If true, shows the date/time of the file.
      * @param sortBy File attribute to use for sorting.
      */
-    public Tree(File rootDir, boolean showFiles, boolean showSize, 
-                boolean showDate, String sortBy)
+    public Tree(
+        File rootDir, 
+        boolean showFiles, 
+        boolean showSize, 
+        boolean showDate, 
+        String sortBy,
+        String regex)
     {
-        this(rootDir, showFiles, showSize, showDate, sortBy, DEFAULT_WRITER);
+        this(
+            rootDir, 
+            showFiles, 
+            showSize, 
+            showDate, 
+            sortBy,
+            regex,
+            DEFAULT_WRITER);
     }
    
     
@@ -432,12 +540,14 @@ public class Tree
      *        filename.
      * @param sortBy Set to any of SORT_[NAME|SIZE|NONE] to specify sort order.
      * @param writer Output destination.
+     * @throws IllegalArgumentException on invalid root dir.
      */
     public Tree(File rootDir, 
                 boolean showFiles, 
                 boolean showSize,
                 boolean showDate,
                 String sortBy,
+                String regex,
                 Writer writer)
     {
         rootDir_ = rootDir;
@@ -455,14 +565,30 @@ public class Tree
             throw new IllegalArgumentException(
                 "Cannot read from " + rootDir_);
         
-        showFiles_ = showFiles;
         showSize_ = showSize;
         showDate_ = showDate;
         writer_ = new PrintWriter(writer, true);
         dirFilter_ = new DirectoryFilter();
+
+        regex_ = regex;
+        
+        //
+        // If a regex is passed and the user forgot to turn on the -files
+        // flag, just turn it on automatically.
+        //
+        boolean useRegex = !StringUtil.isNullOrBlank(regex_);
+        showFiles_ = useRegex | showDate_ | showSize_ ? true : showFiles;
         
         if (showFiles_)
             fileFilter_ = new FileFilter();
+        
+        if (useRegex)
+        {
+            fileFilter_ = 
+                new AndFilter(
+                    fileFilter_, 
+                    new RegexFilter(regex_, false));  // TODO: expose case sensetivity?
+        }
 
         sortByMap_ = new HashMap();
         sortByMap_.put(SORT_NONE, null);
