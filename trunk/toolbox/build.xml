@@ -174,7 +174,8 @@
 		<banner message="Jarring..."/>
 		
         <mkdir dir="${build.stage}/toolbox"/>
-
+		<delete file="${dist}/toolbox.jar" verbose="false" quiet="off"/>
+		
         <!-- Unjar all jars to staging area -->
         <unjar dest="${build.stage}/toolbox" overwrite ="false">
 
@@ -229,7 +230,14 @@
         <jar jarfile ="${dist}/toolbox.jar" 
              manifest="${src}/META-INF/MANIFEST.MF"
              compress="yes">
-            <fileset dir="${build.stage}/toolbox"/>
+            
+            <!-- 
+            The INDEX.LIST file from xom.jar somehow confuses the 
+            Class-Path directive in the manifest so it is excluded
+            for this reason. 
+            --> 
+            <fileset dir="${build.stage}/toolbox" 
+                     excludes="META-INF/INDEX.LIST"/>
         </jar>
 
     </target>
