@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextArea;
@@ -154,6 +155,17 @@ public class JSmartTextArea extends JTextArea
         setCaretPosition(getDocument().getLength());
     }
     
+    /**
+     * Creates the comonly used clear action
+     * 
+     * @return Action to clear the text area
+     */
+    public Action createClearAction()
+    {
+        return new ClearAction("Clear");
+    }
+    
+    
     //--------------------------------------------------------------------------
     //  Accessors/Mutators
     //--------------------------------------------------------------------------
@@ -222,5 +234,18 @@ public class JSmartTextArea extends JTextArea
         {
             // NO OP
         }
-    }    
+    }
+    
+    public class ClearAction extends AbstractAction
+    {
+        public ClearAction(String name)
+        {
+            super(name);
+        }
+        
+        public void actionPerformed(ActionEvent e)
+        {
+            setText("");
+        }
+    }
 }
