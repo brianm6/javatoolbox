@@ -48,6 +48,7 @@ public class ImageCache
     public static final String IMAGE_SAVEAS        = ROOT + "SaveAs.gif";
     public static final String IMAGE_SPANNER       = ROOT + "Spanner.png";
     public static final String IMAGE_STOP          = ROOT + "Stop.png";
+    public static final String IMAGE_SWAP_PANES    = ROOT + "SwapPanes.png";
     public static final String IMAGE_TABLES        = ROOT + "Tables.png";
     public static final String IMAGE_TOOLBOX       = ROOT + "Toolbox.gif";
     public static final String IMAGE_TRASHCAN      = ROOT + "TrashCan.png";
@@ -55,11 +56,11 @@ public class ImageCache
     public static final String IMAGE_TREE_OPEN     = ROOT + "TreeOpen.gif";
     public static final String IMAGE_TRIANGLE      = ROOT + "Triangle.gif";
     
-    public static final String IMAGE_SORT_ASCENDING  = ROOT + 
-                                                       "SortAscending.gif";
+    public static final String 
+        IMAGE_SORT_ASCENDING = ROOT + "SortAscending.gif";
     
-    public static final String IMAGE_SORT_DESCENDING = ROOT + 
-                                                       "SortDescending.gif";
+    public static final String 
+        IMAGE_SORT_DESCENDING = ROOT + "SortDescending.gif";
     
     /**
      * Map for cached icons.

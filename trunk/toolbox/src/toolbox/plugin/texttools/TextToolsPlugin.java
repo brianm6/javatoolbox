@@ -14,6 +14,7 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.JToolBar;
 
 import nu.xom.Element;
 
@@ -24,6 +25,7 @@ import toolbox.util.Banner;
 import toolbox.util.FontUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.XOMUtil;
+import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JHeaderPanel;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartSplitPane;
@@ -147,10 +149,13 @@ public class TextToolsPlugin extends JPanel implements IPlugin
                 JHeaderPanel.createToolBar(inputArea_), 
                 new JScrollPane(inputArea_)));
         
+        JToolBar tb = JHeaderPanel.createToolBar(outputArea_);
+        tb.add(JHeaderPanel.createButton(new CopyOutputToInputAction()), 0);
+        
         splitter_.setBottomComponent(
             new JHeaderPanel(
                 "Output",
-                JHeaderPanel.createToolBar(outputArea_),
+                tb,
                 new JScrollPane(outputArea_)));
         
         add(splitter_, BorderLayout.CENTER);
@@ -502,6 +507,35 @@ public class TextToolsPlugin extends JPanel implements IPlugin
             }
             
             outputArea_.append(sb.toString());
+        }
+    }
+    
+    //--------------------------------------------------------------------------
+    // CopyOutputToInputAction
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Copies the contents of the output text area to the input text area.
+     */
+    class CopyOutputToInputAction extends AbstractAction
+    {
+        /**
+         * Creates a CopyOutputToInputAction.
+         */
+        CopyOutputToInputAction()
+        {
+            super("", ImageCache.getIcon(ImageCache.IMAGE_SWAP_PANES));
+            putValue(MNEMONIC_KEY, new Integer('S'));
+            putValue(SHORT_DESCRIPTION, "Copies output text to input area");
+        }
+
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e)
+        {
+            inputArea_.setText(outputArea_.getText());
         }
     }
 }
