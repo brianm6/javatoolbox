@@ -45,7 +45,7 @@ public class TabbedPluginHost extends AbstractPluginHost
     private BidiMap comp2plugin_;
     
     /**
-     * Maps an IPlugin to its associated UI component.
+     * Bidirectional map that maps an IPlugin to its associated UI component.
      */
     private BidiMap plugin2comp_;
     

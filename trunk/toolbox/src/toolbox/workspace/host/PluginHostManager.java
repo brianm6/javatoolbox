@@ -26,7 +26,7 @@ import toolbox.workspace.WorkspaceAction;
  * <ul>
  *   <li>A recepticle is the only container an external entity (in our case the
  *       PluginWorkspace) needs to expose plugins.
- *   <li>A PluginHostManager manages a single PluginHost
+ *   <li>A PluginHostManager manages a single PluginHost.
  *   <li>A PluginHostManager facilitates the dynamic switching out of one 
  *       PluginHost for another at runtime.
  * </ul>
@@ -118,7 +118,7 @@ public class PluginHostManager
      * Use PluginHostManager.HOST_* constants.
      * 
      * @param hostClass Class name of plugin host to create.
-     * @throws PluginException on plugin error
+     * @throws PluginException on plugin error.
      */
     public void setPluginHost(String pluginHostClass, Map props) 
         throws PluginException
@@ -163,7 +163,7 @@ public class PluginHostManager
      * Creates a menu that exposes functionality of the plugin host manager to
      * the user.
      * 
-     * @return Newly created menu
+     * @return Newly created menu.
      */
     public JMenu createMenu()
     {
@@ -197,8 +197,8 @@ public class PluginHostManager
     /**
      * Transfers the assets from one plugin host to another.
      * 
-     * @param source Plugin host to transfer assets from
-     * @param dest Plugin host to transfer assets to
+     * @param source Plugin host to transfer assets from.
+     * @param dest Plugin host to transfer assets to.
      */
     protected void transfer(PluginHost source, PluginHost dest)
     {
@@ -236,16 +236,18 @@ public class PluginHostManager
          */
         private PluginHost newPluginHost_;
         
+        
         /**
          * Creates an ActivatePluginHostAction.
          * 
-         * @param pluginHost Plugin host to activate
+         * @param pluginHost Plugin host to activate.
          */
         ActivatePluginHostAction(PluginHost pluginHost)
         {
             super(pluginHost.getName(), false, null, null);
             newPluginHost_ = pluginHost;    
         }
+        
         
         /**
          * @see toolbox.util.ui.SmartAction#runAction(

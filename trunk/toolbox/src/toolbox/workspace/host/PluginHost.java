@@ -8,7 +8,7 @@ import toolbox.workspace.IPlugin;
 
 /**
  * PluginHost is an interface used to manage and host IPlugins with a slant
- * towards presentation/rendering specialization. PluginHost implementors 
+ * towards presentation/rendering specialization. PluginHost implementors
  * should be interchangeable at runtime so that the presentation framework or
  * strategy can be changed dynamically on the fly.
  * 
@@ -35,7 +35,7 @@ public interface PluginHost
     /**
      * Initializes the plugin host.
      * 
-     * @param props Map of initialization properties 
+     * @param props Map of initialization properties. 
      */
     void startup(Map props);
     
@@ -43,7 +43,7 @@ public interface PluginHost
     /**
      * Adds a plugin to be hosted by an PluginHost implementor.
      * 
-     * @param plugin Plugin to add
+     * @param plugin Plugin to add.
      */
     void addPlugin(IPlugin plugin);
     
@@ -51,7 +51,7 @@ public interface PluginHost
     /**
      * Removes a plugin from PluginHost implementor.
      * 
-     * @param plugin Plugin to remove
+     * @param plugin Plugin to remove.
      */
     void removePlugin(IPlugin plugin);
     
@@ -59,7 +59,7 @@ public interface PluginHost
     /**
      * Imports an existing plugin from another host.
      * 
-     * @param plugin Plugin to import
+     * @param plugin Plugin to import.
      */
     void importPlugin(IPlugin plugin);
     
@@ -68,7 +68,7 @@ public interface PluginHost
      * Exports an existing plugin so that the plugin can be transferred to
      * another PluginHost via importPlugin()
      * 
-     * @param plugin Plugin to export
+     * @param plugin Plugin to export.
      */
     void exportPlugin(IPlugin plugin);
     
@@ -76,8 +76,8 @@ public interface PluginHost
     /**
      * Checks if a given plugin is already being hosted.
      * 
-     * @param pluginClass FQCN of the plugin to check
-     * @return True if the plugin exists, false otherwise
+     * @param pluginClass FQCN of the plugin to check.
+     * @return True if the plugin exists, false otherwise.
      */
     boolean hasPlugin(String pluginClass);
     
@@ -85,8 +85,8 @@ public interface PluginHost
     /**
      * Retrieves a plugin given its FQCN
      * 
-     * @param pluginClass FCQN of the plugin to retrieve
-     * @return Plugin if found, null otherwise
+     * @param pluginClass FCQN of the plugin to retrieve.
+     * @return Plugin if found, null otherwise.
      */
     IPlugin getPlugin(String pluginClass);
     
@@ -100,9 +100,9 @@ public interface PluginHost
     
     
     /**
-     * Necessary for transfering the contents of one host to another
+     * Necessary for transfering the contents of one host to another.
      * 
-     * @return Map containing the startup parameters
+     * @return Map containing the startup parameters.
      */
     Map getStartupConfig();
     
