@@ -86,10 +86,12 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     private static final String ATTR_LAF          = "lookandfeel";
     private static final String ATTR_SELECTED_TAB = "selectedtab";
     private static final String ATTR_CLASS        = "class";
+    private static final String ATTR_LOADED       = "loaded";
     
     private static final String NODE_WORKSPACE    = "Workspace";
     private static final String NODE_PLUGIN       = "Plugin";
     private static final String NODE_ROOT         = "Root";
+    private static final String NODE_UNLOADED     = "Unloaded";
     
     public  static final String PROP_STATUSBAR    = "workspace.statusbar";
     
@@ -125,8 +127,10 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     /** 
      * Default initialization map for all plugins. Passed into IPlugin.startup() 
      */
-    private Map initMap_;
-
+    private Map bootstrapMap_;
+    
+    private Element unloadedPrefs_;
+        
     //--------------------------------------------------------------------------
     // Main 
     //--------------------------------------------------------------------------
@@ -176,6 +180,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      * Registers a plugin with the GUI. Must be called prior buildView()
      * 
      * @param  plugin  Plugin to add to the GUI
+     * @throws Exception on error
      */
     public void registerPlugin(IPlugin plugin) throws Exception
     {
@@ -183,7 +188,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         plugins_.put(plugin.getName(), plugin);
 
         // Init plugin
-        plugin.startup(initMap_);
+        plugin.startup(bootstrapMap_);
 
         // Create tab
         JPanel pluginPanel = new JPanel(new BorderLayout());
@@ -192,14 +197,41 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         tabbedPane_.insertTab(plugin.getName(), null, pluginPanel, null, 0);
         tabbedPane_.setSelectedIndex(0);
         
-        // Restore preferences
-        plugin.applyPrefs(prefs_);
+        // Restore unloaded preferences if they exist
+        Element workspaceNode = 
+            prefs_.getFirstChildElement(NODE_WORKSPACE);
+        
+        Elements pluginWrappers = 
+            unloadedPrefs_.getChildElements(NODE_PLUGIN);
+            
+        Element pluginWrapper = null;
+                
+        for (int i=0; i<pluginWrappers.size(); i++)
+        {
+            pluginWrapper = pluginWrappers.get(i);
+                
+            Element pluginNode = 
+                pluginWrapper.getFirstChildElement(plugin.getName());
+                    
+            if (pluginNode != null)
+            {
+                unloadedPrefs_.removeChild(pluginWrapper);
+                workspaceNode.appendChild(pluginWrapper);
+                break;    
+            }
+        }
+
+        if (pluginWrapper != null)
+            pluginWrapper.addAttribute(new Attribute(ATTR_LOADED, "true"));
+            
+        plugin.applyPrefs(pluginWrapper);
     }
 
     /**
      * Registers a plugin with the GUI. Must be called prior buildView()
      * 
      * @param  plugin  Plugin to add to the GUI
+     * @throws Exception on error
      */
     public void registerPlugin(IPlugin plugin, Element prefs) throws Exception
     {
@@ -207,7 +239,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         plugins_.put(plugin.getName(), plugin);
 
         // Init plugin
-        plugin.startup(initMap_);
+        plugin.startup(bootstrapMap_);
 
         // Create tab
         JPanel pluginPanel = new JPanel(new BorderLayout());
@@ -216,10 +248,10 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         tabbedPane_.insertTab(plugin.getName(), null, pluginPanel, null, 0);
         tabbedPane_.setSelectedIndex(0);
         
-        // Restore preferences
+        // Restore preferences but first see if there is a set of unloaded 
+        // prefs for this plugin hanging around
         plugin.applyPrefs(prefs);
     }
-
 
     /**
      * Registeres a plugin given its FQN
@@ -269,10 +301,41 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         if (hasPlugin(pluginClass))
         {
             IPlugin plugin = getPluginByClass(pluginClass);
+
+            // Move prefs of soon to be unloaded plugin from the prefs_ DOM to
+            // the unloadedPrefs_ DOM so that they don't get thrown away and
+            // can be picked up later by savePrefs() for saving
+            
+            Element workspaceNode = 
+                prefs_.getFirstChildElement(NODE_WORKSPACE);
+                
+            Elements pluginWrappers = 
+                workspaceNode.getChildElements(NODE_PLUGIN);
+            
+            Element pluginWrapper = null;
+                
+            for (int i=0; i<pluginWrappers.size(); i++)
+            {
+                pluginWrapper = pluginWrappers.get(i);
+                
+                String pluginClazz = 
+                    XOMUtil.getStringAttribute(pluginWrapper, ATTR_CLASS, "");
+                    
+                if (pluginClazz.equals(pluginClass))
+                {
+                    workspaceNode.removeChild(pluginWrapper);
+                    unloadedPrefs_.appendChild(pluginWrapper);
+                    break;    
+                }
+            }
+
+            pluginWrapper.addAttribute(new Attribute(ATTR_LOADED, "false"));
+            
             tabbedPane_.remove(tabbedPane_.indexOfTab(plugin.getName()));
-            //plugin.setStatusBar(null);
             plugins_.remove(plugin.getName());
             plugin.shutdown();
+            
+            logger_.debug("\n\nUNLOADED\n\n" + XOMUtil.toString(unloadedPrefs_));
         }
         else
         {
@@ -313,8 +376,8 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         statusBar_.setStatus("Howdy pardner!");
         contentPane.add(BorderLayout.SOUTH, (Component) statusBar_);
         
-        initMap_ = new HashMap(1);
-        initMap_.put(PROP_STATUSBAR, statusBar_);
+        bootstrapMap_ = new HashMap(1);
+        bootstrapMap_.put(PROP_STATUSBAR, statusBar_);
         
         setJMenuBar(createMenuBar());
         
@@ -426,6 +489,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     protected void loadPrefs()
     {
         prefs_ = new Element(NODE_ROOT);
+        unloadedPrefs_ = new Element(NODE_ROOT);
         
         String userhome = System.getProperty("user.home");
         
@@ -462,6 +526,11 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     // IPreferenced Interface
     //--------------------------------------------------------------------------
 
+    /**
+     * Workspace
+     *  |
+     *  +--Plugin
+     */
     public void savePrefs(Element prefs) throws Exception
     {
         Element root = new Element(NODE_WORKSPACE);
@@ -485,8 +554,12 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         // Save look and feel
         root.addAttribute(new Attribute(
             ATTR_LAF, UIManager.getLookAndFeel().getClass().getName()));
+            
+        // Save currently selected tab
+        root.addAttribute(
+            new Attribute(ATTR_SELECTED_TAB,tabbedPane_.getSelectedIndex()+""));
                 
-        // Save plugin prefs too
+        // Save loaded plugin prefs
         for (Iterator i = plugins_.values().iterator(); i.hasNext();)
         {
             IPlugin plugin = (IPlugin) i.next();
@@ -495,13 +568,21 @@ public class PluginWorkspace extends JFrame implements IPreferenced
             pluginNode.addAttribute(
                 new Attribute(ATTR_CLASS, plugin.getClass().getName()));
                 
+            pluginNode.addAttribute(new Attribute(ATTR_LOADED, "true"));
+                
             plugin.savePrefs(pluginNode);
             root.appendChild(pluginNode);
         }
+
+
+        // Save unloaded plugin prefs
+        Elements unloaded = unloadedPrefs_.getChildElements(NODE_PLUGIN);
         
-        // Save currently selected tab
-        root.addAttribute(
-            new Attribute(ATTR_SELECTED_TAB, tabbedPane_.getSelectedIndex()+""));
+        logger_.debug(unloaded.size() + " unloaded plugins to save");
+        
+        for (int i=0; i<unloaded.size(); i++)
+            root.appendChild(unloaded.get(i).copy());            
+
             
         // Save to file
         String userhome = System.getProperty("user.home");
@@ -609,24 +690,34 @@ public class PluginWorkspace extends JFrame implements IPreferenced
                         item.setSelected(true);
                 }
             }
-
+            
+            // Iterate over the list of plugins. If the plugin has the 'loaded'
+            // attribute then register() it otherwise add to the unloadedPrefs_
+            // DOM for later use.
+            
             Elements plugins = root.getChildElements(NODE_PLUGIN);
             
-            // Register plugins. Don't let failures stop process
             for (int i=0; i<plugins.size(); i++) 
             {
                 Element pluginNode = plugins.get(i);
                 
-                String pluginClass = 
-                    XOMUtil.getStringAttribute(pluginNode, ATTR_CLASS, "");
-                
-                try
-                {
-                    registerPlugin(pluginClass, pluginNode);       
+                if (XOMUtil.getBooleanAttribute(pluginNode, ATTR_LOADED, false))
+                {    
+                    try
+                    {
+                        String pluginClass = XOMUtil.getStringAttribute(
+                            pluginNode, ATTR_CLASS, "");
+                        
+                        registerPlugin(pluginClass, pluginNode);       
+                    }
+                    catch (Throwable t)
+                    {
+                        ExceptionUtil.handleUI(t, logger_);
+                    }
                 }
-                catch (Throwable t)
+                else
                 {
-                    ExceptionUtil.handleUI(t, logger_);
+                    unloadedPrefs_.appendChild(pluginNode.copy());
                 }
             }
             
