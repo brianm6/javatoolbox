@@ -8,7 +8,9 @@ import javax.swing.JPanel;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringUtils;
 
+import toolbox.util.StringUtil;
 import toolbox.util.ui.JSmartButton;
 
 /**
@@ -56,6 +58,7 @@ public class CodecPane extends JPanel
         add(new JSmartButton(new HTMLDecodeAction()));
         add(new JSmartButton(new XMLEncodeAction()));
         add(new JSmartButton(new XMLDecodeAction()));
+        add(new JSmartButton(new SkipLinesAction()));
     }
 
     //----------------------------------------------------------------------
@@ -229,6 +232,57 @@ public class CodecPane extends JPanel
         {
             plugin_.getOutputArea().setText(
                 StringEscapeUtils.unescapeXml(plugin_.getInputText()));
+        }
+    }
+    
+    
+    //----------------------------------------------------------------------
+    // SkipLinesAction
+    //----------------------------------------------------------------------
+
+    /**
+     * Skips every other line.
+     */
+    class SkipLinesAction extends AbstractAction
+    {
+        /**
+         * Creates a SkipLinesAction.
+         */
+        SkipLinesAction()
+        {
+            super("Skip Lines");
+        }
+
+
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e)
+        {
+            String text = plugin_.getInputText();
+            StringBuffer sb = new StringBuffer();
+            String[] lines = StringUtil.tokenize(text, "\n", true);
+            
+            if (lines.length > 1)
+            {
+                int begin = 0;
+                
+                if (!StringUtils.isBlank(lines[0]))
+                    begin++;
+             
+                for (int i = begin; i < lines.length;)
+                {
+                    sb.append(lines[i] + "\n");
+                    
+                    if (StringUtils.isBlank(lines[i]))
+                        i += 1;
+                    else
+                        i += 2;
+                }
+            }
+            
+            plugin_.getOutputArea().setText(sb.toString());
         }
     }
 }
