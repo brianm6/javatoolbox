@@ -34,7 +34,7 @@
  * TODO: Beef up junit plugin with junitx classes
  * TODO: apache geronimo twiddle = Console
  * TODO: Write a CVS log formatter to append logs to bottom of a file.
- * TODO: Add class file DocumentViewer
+ * TODO: Get jode decompiler to work on File input.
  * TODO: Fix broken stop on JTail
  * TODO: Find out why Tiny LAFs are not working
  * =============================================================================
