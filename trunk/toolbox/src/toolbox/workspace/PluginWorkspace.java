@@ -32,6 +32,7 @@ import javax.swing.UIManager;
 import org.apache.commons.collections.SequencedHashMap;
 import org.apache.log4j.Logger;
 
+import toolbox.log4j.SmartLogger;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.PropertiesUtil;
@@ -388,6 +389,8 @@ public class PluginWorkspace extends JFrame implements IStatusBar
         {
             ResourceCloser.close(fos);
         }
+        
+        SmartLogger.debug(logger_, PropertiesUtil.toString(prefs_));
         
         setStatus("Saved preferences");
     }
