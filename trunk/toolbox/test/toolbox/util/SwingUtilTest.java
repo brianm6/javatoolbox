@@ -36,6 +36,7 @@ import org.apache.log4j.Logger;
 import toolbox.junit.testcase.UITestCase;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JSmartButton;
+import toolbox.util.ui.JSmartFrame;
 import toolbox.util.ui.JSmartMenu;
 import toolbox.util.ui.JSmartMenuItem;
 import toolbox.util.ui.plaf.LookAndFeelUtil;
@@ -212,7 +213,7 @@ public class SwingUtilTest extends UITestCase
     // Helper Classes
     //--------------------------------------------------------------------------
         
-    class TestFrame extends JFrame
+    class TestFrame extends JSmartFrame
     {
         private JDesktopPane desktop_;
         

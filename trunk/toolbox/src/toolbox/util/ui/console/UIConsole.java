@@ -15,7 +15,6 @@ import java.io.PipedOutputStream;
 import java.io.PrintStream;
 
 import javax.swing.Action;
-import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -24,6 +23,7 @@ import javax.swing.KeyStroke;
 import javax.swing.WindowConstants;
 
 import toolbox.util.io.JTextAreaOutputStream;
+import toolbox.util.ui.JSmartFrame;
 import toolbox.util.ui.console.action.HistoryUpAction;
 
 /**
@@ -31,7 +31,7 @@ import toolbox.util.ui.console.action.HistoryUpAction;
  * 
  * @see toolbox.util.ui.console.UIConsoleArea
  */
-public class UIConsole extends JFrame implements Console 
+public class UIConsole extends JSmartFrame implements Console 
 {
     //--------------------------------------------------------------------------
     // Static Fields
@@ -86,11 +86,12 @@ public class UIConsole extends JFrame implements Console
     {
         super(title);
         setJMenuBar(buildMenuBar());
-        
         consoleArea_ = new UIConsoleArea(this, rows, columns);
-        
         getContentPane().setLayout(new BorderLayout());
-        getContentPane().add(BorderLayout.CENTER, new JScrollPane(consoleArea_));
+        
+        getContentPane().add(
+            BorderLayout.CENTER, 
+            new JScrollPane(consoleArea_));
         
         // Register shortcuts
         registerShortcut(
@@ -106,7 +107,6 @@ public class UIConsole extends JFrame implements Console
         
         outputStream_ = new PrintStream(
             new JTextAreaOutputStream(consoleArea_), true);
-        
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         consoleArea_.requestFocus();        
@@ -262,9 +262,9 @@ public class UIConsole extends JFrame implements Console
 
     
     /**
-     * getTextConsole
+     * Returns the text mode console.
      * 
-     * @return
+     * @return toolbox.util.Console
      */
     public toolbox.util.Console getTextConsole()
     {
@@ -273,9 +273,9 @@ public class UIConsole extends JFrame implements Console
 
 
     /**
-     * setTextConsole
+     * Sets the text mode console.
      * 
-     * @param console
+     * @param console Text mode console.
      */
     public void setTextConsole(toolbox.util.Console console)
     {
@@ -284,7 +284,9 @@ public class UIConsole extends JFrame implements Console
 
 
     /**
-     * getConsoleArea
+     * Returns the text area within the UI console.
+     * 
+     * @return UIConsoleArea
      */
     public UIConsoleArea getConsoleArea()
     {
