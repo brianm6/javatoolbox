@@ -19,6 +19,7 @@ import org.apache.commons.io.IOUtils;
  *   <li>File timestamp
  *   <li>File contents
  * </ul>
+ * Use the public static instances.
  */
 public class FileComparator implements Comparator
 {
