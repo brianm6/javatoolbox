@@ -17,10 +17,12 @@ import javax.swing.SwingConstants;
 
 import org.apache.log4j.Logger;
 
+import toolbox.util.SwingUtil;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartCheckBox;
 import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartTextField;
+import toolbox.util.ui.action.DisposeAction;
 
 /**
  * Workspace preferences dialog box.
@@ -56,6 +58,7 @@ public class PreferencesView extends JDialog implements ActionListener
         super(parent, "Toolbox Preferences", true);
         buildView();
         pack();
+        SwingUtil.centerWindow(parent, this);
     }
 
     //--------------------------------------------------------------------------
@@ -73,9 +76,9 @@ public class PreferencesView extends JDialog implements ActionListener
         okButton.setActionCommand(ACTION_OK);
         okButton.addActionListener(this);
 
-        JButton cancelButton = new JSmartButton(ACTION_CANCEL);
-        cancelButton.setActionCommand(ACTION_CANCEL);
-        cancelButton.addActionListener(this);
+        JButton cancelButton = new JSmartButton(new DisposeAction(this));
+        cancelButton.setText("Cancel");
+        //cancelButton.addActionListener(this);
 
         buttonPanel.add(okButton);
         buttonPanel.add(cancelButton);
