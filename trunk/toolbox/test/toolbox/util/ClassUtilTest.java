@@ -4,20 +4,18 @@ import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 
+import javassist.ClassPool;
+import javassist.CtClass;
+
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
 
 import toolbox.log4j.SmartLogger;
-import toolbox.util.ArrayUtil;
-import toolbox.util.ClassUtil;
-import toolbox.util.StringUtil;
 
 /**
- * Unit test for ClassUtil.
- * 
- * @see toolbox.util.ClassUtil
+ * Unit test for {@link toolbox.util.ClassUtil}.
  */
 public class ClassUtilTest extends TestCase
 {
@@ -71,7 +69,9 @@ public class ClassUtilTest extends TestCase
         logger_.info("Running testGetClassesInPackageArchive...");
         
         String[] classes = ClassUtil.getClassesInPackage("junit.textui");
+        
         //logger_.info("\n"+ArrayUtil.toString(classes, true));
+        
         assertTrue(TestRunner.class.getName() + " not found in package", 
             ArrayUtil.contains(classes, TestRunner.class.getName()));
     }
@@ -87,6 +87,7 @@ public class ClassUtilTest extends TestCase
         String[] classes = ClassUtil.getClassesInPackage("java.lang");
         
         //logger_.info("\n" + ArrayUtil.toString(classes, true));
+        
         assertTrue(String.class.getName() + " not found in package", 
             ArrayUtil.contains(classes, String.class.getName()));
     }
@@ -121,32 +122,51 @@ public class ClassUtilTest extends TestCase
     
     
     /**
-     * Tests isArchive()
+     * Positive tests isArchive()
      */
     public void testIsArchive()
     {
         logger_.info("Running testIsArchive...");
         
         // Positive tests
-        assertTrue("tar1", ClassUtil.isArchive("a.jar"));
-        assertTrue("tar2", ClassUtil.isArchive("b.zip"));
-        assertTrue("tar3", ClassUtil.isArchive("AFD.JAR"));
-        assertTrue("tar4", ClassUtil.isArchive("ASDF.ZIP")); 
-        assertTrue("tar5", ClassUtil.isArchive("a.b.jar"));
-        assertTrue("tar6", ClassUtil.isArchive("C.D.ZIP"));
-                
-        // Negative tests        
-        assertTrue("tar7", !ClassUtil.isArchive(""));
-        assertTrue("tar8", !ClassUtil.isArchive(" "));
-        assertTrue("tar9", !ClassUtil.isArchive("jar"));
-        assertTrue("tar10", !ClassUtil.isArchive("ZIP"));        
-        assertTrue("tar11", !ClassUtil.isArchive("df.jarx"));
-        assertTrue("tar12", !ClassUtil.isArchive("df.zipo"));
+        assertTrue("testIsArchive 1", ClassUtil.isArchive("a.jar"));
+        assertTrue("testIsArchive 2", ClassUtil.isArchive("b.zip"));
+        assertTrue("testIsArchive 3", ClassUtil.isArchive("c.ear"));
+        assertTrue("testIsArchive 4", ClassUtil.isArchive("d.war"));
+        assertTrue("testIsArchive 5", ClassUtil.isArchive("AFD.JAR"));
+        assertTrue("testIsArchive 6", ClassUtil.isArchive("ASDF.ZIP"));
+        assertTrue("testIsArchive 7", ClassUtil.isArchive("XYZ.EAR"));
+        assertTrue("testIsArchive 8", ClassUtil.isArchive("ABC.WAR"));
+        assertTrue("testIsArchive 9", ClassUtil.isArchive("a.b.jar"));
+        assertTrue("testIsArchive 10", ClassUtil.isArchive("C.D.ZIP"));
+        assertTrue("testIsArchive 11", ClassUtil.isArchive("a.b.ear"));
+        assertTrue("testIsArchive 12", ClassUtil.isArchive("C.D.war"));
     }
-    
+
     
     /**
-     * Tests isClassFile()
+     * Negative tests isArchive()
+     */
+    public void testIsArchiveNegative()
+    {
+        logger_.info("Running testIsArchiveNegative...");
+
+        // Negative tests        
+        assertTrue("testIsArchiveFailure 1", !ClassUtil.isArchive(""));
+        assertTrue("testIsArchiveFailure 2", !ClassUtil.isArchive(" "));
+        assertTrue("testIsArchiveFailure 3", !ClassUtil.isArchive("jar"));
+        assertTrue("testIsArchiveFailure 4", !ClassUtil.isArchive("ZIP"));
+        assertTrue("testIsArchiveFailure 5", !ClassUtil.isArchive("ear"));
+        assertTrue("testIsArchiveFailure 6", !ClassUtil.isArchive("WaR"));        
+        assertTrue("testIsArchiveFailure 7", !ClassUtil.isArchive("df.jarx"));
+        assertTrue("testIsArchiveFailure 8", !ClassUtil.isArchive("df.zipo"));
+        assertTrue("testIsArchiveFailure 9", !ClassUtil.isArchive("df.earx"));
+        assertTrue("testIsArchiveFailure 10", !ClassUtil.isArchive("df.waro"));
+    }
+
+    
+    /**
+     * Positive tests isClassFile()
      */ 
     public void testIsClassFile()
     {
@@ -158,6 +178,15 @@ public class ClassUtilTest extends TestCase
         assertTrue(ClassUtil.isClassFile("asdfasf.class"));
         assertTrue(ClassUtil.isClassFile("abc$123.class")); 
         assertTrue(ClassUtil.isClassFile("abc_123.CLASS"));
+    }
+    
+    
+    /**
+     * Negative tests for isClassFile()
+     */ 
+    public void testIsClassFileNegative()
+    {
+        logger_.info("Running testIsClassFileNegative...");
         
         // Negative tests        
         assertTrue(!ClassUtil.isArchive(".class"));
@@ -243,22 +272,50 @@ public class ClassUtilTest extends TestCase
     
     
     /**
-     * Tests getClassLocation()
+     * Tests getClassLocation() from a jar file.
      */
-    public void testGetClassLocation()
+    public void testGetClassLocationFromJar() throws Exception
     {
-        logger_.info("Running testGetClassLocation...");
+        logger_.info("Running testGetClassLocationFromJar...");
         
         // Try a system class
         URL loc1 = ClassUtil.getClassLocation(Object.class);
         logger_.info("Class Location = " + loc1);
         assertNotNull(loc1);
         assertTrue(loc1.toString().indexOf("rt.jar") >= 0);
+        assertTrue(loc1.toString().indexOf("Object.class") >= 0);
+    }
+    
+    
+    /**
+     * Tests getClassLocation() from the file system
+     */
+    public void testGetClassLocationFromFileSystem() throws Exception
+    {
+        logger_.info("Running testGetClassLocationFromFileSystem...");
         
         // Try a toolbox class
         URL loc2 = ClassUtil.getClassLocation(ClassUtil.class);    
         logger_.info("Class Location = " + loc2);
         assertNotNull(loc2);
         assertTrue(loc2.toString().indexOf("toolbox") >= 0);
+        assertTrue(loc2.toString().indexOf("ClassUtil.class") >= 0);
+    }
+    
+    
+    /**
+     * Tests getClassLocation() from a dynamically created class file.
+     */
+    public void testGetClassLocationFromDynamicClass() throws Exception
+    {
+        logger_.info("Running testGetClassLocationFromDynamicClass...");
+        
+        CtClass c = ClassPool.getDefault().makeClass("DynoClass");
+        Class dynoClass = c.toClass();
+            
+        // Try a dynamically created class
+        URL loc3 = ClassUtil.getClassLocation(dynoClass);    
+        logger_.info("Class Location = " + loc3);
+        assertNull(loc3);
     }
 }
