@@ -387,50 +387,39 @@ public final class ClassUtil
      */
     public static URL getClassLocation(Class cls)
     {
-        if (cls == null)
-            throw new IllegalArgumentException("null input: cls");
-
         URL result = null;
         String clsAsResource = cls.getName().replace('.', '/').concat(".class");
         ProtectionDomain pd = cls.getProtectionDomain();
+        CodeSource cs = pd.getCodeSource();
         
-        // java.lang.Class contract does not specify if 'pd' can ever be null;
-        // it is not the case for Sun's implementations, but guard against null
-        // just in case:
-        
-        if (pd != null)
-        {
-            CodeSource cs = pd.getCodeSource();
-            
-            // 'cs' can be null depending on the classloader behavior:
-            if (cs != null)
-                result = cs.getLocation();
+        // 'cs' can be null depending on the classloader behavior:
+        if (cs != null)
+            result = cs.getLocation();
 
-            if (result != null)
+        if (result != null)
+        {
+            // Convert a code source location into a full class file 
+            // location for some common cases:
+            
+            if ("file".equals(result.getProtocol()))
             {
-                // Convert a code source location into a full class file 
-                // location for some common cases:
-                
-                if ("file".equals(result.getProtocol()))
+                try
                 {
-                    try
-                    {
-                        if (result.toExternalForm().endsWith(".jar") || 
-                            result.toExternalForm().endsWith(".zip"))
-                        {    
-                            result = new URL(
-                                "jar:".concat(result.toExternalForm()).
-                                    concat("!/").concat(clsAsResource));
-                        }
-                        else if (new File(result.getFile()).isDirectory())
-                        {
-                            result = new URL(result, clsAsResource);
-                        }
+                    if (result.toExternalForm().endsWith(".jar") || 
+                        result.toExternalForm().endsWith(".zip"))
+                    {    
+                        result = new URL(
+                            "jar:".concat(result.toExternalForm()).
+                                concat("!/").concat(clsAsResource));
                     }
-                    catch (MalformedURLException ignore)
+                    else if (new File(result.getFile()).isDirectory())
                     {
-                        ; // Ignore
+                        result = new URL(result, clsAsResource);
                     }
+                }
+                catch (MalformedURLException ignore)
+                {
+                    ; // Ignore
                 }
             }
         }
