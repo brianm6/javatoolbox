@@ -21,6 +21,7 @@ package toolbox;
  *       model is a possiblity.
  * TODO: Separate unit tests from main source branch + reconfig maven.
  * TODO: Add a filled bar mode to JSourceView
+ * TODO: Add Plugin menu
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
