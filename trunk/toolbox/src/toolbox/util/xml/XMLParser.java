@@ -5,8 +5,7 @@ import java.io.Reader;
 import java.util.Stack;
 
 /**
- * A tiny parser of xml text. It is intended to deal with simple 
- * config files.
+ * A tiny parser of xml text. It is intended to deal with simple config files.
  */
 public class XMLParser
 {
@@ -39,8 +38,8 @@ public class XMLParser
     }
 
     /**
-     * Parse an XML text read in from a Reader.
-     * Returns the root node of the xml text.
+     * Parse an XML text read in from a Reader. Returns the root node of the 
+     * xml text.
      * 
      * @param  reader  Reader that supplies data
      * @return Root xml node

@@ -16,9 +16,9 @@ public class XMLNode
     private Vector    nodelist_;  // maintains order of myNodes
     private String    name_;
     private String    value_;
-    private boolean  procInstr_;
-    private boolean  comment_;
-    private boolean  doctype_;
+    private boolean   procInstr_;
+    private boolean   comment_;
+    private boolean   doctype_;
 
     //--------------------------------------------------------------------------
     // Constructors
