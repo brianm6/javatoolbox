@@ -24,6 +24,7 @@ import org.apache.commons.cli.PosixParser;
 import toolbox.util.ArrayUtil;
 import toolbox.util.DateTimeUtil;
 import toolbox.util.FileUtil;
+import toolbox.util.StreamUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.collections.AsMap;
 import toolbox.util.file.FileComparator;
@@ -314,6 +315,7 @@ public class Tree
                         		  showDate,
                                   sortBy);
                 t.showTree();
+                StreamUtil.close(t.writer_);
             }
         }
         catch (IllegalArgumentException e)
