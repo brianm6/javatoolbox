@@ -23,8 +23,8 @@ import java.util.Properties;
 import org.apache.log4j.Logger;
 
 /**
- * JDBC Utility class that makes it easy to execute SQL statements and
- * see the results as formatted text in a tabular layout.
+ * JDBC Utility class that makes it easy to execute SQL statements and see the 
+ * results as formatted text in a tabular layout.
  * <p>
  * Typical usage:
  * <p>
@@ -33,13 +33,13 @@ import org.apache.log4j.Logger;
  * JdbcUtilities.init("driver", "url", "username", "password");
  * 
  * String results = 
- *     JdbcUtilities.executeQuery(
+ *     JDBCUtilities.executeQuery(
  *         "select * from users where age > 30");
  * 
  * System.out.println(results);
  * 
  * int numRows = 
- *     JdbcUtilities.executeUpdate(
+ *     JDBCUtilities.executeUpdate(
  *         "delete from users where age < 30");
  * 
  * System.out.println(numrows + " rows deleted.");
@@ -65,22 +65,27 @@ public final class JDBCUtil
     public static final Logger logger_ =
         Logger.getLogger(JDBCUtil.class);
 
+    /** 
+     * JDBC connection properties. 
+     */
+    private static Properties connProps_;
+ 
     /**
-     * Clover private constructor workaround
+     * JDBC driver.
+     */   
+    private static Driver driver_;
+
+    /**
+     * Clover private constructor workaround.
      */
     static { new JDBCUtil(); }
 
-    /** 
-     * JDBC connection properties 
-     */
-    private static Properties connProps_;
-        
     //--------------------------------------------------------------------------
     //  Constructors
     //--------------------------------------------------------------------------
 
     /**
-     * Prevent construction
+     * Prevent construction.
      */
     private JDBCUtil()
     {
@@ -92,7 +97,7 @@ public final class JDBCUtil
 
     /**
      * Initialzies the JDBC properties. Must be called before any of the other
-     * methods are use
+     * methods are use.
      * 
      * @param driver JDBC driver to use
      * @param url URL to database resource
@@ -105,9 +110,13 @@ public final class JDBCUtil
         String driver, 
         String url, 
         String user, 
-        String password) throws ClassNotFoundException, SQLException
+        String password) 
+        throws ClassNotFoundException, 
+               SQLException,
+               IllegalAccessException,
+               InstantiationException
     {
-        Class.forName(driver);
+        driver_ = (Driver) Class.forName(driver).newInstance();
         
         connProps_ = new Properties();
         connProps_.put("user", user);
@@ -149,7 +158,8 @@ public final class JDBCUtil
         URL jarURL = new File(jarFile).toURL();
         URLClassLoader ucl = new URLClassLoader(new URL[]{jarURL});
         Driver d = (Driver) Class.forName(driver, true, ucl).newInstance();
-        DriverManager.registerDriver(new JDBCUtil.DriverProxy(d));
+        driver_ = new JDBCUtil.DriverProxy(d);
+        DriverManager.registerDriver(driver_);
         
         connProps_ = new Properties();
         connProps_.put("user", user);
@@ -159,7 +169,7 @@ public final class JDBCUtil
         Connection conn = getConnection();
         DatabaseMetaData meta = conn.getMetaData();
         
-        logger_.debug("DB Connect: " + 
+        logger_.debug("Connected to " + 
             meta.getDatabaseProductName() + 
                 meta.getDatabaseProductVersion());
             
@@ -168,7 +178,7 @@ public final class JDBCUtil
     
     
     /**
-     * Returns a connection to the database
+     * Returns a connection to the database.
      * 
      * @return Connection ready for use
      * @throws SQLException on SQL error
@@ -188,7 +198,7 @@ public final class JDBCUtil
 
     
     /**
-     * Executes a SQL INSERT, UPDATE, or DELETE statement
+     * Executes a SQL INSERT, UPDATE, or DELETE statement.
      * 
      * @param sql Insert/update/delete sql statement to execute
      * @return Number of rows affected by the execution of the sql statement
@@ -321,7 +331,7 @@ public final class JDBCUtil
 
 
     /**
-     * Formats a results set in a table like manner
+     * Formats a results set in a table like manner.
      * 
      * @param rs ResultSet to format
      * @return Contents of result set formatted in a table like format
@@ -384,9 +394,8 @@ public final class JDBCUtil
                     value = obj.toString().trim();
                 else
                     value= "[NULL]";
-                
-                // Add extra spaces at the end    
-                colWidth[i-1] = Math.max(value.length(), colWidth[i-1]);// + 2;
+   
+                colWidth[i-1] = Math.max(value.length(), colWidth[i-1]);
                 row[i-1] = value;
             }
 
@@ -457,7 +466,7 @@ public final class JDBCUtil
 
     
     /**
-     * Drops table w/o any complaints
+     * Drops table w/o any complaints.
      * 
      * @param table Table name
      */
@@ -478,7 +487,7 @@ public final class JDBCUtil
 
     
     /**
-     * Closes a ResultSet w/o any complaining
+     * Closes a ResultSet w/o any complaining.
      * 
      * @param rs Resultset to close
      */
@@ -522,7 +531,7 @@ public final class JDBCUtil
 
     
     /**
-     * Releases a connection. Supresses any problems 
+     * Releases a connection. Supresses any problems. 
      * 
      * @param connection Connection to release
      */
@@ -545,10 +554,26 @@ public final class JDBCUtil
         }
     }
     
+    
+    /**
+     * Deregisters the current driver.
+     * 
+     * @throws SQLException on SQL error.
+     */
+    public static void shutdown() throws SQLException
+    {
+        DriverManager.deregisterDriver(driver_);
+    }
+    
     //--------------------------------------------------------------------------
     // Inner Classes
     //--------------------------------------------------------------------------
-    
+
+    /**
+     * DriverProxy is used to add an additional layer of method calls to load 
+     * up a JDBC driver dynamically at run time. Basically, the class that is
+     * loading the driver needs to be loadded by the new classloader itself.
+     */    
     static class DriverProxy implements Driver
     {
         private Driver driver_;
