@@ -20,7 +20,7 @@ import toolbox.util.ThreadUtil;
  */
 public class SocketUtilTest extends TestCase
 {
-    /** Logger **/
+    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(SocketUtilTest.class);
 
