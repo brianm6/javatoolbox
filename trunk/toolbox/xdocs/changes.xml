@@ -111,7 +111,7 @@
 
 	<release version="2.0" date="October 2004">
       <action type="add">Util - Added ClassUtils.findInPath() to find executables on the system path</action>
-      <action type="add">Util - Added Create Directory to the JFileExplorer popup menu</action>
+      <action type="add">Util - Added Create and Delete directory to the JFileExplorer popup menu</action>
 	</release>
 
     <!-- =================================================================== -->
