@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import com.martiansoftware.jsap.FlaggedOption;
@@ -24,6 +25,7 @@ import com.martiansoftware.jsap.stringparsers.StringStringParser;
 
 import org.apache.commons.collections.comparators.NullComparator;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.Validate;
 
 import toolbox.util.ArrayUtil;
 import toolbox.util.DateTimeUtil;
@@ -92,7 +94,7 @@ import toolbox.util.io.filter.RegexFilter;
 public class Tree2
 {
     //--------------------------------------------------------------------------
-    // Constants
+    // Tree Ascii Constants
     //--------------------------------------------------------------------------
     
     /** 
@@ -116,7 +118,7 @@ public class Tree2
     private static final String ARM = "---";
 
     //--------------------------------------------------------------------------
-    // Constants : Sort Options
+    // Sort Option Constants
     //--------------------------------------------------------------------------
     
     /**
@@ -140,7 +142,7 @@ public class Tree2
     public static final String SORT_DATE = "d";
 
     //--------------------------------------------------------------------------
-    // Constants : Defaults
+    // Defaults Constants
     //--------------------------------------------------------------------------
 
     /** 
@@ -148,6 +150,11 @@ public class Tree2
      */
     private static final boolean DEFAULT_SHOWFILES = false;
 
+    /**
+     * Full paths are not shown by default.
+     */
+    private static final boolean DEFAULT_SHOWFULLPATH = false;
+    
     /** 
      * File sizes are not shown by default. 
      */
@@ -158,6 +165,11 @@ public class Tree2
      */
     private static final boolean DEFAULT_SHOWDATE = false;
 
+    /**
+     * Help is turned off by default.
+     */
+    private static final boolean DEFAULT_SHOWHELP = false;
+    
     /** 
      * Output is sent to System.out by default. 
      */
@@ -183,11 +195,21 @@ public class Tree2
      * Default starting directory is the users current directory.
      */
     private static final String DEFAULT_DIR = System.getProperty("user.dir");
+
+    //--------------------------------------------------------------------------
+    // Command Line Constants
+    //--------------------------------------------------------------------------
     
-    /**
-     * Help is turned off by default.
-     */
-    private static final boolean DEFAULT_SHOWHELP = false;
+    private static final String SWITCH_FILES    = "files";
+    private static final String SWITCH_DATE     = "date";
+    private static final String SWITCH_HELP     = "help";
+    private static final String SWITCH_SIZE     = "size";
+    private static final String SWITCH_FULLPATH = "fullpath";
+    
+    private static final String OPTION_REGEX    = "regex";
+    private static final String OPTION_SORT     = "sort";
+    private static final String OPTION_DIR      = "dir";
+    private static final String OPTION_MAXDEPTH = "maxDepth";
     
     //--------------------------------------------------------------------------
     // Fields
@@ -213,11 +235,16 @@ public class Tree2
      */
     private boolean showFiles_;
 
+    /**
+     * Flag to toggle the showing of full paths for files and directories.
+     */
+    private boolean showFullPath_;
+
     /** 
      * Flag to toggle the showing of a file's size. 
      */
     private boolean showSize_;
-
+    
     /** 
      * Flag to toggle the showing of a file's timestamp. 
      */
@@ -252,16 +279,6 @@ public class Tree2
      * Formatter for file sizes, etc.
      */
     private NumberFormat formatter_;
-
-    private static final String SWITCH_FILES = "files";
-    private static final String SWITCH_DATE  = "date";
-    private static final String SWITCH_HELP  = "help";
-    private static final String SWITCH_SIZE  = "size";
-    
-    private static final String OPTION_REGEX = "regex";
-    private static final String OPTION_SORT = "sort";
-    private static final String OPTION_DIR = "dir";
-    private static final String OPTION_MAXDEPTH = "maxDepth";
     
     //--------------------------------------------------------------------------
     // Main
@@ -270,14 +287,11 @@ public class Tree2
     /**
      * Launcher for tree.
      *
-     * @param args  [-f, -s -os, rootDir]
+     * @param args  [-f, -s -os, -m, -p rootDir]
      * @throws Exception on error.
      */
     public static void main(String args[]) throws Exception
     {
-
-        ///////////////////////////////////////////////////////////////////////
-        
         JSAP jsap = new JSAP();
         
         Switch filesSwitch = 
@@ -286,6 +300,12 @@ public class Tree2
                 //.setLongFlag("files")
                 .setDefault(DEFAULT_SHOWFILES + "");
 
+        Switch fullPathSwitch = 
+            new Switch(SWITCH_FULLPATH)
+                .setShortFlag('p')
+                //.setLongFlag("fullpath")
+                .setDefault(DEFAULT_SHOWFULLPATH + "");
+        
         Switch sizeSwitch = 
             new Switch(SWITCH_SIZE)
                 .setShortFlag('s')
@@ -340,6 +360,7 @@ public class Tree2
                 
         // Help text
         filesSwitch.setHelp("Includes file names in the output.");
+        fullPathSwitch.setHelp("Displays the full path name for files and directories.");
         sizeSwitch.setHelp("Includes file size in the output.");
         dateSwitch.setHelp("Includes file date and time in the output.");
         helpSwitch.setHelp("Prints tree usage with examples.");
@@ -349,19 +370,22 @@ public class Tree2
         maxDepthOption.setHelp("Max number of directories to recurse into starting at 1.");
         
         jsap.registerParameter(filesSwitch);
+        jsap.registerParameter(fullPathSwitch);
         jsap.registerParameter(sizeSwitch);
         jsap.registerParameter(dateSwitch);
+        jsap.registerParameter(maxDepthOption);
         jsap.registerParameter(helpSwitch);
         jsap.registerParameter(regexOption);
         jsap.registerParameter(sortOption);
         jsap.registerParameter(dirOption);
-        jsap.registerParameter(maxDepthOption);
         
-        
-        JSAPResult config = jsap.parse(args);    
+        JSAPResult config = jsap.parse(args);   
 
-        if (config.getBoolean(SWITCH_HELP))
+        if (!config.success() || config.getBoolean(SWITCH_HELP))
         {
+            for (Iterator i = config.getErrorMessageIterator(); i.hasNext(); )
+                System.err.println(i.next());
+            
             printUsage(jsap);
             return;
         }
@@ -376,6 +400,7 @@ public class Tree2
                     config.getBoolean(SWITCH_FILES), 
                     config.getBoolean(SWITCH_SIZE),
                     config.getBoolean(SWITCH_DATE),
+                    config.getBoolean(SWITCH_FULLPATH),
                     config.getString(OPTION_SORT),
                     config.getInt(OPTION_MAXDEPTH), 
                     config.getString(OPTION_REGEX));
@@ -419,7 +444,8 @@ public class Tree2
             rootDir, 
             DEFAULT_SHOWFILES, 
             DEFAULT_SHOWSIZE, 
-            DEFAULT_SHOWDATE, 
+            DEFAULT_SHOWDATE,
+            DEFAULT_SHOWFULLPATH,
             DEFAULT_SORT, 
             DEFAULT_REGEX,
             DEFAULT_MAXDEPTH,
@@ -457,15 +483,11 @@ public class Tree2
     /**
 	 * Creates a tree with the given root directory and flag to show files.
 	 * 
-	 * @param rootDir
-	 *            Root directory.
-	 * @param showFiles
-	 *            If true, includes files (as opposed to just directories) in
-	 *            the output.
-	 * @param showSize
-	 *            If true, shows the size of the file.
-	 * @param sortBy
-	 *            File attribute to use for sorting.
+	 * @param rootDir Root directory.
+	 * @param showFiles If true, includes files (as opposed to just directories)
+     *        in the output.
+	 * @param showSize If true, shows the size of the file.
+	 * @param sortBy File attribute to use for sorting.
 	 */
     public Tree2(
         File rootDir, 
@@ -477,7 +499,8 @@ public class Tree2
             rootDir, 
             showFiles, 
             showSize, 
-            DEFAULT_SHOWDATE, 
+            DEFAULT_SHOWDATE,
+            DEFAULT_SHOWFULLPATH,
             sortBy,
             DEFAULT_MAXDEPTH,
             DEFAULT_REGEX);
@@ -492,6 +515,7 @@ public class Tree2
      *        in the output.
      * @param showSize If true, shows the size of the file.
      * @param showDate If true, shows the date/time of the file.
+     * @param showFullPath If true, shows full pathnames for files and dirs.
      * @param sortBy File attribute to use for sorting.
      * @param maxDepth Max number of directories to recurse into.
      * @param regex File filter expressed as a regular expression. 
@@ -501,6 +525,7 @@ public class Tree2
         boolean showFiles, 
         boolean showSize, 
         boolean showDate, 
+        boolean showFullPath, 
         String sortBy,
         int maxDepth,
         String regex)
@@ -509,7 +534,8 @@ public class Tree2
             rootDir, 
             showFiles, 
             showSize, 
-            showDate, 
+            showDate,
+            showFullPath,
             sortBy,
             regex,
             maxDepth,
@@ -523,9 +549,10 @@ public class Tree2
      * @param rootDir Root directory of the tree.
      * @param showFiles Set to true if you want file info in the tree, false 
      *        otherwise.
-     * @param showDate Set to true to print out the files timestamp.
      * @param showSize Set to true to print out the size of the file next to the
      *        filename.
+     * @param showDate Set to true to print out the files timestamp.
+     * @param showFullPath Set to true to show full path names.
      * @param sortBy Set to any of SORT_[NAME|SIZE|NONE] to specify sort order.
      * @param regex File filter expressed as a regular expression. 
      * @param writer Output destination.
@@ -535,6 +562,7 @@ public class Tree2
                 boolean showFiles, 
                 boolean showSize,
                 boolean showDate,
+                boolean showFullPath,
                 String sortBy,
                 String regex,
                 int maxDepth,
@@ -543,24 +571,29 @@ public class Tree2
         rootDir_ = rootDir;
 
         // Make sure directory is legit        
-        if (!rootDir_.exists())
-            throw new IllegalArgumentException(
-                "Directory " + rootDir + " does not exist.");
+        Validate.isTrue(
+            rootDir_.exists(),
+            "Directory " + rootDir + " does not exist.");
                 
-        if (!rootDir_.isDirectory())
-            throw new IllegalArgumentException(
-                rootDir + " is not a directory.");
+        Validate.isTrue(
+            rootDir_.isDirectory(), 
+            rootDir + " is not a directory.");
 
-        if (!rootDir_.canRead())
-            throw new IllegalArgumentException(
-                "Cannot read from " + rootDir_);
+        Validate.isTrue(
+            rootDir_.canRead(),
+            "Cannot read from directory " + rootDir_);
         
-        showSize_  = showSize;
-        showDate_  = showDate;
-        writer_    = new PrintWriter(writer, true);  // turn on autoflush
-        dirFilter_ = new DirectoryFilter();
-        regex_     = regex;
-        maxDepth_  = maxDepth;
+        Validate.isTrue(
+            maxDepth >= 1,
+            "Max depth must be greater than or equal to one.");
+        
+        showFullPath_ = showFullPath;
+        showSize_     = showSize;
+        showDate_     = showDate;
+        writer_       = new PrintWriter(writer, true);  // turn on autoflush
+        dirFilter_    = new DirectoryFilter();
+        regex_        = regex;
+        maxDepth_     = maxDepth;
         
         //
         // If a regex is passed and the user forgot to turn on the -files
@@ -574,7 +607,8 @@ public class Tree2
         
         // TODO: expose case sensetivity?
         if (useRegex)
-            fileFilter_ = new AndFilter(fileFilter_, 
+            fileFilter_ = new AndFilter(
+                fileFilter_, 
                 new RegexFilter(regex_, false));  
 
         sortByMap_ = new HashMap();
@@ -665,7 +699,7 @@ public class Tree2
             
             for (int i = 0; i < files.length; i++)
             {
-                writer_.print(level + filler + files[i].getName());
+                writer_.print(level + filler + formatFilename(files[i])); 
                 
                 if (showSize_)
                 {
@@ -751,7 +785,7 @@ public class Tree2
             writer_.print(level);
             writer_.print(JUNCTION);
             writer_.print(ARM);
-            writer_.print(current.getName());
+            writer_.print(formatFilename(current));
             writer_.println();
             
             // Recurse            
@@ -778,6 +812,18 @@ public class Tree2
     
     
     /**
+     * Formats the file name based on the showFullPath flag.
+     * 
+	 * @param current File or directory to format.
+	 * @return String
+	 */
+	protected String formatFilename(File current) 
+    {
+		return showFullPath_ ? current.getAbsolutePath() : current.getName();
+	}
+
+    
+	/**
      * Returns the current depth of the tree.
      * 
      * @param level String used for tree indentation.
