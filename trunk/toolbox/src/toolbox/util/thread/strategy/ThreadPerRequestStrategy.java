@@ -18,7 +18,7 @@ public class ThreadPerRequestStrategy extends ThreadedDispatcherStrategy
     /**
      * Services the request in new thread and records the result.
      *
-     * @param request Request to publish.
+     * @param request Request to dispatch.
      * @param result Holds the request result.
      */
     public void service(IThreadable request, ReturnValue result)

@@ -43,7 +43,7 @@ public abstract class AbstractDispatcherStrategy
     /**
      * Processes the request in the current thread.
      * 
-     * @param request Request to process
+     * @param request Request to process.
      * @return Result of the request or null if no result.
      */
     public Object process(IThreadable request)

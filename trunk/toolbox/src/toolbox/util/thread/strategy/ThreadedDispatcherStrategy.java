@@ -6,7 +6,7 @@ import toolbox.util.thread.ThreadContainer;
 
 /**
  * ThreadedDispatcherStrategy is the abstract class for all threaded 
- * publication strategies. It offers a single method for thread creation. 
+ * dispatcher strategies. It offers a single method for thread creation. 
  */
 public abstract class ThreadedDispatcherStrategy 
     extends AbstractDispatcherStrategy
@@ -30,7 +30,7 @@ public abstract class ThreadedDispatcherStrategy
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a new threaded publication strategy.
+     * Creates a new threaded dispatcher strategy.
      */
     ThreadedDispatcherStrategy()
     {
@@ -39,15 +39,15 @@ public abstract class ThreadedDispatcherStrategy
     }
 
     //--------------------------------------------------------------------------
-    // Public
+    // Overrides AbstractDispatcherStrategy
     //--------------------------------------------------------------------------
     
     /**
-     * Publishes the request in an alternate thread and returns a future object
+     * Dispatches the request in an alternate thread and returns a future object
      * that can interrogate the result.
      * 
-     * @param request Request to publish.
-     * @return Future object encapsualting the request result.
+     * @see toolbox.util.thread.strategy.AbstractDispatcherStrategy#dispatch(
+     *      toolbox.util.thread.IThreadable)
      */
     public ReturnValue dispatch(IThreadable request)
     {
@@ -56,9 +56,12 @@ public abstract class ThreadedDispatcherStrategy
         return result;
     }
 
-
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
     /**
-     * Publish the request in an alternate thread using the supplied callback
+     * Dispatches the request in an alternate thread using the supplied callback
      * to supply status information about the response.
      * 
      * @param request Request to publish.
@@ -105,7 +108,6 @@ public abstract class ThreadedDispatcherStrategy
         }
     }
 
-
     //--------------------------------------------------------------------------
     // Abstract Protected
     //--------------------------------------------------------------------------
@@ -113,7 +115,7 @@ public abstract class ThreadedDispatcherStrategy
     /**
      * Services the request in an alternate thread and records the result.
      *
-     * @param request Request to publish.
+     * @param request Request to dispatch.
      * @param result Holds the request result.
      */
     protected abstract void service(IThreadable request, ReturnValue result);
@@ -126,7 +128,7 @@ public abstract class ThreadedDispatcherStrategy
     /**
      * Services the request and manages the set of active requests.
      *
-     * @param request Request to publish.
+     * @param request Request to dispatch.
      * @param result Holds the request result.
      */
     protected void serviceRequest(IThreadable request, ReturnValue result)
@@ -142,7 +144,7 @@ public abstract class ThreadedDispatcherStrategy
 
     /**
      * Indicates the request corresponding to returnValues is processing. This
-     * is made protected so only publication strategies or classes in this
+     * is made protected so only dispatcher strategies or classes in this
      * package can update the state.
      * 
      * @param returnValue Return value to update state for.
@@ -155,11 +157,11 @@ public abstract class ThreadedDispatcherStrategy
 
     /**
      * Assigns the value contained in the returnValue. This is made protected
-     * so only publication strategies or classes in this package can set the
+     * so only dispatcher strategies or classes in this package can set the
      * value.
      * 
-     * @param result Return value to contain the value
-     * @param value Value to assign to the return value
+     * @param result Return value to contain the value.
+     * @param value Value to assign to the return value.
      */
     protected void setResult(ReturnValue result, Object value)
     {

@@ -15,17 +15,17 @@ public final class ReturnValue
     /**
      * Pending state.
      */
-    public static final int PENDING_STATE = 0;
+    public static final int STATE_PENDING = 0;
     
     /**
      * Started state.
      */
-    public static final int STARTED_STATE = 1;
+    public static final int STATE_STARTED = 1;
     
     /**
      * Finished state.
      */
-    public static final int FINISHED_STATE = 2;
+    public static final int STATE_FINISHED = 2;
 
     //--------------------------------------------------------------------------
     // Fields 
@@ -66,7 +66,7 @@ public final class ReturnValue
     public ReturnValue()
     {
         value_ = null;
-        state_ = PENDING_STATE;
+        state_ = STATE_PENDING;
         available_ = new EventSemaphore();
     }
 
@@ -80,7 +80,7 @@ public final class ReturnValue
     {
         value_ = value;
         available_ = null;
-        state_ = FINISHED_STATE;
+        state_ = STATE_FINISHED;
     }
 
 
@@ -137,11 +137,11 @@ public final class ReturnValue
      */
     public void setStarted()
     {
-        if (state_ != STARTED_STATE)
+        if (state_ != STATE_STARTED)
         {
-            if (state_ == PENDING_STATE)
+            if (state_ == STATE_PENDING)
             {
-                state_ = STARTED_STATE;
+                state_ = STATE_STARTED;
 
                 if (listener_ != null)
                     listener_.started(request_);
@@ -163,7 +163,7 @@ public final class ReturnValue
         if (isAvailable())
             throw new ValueAlreadyAssignedException();
 
-        state_ = FINISHED_STATE;
+        state_ = STATE_FINISHED;
 
         // Signal the availability of the value.
         value_ = value;

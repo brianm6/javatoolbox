@@ -90,15 +90,15 @@ public class ThreadPoolStrategy extends ThreadedDispatcherStrategy
     }
 
     //--------------------------------------------------------------------------
-    // Public
+    // Overrides ThreadedDispatcherStrategy
     //--------------------------------------------------------------------------
     
     /**
      * Services the request by putting it on the request queue. If the queue is
      * full, the calling thread is blocked until a slot becomes available.
      * 
-     * @param request Request to publish.
-     * @param result Holds the request result.
+     * @see toolbox.util.thread.strategy.ThreadedDispatcherStrategy#service(
+     *      toolbox.util.thread.IThreadable, toolbox.util.thread.ReturnValue)
      */
     public void service(IThreadable request, ReturnValue result)
     {
@@ -112,9 +112,14 @@ public class ThreadPoolStrategy extends ThreadedDispatcherStrategy
         }
     }
 
-
+    //--------------------------------------------------------------------------
+    // Overrides AbstractDispatcherStrategy
+    //--------------------------------------------------------------------------
+    
     /** 
      * Publish a null request for each thread in the pool to signal shutdown.
+     * 
+     * @see toolbox.util.thread.strategy.AbstractDispatcherStrategy#destroy()
      */
     public void destroy()
     {

@@ -8,9 +8,10 @@ package toolbox.util.thread;
 public interface IThreadable
 {
     /**
-     * Performs the processing of the request.
-     *
-     * @return Result of the request or null if no result.
+     * Performs the processing of the request and returns the result or null 
+     * if no result.
+     * 
+     * @return Object
      */
     Object run();
 }

@@ -174,7 +174,7 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
     }
 
     //--------------------------------------------------------------------------
-    // Public
+    // Overrides ThreadedDispatcherStrategy
     //--------------------------------------------------------------------------
 
     /**
@@ -183,8 +183,8 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
      * no threads are available to process this request, create additional
      * threads.
      * 
-     * @param request Request to publish.
-     * @param result Holds the request result.
+     * @see toolbox.util.thread.strategy.ThreadedDispatcherStrategy#service(
+     *      toolbox.util.thread.IThreadable, toolbox.util.thread.ReturnValue)
      */
     public synchronized void service(IThreadable request, ReturnValue result)
     {
@@ -206,9 +206,14 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
         }
     }
 
-
+    //--------------------------------------------------------------------------
+    // Overrides AbstractDispatcherStrategy
+    //--------------------------------------------------------------------------
+    
     /**
      * Publish a null request for each thread in the pool to signal shutdown.
+     * 
+     * @see toolbox.util.thread.strategy.AbstractDispatcherStrategy#destroy()
      */
     public void destroy()
     {
