@@ -55,6 +55,7 @@ public final class MathUtil
     {
         for(int i=0; i<array.length; i++)
             array[i] += value;
+            
         return array;
     }
     
@@ -67,7 +68,6 @@ public final class MathUtil
      */
     public static double invNormalCumDist(double p) 
     {
-
         double c[] = new double[3];
         double d[] = new double[3];
 
@@ -83,7 +83,6 @@ public final class MathUtil
 
         if (p <= .5) 
         {
-
             arg = -2.0 * Math.log(p);
             t = Math.sqrt(arg);
             t2 = t * t;
@@ -95,11 +94,9 @@ public final class MathUtil
             x = -qinvp;
 
             return x;
-
         }
         else 
         {
-
             pc = 1.0 - p;
             arg = -2.0 * Math.log(pc);
             t = Math.sqrt(arg);
@@ -123,7 +120,6 @@ public final class MathUtil
      */
     public static int sum(int[] d) 
     {
-
         if( d.length == 0)
             return 0;
             

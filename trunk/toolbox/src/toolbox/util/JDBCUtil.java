@@ -15,13 +15,12 @@ import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
-
 /**
  * JDBC Utility class
  */
-public class JDBCUtil
+public final class JDBCUtil
 {
-    /** Logger **/
+    /** Logger */
     public static final Logger logger_ =
         Logger.getLogger(JDBCUtil.class);
 
@@ -35,14 +34,14 @@ public class JDBCUtil
     //--------------------------------------------------------------------------
 
     /**
-     * Prevent construction
+     * Private constructor
      */
     private JDBCUtil()
     {
     }
 
     //--------------------------------------------------------------------------
-    //  Static Methods
+    //  Public
     //--------------------------------------------------------------------------
     
     /**
@@ -276,9 +275,9 @@ public class JDBCUtil
      *       interface.
      * </pre>
      *
-     * @param         rs    Result set
-     * @return        The size of the result set
-     * @exception     SQLException if an SQL error occurs
+     * @param    rs    Result set
+     * @return  The size of the result set
+     * @throws  SQLException if an SQL error occurs
      */
     public static int getSize(ResultSet rs) throws SQLException 
     {
