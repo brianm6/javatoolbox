@@ -12,28 +12,20 @@ import org.apache.regexp.RESyntaxException;
 import toolbox.util.ClassUtil;
 
 /**
- * Basic implementation of the IDumper interface
+ * Basic implementation of the {@link Dumper} interface
  */
 public class BasicDumpFormatter implements DumpFormatter
 {
-    /**
-     * Classes that are excluded from the object dump
-     */
+    /** Classes that are excluded from the object dump */
     private List excludedClasses_;
 
-    /**
-     * Fields that are excluded from the object dump
-     */
+    /** Fields that are excluded from the object dump */
     private List excludedFields_;
 
-    /**
-     * Controls stripping of the package when printing out a classes' name
-     */
+    /** Controls stripping of the package when printing out a classes' name */
     private boolean stripPackage_;
 
-    /**
-     * Flag for showing inheritance hierarcjy for each object that is traversed
-     */
+    /** Flag to show inheritance tree for each object that is traversed*/
     private boolean showInheritance_;
     
     //--------------------------------------------------------------------------
@@ -121,12 +113,9 @@ public class BasicDumpFormatter implements DumpFormatter
     }
     
     //--------------------------------------------------------------------------
-    //  DumpFormatter Interface
+    // DumpFormatter Interface
     //--------------------------------------------------------------------------
 
-    /**
-     * @see toolbox.util.dump.DumpFormatter#includeClass(java.lang.Class)
-     */
     public boolean shouldInclude(Class clazz)
     {
         String name = clazz.getName();
@@ -142,10 +131,6 @@ public class BasicDumpFormatter implements DumpFormatter
         return true;
     }
 
-    /**
-     * @see toolbox.util.dump.DumpFormatter#
-     *      includeField(java.lang.reflect.Field)
-     */
     public boolean shouldInclude(Field field)
     {
         String name = field.getName();
@@ -165,33 +150,21 @@ public class BasicDumpFormatter implements DumpFormatter
         return true;
     }
     
-    /**
-     * @see toolbox.util.dump.DumpFormatter#formatClass(java.lang.Class)
-     */
     public String formatClassName(Class clazz)
     {
         return formatClassName(clazz.getName());
     }
 
-    /**
-     * @see toolbox.util.dump.DumpFormatter#formatClass(java.lang.String)
-     */
     public String formatClassName(String className)
     {
         return (stripPackage_ ? ClassUtil.stripPackage(className) : className);
     }
 
-    /**
-     * @see toolbox.util.dump.DumpFormatter#showInheritance()
-     */
     public boolean showInheritance()
     {
         return showInheritance_;
     }
     
-    /**
-     * @see toolbox.util.dump.DumpFormatter#sortFields()
-     */
     public boolean sortFields()
     {
         return true;

@@ -32,7 +32,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants
     //--------------------------------------------------------------------------
     
     /**
-     * Constructor for JTailConfig.
+     * Default constructor
      */
     public JTailConfig()
     {
@@ -191,83 +191,51 @@ public class JTailConfig implements IJTailConfig, XMLConstants
     //  IJTailConfig Interface
     //--------------------------------------------------------------------------
 
-    /**
-     * @see toolbox.jtail.config.IJTailConfig#
-     *      setDefaultConfig(toolbox.jtail.config.ITailPaneConfig)
-     */
     public void setDefaultConfig(ITailPaneConfig defaultConfig)
     {
         defaultConfig_ = defaultConfig;
     }
     
-    /**
-     * @see toolbox.jtail.config.IJTailConfig#getDefaultConfig()
-     */
     public ITailPaneConfig getDefaultConfig()
     {
         return defaultConfig_;
     }
 
-    /**
-     * @see toolbox.jtail.config.IJTailConfig#setLocation(java.awt.Point)
-     */
     public void setLocation(Point location)
     {
         location_ = location;
     }
 
-    /**
-     * @see toolbox.jtail.config.IJTailConfig#getLocation()
-     */
     public Point getLocation()
     {
         return location_;
     }
 
-    /**
-     * @see toolbox.jtail.config.IJTailConfig#setSize(java.awt.Dimension)
-     */
     public void setSize(Dimension size)
     {
         size_ = size;
     }
 
-    /**
-     * @see toolbox.jtail.config.IJTailConfig#getSize()
-     */
     public Dimension getSize()
     {
         return size_;
     }
     
-    /**
-     * @see toolbox.jtail.config.IJTailConfig#getTailConfigs()
-     */
     public ITailPaneConfig[] getTailConfigs()
     {
         return tailPaneConfigs_;
     }
 
-    /**
-     * @see toolbox.jtail.config.IJTailConfig#
-     *      setTailConfigs(toolbox.jtail.config.ITailPaneConfig[])
-     */
     public void setTailConfigs(ITailPaneConfig[] tailPaneConfigs)
     {
         tailPaneConfigs_ = tailPaneConfigs;
     }
 
-    /**
-     * @see toolbox.jtail.config.IJTailConfig#getDirectory()
-     */
     public String getDirectory()
     {
         return directory_;
     }
 
-    /**
-     * @see toolbox.jtail.config.IJTailConfig#setDirectory(java.lang.String)
-     */
     public void setDirectory(String directory)
     {
         directory_ = directory;

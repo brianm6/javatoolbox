@@ -14,34 +14,22 @@ import toolbox.util.ArrayUtil;
  */
 public class EventOutputStream extends FilterOutputStream
 {
-    /**
-     * Array of registered listeners
-     */
+    /** Array of registered listeners */
     private Listener[] listeners_;
     
-    /**
-     * Total number of bytes written to the stream
-     */
+    /** Total number of bytes written to the stream */
     private int count_;
     
-    /**
-     * Friendly name for this stream
-     */
+    /** Friendly name for this stream */
     private String name_;
     
-    /**
-     * Number of bytes written last time a sample was taken
-     */
+    /** Number of bytes written last time a sample was taken */
     private int lastSample_;
     
-    /** 
-     * Sample period in milliseconds
-     */
+    /** Sample period in milliseconds */
     private long samplePeriod_ = 1000;
 
-    /**
-     * Timer that takes samples to monitor the stream throughput
-     */    
+    /** Timer that takes samples to monitor the stream throughput */    
     private Timer throughputTimer_;
     
     //--------------------------------------------------------------------------
@@ -74,7 +62,7 @@ public class EventOutputStream extends FilterOutputStream
     }
     
     //--------------------------------------------------------------------------
-    // Overridden from java.io.FilterOutputStream
+    // Overrides java.io.FilterOutputStream
     //--------------------------------------------------------------------------
     
     /**
@@ -276,8 +264,6 @@ public class EventOutputStream extends FilterOutputStream
     
     /**
      * Starts monitoring of stream throughtput
-     * 
-     * @see #streamThroughput()
      */
     public void startThroughputMonitor()
     {
@@ -288,8 +274,6 @@ public class EventOutputStream extends FilterOutputStream
 
     /**
      * Stops monitoring of stream throughput
-     * 
-     * @see #unmonitorThroughput()
      */    
     public void stopThroughputMonitor()
     {

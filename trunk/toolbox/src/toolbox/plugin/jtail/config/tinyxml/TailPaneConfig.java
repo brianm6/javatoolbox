@@ -12,10 +12,6 @@ import toolbox.util.xml.XMLNode;
 /**
  * TailConfig is a data object that captures the configuration of a given tail 
  * instance with the ability to marshal itself to and from XML format.
- * 
- * <p>
- * 
- * TODO: Make sure autostart is working as designed 
  */
 public class TailPaneConfig implements ITailPaneConfig, XMLConstants
 {
@@ -170,7 +166,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
     }
 
     /**
-     * TailConfig -> XML
+     * TailConfig -> XML.
      * <pre>
      * 
      * Tail attr = [file, autoscroll, lineNumbes, antialias, autostart]
@@ -222,7 +218,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
     }
 
     //--------------------------------------------------------------------------
-    // Overridden from java.lang.Object 
+    // Overrides java.lang.Object 
     //--------------------------------------------------------------------------
     
     /**
@@ -248,130 +244,81 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
     //  ITailPaneConfig Interface
     //--------------------------------------------------------------------------
 
-    /**
-     * @see toolbox.jtail.config.ITailPaneConfig#isAutoScroll()
-     */
     public boolean isAutoScroll()
     {
         return autoScroll_;
     }
 
-    /**
-     * @see toolbox.jtail.config.ITailPaneConfig#getFilename()
-     */
     public String getFilename()
     {
         return filename_;
     }
 
-    /**
-     * @see toolbox.jtail.config.ITailPaneConfig#isShowLineNumbers()
-     */
     public boolean isShowLineNumbers()
     {
         return showLineNumbers_;
     }
  
-    /**
-     * @see toolbox.jtail.config.ITailPaneConfig#setAutoScroll(boolean)
-     */
     public void setAutoScroll(boolean autoScroll)
     {
         autoScroll_ = autoScroll;
     }
 
-    /**
-     * @see toolbox.jtail.config.ITailPaneConfig#setFilename(java.lang.String)
-     */
     public void setFilename(String filename)
     {
         filename_ = filename;
     }
 
-    /**
-     * @see toolbox.jtail.config.ITailPaneConfig#setShowLineNumbers(boolean)
-     */
     public void setShowLineNumbers(boolean showLineNumbers)
     {
         showLineNumbers_ = showLineNumbers;
     }
  
-    /**
-     * @see toolbox.jtail.config.ITailPaneConfig#getFont()
-     */
     public Font getFont()
     {
         return font_;
     }
 
-    /**
-     * @see toolbox.jtail.config.ITailPaneConfig#setFont(java.awt.Font)
-     */
     public void setFont(Font font)
     {
         font_ = font;
     }
  
-    /**
-     * @see toolbox.jtail.config.ITailPaneConfig#getRegularExpression()
-     */
     public String getRegularExpression()
     {
         return regularExpression_;
     }
 
-    /**
-     * @see toolbox.jtail.config.ITailPaneConfig#
-     *      setRegularExpression(java.lang.String)
-     */
     public void setRegularExpression(String filter)
     {
         regularExpression_ = filter;
     }
 
-    /**
-     * @see toolbox.jtail.config.ITailPaneConfig#getCutExpression()
-     */
     public String getCutExpression()
     {
         return cutExpression_;
     }
 
-    /**
-     * @see toolbox.jtail.config.ITailPaneConfig#setCutExpression(String)
-     */
     public void setCutExpression(String cutExpression)
     {
         cutExpression_ = cutExpression;
     }
 
-    /**
-     * @see toolbox.jtail.config.ITailPaneConfig#isAntiAlias()
-     */
     public boolean isAntiAlias()
     {
         return antiAlias_;
     }
 
-    /**
-     * @see toolbox.jtail.config.ITailPaneConfig#setAntiAlias(boolean)
-     */
     public void setAntiAlias(boolean b)
     {
         antiAlias_ = b;
     }
  
-    /**
-     * @see toolbox.jtail.config.ITailPaneConfig#isAutoStart()
-     */
     public boolean isAutoStart()
     {
         return autoStart_;
     }
 
-    /**
-     * @see toolbox.jtail.config.ITailPaneConfig#setAutoStart(boolean)
-     */
     public void setAutoStart(boolean autoStart)
     {
         autoStart_ = autoStart;
