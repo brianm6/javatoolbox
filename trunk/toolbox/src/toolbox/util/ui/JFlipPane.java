@@ -47,8 +47,8 @@ import javax.swing.border.Border;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import org.apache.log4j.Logger;
+
 import toolbox.util.ArrayUtil;
-import toolbox.util.ThreadUtil;
 
 /**
  * JFlipPane - panel with flipper like behavior
@@ -62,11 +62,20 @@ public class JFlipPane extends JPanel
         Logger.getLogger(JFlipPane.class);
     
     // Positions
-	public static final String TOP    = "top";
-	public static final String LEFT   = "left";
-	public static final String BOTTOM = "bottom";
-	public static final String RIGHT  = "right";
     
+    /** Top position **/
+    public static final String TOP    = "top";
+    
+    /** Left position **/
+    public static final String LEFT   = "left";
+    
+    /** Bottom position **/
+    public static final String BOTTOM = "bottom";
+    
+    /** Right position **/
+    public static final String RIGHT  = "right";
+    
+    /** Splitter bar width in pixels **/
     public static final int SPLITTER_WIDTH = 10;
 
     // Instance variables
@@ -91,20 +100,20 @@ public class JFlipPane extends JPanel
     //  Constructors
     //--------------------------------------------------------------------------
     
-	/**
-	 * Creates a JFlipPane with the given position
+    /**
+     * Creates a JFlipPane with the given position
      * 
      * @param  position Position (JSplitPane.[TOP|LEFT|BOTTOM|RIGHT]
-	 */
-	public JFlipPane(String position)
-	{
+     */
+    public JFlipPane(String position)
+    {
         position_  = position;
         dimension_ = 0;
         flippers_  = new Hashtable();
         listeners_ = new ArrayList();
                         
         buildView();
-	} 
+    } 
 
     //--------------------------------------------------------------------------
     //  Implementation
@@ -310,7 +319,8 @@ public class JFlipPane extends JPanel
     {
         String method = "[butFor] ";
         
-        //logger_.debug(method + "Button count=" + buttonGroup_.getButtonCount());
+        //logger_.debug(method + 
+        //  "Button count=" + buttonGroup_.getButtonCount());
         
         Enumeration e = buttonGroup_.getElements();
         
@@ -383,7 +393,7 @@ public class JFlipPane extends JPanel
                         
             pref = new Dimension(width, height);
             
-            //logger_.info(method + "prefSize expanded = " + pref);                        
+            //logger_.info(method + "prefSize expanded = " + pref);
         }
         else
         {
@@ -434,6 +444,9 @@ public class JFlipPane extends JPanel
 
 
     /**
+     * Determines if a flipper is selected
+     * 
+     * @param   flipper  Flipper to test if selected
      * @return  True if the given flipper is selected, false otherwise
      */
     public boolean isFlipperSelected(JComponent flipper)
@@ -754,13 +767,13 @@ public class JFlipPane extends JPanel
         static final int CW = 1;
         static final int CCW = 2;
     
-        int rotate;
-        Font font;
-        GlyphVector glyphs;
-        float width;
-        float height;
-        float ascent;
-        RenderingHints renderHints;
+        private int rotate_;
+        private Font font_;
+        private GlyphVector glyphs_;
+        private float width_;
+        private float height_;
+        private float ascent_;
+        private RenderingHints renderHints_;
     
     
         /**
@@ -772,28 +785,30 @@ public class JFlipPane extends JPanel
          */
         public RotatedTextIcon(int rotate, Font font, String text)
         {
-            this.rotate = rotate;
-            this.font = font;
+            this.rotate_ = rotate;
+            this.font_ = font;
     
             FontRenderContext fontRenderContext = 
                 new FontRenderContext(null,true,true);
                 
-            glyphs = font.createGlyphVector(fontRenderContext,text);
-            width = (int)glyphs.getLogicalBounds().getWidth() + 4;
+            glyphs_ = font.createGlyphVector(fontRenderContext,text);
+            width_ = (int)glyphs_.getLogicalBounds().getWidth() + 4;
             //height = (int)glyphs.getLogicalBounds().getHeight();
     
-            LineMetrics lineMetrics = font.getLineMetrics(text,fontRenderContext);
-            ascent = lineMetrics.getAscent();
-            height = (int)lineMetrics.getHeight();
+            LineMetrics lineMetrics = 
+                font.getLineMetrics(text,fontRenderContext);
+                
+            ascent_ = lineMetrics.getAscent();
+            height_ = (int)lineMetrics.getHeight();
     
-            renderHints = new RenderingHints(
+            renderHints_ = new RenderingHints(
                 RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
                 
-            renderHints.put(RenderingHints.KEY_FRACTIONALMETRICS,
+            renderHints_.put(RenderingHints.KEY_FRACTIONALMETRICS,
                 RenderingHints.VALUE_FRACTIONALMETRICS_ON);
                 
-            renderHints.put(RenderingHints.KEY_RENDERING,
+            renderHints_.put(RenderingHints.KEY_RENDERING,
                 RenderingHints.VALUE_RENDER_QUALITY);
         } 
     
@@ -803,8 +818,8 @@ public class JFlipPane extends JPanel
          */
         public int getIconWidth()
         {
-            return (int)(rotate == RotatedTextIcon.CW 
-                || rotate == RotatedTextIcon.CCW ? height : width);
+            return (int)(rotate_ == RotatedTextIcon.CW || 
+                         rotate_ == RotatedTextIcon.CCW ? height_ : width_);
         } 
     
     
@@ -813,8 +828,8 @@ public class JFlipPane extends JPanel
          */
         public int getIconHeight()
         {
-            return (int)(rotate == RotatedTextIcon.CW
-                || rotate == RotatedTextIcon.CCW ? width : height);
+            return (int)(rotate_ == RotatedTextIcon.CW ||
+                         rotate_ == RotatedTextIcon.CCW ? width_ : height_);
         } 
     
     
@@ -829,40 +844,40 @@ public class JFlipPane extends JPanel
         public void paintIcon(Component c, Graphics g, int x, int y)
         {
             Graphics2D g2d = (Graphics2D)g;
-            g2d.setFont(font);
+            g2d.setFont(font_);
             AffineTransform oldTransform = g2d.getTransform();
             RenderingHints oldHints = g2d.getRenderingHints();
     
-            g2d.setRenderingHints(renderHints);
+            g2d.setRenderingHints(renderHints_);
             g2d.setColor(c.getForeground());
     
             
-            if (rotate == RotatedTextIcon.NONE)
+            if (rotate_ == RotatedTextIcon.NONE)
             {
                 // No rotation
-                g2d.drawGlyphVector(glyphs,x + 2,y + ascent);
+                g2d.drawGlyphVector(glyphs_,x + 2,y + ascent_);
             } 
-            else if (rotate == RotatedTextIcon.CW)
+            else if (rotate_ == RotatedTextIcon.CW)
             {
                 // Clockwise rotation
                 AffineTransform trans = new AffineTransform();
                 trans.concatenate(oldTransform);
                 trans.translate(x, y + 2);
-                trans.rotate(Math.PI / 2, height / 2, width / 2);
+                trans.rotate(Math.PI / 2, height_ / 2, width_ / 2);
                 g2d.setTransform(trans);
-                g2d.drawGlyphVector(glyphs,(height - width) / 2,
-                    (width - height) / 2 + ascent);
+                g2d.drawGlyphVector(glyphs_,(height_ - width_) / 2,
+                    (width_ - height_) / 2 + ascent_);
             } 
-            else if(rotate == RotatedTextIcon.CCW)
+            else if(rotate_ == RotatedTextIcon.CCW)
             {
                 // Counterclockwise rotation
                 AffineTransform trans = new AffineTransform();
                 trans.concatenate(oldTransform);
                 trans.translate(x,y - 2);
-                trans.rotate(Math.PI * 3 / 2, height / 2, width / 2);
+                trans.rotate(Math.PI * 3 / 2, height_ / 2, width_ / 2);
                 g2d.setTransform(trans);
-                g2d.drawGlyphVector(glyphs,(height - width) / 2,
-                    (width - height) / 2 + ascent);
+                g2d.drawGlyphVector(glyphs_,(height_ - width_) / 2,
+                    (width_ - height_) / 2 + ascent_);
             } 
     
             g2d.setTransform(oldTransform);
@@ -881,11 +896,11 @@ public class JFlipPane extends JPanel
      */
     public class FlipPaneBorder implements Border
     {
-        String position;
-        Insets insets;
-        Color color1;
-        Color color2;
-        Color color3;
+        private String position_;
+        private Insets insets_;
+        private Color color1_;
+        private Color color2_;
+        private Color color3_;
     
     
         /**
@@ -895,48 +910,60 @@ public class JFlipPane extends JPanel
          */
         FlipPaneBorder(String position)
         {
-            this.position = position;
-            insets = new Insets(
-                position.equals(JFlipPane.BOTTOM) ? JFlipPane.SPLITTER_WIDTH : 0,
-                position.equals(JFlipPane.RIGHT)  ? JFlipPane.SPLITTER_WIDTH : 0,
-                position.equals(JFlipPane.TOP)    ? JFlipPane.SPLITTER_WIDTH : 0,
-                position.equals(JFlipPane.LEFT)   ? JFlipPane.SPLITTER_WIDTH : 0);
+            this.position_ = position;
+            insets_ = new Insets(
+                position.equals(JFlipPane.BOTTOM)?JFlipPane.SPLITTER_WIDTH : 0,
+                position.equals(JFlipPane.RIGHT) ?JFlipPane.SPLITTER_WIDTH : 0,
+                position.equals(JFlipPane.TOP)   ?JFlipPane.SPLITTER_WIDTH : 0,
+                position.equals(JFlipPane.LEFT)  ?JFlipPane.SPLITTER_WIDTH : 0);
         } 
     
     
         /**
          * Paints the border
+         * 
+         * @param  c        Component to paint
+         * @param  g        Graphics device
+         * @param  x        X coord
+         * @param  y        Y coord
+         * @param  width    Width
+         * @param  height   Height
          */
-        public void paintBorder(Component c, Graphics g, int x, int y, int width, 
-            int height)
+        public void paintBorder(Component c, Graphics g, int x, int y, 
+            int width, int height)
         {
             updateColors();
     
-            if (color1 == null || color2 == null || color3 == null)
+            if (color1_ == null || color2_ == null || color3_ == null)
                 return;
     
-            if (position.equals(JFlipPane.BOTTOM))
+            if (position_.equals(JFlipPane.BOTTOM))
                 paintHorizBorder(g,x,y,width);
-            else if (position.equals(JFlipPane.RIGHT))
+            else if (position_.equals(JFlipPane.RIGHT))
                 paintVertBorder(g,x,y,height);
-            else if (position.equals(JFlipPane.TOP))
-                paintHorizBorder(g,x,y + height - JFlipPane.SPLITTER_WIDTH,width);
-            else if (position.equals(JFlipPane.LEFT))
-                paintVertBorder(g,x + width - JFlipPane.SPLITTER_WIDTH,y,height);
+            else if (position_.equals(JFlipPane.TOP))
+                paintHorizBorder(g,x,y + height - JFlipPane.SPLITTER_WIDTH,
+                    width);
+            else if (position_.equals(JFlipPane.LEFT))
+                paintVertBorder(g,x + width - JFlipPane.SPLITTER_WIDTH,y,
+                    height);
         } 
     
     
         /**
+         * Retrieves border insets
+         * 
+         * @param   c   Component
          * @return  Border insets
          */
         public Insets getBorderInsets(Component c)
         {
-            return insets;
+            return insets_;
         } 
     
         
         /**
-         * @return Trie if border is opaque, false otherwise
+         * @return True if border is opaque, false otherwise
          */
         public boolean isBorderOpaque()
         {
@@ -949,18 +976,18 @@ public class JFlipPane extends JPanel
          */
         private void paintHorizBorder(Graphics g, int x, int y, int width)
         {
-            g.setColor(color3);
+            g.setColor(color3_);
             g.fillRect(x, y, width, JFlipPane.SPLITTER_WIDTH);
     
             for(int i = 0; i < width / 4 - 1; i++)
             {
-                g.setColor(color1);
+                g.setColor(color1_);
                 g.drawLine(x + i * 4 + 2,y + 3, x + i * 4 + 2,y + 3);
-                g.setColor(color2);
+                g.setColor(color2_);
                 g.drawLine(x + i * 4 + 3,y + 4, x + i * 4 + 3,y + 4);
-                g.setColor(color1);
+                g.setColor(color1_);
                 g.drawLine(x + i * 4 + 4,y + 5, x + i * 4 + 4,y + 5);
-                g.setColor(color2);
+                g.setColor(color2_);
                 g.drawLine(x + i * 4 + 5,y + 6, x + i * 4 + 5,y + 6);
             }
         } 
@@ -971,18 +998,18 @@ public class JFlipPane extends JPanel
          */
         private void paintVertBorder(Graphics g, int x, int y, int height)
         {
-            g.setColor(color3);
+            g.setColor(color3_);
             g.fillRect(x, y, JFlipPane.SPLITTER_WIDTH, height);
     
             for(int i = 0; i < height / 4 - 1; i++)
             {
-                g.setColor(color1);
+                g.setColor(color1_);
                 g.drawLine(x + 3,y + i * 4 + 2, x + 3,y + i * 4 + 2);
-                g.setColor(color2);
+                g.setColor(color2_);
                 g.drawLine(x + 4,y + i * 4 + 3, x + 4,y + i * 4 + 3);
-                g.setColor(color1);
+                g.setColor(color1_);
                 g.drawLine(x + 5,y + i * 4 + 4, x + 5,y + i * 4 + 4);
-                g.setColor(color2);
+                g.setColor(color2_);
                 g.drawLine(x + 6,y + i * 4 + 5, x + 6,y + i * 4 + 5);
             }
         } 
@@ -995,13 +1022,13 @@ public class JFlipPane extends JPanel
         {
             if(UIManager.getLookAndFeel() instanceof MetalLookAndFeel)
             {
-                color1 = MetalLookAndFeel.getControlHighlight();
-                color2 = MetalLookAndFeel.getControlDarkShadow();
-                color3 = MetalLookAndFeel.getControl();
+                color1_ = MetalLookAndFeel.getControlHighlight();
+                color2_ = MetalLookAndFeel.getControlDarkShadow();
+                color3_ = MetalLookAndFeel.getControl();
             }
             else
             {
-                color1 = color2 = color3 = null;
+                color1_ = color2_ = color3_ = null;
             }
         } 
     }    
@@ -1033,6 +1060,9 @@ public class JFlipPane extends JPanel
         
         /**
          * Adds component to be layed out
+         * 
+         * @param  name  Name of component
+         * @param  comp  Component to layout
          */
         public void addLayoutComponent(String name, Component comp) 
         {
@@ -1041,6 +1071,8 @@ public class JFlipPane extends JPanel
     
         /**
          * Removes component to be layed out
+         * 
+         * @param  comp  Component to remove from the layout
          */
         public void removeLayoutComponent(Component comp) 
         {
@@ -1048,6 +1080,9 @@ public class JFlipPane extends JPanel
     
         
         /**
+         * Gets preferred layout size
+         * 
+         * @param  parent  Parent container
          * @return Preferred layout size
          */
         public Dimension preferredLayoutSize(Container parent)
@@ -1071,6 +1106,9 @@ public class JFlipPane extends JPanel
     
         
         /**
+         * Retrieves min layout size
+         * 
+         * @param  parent  Parent container
          * @return Minimum layout size
          */
         public Dimension minimumLayoutSize(Container parent)
@@ -1094,6 +1132,8 @@ public class JFlipPane extends JPanel
         
         /**
          * Lays out the container
+         * 
+         * @param  parent  Container to layout
          */
         public void layoutContainer(Container parent)
         {
@@ -1124,9 +1164,9 @@ public class JFlipPane extends JPanel
                             closeBoxSizeSet = true;
                         }
     
-                        if (noMore || pos + size.width > parentSize.width
-                            - (i == comp.length - 1
-                            ? 0 : flipPane_.getCloseButton().getWidth()))
+                        if (noMore || pos + size.width > parentSize.width - 
+                            (i == comp.length - 1 ? 
+                            0 : flipPane_.getCloseButton().getWidth()))
                         {
                             flipPane_.getPopupButton().setBounds(
                                 parentSize.width - size.height,
@@ -1154,9 +1194,9 @@ public class JFlipPane extends JPanel
                             closeBoxSizeSet = true;
                         }
     
-                        if(noMore || pos + size.height > parentSize.height
-                            - (i == comp.length - 1
-                            ? 0 : flipPane_.getCloseButton().getHeight()))
+                        if(noMore || pos + size.height > parentSize.height - 
+                            (i == comp.length - 1 ? 0 : 
+                            flipPane_.getCloseButton().getHeight()))
                         {
                             flipPane_.getPopupButton().setBounds(
                                 0,parentSize.height - size.width,
@@ -1249,7 +1289,9 @@ public class JFlipPane extends JPanel
                 if(flipPane_.getDimension()  <= 0)
                 {
                     int width = super.getPreferredSize().width;
-                    flipPane_.setDimension(width - JFlipPane.SPLITTER_WIDTH - 3);
+                    
+                    flipPane_.setDimension(
+                        width - JFlipPane.SPLITTER_WIDTH - 3);
                 }
     
                 if(pos.equals(JFlipPane.TOP) || pos.equals(JFlipPane.BOTTOM))
@@ -1273,19 +1315,20 @@ public class JFlipPane extends JPanel
         /**
          * Mouse handler for resizing of the pane
          */
-        class ResizeMouseHandler extends MouseAdapter implements MouseMotionListener
+        class ResizeMouseHandler extends MouseAdapter 
+            implements MouseMotionListener
         {
-            boolean canDrag;
-            int dragStartDimension;
-            Point dragStart;
+            private boolean canDrag_;
+            private int dragStartDimension_;
+            private Point dragStart_;
     
             /**
              * Records start of mouse drag and dimension
              */
             public void mousePressed(MouseEvent evt)
             {
-                dragStartDimension = flipPane_.getDimension();
-                dragStart = evt.getPoint();
+                dragStartDimension_ = flipPane_.getDimension();
+                dragStart_ = evt.getPoint();
             } 
     
             
@@ -1304,7 +1347,7 @@ public class JFlipPane extends JPanel
     
                 Insets insets = border.getBorderInsets(FlipCardPanel.this);
                 int cursor = Cursor.DEFAULT_CURSOR;
-                canDrag = false;
+                canDrag_ = false;
                 
                 // Top...
                 if (flipPane_.getPosition().equals(JFlipPane.TOP))
@@ -1312,7 +1355,7 @@ public class JFlipPane extends JPanel
                     if(evt.getY() >= getHeight() - insets.bottom)
                     {
                         cursor = Cursor.N_RESIZE_CURSOR;
-                        canDrag = true;
+                        canDrag_ = true;
                     }
                 } 
                 // Left...
@@ -1321,7 +1364,7 @@ public class JFlipPane extends JPanel
                     if(evt.getX() >= getWidth() - insets.right)
                     {
                         cursor = Cursor.W_RESIZE_CURSOR;
-                        canDrag = true;
+                        canDrag_ = true;
                     }
                 } 
                 // Bottom...
@@ -1330,7 +1373,7 @@ public class JFlipPane extends JPanel
                     if(evt.getY() <= insets.top)
                     {
                         cursor = Cursor.S_RESIZE_CURSOR;
-                        canDrag = true;
+                        canDrag_ = true;
                     }
                 } 
                 // Right...
@@ -1339,7 +1382,7 @@ public class JFlipPane extends JPanel
                     if(evt.getX() <= insets.left)
                     {
                         cursor = Cursor.E_RESIZE_CURSOR;
-                        canDrag = true;
+                        canDrag_ = true;
                     }
                 } 
     
@@ -1353,41 +1396,39 @@ public class JFlipPane extends JPanel
              */
             public void mouseDragged(MouseEvent evt)
             {
-                if(!canDrag)
+                if(!canDrag_)
                     return;
     
-                if(dragStart == null) // can't happen?
+                if(dragStart_ == null) // can't happen?
                     return;
     
                 // Top...
                 if(flipPane_.getPosition().equals(JFlipPane.TOP))
                 {
-                    flipPane_.setDimension(evt.getY()
-                        + dragStartDimension
-                        - dragStart.y);
+                    flipPane_.setDimension(evt.getY() + dragStartDimension_ - 
+                        dragStart_.y);
                 } 
                 // Left...
                 else if(flipPane_.getPosition().equals(JFlipPane.LEFT))
                 {
-                    flipPane_.setDimension(evt.getX()
-                        + dragStartDimension
-                        - dragStart.x);
+                    flipPane_.setDimension(evt.getX() + dragStartDimension_ - 
+                        dragStart_.x);
                 } 
                 // Bottom...
                 else if(flipPane_.getPosition().equals(JFlipPane.BOTTOM))
                 {
                     flipPane_.setDimension(
-                        flipPane_.getDimension() + (dragStart.y - evt.getY()));
+                        flipPane_.getDimension() + (dragStart_.y - evt.getY()));
                 } 
                 // Right...
                 else if(flipPane_.getPosition().equals(JFlipPane.RIGHT))
                 {
                     flipPane_.setDimension(
-                        flipPane_.getDimension() + dragStart.x - evt.getX());
+                        flipPane_.getDimension() + dragStart_.x - evt.getX());
                 } 
     
                 if(flipPane_.getDimension() <= 0)
-                    flipPane_.setDimension(dragStartDimension);
+                    flipPane_.setDimension(dragStartDimension_);
     
                 // TODO: find out right way to do this
                 flipPane_.revalidate();
@@ -1411,6 +1452,4 @@ public class JFlipPane extends JPanel
             } 
         } 
     } 
-    
-    
 }

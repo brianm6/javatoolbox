@@ -41,7 +41,7 @@ public abstract class AbstractListModelFilter extends AbstractListModel
     }
 
     //--------------------------------------------------------------------------
-    //  AbstractListModel implementation
+    //  Overridden Methods from AbstractListModel
     //--------------------------------------------------------------------------
 
     /**
@@ -54,6 +54,9 @@ public abstract class AbstractListModelFilter extends AbstractListModel
     }
 
     /**
+     * Retrieves element at a given index
+     * 
+     * @param   index  Index to retrieve
      * @return  List element at given index in filtered model
      */
     public Object getElementAt(int index)
@@ -64,6 +67,8 @@ public abstract class AbstractListModelFilter extends AbstractListModel
 
     /**
      * Adds a data listener
+     * 
+     * @param  listener   Listener to add
      */
     public void addListDataListener(ListDataListener listener)
     {
@@ -73,6 +78,8 @@ public abstract class AbstractListModelFilter extends AbstractListModel
 
     /**
      * Removes a data listener
+     * 
+     * @param  listener  Listener to remove
      */
     public void removeListDataListener(ListDataListener listener)
     {

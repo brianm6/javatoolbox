@@ -207,7 +207,6 @@ public class JFileExplorer extends JPanel
         gridbag.setConstraints(splitPane, constraints);
         add(splitPane);
               
-        // TODO: fix this so its proportional!!!
         splitPane.setDividerLocation(150);
     }
 
@@ -581,8 +580,10 @@ public class JFileExplorer extends JPanel
                     pathTokens[0] = root.toString();
                     
                     // Switch to different drive if necessary
-                    rootsComboBox_.setSelectedItem(new File(pathTokens[0]));                    
-                    logger_.debug(method + "new root: " + rootsComboBox_.getSelectedItem());
+                    rootsComboBox_.setSelectedItem(new File(pathTokens[0]));
+                    
+                    logger_.debug(method + 
+                        "new root: " + rootsComboBox_.getSelectedItem());
                 }
                 else
                 {
@@ -625,7 +626,7 @@ public class JFileExplorer extends JPanel
                             pathTokens[j] + File.separator;
                     }
                         
-                    //logger_.debug(method + "Partial path = "  + partialPath);    
+                    //logger_.debug(method + "Partial path = "  + partialPath);
                         
                     setTreeFolders(partialPath, current);
                 }
@@ -677,7 +678,7 @@ public class JFileExplorer extends JPanel
         /**
          * Constructor for FileNode.
          * 
-         * @param userObject
+         * @param userObject  User object
          */
         public FileNode(Object userObject)
         {
@@ -687,8 +688,8 @@ public class JFileExplorer extends JPanel
         /**
          * Constructor for FileNode.
          * 
-         * @param userObject
-         * @param allowsChildren
+         * @param userObject       User object
+         * @param allowsChildren   Should node allow children
          */
         public FileNode(Object userObject, boolean allowsChildren)
         {
@@ -700,6 +701,7 @@ public class JFileExplorer extends JPanel
          * platform w.r.t. case sensetivity
          * 
          * @param  obj  Object to compare
+         * @return True if nodes are equal, false otherwise
          */
         public boolean equals(Object obj)
         {
