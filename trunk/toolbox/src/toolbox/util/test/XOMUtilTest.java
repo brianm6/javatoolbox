@@ -295,6 +295,26 @@ public class XOMUtilTest extends TestCase
         node.addAttribute(new Attribute("name", "value"));
         node.appendChild(new Element("Child"));
         String xml = XOMUtil.toXML(node);
-        logger_.debug("\n" + xml);
+        //logger_.debug("\n" + xml);
+    }
+    
+    
+    /**
+     * Tests toElement()
+     * 
+     * @throws Exception on error
+     */
+    public void testToElement() throws Exception
+    {
+        logger_.info("Running testToElement...");
+        
+        String xml = new String("<root a=\"1\"><child>value</child></root>");
+        Element node = XOMUtil.toElement(xml);
+        
+        assertEquals("root", node.getLocalName());
+        assertEquals("1", node.getAttributeValue("a"));
+        assertEquals(1, node.getChildCount());
+        assertNotNull(node.getFirstChildElement("child").getLocalName());
+        assertEquals("value", node.getFirstChildElement("child").getValue());
     }
 }
