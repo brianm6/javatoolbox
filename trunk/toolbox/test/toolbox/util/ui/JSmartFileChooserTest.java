@@ -5,7 +5,6 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import junit.textui.TestRunner;
@@ -15,7 +14,6 @@ import nu.xom.Element;
 import org.apache.log4j.Logger;
 
 import toolbox.junit.testcase.UITestCase;
-import toolbox.util.ExceptionUtil;
 
 /**
  * Unit test for JSmartOptionPane.
@@ -26,23 +24,11 @@ public class JSmartFileChooserTest extends UITestCase
         Logger.getLogger(JSmartFileChooserTest.class);
         
     //--------------------------------------------------------------------------
-    // Constants
-    //--------------------------------------------------------------------------
-    
-    private static final String MSG_TITLE = "JSmartOptionPane";
-    private static final String MSG_TEXT = "This is the test of JOptionPane";
-    
-    //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
     
-    private static String MSG_DETAIL;
-
-    /**
-     * Parent frame.
-     */    
-    private JFrame parent_;
-
+    private Element chooserPrefs_;
+    
     //--------------------------------------------------------------------------
     // Main
     //--------------------------------------------------------------------------
@@ -52,33 +38,6 @@ public class JSmartFileChooserTest extends UITestCase
         TestRunner.run(JSmartFileChooserTest.class);
     }
 
-    //--------------------------------------------------------------------------
-    // Overrides TestCase
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Creates the detail portion of the test message.
-     * 
-     * @throws Exception on error. 
-     */
-    public void setUp() throws Exception
-    {
-        super.setUp();
-        parent_ = new JFrame();
-        MSG_DETAIL = ExceptionUtil.getStackTrace(
-            new Exception("This is an exception"));        
-    }
-    
-    
-    /**
-     * @see junit.framework.TestCase#tearDown()
-     */
-    protected void tearDown() throws Exception
-    {
-        parent_.dispose();
-        super.tearDown();
-    }
-    
     //--------------------------------------------------------------------------
     // Unit Tests
     //--------------------------------------------------------------------------
@@ -96,7 +55,9 @@ public class JSmartFileChooserTest extends UITestCase
         launchInDialog(p, UITestCase.SCREEN_ONE_THIRD);
     }
     
-    Element chooserPrefs_;
+    //--------------------------------------------------------------------------
+    // SavePrefsAction
+    //--------------------------------------------------------------------------
     
     class SavePrefsAction extends AbstractAction
     {
@@ -124,6 +85,10 @@ public class JSmartFileChooserTest extends UITestCase
             }
         }
     }
+    
+    //--------------------------------------------------------------------------
+    // ApplyPrefsAction
+    //--------------------------------------------------------------------------
     
     class ApplyPrefsAction extends AbstractAction
     {

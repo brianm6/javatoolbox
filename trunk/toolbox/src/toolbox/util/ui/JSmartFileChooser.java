@@ -12,16 +12,20 @@ import toolbox.util.XOMUtil;
 import toolbox.workspace.IPreferenced;
 
 /**
- * JSmartFileChooser is responsible for _____.
+ * JSmartFileChooser can remember the last chosen directory.
  */
 public class JSmartFileChooser extends JFileChooser implements IPreferenced
 {
     //--------------------------------------------------------------------------
-    // Constructors
+    // IPreferenced Constants
     //--------------------------------------------------------------------------
     
     private static final String NODE_JFILECHOOSER = "JFileChooser";
-
+    private static final String ATTR_LAST_DIRECTORY = "lastDirectory";
+    
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
 
     /**
      * Creates a JSmartFileChooser.
@@ -100,9 +104,8 @@ public class JSmartFileChooser extends JFileChooser implements IPreferenced
             new Element(NODE_JFILECHOOSER));
         
         setCurrentDirectory(new File(
-            root.getAttributeValue("currentDirectory")));
-        
-        
+            XOMUtil.getStringAttribute(
+                root, ATTR_LAST_DIRECTORY, System.getProperty("user.home"))));
     }
 
 
@@ -115,9 +118,8 @@ public class JSmartFileChooser extends JFileChooser implements IPreferenced
         
         root.addAttribute(
             new Attribute(
-                "currentDirectory", 
+                ATTR_LAST_DIRECTORY, 
                 getCurrentDirectory().getCanonicalPath()));
-        
 
         XOMUtil.insertOrReplace(prefs, root);
     }    
