@@ -5,4 +5,10 @@ package toolbox.graph;
  */
 public interface Layout extends Delegator
 {
+    /**
+     * Returns the name of this layout.
+     * 
+     * @return String
+     */
+    String getName();
 }
