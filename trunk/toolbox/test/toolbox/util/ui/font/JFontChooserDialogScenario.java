@@ -1,5 +1,8 @@
 package toolbox.util.ui.font;
 
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+
 import javax.swing.JList;
 
 import org.apache.commons.lang.math.RandomUtils;
@@ -18,6 +21,7 @@ import org.netbeans.jemmy.operators.JTextFieldOperator;
 import org.netbeans.jemmy.util.NameComponentChooser;
 
 import toolbox.util.StringUtil;
+import toolbox.util.io.NullWriter;
 
 /**
  * Automated UI Unit test for JFontChooserDialog.
@@ -39,9 +43,21 @@ public class JFontChooserDialogScenario implements Scenario
      */
     public static void main(String[] args) throws Exception
     {
-        Test.main(new String[]{JFontChooserDialogScenario.class.getName()});
+        //Test.main(new String[]{JFontChooserDialogScenario.class.getName()});
+        
     }
 
+    public static class Launcher
+    {
+        public static void main(String[] args) throws Exception
+        {
+            Test.run(
+                new String[] {JFontChooserDialogScenario.class.getName()},
+                new PrintWriter(new NullWriter()),
+                new PrintWriter(new OutputStreamWriter(System.err)));
+        }
+    }
+    
     //--------------------------------------------------------------------------
     // Scenario Interface
     //--------------------------------------------------------------------------
