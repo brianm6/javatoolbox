@@ -64,13 +64,13 @@ public class SQLDefaults extends TextAreaDefaults
         SyntaxStyle[] styles = new SyntaxStyle[Token.ID_COUNT];
 
         styles[Token.COMMENT1] = 
-            new SyntaxStyle(Colors.getColor("dark red") , false, false);
+            new SyntaxStyle(Colors.dark_red, false, false);
             
         styles[Token.COMMENT2] = 
             new SyntaxStyle(Color.gray, false, true);
             
         styles[Token.KEYWORD1] = 
-            new SyntaxStyle(Colors.getColor("dark blue"), false, false);
+            new SyntaxStyle(Colors.dark_blue, false, false);
             
         styles[Token.KEYWORD2] = 
             new SyntaxStyle(Color.blue, true, true);
@@ -79,7 +79,7 @@ public class SQLDefaults extends TextAreaDefaults
             new SyntaxStyle(Color.magenta, false, false);
             
         styles[Token.LITERAL1] = 
-            new SyntaxStyle(Colors.getColor("blue4"), false, false);
+            new SyntaxStyle(Colors.blue4, false, false);
                 
         styles[Token.LITERAL2] = 
             new SyntaxStyle(Color.orange, false, false);
@@ -88,10 +88,10 @@ public class SQLDefaults extends TextAreaDefaults
             new SyntaxStyle(Color.pink, false, false);
             
         styles[Token.OPERATOR] = 
-            new SyntaxStyle(Colors.getColor("red4"), false, false);
+            new SyntaxStyle(Colors.red4, false, false);
             
         styles[Token.INVALID] = 
-            new SyntaxStyle(Colors.getColor("orange4"), true, true);
+            new SyntaxStyle(Colors.orange4, true, true);
 
         return styles;
     }
