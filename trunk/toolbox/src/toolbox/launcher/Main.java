@@ -27,15 +27,15 @@ public class Main
         // Map program names to class names
         programMap_ = new HashMap(15);
         
-        programMap_.put("findclass",  "toolbox.findclass.Main");
+        programMap_.put("findclass",     "toolbox.findclass.Main");
         programMap_.put("showclasspath", "toolbox.showclasspath.Main");
-        programMap_.put("showpath",   "toolbox.showpath.Main");
-        programMap_.put("tail",       "toolbox.tail.Main");
-        programMap_.put("tcptunnel",  "toolbox.tunnel.TcpTunnel");
-        programMap_.put("tree",       "toolbox.tree.Tree");
-        programMap_.put("banner",     "toolbox.util.Banner");
-        programMap_.put("workspace",  "toolbox.util.ui.plugin.PluginWorkspace");
-        programMap_.put("laflauncher","toolbox.launcher.LAFLauncher");
+        programMap_.put("showpath",      "toolbox.showpath.Main");
+        programMap_.put("tail",          "toolbox.tail.Main");
+        programMap_.put("tcptunnel",     "toolbox.tunnel.TcpTunnel");
+        programMap_.put("tree",          "toolbox.tree.Tree");
+        programMap_.put("banner",        "toolbox.util.Banner");
+        programMap_.put("workspace",     "toolbox.workspace.PluginWorkspace");
+        programMap_.put("laflauncher",   "toolbox.launcher.LAFLauncher");
     }
     
     //--------------------------------------------------------------------------
