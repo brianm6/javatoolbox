@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Use to gather up search results. Create instance and
- * add as listener FindClass
+ * Used to collect the results of a single run of the findclass application
  */
 public class FindClassCollector extends FindClassAdapter
 {
@@ -13,11 +12,10 @@ public class FindClassCollector extends FindClassAdapter
     private List results_ = new ArrayList();
     
     /**
-     * Constructor for FindClassCollector.
+     * Default constructor
      */
     public FindClassCollector()
     {
-        super();
     }
 
     
