@@ -19,6 +19,10 @@ public class ElapsedTimeTest extends TestCase
     private static final Logger logger_ = 
         Logger.getLogger(ElapsedTimeTest.class);
        
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+           
     /**
      * Entrypoint
      * 
@@ -50,7 +54,6 @@ public class ElapsedTimeTest extends TestCase
         logger_.info(elapsed);
     }
 
-
     /**
      * Tests an elapsed time of one second
      */
@@ -67,7 +70,6 @@ public class ElapsedTimeTest extends TestCase
         assertEquals("seconds is incorrect", compare, elapsed);
         logger_.info(elapsed);
     }
-
 
     /**
      * Tests an elapsed time of one minute
@@ -86,7 +88,6 @@ public class ElapsedTimeTest extends TestCase
         logger_.info(elapsed);
     }
 
-
     /**
      * Tests an elapsed time of one hour
      */
@@ -103,7 +104,6 @@ public class ElapsedTimeTest extends TestCase
         assertEquals("hours is incorrect", compare, elapsed);
         logger_.info(elapsed);
     }
-
 
     /**
      * Tests an elapsed time of one day
@@ -122,7 +122,6 @@ public class ElapsedTimeTest extends TestCase
         logger_.info(elapsed);
     }
 
-
     /**
      * Tests millisecond rollover: 1000ms = 1 sec
      */
@@ -136,7 +135,6 @@ public class ElapsedTimeTest extends TestCase
         logger_.info(elapsed);
     }
         
-        
     /**
      * Tests seconds rollover: 60s = 1 minute
      */
@@ -149,7 +147,6 @@ public class ElapsedTimeTest extends TestCase
         assertEquals("minutes is incorrect", compare, elapsed);
         logger_.info(elapsed);
     }
-
  
     /**
      * Tests minutes rollover: 60mins = 1 hour
@@ -164,7 +161,6 @@ public class ElapsedTimeTest extends TestCase
         logger_.info(elapsed);
     }
 
-
     /**
      * Test hours rollover: 24hrs = 1 day
      */
@@ -177,7 +173,6 @@ public class ElapsedTimeTest extends TestCase
         assertEquals("days is incorrect", compare, elapsed);
         logger_.info(elapsed);
     }
-
     
     /**
      * Test equals()
@@ -191,7 +186,6 @@ public class ElapsedTimeTest extends TestCase
         assertTrue("times don't match", time.equals(compare));
     }
 
-
     /**
      * Tests equals() for not equal
      */
@@ -203,7 +197,6 @@ public class ElapsedTimeTest extends TestCase
         ElapsedTime compare = new ElapsedTime(1,2,3,4,5);
         assertTrue("times should not match", !time.equals(compare));        
     }
-    
     
     /**
      * Tests constructor 1
@@ -219,7 +212,6 @@ public class ElapsedTimeTest extends TestCase
         ElapsedTime time = new ElapsedTime(start, end);
         logger_.info(time);
     }
- 
      
     /**
      * Tests constructor 2 - copy constructor
@@ -238,7 +230,6 @@ public class ElapsedTimeTest extends TestCase
         assertTrue("times should be equals", time.equals(copy));
         logger_.info(time);
     }
-    
     
     /**
      * Tests constructor 3
