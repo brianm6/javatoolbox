@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Frame;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -11,6 +12,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import javax.swing.AbstractAction;
@@ -42,6 +44,7 @@ import toolbox.util.ElapsedTime;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.StreamUtil;
+import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.io.StringOutputStream;
@@ -51,6 +54,7 @@ import toolbox.util.ui.JSmartMenu;
 import toolbox.util.ui.JSmartMenuItem;
 import toolbox.util.ui.plaf.LookAndFeelUtil;
 import toolbox.workspace.host.PluginHost;
+import toolbox.workspace.host.PluginHostListener;
 import toolbox.workspace.host.PluginHostManager;
 
 /**
@@ -153,6 +157,11 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      * Manages the plugin host.
      */
     private PluginHostManager pluginHostManager_;
+
+    /**
+     * Plugin menu.
+     */
+    private JSmartMenu pluginMenu_;
     
     //--------------------------------------------------------------------------
     // Main 
@@ -168,7 +177,8 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         // Workaround for annoying WebStart dlg box asking for disk in drive a:
         System.setSecurityManager(null);
         
-        //JFrame.setDefaultLookAndFeelDecorated(true);    // to decorate frames
+        JFrame.setDefaultLookAndFeelDecorated(true);    // to decorate frames
+        Toolkit.getDefaultToolkit().setDynamicLayout(true);
         //JDialog.setDefaultLookAndFeelDecorated(true);   // to decorate dialogs
 
         try
@@ -415,6 +425,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         menubar.add(createFileMenu());
         menubar.add(LookAndFeelUtil.createLookAndFeelMenu());
         menubar.add(createPreferencesMenu());
+        menubar.add(createPluginMenu());
         menubar.add(logMenu_);
         return menubar;
     }
@@ -460,6 +471,113 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         menu.add(pluginHostManager_.createMenu());
         
         return menu;
+    }
+
+    
+    /**
+     * Creates the Plugin menu.
+     * 
+     * @return JMenu 
+     */
+    protected JMenu createPluginMenu()
+    {
+        final Map nameMap_ = new HashMap();
+        
+        pluginMenu_ = new JSmartMenu("Plugins");
+        pluginMenu_.setMnemonic('l');
+        
+        for (Iterator i = PluginDialog.getPluginList().iterator(); i.hasNext();)
+        {
+            PluginMeta meta = (PluginMeta) i.next();
+            
+            JSmartCheckBoxMenuItem mi = 
+                new JSmartCheckBoxMenuItem(new AbstractAction(meta.getName())
+                {
+                    /**
+                     * @see java.awt.event.ActionListener#actionPerformed(
+                     *      java.awt.event.ActionEvent)
+                     */
+                    public void actionPerformed(ActionEvent e)
+                    {
+                        JCheckBoxMenuItem cbmi = 
+                            (JCheckBoxMenuItem) e.getSource();
+
+                        PluginMeta meta = (PluginMeta) 
+                            cbmi.getClientProperty("pluginmeta");
+                        
+
+                        if (cbmi.isSelected())
+                        {
+                            //
+                            // Load the plugin from scratch
+                            //
+                            try
+                            {
+                                registerPlugin(meta.getClassName());
+                            }
+                            catch (Exception e1)
+                            {
+                                ExceptionUtil.handleUI(e1, logger_);
+                            }
+                        }
+                        else
+                        {
+                            //
+                            // Select the plugin if it is already loaded
+                            //
+                            IPlugin plugin = 
+                                getPluginByClass(meta.getClassName());
+                            
+                            getPluginHost().setSelectedPlugin(plugin);
+                        }
+                        
+                        cbmi.setSelected(true);
+                    }
+                });
+
+            mi.putClientProperty("pluginmeta", meta);
+            nameMap_.put(meta.getName(), mi);
+            pluginMenu_.add(mi);
+        }
+        
+        
+        pluginHostManager_.getPluginHost().addPluginHostListener(
+            new PluginHostListener()
+            {
+                /**
+                 * @see toolbox.workspace.host.PluginHostListener#pluginAdded(
+                 *      toolbox.workspace.host.PluginHost, 
+                 *      toolbox.workspace.IPlugin)
+                 */
+                public void pluginAdded(PluginHost pluginHost, IPlugin plugin)
+                {
+                    logger_.debug(StringUtil.addBars("PLugin added " + plugin));
+
+                    JSmartCheckBoxMenuItem mi =  
+                        (JSmartCheckBoxMenuItem) nameMap_.get(
+                            plugin.getPluginName());
+                    
+                    mi.setSelected(true);
+                }
+
+
+                /**
+                 * @see toolbox.workspace.host.PluginHostListener#pluginRemoved(
+                 *      toolbox.workspace.host.PluginHost, 
+                 *      toolbox.workspace.IPlugin)
+                 */
+                public void pluginRemoved(PluginHost pluginHost, IPlugin plugin)
+                {
+                    logger_.debug(StringUtil.addBars("PLugin removed " + plugin));
+                    
+                    JCheckBoxMenuItem mi = (JCheckBoxMenuItem) 
+                        nameMap_.get(plugin.getPluginName());
+                
+                    mi.setSelected(false);
+                }
+            });
+        
+        return pluginMenu_;
     }
 
     
@@ -699,6 +817,8 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         
         new UseDecorationsAction().actionPerformed(
             new ActionEvent(decorationsCheckBoxItem_, -1, null));
+            
+        //setUndecorated(decorationsCheckBoxItem_.isSelected());
         
         boolean maxxed = XOMUtil.getBooleanAttribute(root, ATTR_MAXXED, false);
 
@@ -1054,8 +1174,19 @@ public class PluginWorkspace extends JFrame implements IPreferenced
             if (UIManager.getLookAndFeel().getSupportsWindowDecorations())
             {
                 boolean useDecorations = decorationsCheckBoxItem_.isSelected();
-                JFrame.setDefaultLookAndFeelDecorated(useDecorations);
-                JDialog.setDefaultLookAndFeelDecorated(useDecorations);
+                
+                if (!isDisplayable())
+                {
+                    logger_.debug(StringUtil.addBars("Frame is not displayed yet! Setting decorated to " + useDecorations));                
+                    //JFrame.setDefaultLookAndFeelDecorated(!useDecorations);
+                    setUndecorated(useDecorations);
+                }
+                else
+                {
+                    logger_.debug(StringUtil.addBars("Frame is displayable..doing nuttin!"));
+                }
+                
+                //JDialog.setDefaultLookAndFeelDecorated(useDecorations);
             }
             else
             {
