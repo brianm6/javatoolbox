@@ -1,8 +1,10 @@
 package toolbox.jtail;
 
 import java.awt.BorderLayout;
+import java.awt.Event;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -10,14 +12,15 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
+import javax.swing.KeyStroke;
 
 import org.apache.log4j.Category;
 import toolbox.util.ArrayUtil;
@@ -46,22 +49,19 @@ public class JTail extends JFrame
     private static final String CONFIG_FILE = ".jtail.xml";
     
     
-    private FileSelectionPane   fileSelectionPane_;
-    private JTabbedPane         tabbedPane_;
-    private JSmartStatusBar     statusBar_;    
-    private JMenuBar            menuBar_;    
-    private Map                 tailMap_;
+    private FileSelectionPane fileSelectionPane_;
+    private JTabbedPane       tabbedPane_;
+    private JSmartStatusBar   statusBar_;    
+    private JMenuBar          menuBar_;    
+    private Map               tailMap_;
+
+    private boolean testMode_ = true;
         
-        
-    static
-    {
-        FileStuffer stuffer = new FileStuffer(new File("c:\\crap.txt"), 100);
-        stuffer.start();
-    }
-      
         
     /**
      * Entry point 
+     * 
+     * @param  args  None recognized
      */
     public static void main(String[] args)
     {
@@ -139,17 +139,24 @@ public class JTail extends JFrame
     
     /**
      * Creates the menu bar
+     * 
+     * @return Menu bar
      */
     protected JMenuBar createMenuBar()
     {
         JMenuBar menuBar = new JMenuBar();
-        JMenu fileMenu = new JMenu("File");
-        JMenuItem saveConfigMenuItem = new JMenuItem("Save configuration");
-        saveConfigMenuItem.addActionListener(new MenuListener());
+        JMenu fileMenu   = new JMenu("File");
+        fileMenu.setMnemonic('F');
+        fileMenu.add(new SaveAction());
+        fileMenu.add(new ExitAction());
         
+        if (testMode_)
+        {
+            fileMenu.addSeparator();
+            fileMenu.add(new CreateFileAction());
+        }
+            
         menuBar.add(fileMenu);
-        fileMenu.add(saveConfigMenuItem);
-        
         return menuBar;
     }
     
@@ -179,11 +186,9 @@ public class JTail extends JFrame
     {
         try
         {
-            logger_.debug(config);
-            //File file = new File(config.getFilename());
-            
+            logger_.debug("[tail  ]\n" + config);
             TailPane tailPane = new TailPane(config);
-            
+
             JButton closeButton = tailPane.getCloseButton();
             
             // Create map of (closeButton, tailPane) so that the tail pane
@@ -274,12 +279,14 @@ public class JTail extends JFrame
         try
         {
             Document document = new Document();
-                    
+            document.setRoot(DOC_JTAIL);                    
+
+            logger_.debug("[save  ] Saving " + tailMap_.size() + " configurations");
+            
             for (Iterator i = tailMap_.keySet().iterator(); i.hasNext(); )
             {
                 TailPane tail = (TailPane)tailMap_.get(i.next());
                 TailConfig config = tail.getConfiguration();
-                document.setRoot(DOC_JTAIL);
                 document.getRoot().addElement(config.marshal());                
             }
 
@@ -323,7 +330,7 @@ public class JTail extends JFrame
     /**
      * Listener for the file explorer
      */
-    class FileSelectionListener extends JFileExplorerAdapter
+    private class FileSelectionListener extends JFileExplorerAdapter
     {
         /**
          * Tail files that have been double clicked on
@@ -338,22 +345,9 @@ public class JTail extends JFrame
     
     
     /**
-     * Menu Listener
-     */
-    class MenuListener implements ActionListener
-    {
-        
-        public void actionPerformed(ActionEvent e)
-        {
-            saveConfiguration();
-        }
-    }
-    
-    
-    /**
      * Tail button listener
      */
-    class TailButtonListener implements ActionListener
+    private class TailButtonListener implements ActionListener
     {
         /**
          * Tail button clicked
@@ -372,21 +366,105 @@ public class JTail extends JFrame
     /**
      * Tail button listener
      */
-    class CloseButtonListener implements ActionListener
+    private class CloseButtonListener implements ActionListener
     {
         /**
-         * Close button on TailPane clicked
+         * The source is the closeButton on the tail pane. 
+         * Get the tailPane from the tailMap using the button as
+         * the key and then temove the tail pane from the tabbed pane
+         * and them remove the tailpane from the tailmap itself.
          * 
-         * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
+         * @param  e  ActionEvent
          */
         public void actionPerformed(ActionEvent e)
         {
-            TailPane pane = (TailPane)tailMap_.get(e.getSource());
+            Object closeButton = e.getSource();
+            TailPane pane = (TailPane)tailMap_.get(closeButton);
+            tabbedPane_.remove(pane);        
+            tailMap_.remove(closeButton);
+        }
+    }
+    
+    /**
+     * Action to exit the application. The configurations
+     * are saved before exit.
+     */
+    private class ExitAction extends AbstractAction
+    {
+        public ExitAction()
+        {
+            super("Exit");
+            putValue(MNEMONIC_KEY, new Integer('x'));    
+            putValue(SHORT_DESCRIPTION, "Exits JTail");
+            putValue(LONG_DESCRIPTION, "Saves configuraiton and exits JTail");
+            putValue(ACCELERATOR_KEY, 
+                KeyStroke.getKeyStroke(KeyEvent.VK_X, Event.CTRL_MASK));
+        }
+        
+        /**
+         * Saves the configuration and exits the application
+         */
+        public void actionPerformed(ActionEvent e)
+        {
+            saveConfiguration();
+            System.exit(0);
+        }
+    }
+
+    /**
+     * Action to save configurations
+     */
+    private class SaveAction extends AbstractAction
+    {
+        public SaveAction()
+        {
+            super("Save");
+            putValue(MNEMONIC_KEY, new Integer('S'));
+            putValue(SHORT_DESCRIPTION, "Saves tail configuration");
+            putValue(LONG_DESCRIPTION, "Saves tail configuration to .jtail.xml");
+            putValue(ACCELERATOR_KEY, 
+                KeyStroke.getKeyStroke(KeyEvent.VK_S, Event.CTRL_MASK));
+        }
+    
+        /**
+         * Saves the configuration
+         */
+        public void actionPerformed(ActionEvent e)
+        {
+            saveConfiguration();
+            statusBar_.setStatus("Saved configuration");
+        }
+    }
+
+
+    /**
+     * Generates a file with intermittent output so that the file can be
+     * tailed.
+     */
+    private class CreateFileAction extends AbstractAction
+    {
+        public CreateFileAction()
+        {
+            super("Create test file");
+            putValue(MNEMONIC_KEY, new Integer('C'));
+            putValue(SHORT_DESCRIPTION, "Create test file to tail");
             
-            if (e != null)
-            {
-                tabbedPane_.remove(pane);        
-            }                
+            putValue(LONG_DESCRIPTION, 
+                "Create a file to tail for testing purposes");
+            
+            putValue(ACCELERATOR_KEY, 
+                KeyStroke.getKeyStroke(KeyEvent.VK_C, Event.CTRL_MASK));
+        }
+    
+        /**
+         * Saves the configuration
+         */
+        public void actionPerformed(ActionEvent e)
+        {
+            String file = "c:\\crap.txt";
+            FileStuffer stuffer = new FileStuffer(new File(file), 100);
+            stuffer.start();
+            statusBar_.setStatus("Created " + file + " for tailing");
         }
     }
 }
