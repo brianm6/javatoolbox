@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import org.apache.commons.lang.StringUtils;
 
 import toolbox.plugin.jdbc.QueryPlugin;
+import toolbox.util.JDBCSession;
 import toolbox.util.JDBCUtil;
 import toolbox.util.ui.JSmartOptionPane;
 
@@ -54,17 +55,20 @@ public class ListColumnsAction extends BaseAction
         else
         {
             Connection conn = null;
-
+            ResultSet rs = null;
+            String session = getPlugin().getCurrentProfile().getProfileName();
+            
             try
             {
-                conn = JDBCUtil.getConnection();
+                conn = JDBCSession.getConnection(session);
                 DatabaseMetaData meta = conn.getMetaData();
-                ResultSet rs = meta.getColumns(null, null, tableName, null);
+                rs = meta.getColumns(null, null, tableName, null);
                 String tables = JDBCUtil.format(rs);
                 getPlugin().getResultsArea().append(tables);
             }
             finally
             {
+                JDBCUtil.close(rs);
                 JDBCUtil.releaseConnection(conn);
             }
         }

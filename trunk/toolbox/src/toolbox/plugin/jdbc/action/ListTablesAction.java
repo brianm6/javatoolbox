@@ -6,6 +6,7 @@ import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 
 import toolbox.plugin.jdbc.QueryPlugin;
+import toolbox.util.JDBCSession;
 import toolbox.util.JDBCUtil;
 
 /**
@@ -39,11 +40,22 @@ public class ListTablesAction extends BaseAction
      */
     public void runAction(ActionEvent e) throws Exception
     {
-        Connection conn = JDBCUtil.getConnection();
-        DatabaseMetaData meta = conn.getMetaData();
-        ResultSet rs = meta.getTables(null, null, null, null);
-        String tables = JDBCUtil.format(rs);
-        getPlugin().getResultsArea().append(tables);
-        JDBCUtil.releaseConnection(conn);
+        Connection conn = null;
+        ResultSet rs = null;
+        String session = getPlugin().getCurrentProfile().getProfileName();
+        
+        try
+        {
+            conn = JDBCSession.getConnection(session);
+            DatabaseMetaData meta = conn.getMetaData();
+            rs = meta.getTables(null, null, null, null);
+            String tables = JDBCUtil.format(rs);
+            getPlugin().getResultsArea().append(tables);
+        }
+        finally
+        {
+            JDBCUtil.close(rs);
+            JDBCUtil.releaseConnection(conn);
+        }
     }
 }
