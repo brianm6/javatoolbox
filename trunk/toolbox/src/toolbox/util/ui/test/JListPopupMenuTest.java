@@ -13,7 +13,7 @@ import toolbox.util.SwingUtil;
 import toolbox.util.ui.JListPopupMenu;
 
 /**
- * Unit test for JSmartTextArea
+ * Unit test for JListPopupMenuTest
  */
 public class JListPopupMenuTest extends TestCase
 {
@@ -27,8 +27,12 @@ public class JListPopupMenuTest extends TestCase
         TestRunner.run(JListPopupMenuTest.class);
     }
 
+	//--------------------------------------------------------------------------
+    // Constructors 
+    //--------------------------------------------------------------------------
+    
     /**
-     * Constructor for JSmartTextAreaTest.
+     * Constructor for JListPopupMenuTest
      * 
      * @param arg0  Name
      */
@@ -37,12 +41,18 @@ public class JListPopupMenuTest extends TestCase
         super(arg0);
     }
     
+	//--------------------------------------------------------------------------
+    // Unit Tests 
+    //--------------------------------------------------------------------------
+        
     /**
-     * Tests autoscroll feature
+     * Tests popupmenu
      */
-    public void testAutoScroll()
+    public void testListPopup()
     {
-        JFrame frame = new JFrame("testAutoScroll");        
+        JFrame frame = new JFrame("testListPopup");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                
         Container cp = frame.getContentPane();
         cp.setLayout(new BorderLayout());
         
@@ -51,7 +61,7 @@ public class JListPopupMenuTest extends TestCase
         
         cp.add(new JScrollPane(list));
         frame.pack();
+		SwingUtil.centerWindow(frame);
         frame.setVisible(true);
-        SwingUtil.centerWindow(frame);
     }
 }
