@@ -38,8 +38,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
-import toolbox.util.BeanUtil;
-import toolbox.util.StringUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.ui.CompoundIcon;
 import toolbox.util.ui.ImageCache;
@@ -187,7 +185,6 @@ public class JFlipPane extends JPanel implements IPreferenced
 
         buildView();
     }
-
 
     //--------------------------------------------------------------------------
     // Public
@@ -912,26 +909,3 @@ public class JFlipPane extends JPanel implements IPreferenced
         }
     }
 }
-
-/*
- * Revision History before before change of package name
- * ================================================================================
- * revision 1.19 2003/04/16 02:12:47 analogue Added saving/restoring of
- * preferences. Still need to verify. revision 1.18 2003/04/15 11:41:52 analogue
- * Removed method name debugs revision 1.17 2003/04/14 01:42:01 analogue Added T
- * O D O for saved/restore revision 1.16 2003/04/08 23:09:07 analogue Coding
- * standard updates revision 1.15 2003/03/28 08:38:34 analogue Removed unused
- * code revision 1.14 2003/03/27 04:14:27 analogue Axed loadIcon() and updated
- * to load gifs via ResourceUtil revision 1.13 2003/03/23 05:03:56 analogue
- * Removed tabs revision 1.12 2003/03/15 03:59:52 analogue Checkstyle updates
- * revision 1.11 2002/12/24 06:26:56 analogue None revision 1.10 2002/12/09
- * 09:02:11 analogue Checkstyle updates revision 1.9 2002/11/02 02:23:27
- * analogue Updated log4j to 1.2.7 revision 1.8 2002/11/02 01:38:37 analogue
- * Updated imports revision 1.7 2002/10/23 02:12:48 analogue Updated imports`
- * revision 1.6 2002/09/06 05:29:09 analogue Added method names to debug
- * revision 1.5 2002/09/04 03:32:56 analogue Less logging revision 1.4
- * 2002/08/24 05:18:56 analogue Javadoc updates revision 1.3 2002/08/23 02:51:39
- * analogue Removed getCurrent() revision 1.2 2002/08/22 05:35:01 analogue Debug
- * revision 1.1 2002/08/21 03:41:30 analogue Initial version
- * ================================================================================
- */
