@@ -7,6 +7,7 @@ import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Frame;
+import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.Window;
@@ -51,38 +52,70 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
 
     private static final String BUTTON_COLLAPSED = "Details";
     private static final String BUTTON_EXPANDED  = "No Details";
-        
+    
+    /**
+     * Button to dismiss the detailed message dialog box
+     */    
     private JButton okButton_;
+    
+    /**
+     * Button that toggles display of detailed message
+     */
     private JButton detailsButton_;
+    
+    /**
+     * Current expanded state of the detailed message area
+     */
     private boolean expanded_;
 
-    /** Containts the detailed message text */
+    /**
+     * Contains the detailed message text 
+     */
     private JTextArea detailArea_;
     
-    /** Encapsulating scrollpane for the detailed message area */
+    /** 
+     * Encapsulating scrollpane for the detailed message area 
+     */
     private JScrollPane detailScroller_;
 
+    /**
+     * Array of options buttons
+     */
     private JButton[] buttons_;
 
-    /** Icon used in pane */
+    /** 
+     * Icon used in pane 
+     */
     private transient Icon icon_;
     
-    /** Message to display */
+    /** 
+     * Message to display 
+     */
     private transient Object message_;
 
-    /** Message details */
+    /** 
+     * Message details 
+     */
     private Object details_;
 
-    /** Parent window */
+    /** 
+     * Parent window 
+     */
     private Window parent_;
 
-    /** Options to display to the user */
+    /** 
+     * Options to display to the user 
+     */
     private transient Object[] options_;
 
-    /** Value that should be initially selected in <code>options</code> */
+    /** 
+     * Value that should be initially selected in <code>options</code> 
+     */
     private transient Object initialValue_;
 
-    /** Message type */
+    /** 
+     * Message type 
+     */
     private int messageType_;
 
     /**
@@ -105,19 +138,29 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
      */
     private Object[] selectionValues_;
 
-    /** Value the user has input */
+    /** 
+     * Value the user has input 
+     */
     private Object inputValue_;
     
-    /** Initial value to select in <code>selectionValues</code> */
+    /** 
+     * Initial value to select in <code>selectionValues</code> 
+     */
     private Object initialSelectionValue_;
 
-    /** If true, a UI widget will be provided to the user to get input */
+    /** 
+     * If true, a UI widget will be provided to the user to get input 
+     */
     private boolean wantsInput_;
 
-    /** Expand icon on details button when collapsed */
+    /** 
+     * Expand icon on details button when collapsed 
+     */
     private Icon forwardIcon_;
     
-    /** Collapse icon on details button when expanded */
+    /** 
+     * Collapse icon on details button when expanded 
+     */
     private Icon reverseIcon_;
 
     //--------------------------------------------------------------------------
@@ -1279,7 +1322,7 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
     {
         if (detailArea_ == null)
         {
-            detailArea_ = new JSmartTextArea();
+            detailArea_ = new JSmartTextArea(false, SwingUtil.isAntiAliased());
             detailArea_.setFont(SwingUtil.getPreferredMonoFont());
             detailScroller_ = new JScrollPane(detailArea_);
 
@@ -1338,10 +1381,10 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
     {
         if (buttons_ == null)
         {
-            okButton_ = new JButton("OK");
+            okButton_ = new JSmartButton("OK");
             okButton_.addActionListener(this);
 
-            detailsButton_ = new JButton(BUTTON_COLLAPSED);
+            detailsButton_ = new JSmartButton(BUTTON_COLLAPSED);
             detailsButton_.setHorizontalTextPosition(SwingConstants.LEADING);            
             detailsButton_.setIcon(forwardIcon_);
             detailsButton_.addActionListener(this);
@@ -1352,5 +1395,37 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
         }
 
         return buttons_;
+    }
+    
+    //--------------------------------------------------------------------------
+    // AntiAliased Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see toolbox.util.ui.AntiAliased#isAntiAlias()
+     */
+    public boolean isAntiAliased()
+    {
+        return SwingUtil.isAntiAliased();
+    }
+
+    /**
+     * @see toolbox.util.ui.AntiAliased#setAntiAlias(boolean)
+     */
+    public void setAntiAliased(boolean b)
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    // Overrides JComponent
+    //--------------------------------------------------------------------------
+
+    /**
+     * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
+     */
+    public void paintComponent(Graphics gc)
+    {
+        SwingUtil.makeAntiAliased(gc, isAntiAliased());
+        super.paintComponent(gc);
     }
 }

@@ -19,6 +19,9 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
+import toolbox.util.ui.JSmartButton;
+import toolbox.util.ui.JSmartCheckBox;
+
 /**
  * Simple font selection dialog. Includes ability to view fonts anti-aliased
  * and also to apply font selection changes on the fly.
@@ -73,7 +76,7 @@ public class JFontChooserDialog extends JDialog
     /**
      * Creates a JFontChooserDialog
      * 
-     * @param  owner  Parent frame
+     * @param owner Parent frame
      */
     public JFontChooserDialog(Frame owner)
     {
@@ -83,8 +86,8 @@ public class JFontChooserDialog extends JDialog
     /**
      * Creates a JFontChooserDialog
      * 
-     * @param  owner  Parent frame
-     * @param  modal  Dialog is modal
+     * @param owner Parent frame
+     * @param modal Dialog is modal
      */
     public JFontChooserDialog(Frame owner, boolean modal)
     {
@@ -94,9 +97,9 @@ public class JFontChooserDialog extends JDialog
     /**
      * Creates a JFontChooserDialog
      * 
-     * @param  owner        Parent frame
-     * @param  modal        Set to true for a model dialog
-     * @param  defaultFont  Font to select by default
+     * @param owner Parent frame
+     * @param modal Set to true for a model dialog
+     * @param defaultFont Font to select by default
      */
     public JFontChooserDialog(Frame owner, boolean modal, Font defaultFont)
     {
@@ -106,10 +109,10 @@ public class JFontChooserDialog extends JDialog
     /**
      * Creates a JFontChooserDialog
      * 
-     * @param  owner        Parent frame
-     * @param  modal        Set to true for a model dialog
-     * @param  defaultFont  Font to select by default
-     * @param  antiAlias    Turns antialias on
+     * @param owner Parent frame
+     * @param modal Set to true for a model dialog
+     * @param defaultFont Font to select by default
+     * @param antiAlias Turns antialias on
      */
     public JFontChooserDialog(Frame owner, boolean modal, Font defaultFont, 
         boolean antiAlias)
@@ -122,8 +125,8 @@ public class JFontChooserDialog extends JDialog
     /**
      * Creates a JFontChooserDialog
      * 
-     * @param  owner  Parent frame
-     * @param  title  Frame title
+     * @param owner Parent frame
+     * @param title Frame title
      */
     public JFontChooserDialog(Frame owner, String title)
     {
@@ -133,9 +136,9 @@ public class JFontChooserDialog extends JDialog
     /**
      * Creates a JFontChooserDialog
      * 
-     * @param  owner  Parent frame
-     * @param  title  Frame title
-     * @param  modal  Modal dialog
+     * @param owner Parent frame
+     * @param title Frame title
+     * @param modal Modal dialog
      */
     public JFontChooserDialog(Frame owner, String title, boolean modal)
     {
@@ -149,6 +152,7 @@ public class JFontChooserDialog extends JDialog
      * @param owner Parent dialog
      * @param modal Set to true for a model dialog
      * @param defaultFont Font to select by default
+     * @param antialiased Antialiased flag
      */
     public JFontChooserDialog(Dialog owner, boolean modal, Font defaultFont, 
         boolean antialiased)
@@ -173,9 +177,9 @@ public class JFontChooserDialog extends JDialog
         fontChooser_.addFontSelectionListener(new FontSelectionListener());
         getContentPane().add(BorderLayout.CENTER, fontChooser_);
 
-        okButton_     = new JButton(new OKAction());
-        cancelButton_ = new JButton(new CancelAction());
-        applyButton_  = new JButton(new ApplyAction());
+        okButton_     = new JSmartButton(new OKAction());
+        cancelButton_ = new JSmartButton(new CancelAction());
+        applyButton_  = new JSmartButton(new ApplyAction());
         
         JPanel buttonPanel = new JPanel(new FlowLayout());
         buttonPanel.add(okButton_);
@@ -184,7 +188,7 @@ public class JFontChooserDialog extends JDialog
         
         JPanel p = new JPanel(new GridLayout(2, 1));
         JPanel a = new JPanel(new FlowLayout());
-        autoApplyCheckBox_ = new JCheckBox("Apply on selection change");
+        autoApplyCheckBox_ = new JSmartCheckBox("Apply on selection change");
         a.add(autoApplyCheckBox_);
         p.add(a);
         p.add(buttonPanel);
@@ -203,7 +207,7 @@ public class JFontChooserDialog extends JDialog
     /**
      * Adds a listener
      * 
-     * @param  listener  FontChooserDialog listener to add
+     * @param listener FontChooserDialog listener to add
      */
     public void addFontDialogListener(IFontChooserDialogListener listener)
     {
@@ -213,7 +217,7 @@ public class JFontChooserDialog extends JDialog
     /**
      * Removes a listener
      * 
-     * @param  listener  FontChooserDialog listener to remove
+     * @param listener FontChooserDialog listener to remove
      */
     public void removeFontDialogListener(IFontChooserDialogListener listener)
     {
@@ -250,7 +254,6 @@ public class JFontChooserDialog extends JDialog
         OKAction()
         {
             super("OK");
-            
             putValue(MNEMONIC_KEY, new Integer('o'));
             putValue(ACCELERATOR_KEY, 
                 KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0));
