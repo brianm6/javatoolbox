@@ -72,6 +72,7 @@ import toolbox.workspace.IPreferenced;
  *   <li>Infobar with file attributes
  *   <li>Refresh button
  * </ul>
+ * 
  * @see toolbox.util.ui.explorer.FileExplorerListener
  * @see toolbox.util.ui.explorer.FileNode
  * @see toolbox.util.ui.explorer.InfoBar 
@@ -420,17 +421,19 @@ public class JFileExplorer extends JPanel implements IPreferenced
      * 
      * @return JComboBox
      */
-    JComboBox getRootsComboBox() {
+    JComboBox getRootsComboBox()
+    {
         return rootsComboBox_;
     }
 
     
     /**
      * Package level access for the file list. Used by the InfoBar.
-     *  
+     * 
      * @return JList
      */
-    public JList getFileList() {
+    public JList getFileList()
+    {
         return fileList_;
     }
     
