@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
@@ -35,6 +36,7 @@ import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartOptionPane;
 import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.SmartAction;
+import toolbox.util.ui.table.AutoTailAction;
 import toolbox.util.ui.table.JSmartTable;
 import toolbox.util.ui.table.SmartTableModel;
 import toolbox.util.ui.table.TableSorter;
@@ -49,7 +51,6 @@ import toolbox.workspace.WorkspaceAction;
 public class JSourceView extends JPanel implements IPreferenced
 {
     // TODO: Figure out how to save table column sizes
-    // TODO: Add chart for visualization
     // TODO: Custom table cell renders to color code unusually high or low 
     //       numbers, etc
     
@@ -176,7 +177,7 @@ public class JSourceView extends JPanel implements IPreferenced
     /**
      * Table that contains the gathered source code statistics.
      */
-    private JTable table_;
+    private JSmartTable table_;
     
     /**
      * Model for the source code statistics table.
@@ -406,7 +407,13 @@ public class JSourceView extends JPanel implements IPreferenced
                 ImageCache.getIcon(ImageCache.IMAGE_BAR_CHART),
                 "Show Pie Chart", 
                 new ShowPieChartAction());
-        
+
+        JToggleButton tail = 
+            JHeaderPanel.createToggleButton(
+                ImageCache.getIcon(ImageCache.IMAGE_LOCK),
+                "Auto scroll",
+                new AutoTailAction(table_));
+            
         JButton save =
             JHeaderPanel.createButton(
                 ImageCache.getIcon(ImageCache.IMAGE_SAVE),
@@ -415,6 +422,7 @@ public class JSourceView extends JPanel implements IPreferenced
         
         JToolBar tb = JHeaderPanel.createToolBar();
         tb.add(pieChart);
+        tb.add(tail);
         tb.add(save);
         
         JHeaderPanel header = 
