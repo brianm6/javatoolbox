@@ -27,6 +27,8 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.AbstractBorder;
 
+import toolbox.util.FontUtil;
+
 /**
  * A <code>JPanel</code> subclass that has a drop shadow border and that
  * provides a header with icon, title and tool bar.
@@ -113,6 +115,7 @@ public class JHeaderPanel extends JPanel
         super(new BorderLayout());
         this.isSelected = false;
         this.titleLabel = new JSmartLabel(title, icon, SwingConstants.LEADING);
+        FontUtil.setBold(titleLabel);
         JPanel top = buildHeader(titleLabel, bar);
 
         add(top, BorderLayout.NORTH);
@@ -513,6 +516,7 @@ public class JHeaderPanel extends JPanel
         tb.setRollover(true);
         return tb;
     }
+    
     
     /**
      * Creates a button specifically for a toolbar to be placed in a 
