@@ -19,7 +19,7 @@ import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartTextField;
 
 /**
- * Unit test for JFileExplorer.
+ * Unit test for {@link toolbox.util.ui.explorer.JFileExplorer}.
  */
 public class JFileExplorerTest extends UITestCase
 {
