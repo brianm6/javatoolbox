@@ -6,15 +6,22 @@ import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import javax.swing.AbstractAction;
+import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
+import javax.swing.text.BadLocationException;
 import javax.swing.text.JTextComponent;
 
 import org.apache.log4j.Logger;
 
+import toolbox.util.ExceptionUtil;
+import toolbox.util.FileUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.font.FontChooserException;
 import toolbox.util.ui.font.IFontChooserDialogListener;
@@ -80,8 +87,11 @@ public class JTextComponentPopupMenu extends JPopupMenu
         add(new JMenuItem(new CopyAction()));
         add(new JMenuItem(new PasteAction()));
         add(new JMenuItem(new SelectAllAction()));
+        addSeparator();
         add(new JMenuItem(new SetFontAction()));
         add(new JMenuItem(new FindAction(textComponent_)));
+        add(new JMenuItem(new InsertFileAction(textComponent_)));
+        
         textComponent_.addMouseListener(new JPopupListener(this));
     }
     
@@ -193,7 +203,6 @@ public class JTextComponentPopupMenu extends JPopupMenu
         }
     }
     
-    
     /**
      * Triggers activation of the Find Dialog box
      */    
@@ -212,7 +221,6 @@ public class JTextComponentPopupMenu extends JPopupMenu
                     if ((e.getKeyChar() == 6) &&  // F = 6th letter in alphabet
                         ((KeyEvent.getKeyModifiersText(
                             e.getModifiers()).equals("Ctrl"))))
-                            
                             actionPerformed(
                                 new ActionEvent(finalTextComp, 0, "" ));
                 }
@@ -223,6 +231,60 @@ public class JTextComponentPopupMenu extends JPopupMenu
         {
             JFindDialog findDialog = new JFindDialog(textComponent_);
             findDialog.setVisible(true);
+        }
+    }
+    
+    /**
+     * Inserts the text of a file at the currnet cursor location
+     */
+    protected static class InsertFileAction extends AbstractAction
+    {
+        private static File lastDir_;
+        private JTextComponent jtc_;
+        
+        public InsertFileAction(JTextComponent jtc)
+        {
+            super("Insert..");
+            jtc_ = jtc;
+        }
+        
+        public void actionPerformed(ActionEvent e)
+        {
+            try
+            {
+                JFileChooser chooser = null;
+                
+                if (lastDir_ == null)
+                    chooser = new JFileChooser();
+                else
+                    chooser = new JFileChooser(lastDir_);
+
+                if (chooser.showOpenDialog(jtc_) == 
+                    JFileChooser.APPROVE_OPTION) 
+                {
+                    String txt = FileUtil.getFileContents(
+                        chooser.getSelectedFile().getCanonicalPath());
+                    
+                    int curPos = jtc_.getCaretPosition();    
+                    
+                    jtc_.getDocument().
+                        insertString(curPos, txt, null);                        
+                }
+                
+                lastDir_ = chooser.getCurrentDirectory();
+            }
+            catch (BadLocationException ble)
+            {
+                ExceptionUtil.handleUI(ble, logger_);
+            }
+            catch (FileNotFoundException fnfe)
+            {
+                ExceptionUtil.handleUI(fnfe, logger_);
+            }
+            catch (IOException ioe)
+            {
+                ExceptionUtil.handleUI(ioe, logger_);
+            }
         }
     }
 }
