@@ -6,6 +6,7 @@
     <docviewer name="Calpha Viewer"      class="toolbox.plugin.docviewer.CalphaViewer"/>
     <docviewer name="JEdit Viewer"       class="toolbox.plugin.docviewer.JEditViewer"/>
     <docviewer name="Multivalent Viewer" class="toolbox.plugin.docviewer.MultivalentViewer"/>
+    <docviewer name="Multivalent Text Viewer" class="toolbox.plugin.docviewer.MultivalentViewer"/>
     <docviewer name="Pollo Viewer"       class="toolbox.plugin.docviewer.PolloViewer"/>
     <docviewer name="Text Viewer"        class="toolbox.plugin.docviewer.TextViewer"/>
     <docviewer name="WebWindow Viewer"   class="toolbox.plugin.docviewer.WebWindowViewer"/>
