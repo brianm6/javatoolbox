@@ -1,7 +1,6 @@
 package toolbox.findclass;
 
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.Iterator;
@@ -10,7 +9,6 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 import org.apache.log4j.Logger;
 import org.apache.regexp.RESyntaxException;
@@ -88,8 +86,8 @@ public class Main extends FindClassAdapter
             // Parse options
             CommandLine cmdLine = parser.parse(options, args, true);
     
-            // Set system.out to default output stream
-            Main mainClass = new Main(new OutputStreamWriter(System.out));
+            // Send output to System.out
+            Main mainClass = new Main(new PrintWriter(System.out, true));
             
             // Handle options
             for (Iterator i = cmdLine.iterator(); i.hasNext();)
@@ -129,17 +127,9 @@ public class Main extends FindClassAdapter
                     return;
             }
         }
-        catch (RESyntaxException re)
+        catch (Exception e)
         {
-            logger_.error("main", re);   
-        }
-        catch (ParseException pe)
-        {
-            logger_.error("main", pe);
-        }
-        catch (IOException ioe)
-        {
-            logger_.error("main", ioe);               
+            logger_.error("main", e);   
         }
     }
 
@@ -261,8 +251,7 @@ public class Main extends FindClassAdapter
         writer_.flush();
     }
  
-    /*
-     * 
+/*
      
 NAME
     findClass - finds classes in directories, jars, and the CLASSPATH
@@ -286,17 +275,17 @@ OPTIONS
 
 EXAMPLES
 
-    Example 1: Search for classes matching java.lang.Object
+    Example 1: Search for classes containing java.lang in their FQCN.
 
-        toolbox.findclass.Main java.lang.Object
+        toolbox.findclass.Main java.lang
 
-    Example 2: Search for classes ending in Proxy
+    Example 2: Search for classes ending in Proxy (case sensetive)
 
-        toolbox.findclass.Main Proxy$
+        toolbox.findclass.Main -c Proxy$
 
-    Example 3: Parse a DTD whose location is specified by a URL.
+    Example 3: Search for all classes and also list the search targets.
 
-    com.conradroche.matra.Matra -u http://host/path/name.dtd
+        toolbox.findclass.Main -t .*
     
 */
     
