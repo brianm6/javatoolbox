@@ -50,7 +50,6 @@ public final class StringUtil
         return left(Integer.toString(num), width);
     }
 
-
     /**
      * Left justifies a string within the given width. The string is padded with
      * space characters on the right to given width. Strings longer than the 
@@ -65,7 +64,6 @@ public final class StringUtil
         return left(str, width, ' ');
     }
 
-
     /**
      * Left justifies a string to a given width using a pad character. Strings 
      * longer than the width are returned unaltered.
@@ -79,7 +77,6 @@ public final class StringUtil
     {
         return left( str, width, padChar, false );
     }
-    
     
     /**
      * Left justifies a string to a given width using a pad character. Strings 
@@ -119,7 +116,6 @@ public final class StringUtil
         return justStr;
     }
     
-    
     /**
      * Right justifies a string representing an integer within the given width.
      * The num is converted to a string which is padded with space characters
@@ -149,7 +145,6 @@ public final class StringUtil
         return right(str, width, ' ');
     }
 
-
     /**
      * Right justifies a string to the given width and pad character. If the 
      * string is longer than the width, the string is returned unalteded.
@@ -163,7 +158,6 @@ public final class StringUtil
     {
         return right( str, width, padChar, false );
     }
-   
    
     /**
      * Right justifies a string to a given width using a pad character. If the
@@ -204,7 +198,6 @@ public final class StringUtil
         return justStr;
     }
 
-
     /**
      * Return the given list as a debug string
      * 
@@ -226,7 +219,6 @@ public final class StringUtil
         return buf.toString();
     }
     
-    
     /**
      * Convenience method to check if a string is null or of zero length
      *
@@ -235,12 +227,8 @@ public final class StringUtil
      */
     public static final boolean isNullOrEmpty(String s) 
     {
-        if (s == null || s.length() == 0)
-            return true;
-        else
-            return false;
+        return (s == null || s.length() == 0);
     }
-
     
     /**
      * Convenience method to check if a string is null, empty, or blank
@@ -251,12 +239,8 @@ public final class StringUtil
      */
     public static final boolean isNullEmptyOrBlank(String s)
     {
-        if (isNullOrEmpty(s) || s.trim().length() == 0)
-            return true;
-        else
-            return false;
+        return (isNullOrEmpty(s) || s.trim().length() == 0);
     }
-
     
     /**
      * Generates a numbered ruler underneath a string for character counting 
@@ -299,7 +283,6 @@ public final class StringUtil
 
         return sb.toString();
     }
-
     
     /**
      * Truncates a string to the given length. If s.length() <= n, returns s.
@@ -316,7 +299,6 @@ public final class StringUtil
         else
             return s.substring(0, n);    
     }  
-
     
     /**
      * Repeats a string a specified number of times
@@ -334,7 +316,6 @@ public final class StringUtil
             
         return sb.toString();
     }
-
     
     /**
      * Wraps a string to a default width of 80
@@ -346,7 +327,6 @@ public final class StringUtil
     {
         return wrap(s, 80);
     }
-
     
     /** 
      * Wraps a string to a default width of 80. The beginnning of line and
@@ -366,7 +346,6 @@ public final class StringUtil
     {
         return wrap(s, 80, border);
     }
-
     
     /**
      * Wraps a string to a given width. The beginning of line and end of line
@@ -385,7 +364,6 @@ public final class StringUtil
         else
             return wrap(s, width, "", "");
     }
-
     
     /**
      * Wraps a string to a given width
@@ -398,7 +376,6 @@ public final class StringUtil
     {
         return wrap(s, width, "", "");    
     }
-    
     
     /**
      * Wraps a string to the specified criteria
@@ -430,7 +407,6 @@ public final class StringUtil
         return wrapped;
     }
     
-    
     /**
      * Replace all occurences of a string within another string
      *
@@ -443,7 +419,6 @@ public final class StringUtil
     {
         return replace(text, repl, with, -1);
     }
-
 
     /**
      * Replace a string with another string inside a larger string, for the 
@@ -474,7 +449,6 @@ public final class StringUtil
         buf.append(text.substring(start));
         return buf.toString();
     }
-
     
     /**
      * Returns arary of individual tokens from a string
@@ -492,7 +466,6 @@ public final class StringUtil
         
         return tokens;
     }
-
 
     /**
      * Trims leading and trailing characters from a string

@@ -6,8 +6,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * Utility class that deals only with the DATE portions of the 
- * java.util.Date object
+ * Utility class that deals only with the DATE portions of the java.util.Date 
+ * object.
  * 
  * <p><pre>
  * 
@@ -18,7 +18,7 @@ import java.util.Date;
  *              this class!!! Use DateTimeUtil instead. 
  * </pre>
  */
-public class DateUtil
+public final class DateUtil
 {
     //--------------------------------------------------------------------------
     // Constructors
@@ -47,7 +47,6 @@ public class DateUtil
         return df.format(d);
     }
 
-
     /**
      * Adds a given number of days to a date. The original date is returned 
      * for chaining.
@@ -65,7 +64,6 @@ public class DateUtil
         return date;
     }
 
-
     /**
      * Adds a given number of weeks to a date. The original date is returned 
      * for chaining.
@@ -78,7 +76,6 @@ public class DateUtil
     {
         return addDays(date, weeks * 7);
     }
-
 
     /**
      * Compares only the date portions of a Date object
@@ -100,7 +97,6 @@ public class DateUtil
             return 1;
     }
 
-
     /**
      * Copies only the date portion of an existing date. The time portion is 
      * zeroed out.
@@ -119,7 +115,6 @@ public class DateUtil
         return c.getTime();
     }
 
-
     /**
      * Gets the beginning of the current month. Time portion is zeroed out.
      *
@@ -134,13 +129,12 @@ public class DateUtil
         return c.getTime();
     }
 
-
     /**
      * Compares two dates for equality based on year, month, and day
      *
-     * @param    date1   First date
-     * @param    date2   Second date
-     * @return   True if the dates are equal, false otherwise
+     * @param   date1   First date
+     * @param   date2   Second date
+     * @return  True if the dates are equal, false otherwise
      */
     public static boolean equals(Date date1, Date date2)
     {
@@ -156,7 +150,6 @@ public class DateUtil
             cal1.get(Calendar.DAY_OF_MONTH) == cal2.get(Calendar.DAY_OF_MONTH);
     }
 
-
     /**
      * Gets the current date with the time portion zeroed out
      * 
@@ -167,19 +160,17 @@ public class DateUtil
         return zeroTime(new Date());
     }
 
-
     /**
      * Gets the next occurrence of a given day relative to today.
      * Answers the question: What date is next Thursday?
      *
-     * @param    day  Calendar.MONDAY, TUE, ...
-     * @return   Next occuring date of the given day
+     * @param   day  Calendar.MONDAY, TUE, ...
+     * @return  Next occuring date of the given day
      */
     public static Date getNextDay(int day)
     {
         return getNextDay(getToday(), day);
     }
-
 
     /**
      * Gets the next occurrence of a given day relative to a date.
@@ -208,7 +199,6 @@ public class DateUtil
         return c.getTime();
     }
 
-
     /**
      * Gets the previous occurence of the given day of the week relative to
      * today. Answers the question: What was the date of last Wednesday?
@@ -220,7 +210,6 @@ public class DateUtil
     {
         return getPreviousDay(getToday(), day);
     }
-
 
     /**
      * Gets the previous occurrence of the given day 
@@ -248,7 +237,6 @@ public class DateUtil
         return c.getTime();
     }
 
-
     /**
      * Computes the number of days difference between two dates
      *
@@ -269,7 +257,6 @@ public class DateUtil
         return (int) secs / secsInDay;
     }
 
-
     /**
      * Computes number of whole weeks difference between two dates
      *
@@ -283,10 +270,9 @@ public class DateUtil
         return (days + 1) / 7;
     }
 
-
     /**
-     * Determines if a date is before another date.
-     * Time is not recognized in this comparison.
+     * Determines if a date is before another date. Time is not recognized in 
+     * this comparison.
      * 
      * @param  isThis      Is this date..
      * @param  beforeThis  Before this date?
@@ -318,15 +304,11 @@ public class DateUtil
             else
             {
                 // Months are the same so compare days
-                if (cal1.get(Calendar.DAY_OF_MONTH) < 
-                    cal2.get(Calendar.DAY_OF_MONTH))
-                    return true;
-                else
-                    return false;
+                return (cal1.get(Calendar.DAY_OF_MONTH) < 
+                        cal2.get(Calendar.DAY_OF_MONTH));
             }
         }
     }
-
 
     /**
      * Determines if a date is between a given date range inclusize of the
@@ -341,7 +323,6 @@ public class DateUtil
     {
         return isOnOrAfter(date, begin) && isOnOrBefore(date, end);
     }
-
 
     /**
      * Determines if a date is on or after a given date.
@@ -358,7 +339,6 @@ public class DateUtil
             return isBefore(b, a);
     }
 
-
     /**
      * Determines if a date is on or before a given date
      * 
@@ -374,10 +354,9 @@ public class DateUtil
             return isBefore(isThis, beforeThis);
     }
 
-
     /**
-     * Zeros out the time portion of the given date
-     * Returns original date for chaining
+     * Zeros out the time portion of the given date. Returns original date for 
+     * chaining.
      * 
      * @param  d  Date to zero out
      * @return Date with zeroed out time
@@ -394,22 +373,19 @@ public class DateUtil
         return d;
     }
 
-
     /**
-     *  Rounds number of days to a weekly number. If number of
-     *  days is not wholly divisible by a week, then the week
-     *  is rounded down if less than or equals to the 3rd day
-     *  of the week. If greater than or equal to the 4th day
-     *  of the week, then it is rounded up.
+     * Rounds number of days to a weekly number. If number of days is not 
+     * wholly divisible by a week, then the week is rounded down if less than 
+     * or equal to the 3rd day of the week. If greater than or equal to the 
+     * 4th day of the week, then it is rounded up.
      *
-     *  @param    days   Number of days
-     *  @return   Number of weeks in given number of days
+     * @param    days   Number of days
+     * @return   Number of weeks in given number of days
      */
     public static int roundToWeeks(int days)
     {
         return Math.round((days / (float) 7));
     }
-
 
     /**
      * Subtracts days from a given date

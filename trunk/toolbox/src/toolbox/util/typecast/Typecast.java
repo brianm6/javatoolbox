@@ -25,7 +25,6 @@ import java.util.Map;
  */
 public class Typecast
 {
-
     // INSTANCE VARIABLES
 
     private Class toClass_;
@@ -141,6 +140,7 @@ public class Typecast
 
         IdentityCache cache = getCache(policy);
         Object object = null;
+        
         synchronized (cache)
         {
             object = cache.get(identity);
@@ -149,14 +149,22 @@ public class Typecast
                     identity,
                     object = newInstance(identity, policy, loader));
         }
+        
         return object;
     }
 
-    // HELPER METHODS
+    //--------------------------------------------------------------------------
+    // Private
+    //--------------------------------------------------------------------------
 
+    /**
+     * @param  policy  Policy
+     * @return Cache
+     */
     private IdentityCache getCache(String policy)
     {
         IdentityCache rVal = (IdentityCache) cache_.get(policy);
+        
         if (rVal == null)
         {
             try
@@ -173,9 +181,15 @@ public class Typecast
         return rVal;
     }
 
-    private Object newInstance(
-        Object identity,
-        String policy,
+    /**
+     * Creates new instance
+     * 
+     * @param identity
+     * @param policy
+     * @param loader
+     * @return
+     */
+    private Object newInstance(Object identity, String policy, 
         ClassLoader loader)
     {
         try

@@ -42,10 +42,9 @@ public final class ThreadUtil
         }
         catch(Exception e)
         {
-            // Ignore
+            ;// Ignore
         }
     }
-    
     
     /**
      * Joins the current thread without try/catch business
@@ -54,7 +53,6 @@ public final class ThreadUtil
     {
         join(Thread.currentThread(), 0);
     }
-
 
     /**
      * Joins the current thread without try/catch business
@@ -65,7 +63,6 @@ public final class ThreadUtil
     {
         join(Thread.currentThread(), millis);
     }
-
 
     /**
      * Joins the given thread
@@ -82,11 +79,10 @@ public final class ThreadUtil
             }
             catch(InterruptedException e)
             {
-                // Ignore
+                ;// Ignore
             }
         }
     }
-
 
     /**
      * Joins the given thread
@@ -104,11 +100,10 @@ public final class ThreadUtil
             }
             catch(InterruptedException e)
             {
-                // Ignore
+                ;// Ignore
             }
         }
     }
-
 
     /**
      * Stops a thread as gracefully as possible with a default max wait of 
@@ -120,7 +115,6 @@ public final class ThreadUtil
     {
         stop(t, 1000);
     }
-
 
     /**
      * Stops a thread as gracefully as possible within a given amount of time.
@@ -145,7 +139,6 @@ public final class ThreadUtil
             t = null;                    
     }
 
-
     /**
      * Runs an objects method in a separate thread 
      * 
@@ -158,7 +151,6 @@ public final class ThreadUtil
     {
         return run(target, methodName, new Object[] {param});
     }
-
     
     /**
      * Runs an objects method in a separate thread 
@@ -176,7 +168,6 @@ public final class ThreadUtil
         thread.start(); 
         return thread; 
     }
-
 
     /**
      * Runs an object's method in a separate thread 

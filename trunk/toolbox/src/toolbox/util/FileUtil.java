@@ -73,7 +73,6 @@ public final class FileUtil
         }
     }
 
-
     /**
      * Reads in the contents of a text file into a single string
      *
@@ -103,7 +102,6 @@ public final class FileUtil
 
         return text.toString();
     }
-
 
     /**
      * Reads in the contents of a file into byte array
@@ -143,12 +141,12 @@ public final class FileUtil
     /**     
      * Writes out the contents to a text file from a single string.     
      *     
-     * @param   filename    Name of the file     
-     * @param   contents    Contents to store in the file
-     * @param   append      Specify if you want to append to the file     
+     * @param   filename  Name of the file     
+     * @param   contents  Contents to store in the file
+     * @param   append    Specify if you want to append to the file     
      * @return  Contents of the file as a string
      * @throws  FileNotFoundException if file not found
-     * @throws  IOException on IO error
+     * @throws  IOException on I/O error
      */
     public static String setFileContents(
         String filename,
@@ -156,7 +154,6 @@ public final class FileUtil
         boolean append)
         throws FileNotFoundException, IOException
     {
-
         FileWriter file = new FileWriter(filename, append);
 
         if (file == null)
@@ -170,7 +167,6 @@ public final class FileUtil
 
         return contents;
     }
-
 
     /**     
      * Writes out the contents of a byte array to a file
@@ -200,13 +196,12 @@ public final class FileUtil
         fos.close();
     }
 
-
     /**     
      * Writes a string to a file
      *     
-     * @param   file        File to write to
-     * @param   contents    Contents to store in the file
-     * @param   append      Specify if you want to append to the file     
+     * @param   file      File to write to
+     * @param   contents  Contents to store in the file
+     * @param   append    Specify if you want to append to the file     
      * @return  Contents of the file as a string
      * @throws  FileNotFoundException if file not found
      * @throws  IOException on IO error
@@ -220,7 +215,6 @@ public final class FileUtil
         return setFileContents(file.getAbsolutePath(), contents, append);
     }
 
-
     /**
      * Retrieves the System specific temp file directory
      *
@@ -230,7 +224,6 @@ public final class FileUtil
     {
         return new File(System.getProperty("java.io.tmpdir"));
     }
-
 
     /**
      * Creates a temporary directory in the System temporary directory
@@ -245,7 +238,6 @@ public final class FileUtil
         return f;
     }
 
-
     /**
      * Retrieves a suitable temporary file name for arbitrary use based on the 
      * system's temporary directory. The returned string is absolute in form.
@@ -257,7 +249,6 @@ public final class FileUtil
     {
         return getTempFilename(getTempDir());
     }
-
 
     /**
      * Creates a temporary filename for a file in the given directory
@@ -274,7 +265,6 @@ public final class FileUtil
         tmpFile.delete();
         return filename;
     }
-
 
     /**
      * Moves a file to a given directory. The destination directory must exist 
@@ -320,7 +310,7 @@ public final class FileUtil
         }
         finally
         {
-            // cleanup
+            ; // cleanup
         }
     }
 
@@ -368,7 +358,6 @@ public final class FileUtil
         return basket;
     }
 
-
     /**
      * Appends the file separator char to the end of a path if it already
      * doesn't exist.
@@ -384,7 +373,6 @@ public final class FileUtil
         return path;
     }
 
-
     /**
      * For a given file path, the file separator characters are changed to
      * match the File.separator for the current platform
@@ -398,7 +386,6 @@ public final class FileUtil
         newPath = newPath.replace('/', File.separatorChar);
         return newPath;
     }
-
 
     /**
      * Chops the extension off of a file's name
@@ -415,7 +402,6 @@ public final class FileUtil
         else
             return file.substring(0, dot);
     }
-    
     
     /**
      * Strips the path portion away from the relative or absolulte file path

@@ -11,8 +11,8 @@ import javax.swing.ImageIcon;
 import org.apache.log4j.Logger;
 
 /**
- * This class provides a central authority for retrieving system resources
- * in the form of streams, using a variety of location mechanisms.
+ * This class provides a central authority for retrieving system resources in 
+ * the form of streams, using a variety of location mechanisms.
  */
 public final class ResourceUtil
 {
@@ -36,8 +36,8 @@ public final class ResourceUtil
     //--------------------------------------------------------------------------
 
     /**
-     * Locates a resource with the given name using an exhaustive
-     * variety of methods. 
+     * Locates a resource with the given name using an exhaustive variety of 
+     * methods. 
      * 
      * @param   name   Name of the resource
      * @return  InputStream or null if resource not found.
@@ -83,7 +83,6 @@ public final class ResourceUtil
         return is;
     }
 
-
     /**
      * Locates a resource with the given name using an exhaustive variety of 
      * methods. This is just a convenience method to return the resource in the
@@ -110,7 +109,6 @@ public final class ResourceUtil
         return resource;
     }
 
-
     /**
      * This is just a convenience method to return a resource in the form of 
      * of an Icon. The name should refer to a valid GIF or JPG image. 
@@ -122,7 +120,6 @@ public final class ResourceUtil
     {
         return new ImageIcon(getResourceAsBytes(name));
     }
-
 
     /**
      * Locates the resource identified by the url.
@@ -138,13 +135,12 @@ public final class ResourceUtil
         return (u != null) ? u.openStream() : null;
     }
 
-
     /**
      * Locates the resource identified by the file name.
      *
-     * @param     filename    Name of the file resource.
-     * @return    Input stream representing the file resource.
-     * @throws    IOException if an error occurs.
+     * @param   filename    Name of the file resource.
+     * @return  Input stream representing the file resource.
+     * @throws  IOException if an error occurs.
      */
     public static InputStream getFileResource(String filename) 
         throws IOException
@@ -154,13 +150,12 @@ public final class ResourceUtil
         return (url != null) ? url.openStream() : null;
     }
 
-
     /**
      * Locates the resource associated with this class.
      *
-     * @param     resource    Relative name of the resource.
-     * @return    Input stream representing the resource.
-     * @throws    IOException if an error occurs.
+     * @param   resource    Relative name of the resource.
+     * @return  Input stream representing the resource.
+     * @throws  IOException if an error occurs.
      */
     public static InputStream getClassResource(String resource) 
         throws IOException
@@ -170,14 +165,13 @@ public final class ResourceUtil
         return (url != null) ? url.openStream() : null;
     }
 
-
     /**
      * Locates the resource associated with the supplied class.
      *
-     * @param     context     Class context to use.
-     * @param     resource    Relative name of the resource.
-     * @return    Input stream representing the resource.
-     * @throws    IOException if an error occurs.
+     * @param   context     Class context to use.
+     * @param   resource    Relative name of the resource.
+     * @return  Input stream representing the resource.
+     * @throws  IOException if an error occurs.
      */
     public static InputStream getClassResource(Class context, String resource)
         throws IOException
@@ -189,15 +183,14 @@ public final class ResourceUtil
         return (url != null) ? url.openStream() : null;
     }
 
-
     /**
      * Locates the resource associated with the package of the supplied
      * class.
      *
-     * @param     context     Class context to use.
-     * @param     resource    Relative name of the resource.
-     * @return    Input stream representing the resource.
-     * @throws    IOException if an error occurs.
+     * @param   context     Class context to use.
+     * @param   resource    Relative name of the resource.
+     * @return  Input stream representing the resource.
+     * @throws  IOException if an error occurs.
      */
     public static InputStream getPackageResource(Class context, 
         String resource) throws IOException
@@ -209,13 +202,12 @@ public final class ResourceUtil
         return (url != null) ? url.openStream() : null;
     }
 
-
     /**
      * Locates the resource identified by the url.
      *
-     * @param     url   URL locating the resource.
-     * @return    URL encapsulating the resource.
-     * @throws    IOException if an error occurs.
+     * @param   url   URL locating the resource.
+     * @return  URL encapsulating the resource.
+     * @throws  IOException if an error occurs.
      */
     public static URL getResourceURL(String url)
         throws IOException
@@ -233,13 +225,12 @@ public final class ResourceUtil
         return u;
     }
 
-
     /**
      * Locates the resource identified by the file name.
      *
-     * @param     filename    Name of the file resource.
-     * @return    URL encapsulating the resource.
-     * @throws    IOException if an error occurs.
+     * @param   filename    Name of the file resource.
+     * @return  URL encapsulating the resource.
+     * @throws  IOException if an error occurs.
      */
     public static URL getFileResourceURL(String filename)
         throws IOException
@@ -257,13 +248,12 @@ public final class ResourceUtil
         return file.toURL();
     }
 
-
     /**
      * Locates the resource associated with this class.
      *
-     * @param     resource    Relative name of the resource.
-     * @return    URL encapsulating the resource.
-     * @throws    IOException if an error occurs.
+     * @param   resource    Relative name of the resource.
+     * @return  URL encapsulating the resource.
+     * @throws  IOException if an error occurs.
      */
     public static URL getClassResourceURL(String resource)
         throws IOException
@@ -272,14 +262,13 @@ public final class ResourceUtil
         return getClassResourceURL(ResourceUtil.class, resource);
     }
 
-
     /**
      * Locates the resource associated with the supplied class.
      *
-     * @param     context     Class context to use.
-     * @param     resource    Relative name of the resource.
-     * @return    URL encapsulating the resource.
-     * @throws    IOException if an error occurs.
+     * @param   context     Class context to use.
+     * @param   resource    Relative name of the resource.
+     * @return  URL encapsulating the resource.
+     * @throws  IOException if an error occurs.
      */
     public static URL getClassResourceURL(Class context, String resource)
         throws IOException
@@ -298,15 +287,14 @@ public final class ResourceUtil
         return url;
     }
 
-
     /**
      * Locates the resource associated with the package of the supplied
      * class. 
      *
-     * @param     context     Class context to use.
-     * @param     resource    Relative name of the resource.
-     * @return    URL encapsulating the resource.
-     * @throws    IOException if an error occurs.
+     * @param   context     Class context to use.
+     * @param   resource    Relative name of the resource.
+     * @return  URL encapsulating the resource.
+     * @throws  IOException if an error occurs.
      */
     public static URL getPackageResourceURL(Class context, String resource)
         throws IOException
@@ -335,7 +323,6 @@ public final class ResourceUtil
 
         return url;
     }
-
     
     /**
      * Exports a resource to bytes and encapsulates in a class

@@ -8,7 +8,6 @@ import java.text.ParseException;
  */
 public class DoubleUtil
 {
-
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -52,7 +51,6 @@ public class DoubleUtil
         return b;
     }
 
-
     /**
      * Computes the average of a double array
      * 
@@ -72,7 +70,6 @@ public class DoubleUtil
         double avg = (double)sum/(double)d.length;
         return avg;
     }
-
 
     /**
      * Calculates difference of two arrays of doubles
@@ -94,7 +91,6 @@ public class DoubleUtil
         return diff;
     }
 
-
     /**
      * Determines the number of occurrences of a given value in an array
      *
@@ -112,7 +108,6 @@ public class DoubleUtil
                 
         return cnt;
     }
-
 
     /**
      * Calculates the median value
@@ -151,7 +146,6 @@ public class DoubleUtil
         return median;
     }
 
-
     /**
      * Calculates the sum of an array of doubles
      *
@@ -171,7 +165,6 @@ public class DoubleUtil
 
         return sum;
     }
-
 
     /**
      * Rounds a double using the given Decimal format
@@ -198,7 +191,6 @@ public class DoubleUtil
         }
     }
 
-
     /**
      * Rounds a string that contains a double value 
      * 
@@ -210,7 +202,6 @@ public class DoubleUtil
     {
         return round(Double.parseDouble(s), format);
     }
-    
     
     /**
      * Determines if a double is in a range [a..b]

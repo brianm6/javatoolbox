@@ -59,7 +59,7 @@ public class Relay implements Runnable
         }
         catch (IOException e)
         {
-            // Ignore
+            ;// Ignore
         }
         finally
         {

@@ -24,6 +24,7 @@ import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
 
+import toolbox.util.ExceptionUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.dump.Dumper;
 import toolbox.util.ui.JFlipPane;
@@ -47,8 +48,6 @@ public class JTcpTunnel extends JFrame
     private JTextArea   listenText_;
     private JTextArea   tunnelText_;
     private JLabel      status_;
-    private Relay       inRelay_;
-    private Relay       outRelay_;
     private JSplitPane  splitter_;
     private JButton     clearButton_;
 
@@ -128,7 +127,6 @@ public class JTcpTunnel extends JFrame
         return listenPort_;
     }
 
-
     /**
      * @return  Listen text area
      */
@@ -136,7 +134,6 @@ public class JTcpTunnel extends JFrame
     {
         return listenText_;
     }
-
 
     /**
      * @return  Host to forward traffic to
@@ -146,7 +143,6 @@ public class JTcpTunnel extends JFrame
         return tunnelHost_;
     }
 
-
     /**
      * @return  Port to forward traffic to
      */
@@ -154,7 +150,6 @@ public class JTcpTunnel extends JFrame
     {
         return tunnelPort_;
     }
-
 
     /**
      * @return Tunnel text area
@@ -400,8 +395,7 @@ public class JTcpTunnel extends JFrame
                 }
                 catch (Exception e)
                 {
-                    JSmartOptionPane.showExceptionMessageDialog(
-                        JTcpTunnel.this, e);
+                    ExceptionUtil.handleUI(e, logger_);
                 }
             }
         }

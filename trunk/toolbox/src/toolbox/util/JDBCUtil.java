@@ -144,7 +144,6 @@ public final class JDBCUtil
         
         return sb.toString();
     }
-
  
     /**
      * Returns a connection to the TURBO database
@@ -162,7 +161,6 @@ public final class JDBCUtil
             connProps_.getProperty("url"), connProps_);
     }
 
-
     /**
      * Releases a connection. Supresses any problems 
      * 
@@ -178,11 +176,10 @@ public final class JDBCUtil
             } 
             catch(SQLException e) 
             {
-                // Ignore
+                ; // Ignore
             }
         }
     }
-
  
     /**
      * Executes a SQL INSERT, UPDATE, or DELETE statement
@@ -209,7 +206,6 @@ public final class JDBCUtil
         
         return rows;
     }   
-    
     
     /**
      * Executes a SQL query statement and returns the result in a formatted
@@ -239,7 +235,6 @@ public final class JDBCUtil
         return formattedResults;
     } 
 
-
     /**
      * Initialzies the JDBC properties. Must be called before any of the other
      * methods are use
@@ -263,7 +258,6 @@ public final class JDBCUtil
         connProps_.put("password", password);
         connProps_.put("url", url);
     }
-
     
     /**
      * Returns the size of a given result set. The position of the cursor is

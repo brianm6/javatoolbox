@@ -3,7 +3,7 @@ package toolbox.util;
 import java.util.Properties;
 
 /**
- * Convenience methods dealing with properties
+ * Properties Utility Class
  */
 public final class PropertiesUtil
 {
@@ -54,7 +54,6 @@ public final class PropertiesUtil
         return b;
     }   
     
-    
     /**
      * Sets a boolean property in a properties object
      * 
@@ -67,7 +66,6 @@ public final class PropertiesUtil
     {
         props.setProperty(name, value + "");   
     }
-    
     
     /**
      * Gets an signed integer value from a properties object.
@@ -93,13 +91,12 @@ public final class PropertiesUtil
             }
             catch (NumberFormatException nfe)
             {
-                // return default value
+                ; // return default value
             }
         }
         
         return i;
     }   
-    
     
     /**
      * Sets an integer property in a properties object

@@ -31,7 +31,6 @@ public final class MathUtil
         return ((i%2) == 0);
     }
 
-
     /**
      * Determines if a given integer is an odd number
      * 
@@ -42,7 +41,6 @@ public final class MathUtil
     {
         return !isEven(i);
     }
-    
     
     /**
      * Adds a value to each index of an array
@@ -58,7 +56,6 @@ public final class MathUtil
             
         return array;
     }
-    
     
     /**
      *  Calculates the inverse normal cumulative distribution
@@ -110,7 +107,6 @@ public final class MathUtil
             return x;
         }
     }
-
     
     /**
      *  Returns sum of array of integers
@@ -130,4 +126,4 @@ public final class MathUtil
 
         return sum;
     }
-}    
+}

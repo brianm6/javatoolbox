@@ -55,18 +55,17 @@ public class ElapsedTime
     //--------------------------------------------------------------------------
 
     /**
-     * Creates an elapsed time with the start and end times 
-     * equal to the current time
+     * Creates an elapsed time with the start and end times equal to the 
+     * current time.
      */
     public ElapsedTime()
     {
         this(new Date());
     }
-    
 
     /**
-     * Creates an elapsed time with the start and end times 
-     * equal to the start time
+     * Creates an elapsed time with the start and end times equal to the start 
+     * time.
      * 
      * @param   startTime   Starting time
      */
@@ -74,7 +73,6 @@ public class ElapsedTime
     {
         this(startTime.getTime(), startTime.getTime());
     }
-
 
     /**
      * Creates an elapsed time from the given time span
@@ -86,7 +84,6 @@ public class ElapsedTime
     {
         this(startTime.getTime(), endTime.getTime());
     }
-
 
     /**
      * Creates an elapsed time from the given time span
@@ -100,7 +97,6 @@ public class ElapsedTime
         endTime_   = endTime;
         recalc();
     }
-
     
     /**
      * Creates an elapsed time from the given time components
@@ -120,7 +116,6 @@ public class ElapsedTime
         seconds_ = seconds;        
         millis_  = millis;
     }        
-
     
     /** 
      * Creates a copy of the given elapsed time
@@ -188,7 +183,6 @@ public class ElapsedTime
         return hours_;
     }
 
-
     /**
      * Accessor for the number of minutes elapsed [0..59]
      * 
@@ -220,7 +214,6 @@ public class ElapsedTime
         return millis_;
     }
 
-
     /**
      * Accessor for the staring time of the elapsed time
      * 
@@ -230,7 +223,6 @@ public class ElapsedTime
     {
         return new Date(startTime_);
     }
-
     
     /**
      * Accessor for the ending time of the elapsed time
@@ -242,7 +234,6 @@ public class ElapsedTime
         return new Date(endTime_);
     }
 
-
     /**
      * Sets the starting time for the elapsed time
      *
@@ -252,7 +243,6 @@ public class ElapsedTime
     {
         startTime_ = startTime.getTime();
     }
-
     
     /**
      * Sets the starting time for the elapsed time to the current time
@@ -261,7 +251,6 @@ public class ElapsedTime
     {
         startTime_ = new Date().getTime();
     }
-
     
     /**
      * Sets the ending time for the elapsed time
@@ -273,7 +262,6 @@ public class ElapsedTime
         endTime_ = endTime.getTime();    
         recalc();
     }
-
 
     /**
      * Sets the ending time for the elapsed time to the current time
@@ -310,7 +298,7 @@ public class ElapsedTime
     }
     
     //--------------------------------------------------------------------------
-    //  Overridden Methods from Object
+    //  Overridden from java.lang.Object
     //--------------------------------------------------------------------------
         
     /**
@@ -340,10 +328,9 @@ public class ElapsedTime
         return sb.toString().trim();
     }
 
-
     /**
-     * Compares elapsed times for the span of time regardless of the start
-     * or ending time
+     * Compares elapsed times for the span of time regardless of the start or 
+     * ending time.
      * 
      * @param   obj  Elapsed time to compare
      * @return  True if elapsed time is equals, false otherwise
@@ -354,13 +341,10 @@ public class ElapsedTime
             return false;
         else if (obj == this)
             return true;
-        else if (obj instanceof ElapsedTime &&
-            toString().equals(obj.toString()))
-            return true;
-        else
-            return false;
+        else 
+            return (obj instanceof ElapsedTime && 
+                    toString().equals(obj.toString()));
     }
-    
     
     /**
      * Override hashcode implementation to match equals()

@@ -13,13 +13,11 @@ import java.util.List;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
-import org.apache.log4j.Logger;
-
-
 /**
  * The purpose of the Interactive Console is to add interactive console based 
  * command execution with little effort to existing or new console based 
  * programs. Interactive Console provides the following commands:
+ * <pre>
  * 
  * 1. quit/exit - exits the JVM
  * 2. classpath - prints out classpath information
@@ -32,6 +30,7 @@ import org.apache.log4j.Logger;
  * 8. help      - you're reading it
  * 9. uptime    - shows uptime of process
  * 
+ * </pre>
  * To add a new command, just override handleCommand() in your subclass of 
  * InteractiveConsole and add interceptors for whatever commands you would like 
  * to support. Don't forget to call super.handleCommand() if your concrete 
@@ -40,52 +39,52 @@ import org.apache.log4j.Logger;
  */
 public abstract class Console
 {
-    /** Logger **/
-    private static final Logger logger_ = 
-        Logger.getLogger(Console.class);
-
-    /** Command to show help **/
-    public static final String CMD_HELP      = "help";
+    /** Command to show help */
+    public static final String CMD_HELP = "help";
     
-    /** Commands to exit the jvm **/
-    public static final String CMD_QUIT      = "quit";
+    /** Commands to exit the jvm */
+    public static final String CMD_QUIT = "quit";
     
-    /** Command to exit the jvm **/
-    public static final String CMD_EXIT      = "exit";
+    /** Command to exit the jvm */
+    public static final String CMD_EXIT = "exit";
     
-    /** Command to show the classpath **/
+    /** Command to show the classpath */
     public static final String CMD_CLASSPATH = "classpath";
     
-    /** Command to show the system properties **/
-    public static final String CMD_PROPS     = "props";
+    /** Command to show the system properties */
+    public static final String CMD_PROPS = "props";
     
-    /** Command to show memory consumption **/
-    public static final String CMD_MEM       = "mem";
+    /** Command to show memory consumption */
+    public static final String CMD_MEM = "mem";
     
-    /** Command to detach the console from the input stream **/
-    public static final String CMD_DETACH    = "detach";
+    /** Command to detach the console from the input stream */
+    public static final String CMD_DETACH = "detach";
     
-    /** Command to add a property to System.properties **/
-    public static final String CMD_SETPROP   = "setprop";
+    /** Command to add a property to System.properties */
+    public static final String CMD_SETPROP = "setprop";
     
-    /** Command to remove a property from System.properties **/
-    public static final String CMD_DELPROP   = "delprop";
+    /** Command to remove a property from System.properties */
+    public static final String CMD_DELPROP = "delprop";
 
-    /** Command to show how long the console has been active **/
-    public static final String CMD_UPTIME    = "uptime";
+    /** Command to show how long the console has been active */
+    public static final String CMD_UPTIME = "uptime";
     
-    /** Source of commands **/    
+    /** Source of commands */    
     private LineNumberReader lnr_;
     
-    /** Output of command results **/
+    /** Output of command results */
     private PrintStream ps_;
 
-    /** Time console was created **/
+    /** Time console was created */
     private long startTime_;
     
+    //--------------------------------------------------------------------------
+    // Constructors 
+    //--------------------------------------------------------------------------
+    
     /**
-     * Create an InteractiveConsole with System.in and 
-     * System.out as the default in/out streams
+     * Create an InteractiveConsole with System.in and System.out as the default
+     * in/out streams.
      */
     public Console()
     {
@@ -95,8 +94,8 @@ public abstract class Console
     /**
      * Create an InteractiveConsole with the given streams
      * 
-     * @param  is   Input stream to read commands from
-     * @param  os   Output stream to write command results to
+     * @param  is  Input stream to read commands from
+     * @param  os  Output stream to write command results to
      */
     public Console(InputStream is, PrintStream os)
     {
@@ -106,35 +105,34 @@ public abstract class Console
         lnr_ = new LineNumberReader(new InputStreamReader(is));                 
     }
  
-     /**
-      * This method must be called when ready to handle commands.
-      * The loop is neverending so this call does block (reading
-      * from the input stream)
-      */
-     public void startConsole()
-     {
-         while(true)
-         {
+    /**
+     * This method must be called when ready to handle commands. The loop is 
+     * neverending so this call does block (reading from the input stream)
+     */
+    public void startConsole()
+    {
+        while (true)
+        {
             String command = getNextCommand();
-             handleCommand(command);
-         }
-     }
+            handleCommand(command);
+        }
+    }
       
-     /**
-      * Accessor for the print stream that all output is sent to
-      * 
-      * @return PrintStream
-      */
-     public PrintStream getPrintStream()
-     {
-         return ps_;
-     }
-     
-     /**
-      * Retrieves the next command from the input stream 
-      * 
-      * @return String
-      */  
+    /**
+     * Accessor for the print stream that all output is sent to
+     * 
+     * @return PrintStream
+     */
+    public PrintStream getPrintStream()
+    {
+        return ps_;
+    }
+
+    /**
+     * Retrieves the next command from the input stream 
+     * 
+     * @return Next command
+     */
     public String getNextCommand()
     {
         String cmd = null;
@@ -152,19 +150,11 @@ public abstract class Console
         
         return cmd;
     }        
-
-    /**
-     * Accessor for the command prompt
-     * 
-     * @return Command prompt
-     */
-    public abstract String getPrompt();
-
     
     /**
      * Handles the command 
      * 
-     * @param  cmd   Command to handle
+     * @param  cmd  Command to handle
      */
     public void handleCommand(String cmd)
     {
@@ -190,6 +180,21 @@ public abstract class Console
             ps_.println("Unknown command: " + cmd);
     }
 
+    //--------------------------------------------------------------------------
+    // Abstract
+    //--------------------------------------------------------------------------
+
+    /**
+     * Accessor for the command prompt
+     * 
+     * @return Command prompt
+     */
+    public abstract String getPrompt();
+
+    //--------------------------------------------------------------------------
+    // Private
+    //--------------------------------------------------------------------------
+
     /**
      * Adds/sets a property to system properties 
      * 
@@ -198,6 +203,7 @@ public abstract class Console
     protected void commandSetProp(String cmd)
     {
         StringTokenizer st = new StringTokenizer(cmd," ");
+        
         if(st.countTokens() != 3)
             ps_.println("setprop <property name> <value>");
         else
@@ -215,6 +221,7 @@ public abstract class Console
     protected void commandDelProp(String cmd)
     {
         StringTokenizer st = new StringTokenizer(cmd," ");
+        
         if(st.countTokens() != 2)
             ps_.println("delprop <property name>");
         else
@@ -283,13 +290,13 @@ public abstract class Console
         {
             String name = (String)e.nextElement();
             
-            /* keep track of max length to line columns up */
+            // keep track of max length to line columns up
             if(name.length() > max)
                 max = name.length();
             list.add(name);
         }
 
-        /* looks nicer sorted by property name */        
+        // looks nicer sorted by property name
         Object[] arr = list.toArray();
         Arrays.sort(arr);
 
@@ -320,6 +327,7 @@ public abstract class Console
     {
         StringBuffer sb = new StringBuffer();
         String path = System.getProperty("java.class.path");
+        
         for (StringTokenizer st = new StringTokenizer(
             path, System.getProperty("path.separator")); 
                 st.hasMoreTokens();)
@@ -367,4 +375,3 @@ public abstract class Console
         getPrintStream().println(sb.toString());
     }
 }
-

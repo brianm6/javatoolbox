@@ -162,6 +162,7 @@ public class ClassFinder
         String toClassName = getClassName(toClass);
         List fromClassNames = getClassNames(fromClass);
         List allPackages = getAllPackages(fromClass, toClass);
+        
         List combinations =
             getCombinations(allPackages, fromClassNames, toClassName, prefix);
 
@@ -173,6 +174,7 @@ public class ClassFinder
 
                 //System.err.println( className );
                 Class clazz = loader.loadClass(className);
+                
                 if (toClass.isAssignableFrom(clazz))
                 {
                     putCache(
@@ -186,7 +188,7 @@ public class ClassFinder
             }
             catch (ClassNotFoundException ignore)
             {
-                // Ignore
+                ;// Ignore
             }
         }
 
@@ -249,13 +251,12 @@ public class ClassFinder
     protected void putCache(Class fromClass, Class toClass, String prefix,
         ClassLoader loader, String className)
     {
-
         cache_.put(getCacheKey(fromClass, toClass, prefix, loader), className);
     }
 
     /**
-     * Combine all of the fromClass packages and their heirarchy
-     * along with the toClass heirarchy
+     * Combine all of the fromClass packages and their heirarchy along with the 
+     * toClass heirarchy.
      * 
      * @param  fromClass  From class
      * @param  toClass    To class
@@ -297,8 +298,7 @@ public class ClassFinder
      * @param  packages         List of packages
      * @param  fromClassNames   List of names for from classes
      * @param  toClassName      Name of To class
-     * @param  prefix     Prefix
-     * 
+     * @param  prefix           Prefix
      * @return  List of classes matching combination
      */
     protected List getCombinations(List packages, List fromClassNames,
@@ -445,5 +445,4 @@ public class ClassFinder
 
         return names;
     }
-
 }
