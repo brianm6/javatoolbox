@@ -58,8 +58,7 @@ public class TreeTest extends TestCase
      */
     public void tearDown()
     {
-        FileUtil.cleanDir(rootDir_);
-        rootDir_.delete();
+        FileUtil.removeDir(rootDir_);
     }
 
     //--------------------------------------------------------------------------

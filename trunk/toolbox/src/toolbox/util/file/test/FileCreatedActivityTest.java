@@ -68,18 +68,19 @@ public class FileCreatedActivityTest extends TestCase
             
             // Run the activity again..should report 1  new file
             File[] secondRun = activity.getFiles(dir);
-            assertEquals("second run should contain one file", 
-                1, secondRun.length);
+            
+            assertEquals(
+                "second run should contain one file", 1, secondRun.length);
             
             logger_.info("New file activity: " + ArrayUtil.toString(secondRun));
+            
+            // Run the activity again.. should report no new files
+            File[] thirdRun = activity.getFiles(dir);
+            assertEquals(0, thirdRun.length);
         }
         finally
         {
-            if (dir != null)
-            {
-                FileUtil.cleanDir(dir);
-                dir.delete();                   
-            }
+            FileUtil.removeDir(dir);
         }
     }
 }
