@@ -15,7 +15,16 @@ import toolbox.util.ui.plugin.IStatusBar;
 public class JTailPlugin implements IPlugin
 {
     private JTail jtail_;
-    
+
+    //--------------------------------------------------------------------------
+    // Constructors 
+    //--------------------------------------------------------------------------
+        
+    public JTailPlugin()
+    {
+        jtail_ = new JTail();
+    }
+
     //--------------------------------------------------------------------------
     // IPlugin Interface
     //--------------------------------------------------------------------------
@@ -57,7 +66,6 @@ public class JTailPlugin implements IPlugin
      */
     public void init()
     {
-        jtail_ = new JTail();
     }
 
     /**
@@ -81,6 +89,7 @@ public class JTailPlugin implements IPlugin
      */
     public void setStatusBar(IStatusBar statusBar)
     {
+        jtail_.setStatusBar(statusBar);
     }
 
     /**
