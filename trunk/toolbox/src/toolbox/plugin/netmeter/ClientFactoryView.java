@@ -1,23 +1,21 @@
 package toolbox.plugin.netmeter;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
+import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
 import toolbox.forms.SmartComponentFactory;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JHeaderPanel;
 import toolbox.util.ui.JSmartButton;
-import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.SmartAction;
-import toolbox.util.ui.layout.ParagraphLayout;
 
 /**
  * ClientFactoryView is a user interface component that exposes the 
@@ -68,7 +66,7 @@ public class ClientFactoryView extends JHeaderPanel
             "Client Factory");
         
         plugin_ = plugin;
-        buildFormsView();
+        buildView();
     }
     
     //--------------------------------------------------------------------------
@@ -81,40 +79,6 @@ public class ClientFactoryView extends JHeaderPanel
     protected void buildView()
     {
         JPanel content = new JPanel(new BorderLayout());
-        JPanel inputPanel = new JPanel(new ParagraphLayout());
-        
-        inputPanel.add(new JSmartLabel("Server Hostname"), 
-            ParagraphLayout.NEW_PARAGRAPH);
-        
-        serverHostnameField_ = new JSmartTextField(12);
-        serverHostnameField_.setText(NetMeterPlugin.DEFAULT_HOSTNAME);
-        
-        serverPortField_ = new JSmartTextField(6);
-        serverPortField_.setText(NetMeterPlugin.DEFAULT_PORT + "");
-        
-        inputPanel.add(serverHostnameField_);
-        
-        inputPanel.add(
-            new JSmartLabel("Server Port"), 
-            ParagraphLayout.NEW_PARAGRAPH);
-        
-        inputPanel.add(serverPortField_);
-        
-        JPanel buttonPanel = new JPanel(new FlowLayout());
-        buttonPanel.add(new JSmartButton(new CreateAction()));
-        
-        content.add(inputPanel, BorderLayout.CENTER);
-        content.add(buttonPanel, BorderLayout.SOUTH);
-        setContent(content);
-    }
-
-    
-    /**
-     * Constructs the user interface.
-     */
-    protected void buildFormsView()
-    {
-        JPanel content = new JPanel(new BorderLayout());
 
         serverHostnameField_ = new JSmartTextField(12);
         serverHostnameField_.setText(NetMeterPlugin.DEFAULT_HOSTNAME);
@@ -122,38 +86,33 @@ public class ClientFactoryView extends JHeaderPanel
         serverPortField_ = new JSmartTextField(6);
         serverPortField_.setText(NetMeterPlugin.DEFAULT_PORT + "");
         
-        FormLayout layout = new FormLayout(
-            //"right:pref, 4dlu, left:pref",
-            "right:pref, pref, pref",
-            "pref, pref, 100px, pref, pref"); 
-        
-        layout.setRowGroups(new int[][] {{1,3}});
-        
+        FormLayout layout = new FormLayout("right:pref, pref, pref", "");
         DefaultFormBuilder builder = new DefaultFormBuilder(layout);
         builder.setComponentFactory(SmartComponentFactory.getInstance());
         builder.setDefaultDialogBorder();
         
-        builder.append("&Server Hostname");
-        //builder.appendLabelComponentsGapColumn();
-        builder.append(serverHostnameField_);
+        builder.append("&Server Hostname", serverHostnameField_);
         builder.nextLine();
         
-        builder.append("Server &Port");
-        //builder.appendLabelComponentsGapColumn();
-        builder.append(serverPortField_);
+        builder.append("Server &Port", serverPortField_);
         builder.nextLine();
         
-        builder.nextColumn();
-        builder.nextColumn();
-        builder.append(new JSmartButton(new CreateAction()));
+        builder.appendRelatedComponentsGapRow();
+        builder.nextLine();
+
+        builder.appendRow("pref");
+        CellConstraints cc = new CellConstraints();
         
-        //JPanel buttonPanel = new JPanel(new FlowLayout());
-        //buttonPanel.add(new JSmartButton(new CreateAction()));
+        builder.add(
+            new JSmartButton(new CreateAction()), 
+            cc.xyw(builder.getColumn(), builder.getRow(), 3, "c,f"));
         
-        //content.add(builder.getPanel(), BorderLayout.NORTH);
-        //content.add(buttonPanel, BorderLayout.SOUTH);
         setContent(builder.getPanel());
     }
+    
+    //--------------------------------------------------------------------------
+    // CreateAction
+    //--------------------------------------------------------------------------
     
     /**
      * CreateAction creates the actual ClientView component and hands it back
