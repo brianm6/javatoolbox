@@ -18,7 +18,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.text.BadLocationException;
 
 import org.apache.log4j.Logger;
-
 import org.jedit.syntax.JEditTextArea;
 
 import toolbox.util.ExceptionUtil;
@@ -98,11 +97,12 @@ public class JEditTextAreaPopupMenu extends JPopupMenu
      */
     public void buildView()
     {
-        add(new JMenuItem(new CopyAction()));
-        add(new JMenuItem(new PasteAction()));
-        add(new JMenuItem(new SelectAllAction()));
+        add(new JMenuItem(new CopyAction(textArea_)));
+        add(new JMenuItem(new CutAction(textArea_)));
+        add(new JMenuItem(new PasteAction(textArea_)));
+        add(new JMenuItem(new SelectAllAction(textArea_)));
         addSeparator();
-        add(new JMenuItem(new SetFontAction()));
+        add(new JMenuItem(new SetFontAction(textArea_)));
         add(new JMenuItem(new FindAction(textArea_)));
         add(new JMenuItem(new InsertFileAction(textArea_)));
         add(new JMenuItem(new SaveAsAction(textArea_)));
@@ -115,69 +115,104 @@ public class JEditTextAreaPopupMenu extends JPopupMenu
     //--------------------------------------------------------------------------
 
     /**
+     * Abstract class for all JEdit actions 
+     */
+    protected static abstract class JEditAction extends AbstractAction
+    {
+        JEditTextArea area_;
+        
+        public JEditAction(JEditTextArea area)
+        {
+            area_ = area;
+        }
+        
+        public JEditAction(String label, JEditTextArea area)
+        {
+            super(label);
+            area_ = area;
+        }
+    }
+
+    /**
      * Copies the contents of the currently selected indices to the clipboard
      */    
-    protected class CopyAction extends AbstractAction
+    protected static class CopyAction extends JEditAction
     {
-        public CopyAction()
+        public CopyAction(JEditTextArea area)
         {
-            super("Copy");
+            super("Copy", area);
         }
         
         public void actionPerformed(ActionEvent e)
         {
-            textArea_.copy();
+            area_.copy();
+        }
+    }
+
+    /**
+     * Cuts the contents of the currently selected indices
+     */    
+    protected static class CutAction extends JEditAction
+    {
+        public CutAction(JEditTextArea area)
+        {
+            super("Cut", area);
+        }
+        
+        public void actionPerformed(ActionEvent e)
+        {
+            area_.cut();
         }
     }
 
     /**
      * Pastes the contents of the clipboard into the text component
      */    
-    protected class PasteAction extends AbstractAction
+    protected static class PasteAction extends JEditAction
     {
-        public PasteAction()
+        public PasteAction(JEditTextArea area)
         {
-            super("Paste");
+            super("Paste", area);
         }
         
         public void actionPerformed(ActionEvent e)
         {
-            textArea_.paste();
+            area_.paste();
         }
     }
     
     /**
-     * Selects all items in the list box 
+     * Selects the entire contents of the textarea 
      */
-    protected class SelectAllAction extends AbstractAction
+    protected static class SelectAllAction extends JEditAction
     {
-        public SelectAllAction()
+        public SelectAllAction(JEditTextArea area)
         {
-            super("Select All");
+            super("Select All", area);
         }
         
         public void actionPerformed(ActionEvent e)
         {
-            textArea_.selectAll();
+            area_.selectAll();
         }
     }
     
     /**
      * Sets the font in the text component
      */
-    protected class SetFontAction extends AbstractAction
+    protected static class SetFontAction extends JEditAction
     {
-        public SetFontAction()
+        public SetFontAction(JEditTextArea area)
         {
-            super("Set font..");
+            super("Set font..", area);
         }
         
         public void actionPerformed(ActionEvent e)
         {
-            final Font originalFont = textArea_.getPainter().getFont();
+            final Font originalFont = area_.getPainter().getFont();
             
             // Find parent frame
-            Window w = SwingUtilities.getWindowAncestor(textArea_);
+            Window w = SwingUtilities.getWindowAncestor(area_);
             
             Frame frame = 
                 (w != null && w instanceof Frame) ? (Frame) w : new Frame();
@@ -191,19 +226,19 @@ public class JEditTextAreaPopupMenu extends JPopupMenu
                 {
                     try
                     {
-                        textArea_.getPainter().setFont(
+                        area_.getPainter().setFont(
                             fontChooser.getSelectedFont());
                     }
                     catch (FontChooserException fce)
                     {
-                        logger_.error(fce);
+                        ExceptionUtil.handleUI(fce, logger_);
                     }
                 }
 
                 public void cancelButtonPressed(JFontChooser fontChooser)
                 {
                     // Just restore the original font
-                    textArea_.getPainter().setFont(originalFont);
+                    area_.getPainter().setFont(originalFont);
                 }
 
                 public void applyButtonPressed(JFontChooser fontChooser)
@@ -221,7 +256,7 @@ public class JEditTextAreaPopupMenu extends JPopupMenu
     /**
      * Triggers activation of the Find Dialog box
      */    
-    protected class FindAction extends AbstractAction
+    protected static class FindAction extends AbstractAction
     {
         public FindAction(JEditTextArea textComp)
         {
@@ -255,15 +290,13 @@ public class JEditTextAreaPopupMenu extends JPopupMenu
     /**
      * Inserts the text of a file at the currnet cursor location
      */
-    protected static class InsertFileAction extends AbstractAction
+    protected static class InsertFileAction extends JEditAction
     {
         private static File lastDir_;
-        private JEditTextArea jtc_;
         
-        public InsertFileAction(JEditTextArea jtc)
+        public InsertFileAction(JEditTextArea area)
         {
-            super("Insert..");
-            jtc_ = jtc;
+            super("Insert..", area);
         }
         
         public void actionPerformed(ActionEvent e)
@@ -277,15 +310,15 @@ public class JEditTextAreaPopupMenu extends JPopupMenu
                 else
                     chooser = new JFileChooser(lastDir_);
 
-                if (chooser.showOpenDialog(jtc_) == 
+                if (chooser.showOpenDialog(area_) == 
                     JFileChooser.APPROVE_OPTION) 
                 {
                     String txt = FileUtil.getFileContents(
                         chooser.getSelectedFile().getCanonicalPath());
                     
-                    int curPos = jtc_.getCaretPosition();    
+                    int curPos = area_.getCaretPosition();    
                     
-                    jtc_.getDocument().
+                    area_.getDocument().
                         insertString(curPos, txt, null);                        
                 }
                 
@@ -309,15 +342,13 @@ public class JEditTextAreaPopupMenu extends JPopupMenu
     /**
      * Inserts the text of a file at the currnet cursor location
      */
-    protected static class SaveAsAction extends AbstractAction
+    protected static class SaveAsAction extends JEditAction
     {
         private static File lastDir_;
-        private JEditTextArea jtc_;
         
-        public SaveAsAction(JEditTextArea jtc)
+        public SaveAsAction(JEditTextArea area)
         {
-            super("Save As..");
-            jtc_ = jtc;
+            super("Save As..", area);
         }
         
         public void actionPerformed(ActionEvent e)
@@ -331,15 +362,12 @@ public class JEditTextAreaPopupMenu extends JPopupMenu
                 else
                     chooser = new JFileChooser(lastDir_);
 
-                if (chooser.showSaveDialog(jtc_) == 
-                    JFileChooser.APPROVE_OPTION) 
+                if (chooser.showSaveDialog(area_)==JFileChooser.APPROVE_OPTION) 
                 {
                     String saveFile = 
                         chooser.getSelectedFile().getCanonicalPath();
-                    
-                    logger_.debug("save file=" + saveFile);
-                    
-                    FileUtil.setFileContents(saveFile, jtc_.getText(), false);
+                        
+                    FileUtil.setFileContents(saveFile, area_.getText(), false);
                 }
                 
                 lastDir_ = chooser.getCurrentDirectory();
