@@ -97,9 +97,31 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
     private static final Logger logger_ = Logger.getLogger(TcpTunnel.class);
 
     //--------------------------------------------------------------------------
-    // Constants
+    // IPreferenced Constants
     //--------------------------------------------------------------------------
 
+    // Node and attributes
+    public static final String NODE_TCPTUNNEL       = "TCPTunnel";
+    public static final String PROP_SUPPRESS_BINARY =   "suppressBinary";
+    public static final String PROP_REMOTE_PORT     =   "remotePort";
+    public static final String PROP_REMOTE_HOST     =   "remoteHost";
+    public static final String PROP_LOCAL_PORT      =   "localPort";
+    
+    /**
+     * Java bean properties that are saved via the IPreferenced interface.
+     */
+    public static final String[] PROPS_SAVED = 
+    {
+        PROP_LOCAL_PORT,
+        PROP_REMOTE_HOST,
+        PROP_REMOTE_PORT,
+        PROP_SUPPRESS_BINARY 
+    };
+
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
     /**
      * Stream name for event inputstream.
      */
@@ -109,27 +131,6 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
      * Stream name for event outputstream.
      */
     private static final String NAME_STREAM_OUT = "tunnel --> server";
-
-    /**
-     * IPreferenced root node.
-     */
-    public static final String NODE_TCPTUNNEL = "TCPTunnel";
-    
-    // JavaBean properties
-    public static final String PROP_SUPPRESS_BINARY = "suppressBinary";
-    public static final String PROP_REMOTE_PORT = "remotePort";
-    public static final String PROP_REMOTE_HOST = "remoteHost";
-    public static final String PROP_LOCAL_PORT = "localPort";
-    
-    /**
-     * Java bean properties that are saved via the IPreferenced interface.
-     */
-    public static final String[] SAVED_PROPS = {
-        PROP_LOCAL_PORT,
-        PROP_REMOTE_HOST,
-        PROP_REMOTE_PORT,
-        PROP_SUPPRESS_BINARY 
-    };
     
     /**
      * Substitution character used to suppress printout of non-ascii characters.
@@ -141,7 +142,7 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
     //--------------------------------------------------------------------------
 
     /**
-     * Server socket for tunnel port on localhost.
+     * Tunnel server socket on localhost.
      */
     private ServerSocket serverSocket_;
 
@@ -151,22 +152,17 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
     private int localPort_;
 
     /**
-     * Intended recipient hostname.
+     * Destination hostname.
      */
     private String remoteHost_;
 
     /**
-     * Intended recipient port.
+     * Destination port.
      */
     private int remotePort_;
     
     /**
-     * Flag to shutdown.
-     */
-    private boolean stopped_;
-
-    /**
-     * Listeners of tunnel events.
+     * Tunnel event listeners.
      */
     private List listeners_;
 
@@ -260,7 +256,8 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a TcpTunnel.
+     * Creates a TcpTunnel listening on port 8888 and re-routing to port 9999
+     * on the local host.
      */
     public TcpTunnel()
     {
@@ -428,8 +425,7 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
             // Server socket on listenPort
             serverSocket_ = new ServerSocket(localPort_);
             serverSocket_.setSoTimeout(5000);
-            stopped_ = false;
-            
+
             Thread t = new Thread(new ServerThread());
             t.start();
             fireTunnelStarted();
@@ -451,7 +447,6 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
     public void stop()
     {
         machine_.checkTransition(ServiceTransition.STOP);
-        stopped_ = true;
         SocketUtil.close(serverSocket_);
         fireStatusChanged("Tunnel stopped");
         machine_.transition(ServiceTransition.STOP);
@@ -489,7 +484,7 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
     {
         Element root = XOMUtil.getFirstChildElement(
             prefs, NODE_TCPTUNNEL, new Element(NODE_TCPTUNNEL));
-        PreferencedUtil.readPreferences(this, root, SAVED_PROPS);
+        PreferencedUtil.readPreferences(this, root, PROPS_SAVED);
     }
 
 
@@ -499,7 +494,7 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
     public void savePrefs(Element prefs) throws PreferencedException
     {
         Element root = new Element(NODE_TCPTUNNEL);
-        PreferencedUtil.writePreferences(this, root, SAVED_PROPS);
+        PreferencedUtil.writePreferences(this, root, PROPS_SAVED);
         XOMUtil.insertOrReplace(prefs, root);
     }
     
@@ -721,7 +716,7 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
                 }
                 catch (Exception e)
                 {
-                    if (!stopped_)
+                    if (getState() != ServiceState.STOPPED)
                         ExceptionUtil.handleUI(e, logger_);
                 }
             }
