@@ -3,29 +3,38 @@ package toolbox.workspace.host;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.beans.PropertyVetoException;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
-import javax.swing.SwingUtilities;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
+
+import nu.xom.Attribute;
+import nu.xom.Element;
+import nu.xom.Elements;
 
 import org.apache.commons.collections.BidiMap;
 import org.apache.commons.collections.bidimap.DualHashBidiMap;
 import org.apache.log4j.Logger;
 
+import toolbox.util.ClassUtil;
 import toolbox.util.ExceptionUtil;
-import toolbox.util.SwingUtil;
+import toolbox.util.XOMUtil;
+import toolbox.util.ui.JSmartInternalFrame;
 import toolbox.workspace.IPlugin;
+import toolbox.workspace.IPreferenced;
 import toolbox.workspace.PluginWorkspace;
 
 /**
  * Plugin host that associates each plugin with a JInternalFrame. Multiple
  * plugins are accessible in an MDI manner because of the parent JDesktopPane. 
  */
-public class DesktopPluginHost extends AbstractPluginHost
+public class DesktopPluginHost extends AbstractPluginHost 
+    implements IPreferenced
 {
     private static final Logger logger_ = 
         Logger.getLogger(DesktopPluginHost.class);
@@ -53,6 +62,7 @@ public class DesktopPluginHost extends AbstractPluginHost
      * Parent workspace.
      */
     private PluginWorkspace workspace_;
+
     
     //--------------------------------------------------------------------------
     // PluginHost Interface
@@ -70,6 +80,7 @@ public class DesktopPluginHost extends AbstractPluginHost
         pluginToFrameMap_ = new DualHashBidiMap();
         frameToPluginMap_ = pluginToFrameMap_.inverseBidiMap();
         
+        /*
         SwingUtilities.invokeLater(new Runnable() 
         {
             public void run() 
@@ -93,6 +104,7 @@ public class DesktopPluginHost extends AbstractPluginHost
                 }
             }
         });
+        */
     }
 
     
@@ -124,7 +136,7 @@ public class DesktopPluginHost extends AbstractPluginHost
     {
         super.importPlugin(plugin);
         
-        JInternalFrame frame = new JInternalFrame(
+        JSmartInternalFrame frame = new JSmartInternalFrame(
                                     plugin.getPluginName(),
                                     true,
                                     true,
@@ -255,5 +267,97 @@ public class DesktopPluginHost extends AbstractPluginHost
         pluginToFrameMap_ = null;
         
         super.shutdown();
+    }
+    
+    //--------------------------------------------------------------------------
+    // IPreferenced Interface
+    //--------------------------------------------------------------------------
+    
+    
+    /**
+     * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
+     */
+    public void applyPrefs(Element prefs) throws Exception
+    {
+        logger_.debug("Applying DesktopPluginHost preferences");
+        
+        Map class2Frame = new HashMap();
+        
+        //
+        // Associated a plugin class with an internal frame
+        //
+        for (Iterator i = pluginToFrameMap_.keySet().iterator(); i.hasNext();)
+        {
+            IPlugin plugin = (IPlugin) i.next();
+            
+            class2Frame.put(
+                plugin.getClass().getName(), 
+                pluginToFrameMap_.get(plugin));
+        }
+        
+        Element root = XOMUtil.getFirstChildElement(
+            prefs, NODE_PLUGINHOST, new Element(NODE_PLUGINHOST));
+        
+        Elements frames = root.getChildElements(NODE_FRAME);
+        
+        logger_.debug("Found " + frames.size() + " frames on the desktop");
+        
+        for (int i = 0; i < frames.size(); i++)
+        {
+            logger_.debug("Processing frame " + i);
+            
+            Element frame = frames.get(i);
+            
+            String pluginClass = 
+                XOMUtil.getStringAttribute(frame, ATTR_CLASS, null);
+            
+            if (pluginClass != null)
+            {
+                logger_.debug("Found plugin class " + 
+                    ClassUtil.stripPackage(pluginClass));
+                
+                JSmartInternalFrame sif = 
+                    (JSmartInternalFrame) class2Frame.get(pluginClass);
+                
+                if (sif != null)
+                {
+                    logger_.debug("Reassociated with frame! Applying prefs...");
+                    sif.applyPrefs(frame);
+                }
+                else
+                {
+                    logger_.debug("Could not re-associate with a frame :(");
+                }
+            }
+            else
+            {
+                logger_.debug("No plugin found");
+            }
+        }
+    }
+
+
+    /**
+     * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
+     */
+    public void savePrefs(Element prefs) throws Exception
+    {
+        Element root = new Element(NODE_PLUGINHOST);
+        root.addAttribute(new Attribute(ATTR_CLASS, getClass().getName()));
+
+        for (Iterator i = frameToPluginMap_.keySet().iterator(); i.hasNext();)
+        {
+            JSmartInternalFrame sif = (JSmartInternalFrame) i.next();
+            IPlugin plugin = (IPlugin) frameToPluginMap_.get(sif);
+            Element frame = new Element(NODE_FRAME);
+            
+            frame.addAttribute(new Attribute(
+                ATTR_CLASS, plugin.getClass().getName()));
+            
+            sif.savePrefs(frame);
+            root.appendChild(frame);
+        }
+
+        XOMUtil.insertOrReplace(prefs, root);
     }
 }
