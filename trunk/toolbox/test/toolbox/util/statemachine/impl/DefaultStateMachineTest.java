@@ -121,7 +121,7 @@ public class DefaultStateMachineTest extends TestCase
         {
             public void stateChanged(StateMachine machine)
             {
-                logger_.info(
+                logger_.debug(
                     "State changed: " 
                     + machine.getPreviousState().getName()
                     + " ---> "
@@ -132,6 +132,12 @@ public class DefaultStateMachineTest extends TestCase
 
             public void terminalState(StateMachine machine)
             {
+                logger_.debug("Reached terminal state!");
+            }
+            
+            public void machineReset(DefaultStateMachine machine)
+            {
+                logger_.debug("Machine reset");
             }
         });
         
