@@ -242,7 +242,7 @@
             depends     = "init" 
             description = "Creates toolbox-lookandfeel.jar which contains all the non-essential Swing Look and Feels.">
 
-        <delete verbose="true">
+        <delete verbose="true" failonerror="false" >
             <fileset dir="${dist}" includes="toolbox-lookandfeel.jar"/>
             <fileset dir="${build.stage}/lookandfeel"/>
         </delete>
