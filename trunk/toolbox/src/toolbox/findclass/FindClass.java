@@ -15,7 +15,7 @@ import org.apache.log4j.Category;
 import org.apache.regexp.RE;
 import org.apache.regexp.RESyntaxException;
 import toolbox.util.StringUtil;
-import toolbox.util.io.CompositeFilter;
+import toolbox.util.io.CompoundFilter;
 import toolbox.util.io.DirectoryFilter;
 import toolbox.util.io.ExtensionFilter;
 
@@ -26,7 +26,8 @@ import toolbox.util.io.ExtensionFilter;
 public class FindClass 
 { 
     /** Logger **/
-    private static final Category logger_ = Category.getInstance(Main.class);
+    private static final Category logger_ = 
+        Category.getInstance(Main.class);
     
     /** Class to find **/
     private String classToFind_;
@@ -51,7 +52,7 @@ public class FindClass
     
     /** Filter for archives **/
     private FilenameFilter archiveFilter_ = 
-        new CompositeFilter(jarFilter_, zipFilter_);
+        new CompoundFilter(jarFilter_, zipFilter_);
     
     /** Filter for directories **/
     private FilenameFilter directoryFilter_ = new DirectoryFilter();
@@ -74,14 +75,22 @@ public class FindClass
     /** Holds ordered list of search targets **/
     private List searchTargets_ = new ArrayList();
 
+    /** Flag to cancel the search **/
+    private boolean isCancelled_;
+    
     /**
      * Constructor
      */
     public FindClass() 
     {
+        /* enable debug if findclass.debug found */
+        if (System.getProperty(debugProp_) == null)
+            Category.getDefaultHierarchy().disableDebug();
+        
         addFindClassListener(defaultCollector_);
         buildSearchTargets();
     }
+
 
     /**
      * Finds a class
@@ -98,11 +107,6 @@ public class FindClass
         /* result collector */
         defaultCollector_.clear();
         
-        /* enable debug if findclass.debug found */
-        if (System.getProperty(debugProp_) == null)
-            Category.getDefaultHierarchy().disableDebug();
-        
-        
         /* set arguments */
         ignoreCase_  = ignoreCase;
         classToFind_ = classToFind;
@@ -118,14 +122,22 @@ public class FindClass
         /* for each search target, search it */
         for (int i=0; i< classpath_.length; i++) 
         { 
-            String target = classpath_[i];
-            
-            fireSearchingTarget(target);
-            
-            if (isArchive(target))
-                findInArchive(target);
+            if (!isCancelled_)
+            {
+                String target = classpath_[i];
+                
+                fireSearchingTarget(target);
+                
+                if (isArchive(target))
+                    findInArchive(target);
+                else
+                    findInPath(target);
+            }
             else
-                findInPath(target);
+            {
+                fireSearchCancelled();
+                break;                    
+            }
         }
 
         
@@ -156,6 +168,7 @@ public class FindClass
         }
         
     }
+
     
     /**
      * Retrieves all search targets (archives and directories) on the classpath
@@ -179,6 +192,7 @@ public class FindClass
             
         return targets;
     }
+
     
     /**
      * Retrieves a list of all archive targets to search
@@ -191,6 +205,7 @@ public class FindClass
     {
         return findFilesRecursively(".", archiveFilter_);        
     }
+
 
     /**
      * Finds files recursively from a given starting directory using the
@@ -235,6 +250,7 @@ public class FindClass
         
         return basket;
     }
+
     
     /**
      * Finds class in a given jar file
@@ -271,6 +287,7 @@ public class FindClass
         }
         zf.close();
     }
+
     
     /**
      * Finds class in a given directory and subdirs
@@ -292,15 +309,20 @@ public class FindClass
             String fileName = (String)i.next();
             String dotted = fileName.replace(File.separatorChar, '.');
             
-            dotted = StringUtil.truncate(
+            String searchTarget = StringUtil.truncate(
                 dotted, fileName.length() - ".class".length());
+                
+            dotted = searchTarget.substring(pathName.length());
             
             logger_.debug("file=" + dotted);
             
             if (regExp_.match(dotted))
+            {
                 fireClassFound(pathName, dotted);
+            }
         }
     }
+
     
     /**
      * Determines whether a given file is a java archive
@@ -356,7 +378,22 @@ public class FindClass
             listener.searchingTarget(target);
         }
     }
+
     
+    /**
+     * Called when the search is cancelled
+     */
+    protected void fireSearchCancelled()
+    {
+        for(int i=0; i<findListeners_.size(); i++)
+        {
+            IFindClassListener listener = 
+                (IFindClassListener)findListeners_.get(i);
+                
+            listener.searchCancelled();
+        }
+    }
+
  
     /**
      * Adds a listener to the notification list
@@ -367,6 +404,7 @@ public class FindClass
     {
         findListeners_.add(listener);        
     }
+
     
     /**
      * Removes a listener from the notification list 
@@ -377,6 +415,7 @@ public class FindClass
     {
         findListeners_.remove(listener);
     }
+
     
     /**
      * Returns list of targets that will be searched
@@ -396,7 +435,14 @@ public class FindClass
      */
     public void addSearchTarget(String target)
     {
-        
     }
-}
-        
+    
+    
+    /**
+     * Cancels a pending search
+     */
+    public void  cancelSearch()
+    {
+        isCancelled_ = true;
+    }
+}     
