@@ -5,6 +5,7 @@
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="lib" path="resources"/>
 	<classpathentry sourcepath="JRE_SRC" kind="var" path="JRE_LIB"/>
+	<classpathentry kind="lib" path="lib/3dlf.jar"/>
 	<classpathentry kind="lib" path="lib/apple-mrj.jar"/>
 	<classpathentry kind="lib" path="lib/acrobat.jar"/>
 	<classpathentry kind="lib" path="lib/alloy.jar"/>

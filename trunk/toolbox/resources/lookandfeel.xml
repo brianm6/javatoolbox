@@ -108,6 +108,12 @@
       <Property name="group.name" value="Others"/>            
   </LookAndFeel>
 
+  <LookAndFeel 
+      name="3D"
+      class="swing.addon.plaf.threeD.ThreeDLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
+      <Property name="group.name" value="Others"/>            
+  </LookAndFeel>
   
   <!-- ==================================================================== -->
   <!-- Alloy Look and Feels                                                 -->
