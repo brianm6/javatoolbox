@@ -259,6 +259,8 @@
                 <include name="metouia.jar"/>
                 <include name="tinylaf.jar"/>
                 <include name="skinlf.jar"/>
+                <include name="toniclf.jar"/>
+                <include name="liquidlf.jar"/>
                 
             </fileset>
         </unjar>    
