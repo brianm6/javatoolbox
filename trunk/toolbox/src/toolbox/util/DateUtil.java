@@ -18,9 +18,9 @@ public class DateUtil
     }
 
     /**
-     * @return  Date in dashed MM-dd-yyyy format
+     * @return  Time in hh:mma format. ex: 3:43pm
      */
-    public static String formatDashed(Date d)
+    public static String format(Date d)
     {
         DateFormat df = new SimpleDateFormat("MM-dd-yyyy");
         return df.format(d);
