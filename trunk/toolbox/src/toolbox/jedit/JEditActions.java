@@ -5,20 +5,13 @@ import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
-import javax.swing.AbstractAction;
-import javax.swing.Icon;
-import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
-import javax.swing.text.BadLocationException;
 
 import org.apache.log4j.Logger;
 
+import toolbox.jedit.action.AbstractJEditAction;
 import toolbox.util.ExceptionUtil;
-import toolbox.util.FileUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JFindDialog;
@@ -35,66 +28,13 @@ public final class JEditActions
     private static final Logger logger_ = Logger.getLogger(JEditActions.class);
     
     //--------------------------------------------------------------------------
-    // JEditAction
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Abstract class for all JEdit actions. 
-     */
-    abstract static class JEditAction extends AbstractAction
-    {
-        /**
-         * Context of the action. 
-         */
-        protected JEditTextArea area_;
-        
-        
-        /**
-         * Creates a JEditAction.
-         * 
-         * @param area Target text area.
-         */
-        public JEditAction(JEditTextArea area)
-        {
-            area_ = area;
-        }
-        
-        
-        /**
-         * Creates a JEditAction.
-         * 
-         * @param label Action label.
-         * @param area Target text area.
-         */
-        public JEditAction(String label, JEditTextArea area)
-        {
-            super(label);
-            area_ = area;
-        }
-        
-        
-        /**
-         * Creates a JEditAction.
-         * 
-         * @param label Action label.
-         * @param icon Action's icon.
-         * @param area Target text area.
-         */
-        public JEditAction(String label, Icon icon, JEditTextArea area)
-        {
-            super(label, icon);
-            area_ = area;
-        }
-    }
-
-    //--------------------------------------------------------------------------
     // FindAction
     //--------------------------------------------------------------------------
     
     /**
      * Triggers activation of the Find Dialog box.
      */    
-    static class FindAction extends JEditAction
+    static class FindAction extends AbstractJEditAction
     {
         /**
          * Creates a FindAction.
@@ -123,143 +63,13 @@ public final class JEditActions
     }
 
     //--------------------------------------------------------------------------
-    // SaveAsAction
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Saves the contents of the text area to a file.
-     */
-    static class SaveAsAction extends JEditAction
-    {
-        /**
-         * Remembers last active directory.
-         */
-        private File lastDir_;
-        
-        
-        /**
-         * Creates a SaveAsAction.
-         * 
-         * @param area Target text area.
-         */
-        public SaveAsAction(JEditTextArea area)
-        {
-            super(
-                "Save As..", ImageCache.getIcon(ImageCache.IMAGE_SAVEAS), area);
-        }
-        
-        
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
-         */
-        public void actionPerformed(ActionEvent e)
-        {
-            try
-            {
-                JFileChooser chooser = null;
-                
-                if (lastDir_ == null)
-                    chooser = new JFileChooser();
-                else
-                    chooser = new JFileChooser(lastDir_);
-
-                if (chooser.showSaveDialog(area_)
-                    == JFileChooser.APPROVE_OPTION) 
-                {
-                    String saveFile = 
-                        chooser.getSelectedFile().getCanonicalPath();
-                        
-                    FileUtil.setFileContents(saveFile, area_.getText(), false);
-                }
-                
-                lastDir_ = chooser.getCurrentDirectory();
-            }
-            catch (FileNotFoundException fnfe)
-            {
-                ExceptionUtil.handleUI(fnfe, logger_);
-            }
-            catch (IOException ioe)
-            {
-                ExceptionUtil.handleUI(ioe, logger_);
-            }
-        }
-    }    
-
-    //--------------------------------------------------------------------------
-    // InsertFileAction
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Inserts the text of a file at the currnet cursor location.
-     */
-    static class InsertFileAction extends JEditAction
-    {
-        private File lastDir_;
-        
-        /**
-         * Creates a InsertFileAction.
-         * 
-         * @param area Target textarea.
-         */
-        public InsertFileAction(JEditTextArea area)
-        {
-            super("Insert..", area);
-        }
-        
-        
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
-         */
-        public void actionPerformed(ActionEvent e)
-        {
-            try
-            {
-                JFileChooser chooser = null;
-                
-                if (lastDir_ == null)
-                    chooser = new JFileChooser();
-                else
-                    chooser = new JFileChooser(lastDir_);
-
-                if (chooser.showOpenDialog(area_) == 
-                    JFileChooser.APPROVE_OPTION) 
-                {
-                    String txt = FileUtil.getFileContents(
-                        chooser.getSelectedFile().getCanonicalPath());
-                    
-                    int curPos = area_.getCaretPosition();    
-                    
-                    area_.getDocument().
-                        insertString(curPos, txt, null);                        
-                }
-                
-                lastDir_ = chooser.getCurrentDirectory();
-            }
-            catch (BadLocationException ble)
-            {
-                ExceptionUtil.handleUI(ble, logger_);
-            }
-            catch (FileNotFoundException fnfe)
-            {
-                ExceptionUtil.handleUI(fnfe, logger_);
-            }
-            catch (IOException ioe)
-            {
-                ExceptionUtil.handleUI(ioe, logger_);
-            }
-        }
-    }
-
-    //--------------------------------------------------------------------------
     // SetFontAction
     //--------------------------------------------------------------------------
     
     /**
      * Sets the font in the text component.
      */
-    static class SetFontAction extends JEditAction
+    static class SetFontAction extends AbstractJEditAction
     {
         /**
          * Creates a SetFontAction.
@@ -340,7 +150,7 @@ public final class JEditActions
     /**
      * Copies the contents of the currently selected indices to the clipboard.
      */    
-    static class CopyAction extends JEditAction
+    static class CopyAction extends AbstractJEditAction
     {
         /**
          * Creates a CopyAction.
@@ -370,7 +180,7 @@ public final class JEditActions
     /**
      * Cuts the contents of the currently selected indices.
      */    
-    static class CutAction extends JEditAction
+    static class CutAction extends AbstractJEditAction
     {
         /**
          * Creates a CutAction.
@@ -400,7 +210,7 @@ public final class JEditActions
     /**
      * Pastes the contents of the clipboard into the text component.
      */    
-    static class PasteAction extends JEditAction
+    static class PasteAction extends AbstractJEditAction
     {
         /**
          * Creates a PasteAction.
@@ -430,7 +240,7 @@ public final class JEditActions
     /**
      * Selects the entire contents of the textarea. 
      */
-    static class SelectAllAction extends JEditAction
+    static class SelectAllAction extends AbstractJEditAction
     {
         /**
          * Creates a SelectAllAction.
@@ -460,7 +270,7 @@ public final class JEditActions
     /**
      * Clears the contents of the text area. 
      */
-    public static class ClearAction extends JEditAction
+    public static class ClearAction extends AbstractJEditAction
     {
         /**
          * Creates a ClearAction.
