@@ -228,9 +228,12 @@ public class LookAndFeelUtil
     public static void setLookAndFeel(Element prefs) throws Exception
     {
         Element lafNode = XOMUtil.getFirstChildElement(
-            prefs, NODE_LOOKANDFEEL, new Element(NODE_LOOKANDFEEL));
+            prefs, NODE_LOOKANDFEEL, null);
 
-        setLookAndFeel(new LAFInfo(lafNode));
+        if (lafNode == null)
+            logger_.info("Look and Feel not set. DOM is null");
+        else
+            setLookAndFeel(new LAFInfo(lafNode));
     }
 
     
