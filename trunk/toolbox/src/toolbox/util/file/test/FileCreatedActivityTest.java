@@ -1,7 +1,6 @@
 package toolbox.util.file.test;
 
 import java.io.File;
-import java.util.logging.Logger;
 
 import org.apache.log4j.Category;
 
