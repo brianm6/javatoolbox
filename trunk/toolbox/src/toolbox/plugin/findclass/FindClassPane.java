@@ -18,9 +18,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
+
 import toolbox.util.ExceptionUtil;
 import toolbox.util.StringUtil;
+import toolbox.util.SwingUtil;
 import toolbox.util.ThreadUtil;
+import toolbox.util.ui.JSmartOptionPane;
 import toolbox.util.ui.SafeListModel;
 
 /**
@@ -43,21 +46,21 @@ public class JFindClass extends JFrame implements ActionListener,
     private JLabel statusLabel;
 
     private FindClass findClass;
-
-    private Font monoFont = new Font("Lucida Console", Font.PLAIN, 11);
     
     /**
      * Entrypoint
+     * 
+     * @param  args  None recognized
      */    
     public static void main(String[] args)
     {
         JFindClass jfc = new JFindClass();
         jfc.setVisible(true);
     }
+
     
     /**
-     * Constructor for JFindClass.
-     * @throws HeadlessException
+     * Constructor for JFindClass
      */
     public JFindClass()
     {
@@ -66,9 +69,9 @@ public class JFindClass extends JFrame implements ActionListener,
 
     
     /**
-     * Constructor for JFindClass.
-     * @param title
-     * @throws HeadlessException
+     * Constructor for JFindClass
+     * 
+     * @param  title  Window title
      */
     public JFindClass(String title)
     {
@@ -78,6 +81,10 @@ public class JFindClass extends JFrame implements ActionListener,
         pack();
     }
 
+
+    /**
+     * Initiailizes 
+     */
     protected void init()
     {
         findClass = new FindClass();
@@ -87,6 +94,7 @@ public class JFindClass extends JFrame implements ActionListener,
         for (Iterator i = targets.iterator(); i.hasNext(); 
             pathModel.addElement(i.next()));
     }
+
 
     /**
      * Builds the view
@@ -100,7 +108,7 @@ public class JFindClass extends JFrame implements ActionListener,
         searchLabel = new JLabel("Find Class");
         searchField = new JTextField(15);
         searchField.addActionListener(this);
-        searchField.setFont(monoFont);
+        searchField.setFont(SwingUtil.getMonospacedFont());
         searchButton = new JButton("Find");
         searchButton.addActionListener(this);
                 
@@ -116,7 +124,7 @@ public class JFindClass extends JFrame implements ActionListener,
         JLabel pathListLabel = new JLabel("Classpath");
         pathModel = new DefaultListModel(); 
         pathList = new JList(pathModel);
-        pathList.setFont(monoFont);
+        pathList.setFont(SwingUtil.getMonospacedFont());
         
         JPanel pathPanel = new JPanel(new BorderLayout());
         pathPanel.add(pathListLabel, BorderLayout.NORTH);
@@ -127,7 +135,7 @@ public class JFindClass extends JFrame implements ActionListener,
         JLabel resultListLabel = new JLabel("Results");
         resultModel = new SafeListModel();
         resultList = new JList(resultModel);
-        resultList.setFont(monoFont);
+        resultList.setFont(SwingUtil.getMonospacedFont());
         resultPane = new JScrollPane(resultList);;
         
         JPanel resultPanel = new JPanel(new BorderLayout());
@@ -151,8 +159,11 @@ public class JFindClass extends JFrame implements ActionListener,
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);        
     }
 
+
     /**
      * ActionListener
+     * 
+     * @param  e  Action event to handle
      */    
     public void actionPerformed(ActionEvent e)
     {
@@ -160,6 +171,7 @@ public class JFindClass extends JFrame implements ActionListener,
         
         if (obj == searchButton || obj == searchField)
         {
+            /* spawn search on separate thread */
             ThreadUtil.run(
                 this, "searchButtonClicked", new Object[] { "String" });
         }
@@ -167,6 +179,8 @@ public class JFindClass extends JFrame implements ActionListener,
     
     /**
      * Execute search
+     * 
+     * @param  s  Search regular expression
      */
     public void searchButtonClicked(String s) 
     {
@@ -185,8 +199,9 @@ public class JFindClass extends JFrame implements ActionListener,
         }
         catch (Exception e)
         {
-            JOptionPane.showMessageDialog(this, ExceptionUtil.getStackTrace(e), 
-                "Error", JOptionPane.ERROR_MESSAGE);
+            JSmartOptionPane.showDetailedMessageDialog(this, e.getMessage(), 
+                ExceptionUtil.getStackTrace(e), "Error",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 
