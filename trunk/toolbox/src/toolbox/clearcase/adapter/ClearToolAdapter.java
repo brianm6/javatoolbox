@@ -99,7 +99,6 @@ public class ClearToolAdapter implements IClearCaseAdapter
         
         String dateStr = DateFormatUtils.format(start, "dd-MMM-yy.HH:mm");
         
-        
         String command = 
             //"cleartool lshistory -recurse -since 21-Feb-05.23:59 -fmt \"" 
             "cleartool lshistory -recurse -since " + dateStr + " -fmt \""
@@ -112,7 +111,7 @@ public class ClearToolAdapter implements IClearCaseAdapter
             + "  <Comment>%Nc</Comment>[NL]"
             + "</History>[NL]\"";
         
-        logger_.debug("Command: \n " + command);
+        logger_.debug("Clearcase command: \n " + command);
         
         Process p = Runtime.getRuntime().exec(command, null, getViewPath());
         InputStream is = p.getInputStream();
@@ -131,9 +130,10 @@ public class ClearToolAdapter implements IClearCaseAdapter
         
         try
         {
-            //System.out.println(xml);
+            //logger_.debug(xml);
             Element root = XOMUtil.toElement(xml);
-            //System.out.println(XOMUtil.format(root));
+            
+            //logger_.debug(XOMUtil.format(root));
             Elements histories = root.getChildElements(NODE_HISTORY);
             
             for (int i = 0, n = histories.size(); i < n; i++) 
@@ -167,26 +167,23 @@ public class ClearToolAdapter implements IClearCaseAdapter
                 }
                 else
                 {
-                    //System.err.println("Invalid: " + file);
+                    //logger_.debug("Skipping what doesn't seem to be a file: " + file);
                 }
             }
         }
         catch (ParsingException e)
         {
-            e.printStackTrace();
+            logger_.error(e);
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            logger_.error(e);
         }
         
         //String output = IOUtils.toString(is);
-        //System.out.println(output);
+        //logger_.debug(output);
         
-        System.out.println(
-            StringUtil.banner(
-                "Errors: \n" + IOUtils.toString(es)));
-
+        logger_.debug(StringUtil.banner("Errors: \n" + IOUtils.toString(es)));
         return result;
     }
 }
