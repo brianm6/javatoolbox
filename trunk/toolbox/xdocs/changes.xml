@@ -170,6 +170,15 @@
         </table>
       </action>
 
+      <action type="update">
+        <table>
+          <tr>
+            <td width="20%">XSLFOPlugin</td>
+            <td>Externalized JEdit settings for hilighting XML to toolbox.jedit.XMLDefaults</td>
+          </tr>
+        </table>
+      </action>
+
     </release>
     
     <release version="2.0" date="July 2004">
