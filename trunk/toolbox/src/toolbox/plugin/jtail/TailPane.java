@@ -48,6 +48,7 @@ import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.SmartAction;
+import toolbox.util.ui.textarea.AutoScrollAction;
 import toolbox.util.ui.textarea.ClearAction;
 import toolbox.workspace.IStatusBar;
 
@@ -153,7 +154,7 @@ public class TailPane extends JPanel
     /** 
      * Checkbox to toggle auto scrolling of the output text area. 
      */
-    private JCheckBox autoScrollBox_;
+    private JSmartCheckBox autoScrollBox_;
     
     /** 
      * Checkbox to toggles the inclusion of lines numbers in the tail output.
@@ -297,7 +298,10 @@ public class TailPane extends JPanel
         
         startButton_    = new JSmartButton(new StartStopAction(startMode));
         closeButton_    = new JSmartButton(new CloseAction());
-        autoScrollBox_  = new JSmartCheckBox(new AutoScrollAction());
+        
+        autoScrollBox_  = new JSmartCheckBox(new AutoScrollAction(tailArea_));
+        autoScrollBox_.toggleOnProperty(tailArea_, "autoscroll");
+        
         lineNumbersBox_ = new JSmartCheckBox(new ShowLineNumbersAction());
         regexField_     = new JSmartTextField(5);
         cutField_       = new JSmartTextField(5);
@@ -976,36 +980,6 @@ public class TailPane extends JPanel
             
             statusBar_.setStatus("Closed tail for " + 
                 ArrayUtil.toString(config_.getFilenames()));
-        }
-    }
-
-    //--------------------------------------------------------------------------
-    // AutoScrollAction
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Toggles autoscroll of the output text area.
-     */
-    class AutoScrollAction extends AbstractAction
-    {
-        /**
-         * Creates a AutoScrollAction.
-         */
-        AutoScrollAction()
-        {
-            super("Autoscroll");
-            putValue(MNEMONIC_KEY, new Integer('a'));
-            putValue(SHORT_DESCRIPTION, "Toggles autoscroll");
-        }
-
-        
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
-         */
-        public void actionPerformed(ActionEvent e)
-        { 
-            tailArea_.setAutoScroll(autoScrollBox_.isSelected()); 
         }
     }
 
