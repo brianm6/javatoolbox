@@ -61,7 +61,7 @@ public final class FileUtil
         }
         else
         {
-            // warn??
+            ; // Ignore
         }
     }
 
@@ -495,6 +495,19 @@ public final class FileUtil
             new File(file).delete();
     }
 
+    
+    /**
+     * Deletes a file quietly. If the file can be deleted, ok. If not, 
+     * does not cause a fuss.
+     * 
+     * @param file File to delete
+     */    
+    public static void delete(File file)
+    {
+        if (file != null && file.exists())
+            file.delete();
+    }
+    
     
     /**
      * Returns the file with the longest name. If more than one file has the
