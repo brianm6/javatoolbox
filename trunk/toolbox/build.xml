@@ -184,6 +184,7 @@
 				<include name="junit.jar"/>
                 <include name="xml-apis.jar"/>
 				<include name="xercesImpl.jar"/>
+				<include name="xom.jar"/>
                 <include name="jedit-syntax.jar"/>
                 
                 <!-- ===== Apache Commons ===== -->
@@ -649,7 +650,7 @@
         
         <property 
             name="cvsroot" 
-            value=":pserver:analogue@hemisfear.dyndns.org:4802/c//cvs/cvsrep"/>
+            value=":pserver:analogue@12.239.81.65:4802/c//cvs/cvsrep"/>
         
         <cvspass password = "${cvs.password}"
                  cvsroot  = "${cvsroot}"
