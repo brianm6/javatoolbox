@@ -7,6 +7,8 @@ import java.util.List;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
+import org.apache.log4j.Logger;
+
 import toolbox.util.ArrayUtil;
 import toolbox.util.ClassUtil;
 
@@ -15,6 +17,9 @@ import toolbox.util.ClassUtil;
  */
 public class PackageTester
 {
+    /** Logger **/
+    public static final Logger logger_ = Logger.getLogger(PackageTester.class);
+    
     private List packages_ = new ArrayList();
 
     /**
@@ -93,7 +98,7 @@ public class PackageTester
             String packageName = (String)p.next();
             String[] classes = ClassUtil.getClassesInPackage(packageName);
             
-            System.out.println(ArrayUtil.toString(classes, true));
+            logger_.debug("\n" + ArrayUtil.toString(classes, true));
             
             for (int i=0; i<classes.length; i++)
             {
@@ -101,15 +106,13 @@ public class PackageTester
                 {
                     if (classes[i].endsWith("Test"))
                     {
-                        Class clazz = 
-                            Class.forName(packageName + "." + classes[i]);
-                            
+                        Class clazz = Class.forName(classes[i]);
                         testSuite.addTestSuite(clazz);
                     }
                 }
                 catch (ClassNotFoundException cnfe)
                 {
-                    System.out.println(cnfe);                
+                    logger_.error("run", cnfe);                
                 }
             }
         }
