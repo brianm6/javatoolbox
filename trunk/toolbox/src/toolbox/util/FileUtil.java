@@ -2,6 +2,7 @@ package toolbox.util;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -15,15 +16,14 @@ import java.io.OutputStream;
 
 import org.apache.log4j.Category;
 
-
 /**
  * File Utility Class
  */
 public final class FileUtil
 {
-	/** Logger **/
-	private static Category logger = Category.getInstance(FileUtil.class);
-	
+    /** Logger **/
+    private static Category logger_ = Category.getInstance(FileUtil.class);
+    
     /**
      * Prevent construction
      */
@@ -40,7 +40,8 @@ public final class FileUtil
     {
         if(!directory.isDirectory())
         {
-            throw new IllegalArgumentException("Directory " + directory + " is not a directory.");
+            throw new IllegalArgumentException(
+                "Directory " + directory + " is not a directory.");
         }
         else
         {
@@ -59,71 +60,78 @@ public final class FileUtil
     }
 
     /**
-     *  Reads in the contents of a text file into a single string
+     * Reads in the contents of a text file into a single string
      *
-     *  @param        filename    Name of the file
-     *  @return     Contents of the file as a string
+     * @param   filename    Name of the file
+     * @return  Contents of the file as a string
+     * @throws  FileNotFoundException
+     * @throws  IOException    
      */
-    public static String readFromFile(String filename) throws FileNotFoundException, IOException
+    public static String getFileContents(String filename) 
+        throws FileNotFoundException, IOException
     {
-        LineNumberReader lnr = new LineNumberReader(new FileReader(filename));
+        BufferedReader br = null; 
         StringBuffer text = new StringBuffer();
 
         try 
         {
-            String line = null;
-
-            while((line = lnr.readLine()) != null) 
-            {
-                text.append(line);
-                text.append("\n");
-            }
+            br = new BufferedReader(new FileReader(filename));
+            int i;
+            while ((i = br.read()) != -1) 
+                text.append((char)i);
         }
         finally 
         {
-            if(lnr!= null)
-                lnr.close();
+            if (br != null)
+                br.close();
         }
 
         return text.toString();
     }
     
+    
     /**     
-     *  Writes out the contents to a text file from a single string.     
+     * Writes out the contents to a text file from a single string.     
      *     
-     *  @param 		filename    Name of the file     
-     *  @param   	contents    Contents to store in the file
-     *  @param   	append	    Specify if you want to append to the file     
-     *  @return     Contents of the file as a string
+     * @param   filename    Name of the file     
+     * @param   contents    Contents to store in the file
+     * @param   append      Specify if you want to append to the file     
+     * @return  Contents of the file as a string
+     * @throws  FileNotFoundException
+     * @throws  IOException 
      */    
-    public static String writeToFile(String filename, String contents, boolean append) 
-    	throws FileNotFoundException, IOException    
+    public static String setFileContents(String filename, String contents, 
+        boolean append) throws FileNotFoundException, IOException    
     {   
-    	//open the file		
-    	FileWriter file = new FileWriter(filename, append);		
-    	
-    	//make sure we have a file		
-    	if (file == null) 		
-   	    {		
-    		logger.error("File does not exist: " + filename);
-    		throw new FileNotFoundException();		
-   		}		
-   		
-   		//write to the file
+        //open the file     
+        FileWriter file = new FileWriter(filename, append);     
+        
+        //make sure we have a file      
+        if (file == null)       
+        {       
+            logger_.error("File does not exist: " + filename);
+            throw new FileNotFoundException();      
+        }       
+        
+        //write to the file
         try         
         { 
-        	//write the contents         	
-        	file.write(contents);
-          	//close the file
-           	file.close();
+            //write the contents          
+            file.write(contents);
+            
+            //close the file
+            file.close();
         }
         catch (IOException e)        
-   		{    		
-   			logger.error("Writing to file failed.", e);
-   			throw e;        
-   		}		
-   		return contents;    
+        {           
+            logger_.error("Writing to file failed.", e);
+            throw e;        
+        }       
+        
+        //return the contents for validity
+        return contents;    
     }
+    
     
     /**
      * Retrieves the System specific temp file directory
@@ -136,17 +144,29 @@ public final class FileUtil
     }
 
     /**
-     *  Retrieves a suitable temporary file name for arbitrary use
-     *  based on the systems temporary directory. The returned
-     *  string is absolute in form.
+     * Retrieves a suitable temporary file name for arbitrary use
+     * based on the systems temporary directory. The returned
+     * string is absolute in form.
      *
-     *  @return    Tempory file name
+     * @return    Tempory file name
+     * @throws    IOException
      */
     public static String getTempFilename() throws IOException
     {
+        return getTempFilename(getTempDir());
+    }
+
+    /**
+     * Creates a temporary filename for a file in the given directory
+     * 
+     * @param   dir    Directory to assume the file will be created in
+     * @return  Tempory filename in absolute form
+     * @throws  IOException
+     */
+    public static String getTempFilename(File dir) throws IOException
+    {
         /* create temp file, delete it, and return the name */
-        File tmpDir = getTempDir();
-        File tmpFile = File.createTempFile("temp","", tmpDir);
+        File tmpFile = File.createTempFile("temp","", dir);
         String filename = tmpFile.getAbsolutePath();
         tmpFile.delete();
         return filename;
@@ -161,34 +181,43 @@ public final class FileUtil
      */
     public static void moveFile(File srcFile, File destDir)
     {
-    	/*
-    	 * TODO: This is a *simple* implementation. There are a lot more complicated
-    	 *       scenarios involving permissions, attributes, existence that need
-    	 *       to be accounted for. 
-    	 */
-    	
-    	logger.debug("Moving " + srcFile.getAbsolutePath() + " to " + destDir.getAbsolutePath());
-    	
-    	try
-    	{
-			File destFile = new File(destDir, srcFile.getName());
-			
-			InputStream is = new BufferedInputStream(new FileInputStream(srcFile));
-			OutputStream os = new BufferedOutputStream(new FileOutputStream(destFile));
-			
-			int c;
-			
-			while(is.available()>0)
-				os.write(is.read());
-				
-			is.close();
-			os.close();
-			
-			srcFile.delete();					
-    	}
-    	catch(Exception e)
-    	{
-    		logger.error("move file failed.", e);
-    	}
+        /*
+         * TODO: This is a SIMPLE implementation. There are a lot more 
+         *       complicated scenarios involving permissions, attributes, 
+         *       existence that need to be accounted for. 
+         */
+        logger_.debug("Moving " + srcFile + " => " +  destDir);
+        
+        InputStream is = null;
+        OutputStream os = null;
+        
+        try
+        {
+            File destFile = new File(destDir, srcFile.getName());
+            
+            is = new BufferedInputStream(new FileInputStream(srcFile));
+            os = new BufferedOutputStream(new FileOutputStream(destFile));
+            
+            int c;
+            
+            /* copy contents */
+            while(is.available()>0)
+                os.write(is.read());
+                
+            /* close streams */
+            is.close();
+            os.close();           
+            
+            /* delete original */    
+            srcFile.delete();
+        }
+        catch(IOException e)
+        {
+            logger_.error("moveFile.", e);
+        }
+        finally
+        {
+            /* cleanup */
+        }
     }
 }
