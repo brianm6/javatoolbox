@@ -26,9 +26,11 @@ import org.apache.log4j.Logger;
 import toolbox.graph.Edge;
 import toolbox.graph.Graph;
 import toolbox.graph.GraphLib;
+import toolbox.graph.GraphLibFactory;
 import toolbox.graph.GraphView;
 import toolbox.graph.Vertex;
 import toolbox.graph.jung.JungGraphLib;
+import toolbox.graph.prefuse.PrefuseGraphLib;
 import toolbox.util.FileUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.service.ServiceException;
@@ -88,11 +90,21 @@ public class JarDepsPlugin extends AbstractPlugin
      */
     private JFileExplorer explorer_;
 
-    private GraphView graphView_;
+    /**
+     * Graph model.
+     */
     private Graph graph_;
     
-    // TODO: Use factory
-    private GraphLib graphLib_ = new JungGraphLib(); 
+    /**
+     * Graph view.
+     */
+    private GraphView graphView_;
+    
+    /**
+     * Graphing library implementation.
+     */
+    private GraphLib graphLib_ = 
+        GraphLibFactory.create(GraphLibFactory.TYPE_PREFUSE); 
 
     //--------------------------------------------------------------------------
     // Constructors
