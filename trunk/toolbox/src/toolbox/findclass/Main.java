@@ -2,7 +2,6 @@ package toolbox.findclass;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.Writer;
 import java.util.Iterator;
 
 import org.apache.commons.cli.CommandLine;
@@ -142,7 +141,7 @@ public class Main extends FindClassAdapter
      * 
      * @param  writer  Writer that output will be written to.
      */
-    public Main(Writer writer)
+    public Main(PrintWriter writer)
     {
         setWriter(writer);
     }
@@ -177,8 +176,6 @@ public class Main extends FindClassAdapter
         
         if (numFound_ == 0)
             writer_.println("No matches found.");
-            
-        writer_.flush();
     }
 
     
@@ -220,9 +217,9 @@ public class Main extends FindClassAdapter
      *
      * @param writer Writer to send output to.
      */
-    public void setWriter(Writer writer)
+    public void setWriter(PrintWriter writer)
     {
-        writer_ = new PrintWriter(writer);
+        writer_ = writer;
     }
 
     //--------------------------------------------------------------------------
@@ -270,7 +267,6 @@ public class Main extends FindClassAdapter
         + "        " + getClass().getName() + " -t org.gnu\n";
 
         writer_.print(usage);
-        writer_.flush();
     }
     
     //--------------------------------------------------------------------------
@@ -278,7 +274,7 @@ public class Main extends FindClassAdapter
     //--------------------------------------------------------------------------
  
     /**
-     * Implementation of FindClassListener.
+     * Prints out the class that was found to the writer.
      * 
      * @param searchResult Results of class that was found.
      */   
@@ -289,7 +285,5 @@ public class Main extends FindClassAdapter
         writer_.println(
             searchResult.getClassLocation() + " => " + 
             searchResult.getClassFQN());   
-            
-        writer_.flush();
     }
 }
