@@ -145,7 +145,7 @@ public final class JDBCSession
         {
             if (sessionMap_.containsKey(sessionName))
                 throw new IllegalArgumentException(
-                    "Session with name " + sessionName + "already exists.");
+                    "Session with name " + sessionName + " already exists.");
             
             Session session = new Session(sessionName, null, null, pooled);
             
@@ -281,43 +281,122 @@ public final class JDBCSession
                IllegalAccessException,
                InstantiationException
     {
+        boolean pooled = true;
         
-        Properties connProps = new Properties();
-        connProps.put("user", user);
-        connProps.put("password", password);
-        connProps.put("url", url);
-        
-        Session session = new Session(sessionName, connProps, null, false);
-
-        // jarFiles[] -> jarURLs[]
-        URL[] jarURLs = new URL[jarFiles.length];
-        for (int i = 0; i< jarFiles.length; i++)
-            jarURLs[i] = new File(jarFiles[i]).toURL();
-        
-        URLClassLoader ucl = new URLClassLoader(jarURLs);
-        Driver d = (Driver) Class.forName(driver, true, ucl).newInstance();
-        session.setDriver(new JDBCUtil.DriverProxy(d));
-        DriverManager.registerDriver(session.getDriver());
-
-        // Blah
-        session.getDriver().acceptsURL("jdbc");
-        session.getDriver().getMajorVersion();
-        session.getDriver().getMinorVersion();
-        session.getDriver().jdbcCompliant();
-        
-        sessionMap_.put(sessionName, session);
-
-        // Verify connection
-        Connection conn = getConnection(sessionName);
-        DatabaseMetaData meta = conn.getMetaData();
-        
-        logger_.debug("Connected to " + 
-            meta.getDatabaseProductName() + 
-                meta.getDatabaseProductVersion());
+        try
+        {
+            if (sessionMap_.containsKey(sessionName))
+                throw new IllegalArgumentException(
+                    "Session with name " + sessionName + " already exists.");
             
-        JDBCUtil.releaseConnection(conn);
-        
-        // TODO: remove session from map if SQL exception thrown. REthrow exception
+            Properties connProps = new Properties();
+            connProps.put("user", user);
+            connProps.put("password", password);
+            connProps.put("url", url);
+            
+            Session session = new Session(sessionName, connProps, null, pooled);
+
+            if (!session.isPooled())
+            {
+                // jarFiles[] -> jarURLs[]
+                URL[] jarURLs = new URL[jarFiles.length];
+                for (int i = 0; i< jarFiles.length; i++)
+                    jarURLs[i] = new File(jarFiles[i]).toURL();
+                
+                URLClassLoader ucl = new URLClassLoader(jarURLs);
+                Driver d = (Driver) Class.forName(driver, true, ucl).newInstance();
+                session.setDriver(new JDBCUtil.DriverProxy(d));
+                DriverManager.registerDriver(session.getDriver());
+
+                // Blah
+                session.getDriver().acceptsURL("jdbc");
+                session.getDriver().getMajorVersion();
+                session.getDriver().getMinorVersion();
+                session.getDriver().jdbcCompliant();
+            
+                sessionMap_.put(sessionName, session);
+
+                // Verify connection
+                Connection conn = getConnection(sessionName);
+                DatabaseMetaData meta = conn.getMetaData();
+            
+                logger_.debug("Connected to " + 
+                    meta.getDatabaseProductName() + 
+                        meta.getDatabaseProductVersion());
+                    
+                JDBCUtil.releaseConnection(conn);
+            }
+            else
+            {
+                // jarFiles[] -> jarURLs[]
+                URL[] jarURLs = new URL[jarFiles.length];
+                for (int i = 0; i< jarFiles.length; i++)
+                    jarURLs[i] = new File(jarFiles[i]).toURL();
+
+                URLClassLoader ucl = new URLClassLoader(jarURLs);
+                Driver d = (Driver) Class.forName(driver, true, ucl).newInstance();
+                
+                ObjectPool connPool = new GenericObjectPool(null);
+                
+                PoolableConnectionFactory pconnFactory = 
+                    new PoolableConnectionFactory(
+                        new DriverManagerConnectionFactory(url, user, password), 
+                        connPool, 
+                        null, 
+                        null, 
+                        false,  // readonly
+                        true);  // autocommit
+                
+                //Class.forName(JDBCSession.CONN_POOL_DRIVER, true, ucl);
+                
+//                PoolingDriver poolDriver = (PoolingDriver)
+//                    DriverManager.getDriver(JDBCSession.CONN_POOL_URL_PREFIX);
+                
+                PoolingDriver poolDriver = new PoolingDriver();
+                                                        
+                poolDriver.registerPool(CONN_POOL_NAME + sessionName, connPool);
+                
+                session.setDriver(new JDBCUtil.DriverProxy(poolDriver));
+                DriverManager.registerDriver(session.getDriver());
+                
+                //session.setDriver(poolDriver);
+                
+                Properties connProps2 = new Properties();
+                connProps2.put("user", user);
+                connProps2.put("password", password);
+                
+                connProps2.put(
+                    "url", 
+                    JDBCSession.CONN_POOL_URL_PREFIX 
+                    + CONN_POOL_NAME 
+                    + sessionName);
+                
+                session.setConnProps(connProps2);
+            }
+            
+            sessionMap_.put(sessionName, session);
+            
+            Connection conn = getConnection(sessionName);
+            DatabaseMetaData meta = conn.getMetaData();
+            
+            logger_.debug("DB Connect: " + 
+                meta.getDatabaseProductName() + 
+                    meta.getDatabaseProductVersion());
+                
+            JDBCUtil.releaseConnection(conn);
+        }
+        catch (SQLException sqle)
+        {
+            // Release session if there is a failure
+            logger_.debug(
+                "Removed session " 
+                + sessionName 
+                + " from map because of " 
+                + sqle);
+            
+            sessionMap_.remove(sessionName);
+            throw sqle; 
+        }
     }
     
     

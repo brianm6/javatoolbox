@@ -23,8 +23,12 @@ import toolbox.util.XOMUtil;
 import toolbox.util.io.MonitoredOutputStream;
 import toolbox.util.io.MulticastOutputStream;
 import toolbox.util.io.PrintableOutputStream;
+import toolbox.util.service.AbstractService;
 import toolbox.util.service.ServiceException;
+import toolbox.util.service.ServiceState;
+import toolbox.util.service.ServiceTransition;
 import toolbox.util.service.Startable;
+import toolbox.util.statemachine.StateMachine;
 import toolbox.workspace.IPreferenced;
 
 /**
@@ -200,6 +204,11 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
      */
     private PrintableOutputStream printableOutgoingSink_;
 
+    /**
+     * State machine for this tunnels lifecycle.
+     */
+    private StateMachine machine_;
+    
     //--------------------------------------------------------------------------
     // Main
     //--------------------------------------------------------------------------
@@ -267,6 +276,7 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
      */
     public TcpTunnel(int listenPort, String remoteHost, int remotePort)
     {
+        machine_ = AbstractService.createStateMachine(this);
         listeners_  = new ArrayList();
         inTotal_    = 0;
         outTotal_   = 0;
@@ -410,6 +420,8 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
      */
     public void start() throws ServiceException
     {
+        machine_.checkTransition(ServiceTransition.START);
+        
         try
         {
             // Server socket on listenPort
@@ -425,8 +437,14 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
         {
             throw new ServiceException(ioe);
         }
+        
+        machine_.transition(ServiceTransition.START);
     }
 
+    //--------------------------------------------------------------------------
+    // ServerThread
+    //--------------------------------------------------------------------------
+    
     class ServerThread implements Runnable
     {
         /**
@@ -544,9 +562,11 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
      */
     public void stop()
     {
+        machine_.checkTransition(ServiceTransition.STOP);
         stopped_ = true;
         SocketUtil.close(serverSocket_);
         fireStatusChanged("Tunnel stopped");
+        machine_.transition(ServiceTransition.STOP);
     }
 
     
@@ -555,7 +575,19 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
      */
     public boolean isRunning()
     {
-        return !stopped_;
+        return getState() == ServiceState.RUNNING;
+    }
+    
+    //--------------------------------------------------------------------------
+    // Service Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see toolbox.util.service.Service#getState()
+     */
+    public ServiceState getState()
+    {
+        return (ServiceState) machine_.getState();
     }
     
     //--------------------------------------------------------------------------

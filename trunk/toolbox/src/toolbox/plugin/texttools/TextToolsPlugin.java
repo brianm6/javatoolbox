@@ -26,6 +26,8 @@ import toolbox.util.Banner;
 import toolbox.util.FontUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.XOMUtil;
+import toolbox.util.service.ServiceException;
+import toolbox.util.service.ServiceTransition;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JHeaderPanel;
 import toolbox.util.ui.JSmartButton;
@@ -35,7 +37,7 @@ import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.SmartAction;
 import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.util.ui.textarea.action.ClearAction;
-import toolbox.workspace.IPlugin;
+import toolbox.workspace.AbstractPlugin;
 import toolbox.workspace.IStatusBar;
 import toolbox.workspace.PluginWorkspace;
 
@@ -52,7 +54,7 @@ import toolbox.workspace.PluginWorkspace;
  *   <li>Escapes/unescapes XML and HTML
  * </ul>
  */
-public class TextToolsPlugin extends JPanel implements IPlugin
+public class TextToolsPlugin extends AbstractPlugin
 {
     // TODO: Add checkbox/combo to set type of text (xml, java) and syntax
     //       hilite as appropriate.
@@ -72,6 +74,11 @@ public class TextToolsPlugin extends JPanel implements IPlugin
     // Fields
     //--------------------------------------------------------------------------
 
+    /**
+     * View for this plugin.
+     */
+    private JComponent view_;
+    
     /**
      * Reference to the workspace status bar.
      */
@@ -123,6 +130,8 @@ public class TextToolsPlugin extends JPanel implements IPlugin
      */
     protected void buildView()
     {
+        view_ = new JPanel(new BorderLayout());
+        
         outputArea_ = new JSmartTextArea();
         outputArea_.setFont(FontUtil.getPreferredMonoFont());
 
@@ -140,7 +149,6 @@ public class TextToolsPlugin extends JPanel implements IPlugin
         wrapField_.setText("80");
 
         // Root
-        setLayout(new BorderLayout());
         splitter_ = new JSmartSplitPane(JSplitPane.VERTICAL_SPLIT);
 
         splitter_.setTopComponent(
@@ -158,8 +166,8 @@ public class TextToolsPlugin extends JPanel implements IPlugin
                 tb,
                 new JScrollPane(outputArea_)));
 
-        add(splitter_, BorderLayout.CENTER);
-        add(buttonPanel, BorderLayout.SOUTH);
+        view_.add(splitter_, BorderLayout.CENTER);
+        view_.add(buttonPanel, BorderLayout.SOUTH);
 
         // Top flip pane
         topFlipPane_ = new JFlipPane(JFlipPane.TOP);
@@ -184,7 +192,7 @@ public class TextToolsPlugin extends JPanel implements IPlugin
             "Format", 
             new FormatPane(this));
         
-        add(topFlipPane_, BorderLayout.NORTH);
+        view_.add(topFlipPane_, BorderLayout.NORTH);
     }
 
 
@@ -232,13 +240,15 @@ public class TextToolsPlugin extends JPanel implements IPlugin
     /**
      * @see toolbox.util.service.Initializable#initialize(java.util.Map)
      */
-    public void initialize(Map params)
+    public void initialize(Map params) throws ServiceException
     {
+        checkTransition(ServiceTransition.INITIALIZE);
         if (params != null)
             statusBar_ = (IStatusBar)
                 params.get(PluginWorkspace.KEY_STATUSBAR);
 
         buildView();
+        transition(ServiceTransition.INITIALIZE);
     }
 
     //--------------------------------------------------------------------------
@@ -259,7 +269,7 @@ public class TextToolsPlugin extends JPanel implements IPlugin
      */
     public JComponent getComponent()
     {
-        return this;
+        return view_;
     }
 
 
@@ -279,13 +289,15 @@ public class TextToolsPlugin extends JPanel implements IPlugin
     /**
      * @see toolbox.util.service.Destroyable#destroy()
      */
-    public void destroy()
+    public void destroy() throws ServiceException
     {
+        checkTransition(ServiceTransition.DESTROY);
         outputArea_.setText("");
         inputArea_.setText("");
         inputArea_ = null;
         outputArea_ = null;
         topFlipPane_ = null;
+        transition(ServiceTransition.DESTROY);
     }
 
     //--------------------------------------------------------------------------

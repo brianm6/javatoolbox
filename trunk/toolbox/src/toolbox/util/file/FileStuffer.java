@@ -12,7 +12,11 @@ import org.apache.commons.lang.math.RandomUtils;
 import toolbox.util.DateTimeUtil;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.ThreadUtil;
+import toolbox.util.service.AbstractService;
+import toolbox.util.service.ServiceState;
+import toolbox.util.service.ServiceTransition;
 import toolbox.util.service.Startable;
+import toolbox.util.statemachine.StateMachine;
 
 /**
  * File stuffer continously sends output to a file at a configurable delay
@@ -66,6 +70,11 @@ public class FileStuffer implements Startable
      * File stuffer.
      */
     private IStuffProvider stuffer_;
+    
+    /**
+     * State machine for this stuffers lifecycle.
+     */
+    private StateMachine machine_;
     
     //--------------------------------------------------------------------------
     // Main
@@ -139,6 +148,7 @@ public class FileStuffer implements Startable
     public FileStuffer(File file, int delay, IStuffProvider stuffer,
         boolean openClose)
     {
+        machine_ = AbstractService.createStateMachine(this);
         setFile(file);
         setDelay(delay);
         stuffer_   = stuffer;        
@@ -205,8 +215,10 @@ public class FileStuffer implements Startable
      */
     public void start() 
     {
+        machine_.checkTransition(ServiceTransition.START);
         thread_ = new Thread(new Runner(), "FileStuffer " + file_.getName());
         thread_.start();
+        machine_.transition(ServiceTransition.START);        
     }
 
 
@@ -215,6 +227,7 @@ public class FileStuffer implements Startable
      */    
     public void stop()
     {
+        machine_.checkTransition(ServiceTransition.STOP);
         stop_ = true;
         
         try
@@ -230,6 +243,8 @@ public class FileStuffer implements Startable
         {
             thread_ = null;
         }
+        
+        machine_.transition(ServiceTransition.STOP);
     }
     
     
@@ -240,7 +255,19 @@ public class FileStuffer implements Startable
      */
     public boolean isRunning()
     {
-        return thread_ != null;
+        return getState() == ServiceState.RUNNING;
+    }
+    
+    //--------------------------------------------------------------------------
+    // Service Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see toolbox.util.service.Service#getState()
+     */
+    public ServiceState getState()
+    {
+        return (ServiceState) machine_.getState();
     }
     
     //--------------------------------------------------------------------------

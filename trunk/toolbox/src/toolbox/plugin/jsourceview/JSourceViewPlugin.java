@@ -6,14 +6,14 @@ import javax.swing.JComponent;
 
 import nu.xom.Element;
 
-import toolbox.workspace.IPlugin;
+import toolbox.workspace.AbstractPlugin;
 import toolbox.workspace.IStatusBar;
 import toolbox.workspace.PluginWorkspace;
 
 /**
  * Plugin wrapper for JSourceView.
  */
-public class JSourceViewPlugin implements IPlugin
+public class JSourceViewPlugin extends AbstractPlugin
 {
     //--------------------------------------------------------------------------
     // Constants

@@ -5,13 +5,18 @@ import java.util.Iterator;
 import java.util.List;
 
 import toolbox.util.ThreadUtil;
+import toolbox.util.service.AbstractService;
+import toolbox.util.service.Nameable;
+import toolbox.util.service.ServiceState;
+import toolbox.util.service.ServiceTransition;
 import toolbox.util.service.Startable;
+import toolbox.util.statemachine.StateMachine;
 
 /**
  * Reads as much content off a queue as possible (batch mode) and delivers in a
  * single call to IBatchingQueueListener.nextBatch().
  */
-public class BatchingQueueReader implements Startable
+public class BatchingQueueReader implements Startable, Nameable
 {
     //--------------------------------------------------------------------------
     // Fields
@@ -21,11 +26,6 @@ public class BatchingQueueReader implements Startable
      * Queue to read elements from.
      */
     private BlockingQueue queue_;
-
-    /**
-     * Started flag.
-     */
-    private boolean started_;
 
     /**
      * Queue Listeners.
@@ -42,6 +42,11 @@ public class BatchingQueueReader implements Startable
      */
     private String name_;
 
+    /**
+     * State machine for this reader's lifecycle.
+     */
+    private StateMachine machine_;
+    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -65,36 +70,15 @@ public class BatchingQueueReader implements Startable
      */
     public BatchingQueueReader(BlockingQueue queue, String name)
     {
+        setName(name);
         queue_ = queue;
-        name_ = name;
-        started_ = false;
         listeners_ = new ArrayList();
+        machine_ = AbstractService.createStateMachine(this);
     }
 
     //--------------------------------------------------------------------------
     // Startable Interface
     //--------------------------------------------------------------------------
-
-    /**
-     * Stops the reader.
-     *
-     * @throws IllegalStateException if the reader has already been stopped.
-     * @see toolbox.util.service.Startable#stop()
-     */
-    public synchronized void stop() throws IllegalStateException
-    {
-        if (started_)
-        {
-            started_  = false;
-            ThreadUtil.stop(worker_, 2000);
-        }
-        else
-        {
-            throw new IllegalStateException(
-                "BatchingQueueReader has already been stopped.");
-        }
-    }
-
 
     /**
      * Starts the reader.
@@ -104,17 +88,24 @@ public class BatchingQueueReader implements Startable
      */
     public synchronized void start() throws IllegalStateException
     {
-        if (!started_)
-        {
-            started_  = true;
-            worker_ = new Thread(new Worker(), name_);
-            worker_.start();
-        }
-        else
-        {
-            throw new IllegalStateException(
-                "BatchingQueueReader has already been started.");
-        }
+        machine_.checkTransition(ServiceTransition.START);
+        worker_ = new Thread(new Worker(), name_);
+        worker_.start();
+        machine_.transition(ServiceTransition.START);
+    }
+
+    
+    /**
+     * Stops the reader.
+     *
+     * @throws IllegalStateException if the reader has already been stopped.
+     * @see toolbox.util.service.Startable#stop()
+     */
+    public synchronized void stop() throws IllegalStateException
+    {
+        machine_.checkTransition(ServiceTransition.STOP);
+        ThreadUtil.stop(worker_, 2000);
+        machine_.transition(ServiceTransition.STOP);
     }
 
     
@@ -123,7 +114,19 @@ public class BatchingQueueReader implements Startable
      */
     public boolean isRunning()
     {
-        return started_;
+        return getState() == ServiceState.RUNNING;
+    }
+    
+    //--------------------------------------------------------------------------
+    // Service Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see toolbox.util.service.Service#getState()
+     */
+    public ServiceState getState()
+    {
+        return (ServiceState) machine_.getState();
     }
     
     //--------------------------------------------------------------------------
@@ -173,6 +176,27 @@ public class BatchingQueueReader implements Startable
     }
 
     //--------------------------------------------------------------------------
+    // Nameable Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see toolbox.util.service.Nameable#getName()
+     */
+    public String getName()
+    {
+        return name_;
+    }
+    
+    
+    /**
+     * @see toolbox.util.service.Nameable#setName(java.lang.String)
+     */
+    public void setName(String name)
+    {
+        name_ = name;
+    }
+    
+    //--------------------------------------------------------------------------
     // Worker
     //--------------------------------------------------------------------------
 
@@ -189,7 +213,7 @@ public class BatchingQueueReader implements Startable
         {
             //logger_.debug(method + "Batching queue reader started!");
 
-            while (started_)
+            while (isRunning())
             {
                 try
                 {

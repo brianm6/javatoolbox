@@ -12,7 +12,7 @@ import com.jgoodies.forms.layout.FormLayout;
 import nu.xom.Element;
 
 import toolbox.util.ui.layout.GridLayoutPlus;
-import toolbox.workspace.IPlugin;
+import toolbox.workspace.AbstractPlugin;
 
 /**
  * A NetMeter Plugin connects to another instance of NetMeter Plugin for the
@@ -29,7 +29,7 @@ import toolbox.workspace.IPlugin;
  * @see toolbox.plugin.netmeter.Client
  * @see toolbox.plugin.netmeter.Server
  */
-public class NetMeterPlugin extends JPanel implements IPlugin
+public class NetMeterPlugin extends AbstractPlugin
 {
     //--------------------------------------------------------------------------
     // Constants
@@ -53,6 +53,8 @@ public class NetMeterPlugin extends JPanel implements IPlugin
      * Grid that factory created clients and servers are placed on.
      */
     private JPanel grid_;
+    
+    private JComponent view_;
     
     //--------------------------------------------------------------------------
     // Constructors 
@@ -89,7 +91,7 @@ public class NetMeterPlugin extends JPanel implements IPlugin
      */
     public void buildView()
     {
-        setLayout(new BorderLayout());
+        view_ = new JPanel(new BorderLayout());
         
         FormLayout layout = new FormLayout("f:p:g","f:p:n");
         DefaultFormBuilder builder = new DefaultFormBuilder(layout);
@@ -97,8 +99,8 @@ public class NetMeterPlugin extends JPanel implements IPlugin
         builder.append(new ServerFactoryView(this));
         
         grid_ = new JPanel(new GridLayoutPlus(2, 2));
-        add(builder.getPanel(), BorderLayout.WEST);
-        add(grid_, BorderLayout.CENTER);
+        view_.add(builder.getPanel(), BorderLayout.WEST);
+        view_.add(grid_, BorderLayout.CENTER);
     }
 
     //--------------------------------------------------------------------------
@@ -131,7 +133,7 @@ public class NetMeterPlugin extends JPanel implements IPlugin
      */
     public JComponent getComponent()
     {
-        return this;
+        return view_;
     }
 
     

@@ -1,23 +1,20 @@
 package toolbox.util.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import toolbox.util.ArrayUtil;
-import toolbox.util.statemachine.StateMachine;
-import toolbox.util.statemachine.StateMachineFactory;
 
 /**
  * Abstract base class for Service implementors.
  */
-public class ServiceNotifier
+public class ServiceNotifier implements ObservableService
 {
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
 
-    private ServiceNature nature_;
+    /**
+     * Service of origin.
+     */
+    private Service service_;
     
     /**
      * Array of listeners interested in events that this service generates.
@@ -34,9 +31,9 @@ public class ServiceNotifier
      * 
      * @see #DEFAULT_STRICT
      */
-    protected ServiceNotifier(ServiceNature nature)
+    protected ServiceNotifier(Service nature)
     {
-        nature_ = nature;
+        service_ = nature;
     }
 
     //--------------------------------------------------------------------------
@@ -74,6 +71,6 @@ public class ServiceNotifier
     protected void fireServiceStateChanged() throws ServiceException
     {
         for (int i = 0; i < listeners_.length; 
-            listeners_[i++].serviceStateChanged(nature_);
+            listeners_[i++].serviceStateChanged(service_));
     }
 }

@@ -18,9 +18,13 @@ import toolbox.util.ThreadUtil;
 import toolbox.util.collections.AsMap;
 import toolbox.util.io.NullWriter;
 import toolbox.util.io.ReverseFileReader;
+import toolbox.util.service.AbstractService;
 import toolbox.util.service.ServiceException;
+import toolbox.util.service.ServiceState;
+import toolbox.util.service.ServiceTransition;
 import toolbox.util.service.Startable;
 import toolbox.util.service.Suspendable;
+import toolbox.util.statemachine.StateMachine;
 
 /**
  * Tail is similar to the Unix "tail -f" command used to tail or follow the end
@@ -103,11 +107,6 @@ public class Tail implements Startable, Suspendable
     private int backlog_;
 
     /**
-     * Paused state of the tail (not thread!).
-     */
-    private boolean paused_;
-
-    /**
      * Flag that notifies tail to shutdown gracefully.
      */
     private boolean pendingShutdown_;
@@ -116,7 +115,12 @@ public class Tail implements Startable, Suspendable
      * Thread name..mostly for debugging.
      */
     private String threadName_;
-
+    
+    /**
+     * State machine for this tail's lifecycle.
+     */
+    private StateMachine machine_;
+    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -128,9 +132,9 @@ public class Tail implements Startable, Suspendable
     {
         listeners_       = new TailListener[0];
         sink_            = new NullWriter();
-        paused_          = false;
         pendingShutdown_ = false;
         backlog_         = DEFAULT_BACKLOG;
+        machine_         = AbstractService.createStateMachine(this);
     }
 
     //--------------------------------------------------------------------------
@@ -144,8 +148,9 @@ public class Tail implements Startable, Suspendable
      */
     public void start() throws ServiceException
     {
-        if (!isRunning())
-        {
+        machine_.checkTransition(ServiceTransition.START);
+        //if (!isRunning())
+        //{
             String name = "Tail-" + (isFile() ? file_.getName() : threadName_);
             tailer_ = new Thread(new Tailer(), name);
             
@@ -160,9 +165,11 @@ public class Tail implements Startable, Suspendable
             
             tailer_.start();
             fireTailStarted();
-        }
-        else
-            logger_.warn("Tail is already running");
+        //}
+        //else
+        //    logger_.warn("Tail is already running");
+            
+        machine_.transition(ServiceTransition.START);            
     }
 
 
@@ -173,8 +180,11 @@ public class Tail implements Startable, Suspendable
      */
     public void stop()
     {
-        if (isRunning())
-        {
+//        if (isRunning())
+//        {
+        
+        machine_.checkTransition(ServiceTransition.STOP);
+        
             try
             {
                 pendingShutdown_ = true;
@@ -195,9 +205,11 @@ public class Tail implements Startable, Suspendable
                 pendingShutdown_ = false;
                 fireTailStopped();
             }
-        }
-        else
-            logger_.warn("Tail is already stopped");
+//        }
+//        else
+//            logger_.warn("Tail is already stopped");
+            
+            machine_.transition(ServiceTransition.STOP);            
     }
 
 
@@ -209,7 +221,20 @@ public class Tail implements Startable, Suspendable
      */
     public boolean isRunning()
     {
+        // TODO: Fix this to use machine_
         return (tailer_ != null && tailer_.isAlive());
+    }
+    
+    //--------------------------------------------------------------------------
+    // Service Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see toolbox.util.service.Service#getState()
+     */
+    public ServiceState getState()
+    {
+        return (ServiceState) machine_.getState();
     }
     
     //--------------------------------------------------------------------------
@@ -223,7 +248,7 @@ public class Tail implements Startable, Suspendable
      */
     public boolean isSuspended()
     {
-        return paused_;
+        return getState() == ServiceState.SUSPENDED;
     }
     
     
@@ -234,8 +259,10 @@ public class Tail implements Startable, Suspendable
      */
     public void suspend()
     {
-        if (isRunning() && !isSuspended())
-            paused_ = true;
+        machine_.checkTransition(ServiceTransition.SUSPEND);
+        //if (isRunning() && !isSuspended())
+        //    paused_ = true;
+        machine_.transition(ServiceTransition.SUSPEND);
     }
 
 
@@ -246,15 +273,19 @@ public class Tail implements Startable, Suspendable
      */
     public void resume()
     {
-        if (isRunning() && isSuspended())
-        {
-            paused_ = false;
+        machine_.checkTransition(ServiceTransition.RESUME);
+        
+        //if (isRunning() && isSuspended())
+        //{
+        //    paused_ = false;
 
             synchronized (this)
             {
                 notify();
             }
-        }
+        //}
+            
+        machine_.transition(ServiceTransition.RESUME);    
     }
 
     //--------------------------------------------------------------------------
@@ -360,7 +391,7 @@ public class Tail implements Startable, Suspendable
      */
     protected void checkPaused()
     {
-        if (paused_)
+        if (isSuspended())
         {
             fireTailPaused();
 

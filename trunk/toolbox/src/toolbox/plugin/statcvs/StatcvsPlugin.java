@@ -33,6 +33,8 @@ import toolbox.util.StringUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.io.JTextAreaOutputStream;
 import toolbox.util.io.StringOutputStream;
+import toolbox.util.service.ServiceException;
+import toolbox.util.service.ServiceTransition;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JButtonGroup;
 import toolbox.util.ui.JCollapsablePanel;
@@ -46,7 +48,7 @@ import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.SortedComboBoxModel;
 import toolbox.util.ui.layout.ParagraphLayout;
-import toolbox.workspace.IPlugin;
+import toolbox.workspace.AbstractPlugin;
 import toolbox.workspace.IStatusBar;
 import toolbox.workspace.PluginWorkspace;
 import toolbox.workspace.WorkspaceAction;
@@ -61,7 +63,7 @@ import toolbox.workspace.WorkspaceAction;
  * (thanks to the <a href=http://javacvs.netbeans.org/>javacvs</a> module from
  * <a href=http://www.netbeans.org>Netbeans</a>).
  */
-public class StatcvsPlugin extends JPanel implements IPlugin
+public class StatcvsPlugin extends AbstractPlugin
 {
     private static final Logger logger_ = Logger.getLogger(StatcvsPlugin.class);
 
@@ -112,6 +114,11 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     // UI Fields
     //--------------------------------------------------------------------------
 
+    /**
+     * View for this plugin.
+     */
+    private JComponent view_;
+    
     /**
      * Collapsable panel that contains all the details of the cvs projects.
      */
@@ -232,9 +239,9 @@ public class StatcvsPlugin extends JPanel implements IPlugin
      */
     protected void buildView()
     {
-        setLayout(new BorderLayout());
-        add(BorderLayout.CENTER, buildOutputConsoleView());
-        add(BorderLayout.NORTH, cvsProjectsView_ = buildCVSProjectsView());
+        view_ = new JPanel(new BorderLayout());
+        view_.add(BorderLayout.CENTER, buildOutputConsoleView());
+        view_.add(BorderLayout.NORTH, cvsProjectsView_ = buildCVSProjectsView());
     }
 
 
@@ -533,8 +540,10 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     /**
      * @see toolbox.util.service.Initializable#initialize(java.util.Map)
      */
-    public void initialize(Map params)
+    public void initialize(Map params) throws ServiceException
     {
+        checkTransition(ServiceTransition.INITIALIZE);
+        
         if (params != null)
             statusBar_ = (IStatusBar)
                 params.get(PluginWorkspace.KEY_STATUSBAR);
@@ -546,6 +555,8 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         
         savedSystemOut_ = System.out;
         savedSystemErr_ = System.err;
+        
+        transition(ServiceTransition.INITIALIZE);
     }
     
     //--------------------------------------------------------------------------
@@ -566,7 +577,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
      */
     public JComponent getComponent()
     {
-        return this;
+        return view_;
     }
 
 
@@ -585,8 +596,9 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     /**
      * @see toolbox.util.service.Destroyable#destroy()
      */
-    public void destroy()
+    public void destroy() throws ServiceException
     {
+        transition(ServiceTransition.DESTROY);
     }
 
     //--------------------------------------------------------------------------

@@ -1,10 +1,7 @@
 package toolbox.util.formatter;
 
-import java.util.Map;
-
 import toolbox.util.io.StringInputStream;
 import toolbox.util.io.StringOutputStream;
-import toolbox.util.service.ServiceException;
 
 /**
  * Abstract formatter that takes care of non-formatter related housekeeping 
@@ -47,18 +44,6 @@ public abstract class AbstractFormatter implements Formatter
     public AbstractFormatter(String name)
     {
         setName(name);
-    }
-
-    //--------------------------------------------------------------------------
-    // Initializable Interface
-    //--------------------------------------------------------------------------
-    
-    /**
-     * @see toolbox.util.service.Initializable#initialize(java.util.Map)
-     */
-    public void initialize(Map configuration) throws ServiceException
-    {
-        // NO-OP. Override to specialize.
     }
 
     //--------------------------------------------------------------------------

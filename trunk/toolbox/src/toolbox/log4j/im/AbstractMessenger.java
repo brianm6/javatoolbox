@@ -20,6 +20,7 @@ import toolbox.util.invoker.Invoker;
 import toolbox.util.invoker.QueuedInvoker;
 import toolbox.util.service.AbstractService;
 import toolbox.util.service.ServiceException;
+import toolbox.util.service.ServiceTransition;
 
 /**
  * Abstract Instant Messenger client that supports login, send message, and
@@ -111,6 +112,8 @@ public abstract class AbstractMessenger extends AbstractService
      */
     public void initialize(Map configuration) throws ServiceException 
     {
+        checkTransition(ServiceTransition.INITIALIZE);
+        
         invoker_ = new QueuedInvoker();
         protocols_ = ProtocolManager.getAvailableProtocols();
         messenger_ = protocols_[getProtocol()];
@@ -122,10 +125,7 @@ public abstract class AbstractMessenger extends AbstractService
                 PROP_THROTTLE, 
                 InstantMessengerAppender.DEFAULT_THROTTLE);
         
-        super.initialize(configuration);
-        
-        // Honor service state transitions
-        super.start();
+        transition(ServiceTransition.INITIALIZE);
     }
 
     
@@ -134,18 +134,18 @@ public abstract class AbstractMessenger extends AbstractService
      */
     public void destroy() throws ServiceException 
     {
+        checkTransition(ServiceTransition.DESTROY);
+        
         try
         {
             invoker_.destroy();
-            
-            // Honor strict state transitions
-            super.stop();
-            super.destroy();
         }
         catch (Exception e)
         {
             throw new ServiceException(e);
         }
+        
+        transition(ServiceTransition.DESTROY);
     }
     
     //--------------------------------------------------------------------------
@@ -163,7 +163,7 @@ public abstract class AbstractMessenger extends AbstractService
     public synchronized void login(String username, String password)
         throws InstantMessengerException
     {
-        if (connected_)
+        if (isConnected())
             return;
 
         ProxyInfo info = new ProxyInfo();

@@ -3,13 +3,12 @@ package toolbox.util.formatter;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import toolbox.util.service.Initializable;
 import toolbox.util.service.Nameable;
 
 /**
  * General purpose formatter interface.
  */
-public interface Formatter extends Initializable, Nameable
+public interface Formatter extends Nameable
 {
     /**
      * Returns a formatted version of the input string.

@@ -32,9 +32,11 @@ import org.apache.log4j.Logger;
 
 import toolbox.util.ExceptionUtil;
 import toolbox.util.SwingUtil;
+import toolbox.util.service.ServiceException;
+import toolbox.util.service.ServiceTransition;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.tabbedpane.JSmartTabbedPane;
-import toolbox.workspace.IPlugin;
+import toolbox.workspace.AbstractPlugin;
 
 /**
  * Shows UIDefaults for each widget in Swing's library for all currently
@@ -42,7 +44,7 @@ import toolbox.workspace.IPlugin;
  *
  * @author Unascribed
  */
-public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
+public class UIDefaultsPlugin extends AbstractPlugin implements ActionListener
 {
     private static final Logger logger_ =
         Logger.getLogger(UIDefaultsPlugin.class);
@@ -66,6 +68,11 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
      */
     private Map infoMap_;
 
+    /**
+     * View for this plugin.
+     */
+    private JComponent view_;
+    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -84,9 +91,11 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
     /**
      * @see toolbox.util.service.Initializable#initialize(java.util.Map)
      */
-    public void initialize(Map params)
+    public void initialize(Map params) throws ServiceException
     {
+        checkTransition(ServiceTransition.INITIALIZE);
         buildView();
+        transition(ServiceTransition.INITIALIZE);
     }
     
     //--------------------------------------------------------------------------
@@ -107,7 +116,7 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
      */
     public JComponent getComponent()
     {
-        return this;
+        return view_;
     }
 
 
@@ -145,8 +154,9 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
     /**
      * @see toolbox.util.service.Destroyable#destroy()
      */
-    public void destroy()
+    public void destroy() throws ServiceException
     {
+        transition(ServiceTransition.DESTROY);
     }
 
     //--------------------------------------------------------------------------
@@ -173,10 +183,10 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
             ExceptionUtil.handleUI(e2, logger_);
         }
 
-        remove(tabbedPane_);
+        view_.remove(tabbedPane_);
         tabbedPane_ = getTabbedPane();
-        add(tabbedPane_);
-        SwingUtilities.updateComponentTreeUI(SwingUtil.getFrameAncestor(this));
+        view_.add(tabbedPane_);
+        SwingUtilities.updateComponentTreeUI(SwingUtil.getFrameAncestor(view_));
     }
 
     //--------------------------------------------------------------------------
@@ -188,16 +198,16 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
      */
     protected void buildView()
     {
-        setLayout(new BorderLayout());
+        view_ = new JPanel(new BorderLayout());
         tabbedPane_ = getTabbedPane();
-        add(tabbedPane_);
+        view_.add(tabbedPane_);
 
         UIManager.LookAndFeelInfo[] info = UIManager.getInstalledLookAndFeels();
         infoMap_ = new HashMap(info.length);
 
         JPanel buttons = new JPanel();
         buttons.setLayout(new GridLayout(1, info.length));
-        add(buttons, BorderLayout.SOUTH);
+        view_.add(buttons, BorderLayout.SOUTH);
 
         for (int i = 0; i < info.length; i++)
         {

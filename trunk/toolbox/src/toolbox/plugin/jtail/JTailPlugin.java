@@ -6,14 +6,14 @@ import javax.swing.JComponent;
 
 import nu.xom.Element;
 
-import toolbox.workspace.IPlugin;
+import toolbox.workspace.AbstractPlugin;
 import toolbox.workspace.IStatusBar;
 import toolbox.workspace.PluginWorkspace;
 
 /**
  * Plugin wrapper for {@link JTail}.
  */
-public class JTailPlugin implements IPlugin
+public class JTailPlugin extends AbstractPlugin
 {
     //--------------------------------------------------------------------------
     // Fields

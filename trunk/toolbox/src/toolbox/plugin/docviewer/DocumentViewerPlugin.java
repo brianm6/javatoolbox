@@ -25,12 +25,14 @@ import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.ResourceUtil;
 import toolbox.util.XOMUtil;
+import toolbox.util.service.ServiceException;
+import toolbox.util.service.ServiceTransition;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.explorer.FileExplorerAdapter;
 import toolbox.util.ui.explorer.JFileExplorer;
 import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.util.ui.layout.StackLayout;
-import toolbox.workspace.IPlugin;
+import toolbox.workspace.AbstractPlugin;
 import toolbox.workspace.IStatusBar;
 import toolbox.workspace.PluginWorkspace;
 import toolbox.workspace.WorkspaceAction;
@@ -42,7 +44,7 @@ import toolbox.workspace.WorkspaceAction;
  * 
  * @see toolbox.plugin.docviewer.DocumentViewer
  */ 
-public class DocumentViewerPlugin extends JPanel implements IPlugin
+public class DocumentViewerPlugin extends AbstractPlugin
 {
     private static final Logger logger_ = 
         Logger.getLogger(DocumentViewerPlugin.class);
@@ -80,6 +82,11 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
     // Fields
     //--------------------------------------------------------------------------
 
+    /**
+     * View for this plugin.
+     */
+    private JComponent view_;
+    
     /** 
      * Flip panel that houses the file explorer. 
      */
@@ -141,7 +148,7 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
      */
     protected void buildView()
     {
-        setLayout(new BorderLayout());
+        view_ = new JPanel(new BorderLayout());
         
         explorer_ = new JFileExplorer(false);
         explorer_.addFileExplorerListener(new FileSelectionListener());
@@ -156,8 +163,8 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
         
         outputPanel_ = new JPanel(new BorderLayout());
         
-        add(BorderLayout.CENTER, outputPanel_);
-        add(BorderLayout.WEST, flipPane_);
+        view_.add(BorderLayout.CENTER, outputPanel_);
+        view_.add(BorderLayout.WEST, flipPane_);
     }
     
 
@@ -302,8 +309,10 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
     /**
      * @see toolbox.util.service.Initializable#initialize(java.util.Map)
      */
-    public void initialize(Map params)
+    public void initialize(Map params) throws ServiceException
     {
+        checkTransition(ServiceTransition.INITIALIZE);
+        
         if (params != null)
             statusBar_ = (IStatusBar) 
                 params.get(PluginWorkspace.KEY_STATUSBAR);
@@ -312,6 +321,8 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
         lastViewedWith_ = new HashMap();
         buildView();
         buildViewerList();
+        
+        transition(ServiceTransition.INITIALIZE);
     }
 
     //--------------------------------------------------------------------------
@@ -332,7 +343,7 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
      */
     public JComponent getComponent()
     {
-        return this;
+        return view_;
     }
 
     
@@ -351,8 +362,10 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
     /**
      * @see toolbox.util.service.Destroyable#destroy()
      */
-    public void destroy()
+    public void destroy() throws ServiceException
     {
+        checkTransition(ServiceTransition.DESTROY);
+        
         for (Iterator i = viewers_.iterator(); i.hasNext();)
         {
             try
@@ -369,6 +382,8 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
         
         viewers_.clear();
         viewers_ = null;
+        
+        transition(ServiceTransition.DESTROY);
     }
     
     //--------------------------------------------------------------------------
@@ -430,7 +445,7 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
          */
         public ViewAction(DocumentViewer viewer, File file)
         {
-            super(viewer.getName(), true, true, getParent(), statusBar_);
+            super(viewer.getName(), true, true, view_, statusBar_);
             viewer_ = viewer;
             file_ = file;
         }

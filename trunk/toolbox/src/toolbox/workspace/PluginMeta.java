@@ -99,6 +99,7 @@ public class PluginMeta
         }
         catch (Exception e)
         {
+            logger_.debug("Classname = " + className_);
             ExceptionUtil.handleUI(e, logger_);    
         }
         

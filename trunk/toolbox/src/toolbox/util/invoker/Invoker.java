@@ -1,12 +1,11 @@
 package toolbox.util.invoker;
 
-import toolbox.util.service.Destroyable;
 import toolbox.util.service.ServiceException;
 
 /**
  * Interface for invoking a method on an object or a {@link java.lang.Runnable}.
  */
-public interface Invoker extends Destroyable
+public interface Invoker
 {
     /**
      * Invokes the run() method on class that implements Runnable.

@@ -63,6 +63,8 @@ import toolbox.util.XOMUtil;
 import toolbox.util.db.SQLFormatter;
 import toolbox.util.db.SQLFormatterView;
 import toolbox.util.io.JTextAreaOutputStream;
+import toolbox.util.service.ServiceException;
+import toolbox.util.service.ServiceTransition;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JConveyorMenu;
 import toolbox.util.ui.JHeaderPanel;
@@ -76,7 +78,7 @@ import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.util.ui.table.JSmartTable;
 import toolbox.util.ui.table.TableSorter;
 import toolbox.util.ui.textarea.action.ClearAction;
-import toolbox.workspace.IPlugin;
+import toolbox.workspace.AbstractPlugin;
 import toolbox.workspace.IStatusBar;
 import toolbox.workspace.PluginWorkspace;
 
@@ -137,7 +139,7 @@ import toolbox.workspace.PluginWorkspace;
  * 
  * @see toolbox.util.JDBCUtil
  */
-public class QueryPlugin extends JPanel implements IPlugin, QueryPluginConstants
+public class QueryPlugin extends AbstractPlugin implements QueryPluginConstants
 {
     public static final Logger logger_ = Logger.getLogger(QueryPlugin.class);
 
@@ -254,6 +256,11 @@ public class QueryPlugin extends JPanel implements IPlugin, QueryPluginConstants
      * File explorer accessible via the left flippane.
      */
     private JFileExplorer fileExplorer_;
+    
+    /**
+     * View for this plugin.
+     */
+    private JComponent view_;
     
     //--------------------------------------------------------------------------
     // Constructors
@@ -480,7 +487,7 @@ public class QueryPlugin extends JPanel implements IPlugin, QueryPluginConstants
      */
     protected void buildView()
     {
-        setLayout(new BorderLayout());
+        view_ = new JPanel(new BorderLayout());
 
         // PrintWriter depends on the results text area so this goes first
         JHeaderPanel resultsPanel = buildResultsArea();
@@ -545,8 +552,8 @@ public class QueryPlugin extends JPanel implements IPlugin, QueryPluginConstants
             "Reference", 
             buildSQLReferencePane());
         
-        add(leftFlipPane_, BorderLayout.WEST);
-        add(areaSplitPane_, BorderLayout.CENTER);
+        view_.add(leftFlipPane_, BorderLayout.WEST);
+        view_.add(areaSplitPane_, BorderLayout.CENTER);
     }
 
     
@@ -809,13 +816,16 @@ public class QueryPlugin extends JPanel implements IPlugin, QueryPluginConstants
     /**
      * @see toolbox.util.service.Initializable#initialize(java.util.Map)
      */
-    public void initialize(Map params)
+    public void initialize(Map params) throws ServiceException
     {
+        checkTransition(ServiceTransition.INITIALIZE);
+        
         if (params != null)
             statusBar_ = (IStatusBar)
                 params.get(PluginWorkspace.KEY_STATUSBAR);
 
         buildView();
+        transition(ServiceTransition.INITIALIZE);
     }
 
     //--------------------------------------------------------------------------
@@ -836,7 +846,7 @@ public class QueryPlugin extends JPanel implements IPlugin, QueryPluginConstants
      */
     public JComponent getComponent()
     {
-        return this;
+        return view_;
     }
 
 
@@ -855,8 +865,10 @@ public class QueryPlugin extends JPanel implements IPlugin, QueryPluginConstants
     /**
      * @see toolbox.util.service.Destroyable#destroy()
      */
-    public void destroy()
+    public void destroy() throws ServiceException
     {
+        checkTransition(ServiceTransition.DESTROY);
+        transition(ServiceTransition.DESTROY);
     }
 
     //--------------------------------------------------------------------------

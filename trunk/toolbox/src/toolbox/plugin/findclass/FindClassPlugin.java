@@ -9,12 +9,14 @@ import nu.xom.Element;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ExceptionUtil;
-import toolbox.workspace.IPlugin;
+import toolbox.util.service.ServiceException;
+import toolbox.util.service.ServiceTransition;
+import toolbox.workspace.AbstractPlugin;
 
 /**
  * Plugin wrapper for FindClassPane.
  */
-public class FindClassPlugin implements IPlugin
+public class FindClassPlugin extends AbstractPlugin
 {
     private static final Logger logger_ = 
         Logger.getLogger(FindClassPlugin.class);
@@ -47,8 +49,10 @@ public class FindClassPlugin implements IPlugin
     /**
      * @see toolbox.workspace.IPlugin#initialize(Map)
      */
-    public void initialize(Map params)
+    public void initialize(Map params) throws ServiceException
     {
+        checkTransition(ServiceTransition.INITIALIZE);
+        
         try
         {
             delegate_.initialize(params);        
@@ -57,6 +61,8 @@ public class FindClassPlugin implements IPlugin
         {
             ExceptionUtil.handleUI(ioe, logger_);
         }
+        
+        transition(ServiceTransition.INITIALIZE);
     }
     
     //--------------------------------------------------------------------------
@@ -120,8 +126,10 @@ public class FindClassPlugin implements IPlugin
     /**
      * @see toolbox.util.service.Destroyable#destroy()
      */
-    public void destroy()
+    public void destroy() throws ServiceException
     {
+        checkTransition(ServiceTransition.DESTROY);
         delegate_.destroy();
+        transition(ServiceTransition.DESTROY);
     }
 }

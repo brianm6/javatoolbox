@@ -35,18 +35,4 @@ public interface Service
     public ServiceState getState();
     
     
-    /**
-     * Adds a listener to the list of observers for this service.
-     *  
-     * @param listener Listener to add.
-     */
-    void addServiceListener(ServiceListener listener);
-
-    
-    /**
-     * Removes a listener from the list of observers for this service.
-     *  
-     * @param listener Listener to remove.
-     */
-    void removeServiceListener(ServiceListener listener);
 }

@@ -464,7 +464,8 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
                     driverField_.getText(),
                     urlField_.getText(),
                     userField_.getText(),
-                    String.valueOf(passwordField_.getPassword()));
+                    String.valueOf(passwordField_.getPassword()),
+                    true);
             }
             else
             {
@@ -475,7 +476,7 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
                     urlField_.getText(),
                     userField_.getText(),
                     String.valueOf(passwordField_.getPassword()));
-                    //false);
+                    
             }
        
             statusBar_.setInfo("Connected to the database!");

@@ -106,12 +106,12 @@ public class ServiceView extends JPanel
     {
         // Remove the old one if one exists
         if (service_ != null)
-            service_.removeServiceListener(myServiceListener_);
+            ((ObservableService) service_).removeServiceListener(myServiceListener_);
         
         service_ = service;
         
         // Transsfer the listener to the newly appointed service.
-        service.addServiceListener(myServiceListener_);
+        ((ObservableService) service_).addServiceListener(myServiceListener_);
     }
     
     //--------------------------------------------------------------------------

@@ -271,37 +271,82 @@ public class TailTest extends TestCase
         StringWriter sw = new StringWriter();
         tail.follow(reader, sw, "testTailMonkeyWithLifeCycle");
         
-        // Start twice - should print warning
+        
+        // Start twice - should print warning ----------------------------------
         tail.start();
         listener.waitForStart();
-        tail.start(); 
+        
+        try
+        {
+            tail.start();
+        }
+        catch (IllegalStateException ise)
+        {
+            logger_.debug("SUCCESS: " + ise);
+        }
+        
         ThreadUtil.sleep(d);
         
-        // Pause twice
+        // Pause twice ---------------------------------------------------------
         tail.suspend();
         listener.waitForPause();
-        tail.suspend();
+        
+        try
+        {
+            tail.suspend();
+        }
+        catch (IllegalStateException ise)
+        {
+            logger_.debug("SUCCESS: " + ise);
+        }
         ThreadUtil.sleep(d);
         
-        // Unpause twice
+        // Unpause twice -------------------------------------------------------
         tail.resume();
         listener.waitForUnpause();
-        tail.resume();
+        
+        try
+        {
+            tail.resume();
+        }
+        catch (IllegalStateException ise)
+        {
+            logger_.debug("SUCCESS: " + ise);
+        }
+
         ThreadUtil.sleep(d);
         
-        // Stop twice
+        // Stop twice ----------------------------------------------------------
         tail.stop();
         listener.waitForStop();
-        tail.stop();
-
-        // Stop while tail is paused
         
+        try
+        {
+            tail.stop();
+        }
+        catch (IllegalStateException ise)
+        {
+            logger_.debug("SUCCESS: " + ise);
+        }
+
+        // Stop while tail is paused -------------------------------------------
         tail.start();
         listener.waitForStart();
         tail.suspend();
         listener.waitForPause();
-        tail.stop();
-        listener.waitForStop();
+        
+        try
+        {
+            tail.stop();
+        }
+        catch (IllegalStateException ise)
+        {
+            logger_.debug("SUCCESS: " + ise);
+        }
+
+        //listener.waitForStop();
+
+        // ---------------------------------------------------------------------
         
         // Dump contents of the sinks
         logger_.info("OutputWriter sink:\n" + sw.toString());

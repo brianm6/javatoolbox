@@ -48,7 +48,7 @@ public class ListColumnsAction extends BaseAction
 
         if (StringUtils.isBlank(tableName))
         {
-            JSmartOptionPane.showMessageDialog(getPlugin(),
+            JSmartOptionPane.showMessageDialog(getPlugin().getComponent(),
                 "Select text matching the column name from the output " +
                 "area.", "Error", JSmartOptionPane.ERROR_MESSAGE);
         }

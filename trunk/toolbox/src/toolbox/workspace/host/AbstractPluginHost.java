@@ -10,7 +10,11 @@ import org.apache.commons.lang.ClassUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
+import toolbox.util.service.AbstractService;
 import toolbox.util.service.ServiceException;
+import toolbox.util.service.ServiceState;
+import toolbox.util.service.ServiceTransition;
+import toolbox.util.statemachine.StateMachine;
 import toolbox.workspace.IPlugin;
 import toolbox.workspace.IPreferenced;
 
@@ -47,6 +51,23 @@ public abstract class AbstractPluginHost implements PluginHost, IPreferenced
      */
     private String name_;
     
+    /**
+     * State machine for this plugin hosts lifecycle.
+     */
+    private StateMachine machine_;
+    
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+
+    /**
+     * Creates a AbstractPluginHost.
+     */
+    protected AbstractPluginHost()
+    {
+        machine_ = AbstractService.createStateMachine(this);
+    }
+    
     //--------------------------------------------------------------------------
     // Initializable Interface
     //--------------------------------------------------------------------------
@@ -60,11 +81,14 @@ public abstract class AbstractPluginHost implements PluginHost, IPreferenced
     public void initialize(Map props)
     {
         logger_.debug("Startng up " + ClassUtils.getShortClassName(getClass()));
+        machine_.checkTransition(ServiceTransition.INITIALIZE);
         
         // Make sure map is ordered by insertion.
         plugins_ = new LinkedHashMap();
+        
         init_ = props;
         pluginHostListeners_ = new PluginHostListener[0];
+        machine_.transition(ServiceTransition.INITIALIZE);
     }
 
     //--------------------------------------------------------------------------
@@ -215,8 +239,22 @@ public abstract class AbstractPluginHost implements PluginHost, IPreferenced
         logger_.debug(
             "Shutting down " + ClassUtils.getShortClassName(getClass()));
         
+        machine_.checkTransition(ServiceTransition.DESTROY);
         plugins_.clear();
         plugins_ = null;
+        machine_.transition(ServiceTransition.DESTROY);
+    }
+    
+    //--------------------------------------------------------------------------
+    // Service Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see toolbox.util.service.Service#getState()
+     */
+    public ServiceState getState()
+    {
+        return (ServiceState) machine_.getState();
     }
     
     //--------------------------------------------------------------------------

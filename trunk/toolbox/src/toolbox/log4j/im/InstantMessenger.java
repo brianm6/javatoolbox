@@ -1,11 +1,12 @@
 package toolbox.log4j.im;
 
-import toolbox.util.service.Service;
+import toolbox.util.service.Destroyable;
+import toolbox.util.service.Initializable;
 
 /**
  * Common instant messenger interface.
  */
-public interface InstantMessenger extends Service
+public interface InstantMessenger extends Initializable, Destroyable
 {
     //--------------------------------------------------------------------------
     // Constants
@@ -19,17 +20,6 @@ public interface InstantMessenger extends Service
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
-    
-    /**
-     * Initializes the instant messenger with any properties needed for the
-     * specific implementation.
-     * 
-     * @param props Initialization properties.
-     * @throws InstantMessengerException on initialization error.
-     */
-    //void initialize(Properties props)
-    //    throws InstantMessengerException;
-    
     
     /**
      * Logs the given user onto the instant messaging service.
@@ -59,14 +49,6 @@ public interface InstantMessenger extends Service
      * @throws InstantMessengerException if an error occurs.
      */
     void logout() throws InstantMessengerException;
-    
-    
-    /**
-     * Shuts down the client.
-     * 
-     * @throws InstantMessengerException if an error occurs during shutdown.
-     */
-    //void shutdown() throws InstantMessengerException;
     
     
     /**

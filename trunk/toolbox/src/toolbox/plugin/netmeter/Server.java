@@ -24,7 +24,7 @@ import toolbox.util.statemachine.StateMachine;
  * 
  * @see toolbox.plugin.netmeter.Client
  */
-public class Server implements Startable, Initializable
+public class Server /*extends ServiceNotifier*/ implements Startable, Initializable
 {
     //--------------------------------------------------------------------------
     // Fields
@@ -219,7 +219,19 @@ public class Server implements Startable, Initializable
      */
     public boolean isRunning()
     {
-        return machine_.getState() == ServiceState.RUNNING;
+        return getState() == ServiceState.RUNNING;
+    }
+    
+    //--------------------------------------------------------------------------
+    // Service Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see toolbox.util.service.Service#getState()
+     */
+    public ServiceState getState()
+    {
+        return (ServiceState) machine_.getState();
     }
     
     //--------------------------------------------------------------------------

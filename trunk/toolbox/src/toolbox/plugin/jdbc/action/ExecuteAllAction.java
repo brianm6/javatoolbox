@@ -35,7 +35,13 @@ public class ExecuteAllAction extends BaseAction
      */
     public ExecuteAllAction(QueryPlugin plugin)
     {
-        super(plugin, "Execute All SQL", true, plugin, plugin.getStatusBar());
+        super(
+            plugin, 
+            "Execute All SQL", 
+            true, 
+            plugin.getComponent(),
+            plugin.getStatusBar());
+        
         putValue(MNEMONIC_KEY, new Integer('E'));
         putValue(SHORT_DESCRIPTION, "Executes all the SQL statements");
     }

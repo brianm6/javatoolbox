@@ -36,14 +36,14 @@ import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.list.JListPopupMenu;
 import toolbox.util.ui.list.JSmartList;
 import toolbox.util.ui.list.RegexListModelFilter;
-import toolbox.workspace.IPlugin;
+import toolbox.workspace.AbstractPlugin;
 
 /**
  * Simple plugin that allows running of JUnit tests by package.
  * 
  * @see toolbox.junit.PackageTester
  */
-public class JUnitPlugin extends JPanel implements IPlugin
+public class JUnitPlugin extends AbstractPlugin
 {
     private static final Logger logger_ = Logger.getLogger(JUnitPlugin.class);
 
@@ -57,6 +57,8 @@ public class JUnitPlugin extends JPanel implements IPlugin
     //--------------------------------------------------------------------------
     // Fields 
     //--------------------------------------------------------------------------
+    
+    private JComponent view_;
     
     /**
      * User enters text to filter down the number of listed packages here.
@@ -99,6 +101,8 @@ public class JUnitPlugin extends JPanel implements IPlugin
      */
     protected void buildView()
     {
+        view_ = new JPanel(new BorderLayout());
+        
         // the selection panel
         JPanel selectPanel = new JPanel(new BorderLayout());
         
@@ -137,15 +141,13 @@ public class JUnitPlugin extends JPanel implements IPlugin
             new JSmartButton(new TestPackagesAction()));
 
         // configure the root panel        
-        setLayout(new BorderLayout());
-        
-        add(BorderLayout.WEST, 
+        view_.add(BorderLayout.WEST, 
             new JHeaderPanel("Test Packages", null, selectPanel));
         
-        add(BorderLayout.CENTER, 
+        view_.add(BorderLayout.CENTER, 
             new JHeaderPanel("Output", null, outputPanel));
         
-        add(BorderLayout.SOUTH, buttonPanel);        
+        view_.add(BorderLayout.SOUTH, buttonPanel);        
     }     
     
     
@@ -191,7 +193,7 @@ public class JUnitPlugin extends JPanel implements IPlugin
      */
     public JComponent getComponent()
     {
-        return this;
+        return view_;
     }
 
 

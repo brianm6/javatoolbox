@@ -41,12 +41,14 @@ import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.formatter.XMLFormatter;
 import toolbox.util.io.StringInputStream;
+import toolbox.util.service.ServiceException;
+import toolbox.util.service.ServiceTransition;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartSplitPane;
 import toolbox.util.ui.explorer.FileExplorerAdapter;
 import toolbox.util.ui.explorer.JFileExplorer;
 import toolbox.util.ui.flippane.JFlipPane;
-import toolbox.workspace.IPlugin;
+import toolbox.workspace.AbstractPlugin;
 import toolbox.workspace.IStatusBar;
 import toolbox.workspace.PluginWorkspace;
 import toolbox.workspace.WorkspaceAction;
@@ -65,7 +67,7 @@ import toolbox.workspace.WorkspaceAction;
  *   <li>XML formatter
  * </ul>
  */ 
-public class XSLFOPlugin extends JPanel implements IPlugin
+public class XSLFOPlugin extends AbstractPlugin
 {
     // TODO: Create XMLDefaults ala JavaDefaults for JEditTextArea and refactor
 
@@ -88,6 +90,11 @@ public class XSLFOPlugin extends JPanel implements IPlugin
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
+    
+    /**
+     * View for this plugin.
+     */
+    private JComponent view_;
     
     /** 
      * Flip panel that houses the file explorer. 
@@ -237,12 +244,13 @@ public class XSLFOPlugin extends JPanel implements IPlugin
      */
     protected void buildView()
     {
+        view_ = new JPanel(new BorderLayout());
+        
         initTextArea();
         xmlArea_ = new JEditTextArea(new XMLTokenMarker(), defaults_);
         ((JEditPopupMenu) defaults_.popup).setTextArea(xmlArea_);
         ((JEditPopupMenu) defaults_.popup).buildView();
         
-        setLayout(new BorderLayout());
         explorer_ = new JFileExplorer(false);
         explorer_.addFileExplorerListener(new FileSelectionListener());
         
@@ -266,9 +274,9 @@ public class XSLFOPlugin extends JPanel implements IPlugin
         buttonPane.add(new JSmartButton(new XEPRenderAction()));
         buttonPane.add(new JSmartButton(new XEPLaunchAction()));
         
-        add(BorderLayout.WEST, flipPane_);
-        add(BorderLayout.CENTER, splitPane_);
-        add(BorderLayout.SOUTH, buttonPane);
+        view_.add(BorderLayout.WEST, flipPane_);
+        view_.add(BorderLayout.CENTER, splitPane_);
+        view_.add(BorderLayout.SOUTH, buttonPane);
     }
 
 
@@ -286,7 +294,7 @@ public class XSLFOPlugin extends JPanel implements IPlugin
                 JFileChooser jfc = new JFileChooser();
                 
                 if (jfc.showOpenDialog(
-                        SwingUtil.getFrameAncestor(this)) == 
+                        SwingUtil.getFrameAncestor(getComponent())) == 
                             JFileChooser.APPROVE_OPTION) 
                 {
                     pdfViewerPath_ = jfc.getSelectedFile().getCanonicalPath();
@@ -392,13 +400,15 @@ public class XSLFOPlugin extends JPanel implements IPlugin
     /**
      * @see toolbox.util.service.Initializable#initialize(java.util.Map)
      */
-    public void initialize(Map params)
+    public void initialize(Map params) throws ServiceException
     {
+        checkTransition(ServiceTransition.INITIALIZE);
         if (params != null)
             statusBar_ = (IStatusBar) 
                 params.get(PluginWorkspace.KEY_STATUSBAR);
         
         buildView();
+        transition(ServiceTransition.INITIALIZE);
     }
     
     //--------------------------------------------------------------------------
@@ -419,7 +429,7 @@ public class XSLFOPlugin extends JPanel implements IPlugin
      */
     public JComponent getComponent()
     {
-        return this;
+        return view_;
     }
 
 
@@ -439,10 +449,12 @@ public class XSLFOPlugin extends JPanel implements IPlugin
     /**
      * @see toolbox.util.service.Destroyable#destroy()
      */
-    public void destroy()
+    public void destroy() throws ServiceException
     {
+        checkTransition(ServiceTransition.DESTROY);
         if (viewer_ != null)
             viewer_.deactivate();
+        transition(ServiceTransition.DESTROY);
     }    
 
     //--------------------------------------------------------------------------
@@ -610,7 +622,7 @@ public class XSLFOPlugin extends JPanel implements IPlugin
          */
         FOPRenderAction()
         {
-            super("Render with FOP", true, XSLFOPlugin.this, statusBar_);
+            super("Render with FOP", true, getComponent(), statusBar_);
         }
         
         
@@ -643,7 +655,7 @@ public class XSLFOPlugin extends JPanel implements IPlugin
          */
         FOPLaunchAction()
         {
-            super("Launch with FOP", true, XSLFOPlugin.this, statusBar_);
+            super("Launch with FOP", true, getComponent(), statusBar_);
         }
         
         
@@ -728,7 +740,7 @@ public class XSLFOPlugin extends JPanel implements IPlugin
          */
         XEPRenderAction()
         {
-            super("Render with XEP", true, XSLFOPlugin.this, statusBar_);
+            super("Render with XEP", true, getComponent(), statusBar_);
         }
         
         
@@ -759,7 +771,7 @@ public class XSLFOPlugin extends JPanel implements IPlugin
          */
         XEPLaunchAction()
         {
-            super("Launch with XEP", true, XSLFOPlugin.this, statusBar_);
+            super("Launch with XEP", true, getComponent(), statusBar_);
         }
         
         

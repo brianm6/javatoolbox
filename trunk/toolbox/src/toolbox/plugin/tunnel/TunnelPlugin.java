@@ -6,14 +6,16 @@ import javax.swing.JComponent;
 
 import nu.xom.Element;
 
-import toolbox.workspace.IPlugin;
+import toolbox.util.service.ServiceException;
+import toolbox.util.service.ServiceTransition;
+import toolbox.workspace.AbstractPlugin;
 import toolbox.workspace.IStatusBar;
 import toolbox.workspace.PluginWorkspace;
 
 /**
  * Plugin wrapper for JTcpTunnel.
  */
-public class TunnelPlugin implements IPlugin
+public class TunnelPlugin extends AbstractPlugin
 {
     //--------------------------------------------------------------------------
     // Fields
@@ -31,8 +33,10 @@ public class TunnelPlugin implements IPlugin
     /**
      * @see toolbox.util.service.Initializable#initialize(java.util.Map)
      */
-    public void initialize(Map params)
+    public void initialize(Map params) throws ServiceException
     {
+        checkTransition(ServiceTransition.INITIALIZE);
+        
         IStatusBar statusBar = null;
 
         if (params != null)
@@ -40,6 +44,8 @@ public class TunnelPlugin implements IPlugin
 
         delegate_ = new TunnelPane();
         delegate_.setStatusBar(statusBar);
+        
+        transition(ServiceTransition.INITIALIZE);
     }
 
     //--------------------------------------------------------------------------
@@ -102,8 +108,10 @@ public class TunnelPlugin implements IPlugin
     /**
      * @see toolbox.util.service.Destroyable#destroy()
      */
-    public void destroy()
+    public void destroy() throws ServiceException
     {
+        checkTransition(ServiceTransition.DESTROY);
         delegate_ = null;
+        transition(ServiceTransition.DESTROY);
     }
 }

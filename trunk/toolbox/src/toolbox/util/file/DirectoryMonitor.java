@@ -9,8 +9,12 @@ import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
 import toolbox.util.ThreadUtil;
+import toolbox.util.service.AbstractService;
 import toolbox.util.service.ServiceException;
+import toolbox.util.service.ServiceState;
+import toolbox.util.service.ServiceTransition;
 import toolbox.util.service.Startable;
+import toolbox.util.statemachine.StateMachine;
 
 /**
  * Monitors a directory for file activity based on a configurable selection 
@@ -73,11 +77,6 @@ public class DirectoryMonitor implements Startable
     private int delay_;
 
     /** 
-     * Shutdown flag for file activity thread. 
-     */
-    private boolean shutdown_;
-
-    /** 
      * Filesystem directory to monitor. 
      */
     private File directory_;
@@ -86,6 +85,11 @@ public class DirectoryMonitor implements Startable
      * Thread that IFileActivity implementors are dispatched on. 
      */
     private Thread monitor_;
+    
+    /**
+     * State machine for the this monitors lifecycle.
+     */
+    private StateMachine machine_;
     
     //--------------------------------------------------------------------------
     // Constructors
@@ -98,6 +102,7 @@ public class DirectoryMonitor implements Startable
      */
     public DirectoryMonitor(File dir)
     {
+        machine_ = AbstractService.createStateMachine(this);
         listeners_ = new ArrayList();
         activities_ = new ArrayList();
         setDirectory(dir);
@@ -115,6 +120,8 @@ public class DirectoryMonitor implements Startable
      */
     public void start() throws IllegalStateException
     {
+        machine_.checkTransition(ServiceTransition.START);
+        
         if (monitor_ != null && monitor_.isAlive())
             throw new IllegalStateException(
                 "The directory monitor for " + 
@@ -126,7 +133,7 @@ public class DirectoryMonitor implements Startable
                 "DirectoryMonitor: " + directory_.getName());
                         
         monitor_.start();
-        shutdown_ = false;               
+        machine_.transition(ServiceTransition.START);
     }
 
     
@@ -139,7 +146,8 @@ public class DirectoryMonitor implements Startable
     public void stop() throws ServiceException
     {
         logger_.debug("Shutting down..");
-        shutdown_ = true;
+        
+        machine_.checkTransition(ServiceTransition.STOP);
         
         try
         {
@@ -152,6 +160,7 @@ public class DirectoryMonitor implements Startable
         }
         
         monitor_ = null;
+        machine_.transition(ServiceTransition.STOP);
     }
 
     
@@ -160,7 +169,19 @@ public class DirectoryMonitor implements Startable
      */
     public boolean isRunning()
     {
-        return !shutdown_;
+        return getState() == ServiceState.RUNNING;
+    }
+    
+    //--------------------------------------------------------------------------
+    // Service Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see toolbox.util.service.Service#getState()
+     */
+    public ServiceState getState()
+    {
+        return (ServiceState) machine_.getState();
     }
     
     //--------------------------------------------------------------------------
@@ -299,7 +320,7 @@ public class DirectoryMonitor implements Startable
                 logger_.debug("Checking activity: " + i.next());
     
             // Check termination flag
-            while (!shutdown_)
+            while (isRunning())
             {
                 // Loop through each activity
                 for (Iterator i = activities_.iterator(); i.hasNext();)

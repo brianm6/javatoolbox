@@ -1,5 +1,9 @@
 package toolbox.plugin.docviewer;
 
+import toolbox.util.service.AbstractService;
+import toolbox.util.service.ServiceState;
+import toolbox.util.statemachine.StateMachine;
+
 /**
  * AbstractViewer is a base class implemenation of DocumentViewer.
  */
@@ -14,6 +18,11 @@ public abstract class AbstractViewer implements DocumentViewer
      */
     private String name_;
     
+    /**
+     * State machine for this viewer's lifecycle.
+     */
+    private StateMachine machine_;
+    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -26,8 +35,21 @@ public abstract class AbstractViewer implements DocumentViewer
     public AbstractViewer(String name)
     {
         setName(name);
+        machine_ = AbstractService.createStateMachine(this);
     }
 
+    //--------------------------------------------------------------------------
+    // Service Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see toolbox.util.service.Service#getState()
+     */
+    public ServiceState getState()
+    {
+        return (ServiceState) machine_.getState();
+    }
+    
     //--------------------------------------------------------------------------
     // Nameable Interface
     //--------------------------------------------------------------------------

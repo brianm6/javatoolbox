@@ -27,8 +27,12 @@ import toolbox.util.PreferencedUtil;
 import toolbox.util.RandomUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.XOMUtil;
+import toolbox.util.service.AbstractService;
 import toolbox.util.service.ServiceException;
+import toolbox.util.service.ServiceState;
+import toolbox.util.service.ServiceTransition;
 import toolbox.util.service.Startable;
+import toolbox.util.statemachine.StateMachine;
 import toolbox.workspace.IPreferenced;
 
 /**
@@ -184,6 +188,11 @@ public class DBBenchmark implements Startable, IPreferenced
      */
     private boolean shutdownDB_;
 
+    /**
+     * State machine for this benchmarks lifecycle.
+     */
+    private StateMachine machine_;
+    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -225,8 +234,7 @@ public class DBBenchmark implements Startable, IPreferenced
         plugin_ = plugin;
         initDB_ = initDB;
         writer_ = writer;
-        
-        
+        machine_ = AbstractService.createStateMachine(this);
     }
 
     //--------------------------------------------------------------------------
@@ -238,6 +246,8 @@ public class DBBenchmark implements Startable, IPreferenced
      */
     public void start() throws ServiceException
     {
+        machine_.checkTransition(ServiceTransition.START);
+        
         try
         {
             if (initDB_)
@@ -252,6 +262,7 @@ public class DBBenchmark implements Startable, IPreferenced
             runBenchmark(true, false);
             runBenchmark(false, true);
             runBenchmark(true, true);
+            machine_.transition(ServiceTransition.START);
         }
         catch (Exception ex)
         {
@@ -271,9 +282,12 @@ public class DBBenchmark implements Startable, IPreferenced
      */
     public void stop() throws ServiceException
     {
+        machine_.checkTransition(ServiceTransition.STOP);
+        
         try
         {
             JDBCSession.shutdown(plugin_.getCurrentProfile().toString());
+            machine_.transition(ServiceTransition.STOP);
         }
         catch (SQLException e)
         {
@@ -287,7 +301,19 @@ public class DBBenchmark implements Startable, IPreferenced
      */
     public boolean isRunning()
     {
-        return false;
+        return getState() == ServiceState.RUNNING;
+    }
+    
+    //--------------------------------------------------------------------------
+    // Service Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see toolbox.util.service.Service#getState()
+     */
+    public ServiceState getState()
+    {
+        return (ServiceState) machine_.getState();
     }
     
     //--------------------------------------------------------------------------
