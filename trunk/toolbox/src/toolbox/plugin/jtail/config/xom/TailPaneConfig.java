@@ -116,9 +116,9 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
         boolean autoStart)
     {
         setFilenames(files);
-        setAutoScroll(autoScroll);
+        setAutoTail(autoScroll);
         setShowLineNumbers(showLineNumbers);
-        setAntiAlias(antiAlias);
+        setAntiAliased(antiAlias);
         setFont(font);
         setRegularExpression(regularExpression);
         setCutExpression(cutExpression);
@@ -136,15 +136,15 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
     {
         Element root = prefs.getFirstChildElement(NODE_TAIL);
        
-        setAutoScroll(
+        setAutoTail(
             XOMUtil.getBooleanAttribute(
-                root, ATTR_AUTOSCROLL, DEFAULT_AUTOSCROLL));
+                root, ATTR_AUTOSCROLL, DEFAULT_AUTOTAIL));
         
         setShowLineNumbers(
             XOMUtil.getBooleanAttribute(
                 root, ATTR_LINENUMBERS, DEFAULT_LINENUMBERS));
         
-        setAntiAlias(
+        setAntiAliased(
             XOMUtil.getBooleanAttribute(
                 root, ATTR_ANTIALIAS, DEFAULT_ANTIALIAS));
 
@@ -186,7 +186,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
         root.addAttribute(
             new Attribute(ATTR_LINENUMBERS, isShowLineNumbers() + ""));
         
-        root.addAttribute(new Attribute(ATTR_AUTOSCROLL, isAutoScroll() + ""));
+        root.addAttribute(new Attribute(ATTR_AUTOSCROLL, isAutoTail() + ""));
         root.addAttribute(new Attribute(ATTR_ANTIALIAS, isAntiAliased() + ""));
         root.addAttribute(new Attribute(ATTR_AUTOSTART, isAutoStart() + ""));
 
@@ -244,9 +244,9 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
     //--------------------------------------------------------------------------
 
     /**
-     * @see toolbox.plugin.jtail.config.ITailPaneConfig#isAutoScroll()
+     * @see toolbox.plugin.jtail.config.ITailPaneConfig#isAutoTail()
      */
-    public boolean isAutoScroll()
+    public boolean isAutoTail()
     {
         return autoScroll_;
     }
@@ -271,9 +271,9 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
  
     
     /**
-     * @see toolbox.plugin.jtail.config.ITailPaneConfig#setAutoScroll(boolean)
+     * @see toolbox.plugin.jtail.config.ITailPaneConfig#setAutoTail(boolean)
      */
-    public void setAutoScroll(boolean autoScroll)
+    public void setAutoTail(boolean autoScroll)
     {
         autoScroll_ = autoScroll;
     }
@@ -364,9 +364,9 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
 
     
     /**
-     * @see toolbox.plugin.jtail.config.ITailPaneConfig#setAntiAlias(boolean)
+     * @see toolbox.plugin.jtail.config.ITailPaneConfig#setAntiAliased(boolean)
      */
-    public void setAntiAlias(boolean b)
+    public void setAntiAliased(boolean b)
     {
         antiAlias_ = b;
     }

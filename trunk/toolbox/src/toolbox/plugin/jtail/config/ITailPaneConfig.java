@@ -14,14 +14,14 @@ public interface ITailPaneConfig extends IPreferenced
     //--------------------------------------------------------------------------
     
     /** 
-     * Default antialis is false. 
+     * Default antialias is true. 
      */
-    boolean DEFAULT_ANTIALIAS = false;    
+    boolean DEFAULT_ANTIALIAS = true;    
     
     /** 
-     * Default autoscroll is true.
+     * Default autotail is true.
      */
-    boolean DEFAULT_AUTOSCROLL = true;
+    boolean DEFAULT_AUTOTAIL = true;
     
     /** 
      * Default show line number is false. 
@@ -53,11 +53,11 @@ public interface ITailPaneConfig extends IPreferenced
     //--------------------------------------------------------------------------
     
     /**
-     * Returns the autoScroll nature of the text area.
+     * Returns true if autoTail is enabled, false otherwise.
      * 
      * @return boolean
      */
-    boolean isAutoScroll();
+    boolean isAutoTail();
 
 
     /**
@@ -77,11 +77,11 @@ public interface ITailPaneConfig extends IPreferenced
 
 
     /**
-     * Sets the autoScroll flag.
+     * Sets the autoTail flag.
      * 
-     * @param autoScroll The autoScroll to set.
+     * @param autoTail The autoTail to set.
      */
-    void setAutoScroll(boolean autoScroll);
+    void setAutoTail(boolean autoTail);
 
 
     /**
@@ -161,7 +161,7 @@ public interface ITailPaneConfig extends IPreferenced
      * 
      * @param b True to turn antialias on, false otherwise.
      */
-    void setAntiAlias(boolean b);
+    void setAntiAliased(boolean b);
     
     
     /**

@@ -234,7 +234,7 @@ public class JTail extends JPanel implements IPreferenced
     {
         try
         {
-            tailMap_  = new HashMap();
+            tailMap_ = new HashMap();
             jtailConfig_ = new JTailConfig();
             buildView();
             wireView();
@@ -488,12 +488,12 @@ public class JTail extends JPanel implements IPreferenced
         public void fileDoubleClicked(String file)
         {
             ITailPaneConfig defaults = jtailConfig_.getDefaultConfig();
-            
             ITailPaneConfig config = new TailPaneConfig();
+            
             config.setFilenames(new String[] {file});
-            config.setAutoScroll(defaults.isAutoScroll());
+            config.setAutoTail(defaults.isAutoTail());
             config.setShowLineNumbers(defaults.isShowLineNumbers());
-            config.setAntiAlias(defaults.isAntiAliased());
+            config.setAntiAliased(defaults.isAntiAliased());
             config.setFont(defaults.getFont());
             config.setRegularExpression(defaults.getRegularExpression());
             
@@ -540,9 +540,9 @@ public class JTail extends JPanel implements IPreferenced
                 fileSelectionPane_.getFileExplorer().getFilePath()
             });
                 
-            config.setAutoScroll(defaults.isAutoScroll());
+            config.setAutoTail(defaults.isAutoTail());
             config.setShowLineNumbers(defaults.isShowLineNumbers());
-            config.setAntiAlias(defaults.isAntiAliased());
+            config.setAntiAliased(defaults.isAntiAliased());
             config.setFont(defaults.getFont());
             config.setRegularExpression(defaults.getRegularExpression());
             config.setCutExpression(defaults.getCutExpression());
@@ -630,7 +630,7 @@ public class JTail extends JPanel implements IPreferenced
     //--------------------------------------------------------------------------
     
     /**
-     * When a file is selectect from the Recent menu, this action tails the 
+     * When a file is selected from the Recent menu, this action tails the 
      * file and removes that item from the recent menu.
      */
     class TailRecentAction extends SmartAction
@@ -643,7 +643,7 @@ public class JTail extends JPanel implements IPreferenced
         /**
          * Creates a TailRecentAction.
          * 
-         * @param config Configuration.
+         * @param config Tail configuration.
          */
         TailRecentAction(ITailPaneConfig config)
         {
@@ -733,7 +733,7 @@ public class JTail extends JPanel implements IPreferenced
         public void actionPerformed(ActionEvent e)
         {
             String file = FileUtil.trailWithSeparator(
-                System.getProperty("user.home")) + "jtail.test.txt";
+                System.getProperty("user.home")) + "jtail-test.txt";
                  
             FileStuffer stuffer = new FileStuffer(new File(file), 100);
             stuffer.start();
@@ -817,7 +817,7 @@ public class JTail extends JPanel implements IPreferenced
                 // Apply current settings
                 ITailPaneConfig config = getSelectedConfig();
                 config.setFont(fontChooser.getSelectedFont());
-                config.setAntiAlias(fontChooser.isAntiAliased());
+                config.setAntiAliased(fontChooser.isAntiAliased());
                 getSelectedTail().setConfiguration(config);
             }
             catch (FontChooserException fse)
@@ -839,11 +839,12 @@ public class JTail extends JPanel implements IPreferenced
         {
             // Restore saved state
             ITailPaneConfig config;
+            
             try
             {
                 config = getSelectedConfig();
                 config.setFont(lastFont_);            
-                config.setAntiAlias(lastAntiAlias_);
+                config.setAntiAliased(lastAntiAlias_);
                 getSelectedTail().setConfiguration(config);
             }
             catch (IOException e)
@@ -864,7 +865,7 @@ public class JTail extends JPanel implements IPreferenced
                 // Use new settings
                 ITailPaneConfig config = getSelectedConfig();
                 config.setFont(fontChooser.getSelectedFont());
-                config.setAntiAlias(fontChooser.isAntiAliased());
+                config.setAntiAliased(fontChooser.isAntiAliased());
                 getSelectedTail().setConfiguration(config);
             }
             catch (FontChooserException fse)
@@ -954,8 +955,8 @@ public class JTail extends JPanel implements IPreferenced
         public void runAction(ActionEvent e) throws Exception
         {
             ITailPaneConfig config = new TailPaneConfig();
-            config.setAntiAlias(false);
-            config.setAutoScroll(true);
+            config.setAntiAliased(false);
+            config.setAutoTail(true);
             config.setAutoStart(true);
             config.setCutExpression("");
             config.setFilenames(new String[] {TailPane.LOG_SYSTEM_OUT});
@@ -995,8 +996,8 @@ public class JTail extends JPanel implements IPreferenced
         public void runAction(ActionEvent e) throws Exception
         {
             ITailPaneConfig config = new TailPaneConfig();
-            config.setAntiAlias(false);
-            config.setAutoScroll(true);
+            config.setAntiAliased(false);
+            config.setAutoTail(true);
             config.setAutoStart(true);
             config.setCutExpression("");
             config.setFilenames(new String[] {TailPane.LOG_LOG4J});

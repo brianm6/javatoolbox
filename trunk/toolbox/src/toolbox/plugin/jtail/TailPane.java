@@ -481,7 +481,7 @@ public class TailPane extends JHeaderPanel
     public void setConfiguration(ITailPaneConfig config)
     {
         config_ = config;
-        tailArea_.setAutoTail(config_.isAutoScroll());
+        tailArea_.setAutoTail(config_.isAutoTail());
         lineNumberDecorator_.setEnabled(config_.isShowLineNumbers());
         tailArea_.setFont(config_.getFont());
         tailArea_.setAntiAliased(config.isAntiAliased());
@@ -499,10 +499,10 @@ public class TailPane extends JHeaderPanel
     public ITailPaneConfig getConfiguration() throws IOException
     {
         // Make sure configuration up to date
-        config_.setAutoScroll(tailArea_.isAutoTail());
+        config_.setAutoTail(tailArea_.isAutoTail());
         config_.setShowLineNumbers(lineNumberDecorator_.isEnabled());
         config_.setFont(tailArea_.getFont());
-        config_.setAntiAlias(tailArea_.isAntiAliased());
+        config_.setAntiAliased(tailArea_.isAntiAliased());
         config_.setRegularExpression(getRegularExpression());
         config_.setCutExpression(getCutExpression());
 
