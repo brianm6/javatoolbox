@@ -11,8 +11,8 @@ import toolbox.junit.UITestCase;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.RandomUtil;
 import toolbox.util.StringUtil;
-import toolbox.util.SwingUtil;
 import toolbox.util.ui.JSmartOptionPane;
+import toolbox.util.ui.plaf.LookAndFeelUtil;
 
 /**
  * Unit test for JSmartOptionPane.
@@ -62,6 +62,7 @@ public class JSmartOptionPaneTest extends UITestCase
             new Exception("This is an exception"));        
     }
     
+    
     /**
      * @see junit.framework.TestCase#tearDown()
      */
@@ -96,7 +97,7 @@ public class JSmartOptionPaneTest extends UITestCase
     {
         logger_.info("Running testShowDetailedMessageDialogError...");
         
-        SwingUtil.setMotifLAF();
+        LookAndFeelUtil.setMotifLAF();
         JSmartOptionPane.showDetailedMessageDialog(
             parent_, MSG_TEXT, MSG_DETAIL, MSG_TITLE, JOptionPane.ERROR_MESSAGE);
     }
@@ -111,7 +112,7 @@ public class JSmartOptionPaneTest extends UITestCase
     {
         logger_.info("Running testShowDetailedMessageDialogParams...");
         
-        SwingUtil.setWindowsLAF();
+        LookAndFeelUtil.setWindowsLAF();
         JSmartOptionPane.showDetailedMessageDialog(
             parent_, "message text", MSG_DETAIL, "message title", 
                 JOptionPane.WARNING_MESSAGE);    
@@ -127,7 +128,7 @@ public class JSmartOptionPaneTest extends UITestCase
     {
         logger_.info("Running testShowExceptionMessageDialog...");
         
-        SwingUtil.setMetalLAF();
+        LookAndFeelUtil.setMetalLAF();
         JSmartOptionPane.showExceptionMessageDialog(parent_, 
             new Exception("testing"));
     }

@@ -12,6 +12,7 @@ import toolbox.util.SwingUtil;
 import toolbox.util.ui.font.IFontChooserDialogListener;
 import toolbox.util.ui.font.JFontChooser;
 import toolbox.util.ui.font.JFontChooserDialog;
+import toolbox.util.ui.plaf.LookAndFeelUtil;
 
 /**
  * Unit test for JFontChooserDialog.
@@ -33,7 +34,7 @@ public class JFontChooserDialogTest extends UITestCase
      */
     public static void main(String[] args) throws Exception
     {
-    	SwingUtil.setPreferredLAF();
+    	LookAndFeelUtil.setPreferredLAF();
         TestRunner.run(JFontChooserDialogTest.class);
     }
 
