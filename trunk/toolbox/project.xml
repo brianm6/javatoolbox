@@ -109,6 +109,7 @@
       <version/>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>xslfo</fatjar>
       </properties>
     </dependency>
     --> 
@@ -122,6 +123,7 @@
       <url>http://www.markus-hillenbrand.de/3dlf</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>laf</fatjar>
       </properties>
     </dependency>
           
@@ -131,6 +133,7 @@
       <url>http://www.adobe.com</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>xslfo</fatjar>
       </properties>
     </dependency>
 
@@ -140,6 +143,7 @@
       <url>http://www.incors.com/lookandfeel</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>laf</fatjar>
       </properties>
     </dependency>
 
@@ -163,6 +167,7 @@
       <url/>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>xslfo</fatjar>
       </properties>
     </dependency>
 
@@ -172,6 +177,7 @@
       <url>http://avalon.apache.org/framework</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>xslfo</fatjar>
       </properties>
     </dependency>
 
@@ -181,6 +187,7 @@
       <url>http://xml.apache.org/batik</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>xslfo</fatjar>
       </properties>
     </dependency>
 
@@ -190,6 +197,7 @@
       <url>http://www.beanshell.org</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
       </properties>
     </dependency>
 
@@ -199,6 +207,7 @@
       <url>http://www.netcomuk.co.uk/~offshore</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
       </properties>
     </dependency>
 
@@ -208,6 +217,7 @@
       <url>http://classworlds.codehaus.org</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
       </properties>
     </dependency>
 
@@ -217,6 +227,7 @@
       <url>http://jakarta.apache.org/commons/beanutils</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
       </properties>
     </dependency>
             
@@ -226,6 +237,7 @@
       <url>http://jakarta.apache.org/commons/cli</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
       </properties>
     </dependency>
 
@@ -235,6 +247,7 @@
       <url>http://jakarta.apache.org/commons/codec</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
       </properties>
     </dependency>
 
@@ -244,6 +257,7 @@
       <url>http://jakarta.apache.org/commons/collections</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
       </properties>
     </dependency>
 
@@ -253,6 +267,7 @@
       <url>http://jakarta.apache.org/commons/dbcp</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
       </properties>
     </dependency>
 
@@ -262,6 +277,7 @@
       <url>http://jakarta.apache.org/commons/io</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
       </properties>
     </dependency>
                           
@@ -271,6 +287,7 @@
       <url>http://jakarta.apache.org/commons/lang</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
       </properties>
     </dependency>
 
@@ -280,6 +297,7 @@
       <url>http://jakarta.apache.org/commons/logging</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
       </properties>
     </dependency>
 
@@ -289,6 +307,7 @@
       <url>http://jakarta.apache.org/commons/math</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
       </properties>
     </dependency>
 
@@ -298,6 +317,7 @@
       <url>http://jakarta.apache.org/commons/net</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
       </properties>
     </dependency>
 
@@ -307,6 +327,7 @@
       <url>http://jakarta.apache.org/commons/pool</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
       </properties>
     </dependency>
             
@@ -316,6 +337,7 @@
       <url>http://gee.cs.oswego.edu/dl/classes/EDU/oswego/cs/dl/util/concurrent/intro.html</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
       </properties>
     </dependency>
             
@@ -325,6 +347,7 @@
       <url>http://www.cryptix.org</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>xslfo</fatjar>
       </properties>
     </dependency>
 
@@ -334,6 +357,7 @@
       <url>http://www.cryptix.org</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>xslfo</fatjar>
       </properties>
     </dependency>
 
@@ -343,6 +367,7 @@
       <url>http://javacvs.netbeans.org</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
       </properties>
     </dependency>
 
@@ -352,6 +377,7 @@
       <url>http://fhlaf.sf.net</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>laf</fatjar>
       </properties>
     </dependency>
     
@@ -361,6 +387,7 @@
       <url>http://xml.apache.org/fop</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>xslfo</fatjar>
       </properties>
     </dependency>
 
@@ -370,6 +397,7 @@
       <url>http://forms.dev.java.net</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
       </properties>
     </dependency>
       
@@ -386,6 +414,7 @@
       <url>http://www.diod.se/product_hippolf.asp</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>laf</fatjar>
       </properties>
     </dependency>
 
@@ -395,6 +424,7 @@
       <url>http://www.hsqldb.org</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
       </properties>
     </dependency>
 
@@ -404,6 +434,7 @@
       <url>http://jakarta.apache.org/oro</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
       </properties>
     </dependency>
 
@@ -413,6 +444,7 @@
       <url>http://jakarta.apache.org/regexp</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
       </properties>
     </dependency>
 
@@ -422,6 +454,7 @@
       <url>http://jalopy.sf.net</url>      
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
       </properties>
     </dependency>
 
@@ -431,6 +464,7 @@
       <url>http://www.janino.net</url>      
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
       </properties>
     </dependency>
 
@@ -447,6 +481,7 @@
       <url>http://jaxen.codehaus.org</url>      
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
       </properties>
     </dependency>
 
@@ -456,16 +491,18 @@
       <url>http://www.jfree.org/jcommon</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
       </properties>
     </dependency>
 
     <dependency>
       <id>jdom</id>
       <version>LATEST</version>
+      <url>http://www.jdom.org</url>      
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
       </properties>
-      <url>http://www.jdom.org</url>      
     </dependency>
 
     <dependency>
@@ -474,6 +511,7 @@
       <url>http://jedit-syntax.sourceforge.net</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
       </properties>
     </dependency>
 
@@ -492,6 +530,7 @@
       <url>http://www.jfree.org/jfreechart</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
       </properties>
     </dependency>
 
@@ -501,6 +540,7 @@
       <url>http://jode.sf.net</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
       </properties>
     </dependency>
 
@@ -510,6 +550,7 @@
       <url>http://jrevpro.sf.net</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
       </properties>
     </dependency>
 
@@ -519,6 +560,7 @@
       <url>http://sourceforge.net/projects/jsap</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
       </properties>
     </dependency>
 
@@ -528,6 +570,7 @@
       <url>http://jtidy.sf.net</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
       </properties>
     </dependency>
 
@@ -537,6 +580,7 @@
       <url>http://www.junit.org</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
       </properties>
     </dependency>
 
@@ -553,6 +597,7 @@
       <url>http://www.incors.org</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>laf</fatjar>
       </properties>
     </dependency>
 
@@ -562,6 +607,7 @@
       <url>http://l2fprod-common.dev.java.net</url> 
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
       </properties>
     </dependency>
 
@@ -571,6 +617,7 @@
       <url>http://liquidlnf.sf.net</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>laf</fatjar>
       </properties>
     </dependency>
 
@@ -580,6 +627,7 @@
       <url>http://logging.apache.org/log4j</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
       </properties>
     </dependency>
 
@@ -589,6 +637,7 @@
       <url>http://www.jgoodies.com/freeware/looks</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>laf</fatjar>
       </properties>
     </dependency>
 
@@ -598,6 +647,7 @@
       <url>http://matra.sf.net</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
       </properties>
     </dependency>
               
@@ -607,6 +657,7 @@
       <url>http://mlf.sf.net/</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>laf</fatjar>
       </properties>
     </dependency>
 
@@ -616,6 +667,7 @@
       <url>http://multivalent.sf.net</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
       </properties>
     </dependency>
 
@@ -625,6 +677,7 @@
       <url>http://napkinlaf.sf.net</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>laf</fatjar>
       </properties>
     </dependency>
 
@@ -634,6 +687,7 @@
       <url>http://www.oyoaha.com/lookandfeel</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>laf</fatjar>
       </properties>
     </dependency>
 
@@ -643,6 +697,7 @@
       <url>http://pollo.sf.net</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
       </properties>
     </dependency>
 
@@ -652,6 +707,7 @@
       <url>http://qdox.codehaus.org</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
       </properties>
     </dependency>
     
@@ -661,6 +717,7 @@
       <url>https://skinlf.dev.java.net</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>laf</fatjar>
       </properties>
     </dependency>
 
@@ -670,6 +727,7 @@
       <url>http://squareness.sf.net</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>laf</fatjar>
       </properties>
     </dependency>
 
@@ -679,6 +737,7 @@
       <url>http://statcvs.sf.net</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
       </properties>
     </dependency>
 
@@ -688,6 +747,7 @@
       <url>http://www.muntjak.de/hans/java/tinylaf</url>  
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>laf</fatjar>
       </properties>
     </dependency>
 
@@ -697,6 +757,7 @@
       <url>http://www.geocities.com/shfarr</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>laf</fatjar>
       </properties>
     </dependency>
 
@@ -706,6 +767,7 @@
       <url>http://www.javio.com</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
       </properties>
     </dependency>
 
@@ -715,6 +777,7 @@
       <url>http://xml.apache.org/xerces2-j</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
       </properties>
     </dependency>
 
@@ -724,6 +787,7 @@
       <url>http://www.renderx.com</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>xslfo</fatjar>
       </properties>
     </dependency>
 
@@ -733,6 +797,7 @@
       <url>http://xom.dev.java.net</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
       </properties>
     </dependency>
 
@@ -742,6 +807,7 @@
       <url>http://www.stefan-krause.com/java</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>laf</fatjar>
       </properties>
     </dependency>
 
@@ -751,6 +817,7 @@
       <url>http://www.jclark.com</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
+        <fatjar>xslfo</fatjar>
       </properties>
     </dependency>
 
