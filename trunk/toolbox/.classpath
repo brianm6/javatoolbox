@@ -42,6 +42,7 @@
 	<classpathentry sourcepath="lib/src/jaxen-src.zip" kind="lib" path="lib/jaxen.jar"/>
 	<classpathentry kind="lib" path="lib/jcommon.jar"/>
 	<classpathentry sourcepath="lib/src/jedit-syntax-src.zip" kind="lib" path="lib/jedit-syntax.jar"/>
+	<classpathentry sourcepath="lib/src/jemmy-src.zip" kind="lib" path="lib/jemmy.jar"/>
 	<classpathentry sourcepath="lib/src/jfreechart-src.zip" kind="lib" path="lib/jfreechart.jar"/>
 	<classpathentry sourcepath="lib/src/jode-src.zip" kind="lib" path="lib/jode.jar"/>
 	<classpathentry sourcepath="lib/src/jreversepro-src.zip" kind="lib" path="lib/jreversepro.jar"/>
