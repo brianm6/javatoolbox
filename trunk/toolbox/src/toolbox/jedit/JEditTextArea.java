@@ -9,6 +9,7 @@ import javax.swing.text.PlainDocument;
 import nu.xom.Attribute;
 import nu.xom.Element;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.log4j.Logger;
 
 import org.jedit.syntax.TextAreaDefaults;
@@ -61,11 +62,13 @@ public class JEditTextArea extends org.jedit.syntax.JEditTextArea
     //--------------------------------------------------------------------------
     
     // Preferences
-    public static final String NODE_JEDITTEXTAREA = "JEditTextArea";
-    public static final String   ATTR_ANTIALIAS   = "antialias";
-    public static final String   ATTR_WHEELUNIT   = "mousewheelunit";
-    public static final String   ATTR_TABSIZE     = "tabsize";
-    public static final String NODE_FONT          = "Font";
+    public static final String NODE_JEDITTEXTAREA   = "JEditTextArea";
+    public static final String   ATTR_ANTIALIAS     =   "antialias";
+    public static final String   ATTR_WHEELUNIT     =   "mousewheelunit";
+    public static final String   ATTR_TABSIZE       =   "tabsize";
+    public static final String   ATTR_SAVE_CONTENTS =   "savecontents";
+    public static final String   NODE_FONT          =   "Font";
+    public static final String   NODE_CONTENTS      =   "Contents";
     
     //--------------------------------------------------------------------------
     // Fields 
@@ -74,12 +77,17 @@ public class JEditTextArea extends org.jedit.syntax.JEditTextArea
     /**
      * Number of lines to scroll per mouse wheel scroll.
      */    
-    private int mouseWheelUnit_ = 3;
+    private int mouseWheelUnit_;
     
     /**
      * Antialias flag.
      */
     private boolean antiAlias_ = SwingUtil.getDefaultAntiAlias();
+
+    /**
+     * Flag to save the contents on persistence/hydration of preferences.
+     */
+    private boolean saveContents_;
 
     //--------------------------------------------------------------------------
     // Constructors 
@@ -105,12 +113,18 @@ public class JEditTextArea extends org.jedit.syntax.JEditTextArea
     {
         super(defaults);
         
+        setMouseWheelUnit(3);
+        setSaveContents(false);
+        
         if (marker != null)
             setTokenMarker(marker);
         
         addMouseWheelListener(this);
             
+        //
         // Some more useful keybindings...reuse actions from the popup menu.
+        //
+        
         getInputHandler().addKeyBinding(
             "C+A", new JEditActions.SelectAllAction(this));
             
@@ -158,6 +172,24 @@ public class JEditTextArea extends org.jedit.syntax.JEditTextArea
         mouseWheelUnit_ = mouseWheelUnit;
     }
 
+    
+    /**
+     * @return Returns the saveContents.
+     */
+    public boolean shouldSaveContents()
+    {
+        return saveContents_;
+    }
+    
+    
+    /**
+     * @param saveContents The flag to save contents to set.
+     */
+    public void setSaveContents(boolean saveContents)
+    {
+        saveContents_ = saveContents;
+    }
+    
     //--------------------------------------------------------------------------
     // Convenience Methods
     //--------------------------------------------------------------------------
@@ -267,7 +299,21 @@ public class JEditTextArea extends org.jedit.syntax.JEditTextArea
         setAntiAliased(XOMUtil.getBooleanAttribute(root, ATTR_ANTIALIAS, true));
         setTabSize(XOMUtil.getIntegerAttribute(root, ATTR_TABSIZE, 4));
         setMouseWheelUnit(XOMUtil.getIntegerAttribute(root, ATTR_WHEELUNIT, 3));
-                        
+
+        setSaveContents(
+            XOMUtil.getBooleanAttribute(root, ATTR_SAVE_CONTENTS, false));
+
+        if (shouldSaveContents())
+        {
+            Element content = XOMUtil.getFirstChildElement(
+                root, NODE_CONTENTS, new Element(NODE_CONTENTS));
+            
+            setText(new String(
+                Base64.decodeBase64(XOMUtil.getString(content,"").getBytes())));
+            
+            scrollTo(0, 0);            
+        }
+        
         getPainter().setFont(FontUtil.toFont(XOMUtil.getFirstChildElement(
             root, NODE_FONT, FontUtil.toElement(
                 FontUtil.getPreferredMonoFont()))));
@@ -282,8 +328,25 @@ public class JEditTextArea extends org.jedit.syntax.JEditTextArea
         Element root = new Element(NODE_JEDITTEXTAREA);
         root.addAttribute(new Attribute(ATTR_TABSIZE, getTabSize() + ""));
         root.addAttribute(new Attribute(ATTR_ANTIALIAS, isAntiAliased() + ""));
-        root.addAttribute(new Attribute(ATTR_WHEELUNIT, mouseWheelUnit_ + ""));
+        
+        root.addAttribute(
+            new Attribute(ATTR_WHEELUNIT, getMouseWheelUnit() + ""));
+        
+        root.addAttribute(
+            new Attribute(ATTR_SAVE_CONTENTS, shouldSaveContents() + ""));
+        
         root.appendChild(FontUtil.toElement(getPainter().getFont()));
-        prefs.appendChild(root);
+     
+        if (shouldSaveContents())
+        {
+	        Element contents = new Element(NODE_CONTENTS);
+	        
+	        contents.appendChild(new String(
+	            Base64.encodeBase64(getText().getBytes())));
+	        
+	        root.appendChild(contents);
+        }
+        
+        XOMUtil.insertOrReplace(prefs, root);
     }
 }
