@@ -6,6 +6,8 @@ import java.io.OutputStream;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import org.apache.log4j.Logger;
+
 import toolbox.util.net.IConnection;
 import toolbox.util.net.StringConnection;
 
@@ -14,6 +16,10 @@ import toolbox.util.net.StringConnection;
  */
 public class StringConnectionTest extends TestCase
 {
+    /** Logger **/
+    private static final Logger logger_ =
+        Logger.getLogger(StringConnectionTest.class);
+        
     /**
      * Entrypoint
      *
@@ -49,6 +55,8 @@ public class StringConnectionTest extends TestCase
      */
     public void testGetInputStream() throws Exception
     {
+        logger_.info("Running testGetInputStream...");
+        
         IConnection conn = new StringConnection("abcd");
         InputStream is = conn.getInputStream();
         assertNotNull(is);
@@ -61,6 +69,8 @@ public class StringConnectionTest extends TestCase
      */
     public void testGetOutputStream() throws Exception
     {
+        logger_.info("Running testGetOutputStream...");
+        
         IConnection conn = new StringConnection("abcd");
         OutputStream os = conn.getOutputStream();
         assertNotNull(os);
@@ -73,6 +83,8 @@ public class StringConnectionTest extends TestCase
      */
     public void testIsConnected() throws Exception
     {
+        logger_.info("Running testIsConnected...");
+        
         IConnection conn = new StringConnection("ping");
         assertTrue(!conn.isConnected());
         conn.close();
