@@ -4,6 +4,7 @@ import java.io.File;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
+
 import org.apache.log4j.Category;
 
 import toolbox.util.ArrayUtil;
@@ -58,11 +59,11 @@ public class FileUtilTest extends TestCase
      */    
     public void testGetTempFilename() throws Exception
     {
-        /* generate temp file name */
+        // Generate temp file name
         String tempFile = FileUtil.getTempFilename();
         assertNotNull("temp filename is null", tempFile);
         
-        /* use temp file name to create a file */
+        // Use temp file name to create a file
         FileUtil.setFileContents(tempFile, "this is a temp file", false);
         String contents = FileUtil.getFileContents(tempFile); 
         File file = new File(tempFile);
@@ -78,7 +79,7 @@ public class FileUtilTest extends TestCase
      */
     public void testCleanDirFailure1() throws Exception
     {
-        /* create a file */
+        // Create a file
         String file = FileUtil.getTempFilename();
         FileUtil.setFileContents(file, "hello", false);
         File f = new File(file);
@@ -105,7 +106,7 @@ public class FileUtilTest extends TestCase
      */
     public void testCleanDirFailure2() throws Exception
     {
-        /* create a bogus dir name */
+        // Create a bogus dir name
         String dir = FileUtil.getTempFilename();
         
         try
@@ -128,12 +129,12 @@ public class FileUtilTest extends TestCase
     {
         int numFiles = 10;
         
-        /* create a directory */
+        // Create a directory
         String dirName = FileUtil.getTempFilename();
         File dir = new File(dirName);
         dir.mkdir();
         
-        /* populate with files */
+        // Populate with files
         for (int i=0; i< numFiles; i++)
         {
             String filename = i + ".txt";
@@ -142,23 +143,23 @@ public class FileUtilTest extends TestCase
                 file.getAbsolutePath(), "testing..", false);
         }
 
-        /* verify test files created */
+        // Verify test files created
         String[] before = dir.list();
         logger_.info("Contents before: " + ArrayUtil.toString(before));
         assertEquals("Dir " + dir + " should have files", 
             numFiles, before.length); 
 
-        /* nuke the directory */
+        // Nuke the directory
         try
         {        
             FileUtil.cleanDir(dir);
         }
         finally
         {
-            /* cleanup */
+            // cleanup
         }
         
-        /* verify no files left */
+        // Verify no files left
         String[] after = dir.list();
         logger_.info("Contents after: " + ArrayUtil.toString(after));
         assertEquals("No files should be left in " + dir, 0, after.length);
@@ -171,20 +172,20 @@ public class FileUtilTest extends TestCase
      */
     public void testGetFileContents() throws Exception
     {
-        /* create a file */
+        // Create a file
         String file = FileUtil.getTempFilename();
         String contents = "blah blah blah";
         FileUtil.setFileContents(file, contents, false);
         
-        /* read it back in */
+        // Read it back in
         File reread = new File(file);
         String currentContents = FileUtil.getFileContents(file);
         
-        /* compare */
+        // Compare
         assertEquals("contents should be equals", contents, currentContents);
         logger_.info("Passed: getFileContents on " + file);        
         
-        /* clean up */
+        // Clean up
         reread.delete();
     }
 
@@ -195,26 +196,26 @@ public class FileUtilTest extends TestCase
      */
     public void testGetFileContentsLargeFile() throws Exception
     {
-        /* half meg file */
+        // Half meg file
         int fileSize = 500000;
         
-        /* create a file */
+        // Create a file
         String file = FileUtil.getTempFilename();
         StringBuffer contents = new StringBuffer();
         for(int i=0; i<fileSize; i++)
             contents.append(RandomUtil.nextAlpha());
         FileUtil.setFileContents(file, contents.toString(), false);
         
-        /* read it back in */
+        // Read it back in
         String currentContents = FileUtil.getFileContents(file);
         
-        /* compare */
+        // Compare
         assertEquals("contents should be equals", 
             contents.toString(), currentContents);
         
         logger_.info("Passed: " + file + " length " + currentContents.length());
         
-        /* clean up */
+        // Clean up
         File reread = new File(file);        
         reread.delete();
     }
@@ -226,20 +227,20 @@ public class FileUtilTest extends TestCase
      */
     public void testSetFileContents() throws Exception
     {
-        /* create a file */
+        // Create a file
         String file = FileUtil.getTempFilename();
         String contents = "blah blah blah";
         FileUtil.setFileContents(file, contents, false);
         
-        /* read it back in */
+        // Read it back in
         File reread = new File(file);
         String currentContents = FileUtil.getFileContents(file);
         
-        /* compare */
+        // Compare
         assertEquals("contents should be equals", contents, currentContents);
         logger_.info("Passed: setFileContents on " + file);
         
-        /* clean up */
+        // Clean up
         reread.delete();
     }
     
@@ -264,23 +265,23 @@ public class FileUtilTest extends TestCase
      */
     public void testMoveFile() throws Exception
     {
-        /* make src dir */
+        // Make src dir
         String srcDirName = FileUtil.getTempFilename();
         File   srcDir     = new File(srcDirName);
         srcDir.mkdir();
         
-        /* make dest dir */
+        // Make dest dir
         String destDirName = FileUtil.getTempFilename();
         File   destDir     = new File(destDirName);
         destDir.mkdir();
  
-        /* make src file */       
+        // Make src file
         String srcFilename = FileUtil.getTempFilename(srcDir);
         File   srcFile     = new File(srcFilename);
         String srcContents =  "test file for move";
         FileUtil.setFileContents(srcFilename, srcContents, false);
 
-        /* take snapshot before file move */     
+        // Take snapshot before file move
         String[] beforeMoveSrc = srcDir.list();
         String[] beforeMoveDest= destDir.list();
         
@@ -291,10 +292,10 @@ public class FileUtilTest extends TestCase
         assertEquals("should be zero files in dest dir", 
             0, beforeMoveDest.length);
 
-        /* move file */     
+        // Move file
         FileUtil.moveFile(srcFile, destDir);
 
-        /* take snapshot again */
+        // Take snapshot again
         String[] afterMoveSrc = srcDir.list();
         String[] afterMoveDest= destDir.list();
 
@@ -304,7 +305,7 @@ public class FileUtilTest extends TestCase
         assertEquals("should be zero files in src dir", 0, afterMoveSrc.length);
         assertEquals("should be one file in dest dir", 1, afterMoveDest.length);
 
-        /* compare contents of moved file */
+        // Compare contents of moved file
         String destContents = 
             FileUtil.getFileContents(destDir.listFiles()[0].getAbsolutePath());
             
@@ -313,7 +314,7 @@ public class FileUtilTest extends TestCase
             
         logger_.info("Passed: moveFile");
 
-        /* TODO: add to finally block */        
+        // TODO: add to finally block
         FileUtil.cleanDir(destDir);
         srcDir.delete();
         destDir.delete();

@@ -6,11 +6,12 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 
-import org.apache.log4j.Category;
-
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import org.apache.log4j.Category;
+
+import toolbox.util.ResourceCloser;
 import toolbox.util.SocketUtil;
 import toolbox.util.ThreadUtil;
 
@@ -88,21 +89,21 @@ public class SocketUtilTest extends TestCase
      */
     public void testConnectWithRetrySuccess() throws Exception
     {
-        /* start socket server */
+        // start socket server
         ServerSocket ss = new ServerSocket(0);
         
         ThreadUtil.run(ss,"accept", new Object[0]);
         
-        /* wait for server to init */
+        // wait for server to init
         ThreadUtil.sleep(2000);
         
-        /* connect with client */
+        // connect with client
         Socket socket = SocketUtil.connectWithRetry(
             InetAddress.getLocalHost().getHostAddress(), 
             ss.getLocalPort(), 1, 5);
              
-        /* cleanup */
-        socket.close();     
+        // cleanup
+        ResourceCloser.close(socket);
     }
 
     
