@@ -19,6 +19,11 @@ public class JTcpTunnelPlugin implements IPlugin
      * Delegate
      */
     private JTcpTunnelPane jtcpTunnelPane_;
+
+    /**
+     * Hack for out of order init of plug by registerPlugin()
+     */
+    private IStatusBar savedStatusBar_;
     
     //--------------------------------------------------------------------------
     // Constructors
@@ -29,7 +34,6 @@ public class JTcpTunnelPlugin implements IPlugin
      */
     public JTcpTunnelPlugin()
     {
-        jtcpTunnelPane_ = new JTcpTunnelPane();        
     }
     
     //--------------------------------------------------------------------------
@@ -73,6 +77,10 @@ public class JTcpTunnelPlugin implements IPlugin
      */
     public void init()
     {
+        jtcpTunnelPane_ = new JTcpTunnelPane();    
+        
+        if (savedStatusBar_ != null)
+            setStatusBar(savedStatusBar_);    
     }
 
     /**
@@ -96,7 +104,10 @@ public class JTcpTunnelPlugin implements IPlugin
      */
     public void setStatusBar(IStatusBar statusBar)
     {
-         jtcpTunnelPane_.setStatusBar(statusBar);
+        if (jtcpTunnelPane_ == null)
+            savedStatusBar_ = statusBar;
+        else
+            jtcpTunnelPane_.setStatusBar(statusBar);
     }
 
     /**
