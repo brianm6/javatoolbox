@@ -83,8 +83,6 @@ public class PluginWorkspace extends JFrame implements IStatusBar
      */
     private Map plugins_ = new SequencedHashMap();
 
-    private String[] pluginNames_ = new String[0];
-    
     /**
      * Entrypoint 
      * 
