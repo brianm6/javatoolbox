@@ -28,7 +28,6 @@
 	<classpathentry kind="lib" path="lib/commons-math.jar"/>
 	<classpathentry sourcepath="lib/src/commons-net-src.zip" kind="lib" path="lib/commons-net.jar"/>
 	<classpathentry sourcepath="lib/src/commons-pool-src.zip" kind="lib" path="lib/commons-pool.jar"/>
-	<classpathentry sourcepath="lib/src/concurrent-src.zip" kind="lib" path="lib/concurrent.jar"/>
 	<classpathentry kind="lib" path="lib/cryptix32.jar"/>
 	<classpathentry kind="lib" path="lib/cryptix32-pgp.jar"/>
 	<classpathentry sourcepath="lib/cvslib.jar" kind="lib" path="lib/cvslib.jar"/>
