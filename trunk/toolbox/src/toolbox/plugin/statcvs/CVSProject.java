@@ -28,6 +28,7 @@ public class CVSProject
     private static final String   ATTR_CHECKOUTDIR = "checkoutdir";
     private static final String   ATTR_DEBUG       = "debug";
     private static final String   ATTR_LAUNCHURL   = "launchurl";
+    private static final String   ATTR_ENGINE      = "engine";
 
     //--------------------------------------------------------------------------
     // Fields
@@ -68,6 +69,12 @@ public class CVSProject
      */
     private String launchURL_;
 
+    /**
+     * Field that contains the classname of the statcvs engine to use for 
+     * report generation.
+     */
+    private String engine_;
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -90,6 +97,8 @@ public class CVSProject
         setCheckoutDir(XOMUtil.getStringAttribute(p, ATTR_CHECKOUTDIR, ""));
         setDebug(XOMUtil.getBooleanAttribute(p, ATTR_DEBUG, false));
         setLaunchURL(XOMUtil.getStringAttribute(p, ATTR_LAUNCHURL, ""));
+        setEngine(XOMUtil.getStringAttribute(p, ATTR_ENGINE, 
+            StatcvsPlugin.PROP_STATCVS_ENGINE));
     }
 
 
@@ -103,6 +112,7 @@ public class CVSProject
      * @param checkOutDir Directory to checkout files to.
      * @param debug Print debug output.
      * @param launchURL Launch URL for viewing generated statistics.
+     * @param engine Statcvs engine class name.
      */
     public CVSProject(
         String project,
@@ -111,7 +121,8 @@ public class CVSProject
         String password,
         String checkOutDir,
         boolean debug,
-        String launchURL)
+        String launchURL,
+        String engine)
     {
         setProject(project);
         setCVSModule(module);
@@ -120,6 +131,7 @@ public class CVSProject
         setCheckoutDir(checkOutDir);
         setDebug(debug);
         setLaunchURL(launchURL);
+        setEngine(engine);
     }
 
     //--------------------------------------------------------------------------
@@ -152,6 +164,7 @@ public class CVSProject
         p.addAttribute(new Attribute(ATTR_CHECKOUTDIR, getCheckoutDir()));
         p.addAttribute(new Attribute(ATTR_DEBUG, isDebug() ? "true" : "false"));
         p.addAttribute(new Attribute(ATTR_LAUNCHURL, getLaunchURL()));
+        p.addAttribute(new Attribute(ATTR_ENGINE, getEngine()));
         return p;
     }
 
@@ -316,6 +329,31 @@ public class CVSProject
 
 
     /**
+     * Returns the statcvs engines class name.
+     * 
+     * @return String
+     */
+    public String getEngine()
+    {
+        return engine_;
+    }
+    
+    
+    /**
+     * Sets the statcvs engines class name.
+     * 
+     * @param engine The engine to set.
+     */
+    public void setEngine(String engine)
+    {
+        engine_ = engine;
+    }
+    
+    //--------------------------------------------------------------------------
+    // Overridees java.lang.Object
+    //--------------------------------------------------------------------------
+    
+    /**
      * Returns the project name so it is displayed by the renderer for
      * the comboxbox.
      *
@@ -325,4 +363,5 @@ public class CVSProject
     {
         return getProject();
     }
+    
 }
