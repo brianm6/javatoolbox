@@ -55,4 +55,14 @@ public class MainTest extends TestCase
         
         Main.main(new String[] {  "filter$" } );
     }
+    
+    /**
+     * Tests printUsage()
+     */
+    public void testPrintUsage()
+    {
+    	logger_.info("Running testPrintUsage...");
+    	
+    	Main.main(new String[] { "-badflag"});
+    }
 }
