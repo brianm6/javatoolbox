@@ -15,8 +15,12 @@ import toolbox.workspace.PluginWorkspace;
  */
 public class TunnelPlugin implements IPlugin
 {
-    /** 
-     * UI Delegate. 
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+
+    /**
+     * UI Delegate.
      */
     private TunnelPane delegate_;
 
@@ -30,15 +34,15 @@ public class TunnelPlugin implements IPlugin
     public void startup(Map params)
     {
         IStatusBar statusBar = null;
-        
+
         if (params != null)
             statusBar = (IStatusBar) params.get(PluginWorkspace.KEY_STATUSBAR);
 
         delegate_ = new TunnelPane();
-        delegate_.setStatusBar(statusBar);    
+        delegate_.setStatusBar(statusBar);
     }
-    
-    
+
+
     /**
      * @see toolbox.workspace.IPlugin#getPluginName()
      */
@@ -47,18 +51,18 @@ public class TunnelPlugin implements IPlugin
         return "TCP Tunnel";
     }
 
-    
+
     /**
      * @see toolbox.workspace.IPlugin#getDescription()
      */
     public String getDescription()
     {
-        return "TCP Tunnel allows you to snoop on incoming/outgoing traffic " + 
+        return "TCP Tunnel allows you to snoop on incoming/outgoing traffic " +
                "by creating an intermediate 'tunnel proxy' between two TCP " +
                "connection endpoints.";
     }
 
-    
+
     /**
      * @see toolbox.workspace.IPlugin#getComponent()
      */
@@ -67,16 +71,16 @@ public class TunnelPlugin implements IPlugin
         return delegate_;
     }
 
-    
+
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
     public void applyPrefs(Element prefs) throws Exception
     {
-        delegate_.applyPrefs(prefs);        
+        delegate_.applyPrefs(prefs);
     }
 
-    
+
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
@@ -85,7 +89,7 @@ public class TunnelPlugin implements IPlugin
         delegate_.savePrefs(prefs);
     }
 
-    
+
     /**
      * @see toolbox.workspace.IPlugin#shutdown()
      */

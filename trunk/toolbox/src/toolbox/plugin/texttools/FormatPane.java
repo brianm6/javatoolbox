@@ -15,51 +15,53 @@ import toolbox.util.io.StringOutputStream;
 import toolbox.util.ui.JSmartButton;
 
 /**
- * Flipper for formatting various text formats. 
+ * Flipper for formatting various text formats.
  */
-class FormatPane extends JPanel
+public class FormatPane extends JPanel
 {
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
-    
+
     /**
-     * Reference to parent plugin.
+     * Reference to the parent plugin.
      */
     private final TextToolsPlugin plugin_;
 
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
-    
+
     /**
      * Creates a FormatPane.
+     *
+     * @param plugin Parent plugin.
      */
     FormatPane(TextToolsPlugin plugin)
     {
         buildView();
         plugin_ = plugin;
     }
-    
+
     //--------------------------------------------------------------------------
     // Protected
     //--------------------------------------------------------------------------
-    
+
     /**
-     * Constructs the user interface. 
+     * Constructs the user interface.
      */
     protected void buildView()
     {
         setLayout(new FlowLayout());
         add(new JSmartButton(new FormatHTMLAction()));
     }
-    
+
     //----------------------------------------------------------------------
     // FormatHTMLAction
     //----------------------------------------------------------------------
 
     /**
-     * Formats HTML.
+     * Uses JTidy to format the HTML in the input text area.
      */
     class FormatHTMLAction extends AbstractAction
     {
@@ -71,7 +73,7 @@ class FormatPane extends JPanel
             super("Format HTML");
         }
 
-        
+
         /**
          * @see java.awt.event.ActionListener#actionPerformed(
          *      java.awt.event.ActionEvent)
@@ -79,9 +81,9 @@ class FormatPane extends JPanel
         public void actionPerformed(ActionEvent e)
         {
             // TODO: Add UI to manipulate the configuration
-            
+
             Tidy tidy = new Tidy();
-            
+
             tidy.setIndentContent(true);
             //tidy.setIndentAttributes(true);
             tidy.setWrapAttVals(true);
@@ -92,7 +94,7 @@ class FormatPane extends JPanel
             //tidy.setSmartIndent(true);
             tidy.setMakeClean(true);
             tidy.setWrapScriptlets(true);
-            
+
             InputStream input = new StringInputStream(plugin_.getInputText());
             OutputStream output = new StringOutputStream();
             tidy.parse(input, output);

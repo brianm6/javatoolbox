@@ -17,29 +17,29 @@ import toolbox.util.ui.JSmartTextField;
  * Flipper that allows the user to tokenize strings by providing the token
  * delimiter. Multiline strings can also be merged into one line.
  */
-class TokenizerPane extends JPanel
+public class TokenizerPane extends JPanel
 {
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
-    
+
     /**
      * Reference to parent plugin.
      */
     private final TextToolsPlugin plugin_;
-    
+
     /**
      * Token delimiter field.
      */
     private JTextField  delimiterField_;
-    
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
-    
+
     /**
      * Creates a TokenizerPane.
-     * 
+     *
      * @param plugin TextTools plugin parent.
      */
     TokenizerPane(TextToolsPlugin plugin)
@@ -51,14 +51,14 @@ class TokenizerPane extends JPanel
     //--------------------------------------------------------------------------
     // Protected
     //--------------------------------------------------------------------------
-    
+
     /**
-     * Constructs the user interface. 
+     * Constructs the user interface.
      */
     protected void buildView()
     {
         setLayout(new FlowLayout());
-        
+
         add(new JSmartLabel("Token Delimiter"));
         add(delimiterField_ = new JSmartTextField(20));
         add(new JSmartButton(new TokenizeAction()));
@@ -68,9 +68,9 @@ class TokenizerPane extends JPanel
     //----------------------------------------------------------------------
     // TokenizeAction
     //----------------------------------------------------------------------
-    
-    /** 
-     * Tokenizes the string in the input text area with the entered 
+
+    /**
+     * Tokenizes the string in the input text area with the entered
      * delimiter and dumps the result to the output text area.
      */
     class TokenizeAction extends AbstractAction
@@ -83,30 +83,30 @@ class TokenizerPane extends JPanel
             super("Tokenize");
         }
 
-        
+
         /**
          * @see java.awt.event.ActionListener#actionPerformed(
          *      java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent e)
         {
-            StringTokenizer st = 
+            StringTokenizer st =
                 new StringTokenizer(
-                    plugin_.getInputText(), 
+                    plugin_.getInputText(),
                     delimiterField_.getText());
-        
+
             while (st.hasMoreElements())
                 plugin_.getOutputArea().append(st.nextToken() + StringUtil.NL);
-                
+
             plugin_.getStatusBar().setInfo(
                 st.countTokens() + " tokens identified.");
         }
     }
-    
+
     //----------------------------------------------------------------------
     // SingleLineAction
     //----------------------------------------------------------------------
-    
+
     /**
      * Compresses multiple lines in the input text area to a single line in the
      * output text area.
@@ -121,22 +121,22 @@ class TokenizerPane extends JPanel
             super("Convert to single line");
         }
 
-        
+
         /**
          * @see java.awt.event.ActionListener#actionPerformed(
          *      java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent e)
         {
-            StringTokenizer st = 
+            StringTokenizer st =
                 new StringTokenizer(plugin_.getInputText(), StringUtil.NL);
-            
+
             StringBuffer sb = new StringBuffer();
-                
+
             while (st.hasMoreElements())
                 sb.append(st.nextElement());
-            
-            plugin_.getOutputArea().setText(sb.toString());    
+
+            plugin_.getOutputArea().setText(sb.toString());
         }
     }
 }

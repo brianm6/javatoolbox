@@ -12,14 +12,14 @@ import org.apache.commons.lang.StringEscapeUtils;
 import toolbox.util.ui.JSmartButton;
 
 /**
- * Flipper containing common encoding/decoding schemes. 
+ * Flipper containing common encoding/decoding schemes.
  */
-class CodecPane extends JPanel
+public class CodecPane extends JPanel
 {
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
-    
+
     /**
      * Reference to parent plugin.
      */
@@ -28,10 +28,10 @@ class CodecPane extends JPanel
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
-    
+
     /**
      * Creates a CodecPane.
-     * 
+     *
      * @param plugin Parent plugin.
      */
     CodecPane(TextToolsPlugin plugin)
@@ -39,13 +39,13 @@ class CodecPane extends JPanel
         buildView();
         plugin_ = plugin;
     }
-    
+
     //--------------------------------------------------------------------------
     // Protected
     //--------------------------------------------------------------------------
-    
+
     /**
-     * Constructs the user interface. 
+     * Constructs the user interface.
      */
     protected void buildView()
     {
@@ -63,7 +63,7 @@ class CodecPane extends JPanel
     //----------------------------------------------------------------------
 
     /**
-     * Base64 encodes the current selection.
+     * Base64 encodes the text in the input text area.
      */
     class Base64EncodeAction extends AbstractAction
     {
@@ -75,7 +75,7 @@ class CodecPane extends JPanel
             super("Base64 Encode");
         }
 
-        
+
         /**
          * @see java.awt.event.ActionListener#actionPerformed(
          *      java.awt.event.ActionEvent)
@@ -86,7 +86,7 @@ class CodecPane extends JPanel
             plugin_.getOutputArea().setText(new String(b));
         }
     }
-    
+
     //----------------------------------------------------------------------
     // Base64DecodeAction
     //----------------------------------------------------------------------
@@ -104,7 +104,7 @@ class CodecPane extends JPanel
             super("Base64 Decode");
         }
 
-        
+
         /**
          * @see java.awt.event.ActionListener#actionPerformed(
          *      java.awt.event.ActionEvent)
@@ -115,7 +115,7 @@ class CodecPane extends JPanel
             plugin_.getOutputArea().setText(new String(b));
         }
     }
-    
+
     //----------------------------------------------------------------------
     // HTMLEncodeAction
     //----------------------------------------------------------------------
@@ -132,8 +132,8 @@ class CodecPane extends JPanel
         {
             super("HTML Encode");
         }
-        
-        
+
+
         /**
          * @see java.awt.event.ActionListener#actionPerformed(
          *      java.awt.event.ActionEvent)
@@ -144,7 +144,7 @@ class CodecPane extends JPanel
                 StringEscapeUtils.escapeHtml(plugin_.getInputText()));
         }
     }
-    
+
     //----------------------------------------------------------------------
     // HTMLDecodeAction
     //----------------------------------------------------------------------
@@ -162,7 +162,7 @@ class CodecPane extends JPanel
             super("HTML Decode");
         }
 
-        
+
         /**
          * @see java.awt.event.ActionListener#actionPerformed(
          *      java.awt.event.ActionEvent)
@@ -173,7 +173,7 @@ class CodecPane extends JPanel
                 StringEscapeUtils.unescapeHtml(plugin_.getInputText()));
         }
     }
-    
+
     //----------------------------------------------------------------------
     // XMLEncodeAction
     //----------------------------------------------------------------------
@@ -191,7 +191,7 @@ class CodecPane extends JPanel
             super("XML Encode");
         }
 
-        
+
         /**
          * @see java.awt.event.ActionListener#actionPerformed(
          *      java.awt.event.ActionEvent)
@@ -202,11 +202,11 @@ class CodecPane extends JPanel
                 StringEscapeUtils.escapeXml(plugin_.getInputText()));
         }
     }
-    
+
     //----------------------------------------------------------------------
     // XMLDecodeAction
     //----------------------------------------------------------------------
-    
+
     /**
      * XML decode the current selection.
      */
@@ -220,7 +220,7 @@ class CodecPane extends JPanel
             super("XML Decode");
         }
 
-        
+
         /**
          * @see java.awt.event.ActionListener#actionPerformed(
          *      java.awt.event.ActionEvent)
