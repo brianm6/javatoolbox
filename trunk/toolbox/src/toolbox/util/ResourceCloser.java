@@ -13,7 +13,8 @@ import toolbox.util.net.IConnection;
  * Convenience class that removes the ugliness of closing resoures that is so
  * common in managed resources. The premise of this class is to close resources
  * without concern for any exceptional conditions that may arise from doing so.
- * <pre>
+ * <p>
+ * <pre class="snippet">
  * 
  * Before:
  * 
@@ -45,7 +46,6 @@ import toolbox.util.net.IConnection;
  * After:
  * 
  * ResourceCloser.close(resource);
- * 
  * </pre>
  */
 public final class ResourceCloser
@@ -53,15 +53,12 @@ public final class ResourceCloser
     private static Logger logger_ =
         Logger.getLogger(ResourceCloser.class);
 
-    // Clover private constructor workaround
-    static { new ResourceCloser(); }
-
     //--------------------------------------------------------------------------
     //  Constructors
     //--------------------------------------------------------------------------
 
     /**
-     * Prevent construction
+     * Prevent construction of this static singleton.
      */
     private ResourceCloser()
     {
@@ -72,9 +69,9 @@ public final class ResourceCloser
     //--------------------------------------------------------------------------
 
     /**
-     * Closes a context quietly
+     * Closes a context quietly.
      * 
-     * @param  context  Context to close
+     * @param context Context to close.
      */
     public static void close(Context context)
     {
@@ -120,9 +117,9 @@ public final class ResourceCloser
 
     
     /**
-     * Closes an IConnection quietly
-     *
-     * @param  conn  IConnection to close
+     * Closes an IConnection quietly.
+     * 
+     * @param conn IConnection to close.
      */
     public static void close(IConnection conn)
     {
@@ -142,9 +139,9 @@ public final class ResourceCloser
 
     
     /**
-     * Closes a QueueReceiver quietly
-     *
-     * @param  queueReceiver  Queue receiver to close
+     * Closes a QueueReceiver quietly.
+     * 
+     * @param queueReceiver Queue receiver to close.
      */
 //    public static void close(QueueReceiver queueReceiver)
 //    {
