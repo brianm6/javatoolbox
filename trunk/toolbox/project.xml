@@ -427,16 +427,6 @@
     </dependency>
 
     <dependency>
-      <id>sametime-comm</id>
-      <version/>
-    </dependency>
-
-    <dependency>
-      <id>sametime-comm-res</id>
-      <version/>
-    </dependency>
-
-    <dependency>
       <id>saxon</id>
       <version/>
       <properties>

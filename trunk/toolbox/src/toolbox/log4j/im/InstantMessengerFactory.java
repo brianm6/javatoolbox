@@ -24,10 +24,6 @@ public class InstantMessengerFactory
         {
             im = new AOLMessenger();
         }
-        else if (network.equalsIgnoreCase("sametime"))
-        {
-            im = new SametimeMessenger();
-        }
         else if (network.equalsIgnoreCase("null"))
         {
             im = new NullMessenger();
