@@ -31,13 +31,20 @@ public class SwingUtil
     private static final Logger logger_ =
         Logger.getLogger(SwingUtil.class);
     
-    /** Monospaced font **/
+    /** 
+     * Preferred monospaced font
+     */
     private static Font monofont_;
     
-    /** Serif font **/
+    /** 
+     * Preferred serif font 
+     */
     private static Font serifFont_;
-    
-    
+
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+        
     /**
      * Prevent construction
      */
@@ -380,7 +387,104 @@ public class SwingUtil
             }
         }
     }
+
     
+    /**
+     * Cascades all internal frames on a desktop
+     * 
+     * @param  desktop  Desktop on with to cascade all internal frames
+     */
+    public static void cascade(JDesktopPane desktop)
+    {
+        JInternalFrame[] frames = desktop.getAllFrames();
+        JInternalFrame frame;
+        int cnt = 0;
+
+        for (int i = frames.length - 1; i >= 0; i--)
+        {
+            frame = frames[i];
+
+            // Don't include iconified frames in the cascade
+            if (!frame.isIcon())
+            {
+                // Fix me
+                frame.setSize( new Dimension(200,200) 
+                    /*f.getInitialDimensions()*/);
+                    
+                frame.setLocation(cascade(desktop, frame, cnt++));
+            }
+        }
+    }
+
+
+    /** 
+     * Cascades the given internal frame based upon the current number 
+     * of internal frames
+     *
+     * @param  desktop      Desktop
+     * @param  frame        Internal frame to cascade
+     * @return Point object representing the location assigned to the 
+     *         internal frame upon the virtual desktop
+     */
+    public static Point cascade(JDesktopPane desktop,JInternalFrame frame)
+    {
+        return cascade(desktop, frame, desktop.getAllFrames().length);
+    }
+
+
+    /**
+     * Cascades the given internal frame based upon supplied count
+     *
+     * @param   desktop     Desktop upon which frame is visible
+     * @param   f           Internal frame to cascade
+     * @param   count       Count to use in cascading the internal frame
+     * 
+     * @return  Point object representing the location assigned to the internal 
+     *          frame upon the virtual desktop
+     */
+    private static Point cascade(JDesktopPane desktop, JInternalFrame f, 
+        int count)
+    {
+        int windowWidth = f.getWidth();
+        int windowHeight = f.getHeight();
+        
+        int X_OFFSET = 30;
+        int Y_OFFSET = 30;
+
+        Rectangle viewP = desktop.getBounds();
+
+        // get # of windows that fit horizontally
+        int numFramesWide = (viewP.width - windowWidth) / X_OFFSET;
+        
+        if (numFramesWide < 1)
+        {
+            numFramesWide = 1;
+        }
+        
+        // get # of windows that fit vertically
+        int numFramesHigh = (viewP.height - windowHeight) / Y_OFFSET;
+        
+        if (numFramesHigh < 1)
+        {
+            numFramesHigh = 1;
+        }
+
+        // position relative to the current viewport (viewP.x/viewP.y)
+        // (so new windows appear onscreen)
+        int xLoc = viewP.x + 
+                   X_OFFSET * 
+                   ((count + 1) - 
+                   (numFramesWide - 1) * 
+                   (int) (count / numFramesWide));
+                   
+        int yLoc = viewP.y + 
+                   Y_OFFSET * 
+                   ((count + 1) - 
+                   numFramesHigh * 
+                   (int) (count / numFramesHigh));
+
+        return new Point(xLoc, yLoc);
+    }
     
     //--------------------------------------------------------------------------
     //  Widget/Layout Stuff
