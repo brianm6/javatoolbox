@@ -3,11 +3,16 @@ package com.javio.webwindow;
 import java.awt.Component;
 import java.awt.Frame;
 
-import B.J;
+import toolbox.util.StringUtil;
 
 class BZ implements Runnable
 {
-
+    static
+    {
+        System.out.println(StringUtil.addBars(
+            "Loaded debug com.javio.webwindow.BZ"));
+    }
+    
     private final HTMLPane exit;
 
     BZ(HTMLPane htmlpane)
@@ -17,6 +22,7 @@ class BZ implements Runnable
 
     public final void run()
     {
+        /*
         System.out.println("Evaluation timer has started...");
         try
         {
@@ -36,5 +42,6 @@ class BZ implements Runnable
             j.show();
             System.exit(0);
         }
+        */
     }
 }

@@ -1,20 +1,33 @@
-// Decompiled by Jad v1.5.8e2. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://kpdus.tripod.com/jad.html
-// Decompiler options: packimports(3) fieldsfirst space 
-
 package B;
-import Z.A;
-import Z.C;
-import com.javio.webwindow.QC;
-import java.awt.*;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import javax.swing.*;
+
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+import Z.A;
+import Z.C;
+
+import com.javio.webwindow.QC;
+
+import toolbox.util.StringUtil;
+import toolbox.util.SwingUtil;
 
 public class B extends JPanel
     implements C, A, ActionListener
 {
+    static
+    {
+        System.out.println(StringUtil.addBars("Loaded debug B.B"));
+    }
 
     String I;
     JTextField addActionListener;
@@ -76,4 +89,17 @@ public class B extends JPanel
     {
         requestFocus();
     }
+    
+    //--------------------------------------------------------------------------
+    // Overrides JComponent
+    //--------------------------------------------------------------------------
+
+    /**
+     * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
+     */
+    public void paintComponent(Graphics gc)
+    {
+        SwingUtil.makeAntiAliased(gc, true);
+        super.paintComponent(gc);
+    }    
 }
