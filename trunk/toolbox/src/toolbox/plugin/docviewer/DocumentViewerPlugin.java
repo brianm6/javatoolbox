@@ -1,19 +1,13 @@
 package toolbox.plugin.pdf;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.io.File;
 import java.util.Map;
-import java.util.Vector;
 
 import javax.swing.JComponent;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.ListCellRenderer;
 
 import nu.xom.Element;
 
@@ -21,13 +15,12 @@ import org.apache.log4j.Logger;
 
 import toolbox.util.ExceptionUtil;
 import toolbox.util.XOMUtil;
-import toolbox.util.ui.JFileExplorer;
-import toolbox.util.ui.JFileExplorerAdapter;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartSplitPane;
+import toolbox.util.ui.explorer.FileExplorerAdapter;
+import toolbox.util.ui.explorer.JFileExplorer;
 import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.util.ui.layout.StackLayout;
-import toolbox.util.ui.list.JSmartList;
 import toolbox.workspace.IPlugin;
 import toolbox.workspace.IStatusBar;
 import toolbox.workspace.PluginWorkspace;
@@ -52,7 +45,7 @@ public class PDFPlugin extends JPanel implements IPlugin
     /**
      * Node for PDFViewer preferences.
      */
-    private static final String NODE_PDF_VIEWER   = "PDFViewer";
+    private static final String NODE_PDF_VIEWER = "PDFViewer";
     
     //--------------------------------------------------------------------------
     // Fields
@@ -82,7 +75,6 @@ public class PDFPlugin extends JPanel implements IPlugin
      * File explorer used to open XML files. 
      */
     private JFileExplorer explorer_;
-
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -195,6 +187,7 @@ public class PDFPlugin extends JPanel implements IPlugin
         return "PDF Viewer";
     }
 
+    
     /**
      * @see toolbox.workspace.IPlugin#getComponent()
      */
@@ -203,6 +196,7 @@ public class PDFPlugin extends JPanel implements IPlugin
         return this;
     }
 
+    
     /**
      * @see toolbox.workspace.IPlugin#getDescription()
      */
@@ -211,6 +205,7 @@ public class PDFPlugin extends JPanel implements IPlugin
         return "Views PDF documents.";
     }
 
+    
     /**
      * @see toolbox.workspace.IPlugin#startup(java.util.Map)
      */
@@ -222,6 +217,7 @@ public class PDFPlugin extends JPanel implements IPlugin
         buildView();
     }
 
+    
     /**
      * @see toolbox.workspace.IPlugin#shutdown()
      */
@@ -267,7 +263,7 @@ public class PDFPlugin extends JPanel implements IPlugin
     /**
      * Populates file that is double clicked on in the text area.
      */
-    class FileSelectionListener extends JFileExplorerAdapter
+    class FileSelectionListener extends FileExplorerAdapter
     {
         /**
          * @see toolbox.util.ui.JFileExplorerListener#fileDoubleClicked(
