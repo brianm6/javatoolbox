@@ -51,6 +51,7 @@
  * TODO: Rename Banner.java to Figlet
  * TODO: Extend PropertySheet to smooth fonts
  * TODO: Add regular expression cheat sheet (TextToolsPlugin maybe)
+ * TODO: Updated fatjar targets to use maven jar dependencies instead of hard coding
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
@@ -115,6 +116,7 @@
       <action type="update">Util - Replaced StringUtil.left() and right() with StringUtils.rightPad() and leftPad()</action>
       <action type="update">Util - Upated code snippets in javadocs to use class=snippet</action>
       <action type="fix"   >Util - Fixed QueryPlugin to remove the session from the session map if Connect fails</action>
+      <action type="update">Build - Updated fatjar maven goals to pull the list of jars directly from the Maven POM instead of the hardcoded list used previously</action>
     </release>
     
     <release version="2.0" date="July 2004">
