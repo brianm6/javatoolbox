@@ -25,7 +25,6 @@ import com.adobe.acrobat.Viewer;
 
 import org.apache.fop.apps.Fop;
 import org.apache.log4j.Logger;
-
 import org.jedit.syntax.SyntaxStyle;
 import org.jedit.syntax.TextAreaDefaults;
 import org.jedit.syntax.Token;
@@ -54,11 +53,12 @@ import toolbox.util.ui.plugin.IStatusBar;
  * o transforms XSL-FO to PDF and views with embedded PDF viewer
  * o transforms XSL-FO and renders output directly to a GUI
  * 
+ * TODO: Create XMLDefaults ala JavaDefaults for JEditTextArea and refactor
  * </pre>
+ * 
  */ 
 public class XSLFOPlugin extends JPanel implements IPlugin
 {
-    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(XSLFOPlugin.class);
 
@@ -71,49 +71,31 @@ public class XSLFOPlugin extends JPanel implements IPlugin
      */
     private JFlipPane flipPane_;    
     
-    /**
-     * Shared status bar with plugin host
-     */
+    /** Shared status bar with plugin host */
     private IStatusBar statusBar_;
     
-    /**
-     * XML text work area
-     */
+    /** XML text work area */
     private JEditTextArea xmlArea_;
 
-    /**
-     * Default settings for XML text area
-     */
+    /** Default settings for XML text area */
     private TextAreaDefaults defaults_;    
     
-    /**
-     * XML output pane
-     */
+    /** XML output pane */
     private JPanel outputPanel_;
     
-    /**
-     * Embedded PDF viewer component
-     */
+    /** Embedded PDF viewer component */
     private Viewer viewer_;    
 
-    /**
-     * File explorer to load xml from files directly
-     */
+    /** File explorer to load xml from files directly */
     private JFileExplorer explorer_;
 
-    /**
-     * Full Path to acrobat reader executable
-     */
+    /** Full Path to acrobat reader executable */
     private String acrobatPath_;
 
-    /**
-     * Apache FOP 
-     */
+    /** Apache XSLFO implementation = FOP */
     private FOProcessor fopProcessor_;
     
-    /**
-     * RenderX XEP
-     */
+    /** RenderX XSLFO implementation = XEP */
     private FOProcessor xepProcessor_;
 
     //--------------------------------------------------------------------------
@@ -208,11 +190,9 @@ public class XSLFOPlugin extends JPanel implements IPlugin
     protected void buildView()
     {
         initTextArea();
-        xmlArea_ = new JEditTextArea(defaults_);
+        xmlArea_ = new JEditTextArea(new XMLTokenMarker(), defaults_);
         ((JEditTextAreaPopupMenu) defaults_.popup).setTextArea(xmlArea_);
         ((JEditTextAreaPopupMenu) defaults_.popup).buildView();
-        
-        xmlArea_.setTokenMarker(new XMLTokenMarker());
         
         setLayout(new BorderLayout());
         explorer_ = new JFileExplorer(false);
