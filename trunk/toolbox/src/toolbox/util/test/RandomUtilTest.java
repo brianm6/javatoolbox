@@ -1,12 +1,17 @@
 package toolbox.util.test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
+
 import org.apache.log4j.Logger;
 
 import toolbox.util.RandomUtil;
 import toolbox.util.StringUtil;
-import toolbox.util.io.WrappingWriter;
 
 /**
  * Unit test for RandomUtil
@@ -285,5 +290,80 @@ public class RandomUtilTest extends TestCase
         for (int i=0; i<10; i++)
             logger_.info(RandomUtil.nextBoolean()+"");
     }    
+    
+    
+    /**
+     * Tests nextElement() for an empty array
+     */
+    public void testNextElementArrayEmpty()
+    {
+        assertNull(RandomUtil.nextElement(new String[0]));
+    }
+
+    
+    /**
+     * Tests nextElement() for a single element array
+     */
+    public void testNextElementArrayOne()
+    {
+        assertEquals("one", (RandomUtil.nextElement(new String[] { "one" } )));
+    }
+
+
+    /**
+     * Tests nextElement() for an array length > 1
+     */
+    public void testNextElementArrayMany()
+    {
+        String[] s = new String[] { "zero", "one", "two", "three", "four", "five" };
+        
+        StringBuffer  sb = new StringBuffer();
+        
+        for (int i=0; i<50; i++)
+            sb.append(RandomUtil.nextElement(s) + " ");
+        
+        logger_.info("\n" + StringUtil.wrap(sb.toString(), true));
+    }
+
+    /**
+     * Tests nextElement() for an empty list
+     */
+    public void testNextElementListEmpty()
+    {
+        assertNull(RandomUtil.nextElement(new ArrayList()));
+    }
+
+    
+    /**
+     * Tests nextElement() for a single element list
+     */
+    public void testNextElementListOne()
+    {
+        List one = new ArrayList();
+        one.add("one");
+        assertEquals("one", (RandomUtil.nextElement(one)));
+    }
+
+
+    /**
+     * Tests nextElement() for an list length > 1
+     */
+    public void testNextElementListMany()
+    {
+        List many = new ArrayList();
+        many.add("zero");
+        many.add("one");
+        many.add("two");
+        many.add("three");
+        many.add("four");
+        many.add("five");
+        
+        StringBuffer  sb = new StringBuffer();
+        
+        for (int i=0; i<50; i++)
+            sb.append(RandomUtil.nextElement(many) + " ");
+        
+        logger_.info("\n" + StringUtil.wrap(sb.toString(), true));
+    }
 }
 
