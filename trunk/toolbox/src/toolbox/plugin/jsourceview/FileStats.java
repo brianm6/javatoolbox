@@ -17,6 +17,12 @@ public class FileStats
     /** Number of blank lines in file **/
     public int blankLines;
     
+    /**
+     * No arg
+     */
+    FileStats()
+    {
+    }
     
     /**
      * Gets percentage
@@ -39,16 +45,9 @@ public class FileStats
      */
     public void add(FileStats filestats)
     {
-        totalLines += filestats.totalLines;
+        totalLines   += filestats.totalLines;
         commentLines += filestats.commentLines;
-        codeLines += filestats.codeLines;
-        blankLines += filestats.blankLines;
-    }
-
-    /**
-     * No arg
-     */
-    FileStats()
-    {
+        codeLines    += filestats.codeLines;
+        blankLines   += filestats.blankLines;
     }
 }

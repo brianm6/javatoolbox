@@ -1,5 +1,8 @@
 package toolbox.jsourceview;
 
+/**
+ * Machine constants
+ */
 public interface MachineConstants
 {
 
