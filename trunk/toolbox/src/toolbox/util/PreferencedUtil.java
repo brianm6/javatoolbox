@@ -34,8 +34,8 @@ public class PreferencedUtil
     //--------------------------------------------------------------------------
     
     /**
-     * Reads properties from a javabean and inserts them into an XML node
-     * as atttributes.
+     * Reads properties from a javabean and adds them to an XML node as 
+     * atttributes.
      * 
      * @param bean Javabean to extract values from.
      * @param node XML node to add attributes to.
@@ -62,7 +62,6 @@ public class PreferencedUtil
                 Attribute attr = 
                     new Attribute(
                         propName, 
-                        //PropertyUtils.getProperty(bean, propName).toString());
                         BeanUtils.getProperty(bean, propName).toString());
                 
                 node.addAttribute(attr);
