@@ -14,7 +14,7 @@ public class NumberParamPattern extends ParamPattern
     private Method convertMethod_;
 
     // STATIC INITIALIZER
-    static 
+    static
     {
         PrimitiveNumbers_ = new Hashtable(20);
         WrapperNumbers_ = new Hashtable(20);
@@ -24,16 +24,16 @@ public class NumberParamPattern extends ParamPattern
         try
         {
             for (int i = 0; i < methods.length; i++)
-                if (Modifier.isStatic(methods[i].getModifiers()) && 
-                     methods[i].getName().startsWith("to"))
+                if (Modifier.isStatic(methods[i].getModifiers())
+                    && methods[i].getName().startsWith("to"))
                 {
-                    Class c = Class.forName(
-                        "java.lang." + methods[i].getName().substring(2));
-                        
+                    Class c = Class.forName("java.lang."
+                        + methods[i].getName().substring(2));
+
                     WrapperNumbers_.put(c, methods[i]);
-                    
-                    PrimitiveNumbers_.put(
-                        c.getField("TYPE").get(null), methods[i]);
+
+                    PrimitiveNumbers_.put(c.getField("TYPE").get(null),
+                        methods[i]);
                 }
         }
         catch (Exception ex)
@@ -42,7 +42,7 @@ public class NumberParamPattern extends ParamPattern
         }
     }
 
-    static 
+    static
     {
         ParamPattern.register(new NumberParamPattern());
     }
@@ -57,6 +57,7 @@ public class NumberParamPattern extends ParamPattern
     {
     }
 
+
     /**
      * Creates a new NumberParamPattern object.
      * 
@@ -68,36 +69,39 @@ public class NumberParamPattern extends ParamPattern
         initializeConvertMethod();
     }
 
+
     // PARAMPATTERN METHODS
 
     /**
      * DOCUMENT ME!
      * 
      * @param aClass DOCUMENT ME!
-     * @return DOCUMENT ME! 
+     * @return DOCUMENT ME!
      */
     protected boolean isApplicable(Class aClass)
     {
-        return Number.class.isAssignableFrom(aClass) || 
-            PrimitiveNumbers_.get(aClass) != null;
+        return Number.class.isAssignableFrom(aClass)
+            || PrimitiveNumbers_.get(aClass) != null;
     }
+
 
     /**
      * DOCUMENT ME!
      * 
      * @param aClass DOCUMENT ME!
-     * @return DOCUMENT ME! 
+     * @return DOCUMENT ME!
      */
     protected int getFactor(Class aClass)
     {
         return MATCH_CONVERT;
     }
 
+
     /**
      * DOCUMENT ME!
      * 
      * @param object DOCUMENT ME!
-     * @return DOCUMENT ME! 
+     * @return DOCUMENT ME!
      */
     protected Object advancedConvert(Object object)
     {
@@ -107,19 +111,20 @@ public class NumberParamPattern extends ParamPattern
             return super.advancedConvert(object);
     }
 
+
     // SUPPORT METHODS
 
     /**
      * DOCUMENT ME!
      * 
      * @param object DOCUMENT ME!
-     * @return DOCUMENT ME! 
+     * @return DOCUMENT ME!
      */
     protected Object invoke(Object object)
     {
         try
         {
-            return convertMethod_.invoke(null, new Object[] {object});
+            return convertMethod_.invoke(null, new Object[]{object});
         }
         catch (Exception ex)
         {
@@ -127,16 +132,17 @@ public class NumberParamPattern extends ParamPattern
         }
     }
 
+
     /**
      * DOCUMENT ME!
      */
     protected void initializeConvertMethod()
     {
-        convertMethod_ =
-            (Method) (Number.class.isAssignableFrom(getParamType()) ? 
-                WrapperNumbers_.get(getParamType()) : 
-                PrimitiveNumbers_.get(getParamType()));
+        convertMethod_ = (Method) (Number.class
+            .isAssignableFrom(getParamType()) ? WrapperNumbers_
+            .get(getParamType()) : PrimitiveNumbers_.get(getParamType()));
     }
+
 
     // CONVERSION METHODS
 
@@ -144,62 +150,67 @@ public class NumberParamPattern extends ParamPattern
      * DOCUMENT ME!
      * 
      * @param num DOCUMENT ME!
-     * @return DOCUMENT ME! 
+     * @return DOCUMENT ME!
      */
     public static Object toInteger(Number num)
     {
         return new Integer(num.intValue());
     }
 
+
     /**
      * DOCUMENT ME!
      * 
      * @param num DOCUMENT ME!
-     * @return DOCUMENT ME! 
+     * @return DOCUMENT ME!
      */
     public static Object toShort(Number num)
     {
         return new Short(num.shortValue());
     }
 
+
     /**
      * DOCUMENT ME!
      * 
      * @param num DOCUMENT ME!
-     * @return DOCUMENT ME! 
+     * @return DOCUMENT ME!
      */
     public static Object toLong(Number num)
     {
         return new Long(num.longValue());
     }
 
+
     /**
      * DOCUMENT ME!
      * 
      * @param num DOCUMENT ME!
-     * @return DOCUMENT ME! 
+     * @return DOCUMENT ME!
      */
     public static Object toFloat(Number num)
     {
         return new Float(num.floatValue());
     }
 
+
     /**
      * DOCUMENT ME!
      * 
      * @param num DOCUMENT ME!
-     * @return DOCUMENT ME! 
+     * @return DOCUMENT ME!
      */
     public static Object toDouble(Number num)
     {
         return new Double(num.doubleValue());
     }
 
+
     /**
      * DOCUMENT ME!
      * 
      * @param num DOCUMENT ME!
-     * @return DOCUMENT ME! 
+     * @return DOCUMENT ME!
      */
     public static Object toByte(Number num)
     {

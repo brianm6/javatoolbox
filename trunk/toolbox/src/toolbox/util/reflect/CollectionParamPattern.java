@@ -6,11 +6,12 @@ import java.util.Enumeration;
 import java.util.Vector;
 
 /**
- * CollectionParamPattern
+ * CollectionParamPattern.
  */
 public class CollectionParamPattern extends ParamPattern
 {
     private Method convertMethod_;
+
 
     // CONSTRUCTORS
 
@@ -20,6 +21,7 @@ public class CollectionParamPattern extends ParamPattern
     public CollectionParamPattern()
     {
     }
+
 
     /**
      * Creates a new CollectionParamPattern object.
@@ -32,29 +34,32 @@ public class CollectionParamPattern extends ParamPattern
         initializeConvertMethod();
     }
 
+
     // PARAMPATTERN METHODS
 
     /**
      * DOCUMENT ME!
      * 
-     * @param aClass DOCUMENT ME!
+     * @param clazz DOCUMENT ME!
      * @return DOCUMENT ME!
      */
-    protected boolean isApplicable(Class aClass)
+    protected boolean isApplicable(Class clazz)
     {
-        return aClass.isArray() || Vector.class.isAssignableFrom(aClass);
+        return clazz.isArray() || Vector.class.isAssignableFrom(clazz);
     }
+
 
     /**
      * DOCUMENT ME!
      * 
-     * @param aClass DOCUMENT ME!
+     * @param clazz DOCUMENT ME!
      * @return DOCUMENT ME!
      */
-    protected int getFactor(Class aClass)
+    protected int getFactor(Class clazz)
     {
         return MATCH_CONVERT;
     }
+
 
     /**
      * DOCUMENT ME!
@@ -70,6 +75,7 @@ public class CollectionParamPattern extends ParamPattern
             return super.advancedConvert(object);
     }
 
+
     // SUPPORT METHODS
 
     /**
@@ -82,14 +88,15 @@ public class CollectionParamPattern extends ParamPattern
     {
         try
         {
-            return convertMethod_.invoke(
-                null, new Object[] {getParamType(), object});
+            return convertMethod_.invoke(null, new Object[]{getParamType(),
+                object});
         }
         catch (Exception ex)
         {
             throw new ClassCastException(ex.getMessage());
         }
     }
+
 
     /**
      * DOCUMENT ME!
@@ -98,17 +105,16 @@ public class CollectionParamPattern extends ParamPattern
     {
         try
         {
-            convertMethod_ = getParamType().isArray() ? 
-                getClass().getMethod("toArray", 
-                    new Class[] {Class.class, Vector.class}) : 
-                getClass().getMethod("toVector", 
-                    new Class[] {Class.class, Object.class});
+            convertMethod_ = getParamType().isArray() ? getClass().getMethod(
+                "toArray", new Class[]{Class.class, Vector.class}) : getClass()
+                .getMethod("toVector", new Class[]{Class.class, Object.class});
         }
         catch (Exception ex)
         {
             ; // should never happen
         }
     }
+
 
     // CONVERSION METHODS
 
@@ -131,6 +137,7 @@ public class CollectionParamPattern extends ParamPattern
         return array;
     }
 
+
     /**
      * DOCUMENT ME!
      * 
@@ -150,7 +157,7 @@ public class CollectionParamPattern extends ParamPattern
     }
 
     // STATIC INITIALIZER
-    static 
+    static
     {
         ParamPattern.register(new CollectionParamPattern());
     }

@@ -13,6 +13,7 @@ public class MethodParamTypeHolder implements IMethodHolder
     private Vector holders_ = new Vector(5);
     private Vector patterns_ = new Vector(5);
 
+
     // CONSTRUCTORS
 
     /**
@@ -30,21 +31,22 @@ public class MethodParamTypeHolder implements IMethodHolder
         patterns_.add(method2.getParameterPatterns());
     }
 
+
     // METHODHOLDER METHODS
 
     /**
      * DOCUMENT ME!
      * 
      * @param method DOCUMENT ME!
-     * @return DOCUMENT ME! 
+     * @return DOCUMENT ME!
      */
     public IMethodHolder addMethod(SmartMethod method)
     {
 
         // Check if we have the same number of parameters
-        if (paramCount_ != method.getParameterTypes().length || 
-            method.getParameterTypes().length == 0)
-            
+        if (paramCount_ != method.getParameterTypes().length
+            || method.getParameterTypes().length == 0)
+
             return new MethodParamCountHolder(method, this, paramCount_);
 
         // Add the information
@@ -54,14 +56,15 @@ public class MethodParamTypeHolder implements IMethodHolder
         return this;
     }
 
+
     /**
      * DOCUMENT ME!
      * 
      * @param paramTypes DOCUMENT ME!
-     * @return DOCUMENT ME! 
+     * @return DOCUMENT ME!
      * @throws NoSuchMethodException DOCUMENT ME!
      */
-    public SmartMethod getMethod(Class[] paramTypes) 
+    public SmartMethod getMethod(Class[] paramTypes)
         throws NoSuchMethodException
     {
         int total = 0;
@@ -72,8 +75,8 @@ public class MethodParamTypeHolder implements IMethodHolder
         {
             total = 0;
 
-            ParamPattern[] testPatterns = 
-                (ParamPattern[]) patterns_.elementAt(i);
+            ParamPattern[] testPatterns = (ParamPattern[]) patterns_
+                .elementAt(i);
 
             for (int j = 0; j < testPatterns.length; j++)
             {
@@ -99,28 +102,31 @@ public class MethodParamTypeHolder implements IMethodHolder
 
         Integer last = (Integer) map.lastKey();
         Integer key = (Integer) map.get(last);
-        
-        IMethodHolder holderRes = 
-            (IMethodHolder) holders_.elementAt(key.intValue());
+
+        IMethodHolder holderRes = (IMethodHolder) holders_.elementAt(key
+            .intValue());
 
         return holderRes.getMethod(paramTypes);
     }
 
     // COMPARATOR
+
     protected static class IntegerComparator implements Comparator
     {
         protected static final IntegerComparator defComparator_ = 
             new IntegerComparator();
 
+
         /**
-         * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+         * @see java.util.Comparator#compare(java.lang.Object,
+         *      java.lang.Object)
          */
         public int compare(Object obj1, Object obj2)
         {
             return ((Integer) obj1).intValue() - ((Integer) obj2).intValue();
         }
 
-        
+
         /**
          * Returns the comparator.
          * 

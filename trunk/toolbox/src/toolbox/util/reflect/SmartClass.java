@@ -10,9 +10,10 @@ import java.util.Hashtable;
  */
 public class SmartClass
 {
-    private Class javaClass_;
+    private Class javclazz_;
     private Hashtable methods_;
     private IMethodHolder constructors_;
+
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -21,11 +22,11 @@ public class SmartClass
     /**
      * Creates a new SmartClass object.
      * 
-     * @param aClass Class.
+     * @param clazz Class.
      */
-    protected SmartClass(Class aClass)
+    protected SmartClass(Class clazz)
     {
-        javaClass_ = aClass;
+        javclazz_ = clazz;
     }
 
     //--------------------------------------------------------------------------
@@ -48,9 +49,10 @@ public class SmartClass
         if (method == null)
             throw new NoSuchMethodException();
 
-        return method.getMethod(parameterTypes == null ? 
-            new Class[] {} : parameterTypes);
+        return method.getMethod(parameterTypes == null ? new Class[]{}
+            : parameterTypes);
     }
+
 
     /**
      * Gets method
@@ -74,6 +76,7 @@ public class SmartClass
         return getMethod(selector, types);
     }
 
+
     /**
      * Gets method
      * 
@@ -88,6 +91,7 @@ public class SmartClass
         return getMethod(new Symbol(name), parameterTypes);
     }
 
+
     /**
      * Gets method
      * 
@@ -96,11 +100,12 @@ public class SmartClass
      * @return Smart method
      * @throws NoSuchMethodException on no method
      */
-    public SmartMethod getMethod(String name, Object[] parameters) 
+    public SmartMethod getMethod(String name, Object[] parameters)
         throws NoSuchMethodException
     {
         return getMethod(new Symbol(name), parameters);
     }
+
 
     /**
      * Gets constructor
@@ -109,13 +114,13 @@ public class SmartClass
      * @return Smart constructor
      * @throws NoSuchMethodException on no method
      */
-    public SmartConstructor getConstructor(Class[] parameterTypes) 
+    public SmartConstructor getConstructor(Class[] parameterTypes)
         throws NoSuchMethodException
     {
-        return (SmartConstructor) 
-            constructors_.getMethod(parameterTypes == null ? 
-                new Class[] {} : parameterTypes);
+        return (SmartConstructor) constructors_
+            .getMethod(parameterTypes == null ? new Class[]{} : parameterTypes);
     }
+
 
     /**
      * Gets constructor
@@ -124,7 +129,7 @@ public class SmartClass
      * @return SmartConstructor
      * @throws NoSuchMethodException on method not found
      */
-    public SmartConstructor getConstructor(Object[] parameters) 
+    public SmartConstructor getConstructor(Object[] parameters)
         throws NoSuchMethodException
     {
         if (parameters == null)
@@ -138,10 +143,11 @@ public class SmartClass
         return getConstructor(types);
     }
 
+
     //--------------------------------------------------------------------------
     // Invocation Methods
     //--------------------------------------------------------------------------
-    
+
     /**
      * Invokes method on an object
      * 
@@ -156,17 +162,14 @@ public class SmartClass
      * @throws Exception on error
      */
     public Object invoke(Object obj, Symbol selector, Object[] parameters)
-        throws
-            NoSuchMethodException,
-            IllegalAccessException,
-            IllegalArgumentException,
-            InvocationTargetException,
-            Exception
+        throws NoSuchMethodException, IllegalAccessException,
+        IllegalArgumentException, InvocationTargetException, Exception
     {
         SmartMethod method = getMethod(selector, parameters);
 
         return method.invoke(obj, parameters);
     }
+
 
     /**
      * Invokes method on an object
@@ -181,14 +184,12 @@ public class SmartClass
      * @throws Exception on error
      */
     public Object invoke(Object obj, String methodName, Object[] parameters)
-        throws
-            IllegalAccessException,
-            IllegalArgumentException,
-            InvocationTargetException,
-            Exception
+        throws IllegalAccessException, IllegalArgumentException,
+        InvocationTargetException, Exception
     {
         return invoke(obj, new Symbol(methodName), parameters);
     }
+
 
     /**
      * @param obj Object
@@ -210,17 +211,19 @@ public class SmartClass
         }
     }
 
+
     /**
      * @param obj Object
      * @param methodName Method name
      * @param parameters Params
      * @return Return value
      */
-    public Object invokeSilent(Object obj, String methodName, 
+    public Object invokeSilent(Object obj, String methodName,
         Object[] parameters)
     {
         return invokeSilent(obj, new Symbol(methodName), parameters);
     }
+
 
     // INSTATIONATION METHODS
 
@@ -232,16 +235,13 @@ public class SmartClass
      * @throws IllegalArgumentException on error
      * @throws InvocationTargetException on error
      */
-    public Object newInstance()
-        throws
-            NoSuchMethodException,
-            InstantiationException,
-            IllegalAccessException,
-            IllegalArgumentException,
-            InvocationTargetException
+    public Object newInstance() throws NoSuchMethodException,
+        InstantiationException, IllegalAccessException,
+        IllegalArgumentException, InvocationTargetException
     {
         return newInstance(null);
     }
+
 
     /**
      * Creates a new instance
@@ -255,22 +255,20 @@ public class SmartClass
      * @throws InvocationTargetException on error
      */
     public Object newInstance(Object[] parameters)
-        throws
-            NoSuchMethodException,
-            InstantiationException,
-            IllegalAccessException,
-            IllegalArgumentException,
-            InvocationTargetException
+        throws NoSuchMethodException, InstantiationException,
+        IllegalAccessException, IllegalArgumentException,
+        InvocationTargetException
     {
         SmartConstructor c = getConstructor(parameters);
 
         return c.newInstance(parameters);
     }
 
+
     // SUPPORT METHODS
 
     /**
-     * Constructs class 
+     * Constructs class
      */
     public void constructClass()
     {
@@ -278,12 +276,13 @@ public class SmartClass
         cacheConstructors();
     }
 
+
     /**
      * Caches methods
      */
     protected void cacheMethods()
     {
-        Method[] javaMethods = javaClass_.getMethods();
+        Method[] javaMethods = javclazz_.getMethods();
         methods_ = new Hashtable(javaMethods.length * 2);
 
         for (int i = 0; i < javaMethods.length; i++)
@@ -291,26 +290,27 @@ public class SmartClass
             SmartMethod method = new SmartMethod(javaMethods[i]);
             Object selector = method.getSelector();
             IMethodHolder holder = (IMethodHolder) methods_.get(selector);
-            
-            holder = holder == null ? new MethodHolder(method)  : 
-                holder.addMethod(method);
-                
+
+            holder = holder == null ? new MethodHolder(method) : holder
+                .addMethod(method);
+
             methods_.put(selector, holder);
         }
     }
+
 
     /**
      * Caches constructors
      */
     protected void cacheConstructors()
     {
-        Constructor[] cs = javaClass_.getConstructors();
+        Constructor[] cs = javclazz_.getConstructors();
 
         if (cs.length > 0)
             constructors_ = new MethodHolder(new SmartConstructor(cs[0]));
 
         for (int i = 1; i < cs.length; i++)
-            constructors_ = 
-                constructors_.addMethod(new SmartConstructor(cs[i]));
+            constructors_ = constructors_
+                .addMethod(new SmartConstructor(cs[i]));
     }
 }

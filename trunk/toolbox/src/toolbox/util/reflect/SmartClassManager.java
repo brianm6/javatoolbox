@@ -10,8 +10,9 @@ public class SmartClassManager
 {
     private static SmartClassManager DefaultClassManager = 
         new SmartClassManager();
-        
+
     private Map cache_;
+
 
     // CONSTRUCTORS
 
@@ -23,6 +24,7 @@ public class SmartClassManager
         this(new HashMap());
     }
 
+
     /**
      * Creates a new SmartClassManager object.
      * 
@@ -30,8 +32,9 @@ public class SmartClassManager
      */
     public SmartClassManager(Map cache)
     {
-        this.cache_ = cache;
+        cache_ = cache;
     }
+
 
     // API
 
@@ -39,7 +42,7 @@ public class SmartClassManager
      * DOCUMENT ME!
      * 
      * @param javaClass DOCUMENT ME!
-     * @return DOCUMENT ME! 
+     * @return DOCUMENT ME!
      */
     public SmartClass getClass(Class javaClass)
     {
@@ -48,22 +51,24 @@ public class SmartClassManager
         if (siClass == null)
         {
 
-            //System.out.println( "SmartClassManager: " + javaClass.getName() );
-            
-            cache_.put(javaClass.getName(), 
-                siClass = new SmartClass(javaClass));
-                
+            //System.out.println( "SmartClassManager: " + javaClass.getName()
+            // );
+
+            cache_
+                .put(javaClass.getName(), siClass = new SmartClass(javaClass));
+
             siClass.constructClass();
         }
 
         return siClass;
     }
 
+
     /**
      * DOCUMENT ME!
      * 
      * @param name DOCUMENT ME!
-     * @return DOCUMENT ME! 
+     * @return DOCUMENT ME!
      * @throws ClassNotFoundException DOCUMENT ME!
      */
     public SmartClass getClass(String name) throws ClassNotFoundException
@@ -71,27 +76,29 @@ public class SmartClassManager
         return getClass(Class.forName(name));
     }
 
+
     // HELPER METHODS
 
     /**
      * DOCUMENT ME!
      * 
      * @param javaClass DOCUMENT ME!
-     * @return DOCUMENT ME! 
+     * @return DOCUMENT ME!
      */
     public static SmartClass forClass(Class javaClass)
     {
         return DefaultClassManager.getClass(javaClass);
     }
 
+
     /**
      * DOCUMENT ME!
      * 
      * @param name DOCUMENT ME!
-     * @return DOCUMENT ME! 
+     * @return DOCUMENT ME!
      * @throws ClassNotFoundException DOCUMENT ME!
      */
-    public static SmartClass loadClass(String name) 
+    public static SmartClass loadClass(String name)
         throws ClassNotFoundException
     {
         return DefaultClassManager.getClass(name);

@@ -8,6 +8,7 @@ public class MethodParamCountHolder implements IMethodHolder
     private int paramOffset_;
     private IMethodHolder[] holders_;
 
+
     // CONSTRUCTORS
 
     /**
@@ -25,6 +26,7 @@ public class MethodParamCountHolder implements IMethodHolder
         holders_[offset2] = new MethodHolder(method2);
     }
 
+
     /**
      * Creates a new MethodParamCountHolder object.
      * 
@@ -32,7 +34,7 @@ public class MethodParamCountHolder implements IMethodHolder
      * @param holder DOCUMENT ME!
      * @param count DOCUMENT ME!
      */
-    public MethodParamCountHolder(SmartMethod method, IMethodHolder holder, 
+    public MethodParamCountHolder(SmartMethod method, IMethodHolder holder,
         int count)
     {
         int offset = method.getParameterTypes().length;
@@ -41,26 +43,28 @@ public class MethodParamCountHolder implements IMethodHolder
         holders_[count] = holder;
     }
 
+
     // METHODHOLDER METHODS
 
     /**
      * DOCUMENT ME!
      * 
      * @param paramTypes DOCUMENT ME!
-     * @return DOCUMENT ME! 
+     * @return DOCUMENT ME!
      * @throws NoSuchMethodException DOCUMENT ME!
      */
-    public SmartMethod getMethod(Class[] paramTypes) 
+    public SmartMethod getMethod(Class[] paramTypes)
         throws NoSuchMethodException
     {
         return holders_[paramTypes.length].getMethod(paramTypes);
     }
 
+
     /**
      * DOCUMENT ME!
      * 
      * @param method DOCUMENT ME!
-     * @return DOCUMENT ME! 
+     * @return DOCUMENT ME!
      */
     public IMethodHolder addMethod(SmartMethod method)
     {
@@ -76,10 +80,10 @@ public class MethodParamCountHolder implements IMethodHolder
         else
         {
             IMethodHolder holder = holders_[offset];
-            
-            holder = holder == null  ? new MethodHolder(method) : 
-                holder.addMethod(method);
-                
+
+            holder = holder == null ? new MethodHolder(method) : holder
+                .addMethod(method);
+
             holders_[offset] = holder;
         }
 

@@ -13,6 +13,7 @@ public class Symbol implements Externalizable
     private int hashCode_;
     private String string_;
 
+
     // CONSTRUCTORS
 
     /**
@@ -25,23 +26,25 @@ public class Symbol implements Externalizable
         setString(string);
     }
 
+
     // STANDARD METHODS
 
     /**
      * DOCUMENT ME!
      * 
-     * @return DOCUMENT ME! 
+     * @return DOCUMENT ME!
      */
     public int hashCode()
     {
         return hashCode_;
     }
 
+
     /**
      * DOCUMENT ME!
      * 
      * @param another DOCUMENT ME!
-     * @return DOCUMENT ME! 
+     * @return DOCUMENT ME!
      */
     public boolean equals(Object another)
     {
@@ -53,15 +56,17 @@ public class Symbol implements Externalizable
         return string_ == another.toString();
     }
 
+
     /**
      * DOCUMENT ME!
      * 
-     * @return DOCUMENT ME! 
+     * @return DOCUMENT ME!
      */
     public String toString()
     {
         return string_;
     }
+
 
     // ACCESSING METHODS
 
@@ -72,9 +77,10 @@ public class Symbol implements Externalizable
      */
     protected final void setString(String string)
     {
-        this.string_ = string.intern();
-        this.hashCode_ = string.hashCode();
+        string_ = string.intern();
+        hashCode_ = string.hashCode();
     }
+
 
     // EXTERNALIZABLE METHODS
 
@@ -85,7 +91,7 @@ public class Symbol implements Externalizable
      * @throws IOException DOCUMENT ME!
      * @throws ClassNotFoundException DOCUMENT ME!
      */
-    public void readExternal(ObjectInput in) throws IOException, 
+    public void readExternal(ObjectInput in) throws IOException,
         ClassNotFoundException
     {
         int size = in.readInt();
@@ -93,6 +99,7 @@ public class Symbol implements Externalizable
         in.readFully(buf);
         setString(new String(buf));
     }
+
 
     /**
      * DOCUMENT ME!
