@@ -50,162 +50,162 @@ public class FixedWidthWriterTest extends TestCase
     /**
      * Tests writeLPad(String, int)
      * 
-     * throws IOException 
+     * @throws IOException on error
      */
     public void testWriteLPad() throws IOException
     {
-    	logger_.info("Running testWriteLPad...");
-    	
-    	// Exact size
-    	StringWriter sw = new StringWriter();
-    	FixedWidthWriter fww = new FixedWidthWriter(sw);
-    	fww.writeLPad("hello", 5);
-    	assertEquals("hello", sw.getBuffer().toString());
+        logger_.info("Running testWriteLPad...");
+        
+        // Exact size
+        StringWriter sw = new StringWriter();
+        FixedWidthWriter fww = new FixedWidthWriter(sw);
+        fww.writeLPad("hello", 5);
+        assertEquals("hello", sw.getBuffer().toString());
 
-		// Underflow
-		sw = new StringWriter();
-		fww = new FixedWidthWriter(sw);
-		fww.writeLPad("hel", 5);
-		assertEquals("  hel", sw.getBuffer().toString());
+        // Underflow
+        sw = new StringWriter();
+        fww = new FixedWidthWriter(sw);
+        fww.writeLPad("hel", 5);
+        assertEquals("  hel", sw.getBuffer().toString());
 
-		// Overflow
-		sw = new StringWriter();
-		fww = new FixedWidthWriter(sw);
-		fww.writeLPad("helloworld", 5);
-		assertEquals("hello", sw.getBuffer().toString());
-		
-		// Empty
-		sw = new StringWriter();
-		fww = new FixedWidthWriter(sw);
-		fww.writeLPad("", 5);
-		assertEquals("     ", sw.getBuffer().toString());
-		
-		// One
-		sw = new StringWriter();
-		fww = new FixedWidthWriter(sw);
-		fww.writeLPad("h", 5);
-		assertEquals("    h", sw.getBuffer().toString());
+        // Overflow
+        sw = new StringWriter();
+        fww = new FixedWidthWriter(sw);
+        fww.writeLPad("helloworld", 5);
+        assertEquals("hello", sw.getBuffer().toString());
+        
+        // Empty
+        sw = new StringWriter();
+        fww = new FixedWidthWriter(sw);
+        fww.writeLPad("", 5);
+        assertEquals("     ", sw.getBuffer().toString());
+        
+        // One
+        sw = new StringWriter();
+        fww = new FixedWidthWriter(sw);
+        fww.writeLPad("h", 5);
+        assertEquals("    h", sw.getBuffer().toString());
     }
 
-	/**
-	 * Tests writeLPad(String, int, char)
-	 * 
-	 * throws IOException 
-	 */
-	public void testWriteLPadChar() throws IOException
-	{
-		logger_.info("Running testWriteLPadChar...");
-    	
-		// Exact size
-		StringWriter sw = new StringWriter();
-		FixedWidthWriter fww = new FixedWidthWriter(sw);
-		fww.writeLPad("hello", 5, '.');
-		assertEquals("hello", sw.getBuffer().toString());
+    /**
+     * Tests writeLPad(String, int, char)
+     * 
+     * @throws IOException on error
+     */
+    public void testWriteLPadChar() throws IOException
+    {
+        logger_.info("Running testWriteLPadChar...");
+        
+        // Exact size
+        StringWriter sw = new StringWriter();
+        FixedWidthWriter fww = new FixedWidthWriter(sw);
+        fww.writeLPad("hello", 5, '.');
+        assertEquals("hello", sw.getBuffer().toString());
 
-		// Underflow
-		sw = new StringWriter();
-		fww = new FixedWidthWriter(sw);
-		fww.writeLPad("hel", 5, '.');
-		assertEquals("..hel", sw.getBuffer().toString());
+        // Underflow
+        sw = new StringWriter();
+        fww = new FixedWidthWriter(sw);
+        fww.writeLPad("hel", 5, '.');
+        assertEquals("..hel", sw.getBuffer().toString());
 
-		// Overflow
-		sw = new StringWriter();
-		fww = new FixedWidthWriter(sw);
-		fww.writeLPad("helloworld", 5, '.');
-		assertEquals("hello", sw.getBuffer().toString());
-		
-		// Empty
-		sw = new StringWriter();
-		fww = new FixedWidthWriter(sw);
-		fww.writeLPad("", 5, '.');
-		assertEquals(".....", sw.getBuffer().toString());
-		
-		// One
-		sw = new StringWriter();
-		fww = new FixedWidthWriter(sw);
-		fww.writeLPad("h", 5, '.');
-		assertEquals("....h", sw.getBuffer().toString());
-	}
+        // Overflow
+        sw = new StringWriter();
+        fww = new FixedWidthWriter(sw);
+        fww.writeLPad("helloworld", 5, '.');
+        assertEquals("hello", sw.getBuffer().toString());
+        
+        // Empty
+        sw = new StringWriter();
+        fww = new FixedWidthWriter(sw);
+        fww.writeLPad("", 5, '.');
+        assertEquals(".....", sw.getBuffer().toString());
+        
+        // One
+        sw = new StringWriter();
+        fww = new FixedWidthWriter(sw);
+        fww.writeLPad("h", 5, '.');
+        assertEquals("....h", sw.getBuffer().toString());
+    }
 
-	/**
-	 * Tests writeRPad(String, int)
-	 * 
-	 * throws IOException 
-	 */
-	public void testWriteRPad() throws IOException
-	{
-		logger_.info("Running testWriteRPad...");
-    	
-		// Exact size
-		StringWriter sw = new StringWriter();
-		FixedWidthWriter fww = new FixedWidthWriter(sw);
-		fww.writeRPad("hello", 5);
-		assertEquals("hello", sw.getBuffer().toString());
+    /**
+     * Tests writeRPad(String, int)
+     * 
+     * @throws IOException on error
+     */
+    public void testWriteRPad() throws IOException
+    {
+        logger_.info("Running testWriteRPad...");
+        
+        // Exact size
+        StringWriter sw = new StringWriter();
+        FixedWidthWriter fww = new FixedWidthWriter(sw);
+        fww.writeRPad("hello", 5);
+        assertEquals("hello", sw.getBuffer().toString());
 
-		// Underflow
-		sw = new StringWriter();
-		fww = new FixedWidthWriter(sw);
-		fww.writeRPad("hel", 5);
-		assertEquals("hel  ", sw.getBuffer().toString());
+        // Underflow
+        sw = new StringWriter();
+        fww = new FixedWidthWriter(sw);
+        fww.writeRPad("hel", 5);
+        assertEquals("hel  ", sw.getBuffer().toString());
 
-		// Overflow
-		sw = new StringWriter();
-		fww = new FixedWidthWriter(sw);
-		fww.writeRPad("helloworld", 5);
-		assertEquals("hello", sw.getBuffer().toString());
-		
-		// Empty
-		sw = new StringWriter();
-		fww = new FixedWidthWriter(sw);
-		fww.writeRPad("", 5);
-		assertEquals("     ", sw.getBuffer().toString());
-		
-		// One
-		sw = new StringWriter();
-		fww = new FixedWidthWriter(sw);
-		fww.writeRPad("h", 5);
-		assertEquals("h    ", sw.getBuffer().toString());
-	}
+        // Overflow
+        sw = new StringWriter();
+        fww = new FixedWidthWriter(sw);
+        fww.writeRPad("helloworld", 5);
+        assertEquals("hello", sw.getBuffer().toString());
+        
+        // Empty
+        sw = new StringWriter();
+        fww = new FixedWidthWriter(sw);
+        fww.writeRPad("", 5);
+        assertEquals("     ", sw.getBuffer().toString());
+        
+        // One
+        sw = new StringWriter();
+        fww = new FixedWidthWriter(sw);
+        fww.writeRPad("h", 5);
+        assertEquals("h    ", sw.getBuffer().toString());
+    }
 
-	/**
-	 * Tests writeRPad(String, int, char)
-	 * 
-	 * throws IOException 
-	 */
-	public void testWriteRPadChar() throws IOException
-	{
-		logger_.info("Running testWriteRPadChar...");
-    	
-		// Exact size
-		StringWriter sw = new StringWriter();
-		FixedWidthWriter fww = new FixedWidthWriter(sw);
-		fww.writeRPad("hello", 5, '.');
-		assertEquals("hello", sw.getBuffer().toString());
+    /**
+     * Tests writeRPad(String, int, char)
+     * 
+     * @throws IOException on error
+     */
+    public void testWriteRPadChar() throws IOException
+    {
+        logger_.info("Running testWriteRPadChar...");
+        
+        // Exact size
+        StringWriter sw = new StringWriter();
+        FixedWidthWriter fww = new FixedWidthWriter(sw);
+        fww.writeRPad("hello", 5, '.');
+        assertEquals("hello", sw.getBuffer().toString());
 
-		// Underflow
-		sw = new StringWriter();
-		fww = new FixedWidthWriter(sw);
-		fww.writeRPad("hel", 5, '.');
-		assertEquals("hel..", sw.getBuffer().toString());
+        // Underflow
+        sw = new StringWriter();
+        fww = new FixedWidthWriter(sw);
+        fww.writeRPad("hel", 5, '.');
+        assertEquals("hel..", sw.getBuffer().toString());
 
-		// Overflow
-		sw = new StringWriter();
-		fww = new FixedWidthWriter(sw);
-		fww.writeRPad("helloworld", 5, '.');
-		assertEquals("hello", sw.getBuffer().toString());
-		
-		// Empty
-		sw = new StringWriter();
-		fww = new FixedWidthWriter(sw);
-		fww.writeRPad("", 5, '.');
-		assertEquals(".....", sw.getBuffer().toString());
-		
-		// One
-		sw = new StringWriter();
-		fww = new FixedWidthWriter(sw);
-		fww.writeRPad("h", 5, '.');
-		assertEquals("h....", sw.getBuffer().toString());
-	}
+        // Overflow
+        sw = new StringWriter();
+        fww = new FixedWidthWriter(sw);
+        fww.writeRPad("helloworld", 5, '.');
+        assertEquals("hello", sw.getBuffer().toString());
+        
+        // Empty
+        sw = new StringWriter();
+        fww = new FixedWidthWriter(sw);
+        fww.writeRPad("", 5, '.');
+        assertEquals(".....", sw.getBuffer().toString());
+        
+        // One
+        sw = new StringWriter();
+        fww = new FixedWidthWriter(sw);
+        fww.writeRPad("h", 5, '.');
+        assertEquals("h....", sw.getBuffer().toString());
+    }
     
     /**
      * Tests the write() method

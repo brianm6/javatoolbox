@@ -2,10 +2,10 @@ package toolbox.util.io.filter.test;
 
 import java.io.File;
 
+import org.apache.log4j.Logger;
+
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
-
-import org.apache.log4j.Logger;
 
 import toolbox.util.FileUtil;
 import toolbox.util.io.filter.RegexFilter;
@@ -129,24 +129,24 @@ public class RegexFilterTest extends TestCase
                 matches[i].endsWith("java"));
     }
     
-	/**
-	 * Tests accept() for case sensetivity
-	 * 
-	 * @throws Exception on error
-	 */
-	public void testAcceptMatchesCase() throws Exception
-	{
-		logger_.info("Running testAcceptMatchesCase...");
+    /**
+     * Tests accept() for case sensetivity
+     * 
+     * @throws Exception on error
+     */
+    public void testAcceptMatchesCase() throws Exception
+    {
+        logger_.info("Running testAcceptMatchesCase...");
         
         // Match found        
-		RegexFilter filter = new RegexFilter("^b2b", true);
-		String matches[] = testDir_.list(filter);
-		assertEquals("One match should have been found", 1, matches.length);
-		assertEquals("One match should have been found", "b2b.xml", matches[0]);
-		
-		// Match not found
-		filter = new RegexFilter("^B2B", true);
-		matches = testDir_.list(filter);
-		assertEquals("No matches should have been found", 0, matches.length);
-	} 
+        RegexFilter filter = new RegexFilter("^b2b", true);
+        String matches[] = testDir_.list(filter);
+        assertEquals("One match should have been found", 1, matches.length);
+        assertEquals("One match should have been found", "b2b.xml", matches[0]);
+        
+        // Match not found
+        filter = new RegexFilter("^B2B", true);
+        matches = testDir_.list(filter);
+        assertEquals("No matches should have been found", 0, matches.length);
+    } 
 }

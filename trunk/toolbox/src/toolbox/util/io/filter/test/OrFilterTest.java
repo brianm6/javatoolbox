@@ -87,7 +87,7 @@ public class OrFilterTest extends TestCase
         
         OrFilter filter1 = 
             new OrFilter(new MockFilter(true), new MockFilter(true));
-        	
+            
         OrFilter filter2 = new OrFilter();
 
         assertNotNull(filter1);
@@ -102,8 +102,8 @@ public class OrFilterTest extends TestCase
         logger_.info("Running testAcceptTrueTrue...");
         
         OrFilter filter = 
-        	new OrFilter(new MockFilter(true), new MockFilter(true));
-        	
+            new OrFilter(new MockFilter(true), new MockFilter(true));
+            
         String matches[] = testDir_.list(filter);
         
         assertEquals("One match should have been found", 1, matches.length);
@@ -118,7 +118,7 @@ public class OrFilterTest extends TestCase
         
         OrFilter filter = 
             new OrFilter(new MockFilter(false), new MockFilter(false));
-        	
+            
         String matches[] = testDir_.list(filter);
         
         assertEquals("No matches should have been found", 0, matches.length);
@@ -133,7 +133,7 @@ public class OrFilterTest extends TestCase
         
         OrFilter filter = 
             new OrFilter(new MockFilter(true), new MockFilter(false));
-        	
+            
         String matches[] = testDir_.list(filter);
         
         assertEquals("One match should have been found", 1, matches.length);
@@ -149,10 +149,10 @@ public class OrFilterTest extends TestCase
         OrFilter filter = new OrFilter();
         
         for (int i=0; i<100; i++)
-        	filter.addFilter(new MockFilter(RandomUtil.nextBoolean()));
+            filter.addFilter(new MockFilter(RandomUtil.nextBoolean()));
         
         filter.addFilter(new MockFilter(true));
-        	
+            
         String matches[] = testDir_.list(filter);
         
         assertEquals("One match should have been found", 1, matches.length);

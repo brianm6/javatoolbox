@@ -16,6 +16,8 @@ public class MockFilter implements FilenameFilter
     
     /**
      * Cretes an MockFilter
+     * 
+     * @param  accept  Static accept criteria
      */
     public MockFilter(boolean accept)
     {
@@ -35,6 +37,6 @@ public class MockFilter implements FilenameFilter
      */
     public boolean accept(File dir, String name)
     {        
-   		return accept_;
+           return accept_;
     }
 }

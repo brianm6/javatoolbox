@@ -14,9 +14,10 @@ import toolbox.util.io.PositionReader;
  */
 public class PositionReaderTest extends TestCase
 {
+    /** Logger */
     public static final Logger logger_ =
         Logger.getLogger(PositionReaderTest.class);
-        
+
     /**
      * Entrypoint
      * 
@@ -54,7 +55,7 @@ public class PositionReaderTest extends TestCase
     {
         logger_.info("Running testReadUntil...");
 
-		// Read until found mid string        
+        // Read until found mid string        
         StringReader sr = new StringReader("abcdefghijk");
         PositionReader pr = new PositionReader(sr);
         String read = pr.readUntil('f');
@@ -62,24 +63,24 @@ public class PositionReaderTest extends TestCase
         assertEquals(6, pr.getOffset());
         
         // Read until found at end of string
-		sr = new StringReader("abcdefghijk");
-		pr = new PositionReader(sr);
-		read = pr.readUntil('k');
-		assertEquals("abcdefghijk", read);
+        sr = new StringReader("abcdefghijk");
+        pr = new PositionReader(sr);
+        read = pr.readUntil('k');
+        assertEquals("abcdefghijk", read);
         assertEquals(11, pr.getOffset());
         
         // Read until not found at all
-		sr = new StringReader("abcdefghijk");
-		pr = new PositionReader(sr);
-		read = pr.readUntil('z');
-		assertEquals("abcdefghijk", read);
+        sr = new StringReader("abcdefghijk");
+        pr = new PositionReader(sr);
+        read = pr.readUntil('z');
+        assertEquals("abcdefghijk", read);
         assertEquals(11, pr.getOffset());
         
         // Read until found at first char
-		sr = new StringReader("abcdefghijk");
-		pr = new PositionReader(sr);
-		read = pr.readUntil('a');
-		assertEquals("a", read);
-		assertEquals(1, pr.getOffset());
+        sr = new StringReader("abcdefghijk");
+        pr = new PositionReader(sr);
+        read = pr.readUntil('a');
+        assertEquals("a", read);
+        assertEquals(1, pr.getOffset());
     }
 }

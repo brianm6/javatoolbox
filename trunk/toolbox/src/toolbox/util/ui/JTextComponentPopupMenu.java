@@ -26,9 +26,9 @@ import toolbox.util.ui.font.JFontChooserDialog;
  */
 public class JTextComponentPopupMenu extends JPopupMenu
 {
-	private static final Logger logger_ =
-		Logger.getLogger(JTextComponentPopupMenu.class); 
-		
+    private static final Logger logger_ =
+        Logger.getLogger(JTextComponentPopupMenu.class); 
+        
     /**
      * Text component to associate this popup menu with
      */
@@ -142,43 +142,43 @@ public class JTextComponentPopupMenu extends JPopupMenu
      */
     protected class SetFontAction extends AbstractAction
     {
-    	public SetFontAction()
-    	{
-    		super("Set font..");
-    	}
-    	
+        public SetFontAction()
+        {
+            super("Set font..");
+        }
+        
         public void actionPerformed(ActionEvent e)
         {
-        	final Font originalFont = textComponent_.getFont();
-        	
-        	// Find parent frame
-        	Window w = SwingUtilities.getWindowAncestor(textComponent_);
-        	
-        	Frame frame = 
-        		(w != null && w instanceof Frame) ? (Frame) w : new Frame();
-        	
-        	JFontChooserDialog fontChooser = new JFontChooserDialog(
-        		frame, false, textComponent_.getFont());
-        		
-			fontChooser.addFontDialogListener(new IFontChooserDialogListener()
+            final Font originalFont = textComponent_.getFont();
+            
+            // Find parent frame
+            Window w = SwingUtilities.getWindowAncestor(textComponent_);
+            
+            Frame frame = 
+                (w != null && w instanceof Frame) ? (Frame) w : new Frame();
+            
+            JFontChooserDialog fontChooser = new JFontChooserDialog(
+                frame, false, textComponent_.getFont());
+                
+            fontChooser.addFontDialogListener(new IFontChooserDialogListener()
             {
                 public void okButtonPressed(JFontChooser fontChooser)
                 {
-                	try
-                	{
-                		// Set the newly selected font
-						textComponent_.setFont(fontChooser.getSelectedFont());                		
-                	}
-                	catch (FontChooserException fce)
-                	{
-                		logger_.error(fce);
-                	}
+                    try
+                    {
+                        // Set the newly selected font
+                        textComponent_.setFont(fontChooser.getSelectedFont());
+                    }
+                    catch (FontChooserException fce)
+                    {
+                        logger_.error(fce);
+                    }
                 }
 
                 public void cancelButtonPressed(JFontChooser fontChooser)
                 {
-                	// Just restore the original font
-					textComponent_.setFont(originalFont);                		
+                    // Just restore the original font
+                    textComponent_.setFont(originalFont);
                 }
 
                 public void applyButtonPressed(JFontChooser fontChooser)
@@ -188,41 +188,41 @@ public class JTextComponentPopupMenu extends JPopupMenu
                 }
             });
 
-			SwingUtil.centerWindow(frame, fontChooser);			            
-            fontChooser.setVisible(true);        	
+            SwingUtil.centerWindow(frame, fontChooser);                        
+            fontChooser.setVisible(true);            
         }
     }
     
     
-	/**
-	 * Triggers activation of the Find Dialog box
-	 */    
-	protected class FindAction extends AbstractAction
-	{
-		public FindAction(JTextComponent textComp)
-		{
-			super("Find..");
-			final JTextComponent finalTextComp = textComp;
-			
-			// Bind Ctrl-F to activate the find action
-			textComp.addKeyListener( new KeyAdapter()
-			{
-				public void keyTyped(KeyEvent e)
-				{
-					if ((e.getKeyChar() == 6) &&  // F = 6th letter in alphabet
-						((KeyEvent.getKeyModifiersText(
-							e.getModifiers()).equals("Ctrl"))))
-							
-							actionPerformed(
-								new ActionEvent(finalTextComp, 0, "" ));
-				}
-			});
-		}
+    /**
+     * Triggers activation of the Find Dialog box
+     */    
+    protected class FindAction extends AbstractAction
+    {
+        public FindAction(JTextComponent textComp)
+        {
+            super("Find..");
+            final JTextComponent finalTextComp = textComp;
+            
+            // Bind Ctrl-F to activate the find action
+            textComp.addKeyListener( new KeyAdapter()
+            {
+                public void keyTyped(KeyEvent e)
+                {
+                    if ((e.getKeyChar() == 6) &&  // F = 6th letter in alphabet
+                        ((KeyEvent.getKeyModifiersText(
+                            e.getModifiers()).equals("Ctrl"))))
+                            
+                            actionPerformed(
+                                new ActionEvent(finalTextComp, 0, "" ));
+                }
+            });
+        }
         
-		public void actionPerformed(ActionEvent e)
-		{
-			JFindDialog findDialog = new JFindDialog(textComponent_);
-			findDialog.setVisible(true);
-		}
-	}
+        public void actionPerformed(ActionEvent e)
+        {
+            JFindDialog findDialog = new JFindDialog(textComponent_);
+            findDialog.setVisible(true);
+        }
+    }
 }

@@ -2,10 +2,10 @@ package toolbox.util.file.test;
 
 import java.io.File;
 
+import org.apache.log4j.Logger;
+
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
-
-import org.apache.log4j.Logger;
 
 import toolbox.util.FileUtil;
 import toolbox.util.ThreadUtil;
@@ -60,7 +60,7 @@ public class FileStufferTest extends TestCase
         File outfile = new File(tmpDir, "outfile");
         FileStuffer fs = new FileStuffer(outfile, 500);
 
-		assertEquals(500, fs.getDelay());
+        assertEquals(500, fs.getDelay());
 
         fs.start();
         
@@ -70,7 +70,7 @@ public class FileStufferTest extends TestCase
         
         String contents = FileUtil.getFileContents(outfile.getAbsolutePath());
 
-        logger_.info("File contents: \n" + contents);                                           
+        logger_.info("File contents: \n" + contents);
         
         outfile.delete();
     }
@@ -80,9 +80,9 @@ public class FileStufferTest extends TestCase
      */
     public void testPrintUsage()
     {
-    	logger_.info("Running testPrintUsage...");
-    	
-    	// Passing in no args should trigger usage info to be displayed
-    	FileStuffer.main(new String[0]);
+        logger_.info("Running testPrintUsage...");
+        
+        // Passing in no args should trigger usage info to be displayed
+        FileStuffer.main(new String[0]);
     }
 }

@@ -1,10 +1,11 @@
 package toolbox.util.io.filter.test;
 
 import java.io.File;
-import junit.framework.TestCase;
-import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
+
+import junit.framework.TestCase;
+import junit.textui.TestRunner;
 
 import toolbox.util.FileUtil;
 import toolbox.util.RandomUtil;
@@ -87,7 +88,7 @@ public class AndFilterTest extends TestCase
         
         AndFilter filter1 = 
             new AndFilter(new MockFilter(true), new MockFilter(true));
-        	
+            
         AndFilter filter2 = new AndFilter();
 
         assertNotNull(filter1);
@@ -102,8 +103,8 @@ public class AndFilterTest extends TestCase
         logger_.info("Running testAcceptTrueTrue...");
         
         AndFilter filter = 
-        	new AndFilter(new MockFilter(true), new MockFilter(true));
-        	
+            new AndFilter(new MockFilter(true), new MockFilter(true));
+            
         String matches[] = testDir_.list(filter);
         
         assertEquals("One match should have been found", 1, matches.length);
@@ -118,7 +119,7 @@ public class AndFilterTest extends TestCase
         
         AndFilter filter = 
             new AndFilter(new MockFilter(false), new MockFilter(false));
-        	
+            
         String matches[] = testDir_.list(filter);
         
         assertEquals("No matches should have been found", 0, matches.length);
@@ -133,7 +134,7 @@ public class AndFilterTest extends TestCase
         
         AndFilter filter = 
             new AndFilter(new MockFilter(true), new MockFilter(false));
-        	
+            
         String matches[] = testDir_.list(filter);
         
         assertEquals("No matches should have been found", 0, matches.length);
@@ -149,10 +150,10 @@ public class AndFilterTest extends TestCase
         AndFilter filter = new AndFilter();
         
         for (int i=0; i<100; i++)
-        	filter.addFilter(new MockFilter(RandomUtil.nextBoolean()));
+            filter.addFilter(new MockFilter(RandomUtil.nextBoolean()));
         
         filter.addFilter(new MockFilter(false));
-        	
+            
         String matches[] = testDir_.list(filter);
         
         assertEquals("No matches should have been found", 0, matches.length);

@@ -2,10 +2,10 @@ package toolbox.util.io.filter.test;
 
 import java.io.File;
 
+import org.apache.log4j.Logger;
+
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
-
-import org.apache.log4j.Logger;
 
 import toolbox.util.FileUtil;
 import toolbox.util.io.filter.NotFilter;
@@ -97,7 +97,7 @@ public class NotFilterTest extends TestCase
         logger_.info("Running testAcceptNotTrue...");
         
         NotFilter filter = new NotFilter(new MockFilter(true));
-        	
+            
         String matches[] = testDir_.list(filter);
         
         assertEquals("No matches should have been found", 0, matches.length);
@@ -112,7 +112,7 @@ public class NotFilterTest extends TestCase
         
         NotFilter filter = 
             new NotFilter(new MockFilter(false));
-        	
+            
         String matches[] = testDir_.list(filter);
         
         assertEquals("One match should have been found", 1, matches.length);
