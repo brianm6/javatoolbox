@@ -24,6 +24,7 @@ import org.apache.log4j.Logger;
 import org.netbeans.lib.cvsclient.commandLine.CVSCommand;
 
 import toolbox.util.ArrayUtil;
+import toolbox.util.BrowserLauncher;
 import toolbox.util.FileUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.XOMUtil;
@@ -39,7 +40,6 @@ import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartRadioButton;
 import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.JSmartTextField;
-import toolbox.util.ui.NativeBrowser;
 import toolbox.util.ui.SortedComboBoxModel;
 import toolbox.util.ui.layout.GridLayoutPlus;
 import toolbox.util.ui.layout.ParagraphLayout;
@@ -1001,7 +1001,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
          */
         public void runAction(ActionEvent e) throws Exception
         {
-            NativeBrowser.displayURL(launchURLField_.getText());
+            BrowserLauncher.openURL(launchURLField_.getText());
         }
     }
 
