@@ -3,6 +3,7 @@ package toolbox.util.invoker;
 import org.apache.commons.beanutils.MethodUtils;
 import org.apache.log4j.Logger;
 
+import toolbox.util.ThreadUtil;
 import toolbox.util.concurrent.BlockingQueue;
 
 /**
@@ -20,6 +21,11 @@ public class QueuedInvoker implements Invoker
      * Queue of Runnables waiting to be invoked 
      */
     private BlockingQueue queue_;
+    
+    /**
+     * Thread that pulls Runnables off of the queue_
+     */
+    private Thread puller_;
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -43,11 +49,13 @@ public class QueuedInvoker implements Invoker
         queue_ = new BlockingQueue();
 
         // Creates the consumer thread and starts it    
-        Thread t = new Thread(new Runnable()
+        puller_ = new Thread(new Runnable()
         {
             public void run()
             {
-                while (true)
+                boolean shutdown = false;
+                
+                while (!shutdown)
                 {
                     try
                     {
@@ -57,14 +65,16 @@ public class QueuedInvoker implements Invoker
                     }
                     catch (InterruptedException ie)
                     {
-                        logger_.warn("run", ie);
+                        shutdown = true;
+                        logger_.debug("Thread " + puller_.getName() + 
+                            " was interrupted(). Shutting down...");
                     }
                 }
             }
-        }, "QueuedInvoker");
+        }, Thread.currentThread().getName() + "->QueuedInvoker");
 
         // Start the consumer
-        t.start();
+        puller_.start();
     }
 
     //--------------------------------------------------------------------------
@@ -77,7 +87,9 @@ public class QueuedInvoker implements Invoker
     }
 
     public void invoke(        
-        final Object target, final String method, final Object[] params)
+        final Object target, 
+        final String method, 
+        final Object[] params)
         throws Exception
     {
         invoke(new Runnable()
@@ -94,5 +106,10 @@ public class QueuedInvoker implements Invoker
                 }
             }
         });
+    }
+    
+    public void shutdown() throws Exception
+    {
+        ThreadUtil.stop(puller_);
     }
 }

@@ -23,4 +23,11 @@ public interface Invoker
      */
     public void invoke(Object target, String method, Object[] params)
         throws Exception;
+    
+    /**
+     * Shuts down the invoker
+     * 
+     * @throws Exception on error
+     */    
+    public void shutdown() throws Exception;
 }

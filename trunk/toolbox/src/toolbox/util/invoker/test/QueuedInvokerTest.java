@@ -45,40 +45,48 @@ public class QueuedInvokerTest extends TestCase
     {
         logger_.info("Running testInvokeRunnable...");
 
+        
         int queueSize = 5;
         int delay = 2000;
         Invoker invoker = new QueuedInvoker();
 
         TimedRunner invokables[] = new TimedRunner[queueSize];
 
-        for (int i = 0; i < queueSize; i++)
+        try
         {
-            invokables[i] = new TimedRunner(delay);
-            ElapsedTime time = new ElapsedTime();
-            invoker.invoke(invokables[i]);
-            time.setEndTime();
-        }
-
-        Thread.sleep((delay * queueSize) + 1000);
-
-        for (int i = 0; i < invokables.length; i++)
-        {
-            assertTrue("Method was not invoked", invokables[i].wasInvoked());
-
-            // Compare current begin timestamp to previous end timestamp to 
-            // verify the invokables were executed in sequence.
-            if (i >= 1)
+            for (int i = 0; i < queueSize; i++)
             {
-                long begin = invokables[i].getBegin().getTime();
-                long end = invokables[i - 1].getEnd().getTime();
-
-                assertTrue(
-                    "Time sequence mismatch: current.begin: "
-                        + begin
-                        + "  previous.end: "
-                        + end,
-                    end <= begin);
+                invokables[i] = new TimedRunner(delay);
+                ElapsedTime time = new ElapsedTime();
+                invoker.invoke(invokables[i]);
+                time.setEndTime();
             }
+    
+            Thread.sleep((delay * queueSize) + 1000);
+    
+            for (int i = 0; i < invokables.length; i++)
+            {
+                assertTrue("Method was not invoked", invokables[i].wasInvoked());
+    
+                // Compare current begin timestamp to previous end timestamp to 
+                // verify the invokables were executed in sequence.
+                if (i >= 1)
+                {
+                    long begin = invokables[i].getBegin().getTime();
+                    long end = invokables[i - 1].getEnd().getTime();
+    
+                    assertTrue(
+                        "Time sequence mismatch: current.begin: "
+                            + begin
+                            + "  previous.end: "
+                            + end,
+                        end <= begin);
+                }
+            }
+        }
+        finally
+        {
+            invoker.shutdown();
         }
     }
 
@@ -98,34 +106,41 @@ public class QueuedInvokerTest extends TestCase
 
         TimedRunner invokables[] = new TimedRunner[queueSize];
 
-        for (int i = 0; i < queueSize; i++)
+        try
         {
-            invokables[i] = new TimedRunner(delay);
-            ElapsedTime time = new ElapsedTime();
-            invoker.invoke(invokables[i], "run", null);
-            time.setEndTime();
-        }
-
-        Thread.sleep((delay * queueSize) + 1000);
-
-        for (int i = 0; i < invokables.length; i++)
-        {
-            assertTrue("Method was not invoked", invokables[i].wasInvoked());
-
-            // Compare current begin timestamp to previous end timestamp to verify
-            // invokables were executed in sequence.
-            if (i >= 1)
+            for (int i = 0; i < queueSize; i++)
             {
-                long begin = invokables[i].getBegin().getTime();
-                long end = invokables[i - 1].getEnd().getTime();
-
-                assertTrue(
-                    "Time sequence mismatch: current.begin: "
-                        + begin
-                        + "  previous.end: "
-                        + end,
-                    end <= begin);
+                invokables[i] = new TimedRunner(delay);
+                ElapsedTime time = new ElapsedTime();
+                invoker.invoke(invokables[i], "run", null);
+                time.setEndTime();
             }
+    
+            Thread.sleep((delay * queueSize) + 1000);
+    
+            for (int i = 0; i < invokables.length; i++)
+            {
+                assertTrue("Method was not invoked", invokables[i].wasInvoked());
+    
+                // Compare current begin timestamp to previous end timestamp to verify
+                // invokables were executed in sequence.
+                if (i >= 1)
+                {
+                    long begin = invokables[i].getBegin().getTime();
+                    long end = invokables[i - 1].getEnd().getTime();
+    
+                    assertTrue(
+                        "Time sequence mismatch: current.begin: "
+                            + begin
+                            + "  previous.end: "
+                            + end,
+                        end <= begin);
+                }
+            }
+        }
+        finally
+        {
+            invoker.shutdown();
         }
     }
 
@@ -144,36 +159,43 @@ public class QueuedInvokerTest extends TestCase
         Invoker invoker = new QueuedInvoker();
         TimedRunner[] invokables = new TimedRunner[numIterations];
 
-        // Stress    
-        for (int i = 0; i < numIterations; i++)
+        try
         {
-            invokables[i] = new TimedRunner(delay);
-            invoker.invoke(invokables[i]);
-        }
-
-        // Wait for everything to finish + overhead.. 
-        // would be nice to have invoker.join()
-        Thread.sleep((numIterations * delay) + 1000);
-
-        // Verify
-        for (int i = 0; i < invokables.length; i++)
-        {
-            assertTrue("Method was not invoked", invokables[i].wasInvoked());
-
-            // Compare current begin timestamp to previous end timestamp to verify
-            // invokables where execute in sequence.
-            if (i >= 1)
+            // Stress    
+            for (int i = 0; i < numIterations; i++)
             {
-                long begin = invokables[i].getBegin().getTime();
-                long end = invokables[i - 1].getEnd().getTime();
-
-                assertTrue(
-                    "Time sequence mismatch: current.begin: "
-                        + begin
-                        + "  previous.end: "
-                        + end,
-                    end <= begin);
+                invokables[i] = new TimedRunner(delay);
+                invoker.invoke(invokables[i]);
             }
+    
+            // Wait for everything to finish + overhead.. 
+            // would be nice to have invoker.join()
+            Thread.sleep((numIterations * delay) + 1000);
+    
+            // Verify
+            for (int i = 0; i < invokables.length; i++)
+            {
+                assertTrue("Method was not invoked", invokables[i].wasInvoked());
+    
+                // Compare current begin timestamp to previous end timestamp to 
+                // verify invokables where execute in sequence.
+                if (i >= 1)
+                {
+                    long begin = invokables[i].getBegin().getTime();
+                    long end = invokables[i - 1].getEnd().getTime();
+    
+                    assertTrue(
+                        "Time sequence mismatch: current.begin: "
+                            + begin
+                            + "  previous.end: "
+                            + end,
+                        end <= begin);
+                }
+            }
+        }
+        finally
+        {
+            invoker.shutdown();
         }
     }
 }

@@ -22,4 +22,8 @@ public class BlockingInvoker implements Invoker
     {
         MethodUtils.invokeMethod(target, method, params);
     }
+    
+    public void shutdown() throws Exception
+    {
+    }
 }

@@ -40,4 +40,8 @@ public class ThreadedInvoker implements Invoker
             }
         });
     }
+    
+    public void shutdown() throws Exception
+    {
+    }
 }
