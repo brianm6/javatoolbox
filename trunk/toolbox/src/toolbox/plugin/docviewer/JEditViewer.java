@@ -130,13 +130,11 @@ public class JEditViewer implements DocumentViewer
             {    
                 textArea_ = new JEditTextArea();
             }
-            
+
+            textArea_.getPainter().setFont(FontUtil.getPreferredMonoFont());
             String text = FileUtil.getFileContents(file.getCanonicalPath());
             textArea_.setText(text);
             textArea_.scrollTo(0,0);
-            
-            textArea_.getPainter().setFont(
-                FontUtil.grow(FontUtil.getPreferredMonoFont(), -2));
         }
         catch (FileNotFoundException e)
         {
