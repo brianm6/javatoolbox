@@ -64,12 +64,12 @@ public class JEditTextArea extends org.jedit.syntax.JEditTextArea
     private static final String NODE_FONT          = "Font";
     
     /**
-     * Number of lines to scroll per mouse wheel scroll
+     * Number of lines to scroll per mouse wheel scroll.
      */    
     private int mouseWheelUnit_ = 3;
     
     /**
-     * Antialias flag
+     * Antialias flag.
      */
     private boolean antiAlias_ = SwingUtil.getDefaultAntiAlias();
 
@@ -86,8 +86,9 @@ public class JEditTextArea extends org.jedit.syntax.JEditTextArea
         this(null, TextAreaDefaults.getDefaults());
     }
     
+    
     /**
-     * Creates a JEditTextArea with the given defaults
+     * Creates a JEditTextArea with the given defaults.
      * 
      * @param marker Token marker to use for syntax hiliting
      * @param defaults Text area defaults
@@ -129,7 +130,7 @@ public class JEditTextArea extends org.jedit.syntax.JEditTextArea
     //--------------------------------------------------------------------------
     
     /**
-     * Returns number of lines to scroll on mouse wheel activity
+     * Returns number of lines to scroll on mouse wheel activity.
      * 
      * @return int
      */
@@ -138,8 +139,9 @@ public class JEditTextArea extends org.jedit.syntax.JEditTextArea
         return mouseWheelUnit_;
     }
     
+    
     /**
-     * Sets the number of lines to scroll on mouse wheel activity
+     * Sets the number of lines to scroll on mouse wheel activity.
      * 
      * @param mouseWheelUnit  Number of lines
      */
@@ -148,6 +150,7 @@ public class JEditTextArea extends org.jedit.syntax.JEditTextArea
         mouseWheelUnit_ = mouseWheelUnit;
     }
 
+    
     /**
      * Sets the width of the tab character.
      * 
@@ -160,7 +163,7 @@ public class JEditTextArea extends org.jedit.syntax.JEditTextArea
     }
 
     /**
-     * Returns the width of the tab character
+     * Returns the width of the tab character.
      * 
      * @return int
      */
@@ -200,6 +203,7 @@ public class JEditTextArea extends org.jedit.syntax.JEditTextArea
         antiAlias_ = b;
     }
 
+    
     /**
      * @see toolbox.util.ui.AntiAliased#isAntiAliased()
      */
@@ -231,6 +235,7 @@ public class JEditTextArea extends org.jedit.syntax.JEditTextArea
             root, NODE_FONT, FontUtil.toElement(
                 SwingUtil.getPreferredMonoFont()))));
     }
+    
     
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)

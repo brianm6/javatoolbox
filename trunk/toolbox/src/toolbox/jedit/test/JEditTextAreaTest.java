@@ -30,7 +30,7 @@ import toolbox.jedit.JavaDefaults;
 import toolbox.util.SwingUtil;
 
 /**
- * Unit test for JEditTextArea
+ * Unit test for JEditTextArea.
  */
 public class JEditTextAreaTest extends TestCase
 {
@@ -42,7 +42,7 @@ public class JEditTextAreaTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
      * @param args None recognized
      * @throws Exception on error
@@ -72,7 +72,7 @@ public class JEditTextAreaTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Frame to encompass the JEditTextArea
+     * Frame to encompass the JEditTextArea.
      */
     class JEditTester extends JDialog implements ActionListener
     {
@@ -91,6 +91,7 @@ public class JEditTextAreaTest extends TestCase
             SwingUtil.centerWindow(this);
         }
         
+        
         protected void buildView()
         {
            Container c = getContentPane();
@@ -106,6 +107,7 @@ public class JEditTextAreaTest extends TestCase
            c.add(BorderLayout.SOUTH, buildControlView());
         }
         
+        
         protected JPanel buildControlView() 
         {
             clut_ = new HashMap();
@@ -116,14 +118,20 @@ public class JEditTextAreaTest extends TestCase
             JPanel p = new JPanel(new FlowLayout());
             
             p.add(new JLabel("Foreground"));
-            p.add(fgCombo_ = new JComboBox(new String [] {"red", "green", "blue"} ));
+            
+            p.add(fgCombo_ = new JComboBox(
+                new String [] {"red", "green", "blue"} ));
+            
             p.add(new JLabel("Background"));
-            p.add(bgCombo_ = new JComboBox(new String [] {"red", "green", "blue"} ));
+            
+            p.add(bgCombo_ = new JComboBox(
+                new String [] {"red", "green", "blue"} ));
             
             fgCombo_.addActionListener(this);
             bgCombo_.addActionListener(this);
             return p;
         }
+        
         
         public void actionPerformed(ActionEvent e)
         {

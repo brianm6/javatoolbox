@@ -12,12 +12,12 @@ import toolbox.util.ui.JFindDialog;
 public class JEditSearchInitiator implements JFindDialog.SearchInitiator
 {
     /**
-     * String to search for
+     * String to search for.
      */
     private String searchString_;
     
     /**
-     * Search text container
+     * Search text container.
      */
     private JEditTextArea jeta_;
     
@@ -26,10 +26,10 @@ public class JEditSearchInitiator implements JFindDialog.SearchInitiator
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a JEditSearchInitiator
+     * Creates a JEditSearchInitiator.
      * 
-     * @param  searchString  String to search for
-     * @param  jeta          JEdit text area to search
+     * @param searchString String to search for
+     * @param jeta JEdit text area to search
      */
     public JEditSearchInitiator(String searchString, JEditTextArea jeta)
     {
@@ -49,6 +49,7 @@ public class JEditSearchInitiator implements JFindDialog.SearchInitiator
         return searchString_;
     }
 
+    
     /**
      * @see toolbox.util.ui.JFindDialog.SearchInitiator#getText()
      */
@@ -57,6 +58,7 @@ public class JEditSearchInitiator implements JFindDialog.SearchInitiator
         return jeta_.getText();
     }
 
+    
     /**
      * @see toolbox.util.ui.JFindDialog.SearchInitiator#selectText(int, int)
      */
@@ -64,6 +66,7 @@ public class JEditSearchInitiator implements JFindDialog.SearchInitiator
     {
         jeta_.select(start, end);
     }
+    
     
     /**
      * @see toolbox.util.ui.JFindDialog.SearchInitiator#getFrame()

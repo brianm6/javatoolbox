@@ -11,7 +11,7 @@ import nu.xom.ParseException;
 import toolbox.util.XOMUtil;
 
 /**
- * Database connection profile for JDBC
+ * Database connection profile for single JDBC connection.
  */
 public class DBProfile
 {
@@ -20,12 +20,12 @@ public class DBProfile
     //--------------------------------------------------------------------------
     
     /**
-     * XML element name for a DBProfile
+     * XML element name for a DBProfile.
      */
     private static final String ELEMENT_PROFILE = "DBProfile";
     
     /**
-     * XML attribute name for the profile name
+     * XML attribute name for the profile name.
      */
     private static final String ATTR_PROFILE_NAME = "profilename";
 
@@ -36,22 +36,22 @@ public class DBProfile
     private static final String ATTR_JARFILE = "jarfile";
 
     /**
-     * XML attribute name for the JDBC driver 
+     * XML attribute name for the JDBC driver. 
      */
     private static final String ATTR_DRIVER = "driver";
     
     /**
-     * XML attribute name for the JDBC url 
+     * XML attribute name for the JDBC url. 
      */
     private static final String ATTR_URL = "url";
     
     /**
-     * XML attribute name for the JDBC user 
+     * XML attribute name for the JDBC user.
      */
     private static final String ATTR_USERNAME = "username";
     
     /**
-     * XML attribute name for the JDBC authentication password (clear text)
+     * XML attribute name for the JDBC authentication password (clear text).
      */
     private static final String ATTR_PASSWORD = "password";
     
@@ -60,12 +60,12 @@ public class DBProfile
     //--------------------------------------------------------------------------
     
     /**
-     * Profile name is a user friendly term used to uniquely identify a profile 
+     * Profile name is a user friendly term used to uniquely identify a profile. 
      */
     private String profileName_;
     
     /**
-     * JDBC driver jar file name
+     * JDBC driver jar file name.
      */
     private String jarFile_;
     
@@ -75,17 +75,17 @@ public class DBProfile
     private String driver_;
     
     /**
-     * JDBC access url
+     * JDBC access url.
      */
     private String url_;
     
     /**
-     * Username for database access
+     * Username for database access.
      */
     private String username_;
     
     /**
-     * Password to authenticate the user with
+     * Password to authenticate the user with.
      */
     private String password_;
     
@@ -113,6 +113,7 @@ public class DBProfile
         setPassword(profile.getAttributeValue(ATTR_PASSWORD));
     }
 
+    
     /**
      * Creates a DBProfile.
      *
@@ -153,6 +154,7 @@ public class DBProfile
         return toDOM().toXML();
     }
 
+    
     /**
      * Returns a DOM representation of the data contained in this profile.
      * 
@@ -184,6 +186,7 @@ public class DBProfile
         return profileName_;
     }
 
+    
     /**
      * Returns the JDBC driver.
      * 
@@ -194,6 +197,7 @@ public class DBProfile
         return driver_;
     }
 
+    
     /**
      * Returns the path and name of the jar file containing the JDBC driver
      * 
@@ -203,6 +207,7 @@ public class DBProfile
     {
         return jarFile_;
     }
+    
     
     /**
      * Returns the JDBC password.
@@ -214,6 +219,7 @@ public class DBProfile
         return password_;
     }
 
+    
     /**
      * Returns the JDBC URL.
      * 
@@ -224,6 +230,7 @@ public class DBProfile
         return url_;
     }
 
+    
     /**
      * Returns the JDBC username.
      * 
@@ -234,6 +241,7 @@ public class DBProfile
         return username_;
     }
 
+    
     /**
      * Sets the name of the database profile.
      * 
@@ -244,6 +252,7 @@ public class DBProfile
         profileName_ = string;
     }
 
+    
     /**
      * Sets the JDBC driver. Must be a FQCN.
      * 
@@ -254,6 +263,7 @@ public class DBProfile
         driver_ = string;
     }
 
+    
     /**
      * Sets the JDBC password.
      * 
@@ -264,6 +274,7 @@ public class DBProfile
         password_ = string;
     }
 
+    
     /**
      * Sets the JDBC URL.
      * 
@@ -274,6 +285,7 @@ public class DBProfile
         url_ = string;
     }
 
+    
     /**
      * Sets the JDBC username.
      * 
@@ -284,6 +296,7 @@ public class DBProfile
         username_ = string;
     }
 
+    
     /**
      * Sets the name of the jar file containing the JDBC driver
      * 

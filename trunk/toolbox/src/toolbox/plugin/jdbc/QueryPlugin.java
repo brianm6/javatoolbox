@@ -79,7 +79,7 @@ public class QueryPlugin extends JPanel implements IPlugin
         Logger.getLogger(QueryPlugin.class);   
 
     /**
-     * XML: Root preferences element for the query plugin
+     * XML: Root preferences element for the query plugin.
      */
     public static final String NODE_QUERY_PLUGIN = "QueryPlugin";
 
@@ -90,7 +90,7 @@ public class QueryPlugin extends JPanel implements IPlugin
     public static final String ATTR_HISTORY_MAX = "maxHistory";
 
     /**
-     * XML: Child of QueryPlugin that contains a single "remembered" SQL stmt
+     * XML: Child of QueryPlugin that contains a single "remembered" SQL stmt.
      */
     public static final String NODE_HISTORY_ITEM = "HistoryItem";
         
@@ -104,7 +104,7 @@ public class QueryPlugin extends JPanel implements IPlugin
     //--------------------------------------------------------------------------
     
     /** 
-     * Reference to the workspace statusbar 
+     * Reference to the workspace statusbar. 
      */
     private IStatusBar statusBar_;
     
@@ -114,42 +114,42 @@ public class QueryPlugin extends JPanel implements IPlugin
     private JSmartSplitPane areaSplitPane_;
         
     /** 
-     * Text area for entering sql statements 
+     * Text area for entering sql statements. 
      */    
     private JEditTextArea sqlArea_;
     
     /** 
-     * Text are for sql execution results 
+     * Text are for sql execution results. 
      */
     private JSmartTextArea resultsArea_;
     
     /** 
-     * Invokes execution of sql command 
+     * Invokes execution of sql command. 
      */
     private JButton queryButton_;
     
     /** 
-     * Clears the contents of the sql results area 
+     * Clears the contents of the sql results area. 
      */
     private JButton clearButton_;
     
     /** 
-     * Flippane which houses the jdbc configuration panel 
+     * Flippane which houses the jdbc configuration panel. 
      */
     private JFlipPane leftFlipPane_;
     
     /** 
-     * Popup menu that contains a history of recently executed sql 
+     * Popup menu that contains a history of recently executed sql. 
      */
     private JConveyorPopupMenu sqlPopup_;    
     
     /** 
-     * Maps sqlpopup_ menu items to the actual sql text 
+     * Maps sqlpopup_ menu items to the actual sql text. 
      */
     private Map sqlHistory_;
 
     /** 
-     * Database configuration panel 
+     * Database configuration panel. 
      */
     private DBConfig dbConfigPane_;
     
@@ -158,7 +158,7 @@ public class QueryPlugin extends JPanel implements IPlugin
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a QueryPlugin
+     * Creates a QueryPlugin.
      */
     public QueryPlugin()
     {
@@ -169,7 +169,7 @@ public class QueryPlugin extends JPanel implements IPlugin
     //--------------------------------------------------------------------------
         
     /**
-     * Returns the status bar
+     * Returns the status bar.
      * 
      * @return IStatusBar
      */
@@ -183,7 +183,7 @@ public class QueryPlugin extends JPanel implements IPlugin
     //--------------------------------------------------------------------------
     
     /** 
-     * Builds the GUI
+     * Builds the GUI.
      */
     protected void buildView()
     {
@@ -239,6 +239,7 @@ public class QueryPlugin extends JPanel implements IPlugin
         add(buttonPanel, BorderLayout.SOUTH);
     }
     
+    
     /**
      * Runs a query against the database and returns the results as a nicely 
      * formatted string.
@@ -283,8 +284,9 @@ public class QueryPlugin extends JPanel implements IPlugin
         return metaResults;
     }
 
+    
     /**
-     * Adds a sql statement to the popup menu history
+     * Adds a sql statement to the popup menu history.
      * 
      * @param sql SQL statement to add to the history
      */
@@ -313,6 +315,7 @@ public class QueryPlugin extends JPanel implements IPlugin
         buildView();
     }
 
+    
     /**
      * @see toolbox.workspace.IPlugin#getPluginName()
      */
@@ -321,6 +324,7 @@ public class QueryPlugin extends JPanel implements IPlugin
         return "JDBC Query";
     }
 
+    
     /**
      * @see toolbox.workspace.IPlugin#getComponent()
      */
@@ -329,6 +333,7 @@ public class QueryPlugin extends JPanel implements IPlugin
         return this;
     }
 
+    
     /**
      * @see toolbox.workspace.IPlugin#getDescription()
      */
@@ -336,6 +341,7 @@ public class QueryPlugin extends JPanel implements IPlugin
     {
         return "Simple SQL driven interface to a JDBC accessible database.";
     }
+    
     
 	/**
      * @see toolbox.workspace.IPlugin#shutdown()
@@ -377,6 +383,7 @@ public class QueryPlugin extends JPanel implements IPlugin
                 root.getFirstChildElement(NODE_CONTENTS),""));
     }
 
+    
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
@@ -405,11 +412,11 @@ public class QueryPlugin extends JPanel implements IPlugin
     }
     
     //--------------------------------------------------------------------------
-    // Actions
+    // ExecuteAction
     //--------------------------------------------------------------------------
     
     /**
-     * Runs the query and appends the results to the output text area
+     * Runs the query and appends the results to the output text area.
      */
     class ExecuteAction extends WorkspaceAction
     {
@@ -443,8 +450,12 @@ public class QueryPlugin extends JPanel implements IPlugin
         }
     }
 
+    //--------------------------------------------------------------------------
+    // ExecuteCurrentAction
+    //--------------------------------------------------------------------------
+    
     /**
-     * Runs the query and appends the results to the output text area
+     * Runs the query and appends the results to the output text area.
      */
     class ExecuteCurrentAction extends WorkspaceAction
     {
@@ -477,8 +488,12 @@ public class QueryPlugin extends JPanel implements IPlugin
         }
     }
 
+    //--------------------------------------------------------------------------
+    // ExecutePriorAction
+    //--------------------------------------------------------------------------
+    
     /**
-     * Runs the query selected from the SQL history popup menu
+     * Runs the query selected from the SQL history popup menu.
      */
     class ExecutePriorAction extends AbstractAction
     {
@@ -497,9 +512,13 @@ public class QueryPlugin extends JPanel implements IPlugin
             new ExecuteAction().actionPerformed(e);
         }
     }
+
+    //--------------------------------------------------------------------------
+    // CtrlUpAction
+    //--------------------------------------------------------------------------
     
     /**
-     * Ctrl-Up Key action
+     * Ctrl-Up Key action.
      */
     class CtrlUpAction extends AbstractAction
     {
@@ -513,6 +532,10 @@ public class QueryPlugin extends JPanel implements IPlugin
             statusBar_.setStatus("Ctrl-up registered!");
         }
     }
+    
+    //--------------------------------------------------------------------------
+    // ListTablesAction
+    //--------------------------------------------------------------------------
     
     /**
      * Queries the DB metadata and dumps a list of the tables.
@@ -535,6 +558,10 @@ public class QueryPlugin extends JPanel implements IPlugin
         }
     }
 
+    //--------------------------------------------------------------------------
+    // ListColumnsAction
+    //--------------------------------------------------------------------------
+    
     /**
      * Queries the DB metadata and dumps a list of all columns. If a table 
      * name is selected in the results area, then only the columns for the

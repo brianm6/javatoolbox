@@ -36,7 +36,7 @@ import toolbox.workspace.IStatusBar;
 import toolbox.workspace.WorkspaceAction;
 
 /**
- * JDBC driver and connection settings configuration panel
+ * JDBC driver and connection settings configuration panel.
  */    
 public class DBConfig extends JPanel implements IPreferenced
 {
@@ -48,17 +48,17 @@ public class DBConfig extends JPanel implements IPreferenced
     //--------------------------------------------------------------------------
     
     /**
-     * DBConfig has zero or more DBProfile children
+     * DBConfig has zero or more DBProfile children.
      */
     private static final String NODE_DBCONFIG = "DBConfig";
 
     /**
-     * Index of last selected database profile
+     * Index of last selected database profile.
      */
     private static final String ATTR_SELECTED = "selected";
     
     /**
-     * DBProfile is a child of DBConfig
+     * DBProfile is a child of DBConfig.
      */
     private static final String NODE_DBPROFILE = "DBProfile";
 
@@ -67,42 +67,42 @@ public class DBConfig extends JPanel implements IPreferenced
     //--------------------------------------------------------------------------
         
     /**
-     * Parent of this panel
+     * Parent of this panel.
      */
     private final QueryPlugin plugin_;
     
     /**
-     * Combobox that allows selection of the database profile to use
+     * Combobox that allows selection of the database profile to use.
      */
     private JComboBox profileCombo_;
     
     /**
-     * Jar containing the jdbc driver if not already on the classpath
+     * Jar containing the jdbc driver if not already on the classpath.
      */
     private JTextField jarField_;
     
     /**
-     * JDBC driver (dot notated class name)
+     * JDBC driver (dot notated class name).
      */
     private JTextField driverField_;
     
     /**
-     * JDBC access URL (driver implementation dependent)
+     * JDBC access URL (driver implementation dependent).
      */
     private JTextField urlField_;
     
     /**
-     * JDBC username
+     * JDBC username.
      */
     private JTextField userField_;
     
     /**
-     * JDBC password. This is in clear text
+     * JDBC password. This is in clear text.
      */
     private JTextField passwordField_;
     
     /**
-     * Reference to the workspace statusbar
+     * Reference to the workspace statusbar.
      */
     private IStatusBar statusBar_;
     
@@ -111,7 +111,7 @@ public class DBConfig extends JPanel implements IPreferenced
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a DBConfig for the given plugin
+     * Creates a DBConfig for the given plugin.
      * 
      * @param plugin Query plugin
      */
@@ -127,7 +127,7 @@ public class DBConfig extends JPanel implements IPreferenced
     //--------------------------------------------------------------------------
     
     /**
-     * Adds a profile to the existing list displayed in the combobox
+     * Adds a profile to the existing list displayed in the combobox.
      * 
      * @param profile Database profile
      */
@@ -147,7 +147,7 @@ public class DBConfig extends JPanel implements IPreferenced
     //--------------------------------------------------------------------------
     
     /**
-     * Builds the panel which displays all the JDBC configuration information 
+     * Builds the panel which displays all the JDBC configuration information. 
      */
     protected void buildView()
     {
@@ -270,6 +270,7 @@ public class DBConfig extends JPanel implements IPreferenced
 
     }
 
+    
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
@@ -290,11 +291,11 @@ public class DBConfig extends JPanel implements IPreferenced
     }
     
     //--------------------------------------------------------------------------
-    // Actions
+    // ConnectAction
     //--------------------------------------------------------------------------
 
     /**
-     * Connects to the database
+     * Connects to the database.
      */
     class ConnectAction extends WorkspaceAction
     {
@@ -329,6 +330,10 @@ public class DBConfig extends JPanel implements IPreferenced
             statusBar_.setInfo("Connected to the database!");
         }
     }
+
+    //--------------------------------------------------------------------------
+    // ProfileChangedAction.
+    //--------------------------------------------------------------------------
     
     /** 
      * Updates the database profile fields when the profile selection changes.
@@ -352,6 +357,10 @@ public class DBConfig extends JPanel implements IPreferenced
         }
     }
 
+    //--------------------------------------------------------------------------
+    // SaveAction
+    //--------------------------------------------------------------------------
+    
     /**
      * Saves the current DB profile. If the profile does not already exist,
      * it is created.
@@ -404,8 +413,12 @@ public class DBConfig extends JPanel implements IPreferenced
         }
     }
 
+    //--------------------------------------------------------------------------
+    // DeleteAction
+    //--------------------------------------------------------------------------
+    
     /**
-     * Deletes the selected db profile
+     * Deletes the selected db profile.
      */
     class DeleteAction extends AbstractAction
     {
@@ -446,6 +459,10 @@ public class DBConfig extends JPanel implements IPreferenced
         }
     }
 
+    //--------------------------------------------------------------------------
+    // JarChooserAction
+    //--------------------------------------------------------------------------
+    
     /**
      * Allows user to pick a source directory through the file chooser instead 
      * of typing one in.

@@ -15,7 +15,7 @@ public class JEditPopupMenu extends JSmartPopupMenu
         Logger.getLogger(JEditPopupMenu.class); 
         
     /** 
-     * Text component to associate this popup menu with 
+     * Text component to associate this popup menu with. 
      */
     private JEditTextArea textArea_;
 
@@ -24,14 +24,15 @@ public class JEditPopupMenu extends JSmartPopupMenu
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a JEditPopupMenu 
+     * Creates a JEditPopupMenu.
      */
     public JEditPopupMenu()
     {
     }
     
+    
     /**
-     * Creates a JEditTextAreaPopupMenu for the given textarea
+     * Creates a JEditTextAreaPopupMenu for the given textarea.
      * 
      * @param textArea JEditTextArea to add popup to
      */
@@ -47,7 +48,7 @@ public class JEditPopupMenu extends JSmartPopupMenu
     //--------------------------------------------------------------------------
 
     /**
-     * Sets the textarea
+     * Sets the textarea.
      * 
      * @param area Textarea
      */
@@ -56,8 +57,9 @@ public class JEditPopupMenu extends JSmartPopupMenu
         textArea_ = area;
     }
 
+    
     /**
-     * Builds popupmenu and adds mouse listener to listbox
+     * Builds popupmenu and adds mouse listener to listbox.
      */
     public void buildView()
     {

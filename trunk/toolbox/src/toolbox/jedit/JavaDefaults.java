@@ -9,7 +9,7 @@ import org.jedit.syntax.TextAreaDefaults;
 import org.jedit.syntax.Token;
 
 /**
- * Customized JEditTextArea defaults for editing Java files
+ * Customized JEditTextArea defaults for editing Java files.
  */
 public class JavaDefaults extends TextAreaDefaults
 {
@@ -18,7 +18,7 @@ public class JavaDefaults extends TextAreaDefaults
     //--------------------------------------------------------------------------
     
     /**
-     * Default constructor which overrides default values from superclass
+     * Default constructor which overrides default values from superclass.
      */
     public JavaDefaults()
     {
@@ -53,9 +53,9 @@ public class JavaDefaults extends TextAreaDefaults
     //--------------------------------------------------------------------------
     
     /**
-     * Customizes the colors used for syntax hiliting the xml
+     * Customizes the colors used for syntax hiliting the xml.
      * 
-     * @return  Syntax styles
+     * @return Syntax styles
      */
     protected SyntaxStyle[] getSyntaxStyles()
     {

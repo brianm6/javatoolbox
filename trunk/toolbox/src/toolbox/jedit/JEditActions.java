@@ -34,7 +34,7 @@ public final class JEditActions
         Logger.getLogger(JEditActions.class);
     
     /**
-     * Abstract class for all JEdit actions 
+     * Abstract class for all JEdit actions. 
      */
     abstract static class JEditAction extends AbstractAction
     {
@@ -52,8 +52,9 @@ public final class JEditActions
         }
     }
 
+    
     /**
-     * Triggers activation of the Find Dialog box
+     * Triggers activation of the Find Dialog box.
      */    
     static class FindAction extends JEditAction
     {
@@ -116,8 +117,9 @@ public final class JEditActions
         }
     }    
 
+    
     /**
-     * Inserts the text of a file at the currnet cursor location
+     * Inserts the text of a file at the currnet cursor location.
      */
     static class InsertFileAction extends JEditAction
     {
@@ -168,8 +170,9 @@ public final class JEditActions
         }
     }
 
+    
     /**
-     * Sets the font in the text component
+     * Sets the font in the text component.
      */
     static class SetFontAction extends JEditAction
     {
@@ -235,8 +238,9 @@ public final class JEditActions
         }
     }
 
+    
     /**
-     * Copies the contents of the currently selected indices to the clipboard
+     * Copies the contents of the currently selected indices to the clipboard.
      */    
     static class CopyAction extends JEditAction
     {
@@ -251,8 +255,9 @@ public final class JEditActions
         }
     }
 
+    
     /**
-     * Cuts the contents of the currently selected indices
+     * Cuts the contents of the currently selected indices.
      */    
     static class CutAction extends JEditAction
     {
@@ -267,8 +272,9 @@ public final class JEditActions
         }
     }
 
+    
     /**
-     * Pastes the contents of the clipboard into the text component
+     * Pastes the contents of the clipboard into the text component.
      */    
     static class PasteAction extends JEditAction
     {
@@ -283,8 +289,9 @@ public final class JEditActions
         }
     }
     
+    
     /**
-     * Selects the entire contents of the textarea 
+     * Selects the entire contents of the textarea. 
      */
     static class SelectAllAction extends JEditAction
     {
