@@ -101,7 +101,7 @@ public class ManagePluginsDialog extends JDialog
     }
     
     //--------------------------------------------------------------------------
-    //  Private
+    // Protected
     //--------------------------------------------------------------------------
     
     /**
@@ -336,12 +336,12 @@ public class ManagePluginsDialog extends JDialog
     /**
      * PluginMeta info used to populate the active/inactive lists
      */
-    public class PluginMeta
+    class PluginMeta
     {
         private String className_;
         private IPlugin plugin_;
 
-        public PluginMeta(String pluginClass)
+        PluginMeta(String pluginClass)
         {
             className_ = pluginClass;
         }
@@ -394,9 +394,9 @@ public class ManagePluginsDialog extends JDialog
         }
     }
     
-    //----------------------------------------------------------------------
-    //  Actions
-    //----------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    // Actions
+    //--------------------------------------------------------------------------
     
     /**
      * Adds a plugin - moves the plugin from the inactive list to the active 

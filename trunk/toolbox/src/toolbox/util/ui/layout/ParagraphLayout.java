@@ -65,11 +65,11 @@ public class ParagraphLayout extends ConstraintLayout
     private int colWidth2_;
 
     //--------------------------------------------------------------------------
-    //  Constructors
+    // Constructors
     //--------------------------------------------------------------------------
 
     /**
-     * Default Constructor
+     * Creates a ParagraphLayout
      */
     public ParagraphLayout()
     {
@@ -302,6 +302,9 @@ public class ParagraphLayout extends ConstraintLayout
     //  Protected
     //--------------------------------------------------------------------------
 
+    /**
+     * Layout row
+     */
     protected void layoutRow(
         Container target,
         Dimension[] sizes,
