@@ -32,4 +32,11 @@ public class JFileExplorerAdapter implements JFileExplorerListener
     public void folderDoubleClicked(String folder)
     {
     }
+    
+    /**
+     * @see toolbox.util.ui.JFileExplorerListener#fileSelected(java.lang.String)
+     */
+    public void fileSelected(String file)
+    {
+    }
 }

@@ -6,6 +6,13 @@ package toolbox.util.ui;
 public interface JFileExplorerListener
 {
     /**
+     * Called when a file is selected in the file list
+     * 
+     * @param  file  Name of the file selected
+     */
+    public void fileSelected(String file);    
+    
+    /**
      * Called when a file is double clicked in the details view
      *
      * @param  file   Name of the file that was clicked
