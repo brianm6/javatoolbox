@@ -254,6 +254,11 @@
         	src       ="${lib}/commons-collections.jar" 
             dest      ="${classes}" 
             overwrite ="false" />
+
+        <unjar 
+        	src       ="${lib}/skinlf.jar" 
+            dest      ="${classes}" 
+            overwrite ="false" />
                              
         <jar 
         	jarfile ="${dist}/toolbox.jar" 
