@@ -3,6 +3,7 @@ package toolbox.jtail;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Event;
+import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,6 +28,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
 
 import org.apache.log4j.Category;
@@ -73,6 +75,7 @@ public class JTail extends JFrame
     private Point             location_;
     private Dimension         size_;
     private boolean           testMode_ = true;
+    private Font              defaultFont_;
         
         
     /**
@@ -86,7 +89,10 @@ public class JTail extends JFrame
         jtail.setVisible(true);
     }
 
-
+    //
+    //  CONSTRUCTORS
+    //
+    
     /**
      * Constructor for JTail.
      */
@@ -107,7 +113,10 @@ public class JTail extends JFrame
         init();
     }
 
-
+    //
+    //  IMPLEMENTATION
+    //
+    
     /** 
      * Initializes program
      */
@@ -142,8 +151,11 @@ public class JTail extends JFrame
         fileSelectionPane_ = new FileSelectionPane();
         tabbedPane_ = new JTabbedPane();
 
-        JSplitPane rootSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-            fileSelectionPane_, tabbedPane_);                
+        JSplitPane rootSplitPane = 
+            new JSplitPane(
+                JSplitPane.HORIZONTAL_SPLIT,
+                fileSelectionPane_, 
+                tabbedPane_);                
 
         getContentPane().add(BorderLayout.CENTER, rootSplitPane);
         
@@ -194,9 +206,9 @@ public class JTail extends JFrame
 
             JButton closeButton = tailPane.getCloseButton();
             
-            // Create map of (closeButton, tailPane) so that the tail pane
-            // can be reassociated if it needs to be removed from the
-            // tabbed pane
+            // Create map of (closeButton, tailPane) so that the 
+            // tail pane can be reassociated if it needs to be 
+            // removed from the tabbed pane
             tailMap_.put(closeButton, tailPane);
             
             closeButton.addActionListener(new CloseButtonListener());
@@ -249,24 +261,66 @@ public class JTail extends JFrame
                 Document config = new Document(xmlFile);            
                 Element jtailNode = config.getRoot();
                 
-                location_ = new Point();
-                location_.x  = Integer.parseInt(jtailNode.getAttribute(ATTR_X));
-                location_.y  = Integer.parseInt(jtailNode.getAttribute(ATTR_Y));
+                // Read optional window location
+                if ((jtailNode.getAttribute(ATTR_X) != null) &&
+                    (jtailNode.getAttribute(ATTR_Y) != null))
+                {
+                    location_ = new Point();
+                    
+                    location_.x = 
+                        Integer.parseInt(jtailNode.getAttribute(ATTR_X));
+                        
+                    location_.y = 
+                        Integer.parseInt(jtailNode.getAttribute(ATTR_Y));
+                }
                 
-                size_ = new Dimension();
-                size_.height = Integer.parseInt(jtailNode.getAttribute(ATTR_HEIGHT));
-                size_.width  = Integer.parseInt(jtailNode.getAttribute(ATTR_WIDTH));
-
+                // Read optional window size
+                if ((jtailNode.getAttribute(ATTR_HEIGHT) != null) &&
+                    (jtailNode.getAttribute(ATTR_WIDTH)!= null))
+                {
+                    size_ = new Dimension();
+                    
+                    size_.height = Integer.parseInt(
+                        jtailNode.getAttribute(ATTR_HEIGHT));
+                        
+                    size_.width  = Integer.parseInt(
+                        jtailNode.getAttribute(ATTR_WIDTH));
+                }
+                
+                // Handle optional default font element    
+                Element fontNode = 
+                    jtailNode.getElement(TailConfig.ELEMENT_FONT);
+                
+                if (fontNode != null)
+                {
+                    String family = 
+                        fontNode.getAttribute(TailConfig.ATTR_FAMILY);
+                        
+                    int style = Integer.parseInt(
+                        fontNode.getAttribute(TailConfig.ATTR_STYLE));
+                        
+                    int size = Integer.parseInt(
+                        fontNode.getAttribute(TailConfig.ATTR_SIZE));
+                        
+                    defaultFont_ = new Font(family, style, size);
+                }
+                else
+                {
+                    defaultFont_ = SwingUtil.getPreferredMonoFont();
+                }
+                 
                                 
                 // Iterate through each "tail" element, hydrate the 
                 // corresponding TailConfig object
                 for (Elements tails = 
-                        jtailNode.getElements(TailConfig.ELEMENT_TAIL); 
-                    tails.hasMoreElements();)
+                     jtailNode.getElements(TailConfig.ELEMENT_TAIL); 
+                     tails.hasMoreElements();)
                 {
                     Element tail = tails.next();
                     TailConfig props = TailConfig.unmarshal(tail);                    
-                    configs = (TailConfig[])ArrayUtil.addElement(configs, props);
+                    
+                    configs = (TailConfig[])
+                        ArrayUtil.addElement(configs, props);
                 }
             }
             catch (ParseException pe)
@@ -298,10 +352,27 @@ public class JTail extends JFrame
             jtailNode.setAttribute(ATTR_X, getLocation().x + "");
             jtailNode.setAttribute(ATTR_Y, getLocation().y + "");
 
-            logger_.debug("[save  ] Saving "+tailMap_.size()+" configurations");
+            // Save default font
+            Element fontNode = new Element(TailConfig.ELEMENT_FONT);
+            
+            fontNode.setAttribute(
+                TailConfig.ATTR_FAMILY, getFont().getFamily());
+                
+            fontNode.setAttribute(
+                TailConfig.ATTR_STYLE, getFont().getStyle() + "");
+                
+            fontNode.setAttribute(
+                TailConfig.ATTR_SIZE, getFont().getSize() + "");            
+            
+            jtailNode.addElement(fontNode);
+            
+            // Save tail configurations
+            logger_.debug("Saving "+tailMap_.size()+" configurations");
 
             List keys = new ArrayList();
             keys.addAll(tailMap_.keySet());
+            
+            // Flip collection so read in originally created order
             Collections.reverse(keys);            
             
             for (Iterator i = keys.iterator(); i.hasNext(); )
@@ -314,6 +385,8 @@ public class JTail extends JFrame
             Document document = new Document();    
             document.setRoot(jtailNode);
             document.write(configFile);
+            
+            logger_.debug("\n" + document);
         }
         catch (IOException ioe)
         {
@@ -324,22 +397,32 @@ public class JTail extends JFrame
     
     /**
      * Applies configurations
+     * 
+     * @param  configs  Tail configurations
      */
     protected void applyConfiguration(TailConfig[] configs)
     {
+        // Window size
         if (size_ != null)
             setSize(size_);
         else
             setSize(800,400);
-            
+        
+        // Window location    
         if (location_ != null)
             setLocation(location_);
         else
             SwingUtil.centerWindow(this);
         
+        // Tails left running since last save
         for (int i=0; i<configs.length; i++)
         {
             TailConfig config = configs[i];
+            
+            // Apply defaults if any
+            if (config.getFont() == null)
+                config.setFont(getDefaultFont());
+                
             addTail(config);
         }
     }    
@@ -358,6 +441,24 @@ public class JTail extends JFrame
             
         fileSelectionPane_.getTailButton().
             addActionListener(new TailButtonListener());
+    }
+    
+    
+    /**
+     * @return  Currently selected tail in the tabbed pane
+     */
+    protected TailPane getSelectedTail()
+    {
+        return (TailPane)tabbedPane_.getSelectedComponent();
+    }
+    
+    
+    /**
+     * @return  Default font
+     */
+    protected Font getDefaultFont()
+    {
+        return defaultFont_;
     }
     
 
@@ -423,6 +524,9 @@ public class JTail extends JFrame
     }
 
 
+    //
+    //  LISTENERS
+    //
 
     /**
      * Listener for the file explorer
@@ -437,7 +541,7 @@ public class JTail extends JFrame
         public void fileDoubleClicked(String file)
         {
             TailConfig config = new TailConfig(file, true, false, 
-                SwingUtil.getPreferredMonoFont());
+                SwingUtil.getPreferredMonoFont(), "");
                 
             addTail(config);
         }
@@ -459,7 +563,7 @@ public class JTail extends JFrame
             
             TailConfig config = new TailConfig(
                 fileSelectionPane_.getFileExplorer().getFilePath(), 
-                    true, false, SwingUtil.getPreferredMonoFont());
+                    true, false, SwingUtil.getPreferredMonoFont(), "");
             
             addTail(config);
         }
@@ -488,9 +592,24 @@ public class JTail extends JFrame
             
             // Save the configuration since the tail is gone
             saveConfiguration();
-            
         }
     }
+
+
+    /**
+     * Saves the configuration when the application is being closed
+     */
+    private class WindowListener extends WindowAdapter
+    {
+        public void windowClosing(WindowEvent e)
+        {
+            saveConfiguration();
+        }
+    }
+
+    //
+    //  ACTIONS
+    //
     
     /**
      * Action to exit the application. The configurations
@@ -503,7 +622,6 @@ public class JTail extends JFrame
             super("Exit");
             putValue(MNEMONIC_KEY, new Integer('x'));    
             putValue(SHORT_DESCRIPTION, "Exits JTail");
-            putValue(LONG_DESCRIPTION, "Saves configuraiton and exits JTail");
             putValue(ACCELERATOR_KEY, 
                 KeyStroke.getKeyStroke(KeyEvent.VK_X, Event.CTRL_MASK));
         }
@@ -518,6 +636,7 @@ public class JTail extends JFrame
         }
     }
 
+
     /**
      * Action to save configurations
      */
@@ -528,7 +647,6 @@ public class JTail extends JFrame
             super("Save Settings");
             putValue(MNEMONIC_KEY, new Integer('S'));
             putValue(SHORT_DESCRIPTION, "Saves tail configuration");
-            putValue(LONG_DESCRIPTION, "Saves tail configuration to .jtail.xml");
             putValue(ACCELERATOR_KEY, 
                 KeyStroke.getKeyStroke(KeyEvent.VK_S, Event.CTRL_MASK));
         }
@@ -574,6 +692,7 @@ public class JTail extends JFrame
             statusBar_.setStatus("Created " + file + " for tailing");
         }
     }
+
     
     /**
      * Select Font action
@@ -581,11 +700,16 @@ public class JTail extends JFrame
     private class SetFontAction extends AbstractAction 
         implements IFontDialogListener
     {
+        private Font lastFont_;
+        
         public SetFontAction()
         {
             super("Set font ..");
             putValue(MNEMONIC_KEY, new Integer('t'));
-            putValue(SHORT_DESCRIPTION, "Sets the font of the tail output");
+            
+            putValue(SHORT_DESCRIPTION, 
+                "Sets the font of the tail output");
+                
             putValue(ACCELERATOR_KEY, 
                 KeyStroke.getKeyStroke(KeyEvent.VK_T, Event.CTRL_MASK));
         }
@@ -595,15 +719,23 @@ public class JTail extends JFrame
          */
         public void actionPerformed(ActionEvent e)
         {
-            FontSelectionDialog fsd = new FontSelectionDialog(JTail.this, false);
+            lastFont_ = getSelectedTail().getTailFont();
+            
+            // Show font selection dialog with font from the current
+            // tail set as the default selected font
+            FontSelectionDialog fsd = 
+                new FontSelectionDialog(JTail.this, false, 
+                    lastFont_);
+            fsd.setTitle("Select font");
+            
             fsd.addFontDialogListener(this);
             SwingUtil.centerWindow(fsd);
             fsd.setVisible(true);
         }
         
         /**
-         * Sets the font of the currently selected tail to the chosen font in 
-         * the font selection dialog
+         * Sets the font of the currently selected tail to the chosen 
+         * font in the font selection dialog
          * 
          * @param  fontPanel  Font selection panel in the dialog box
          */
@@ -611,12 +743,13 @@ public class JTail extends JFrame
         {
             try
             {
-                TailPane pane = (TailPane) tabbedPane_.getSelectedComponent();
-                pane.setTailFont(fontPanel.getSelectedFont());
+                getSelectedTail().setTailFont(
+                    fontPanel.getSelectedFont());
             }
             catch (FontSelectionException fse)
             {
-                JSmartOptionPane.showExceptionMessageDialog(JTail.this, fse);
+                JSmartOptionPane.showExceptionMessageDialog(
+                    JTail.this, fse);
             }
         }
 
@@ -625,7 +758,8 @@ public class JTail extends JFrame
          */
         public void cancelButtonPressed(FontSelectionPanel fontPanel)
         {
-            // Do nothing
+            // Restore last font
+            getSelectedTail().setTailFont(lastFont_);            
         }
         
         /**
@@ -635,25 +769,14 @@ public class JTail extends JFrame
         {
             try
             {
-                TailPane pane = (TailPane) tabbedPane_.getSelectedComponent();
-                pane.setTailFont(fontPanel.getSelectedFont());
+                getSelectedTail().setTailFont(
+                    fontPanel.getSelectedFont());
             }
             catch (FontSelectionException fse)
             {
-                JSmartOptionPane.showExceptionMessageDialog(JTail.this, fse);
+                JSmartOptionPane.showExceptionMessageDialog(
+                    JTail.this, fse);
             }
-        }
-    }
-    
-    
-    /**
-     * Saves the configuration when the application is being closed
-     */
-    private class WindowListener extends WindowAdapter
-    {
-        public void windowClosing(WindowEvent e)
-        {
-            saveConfiguration();
         }
     }
 }
