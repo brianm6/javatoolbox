@@ -28,6 +28,10 @@ public class InstantMessengerFactory
         {
             im = new SametimeMessenger();
         }
+        else if (network.equalsIgnoreCase("null"))
+        {
+            im = new NullMessenger();
+        }
         else
         {
             throw new IllegalArgumentException(
