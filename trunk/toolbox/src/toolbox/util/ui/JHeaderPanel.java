@@ -28,6 +28,9 @@ import javax.swing.UIManager;
 import javax.swing.border.AbstractBorder;
 
 import toolbox.util.FontUtil;
+import toolbox.util.ui.textarea.AutoScrollAction;
+import toolbox.util.ui.textarea.ClearAction;
+import toolbox.util.ui.textarea.LineWrapAction;
 
 /**
  * A <code>JPanel</code> subclass that has a drop shadow border and that
@@ -53,13 +56,19 @@ import toolbox.util.FontUtil;
 
 public class JHeaderPanel extends JPanel
 {
-
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     private JLabel titleLabel;
     private GradientPanel gradientPanel;
     private JPanel headerPanel;
     private boolean isSelected;
 
-
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     // Instance Creation ****************************************************
 
     /**
@@ -506,7 +515,7 @@ public class JHeaderPanel extends JPanel
     // Customizations ==========================================================
     
     /**
-     * Creates a toolbox specifically to be added to a JHeaderPanel.
+     * Creates a toolbar specifically to be added to a JHeaderPanel.
      * 
      * @return JToolBar
      */
@@ -516,6 +525,43 @@ public class JHeaderPanel extends JPanel
         tb.setRollover(true);
         tb.setFloatable(false);
         return tb;
+    }
+    
+    
+    /**
+     * Creates a toolbar specifically to be added to a JHeaderPanel 
+     * prepopulated with commonly used text area buttons.
+     * 
+     * @param textArea JSmartTextArea.
+     * @return JToolBar
+     */
+    public static JToolBar createToolBar(JSmartTextArea textArea)
+    {
+       JToolBar tb = createToolBar();
+       
+       tb.add(createToggleButton(
+           new LineWrapAction(textArea), textArea, "wrapLine"));
+       
+       tb.add(createToggleButton(
+           new AutoScrollAction(textArea), textArea, "autoscroll"));
+       
+       tb.add(createButton(new ClearAction(textArea)));
+       return tb;
+    }
+    
+    
+    /**
+     * Creates a button specifically for a toolbar to be placed in a 
+     * JHeaderPanel.
+     * 
+     * @param action Action to execute.
+     * @return JButton
+     */
+    public static JButton createButton(Action action)
+    {
+        JButton jb = new JSmartButton(action);
+        jb.setText("");
+        return jb;
     }
     
     
@@ -586,6 +632,28 @@ public class JHeaderPanel extends JPanel
         String property)
     {
         JSmartToggleButton jb = createToggleButton(icon, tooltip, action);
+        jb.toggleOnProperty(propertyChangeSource, property);
+        return jb;
+    }
+    
+    
+    /**
+     * Creates a button specifically for a toolbar to be placed in a 
+     * JHeaderPanel.
+     * 
+     * @param action Action to execute.
+     * @param propertyChangeSource Source of the property change event that 
+     *        will toggle this button.
+     * @param property Name of the property change event to listen for.
+     * @return JSmartToggleButton
+     */
+    public static JSmartToggleButton createToggleButton(
+        Action action, 
+        JComponent propertyChangeSource,
+        String property)
+    {
+        JSmartToggleButton jb = new JSmartToggleButton(action);
+        jb.setText("");
         jb.toggleOnProperty(propertyChangeSource, property);
         return jb;
     }
