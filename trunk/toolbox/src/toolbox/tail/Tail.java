@@ -83,6 +83,9 @@ public class Tail
     /** Flag set if the tailer thread needs to shutdown */ 
     private boolean pendingShutdown_;
     
+    /** Thread name..mostly for debugging a stream */
+    private String threadName_;
+    
     //--------------------------------------------------------------------------
     //  Constructors
     //--------------------------------------------------------------------------
@@ -99,6 +102,10 @@ public class Tail
         backlog_         = DEFAULT_BACKLOG;
     }
 
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
     /**
      * Follows the given file sending the tail output to the writer.
      * 
@@ -119,7 +126,7 @@ public class Tail
      * @param   readFrom  Reader to follow
      * @param   writeTo   Writer to send the tail output to
      */
-    public void follow(Reader readFrom, Writer writeTo) 
+    public void follow(Reader readFrom, Writer writeTo, String threadName) 
     {
         if (readFrom instanceof BufferedReader)
             reader_ = (BufferedReader) readFrom;
@@ -127,6 +134,7 @@ public class Tail
             reader_ = new BufferedReader(readFrom);            
             
         sink_   = writeTo;
+        threadName_ = threadName;
     }
     
     /**
@@ -147,7 +155,7 @@ public class Tail
     {
         if (!isAlive())
         {
-            String name = "Tail-" + (isFile() ? file_.getName() : "Reader");
+            String name = "Tail-" + (isFile() ? file_.getName() : threadName_);
             tailer_ = new Thread(new Tailer(), name);
             connect();
             tailer_.start();
@@ -167,16 +175,16 @@ public class Tail
             try
             {
                 pendingShutdown_ = true;
-                unpause();
-                reader_.close();
-                tailer_.interrupt();
-                tailer_.join(10000);
+                
+                if (isPaused())
+                    unpause();
+
+                ThreadUtil.stop(tailer_);
+                
+                if (reader_ != null)
+                    reader_.close();
             }
             catch (IOException e)
-            {
-                logger_.error("stop", e);
-            }
-            catch (InterruptedException e)
             {
                 logger_.error("stop", e);
             }
@@ -216,22 +224,6 @@ public class Tail
         }
     }
     
-    /**
-     * Wait for the tail to reach end of stream
-     */
-    public void join()
-    {
-        try
-        {
-            if (tailer_.isAlive())
-                tailer_.join();
-        }
-        catch (InterruptedException e)
-        {
-            logger_.error("join", e);
-        }
-    }
-
     /**
      * @return  True if the tail is paused, false otherwise
      */
@@ -538,7 +530,7 @@ public class Tail
             }
             catch (Exception e)
             {
-                logger_.error("Tail.run", e);
+                logger_.error("Tailer.run", e);
             }
         }
     }
