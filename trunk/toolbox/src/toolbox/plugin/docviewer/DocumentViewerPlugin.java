@@ -15,10 +15,10 @@ import org.apache.log4j.Logger;
 
 import toolbox.util.ExceptionUtil;
 import toolbox.util.XOMUtil;
+import toolbox.util.ui.explorer.JFileExplorer;
+import toolbox.util.ui.explorer.FileExplorerAdapter;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartSplitPane;
-import toolbox.util.ui.explorer.FileExplorerAdapter;
-import toolbox.util.ui.explorer.JFileExplorer;
 import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.util.ui.layout.StackLayout;
 import toolbox.workspace.IPlugin;
@@ -45,7 +45,7 @@ public class PDFPlugin extends JPanel implements IPlugin
     /**
      * Node for PDFViewer preferences.
      */
-    private static final String NODE_PDF_VIEWER = "PDFViewer";
+    private static final String NODE_PDF_VIEWER   = "PDFViewer";
     
     //--------------------------------------------------------------------------
     // Fields
@@ -75,6 +75,7 @@ public class PDFPlugin extends JPanel implements IPlugin
      * File explorer used to open XML files. 
      */
     private JFileExplorer explorer_;
+
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -266,7 +267,7 @@ public class PDFPlugin extends JPanel implements IPlugin
     class FileSelectionListener extends FileExplorerAdapter
     {
         /**
-         * @see toolbox.util.ui.JFileExplorerListener#fileDoubleClicked(
+         * @see toolbox.util.ui.explorer.FileExplorerListener#fileDoubleClicked(
          *      java.lang.String)
          */
         public void fileDoubleClicked(String file)
@@ -283,7 +284,7 @@ public class PDFPlugin extends JPanel implements IPlugin
         
         
         /**
-         * @see toolbox.util.ui.JFileExplorerAdapter#fileSelected(
+         * @see toolbox.util.ui.explorer.FileExplorerListener#fileSelected(
          *      java.lang.String)
          */
         public void fileSelected(String file)
