@@ -1,4 +1,4 @@
-package toolbox.clearcase;
+package toolbox.clearcase.adapter;
 
 import java.io.File;
 import java.util.Date;
@@ -11,13 +11,17 @@ import junit.textui.TestRunner;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.apache.log4j.Logger;
 
+import toolbox.clearcase.IClearCaseAdapter;
+import toolbox.clearcase.domain.Revision;
+import toolbox.clearcase.domain.VersionedFile;
+
 /**
- * ClearToolBridgeTest is responsible for ___.
+ * ClearToolAdapterTest is responsible for ___.
  */
-public class ClearToolBridgeTest extends TestCase
+public class ClearToolAdapterTest extends TestCase
 {
     private static final Logger logger_ = 
-        Logger.getLogger(ClearToolBridgeTest.class);
+        Logger.getLogger(ClearToolAdapterTest.class);
     
     //--------------------------------------------------------------------------
     // Main
@@ -25,7 +29,7 @@ public class ClearToolBridgeTest extends TestCase
     
     public static void main(String[] args)
     {
-        TestRunner.run(ClearToolBridgeTest.class);
+        TestRunner.run(ClearToolAdapterTest.class);
     }
 
     //--------------------------------------------------------------------------
@@ -36,7 +40,7 @@ public class ClearToolBridgeTest extends TestCase
     {
         logger_.info("Running testFindChangedFiles...");
         
-        ClearCaseBridge cc = ClearCaseBridgeFactory.create();
+        IClearCaseAdapter cc = ClearCaseAdapterFactory.create();
         cc.setViewPath(new File("m:\\x1700_sandbox\\staffplanning"));
         
         List changed = 

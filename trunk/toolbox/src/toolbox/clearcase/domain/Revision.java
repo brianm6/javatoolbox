@@ -1,4 +1,4 @@
-package toolbox.clearcase;
+package toolbox.clearcase.domain;
 
 /**
  * Revision
@@ -8,6 +8,7 @@ public class Revision
     private String comment_;
     private String action_;
     private String user_;
+    private String date_;
     
     /**
      * Creates a Revision.
@@ -49,5 +50,16 @@ public class Revision
     public void setUser(String user)
     {
         user_ = user;
+    }
+    
+    
+    public String getDate()
+    {
+        return date_;
+    }
+    
+    public void setDate(String date)
+    {
+        date_ = date;
     }
 }

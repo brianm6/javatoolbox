@@ -1,14 +1,15 @@
-package toolbox.clearcase;
+package toolbox.clearcase.domain;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import toolbox.clearcase.IVersionable;
 import toolbox.util.service.Nameable;
 
 /**
  * VersionedFile is responsible for ___.
  */
-public class VersionedFile implements Versionable, Nameable
+public class VersionedFile implements IVersionable, Nameable
 {
     private String name_;
     private List revisions_;
@@ -26,11 +27,11 @@ public class VersionedFile implements Versionable, Nameable
     }
     
     //--------------------------------------------------------------------------
-    // Versionable Interface
+    // IVersionable Interface
     //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.clearcase.Versionable#getVersion()
+     * @see toolbox.clearcase.IVersionable#getVersion()
      */
     public String getVersion()
     {
@@ -76,5 +77,12 @@ public class VersionedFile implements Versionable, Nameable
     public List getRevisions()
     {
         return revisions_;
+    }
+    
+    public Revision getLastRevision()
+    {
+        return revisions_.size() == 0 
+            ? null 
+            : (Revision) revisions_.iterator().next(); 
     }
 }

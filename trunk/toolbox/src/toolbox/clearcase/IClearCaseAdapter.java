@@ -7,9 +7,9 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * ClearCaseBridge is responsible for ___.
+ * IClearCaseAdapter is responsible for ___.
  */
-public interface ClearCaseBridge
+public interface IClearCaseAdapter
 {
     void setViewPath(File path);
     

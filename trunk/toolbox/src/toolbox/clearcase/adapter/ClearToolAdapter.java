@@ -1,4 +1,4 @@
-package toolbox.clearcase;
+package toolbox.clearcase.adapter;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -14,19 +14,23 @@ import nu.xom.ParsingException;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.log4j.Logger;
 
+import toolbox.clearcase.IClearCaseAdapter;
+import toolbox.clearcase.domain.Revision;
+import toolbox.clearcase.domain.VersionedFile;
 import toolbox.util.FileUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.XOMUtil;
 
 /**
- * ClearToolBridge.
+ * ClearToolAdapter.
  */
-public class ClearToolBridge implements ClearCaseBridge
+public class ClearToolAdapter implements IClearCaseAdapter
 {
     private static final Logger logger_ = 
-        Logger.getLogger(ClearToolBridge.class);
+        Logger.getLogger(ClearToolAdapter.class);
     
     //--------------------------------------------------------------------------
     // Fields
@@ -39,25 +43,26 @@ public class ClearToolBridge implements ClearCaseBridge
     private static final String NODE_FILE       = "File";
     private static final String NODE_COMMENT    = "Comment";
     private static final String NODE_ACTION     = "Operation";
+    private static final String NODE_DATE       = "TimeStamp";
 
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a ClearToolBridge.
+     * Creates a ClearToolAdapter.
      * 
      */
-    public ClearToolBridge()
+    public ClearToolAdapter()
     {
     }
 
     //--------------------------------------------------------------------------
-    // ClearCaseBridge Interface
+    // IClearCaseAdapter Interface
     //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.clearcase.ClearCaseBridge#setViewPath(java.io.File)
+     * @see toolbox.clearcase.IClearCaseAdapter#setViewPath(java.io.File)
      */
     public void setViewPath(File path)
     {
@@ -66,7 +71,7 @@ public class ClearToolBridge implements ClearCaseBridge
 
 
     /**
-     * @see toolbox.clearcase.ClearCaseBridge#getViewPath()
+     * @see toolbox.clearcase.IClearCaseAdapter#getViewPath()
      */
     public File getViewPath()
     {
@@ -75,7 +80,7 @@ public class ClearToolBridge implements ClearCaseBridge
 
 
     /**
-     * @see toolbox.clearcase.ClearCaseBridge#findChangedFiles(java.util.Date, 
+     * @see toolbox.clearcase.IClearCaseAdapter#findChangedFiles(java.util.Date, 
      *      java.util.Date, java.io.FilenameFilter)
      */
     public List findChangedFiles(Date start, Date end, FilenameFilter filter)
@@ -84,16 +89,22 @@ public class ClearToolBridge implements ClearCaseBridge
         // -fmt '%t'
         //"cleartool lshistory -recurse -since 21-Feb-05.23:59 -fmt \"%u\n %o  %n %e %d %c\"",
         
+        String dateStr = DateFormatUtils.format(start, "dd-MMM-yy.HH:mm");
+        
+        
         String command = 
-            "cleartool lshistory -recurse -since 21-Feb-05.23:59 -fmt \"" 
+            //"cleartool lshistory -recurse -since 21-Feb-05.23:59 -fmt \"" 
+            "cleartool lshistory -recurse -since " + dateStr + " -fmt \""
             + "<History>[NL]" 
-            + "  <User>%u</User>[NL]"
+            + "  <User>%Fu</User>[NL]"
             + "  <Operation>%o</Operation>[NL]"
             + "  <File>%En</File>[NL]"
             + "  <OperationDetail>%e</OperationDetail>[NL]"
             + "  <TimeStamp>%d</TimeStamp>[NL]"
             + "  <Comment>%Nc</Comment>[NL]"
             + "</History>[NL]\"";
+        
+        logger_.debug("Command: \n " + command);
         
         Process p = Runtime.getRuntime().exec(command, null, getViewPath());
         InputStream is = p.getInputStream();
@@ -129,6 +140,7 @@ public class ClearToolBridge implements ClearCaseBridge
                 
                 String comment = history.getFirstChildElement(NODE_COMMENT).getValue();
                 String action = history.getFirstChildElement(NODE_ACTION).getValue();
+                String date = history.getFirstChildElement(NODE_DATE).getValue();
                 
                 File f = new File(file);
                 
@@ -141,7 +153,7 @@ public class ClearToolBridge implements ClearCaseBridge
                     rev.setAction(action);
                     rev.setComment(comment);
                     rev.setUser(user);
-                    
+                    rev.setDate(date);
                     vf.addRevision(rev);
                     result.add(vf);
                 }

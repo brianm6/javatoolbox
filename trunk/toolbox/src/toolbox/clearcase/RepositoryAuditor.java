@@ -2,20 +2,27 @@ package toolbox.clearcase;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.Predicate;
-import org.apache.commons.collections.PredicateUtils;
+import net.sf.statcvs.util.FileUtils;
+
 import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
+import toolbox.clearcase.adapter.ClearCaseAdapterFactory;
+import toolbox.clearcase.audit.ContainsTabsAudit;
+import toolbox.clearcase.audit.MissingCommentAudit;
 import toolbox.util.DateUtil;
+import toolbox.util.FileUtil;
+import toolbox.util.collections.ObjectComparator;
 
 /**
  * RepositoryAuditor for a clearcase repository.
@@ -78,51 +85,89 @@ public class RepositoryAuditor
     
     public void run() throws IOException 
     {
-        ClearCaseBridge cc = ClearCaseBridgeFactory.create();
+        IClearCaseAdapter cc = ClearCaseAdapterFactory.create();
         cc.setViewPath(new File("m:\\x1700_sandbox\\staffplanning"));
         
         List changedFiles = 
             cc.findChangedFiles(
-                DateUtil.addDays(new Date(), -1), 
+                DateUtil.addDays(new Date(), -3), 
                 new Date(), 
                 new SuffixFileFilter(".java"));
 
         
-        CollectionUtils.filter(changedFiles, new NoCommentFilter());
+        List audits = new ArrayList();
+        audits.add(new MissingCommentAudit());
+        audits.add(new ContainsTabsAudit());
+        List finalResults = new ArrayList();
         
-        
-        for (Iterator iter = changedFiles.iterator(); iter.hasNext();)
+        for (Iterator iter = audits.iterator(); iter.hasNext();)
         {
-            VersionedFile file = (VersionedFile) iter.next();
-
-            System.out.println("File   : " + file.getName());
-            for (Iterator iterator = file.getRevisions().iterator(); iterator.hasNext();)
-            {
-                Revision revision = (Revision) iterator.next();
-                
-                String user = revision.getUser();
-                
-                if (userMap_.containsKey(user))
-                    user = userMap_.get(user).toString();
-                
-                System.out.println("Action : " + revision.getAction());
-                System.out.println("User   : " + user);
-                System.out.println("Comment: " + revision.getComment());
-                System.out.println();
-            }
+            IAudit audit = (IAudit) iter.next();
+            finalResults.addAll(audit.audit(changedFiles));
         }
+
+        Comparator sortByUser = new ObjectComparator("username", "filename");
+        Collections.sort(finalResults, sortByUser);
+        
+        for (Iterator iter = finalResults.iterator(); iter.hasNext();)
+        {
+            IAuditResult result = (IAuditResult) iter.next();
+            
+            StringBuffer sb = new StringBuffer();
+            sb.append(StringUtils.rightPad(getAlias(result.getUsername()), 10));
+            sb.append("  ");
+            
+            sb.append(
+                StringUtils.rightPad(
+                    FileUtils.getFilenameWithoutPath(
+                        result.getFilename()), 15));
+            
+            sb.append("  ");
+            sb.append(StringUtils.rightPad(result.getReason(), 20));
+            sb.append("  ");
+            sb.append(StringUtils.rightPad(result.getDate(), 20));
+            sb.append("  ");
+            sb.append(FileUtil.stripFile(result.getFilename()));
+            
+            System.out.println(sb);
+        }
+        
+        //CollectionUtils.filter(changedFiles, new NoCommentFilter());
+        
+        
+//        for (Iterator iter = changedFiles.iterator(); iter.hasNext();)
+//        {
+//            VersionedFile file = (VersionedFile) iter.next();
+//
+//            System.out.println("File   : " + file.getName());
+//            for (Iterator iterator = file.getRevisions().iterator(); iterator.hasNext();)
+//            {
+//                Revision revision = (Revision) iterator.next();
+//                
+//                String user = revision.getUser();
+//                
+//                if (userMap_.containsKey(user))
+//                    user = userMap_.get(user).toString();
+//                
+//                System.out.println("Action : " + revision.getAction());
+//                System.out.println("User   : " + user);
+//                System.out.println("Comment: " + revision.getComment());
+//                System.out.println();
+//            }
+//        }
+    }
+
+    /**
+     * @param username
+     * @return
+     */
+    private String getAlias(String username)
+    {
+        String result = (String) userMap_.get(username);
+        if (result == null)
+            result = username;
+        
+        return result;
     }
     
-    class NoCommentFilter implements Predicate
-    {
-        /**
-         * @see org.apache.commons.collections.Predicate#evaluate(java.lang.Object)
-         */
-        public boolean evaluate(Object object)
-        {
-            VersionedFile file = (VersionedFile) object;
-            Revision rev = (Revision) file.getRevisions().iterator().next();
-            return StringUtils.isBlank(rev.getComment());
-        }
-    }
 }
