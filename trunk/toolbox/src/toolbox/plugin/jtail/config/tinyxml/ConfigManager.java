@@ -11,6 +11,7 @@ import toolbox.jtail.config.IJTailConfig;
 import toolbox.jtail.config.ITailPaneConfig;
 import toolbox.util.FileUtil;
 import toolbox.util.SwingUtil;
+import toolbox.util.XMLUtil;
 import toolbox.util.xml.XMLNode;
 import toolbox.util.xml.XMLParser;
 
@@ -23,7 +24,6 @@ public class ConfigManager implements IConfigManager
         Logger.getLogger(ConfigManager.class);
         
     private static final String CONFIG_FILE = ".jtail.xml";
-
 
     //--------------------------------------------------------------------------
     //  Constructors
@@ -57,7 +57,7 @@ public class ConfigManager implements IConfigManager
         {
             String xmlString = config.marshal().toString();
             FileUtil.setFileContents(configFile, xmlString, false);
-            logger_.debug(method + "\n" + xmlString);
+            logger_.debug(method + "\n" + XMLUtil.format(xmlString));
         }
         catch (IOException ioe)
         {
