@@ -21,7 +21,6 @@ public class Main extends TailAdapter
      */    
     public static void main(String args[])
     {
-        BasicConfigurator.configure();
         Main tail = new Main(args);
     }
 
@@ -47,7 +46,8 @@ public class Main extends TailAdapter
             {
                 Tail tail = new Tail();
                 tail.addTailListener(this);
-                tail.tail(files[i]);
+                tail.setTailFile(files[i]);
+                tail.start();
             }
             catch (FileNotFoundException fnfe)
             {

@@ -66,7 +66,8 @@ public class TailTest extends TestCase
         tail.addWriter(new OutputStreamWriter(new StringOutputStream()));
         tail.addTailListener(new TestTailListener());
         logger_.info(tail.toString());
-        tail.tail(reader);
+        tail.setTailReader(reader);
+        tail.start();
         ThreadUtil.sleep(2000);
         tail.pause();
         ThreadUtil.sleep(2000);
