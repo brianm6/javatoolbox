@@ -235,6 +235,7 @@ public class DateUtilTest extends TestCase
             "Number of weeks in 14 days should be 2",
             2,
             DateUtil.roundToWeeks(14));
+    }
 
     /**
      * Tests equals()
@@ -256,7 +257,7 @@ public class DateUtilTest extends TestCase
         cal.add(Calendar.MINUTE, 1);
         Date sameDay = cal.getTime();
         assertTrue(DateUtil.equals(now, sameDay));
-    }    }
+    }
  
     
     /**
