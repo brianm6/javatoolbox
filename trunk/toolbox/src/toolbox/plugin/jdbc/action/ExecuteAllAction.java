@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import org.jedit.syntax.JEditTextArea;
 
 import toolbox.plugin.jdbc.QueryPlugin;
+import toolbox.plugin.jdbc.SQLMessageException;
 import toolbox.util.StringUtil;
 import toolbox.workspace.IStatusBar;
 
@@ -23,7 +24,7 @@ import toolbox.workspace.IStatusBar;
  */
 public class ExecuteAllAction extends BaseAction
 {
-    private static final Logger logger_ = 
+    private static final Logger logger_ =
         Logger.getLogger(ExecuteAllAction.class);
     
     //--------------------------------------------------------------------------
@@ -76,7 +77,9 @@ public class ExecuteAllAction extends BaseAction
             plugin.getStatusBar().setInfo("Executing...");
             
             String[] stmts = 
-                StringUtils.split(sqlText, plugin.getSqlTerminator());
+                StringUtils.split(
+                    sqlText, 
+                    plugin.getSqlTerminator());
             
             //logger_.debug(
             //    StringUtil.addBars(ArrayUtil.toString(stmts, true)));
@@ -135,6 +138,18 @@ public class ExecuteAllAction extends BaseAction
                         plugin.getResultsArea().scrollToEnd();
                     }
                 }
+                catch (SQLException se)
+                {
+                    SQLMessageException sme = 
+                        new SQLMessageException(se, stmts[i]);
+                    
+                    errors.add(sme);
+                    
+                    // Break out..
+                    if (!plugin.isContinueOnError())
+                        break;
+                    
+                }
                 catch (Exception ex)
                 {
                     errors.add(ex);
@@ -173,6 +188,9 @@ public class ExecuteAllAction extends BaseAction
                         
                         sb.append((j + 1) + ") ")  // Exception number
                           .append(ex.getMessage())
+//                          .append((ex instanceof SQLMessageException) 
+//                              ? "\n" + ((SQLMessageException) ex).getStatement() 
+//                              : "")
                           .append("\n")
                           .append(ExceptionUtils.getFullStackTrace(ex))
                           .append("\n");
