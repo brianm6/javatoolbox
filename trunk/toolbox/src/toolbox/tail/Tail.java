@@ -72,11 +72,6 @@ public class Tail implements Runnable
     private boolean paused_ = false;
 
     /** 
-     * Active state of the tail 
-     */
-    private boolean isAlive_ = false;
-
-    /** 
      * Flag to signify a shutdown is pending 
      */
     private boolean pendingShutdown_ = false;
@@ -108,7 +103,6 @@ public class Tail implements Runnable
         setTailFile(new File(filename));
     }
 
-
     /**
      * Tails the given file
      * 
@@ -120,7 +114,6 @@ public class Tail implements Runnable
         setFile(f);
     }
 
-
     /**
      * Tails an inputstream
      * 
@@ -131,7 +124,6 @@ public class Tail implements Runnable
         setTailReader(new InputStreamReader(stream));
     }
 
-
     /**
      * Tails a reader
      * 
@@ -141,7 +133,6 @@ public class Tail implements Runnable
     {
         setReader(reader);
     }
-
     
     /**
      * @return  True if the tail is running, false otherwise. This has no 
@@ -151,7 +142,6 @@ public class Tail implements Runnable
     {
         return thread_ != null && thread_.isAlive();
     }
-    
     
     /**
      * Starts the tail
@@ -170,7 +160,6 @@ public class Tail implements Runnable
         else
             logger_.warn("Tail is already running");
     }
-
 
     /**
      * Stops the tail
@@ -206,7 +195,6 @@ public class Tail implements Runnable
             logger_.warn("Tail is already stopped");
     }
 
-
     /**
      * Pauses the tail
      */
@@ -215,7 +203,6 @@ public class Tail implements Runnable
         if (isAlive() && !isPaused())
             paused_ = true;
     }
-
 
     /**
      * Unpauses the tail 
@@ -243,7 +230,6 @@ public class Tail implements Runnable
         }
     }
 
-
     /**
      * Adds a writer to the list of tail sinks
      * 
@@ -253,7 +239,6 @@ public class Tail implements Runnable
     {
         writers_.add(writer);
     }
-
 
     /**
      * Removes a writer from the list of tail sinks
@@ -265,7 +250,6 @@ public class Tail implements Runnable
         writers_.remove(writer);
     }
     
-    
     /**
      * Adds an output stream to the list of tail sinks
      * 
@@ -275,7 +259,6 @@ public class Tail implements Runnable
     {
         streams_.add(os);
     }
-
     
     /**
      * Removes an outputstream from the list of tail sinks
@@ -287,7 +270,6 @@ public class Tail implements Runnable
         streams_.remove(os);
     }
     
-    
     /**
      * Returns the file.
      * 
@@ -297,7 +279,6 @@ public class Tail implements Runnable
     {
         return file_;
     }
-
 
     /**
      * @return  True if the tail is paused, false otherwise
@@ -342,7 +323,6 @@ public class Tail implements Runnable
         }
     }
 
-
     /**
      * Sets the tail file
      * 
@@ -352,7 +332,6 @@ public class Tail implements Runnable
     {
         file_ = file;
     }
-
 
     /**
      * Returns the reader.
@@ -364,7 +343,6 @@ public class Tail implements Runnable
         return reader_;
     }
 
-
     /**
      * Sets the reader.
      * 
@@ -374,7 +352,6 @@ public class Tail implements Runnable
     {
         reader_ = reader;
     }
-
 
     /**
      * Connects to the provided stream source
@@ -393,7 +370,6 @@ public class Tail implements Runnable
         }
     }
 
-
     //--------------------------------------------------------------------------
     // Event Listener Support
     //--------------------------------------------------------------------------
@@ -406,7 +382,6 @@ public class Tail implements Runnable
         listeners_.add(listener);
     }
 
-
     /**
      * @param  listener  Listener to remove
      */
@@ -414,7 +389,6 @@ public class Tail implements Runnable
     {
         listeners_.remove(listener);
     }
-
     
     /**
      * Fires event for availability of the next line of the tail
@@ -465,7 +439,6 @@ public class Tail implements Runnable
         }
     }
 
-
     /**
      * Fires event when tail is stopped
      */
@@ -484,7 +457,6 @@ public class Tail implements Runnable
             }
         }
     }
-
     
     /**
      * Fires event when tail is started
@@ -504,7 +476,6 @@ public class Tail implements Runnable
             }
         }
     }
-
     
     /**
      * Fires event when tail has reached the end of stream/reader/etc
@@ -524,7 +495,6 @@ public class Tail implements Runnable
             }
         }
     }
-
     
     /**
      * Fires an event when the tail is unpaused 
@@ -544,7 +514,6 @@ public class Tail implements Runnable
             }
         }
     }
-
     
     /**
      * Fires an event when tail is paused 
@@ -646,6 +615,8 @@ public class Tail implements Runnable
                         }
                         else
                         {
+                            ;
+                            
                             //logger_.debug(method + 
                             //    "Failed criterai for reset");
                         }
