@@ -320,6 +320,120 @@ public final class JDBCSession
         // TODO: remove session from map if SQL exception thrown. REthrow exception
     }
     
+
+    
+    /**
+     * @param sessionName
+     * @param jar
+     * @param driver
+     * @param url
+     * @param user
+     * @param password
+     * @param pooled
+     * @throws SQLException
+     * @throws MalformedURLException
+     * @throws ClassNotFoundException
+     * @throws IllegalAccessException
+     * @throws InstantiationException
+     */
+    public static void init(
+        String sessionName,
+        String jar, 
+        String driver,
+        String url,
+        String user,
+        String password,
+        boolean pooled)
+        throws SQLException,
+               MalformedURLException, 
+               ClassNotFoundException, 
+               IllegalAccessException, 
+               InstantiationException
+    {
+        try
+        {
+            if (sessionMap_.containsKey(sessionName))
+                throw new IllegalArgumentException(
+                    "Session with name " + sessionName + "already exists.");
+            
+            Session session = new Session(sessionName, null, null, pooled);
+            
+            if (!session.isPooled())
+            {
+                init(sessionName, jar, driver, url, user, password);
+            }
+            else
+            {
+                File jarFile = new File(jar); 
+                
+                URLClassLoader ucl = 
+                    new URLClassLoader(new URL[] { jarFile.toURL()});
+                
+                Driver d = (Driver) 
+                    Class.forName(driver, true, ucl).newInstance();
+                
+                session.setDriver(new JDBCUtil.DriverProxy(d));
+                DriverManager.registerDriver(session.getDriver());
+                
+                //Class.forName(driver);
+                ObjectPool connPool = new GenericObjectPool(null);
+            
+                PoolableConnectionFactory pconnFactory = 
+                    new PoolableConnectionFactory(
+                        new DriverManagerConnectionFactory(url, user, password), 
+                        connPool, 
+                        null, 
+                        null, 
+                        false,  // readonly
+                        true);  // autocommit
+        
+                Class.forName(JDBCSession.CONN_POOL_DRIVER);
+                
+                PoolingDriver poolDriver = (PoolingDriver)
+                    DriverManager.getDriver(JDBCSession.CONN_POOL_URL_PREFIX);
+                                                        
+                poolDriver.registerPool(CONN_POOL_NAME + sessionName, connPool);
+        
+                session.setDriver(poolDriver);
+                
+                Properties connProps = new Properties();
+                connProps.put("user", user);
+                connProps.put("password", password);
+                
+                connProps.put(
+                    "url", 
+                    JDBCSession.CONN_POOL_URL_PREFIX 
+                    + CONN_POOL_NAME 
+                    + sessionName);
+                
+                session.setConnProps(connProps);
+            }
+            
+            sessionMap_.put(sessionName, session);
+            
+            Connection conn = getConnection(sessionName);
+            DatabaseMetaData meta = conn.getMetaData();
+            
+            logger_.debug("DB Connect: " + 
+                meta.getDatabaseProductName() + 
+                    meta.getDatabaseProductVersion());
+                
+            JDBCUtil.releaseConnection(conn);
+        }
+        catch (SQLException sqle)
+        {
+            // Release session if there is a failure
+            logger_.debug(
+                "Removed session " 
+                + sessionName 
+                + " from map because of " 
+                + sqle);
+            
+            sessionMap_.remove(sessionName);
+            throw sqle; 
+        }
+    }
+
     
     /**
      * Returns a connection to the database.
