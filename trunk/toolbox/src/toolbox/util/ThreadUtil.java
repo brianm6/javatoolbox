@@ -111,6 +111,42 @@ public final class ThreadUtil
 
 
     /**
+     * Stops a thread as gracefully as possible with a default max wait of 
+     * 1 second
+     * 
+     * @param  t        Thread to stop
+     */
+    public static void stop(Thread t)
+    {
+        stop(t, 1000);
+    }
+
+
+    /**
+     * Stops a thread as gracefully as possible within a given amount of time.
+     * If the thread is stopped successfully, the thread is set equal to null
+     * otherwise a warning is logged and the thread is not left alone.
+     * 
+     * @param  t        Thread to stop
+     * @param  millis   Max number of millis to wait for thread to die
+     */
+    public static void stop(Thread t, long millis)
+    {
+        // Kill nicely and wait for death
+        ThreadUtil.join(t, millis);
+        
+        // Nuke as last resort if not dead
+        if (t.isAlive())
+            t.interrupt();
+
+        if (t.isAlive())
+            logger_.warn("Could not kill thread " + t);
+        else    
+            t = null;                    
+    }
+
+
+    /**
      * Runs an objects method in a separate thread 
      * 
      * @param   target      Object which contains method to run
@@ -141,6 +177,24 @@ public final class ThreadUtil
         return thread; 
     }
 
+    /**
+     * Runs an object's method in a separate thread 
+     * 
+     * @param   target  Object to invoke method upon
+     * @param   method  Name of the method to execute
+     * @param   params  Methods arguments
+     * @return  Started thread of execution 
+     */
+    public static Thread run(Object target, String method, Object[] params, Class[] clazzes)
+    {
+        // create thread with a MethodRunner and start
+        Runnable runnable = new ThreadUtil.MethodRunner(target, method, params, clazzes);
+        Thread thread = new Thread(runnable);
+        thread.start();
+        return thread;
+    }
+
+
     //--------------------------------------------------------------------------
     //  Inner Classes
     //--------------------------------------------------------------------------
@@ -165,7 +219,11 @@ public final class ThreadUtil
          */
         private Object[] params_;
     
-    
+    	/**
+    	 * Parameter types
+    	 */
+        private Class[] clazzes_;
+            
         /**
          * Creates a MethodRunner
          * 
@@ -183,7 +241,23 @@ public final class ThreadUtil
             if (params_ == null)
                 params_ = new Object[0];
         }
+
         
+        /**
+         * Creates a MethodRunner
+         * 
+         * @param  newTarget   Target object of method invocation
+         * @param  newMethod   Method name on target object
+         * @param  newParams   List of parameters to the method
+         */
+        public MethodRunner(Object newTarget, String newMethod, 
+            Object[] newParams, Class[] newClazzes)
+        {
+            target_  = newTarget;
+            method_  = newMethod;                    
+            params_  = newParams;
+            clazzes_ = newClazzes;
+        }        
         
         /**
          * Executes the method provided at time of construction
@@ -191,8 +265,11 @@ public final class ThreadUtil
         public void run()
         {
             try
-            {   
-                MethodUtils.invokeMethod(target_, method_, params_);
+            {  
+                if (clazzes_ == null)
+                    MethodUtils.invokeMethod(target_, method_, params_);    
+                else
+                    MethodUtils.invokeMethod(target_, method_, params_, clazzes_);    
             }
             catch (NoSuchMethodException nsme)
             {
