@@ -72,4 +72,25 @@ public class RegexFilterReaderTest extends TestCase
         assertEquals("three", rr.readLine());
         assertNull(rr.readLine());
     }
+
+    
+    /**
+     * Tests readLine() an inverse regular expression.
+     * 
+     * @throws Exception on error.
+     */
+    public void testReadLineInverse() throws Exception
+    {
+        logger_.info("Running testReadLineInverse...");
+        
+        String data = "one\ntwo\nthree\nfour\n";
+        
+        StringReader sr = new StringReader(data);
+        RegexFilterReader rr = new RegexFilterReader(sr, "three", true, true);
+        
+        assertEquals("one", rr.readLine());
+        assertEquals("two", rr.readLine());
+        assertEquals("four", rr.readLine());
+        assertNull(rr.readLine());
+    }
 }
