@@ -6,6 +6,7 @@ import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -309,7 +310,7 @@ public class XSLFOPlugin extends JPanel implements IPlugin
             fopProcessor_ = FOProcessorFactory.createProcessor(
                 FOProcessorFactory.FO_IMPL_APACHE);
               
-            fopProcessor_.initialize();
+            fopProcessor_.initialize(new Properties());
         }
         
         return fopProcessor_;
@@ -325,7 +326,7 @@ public class XSLFOPlugin extends JPanel implements IPlugin
             xepProcessor_ = FOProcessorFactory.createProcessor(
                 FOProcessorFactory.FO_IMPL_RENDERX);
               
-            xepProcessor_.initialize();
+            xepProcessor_.initialize(new Properties());
         }
         
         return xepProcessor_;
@@ -461,8 +462,12 @@ public class XSLFOPlugin extends JPanel implements IPlugin
         
         public void runAction(ActionEvent e) throws Exception
         {
-            byte[] pdfBytes = getFOP().renderPDF(xmlArea_.getText());
-            viewPDFEmbedded(new ByteArrayInputStream(pdfBytes));
+            ByteArrayOutputStream output = new ByteArrayOutputStream();
+            StringInputStream input = new StringInputStream(xmlArea_.getText());
+            
+            getFOP().renderPDF(input, output);
+            
+            viewPDFEmbedded(new ByteArrayInputStream(output.toByteArray()));
         }
     }
 
@@ -478,7 +483,12 @@ public class XSLFOPlugin extends JPanel implements IPlugin
         
         public void runAction(ActionEvent e) throws Exception
         {
-            byte[] pdfBytes = getFOP().renderPDF(xmlArea_.getText());
+            ByteArrayOutputStream output = new ByteArrayOutputStream();
+            StringInputStream input = new StringInputStream(xmlArea_.getText());
+            
+            getFOP().renderPDF(input, output);
+            byte[] pdfBytes = output.toByteArray();
+            
             String pdfFile = FileUtil.getTempFilename() + ".pdf";
             FileUtil.setFileContents(pdfFile, pdfBytes, false);
             viewPDFExternal(pdfFile);
@@ -506,17 +516,16 @@ public class XSLFOPlugin extends JPanel implements IPlugin
             else
                 chooser = new JFileChooser(lastDir_);
 
-            if (chooser.showSaveDialog(null) == 
-                JFileChooser.APPROVE_OPTION) 
+            if (chooser.showSaveDialog(null) ==  JFileChooser.APPROVE_OPTION) 
             {
-                String saveFile = 
-                    chooser.getSelectedFile().getCanonicalPath();
+                String saveFile = chooser.getSelectedFile().getCanonicalPath();
                 
                 logger_.debug("Save file=" + saveFile);
                 
-                FileOutputStream bos = new FileOutputStream(saveFile);
-                bos.write(getFOP().renderPDF(xmlArea_.getText()));
-                bos.close();
+                FileOutputStream output = new FileOutputStream(saveFile);
+                StringInputStream i = new StringInputStream(xmlArea_.getText());
+                getFOP().renderPDF(i, output);
+                output.close();
             }
             
             lastDir_ = chooser.getCurrentDirectory();
@@ -535,8 +544,10 @@ public class XSLFOPlugin extends JPanel implements IPlugin
         
         public void runAction(ActionEvent e) throws Exception
         {
-            byte[] pdfBytes = getXEP().renderPDF(xmlArea_.getText());
-            viewPDFEmbedded(new ByteArrayInputStream(pdfBytes));
+            InputStream input = new StringInputStream(xmlArea_.getText());
+            ByteArrayOutputStream output = new ByteArrayOutputStream();
+            getXEP().renderPDF(input, output);
+            viewPDFEmbedded(new ByteArrayInputStream(output.toByteArray()));
         }
     }
     
@@ -552,9 +563,12 @@ public class XSLFOPlugin extends JPanel implements IPlugin
         
         public void runAction(ActionEvent e) throws Exception
         {
-            byte[] pdfBytes = getXEP().renderPDF(xmlArea_.getText());
+            InputStream input = new StringInputStream(xmlArea_.getText());
+            ByteArrayOutputStream output = new ByteArrayOutputStream();
+            getXEP().renderPDF(input, output);
+             
             String pdfFile = FileUtil.getTempFilename() + ".pdf";
-            FileUtil.setFileContents(pdfFile, pdfBytes, false);
+            FileUtil.setFileContents(pdfFile, output.toByteArray(), false);
             viewPDFExternal(pdfFile);
         }
     }    

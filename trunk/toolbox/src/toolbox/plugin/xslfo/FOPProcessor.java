@@ -1,20 +1,15 @@
 package toolbox.util.xslfo;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
+import java.util.Properties;
 
 import org.apache.avalon.framework.logger.ConsoleLogger;
 import org.apache.avalon.framework.logger.Logger;
 import org.apache.fop.apps.Driver;
 import org.apache.fop.messaging.MessageHandler;
-
 import org.xml.sax.InputSource;
 
 /**
@@ -35,7 +30,7 @@ public class FOPProcessor implements FOProcessor
     // FOProcessor Interface
     //--------------------------------------------------------------------------
     
-    public void initialize()
+    public void initialize(Properties props)
     {
         // Common
         Logger logger = new ConsoleLogger(ConsoleLogger.LEVEL_INFO);
@@ -50,11 +45,6 @@ public class FOPProcessor implements FOProcessor
         psDriver_ = new Driver();
         psDriver_.setLogger(logger);
         psDriver_.setRenderer(Driver.RENDER_PS);
-    }
-
-    public void renderPDF(File foFile, File pdfFile) throws Exception
-    {
-        renderPDF(new FileInputStream(foFile), new FileOutputStream(pdfFile));
     }
 
     public void renderPDF(InputStream foStream, OutputStream pdfStream)
@@ -75,13 +65,6 @@ public class FOPProcessor implements FOProcessor
         }
     }
     
-    public byte[] renderPDF(String foXML) throws Exception
-    {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        renderPDF(new ByteArrayInputStream(foXML.getBytes("UTF-8")), baos);
-        return baos.toByteArray();
-    }
-
     public void renderPostscript(InputStream foStream, OutputStream psStream)
         throws Exception
     {

@@ -1,8 +1,8 @@
 package toolbox.util.xslfo;
 
-import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Properties;
 
 /**
  * Common interface for all 3rd party XSL-FO implementations
@@ -11,17 +11,10 @@ public interface FOProcessor
 {
     /**
      * Intializes the FO processor
-     */
-    public void initialize();
-    
-    /**
-     * Transforms a FO file to a PDF file
      * 
-     * @param   foFile    File containing FO XML instructions
-     * @param   pdfFile   File to render the output to
-     * @throws  Exception on error
+     * @param  props  Initialization properties
      */
-    public void renderPDF(File foFile, File pdfFile) throws Exception;
+    public void initialize(Properties props);
     
     /**
      * Transforms the FO originating from an inputstream and writes the
@@ -35,15 +28,6 @@ public interface FOProcessor
         throws Exception;
     
     /**
-     * Transforms a FO xml string to a PDF. 
-     * 
-     * @param   foXML  String containing FO XML instructions
-     * @return  PDF in the form of a byte array
-     * @throws  Exception on error
-     */    
-    public byte[] renderPDF(String foXML) throws Exception;
-    
-    /**
      * Renders XSL-FO to a Postscript document
      * 
      * @param   foStream  Source of XSL-FO
@@ -52,5 +36,4 @@ public interface FOProcessor
      */    
     public void renderPostscript(InputStream foStream, OutputStream psStream)
         throws Exception;
-    
 }

@@ -1,10 +1,9 @@
 package toolbox.util.xslfo;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Properties;
 
 import com.renderx.xep.XSLDriver;
 
@@ -22,16 +21,10 @@ public class XEPProcessor implements FOProcessor
     // FOProcessor Interface
     //--------------------------------------------------------------------------
     
-    public void initialize()
+    public void initialize(Properties props)
     {
         // TODO: Get rid of XEP absolute key
         System.setProperty("com.renderx.xep.ROOT", "C:\\dev\\XEP");
-    }
-
-    public void renderPDF(File foFile, File pdfFile) throws Exception
-    {
-        XSLDriver.main(new String[] { 
-            "-fo", foFile.getAbsolutePath(), pdfFile.getAbsolutePath() } );
     }
 
     public void renderPDF(InputStream foStream, OutputStream pdfStream)
@@ -47,16 +40,20 @@ public class XEPProcessor implements FOProcessor
         pdfStream.close();
     }
     
-    public byte[] renderPDF(String foXML) throws Exception
-    {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        renderPDF(new ByteArrayInputStream(foXML.getBytes("UTF-8")), baos);        
-        return baos.toByteArray();
-    }
-    
     public void renderPostscript(InputStream foStream, OutputStream psStream)
         throws Exception
     {
         // to do 
     }
+
+    //--------------------------------------------------------------------------
+    // Private
+    //--------------------------------------------------------------------------
+        
+    private void renderPDF(File foFile, File pdfFile) throws Exception
+    {
+        XSLDriver.main(new String[] { 
+            "-fo", foFile.getAbsolutePath(), pdfFile.getAbsolutePath() } );
+    }
+    
 }
