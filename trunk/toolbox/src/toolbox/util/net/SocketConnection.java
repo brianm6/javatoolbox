@@ -10,6 +10,10 @@ import toolbox.util.SocketUtil;
 
 /**
  * Concrete implementation of an IConnection that wraps a socket
+ * 
+ * <pre>
+ * TODO: Implement notification for connectionInterrupted
+ * </pre>
  */
 public class SocketConnection extends AbstractConnection implements IConnection
 {
@@ -59,7 +63,6 @@ public class SocketConnection extends AbstractConnection implements IConnection
     {
         addConnectionListener(new InternalSocketConnectionListener());
     }
-
     
     /**
      * Creates a SocketConnection with an existing Socket by wrapping the
@@ -75,7 +78,6 @@ public class SocketConnection extends AbstractConnection implements IConnection
         addConnectionListener(new InternalSocketConnectionListener());
         connected_ = true;
     }
-
 
     /**
      * Creates a SocketConnection with the given host and port. Connects 
@@ -109,7 +111,6 @@ public class SocketConnection extends AbstractConnection implements IConnection
     {
         this(host, port, forceConnect, DEFAULT_RETRY_INTERVAL);
     }
-
 
     /**
      * Creates a SocketConnection with the given connection parameters. Connects
@@ -154,7 +155,6 @@ public class SocketConnection extends AbstractConnection implements IConnection
             
         fireConnectionStarted(this);
     }
- 
 
     /**
      * Closes the connection
@@ -171,7 +171,6 @@ public class SocketConnection extends AbstractConnection implements IConnection
         }
     }
 
-
     /**
      * Accessor for the input stream
      * 
@@ -183,7 +182,6 @@ public class SocketConnection extends AbstractConnection implements IConnection
         return socket_.getInputStream();
     }
 
-
     /**
      * Accessor for the output stream
      * 
@@ -194,7 +192,6 @@ public class SocketConnection extends AbstractConnection implements IConnection
     {
         return socket_.getOutputStream();
     }
-
 
     /**
      * @return True if connected
