@@ -25,12 +25,14 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import com.jgoodies.plaf.plastic.PlasticLookAndFeel;
 import com.jgoodies.plaf.plastic.PlasticTheme;
+
+import org.apache.commons.collections.SequencedHashMap;
+import org.apache.log4j.Logger;
 
 import nu.xom.Attribute;
 import nu.xom.Builder;
@@ -41,9 +43,6 @@ import nu.xom.Node;
 import nu.xom.ParseException;
 import nu.xom.Serializer;
 
-import org.apache.commons.collections.SequencedHashMap;
-import org.apache.log4j.Logger;
-
 import toolbox.log4j.SmartLogger;
 import toolbox.util.ElapsedTime;
 import toolbox.util.ExceptionUtil;
@@ -53,6 +52,7 @@ import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.io.StringOutputStream;
 import toolbox.util.ui.ImageCache;
+import toolbox.util.ui.tabbedpane.JSmartTabbedPane;
 
 /**
  * Generic Frame that accepts pluggable GUI components that are displayed on
@@ -112,7 +112,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     /** 
      * Plugins are added to this tab panel in order or registration 
      */
-    private JTabbedPane tabbedPane_;
+    private JSmartTabbedPane tabbedPane_;
     
     /** 
      * Status bar at bottom of screen 
@@ -207,8 +207,9 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         JPanel pluginPanel = new JPanel(new BorderLayout());
         
         pluginPanel.add(BorderLayout.CENTER, plugin.getComponent());
-        tabbedPane_.insertTab(plugin.getName(), null, pluginPanel, null, 0);
-        tabbedPane_.setSelectedIndex(0);
+        //tabbedPane_.insertTab(plugin.getName(), null, pluginPanel, null, 0);
+        tabbedPane_.addTab(plugin.getName(), pluginPanel, ImageCache.getIcon(ImageCache.IMAGE_CROSS));
+        //tabbedPane_.setSelectedIndex(0);
         
         // Restore unloaded preferences if they exist
         Element workspaceNode = 
@@ -257,8 +258,9 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         JPanel pluginPanel = new JPanel(new BorderLayout());
         
         pluginPanel.add(BorderLayout.CENTER, plugin.getComponent());
-        tabbedPane_.insertTab(plugin.getName(), null, pluginPanel, null, 0);
-        tabbedPane_.setSelectedIndex(0);
+        //tabbedPane_.insertTab(plugin.getName(), null, pluginPanel, null, 0);
+        tabbedPane_.addTab(plugin.getName(), pluginPanel, ImageCache.getIcon(ImageCache.IMAGE_CROSS));
+        //tabbedPane_.setSelectedIndex(0);
         
         // Restore preferences but first see if there is a set of unloaded 
         // prefs for this plugin hanging around
@@ -360,7 +362,9 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         Container contentPane = getContentPane();
         contentPane.setLayout(new BorderLayout());
 
-        tabbedPane_ = new JTabbedPane();
+        tabbedPane_ = 
+            new JSmartTabbedPane(); //ImageCache.getIcon(ImageCache.IMAGE_DELETE));
+            
         contentPane.add(BorderLayout.CENTER, tabbedPane_);
 
         statusBar_ = new WorkspaceStatusBar();
