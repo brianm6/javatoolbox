@@ -5,6 +5,8 @@ import java.io.File;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
+import toolbox.util.ClassUtil;
+
 /**
  * Decompiler bridge to the windows only JAD decompiler.
  * 
@@ -13,6 +15,15 @@ import org.apache.log4j.Logger;
 public class JadDecompiler extends AbstractDecompiler
 {
     private static final Logger logger_ = Logger.getLogger(JadDecompiler.class);
+    
+    //--------------------------------------------------------------------------
+    // Static Fields
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Flag set if the jad executable is found on the filesystem.
+     */
+    private static Boolean executableFound_;
     
     //--------------------------------------------------------------------------
     // Constructors
@@ -27,6 +38,25 @@ public class JadDecompiler extends AbstractDecompiler
     }
     
     //--------------------------------------------------------------------------
+    // Private
+    //--------------------------------------------------------------------------
+
+    /**
+     * Returns true if the jad executable is found on the system path, false
+     * otherwise.
+     * 
+     * @return boolean
+     */
+    private static boolean isFound()
+    {
+        if (executableFound_ == null)
+            executableFound_ = 
+                new Boolean(ClassUtil.findInPath("jad.exe") != null);
+        
+        return executableFound_.booleanValue();
+    }
+    
+    //--------------------------------------------------------------------------
     // Decompiler Interface
     //--------------------------------------------------------------------------
     
@@ -35,6 +65,10 @@ public class JadDecompiler extends AbstractDecompiler
      */
     public String decompile(File classFile) throws DecompilerException 
     {
+        if (!isFound())
+            throw new DecompilerException(
+                "Jad.exe executable not found on the system path.");
+
         String javaSource = null;
         
         try
