@@ -9,6 +9,26 @@ import java.io.FilenameFilter;
 public class FileOnlyFilter implements FilenameFilter
 {
     //--------------------------------------------------------------------------
+    // Static Instance
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Shared static instance.
+     */
+    public static final FileOnlyFilter INSTANCE = new FileOnlyFilter();
+    
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Prevent construction. Use publicly available static instance.
+     */
+    private FileOnlyFilter()
+    {
+    }
+    
+    //--------------------------------------------------------------------------
     //  FilenameFilter Interface
     //--------------------------------------------------------------------------
     
