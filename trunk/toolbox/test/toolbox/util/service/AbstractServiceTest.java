@@ -1,5 +1,7 @@
 package toolbox.util.service;
 
+import java.util.Collections;
+
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
@@ -43,19 +45,19 @@ public class AbstractServiceTest extends TestCase
         logger_.info("Running testStart...");
         
         Service s = new MockService(true);
-        s.initialize();
+        s.initialize(Collections.EMPTY_MAP);
         s.start();
         assertTrue(s.isRunning());
         
         s = new MockService(true);
-        s.initialize();
+        s.initialize(Collections.EMPTY_MAP);
         s.start();
         s.stop();
         s.start();
         assertTrue(s.isRunning());
         
         s = new MockService(true);
-        s.initialize();
+        s.initialize(Collections.EMPTY_MAP);
         s.start();
         s.suspend();
         s.start();
@@ -85,7 +87,7 @@ public class AbstractServiceTest extends TestCase
         try 
         {
             Service s = new MockService(true);
-            s.initialize();
+            s.initialize(Collections.EMPTY_MAP);
             s.start();
             s.suspend();
             s.resume();
@@ -100,7 +102,7 @@ public class AbstractServiceTest extends TestCase
         try 
         {
             Service s = new MockService(true);
-            s.initialize();
+            s.initialize(Collections.EMPTY_MAP);
             s.destroy();
             s.start();
             fail("Invalid start from destroy");
@@ -124,7 +126,7 @@ public class AbstractServiceTest extends TestCase
         
         Service s = new MockService(true);
         s.addServiceListener(new MockServiceListener());
-        s.initialize();
+        s.initialize(Collections.EMPTY_MAP);
         s.start();
         s.suspend();
         assertTrue(s.isSuspended());
@@ -154,7 +156,7 @@ public class AbstractServiceTest extends TestCase
         try 
         {
             Service s = new MockService(true);
-            s.initialize();
+            s.initialize(Collections.EMPTY_MAP);
             s.suspend();
             fail("Invalid suspend from initialized");
         }
@@ -166,7 +168,7 @@ public class AbstractServiceTest extends TestCase
         try 
         {
             Service s = new MockService(true);
-            s.initialize();
+            s.initialize(Collections.EMPTY_MAP);
             s.start();
             s.stop();
             s.suspend();
@@ -180,7 +182,7 @@ public class AbstractServiceTest extends TestCase
         try 
         {
             Service s = new MockService(true);
-            s.initialize();
+            s.initialize(Collections.EMPTY_MAP);
             s.destroy();
             s.suspend();
             fail("Invalid suspend from destroy");
@@ -203,7 +205,7 @@ public class AbstractServiceTest extends TestCase
         
         Service s = new MockService(true);
         s.addServiceListener(new MockServiceListener());
-        s.initialize();
+        s.initialize(Collections.EMPTY_MAP);
         s.start();
         s.suspend();
         s.resume();
@@ -234,7 +236,7 @@ public class AbstractServiceTest extends TestCase
         try 
         {
             Service s = new MockService(true);
-            s.initialize();
+            s.initialize(Collections.EMPTY_MAP);
             s.resume();
             fail("Invalid resume from initialized");
         }
@@ -246,7 +248,7 @@ public class AbstractServiceTest extends TestCase
         try 
         {
             Service s = new MockService(true);
-            s.initialize();
+            s.initialize(Collections.EMPTY_MAP);
             s.start();
             s.resume();
             fail("Invalid resume from start");
@@ -259,7 +261,7 @@ public class AbstractServiceTest extends TestCase
         try 
         {
             Service s = new MockService(true);
-            s.initialize();
+            s.initialize(Collections.EMPTY_MAP);
             s.destroy();
             s.start();
             s.stop();
@@ -274,7 +276,7 @@ public class AbstractServiceTest extends TestCase
         try 
         {
             Service s = new MockService(true);
-            s.initialize();
+            s.initialize(Collections.EMPTY_MAP);
             s.destroy();
             s.suspend();
             fail("Invalid resume from destryed");
@@ -297,7 +299,7 @@ public class AbstractServiceTest extends TestCase
         
         Service s = new MockService(true);
         s.addServiceListener(new MockServiceListener());
-        s.initialize();
+        s.initialize(Collections.EMPTY_MAP);
         s.start();
         s.stop();
         assertFalse(s.isRunning());
@@ -327,7 +329,7 @@ public class AbstractServiceTest extends TestCase
         try 
         {
             Service s = new MockService(true);
-            s.initialize();
+            s.initialize(Collections.EMPTY_MAP);
             s.stop();
             fail("Invalid stop from initialized");
         }
@@ -339,7 +341,7 @@ public class AbstractServiceTest extends TestCase
         try 
         {
             Service s = new MockService(true);
-            s.initialize();
+            s.initialize(Collections.EMPTY_MAP);
             s.destroy();
             s.stop();
             fail("Invalid stop from destroyed");
@@ -362,7 +364,7 @@ public class AbstractServiceTest extends TestCase
         
         Service s = new MockService(true);
         s.addServiceListener(new MockServiceListener());
-        s.initialize();
+        s.initialize(Collections.EMPTY_MAP);
         s.start();
         s.stop();
         s.destroy();
@@ -393,7 +395,7 @@ public class AbstractServiceTest extends TestCase
         try 
         {
             Service s = new MockService(true);
-            s.initialize();
+            s.initialize(Collections.EMPTY_MAP);
             s.start();
             s.destroy();
             fail("Invalid destroy from start");
@@ -406,7 +408,7 @@ public class AbstractServiceTest extends TestCase
         try 
         {
             Service s = new MockService(true);
-            s.initialize();
+            s.initialize(Collections.EMPTY_MAP);
             s.start();
             s.suspend();
             s.resume();
@@ -421,7 +423,7 @@ public class AbstractServiceTest extends TestCase
         try 
         {
             Service s = new MockService(true);
-            s.initialize();
+            s.initialize(Collections.EMPTY_MAP);
             s.start();
             s.suspend();
             s.destroy();

@@ -2,6 +2,7 @@ package toolbox.plugin.netmeter;
 
 import java.awt.BorderLayout;
 import java.net.Socket;
+import java.util.Collections;
 
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -76,7 +77,7 @@ public class ServerView extends JHeaderPanel
         server_ = server;
         buildView();
         server_.addServiceListener(this);
-        server_.initialize();
+        server_.initialize(Collections.EMPTY_MAP);
         server_.getSocketServer().addSocketServerListener(this);
     }
     

@@ -4,6 +4,7 @@ import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.text.NumberFormat;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -229,12 +230,12 @@ public class Client extends AbstractService
     //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.util.service.AbstractService#initialize()
+     * @see toolbox.util.service.AbstractService#initialize(Map)
      */
-    public void initialize() throws ServiceException
+    public void initialize(Map configuration) throws ServiceException
     {
         monitor_ = new DefaultThroughputMonitor();
-        super.initialize();
+        super.initialize(configuration);
     }
     
     

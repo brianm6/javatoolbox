@@ -241,9 +241,9 @@ public abstract class AbstractService implements Service
     //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.util.service.Service#initialize()
+     * @see toolbox.util.service.Service#initialize(Map)
      */
-    public void initialize() throws ServiceException
+    public void initialize(Map configuration) throws ServiceException
     {
         transition(ServiceActivity.INITIALIZE);
     }

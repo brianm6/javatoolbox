@@ -1,6 +1,7 @@
 package toolbox.plugin.netmeter;
 
 import java.awt.BorderLayout;
+import java.util.Collections;
 
 import javax.swing.JPanel;
 import javax.swing.JSlider;
@@ -95,7 +96,7 @@ public class ClientView extends JHeaderPanel
         
         // initialize() before addThroughputListener() so that clients 
         // internal monitor is non-null.
-        client_.initialize();
+        client_.initialize(Collections.EMPTY_MAP);
         
         // last
         client_.addThroughputListener(this);

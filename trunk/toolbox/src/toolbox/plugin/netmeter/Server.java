@@ -2,6 +2,7 @@ package toolbox.plugin.netmeter;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Map;
 
 import toolbox.util.net.AsyncConnectionHandler;
 import toolbox.util.net.IConnection;
@@ -130,9 +131,9 @@ public class Server extends AbstractService
     //--------------------------------------------------------------------------
 
     /**
-     * @see toolbox.util.service.AbstractService#initialize()
+     * @see toolbox.util.service.AbstractService#initialize(Map)
      */
-    public void initialize() throws ServiceException
+    public void initialize(Map configuration) throws ServiceException
     {
         SocketServerConfig config = new SocketServerConfig();
         config.setName("NetMeterServer");
@@ -151,7 +152,7 @@ public class Server extends AbstractService
         serverListener_ = new ServerListener();        
         server_.addSocketServerListener(serverListener_);
         
-        super.initialize();
+        super.initialize(configuration);
     }
     
     //--------------------------------------------------------------------------
