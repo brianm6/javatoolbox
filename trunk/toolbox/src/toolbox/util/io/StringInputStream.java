@@ -3,34 +3,85 @@ package toolbox.util.io;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.apache.log4j.Logger;
+
+import toolbox.util.StringUtil;
+
 /**
- * StringInputStream. Enables a string to be streamed as
- * a source of input.
+ * StringInputStream is an input stream that is backed by a string
  */
 public class StringInputStream extends InputStream 
 {
+    private static final Logger logger_ = 
+        Logger.getLogger(StringInputStream.class);
+    
+    /** 
+     * Current position in stream 
+     */
+    private int index_;
 
-    /** size of string **/
-    private int size;
+    /** 
+     * Stream buffer 
+     */
+    private StringBuffer buffer_;
 
-    /** current position in stream **/
-    private int index;
+    /**
+     * Flag to ignore the eof of stream
+     */
+    private boolean ignoreEOF_;
+    
 
-    /** stream buffer **/
-    private String buf;
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
+
+    /**
+     * Creates an empty StringInputStream
+     */
+    public StringInputStream()
+    {
+        this("", false);
+    }
 
     /**
      * Creates a StringInputStream with the passed string
      *
-     * @param  s  Sting to stream
+     * @param  s  String to initialize stream with
      */
     public StringInputStream(String s)
     {
-        size = s.length();
-        index = 0;
-        buf = s;
+        this(s, false);
     }
 
+    /**
+     * Creates a StringInputStream
+     * 
+     * @param  ignoreEOF    Ignores EOF (read blocks indefinitely if the end
+     *                      of the stream has been reached)
+     */
+    public StringInputStream(boolean ignoreEOF)
+    {
+        this("", ignoreEOF);
+    }
+    
+    /**
+     * Creates a StringInputStream
+     * 
+     * @param  s            String to initialize stream with
+     * @param  ignoreEOF    Ignores EOF (read blocks indefinitely if the end
+     *                      of the stream has been reached)
+     */
+    public StringInputStream(String s, boolean ignoreEOF)
+    {
+        index_     = 0;
+        buffer_    = new StringBuffer(s);
+        ignoreEOF_ = ignoreEOF;
+    }
+
+    //--------------------------------------------------------------------------
+    //  Overridden Methods from InputStream
+    //--------------------------------------------------------------------------
+    
     /**
      * Reads a byte from the stream
      *
@@ -39,10 +90,26 @@ public class StringInputStream extends InputStream
      */
     public int read() throws IOException 
     {
-        if (index < size)
-            return buf.charAt(index++);
-        else
-            return -1;
+        int c = -1;
+        
+        if (index_ < buffer_.length())
+        {
+            c = buffer_.charAt(index_++);
+        }
+        else if (ignoreEOF_)
+        {
+            synchronized(this)
+            {
+                try
+                {
+                    wait();    
+                    c = buffer_.charAt(index_++);
+                }
+                catch (InterruptedException ie) {};
+            }
+        }
+        
+        return c;
     }
     
     /**
@@ -53,6 +120,36 @@ public class StringInputStream extends InputStream
      */
     public int available() throws IOException
     {
-        return size - index;
+        return buffer_.length() - index_;
+    }
+    
+    //--------------------------------------------------------------------------
+    //  Public
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Appends a string to the end of the input stream
+     * 
+     * @param  s  String to append
+     */
+    public synchronized void append(String s)
+    {
+        if (!StringUtil.isNullOrEmpty(s))
+        {
+            buffer_.append(s);
+            
+            if (ignoreEOF_)
+                notify();
+        }
+    }   
+ 
+    /**
+     * Sets the flag to ignore EOF
+     * 
+     * @param  ignoreEOF   True to ignore EOF, false otherwise
+     */   
+    public void setIgnoreEOF(boolean ignoreEOF)
+    {
+        ignoreEOF_ = ignoreEOF;
     }
 }

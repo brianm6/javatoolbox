@@ -52,16 +52,10 @@ public class FileStuffer implements Runnable
         }
     }
 
-     
-    /**
-     * Prints program usage
-     */ 
-    protected static void printUsage()
-    {
-        System.out.println("FileStuffer writes data to a file at given intervals");
-        System.out.println("Usage: FileStuffer <output file> <delay in millis>");
-    } 
-        
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Creates a FileStuffer
      * 
@@ -73,6 +67,17 @@ public class FileStuffer implements Runnable
         setFile(file);
         setDelay(delay);
     }
+
+     
+    /**
+     * Prints program usage
+     */ 
+    protected static void printUsage()
+    {
+        System.out.println("FileStuffer writes data to a file at given intervals");
+        System.out.println("Usage: FileStuffer <output file> <delay in millis>");
+    } 
+        
 
 
     /**

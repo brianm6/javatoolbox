@@ -9,14 +9,17 @@ import java.util.Iterator;
  */
 public class OrFilter extends CompoundFilter implements FilenameFilter
 {
-    
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
+     
     /**
-     * Default constructor
-     */    
+     * Default Constructor
+     */
     public OrFilter()
     {
-    }
-    
+    } 
+        
     /**
      * Creates a filter that ORs the given filters
      * 
@@ -28,7 +31,11 @@ public class OrFilter extends CompoundFilter implements FilenameFilter
         addFilter(filterOne);
         addFilter(filterTwo);
     }
-    
+
+    //--------------------------------------------------------------------------
+    //  FilenameFilter Interface
+    //--------------------------------------------------------------------------
+        
     /**
      * Accepts files based on the logical OR of the added filters
      * 

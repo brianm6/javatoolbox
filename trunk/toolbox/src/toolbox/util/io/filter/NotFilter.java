@@ -10,12 +10,21 @@ public class NotFilter implements FilenameFilter
 {
     private FilenameFilter filter_;
     
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
+    
     /**
+     * Constructor
      */   
     public NotFilter(FilenameFilter filter)
     {
         filter_  = filter;
     }
+    
+    //--------------------------------------------------------------------------
+    //  FilenameFilter Interface
+    //--------------------------------------------------------------------------
     
     /**
      * Not

@@ -9,13 +9,23 @@ import java.io.Writer;
  */
 public class FixedWidthWriter extends FilterWriter
 {
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
+    
     /**
-     * Constructor for FormattedTextWriter
+     * Constructor
+     * 
+     * @param  writer  Writer
      */
     public FixedWidthWriter(Writer writer)
     {
         super(writer);
     }
+
+    //--------------------------------------------------------------------------
+    //  Public
+    //--------------------------------------------------------------------------
 
     public void writeRPad(String str, int width) throws IOException
     {

@@ -8,6 +8,10 @@ import java.io.FilenameFilter;
  */
 public class DirectoryFilter implements FilenameFilter
 {
+    //--------------------------------------------------------------------------
+    //  FilenameFilter Interface
+    //--------------------------------------------------------------------------
+    
     /**
      * Filter out directories
      * 

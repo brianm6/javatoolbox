@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+
 import toolbox.util.ArrayUtil;
 import toolbox.util.ThreadUtil;
 
@@ -20,23 +21,39 @@ public class DirectoryMonitor
     private static Logger logger_ = 
         Logger.getLogger(DirectoryMonitor.class);
 
-    /** Notification list **/
+    /** 
+     * Notification list 
+     */
     private List listeners_ = new ArrayList();
     
-    /** File activities that this monitor will provide notification for  **/
+    /** 
+     * File activities that this monitor will provide notification for  
+     */
     private List activities_ = new ArrayList();
 
-    /** Delay interval in ms used to check for new activity **/
+    /** 
+     * Delay interval in ms used to check for new activity 
+     */
     private int delay_ = 5000;
 
-    /** Termination flag **/
+    /** 
+     * Termination flag 
+     */
     private boolean shutdown_ = false;
 
-    /** Directory to monitor **/
+    /** 
+     * Directory to monitor 
+     */
     private File directory_;
 
-    /** Thread that the activities are dispatched on **/
+    /** 
+     * Thread that the activities are dispatched on 
+     */
     private Thread monitor_;
+    
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
     
     /**
      *  Creates a DirectoryMonitor with the given directory and selection policy
@@ -49,6 +66,10 @@ public class DirectoryMonitor
         setDirectory(dir);
     }
 
+    //--------------------------------------------------------------------------
+    //  Public
+    //--------------------------------------------------------------------------
+    
     /**
      * Starts execution of the directory monitor
      */
@@ -82,7 +103,110 @@ public class DirectoryMonitor
         monitor_ = null;
     }
 
+    /**
+     * Accessor for delay
+     *
+     * @return int
+     */
+    public int getDelay()
+    {
+        return this.delay_;
+    }
 
+    /**
+     * Mutator for delay
+     *
+     * @param newDelay    Delay
+     */
+    public void setDelay(int newDelay)
+    {
+        this.delay_ = newDelay;
+    }
+
+    /**
+     * Returns the directory.
+     * 
+     * @return File
+     */
+    public File getDirectory()
+    {
+        return directory_;
+    }
+
+    /**
+     * Sets the directory.
+     * 
+     * @param directory The directory to set
+     */
+    public void setDirectory(File directory)
+    {
+        this.directory_ = directory;
+    }
+
+    /**
+     * Adds an activity to monitor
+     */
+    public void addFileActivity(IFileActivity activity)
+    {
+        activities_.add(activity);
+    }
+
+    /**
+     * Removes an activity from the list of monitored activities_
+     */
+    public void removeFileActivity(IFileActivity activity)
+    {
+        activities_.remove(activity);
+    }
+
+    //--------------------------------------------------------------------------
+    //  Event Support
+    //--------------------------------------------------------------------------
+
+    /**
+     * Fires notification of file activity to the directory monitor listeners
+     *
+     * @param   actvitity  Activity that generated this event
+     * @param   files      Files affected by the activity 
+     * @throws  Exception on error
+     */
+    protected void fireFileActivity(IFileActivity activity, File[] files) 
+        throws Exception
+    {
+        // Iterator through listeners and file event
+        for (Iterator i = listeners_.iterator(); i.hasNext(); )
+        {
+            IDirectoryListener dirListener = (IDirectoryListener) i.next();
+            dirListener.fileActivity(activity, files);
+        }
+    }
+
+    /**
+     * Removes a listener from the list that is notified each time
+     * a file becomes available.
+     *
+     * @param    listener    Listener to remove from the notification list
+     */
+    public void removeDirectoryListener(IDirectoryListener listener)
+    {
+        listeners_.remove(listener);
+    }
+
+    /**
+     * Adds a listener to the list that's notified each time a new file is available.
+     *
+     * @param    listener    Listener to add to notification list
+     */
+    public void addDirectoryListener(IDirectoryListener listener)
+    {
+        listeners_.add(listener);
+    }
+
+
+    //--------------------------------------------------------------------------
+    //  Inner Classes
+    //--------------------------------------------------------------------------
+    
     /**
      * Starts running monitor
      */
@@ -132,103 +256,4 @@ public class DirectoryMonitor
             }
         }
     }
-    
-    /**
-     * Fires notification of file activity to the directory monitor listeners
-     *
-     * @param   actvitity  Activity that generated this event
-     * @param   files      Files affected by the activity 
-     * @throws  Exception on error
-     */
-    protected void fireFileActivity(IFileActivity activity, File[] files) 
-        throws Exception
-    {
-        // Iterator through listeners and file event
-        for (Iterator i = listeners_.iterator(); i.hasNext(); )
-        {
-            IDirectoryListener dirListener = (IDirectoryListener) i.next();
-            dirListener.fileActivity(activity, files);
-        }
-    }
-
-
-    /**
-     * Accessor for delay
-     *
-     * @return int
-     */
-    public int getDelay()
-    {
-        return this.delay_;
-    }
-
-
-    /**
-     * Removes a listener from the list that is notified each time
-     * a file becomes available.
-     *
-     * @param    listener    Listener to remove from the notification list
-     */
-    public void removeDirectoryListener(IDirectoryListener listener)
-    {
-        listeners_.remove(listener);
-    }
-
-
-    /**
-     * Mutator for delay
-     *
-     * @param newDelay    Delay
-     */
-    public void setDelay(int newDelay)
-    {
-        this.delay_ = newDelay;
-    }
-
-    /**
-     * Returns the directory.
-     * 
-     * @return File
-     */
-    public File getDirectory()
-    {
-        return directory_;
-    }
-
-    /**
-     * Sets the directory.
-     * 
-     * @param directory The directory to set
-     */
-    public void setDirectory(File directory)
-    {
-        this.directory_ = directory;
-    }
-
-    /**
-     * Adds an activity to monitor
-     */
-    public void addFileActivity(IFileActivity activity)
-    {
-        activities_.add(activity);
-    }
-
-    /**
-     * Removes an activity from the list of monitored activities_
-     */
-    public void removeFileActivity(IFileActivity activity)
-    {
-        activities_.remove(activity);
-    }
-
-    /**
-     * Adds a listener to the list that's notified each time a new file is available.
-     *
-     * @param    listener    Listener to add to notification list
-     */
-    public void addDirectoryListener(IDirectoryListener listener)
-    {
-        listeners_.add(listener);
-    }
-
 }

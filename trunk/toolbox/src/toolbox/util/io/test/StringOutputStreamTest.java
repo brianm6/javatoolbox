@@ -2,6 +2,9 @@ package toolbox.util.io.test;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
+
+import org.apache.log4j.Logger;
+
 import toolbox.util.io.StringOutputStream;
 
 /**
@@ -9,6 +12,9 @@ import toolbox.util.io.StringOutputStream;
  */
 public class StringOutputStreamTest extends TestCase
 {
+    private static final Logger logger_ =
+        Logger.getLogger(StringOutputStreamTest.class);
+        
     /**
      * Entrypoint   
      * 
@@ -19,6 +25,9 @@ public class StringOutputStreamTest extends TestCase
         TestRunner.run(StringOutputStreamTest.class);
     }
     
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
     
     /**
      * Constructor for StringOutputStreamTest
@@ -30,7 +39,10 @@ public class StringOutputStreamTest extends TestCase
         super(arg0);
     }
 
-    
+    //--------------------------------------------------------------------------
+    //  Unit Tests
+    //--------------------------------------------------------------------------
+        
     /**
      * Tests the write() method
      * 
@@ -38,6 +50,8 @@ public class StringOutputStreamTest extends TestCase
      */
     public void testWrite() throws Exception
     {
+        logger_.info("Running testWrite...");
+        
         StringOutputStream sos = new StringOutputStream();
         
         String testString = "holy moly!";

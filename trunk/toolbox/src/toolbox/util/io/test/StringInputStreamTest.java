@@ -2,6 +2,10 @@ package toolbox.util.io.test;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
+
+import org.apache.log4j.Logger;
+
+import toolbox.util.ThreadUtil;
 import toolbox.util.io.StringInputStream;
 
 /**
@@ -9,6 +13,9 @@ import toolbox.util.io.StringInputStream;
  */
 public class StringInputStreamTest extends TestCase
 {
+    private static final Logger logger_ = 
+        Logger.getLogger(StringInputStreamTest.class);
+        
     /**
      * Entrypoint
      * 
@@ -19,7 +26,10 @@ public class StringInputStreamTest extends TestCase
         TestRunner.run(StringInputStreamTest.class);
     }
     
-    
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
+        
     /**
      * Constructor for StringInputStreamTest
      * 
@@ -30,7 +40,10 @@ public class StringInputStreamTest extends TestCase
         super(arg0);
     }
     
-    
+    //--------------------------------------------------------------------------
+    //  Unit Tests
+    //--------------------------------------------------------------------------
+        
     /**
      * Tests the read() method
      * 
@@ -38,6 +51,8 @@ public class StringInputStreamTest extends TestCase
      */
     public void testRead() throws Exception
     {
+        logger_.info("Running testRead...");
+        
         String str = "hello";
         StringInputStream sis = new StringInputStream(str);
         byte[] readBuf = new byte[str.length()];
@@ -55,6 +70,8 @@ public class StringInputStreamTest extends TestCase
      */
     public void testReadEmpty() throws Exception
     {
+        logger_.info("Running testReadEmpty...");
+        
         StringInputStream sis = new StringInputStream("");
         
         assertEquals("should not be able to read from stream", 
@@ -69,17 +86,79 @@ public class StringInputStreamTest extends TestCase
      */
     public void testAvailable() throws Exception
     {
-        /* case zero */
+        logger_.info("Running testAvailable...");
+        
+        // Case zero
         StringInputStream sis = new StringInputStream("");
         assertEquals("available should be zero", 0, sis.available());
         
-        /* case one */
+        // Case one
         sis = new StringInputStream("x");
         assertEquals("available should be one", 1, sis.available());
         
-        /* case many */
+        // Case many 
         String many = "qiwuerpoqierupqiwuerpqowiuerpoqiwuerpqiurp";
         sis = new StringInputStream(many);
         assertEquals("available is incorrect", many.length(), sis.available());
+    }
+    
+    
+    /** 
+     * Tests read on an empty stream with ignore EOF set to true
+     */
+    public void testReadEmptyIgnoreEOF() throws Exception
+    {
+        logger_.info("Running testReadEmptyIgnoreEOF...");
+        
+        StringInputStream sis = new StringInputStream(true);
+ 
+        int iterations = 3;
+        ThreadUtil.run(this, "stuffStream", 
+            new Object[] { sis, new Integer(1000), "x", new Integer(iterations)});
+        
+        for (int i=0; i<iterations; i++)                  
+        {
+            int c = sis.read();
+            logger_.info("Read: " + (char)c);
+            assertEquals('x', (char)c);
+        }
+        
+        sis.setIgnoreEOF(false);
+        assertEquals(-1, sis.read());
+    }   
+ 
+    /**
+     * Tests append()
+     */
+    public void testAppend() throws Exception
+    {
+        logger_.info("Running testAppend...");
+        
+        StringInputStream sis = new StringInputStream();
+        
+        int c = -1;
+        
+        sis.append("x");
+        c = sis.read();
+        assertEquals('x', (char)c);
+        
+        sis.append("ab");
+        assertEquals('a', (char)sis.read());
+        assertEquals('b', (char)sis.read());
+        
+    }
+ 
+    //--------------------------------------------------------------------------
+    //  Helper Methods
+    //--------------------------------------------------------------------------   
+    
+    public void stuffStream(StringInputStream sis, int delay, String s, 
+        int iterations) 
+    {
+        for (int i=0; i<iterations; i++)
+        {
+            sis.append(s);
+            ThreadUtil.sleep(delay);
+        }
     }
 }

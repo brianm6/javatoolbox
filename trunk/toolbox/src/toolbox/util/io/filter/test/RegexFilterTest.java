@@ -2,10 +2,10 @@ package toolbox.util.io.filter.test;
 
 import java.io.File;
 
-import org.apache.regexp.RESyntaxException;
-
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
+
+import org.apache.log4j.Logger;
 
 import toolbox.util.FileUtil;
 import toolbox.util.io.filter.RegexFilter;
@@ -15,9 +15,13 @@ import toolbox.util.io.filter.RegexFilter;
  */
 public class RegexFilterTest extends TestCase
 {
-    /** Test directory for filtering files **/
+    private static final Logger logger_ = 
+        Logger.getLogger(RegexFilterTest.class);
+        
+    /** 
+     * Test directory for filtering files 
+     */
     private File testDir_;
-    
     
     /** 
      * Entrypoint
@@ -29,7 +33,24 @@ public class RegexFilterTest extends TestCase
         TestRunner.run(RegexFilterTest.class);
     }
 
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Constructor for RegexFilterTest.
+     * 
+     * @param arg0  Name
+     */
+    public RegexFilterTest(String arg0)
+    {
+        super(arg0);
+    }
 
+    //--------------------------------------------------------------------------
+    //  Setup/Teardown
+    //--------------------------------------------------------------------------
+    
     /** 
      * Create a temporary directory with files to use for testing
      */
@@ -56,24 +77,18 @@ public class RegexFilterTest extends TestCase
         testDir_.delete();
         super.tearDown();
     }
-
-    
-    /**
-     * Constructor for RegexFilterTest.
-     * 
-     * @param arg0  Name
-     */
-    public RegexFilterTest(String arg0)
-    {
-        super(arg0);
-    }
-    
+   
+    //--------------------------------------------------------------------------
+    //  Unit Tests
+    //--------------------------------------------------------------------------
     
     /**
      * Tests accept() for not matching any files
      */
     public void testAcceptMatchesZero() throws Exception
     {
+        logger_.info("Running testAcceptMatchesZero...");
+        
         RegexFilter filter = new RegexFilter("xyz", false);
         String matches[] = testDir_.list(filter);
         assertEquals("No matches should have been found", 0, matches.length);
@@ -85,6 +100,8 @@ public class RegexFilterTest extends TestCase
      */
     public void testAcceptMatchesOne() throws Exception
     {
+        logger_.info("Running testAcceptMatchesOne...");
+                
         RegexFilter filter = new RegexFilter("^b2b", false);
         String matches[] = testDir_.list(filter);
         assertEquals("One match should have been found", 1, matches.length);
@@ -97,6 +114,8 @@ public class RegexFilterTest extends TestCase
      */
     public void testAcceptMatchesMany() throws Exception
     {
+        logger_.info("Running testAcceptMatchesMany...");
+        
         RegexFilter filter = new RegexFilter("java$", false);
         String matches[] = testDir_.list(filter);
         

@@ -14,8 +14,14 @@ public class ExtensionFilter implements FilenameFilter
     private static final Logger logger_ = 
         Logger.getLogger(ExtensionFilter.class);
         
-    /** Extension to filter on **/
-    private String extension;
+    /** 
+     * Extension to filter on 
+     */
+    private String extension_;
+    
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
     
     /**
      * Creates an Extension filter with the given file extension
@@ -24,11 +30,15 @@ public class ExtensionFilter implements FilenameFilter
      */   
     public ExtensionFilter(String fileExtension)
     {
-        /* add a dot just in case */
+        // add a dot just in case 
         if(!fileExtension.startsWith("."))
             fileExtension = "." + fileExtension;
-        extension = fileExtension;
+        extension_ = fileExtension;
     }
+    
+    //--------------------------------------------------------------------------
+    //  FilenameFilter Interface
+    //--------------------------------------------------------------------------
     
     /**
      * Filter out a files by extension
@@ -39,7 +49,7 @@ public class ExtensionFilter implements FilenameFilter
      */
     public boolean accept(File dir,String name)
     {
-        boolean b = name.toLowerCase().endsWith(extension.toLowerCase());
+        boolean b = name.toLowerCase().endsWith(extension_.toLowerCase());
         
         //if (b)
         //    logger_.debug("Accepted " + name);

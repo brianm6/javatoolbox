@@ -30,7 +30,10 @@ public class FileCreatedActivityTest extends TestCase
         TestRunner.run(FileCreatedActivityTest.class);
     }
 
-
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Constructor for FileCreatedActivityTest.
      * 
@@ -41,12 +44,17 @@ public class FileCreatedActivityTest extends TestCase
         super(arg0);
     }
 
-    
+    //--------------------------------------------------------------------------
+    //  Unit Tests
+    //--------------------------------------------------------------------------
+        
     /**
      * Tests getFiles()
      */
     public void testGetFiles() throws Exception
     {
+        logger_.info("Running testGetFiles...");
+        
         // Create a base line dir with two files
         File dir = FileUtil.createTempDir();
         

@@ -22,6 +22,9 @@ public class ElapsedTime
     private int  seconds_;
     private int  millis_;
 
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
 
     /**
      * Creates an elapsed time with the start and end times 
@@ -105,7 +108,10 @@ public class ElapsedTime
             elapsedTime.getMillis());        
     }
 
-
+    //--------------------------------------------------------------------------
+    //  Private
+    //--------------------------------------------------------------------------
+    
     /**
      * Calculates the elapsed time between the starting time and ending time
      */
@@ -131,7 +137,10 @@ public class ElapsedTime
         millis_   = (int)delta;
     }
 
-
+    //--------------------------------------------------------------------------
+    //  Public
+    //--------------------------------------------------------------------------
+    
     /**
      * Accessor for the number of days elapsed [0..Integer.MAXINT]
      * 
@@ -247,6 +256,31 @@ public class ElapsedTime
     {
         endTime_ = new Date().getTime();
         recalc();
+    }
+    
+    /**
+     * Returns total time elapsed in milliseconds
+     */
+    public long getTotalMillis()
+    {
+        int total = 0;
+        
+        if (days_ > 0)
+            total += days_ * DAY * HOUR * MINUTE * SECOND * MILLI;
+            
+        if (hours_ > 0)
+            total += hours_ * HOUR * MINUTE * SECOND * MILLI;
+            
+        if (minutes_ > 0)
+            total += minutes_ * MINUTE * SECOND * MILLI;
+            
+        if (seconds_ > 0)
+            total += seconds_ * SECOND * MILLI;
+            
+        if (millis_ > 0)
+            total += millis_;            
+        
+        return total;
     }
     
     

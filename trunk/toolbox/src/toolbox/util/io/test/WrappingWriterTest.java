@@ -28,7 +28,11 @@ public class WrappingWriterTest extends TestCase
     {
         TestRunner.run(WrappingWriterTest.class);
     }
-    
+
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
+        
     /**
      * Constructor for WrappingWriterTest.
      * 
@@ -39,12 +43,17 @@ public class WrappingWriterTest extends TestCase
         super(name);
     }
 
-
+    //--------------------------------------------------------------------------
+    //  Unit Tests
+    //--------------------------------------------------------------------------
+    
     /**
      * Tests WrappingWriter
      */
     public void testWrappingWriter() throws IOException
     {
+        logger_.info("Running testWrappingWriter...");
+        
         StringWriter sw = new StringWriter();
         WrappingWriter w = new WrappingWriter(sw, 10, "", "");
         
@@ -62,6 +71,8 @@ public class WrappingWriterTest extends TestCase
      */
     public void testWrappingWriterWithPrePost() throws IOException
     {
+        logger_.info("Running testWrappingWriterWithPrePost...");
+        
         StringWriter sw = new StringWriter();
         WrappingWriter w = new WrappingWriter(sw, 10, "[", "]");
         
@@ -80,6 +91,8 @@ public class WrappingWriterTest extends TestCase
      */
     public void testEmpty() throws IOException
     {
+        logger_.info("Running testEmpty...");
+        
         StringWriter sw = new StringWriter(); 
         WrappingWriter ww = new WrappingWriter(sw);
         ww.write("");
@@ -97,6 +110,8 @@ public class WrappingWriterTest extends TestCase
      */
     public void testOne() throws IOException
     {
+        logger_.info("Running testOne...");
+        
         String one = "a";
         StringWriter sw = new StringWriter(); 
         WrappingWriter ww = new WrappingWriter(sw);
@@ -114,6 +129,8 @@ public class WrappingWriterTest extends TestCase
      */
     public void testOneLine() throws Exception
     {
+        logger_.info("Running testOneLine...");
+        
         String expected = "12345";
         
         StringWriter sw = new StringWriter(); 
@@ -131,6 +148,8 @@ public class WrappingWriterTest extends TestCase
      */
     public void testOneLineOneChar() throws Exception
     {
+        logger_.info("Running testOneLineOneChar...");
+        
         String expected = "12345\n6";
         
         StringWriter sw = new StringWriter(); 
@@ -148,6 +167,8 @@ public class WrappingWriterTest extends TestCase
      */
     public void testOneLineTwoChar() throws Exception
     {
+        logger_.info("Running testOneLineTwoChar...");
+        
         String expected = "12345\n67";
         
         StringWriter sw = new StringWriter(); 
@@ -165,6 +186,8 @@ public class WrappingWriterTest extends TestCase
      */
     public void testSmallWidth() throws Exception
     {
+        logger_.info("Running testSmallWitdth...");
+        
         String expected = "1\n2\n3\n4\n5";
         
         StringWriter sw = new StringWriter(); 
@@ -182,6 +205,8 @@ public class WrappingWriterTest extends TestCase
      */
     public void testEmptyDecorated() throws IOException
     {
+        logger_.info("Running testEmptyDecorated...");
+        
         StringWriter sw = new StringWriter(); 
         WrappingWriter ww = new WrappingWriter(sw, 80, "[", "]");
         ww.write("");
@@ -198,6 +223,8 @@ public class WrappingWriterTest extends TestCase
      */
     public void testOneDecorated() throws IOException
     {
+        logger_.info("Running testOneDecorated...");        
+        
         String one = "a";
         
         StringWriter sw = new StringWriter(); 
@@ -216,6 +243,8 @@ public class WrappingWriterTest extends TestCase
      */
     public void testOneLineDecorated() throws Exception
     {
+        logger_.info("Running testOneLineDecorated...");        
+        
         String expected = "[12345]";
 
         StringWriter sw = new StringWriter(); 
@@ -233,6 +262,8 @@ public class WrappingWriterTest extends TestCase
      */
     public void testOneLineOneCharDecorated() throws Exception
     {
+        logger_.info("Running testOneLineOneCharDecorated...");        
+        
         String expected = "[12345]\n[6]";
         
         StringWriter sw = new StringWriter(); 
@@ -250,6 +281,8 @@ public class WrappingWriterTest extends TestCase
      */
     public void testOneLineTwoCharDecorated() throws Exception
     {
+        logger_.info("Running testOneLineTwoCharDecorated...");        
+        
         String expected = "[12345]\n[67]";
         
         StringWriter sw = new StringWriter(); 
@@ -267,6 +300,8 @@ public class WrappingWriterTest extends TestCase
      */
     public void testSmallWidthDecorated() throws Exception
     {
+        logger_.info("Running testSmallWitdthDecorated...");
+        
         String expected = "[1]\n[2]\n[3]\n[4]\n[5]";
         
         StringWriter sw = new StringWriter(); 

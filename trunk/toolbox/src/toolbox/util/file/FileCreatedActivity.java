@@ -14,10 +14,15 @@ import java.util.TreeSet;
  */
 public class FileCreatedActivity implements IFileActivity
 {
-    /** Map of directories with their associated snapshot **/   
+    /** 
+     * Map of directories with their associated snapshot 
+     */   
     private Map snapshots_ = new HashMap();
 
-    
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
+        
     /**
      * Constructor for FileCreatedActivity.
      */
@@ -25,7 +30,10 @@ public class FileCreatedActivity implements IFileActivity
     {
     }
 
-
+    //--------------------------------------------------------------------------
+    //  IFileActivity Interface
+    //--------------------------------------------------------------------------
+    
     /**
      * Determines new files in a directory since the last time a snapshot was
      * taken.
@@ -73,7 +81,10 @@ public class FileCreatedActivity implements IFileActivity
         return newFiles;
     }
 
-
+    //--------------------------------------------------------------------------
+    //  Overridden Methods from Object
+    //--------------------------------------------------------------------------
+    
     /**
      * @return  Simple name
      */    

@@ -2,12 +2,7 @@ package toolbox.util.io.filter;
 
 import java.io.File;
 import java.io.FilenameFilter;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
-
-
-import junit.framework.Assert;
 
 /**
  * A file filter that logically ANDs two existing filters so that the 
@@ -15,6 +10,13 @@ import junit.framework.Assert;
  */
 public class AndFilter extends CompoundFilter implements FilenameFilter
 {
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Default constructor
+     */
     public AndFilter()
     {
     }
@@ -30,6 +32,10 @@ public class AndFilter extends CompoundFilter implements FilenameFilter
         addFilter(filterOne);
         addFilter(filterTwo);
     }
+
+    //--------------------------------------------------------------------------
+    //  FilenameFilter Interface
+    //--------------------------------------------------------------------------
     
     /**
      * Accepts files that that meet the criteria of filterOne AND filterTwo

@@ -4,7 +4,9 @@ import java.io.StringReader;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
+
 import org.apache.log4j.Logger;
+
 import toolbox.util.io.RegexFilterReader;
 
 /** 
@@ -17,6 +19,20 @@ public class RegexFilterReaderTest extends TestCase
         Logger.getLogger(RegexFilterReaderTest.class);
         
     /**
+     * Entrypoint
+     *
+     * @param  args  Arguments
+     */
+    public static void main(String[] args)
+    {
+        TestRunner.run(RegexFilterReaderTest.class);
+    }
+
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
+        
+    /**
      * Constructor for RegexFilterReaderTest.
      * 
      * @param  arg0  Name
@@ -26,17 +42,10 @@ public class RegexFilterReaderTest extends TestCase
         super(arg0);
     }
 
-    /**
-     * Entrypoint
-     *
-     * @param  args  Arguments
-     */
-    public static void main(String[] args)
-    {
-        TestRunner.run(RegexFilterReaderTest.class);
-    }
-    
-    
+    //--------------------------------------------------------------------------
+    //  Unit Tests
+    //--------------------------------------------------------------------------
+        
     /**
      * Tests readLine() for a simple test case
      * 
@@ -44,6 +53,8 @@ public class RegexFilterReaderTest extends TestCase
      */
     public void testRegexReader() throws Exception
     {
+        logger_.info("Running testRegexReader...");
+        
         String data = "one\ntwo\nthree\nfour\n";
         
         StringReader sr = new StringReader(data);
@@ -53,7 +64,7 @@ public class RegexFilterReaderTest extends TestCase
         
         while( (result = rr.readLine()) != null)
         {
-            System.out.println("result=" + result);            
+            logger_.info("result=" + result);            
         }
     }
 }

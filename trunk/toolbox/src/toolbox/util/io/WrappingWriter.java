@@ -64,6 +64,10 @@ public class WrappingWriter extends Writer
     /** Flag to stagger writing on a new line until the next char is written **/
     private boolean stagger_;
 
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
+
     /**
      * Creates a wrapping writer with default with of <code>DEFAULT_WIDTH</code>
      * 
@@ -102,17 +106,20 @@ public class WrappingWriter extends Writer
         prefix_    = prefix;
         suffix_    = suffix;
         
-        /* subtract the space that the pre/suffix takes up from the width */
+        // Subtract the space that the pre/suffix takes up from the width
         width_     = width - prefix_.length() - suffix_.length();
         
         first_     = true;
         stagger_   = false;
         
-        /* create a counter with range 1..width */
+        // Create a counter with range 1..width 
         counter_     = new RollingCounter(1, width_, 1); 
         counter_.addRollingCounterListener(this);
     }
 
+    //--------------------------------------------------------------------------
+    //  Overriden Methods from OutputStream
+    //--------------------------------------------------------------------------
 
     /**
      * Write a portion of an array of characters.
@@ -179,7 +186,9 @@ public class WrappingWriter extends Writer
         writer_.close();
     }
     
-
+    //--------------------------------------------------------------------------
+    //  Public 
+    //--------------------------------------------------------------------------
 
     /**
      * Counter has rolled back to the beginning of the range

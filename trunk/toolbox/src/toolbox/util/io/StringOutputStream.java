@@ -7,9 +7,15 @@ import java.io.OutputStream;
  */
 public class StringOutputStream extends OutputStream
 {
-    /** output buffer **/
+    /** 
+     * Output buffer 
+     */
     private StringBuffer output;
 
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Create a new StringOutputStream with the default initial buffer size.
      */
@@ -28,6 +34,10 @@ public class StringOutputStream extends OutputStream
         output = new StringBuffer(initialBufferSize);
     }
 
+    //--------------------------------------------------------------------------
+    //  Overriden Methods from OutputStream
+    //--------------------------------------------------------------------------
+
     /**
      * Close the stream - no-op
      */
@@ -45,11 +55,14 @@ public class StringOutputStream extends OutputStream
     }
 
     /**
-     * @return The stringbuffer
+     * Write a single character. Ignores end of file.
+     *
+     * @param  outputChar  The character to write to the stream
      */
-    public StringBuffer getBuffer()
+    public void write(int outputChar)
     {
-        return output;
+        if (outputChar != -1)
+            output.append((char) outputChar);
     }
 
     /**
@@ -60,14 +73,15 @@ public class StringOutputStream extends OutputStream
         return output.toString();
     }
 
+    //--------------------------------------------------------------------------
+    //  Public
+    //--------------------------------------------------------------------------
+        
     /**
-     * Write a single character. Ignores end of file.
-     *
-     * @param  outputChar  The character to write to the stream
+     * @return The stringbuffer
      */
-    public void write(int outputChar)
+    public StringBuffer getBuffer()
     {
-        if (outputChar != -1)
-            output.append((char) outputChar);
+        return output;
     }
 }

@@ -6,13 +6,19 @@ import java.io.Reader;
 
 import toolbox.util.StringUtil;
 
-
 /**
  * Simple reader that reads string delimited tokens a line at a time
  */
 public class TokenReader extends LineNumberReader
 {
+    /**
+     * Token delimiter
+     */
     private String delimiter_;
+    
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
     
     /**
      * Create a TokenReader with the given delimiter
@@ -25,6 +31,10 @@ public class TokenReader extends LineNumberReader
         super(in);
         delimiter_ = delimiter;
     }
+    
+    //--------------------------------------------------------------------------
+    //  Public
+    //--------------------------------------------------------------------------
     
     /**
      * Returns the next batch of tokens parsed from a single line

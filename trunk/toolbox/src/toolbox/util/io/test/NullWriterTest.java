@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import junit.framework.TestCase;
 
+import org.apache.log4j.Logger;
+
 import toolbox.util.io.NullWriter;
 
 /**
@@ -11,6 +13,9 @@ import toolbox.util.io.NullWriter;
  */
 public class NullWriterTest extends TestCase
 {
+    private static final Logger logger_ =
+        Logger.getLogger(NullWriterTest.class);
+        
     /**
      * Entrypoint
      */
@@ -19,7 +24,10 @@ public class NullWriterTest extends TestCase
         junit.textui.TestRunner.run(NullWriterTest.class);
     }
 
-
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Constructor for NullWriterTest.
      * 
@@ -30,12 +38,17 @@ public class NullWriterTest extends TestCase
         super(arg0);
     }
 
-
+    //--------------------------------------------------------------------------
+    //  Unit Tests
+    //--------------------------------------------------------------------------
+    
     /**
      * Tests the NullWriter
      */
     public void testNullWriter() throws IOException
     {
+        logger_.info("Running testNullWriter...");
+        
         NullWriter nw = new NullWriter();    
         nw.write("hello".toCharArray());
         nw.write("goodbye".toCharArray(), 1, 2);

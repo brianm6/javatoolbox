@@ -5,6 +5,8 @@ import java.io.File;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import org.apache.log4j.Logger;
+
 import toolbox.util.FileUtil;
 import toolbox.util.ThreadUtil;
 import toolbox.util.file.FileStuffer;
@@ -14,6 +16,9 @@ import toolbox.util.file.FileStuffer;
  */
 public class FileStufferTest extends TestCase
 {
+    private static final Logger logger_ = 
+        Logger.getLogger(FileStufferTest.class);
+        
     /**
      * Entrypoint
      *
@@ -24,6 +29,9 @@ public class FileStufferTest extends TestCase
         TestRunner.run(FileStufferTest.class);
     }
     
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
     
     /**
      * Constructor for FileStufferTest.
@@ -35,12 +43,17 @@ public class FileStufferTest extends TestCase
         super(arg0);
     }
     
+    //--------------------------------------------------------------------------
+    //  Unit Tests
+    //--------------------------------------------------------------------------
     
     /**
      * Tests running the filestuffer
      */
     public void testFileStuffer() throws Exception
     {
+        logger_.info("Running testFileStuffer...");
+        
         File tmpDir = FileUtil.getTempDir();
         File outfile = new File(tmpDir, "outfile");
         FileStuffer fs = new FileStuffer(outfile, 500);

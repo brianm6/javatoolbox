@@ -8,6 +8,10 @@ import java.io.FilenameFilter;
  */
 public class FileFilter implements FilenameFilter
 {
+    //--------------------------------------------------------------------------
+    //  FilenameFilter Interface
+    //--------------------------------------------------------------------------
+    
     /**
      * Filter out files only
      * 

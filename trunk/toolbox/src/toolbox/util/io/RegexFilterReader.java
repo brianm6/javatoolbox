@@ -20,22 +20,35 @@ public class RegexFilterReader extends LineNumberReader
     private static final Logger logger_ = 
         Logger.getLogger(RegexFilterReader.class);
     
-    /** Default regular expression matches all if one is not specified **/    
+    /** 
+     * Default regular expression matches all if one is not specified 
+     */    
     private static final String DEFAULT_MATCH = "*";
 
-    /** Regular expression as a string **/
+    /** 
+     * Regular expression as a string 
+     */
     private String strRegExp_;
     
-    /** Flag to match case **/
+    /** 
+     * Flag to match case 
+     */
     private boolean matchCase_;
 
-    /** Inverse match flag **/
+    /** 
+     * Inverse match flag 
+     */
     private boolean matchInverse_;
     
-    /** Regular expression */
+    /** 
+     * Regular expression 
+     */
     private RE regExp_;
 
-    
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
+        
     /**
      * Creates a RegexFilterReader
      * 
@@ -89,7 +102,10 @@ public class RegexFilterReader extends LineNumberReader
         }
     }
 
-    
+    //--------------------------------------------------------------------------
+    //  Overridden Methods from LineNumberReader
+    //--------------------------------------------------------------------------
+        
     /**
      * Reads the next line that matches the regular expression
      * 
