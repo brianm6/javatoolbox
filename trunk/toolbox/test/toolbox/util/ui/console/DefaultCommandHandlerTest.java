@@ -6,18 +6,26 @@ import junit.textui.TestRunner;
 import org.apache.log4j.Logger;
 
 /**
- * Unit test for {@link toolbox.util.ui.console.AbstractConsole}.
+ * Unit test for {@link toolbox.util.ui.console.DefaultCommandHandler}.
  */
 public class DefaultCommandHandlerTest extends TestCase
 {
-    private static final Logger logger_ = Logger.getLogger(DefaultCommandHandlerTest.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(DefaultCommandHandlerTest.class);
 
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
     
+    /**
+     * Mock console.
+     */
+    private Console console_;
+
+    /**
+     * Handler to test.
+     */
     private CommandHandler handler_;
-    private Console console_ = new MockConsole();
     
     //--------------------------------------------------------------------------
     // Main
@@ -26,7 +34,7 @@ public class DefaultCommandHandlerTest extends TestCase
     /**
      * Entrypoint
      *
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -42,6 +50,7 @@ public class DefaultCommandHandlerTest extends TestCase
      */
     protected void setUp() throws Exception
     {
+        console_ = new MockConsole();
         handler_ = new DefaultCommandHandler();
     }
     
@@ -109,10 +118,21 @@ public class DefaultCommandHandlerTest extends TestCase
         String prop = "console.test";
         String value = "123";        
         
-        handler_.handleCommand(console_, 
-            DefaultCommandHandler.CMD_SETPROP + " " + prop + " " + value);
-        
-        assertEquals("property should be set", value, System.getProperty(prop));
+        try
+        {
+            handler_.handleCommand(console_, 
+                DefaultCommandHandler.CMD_SETPROP + " " + prop + " " + value);
+            
+            assertEquals(
+                "property should be set", 
+                value, 
+                System.getProperty(prop));
+        }
+        finally
+        {
+            // Cleanup...
+            System.getProperties().remove(prop);
+        }
     }
     
     
@@ -124,12 +144,21 @@ public class DefaultCommandHandlerTest extends TestCase
         logger_.info("Running testHandleCommandDelProp...");
         
         String prop = "console.delprop";
-        String value = "123";        
-        System.setProperty(prop, value);
+        String value = "123";
         
-        handler_.handleCommand(console_, 
-            DefaultCommandHandler.CMD_DELPROP + " " + prop);
-        
-        assertNull("property should be null", System.getProperty(prop));    
+        try
+        {
+            System.setProperty(prop, value);
+            
+            handler_.handleCommand(console_, 
+                DefaultCommandHandler.CMD_DELPROP + " " + prop);
+            
+            assertNull("property should be null", System.getProperty(prop));
+        }
+        finally
+        {
+            // Cleanup...
+            System.getProperties().remove(prop);
+        }
     }
 }
