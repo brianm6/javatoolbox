@@ -56,6 +56,7 @@ import toolbox.util.io.filter.FileFilter;
  * <pre>
  * TODO: Add filter for file list
  * TODO: Add refresh button
+ * TODO: Add file size and timestamp info somewhere
  * </pre>
  */
 public class JFileExplorer extends JPanel
