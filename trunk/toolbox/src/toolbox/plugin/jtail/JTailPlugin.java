@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.util.Properties;
 
 import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 
 import toolbox.util.ui.plugin.IPlugin;
 import toolbox.util.ui.plugin.IStatusBar;
@@ -41,6 +42,14 @@ public class JTailPlugin implements IPlugin
     public JMenu getMenu()
     {
         return jtail_.getJMenuBar().getMenu(0);
+    }
+
+	/**
+     * @see toolbox.util.ui.plugin.IPlugin#getMenuBar()
+     */
+    public JMenuBar getMenuBar()
+    {
+    	return jtail_.getJMenuBar();
     }
 
     /**

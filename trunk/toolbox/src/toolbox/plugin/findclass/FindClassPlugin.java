@@ -3,7 +3,7 @@ package toolbox.findclass;
 import java.awt.Component;
 import java.util.Properties;
 
-import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 
 import org.apache.log4j.Logger;
 
@@ -16,7 +16,7 @@ import toolbox.util.ui.plugin.IStatusBar;
  */
 public class JFindClassPlugin implements IPlugin
 {
-    /** Logger **/
+    /** Logger */
     public static final Logger logger_ =
         Logger.getLogger(JFindClassPlugin.class);
         
@@ -43,11 +43,11 @@ public class JFindClassPlugin implements IPlugin
     }
 
     /**
-     * @see toolbox.util.ui.plugin.IPlugin#getMenu()
+     * @see toolbox.util.ui.plugin.IPlugin#getMenuBar()
      */
-    public JMenu getMenu()
+    public JMenuBar getMenuBar()
     {
-        return null;
+        return jfindClass_.getJMenuBar();
     }
 
     /**

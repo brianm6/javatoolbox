@@ -16,6 +16,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -169,9 +170,9 @@ public class JUnitPlugin extends JPanel implements  IPlugin
     }
 
     /**
-     * @see toolbox.util.ui.plugin.IPlugin#getMenu()
+     * @see toolbox.util.ui.plugin.IPlugin#getMenuBar()
      */
-    public JMenu getMenu()
+    public JMenuBar getMenuBar()
     {
         return null;
     }

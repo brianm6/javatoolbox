@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.util.Properties;
 
 import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import toolbox.util.ui.plugin.IPlugin;
@@ -40,15 +41,19 @@ public class JTcpTunnelPlugin implements IPlugin
     }
 
     /**
-     * @see toolbox.util.ui.plugin.IPlugin#getMenu()
+     * @see toolbox.util.ui.plugin.IPlugin#getMenuBar()
      */
-    public JMenu getMenu()
+    public JMenuBar getMenuBar()
     {
         JMenu menu = new JMenu(getName());
         menu.add(new JMenuItem(jtcpTunnelPane_.new StartTunnelAction()));
         menu.add(new JMenuItem(jtcpTunnelPane_.new StopTunnelAction()));
         menu.add(new JMenuItem(jtcpTunnelPane_.new ClearAction()));
-        return menu;
+        
+		JMenuBar jmb = new JMenuBar();
+		jmb.add(menu);
+
+        return jmb;
     }
 
     /**

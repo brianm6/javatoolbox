@@ -17,7 +17,7 @@ import java.util.Properties;
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -40,7 +40,7 @@ import toolbox.util.ui.JTextComponentPopupMenu;
  */ 
 public class QueryPlugin extends JPanel implements IPlugin
 { 
-    /** Logger **/ 
+    /** Logger */ 
     public static final Logger logger_ =
         Logger.getLogger(QueryPlugin.class);   
 
@@ -193,8 +193,8 @@ public class QueryPlugin extends JPanel implements IPlugin
     }
     
     /**
-     * Runs a query against the database and 
-     * returns the results in a formatted string
+     * Runs a query against the database and returns the results in a 
+     * formatted string
      * 
      * @param  sql  SQL query
      * @return Formatted results
@@ -287,9 +287,9 @@ public class QueryPlugin extends JPanel implements IPlugin
     }
 
     /**
-     * @see com.swa.turbo.pos.comm.proxy.ui.IPlugin#getMenu()
+     * @see com.swa.turbo.pos.comm.proxy.ui.IPlugin#getMenuBar()
      */
-    public JMenu getMenu()
+    public JMenuBar getMenuBar()
     {
         return null;
     }

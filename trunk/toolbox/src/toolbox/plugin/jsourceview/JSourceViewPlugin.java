@@ -3,7 +3,7 @@ package toolbox.jsourceview;
 import java.awt.Component;
 import java.util.Properties;
 
-import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 
 import toolbox.util.ui.plugin.IPlugin;
 import toolbox.util.ui.plugin.IStatusBar;
@@ -36,11 +36,11 @@ public class JSourceViewPlugin implements IPlugin
     }
 
     /**
-     * @see toolbox.util.ui.plugin.IPlugin#getMenu()
+     * @see toolbox.util.ui.plugin.IPlugin#getMenuBar()
      */
-    public JMenu getMenu()
+    public JMenuBar getMenuBar()
     {
-        return null;
+        return sourceView_.getJMenuBar();
     }
 
     /**
