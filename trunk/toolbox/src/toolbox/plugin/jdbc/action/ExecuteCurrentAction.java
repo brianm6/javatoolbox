@@ -126,7 +126,7 @@ public class ExecuteCurrentAction extends BaseAction
         
         if (StringUtils.isBlank(sql))
         {
-            statusBar.setInfo("Enter SQL to execute");
+            statusBar.setWarning("No SQL statement(s) to execute");
         }
         else
         {
