@@ -35,7 +35,7 @@ public class ActivatePlasticLookAndFeelAction extends ActivateLookAndFeelAction
     public void setLookAndFeelInfo(LAFInfo info)
     {
         super.setLookAndFeelInfo(info);
-        setName(info.getName() + " - " + info.getProperty("theme.name"));
+        setName(info.getName() + " " + info.getProperty("theme.name"));
     }
     
     
