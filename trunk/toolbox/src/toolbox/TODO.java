@@ -1,7 +1,7 @@
 package toolbox;
 
 /**
- * Just a place where TODOs are lumped...
+ * Just a place where project wide to do items are lumped...
  * <pre>
  * TODO: SSH on CVS
  * TODO: Move Tomcat server to booger2
