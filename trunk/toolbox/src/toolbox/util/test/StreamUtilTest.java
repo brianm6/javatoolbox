@@ -14,6 +14,7 @@ import junit.textui.TestRunner;
 import org.apache.log4j.Logger;
 
 import toolbox.util.StreamUtil;
+import toolbox.util.ThreadUtil;
 import toolbox.util.io.StringInputStream;
 import toolbox.util.io.StringOutputStream;
 
@@ -102,7 +103,7 @@ public class StreamUtilTest extends TestCase
     
     
     /**
-     * Tests readExactly() for a stream.
+     * Tests readExactly(InputStream).
      * 
      * @throws Exception on error
      */
@@ -121,6 +122,52 @@ public class StreamUtilTest extends TestCase
         // verify
         assertEquals("first pass does not match", "test", new String(pass1));
         assertEquals("second pass does not match", "ing", new String(pass2));
+    }
+
+    
+    /**
+     * Tests readExactly(InputStream) for blocking on input. 
+     * 
+     * @throws Exception on error
+     */
+    public void testReadExactlyStreamBlocks() throws Exception
+    {
+        logger_.info("Running testReadExactlyStreamBlocks...");
+        
+        //
+        // create stream and populate
+        //
+        
+        String contents = "12345";
+        final StringInputStream sis = new StringInputStream(contents, true);
+
+        //
+        // Delay appending to the stream so that readExactly() will reach 
+        // a blocking point.
+        //
+        
+        new Thread(new Runnable() 
+        {
+            public void run()
+            {
+                ThreadUtil.sleep(3000);
+                sis.append("6789");
+            }
+        }).start();
+        
+
+        //
+        // Try to read in all 9 bytes. Should block after first 5 bytes and
+        // then continue after 6789 is appended.
+        //
+        
+        byte[] pass1 = StreamUtil.readExactly(sis, 9);
+     
+        //
+        // verify
+        //
+        
+        assertEquals("123456789", new String(pass1));
     }
     
     
