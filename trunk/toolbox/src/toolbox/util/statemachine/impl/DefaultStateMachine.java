@@ -39,10 +39,24 @@ public class DefaultStateMachine implements StateMachine
      */
     private String name_;
     
+    /**
+     * Current state of this state machine.
+     */
     private State currentState_;
+    
+    /**
+     * The state of this state machine before the last transition.
+     */
     private State previousState_;
+    
+    /**
+     * The transition that resulted in the current state.
+     */
     private Transition lastTransition_;
     
+    /**
+     * All known registered states.
+     */
     private List states_;
     
     /**
@@ -76,18 +90,30 @@ public class DefaultStateMachine implements StateMachine
     public DefaultStateMachine(String name)
     {
         setName(name);
-        listeners_ = new ArrayList(1);
-        states_ = new ArrayList();
+        listeners_  = new ArrayList(1);
+        states_     = new ArrayList();
         fromStates_ = new MultiHashMap();
-        toStates_ = new HashMap();
+        toStates_   = new HashMap();
     }
     
     //--------------------------------------------------------------------------
     // StateMachine Interface
     //--------------------------------------------------------------------------
     
+    /**
+     * @see toolbox.util.statemachine.StateMachine#setBeginState(
+     *      toolbox.util.statemachine.State)
+     */
     public void setBeginState(State state)
     {
+        // Validate state exists
+        Validate.isTrue(states_.contains(state), 
+            "State '" 
+            + state.getName() 
+            + "' does not exist in state machine '" 
+            + getName() 
+            + "'.");
+        
         currentState_ = state;
     }
     
