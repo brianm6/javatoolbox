@@ -868,17 +868,18 @@
         <include>**/*Test.java</include>
         <!--include>toolbox/junit/CloverTestSuite.java</include-->
       </includes>
-      
+
+      <!-- Tests that are excluded because they exercise a GUI component or -->
+      <!-- require interactivity                                            -->      
       <excludes>
-        
-        <exclude>**/RepositoryTest.java</exclude>
-        <exclude>**/ui/**/*Test.java</exclude>
-        <exclude>**/SwingUtilTest.java</exclude>
         <exclude>**/jedit/**</exclude>
         <exclude>**/log4j/im/**/*Test.java</exclude>
-        <exclude>**/BannerTaskTest.java</exclude>
+        <exclude>**/ui/**/*Test.java</exclude>
         <exclude>**/DecompilerTest.java</exclude>
-        
+        <exclude>**/FigletTaskTest.java</exclude>
+        <exclude>**/RepositoryTest.java</exclude>
+        <exclude>**/ServiceViewTest.java</exclude>
+        <exclude>**/SwingUtilTest.java</exclude>
       </excludes>
       
       <resources>
