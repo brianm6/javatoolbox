@@ -2,12 +2,15 @@ package toolbox.util;
 
 import java.io.IOException;
 
+import nu.xom.Builder;
 import nu.xom.Document;
 import nu.xom.Element;
 import nu.xom.Elements;
 import nu.xom.Node;
+import nu.xom.ParseException;
 import nu.xom.Serializer;
 
+import toolbox.util.io.StringInputStream;
 import toolbox.util.io.StringOutputStream;
 
 /**
@@ -214,6 +217,21 @@ public class XOMUtil
         serializer.setLineSeparator("\n");
         serializer.write(new Document((Element)node.copy()));
         return sos.toString();
+    }
+    
+    
+    /**
+     * Converts a valid XML string into an Element.
+     * 
+     * @param xml Valid XML string.
+     * @return Element
+     * @throws ParseException if XML is invalid or not well-formed.
+     * @throws IOException if an I/O error occurs.
+     */
+    public static Element toElement(String xml) throws ParseException, 
+        IOException
+    {
+        return new Builder().build(new StringInputStream(xml)).getRootElement();
     }
     
     
