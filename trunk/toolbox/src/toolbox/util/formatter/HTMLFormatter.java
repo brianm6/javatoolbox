@@ -9,9 +9,9 @@ import org.w3c.tidy.Tidy;
 
 /**
  * HTML formatter that uses Tidy internally.
+ * <p>
+ * <b>Example:</b>
  * <pre class="snippet">
- * Usage:
- * 
  * Formatter f = new HTMLFormatter();
  * String html = getSomeHTML();
  * String formattedHTML = f.format(html);
@@ -61,6 +61,8 @@ public class HTMLFormatter extends AbstractFormatter
     //--------------------------------------------------------------------------
     
     /**
+     * Formats the HTML.
+     * 
      * @see toolbox.util.formatter.Formatter#format(java.io.InputStream, 
      *      java.io.OutputStream)
      */

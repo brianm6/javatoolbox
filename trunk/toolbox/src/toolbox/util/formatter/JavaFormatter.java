@@ -13,9 +13,9 @@ import toolbox.util.FileUtil;
 
 /**
  * Java source code formatter that uses Jalopy internally.
+ * <p>
+ * <b>Example:</b>
  * <pre class="snippet">
- * Usage:
- * 
  * Formatter f = new JavaFormatter();
  * String sourceCode = getSomeJavaCode();
  * String formattedCode = f.format(sourceCode);
@@ -54,6 +54,8 @@ public class JavaFormatter extends AbstractFormatter
     //--------------------------------------------------------------------------
     
     /**
+     * Formats java source code.
+     * 
      * @see toolbox.util.formatter.Formatter#format(java.io.InputStream, 
      *      java.io.OutputStream)
      */

@@ -10,10 +10,9 @@ import toolbox.util.XMLUtil;
 
 /**
  * XML formatter that uses Xerces internally.
- * 
+ * <p>
+ * <b>Example:</b>
  * <pre class="snippet">
- * Usage:
- * 
  * Formatter f = new XMLFormatter();
  * String xml = getSomeXML();
  * String formattedXML = f.format(xml);
@@ -64,6 +63,8 @@ public class XMLFormatter extends AbstractFormatter
     //--------------------------------------------------------------------------
     
     /**
+     * Formats the XML.
+     * 
      * @see toolbox.util.formatter.Formatter#format(
      *      java.io.InputStream, java.io.OutputStream)
      */
