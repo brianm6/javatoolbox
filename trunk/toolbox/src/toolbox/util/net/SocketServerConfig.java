@@ -142,7 +142,7 @@ public class SocketServerConfig implements Nameable
     /**
      * Creates a socket server configuration with the given properties.
      * 
-     * @param props Properties.
+     * @param props Configuration properties.
      */
     public SocketServerConfig(Properties props)
     {

@@ -18,7 +18,6 @@ public class SmartClass
     private Hashtable methods_;
     private IMethodHolder constructors_;
 
-
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -147,7 +146,6 @@ public class SmartClass
         return getConstructor(types);
     }
 
-
     //--------------------------------------------------------------------------
     // Invocation Methods
     //--------------------------------------------------------------------------
@@ -166,8 +164,12 @@ public class SmartClass
      * @throws Exception on error.
      */
     public Object invoke(Object obj, Symbol selector, Object[] parameters)
-        throws NoSuchMethodException, IllegalAccessException,
-        IllegalArgumentException, InvocationTargetException, Exception
+        throws 
+            NoSuchMethodException, 
+            IllegalAccessException,
+            IllegalArgumentException, 
+            InvocationTargetException, 
+            Exception
     {
         SmartMethod method = getMethod(selector, parameters);
 
@@ -188,8 +190,11 @@ public class SmartClass
      * @throws Exception on error.
      */
     public Object invoke(Object obj, String methodName, Object[] parameters)
-        throws IllegalAccessException, IllegalArgumentException,
-        InvocationTargetException, Exception
+        throws 
+            IllegalAccessException, 
+            IllegalArgumentException,
+            InvocationTargetException, 
+            Exception
     {
         return invoke(obj, new Symbol(methodName), parameters);
     }
@@ -206,7 +211,6 @@ public class SmartClass
         try
         {
             SmartMethod method = getMethod(selector, parameters);
-
             return method.invokeSilent(obj, parameters);
         }
         catch (NoSuchMethodException ex)
@@ -222,7 +226,9 @@ public class SmartClass
      * @param parameters Params.
      * @return Return value.
      */
-    public Object invokeSilent(Object obj, String methodName,
+    public Object invokeSilent(
+        Object obj, 
+        String methodName,
         Object[] parameters)
     {
         return invokeSilent(obj, new Symbol(methodName), parameters);
@@ -239,9 +245,12 @@ public class SmartClass
      * @throws IllegalArgumentException on error.
      * @throws InvocationTargetException on error.
      */
-    public Object newInstance() throws NoSuchMethodException,
-        InstantiationException, IllegalAccessException,
-        IllegalArgumentException, InvocationTargetException
+    public Object newInstance() throws 
+        NoSuchMethodException,
+        InstantiationException, 
+        IllegalAccessException,
+        IllegalArgumentException, 
+        InvocationTargetException
     {
         return newInstance(null);
     }
@@ -258,16 +267,16 @@ public class SmartClass
      * @throws IllegalArgumentException on error.
      * @throws InvocationTargetException on error.
      */
-    public Object newInstance(Object[] parameters)
-        throws NoSuchMethodException, InstantiationException,
-        IllegalAccessException, IllegalArgumentException,
+    public Object newInstance(Object[] parameters) throws 
+        NoSuchMethodException, 
+        InstantiationException,
+        IllegalAccessException, 
+        IllegalArgumentException,
         InvocationTargetException
     {
         SmartConstructor c = getConstructor(parameters);
-
         return c.newInstance(parameters);
     }
-
 
     // SUPPORT METHODS
 
@@ -295,8 +304,9 @@ public class SmartClass
             Object selector = method.getSelector();
             IMethodHolder holder = (IMethodHolder) methods_.get(selector);
 
-            holder = holder == null ? new MethodHolder(method) : holder
-                .addMethod(method);
+            holder = holder == null 
+                ? new MethodHolder(method) 
+                : holder.addMethod(method);
 
             methods_.put(selector, holder);
         }
@@ -314,7 +324,7 @@ public class SmartClass
             constructors_ = new MethodHolder(new SmartConstructor(cs[0]));
 
         for (int i = 1; i < cs.length; i++)
-            constructors_ = constructors_
-                .addMethod(new SmartConstructor(cs[i]));
+            constructors_ = 
+                constructors_.addMethod(new SmartConstructor(cs[i]));
     }
 }

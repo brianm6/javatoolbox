@@ -5,11 +5,16 @@ package toolbox.util.reflect;
  */
 public class MethodParamCountHolder implements IMethodHolder
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     private int paramOffset_;
     private IMethodHolder[] holders_;
 
-
-    // CONSTRUCTORS
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
 
     /**
      * Creates a new MethodParamCountHolder object.
@@ -43,15 +48,12 @@ public class MethodParamCountHolder implements IMethodHolder
         holders_[count] = holder;
     }
 
-
-    // METHODHOLDER METHODS
+    //--------------------------------------------------------------------------
+    // IMethodHolder Interface
+    //--------------------------------------------------------------------------
 
     /**
-     * DOCUMENT ME!
-     * 
-     * @param paramTypes DOCUMENT ME!
-     * @return DOCUMENT ME!
-     * @throws NoSuchMethodException DOCUMENT ME!
+     * @see toolbox.util.reflect.IMethodHolder#getMethod(java.lang.Class[])
      */
     public SmartMethod getMethod(Class[] paramTypes)
         throws NoSuchMethodException
@@ -61,10 +63,8 @@ public class MethodParamCountHolder implements IMethodHolder
 
 
     /**
-     * DOCUMENT ME!
-     * 
-     * @param method DOCUMENT ME!
-     * @return DOCUMENT ME!
+     * @see toolbox.util.reflect.IMethodHolder#addMethod(
+     *      toolbox.util.reflect.SmartMethod)
      */
     public IMethodHolder addMethod(SmartMethod method)
     {
@@ -81,8 +81,9 @@ public class MethodParamCountHolder implements IMethodHolder
         {
             IMethodHolder holder = holders_[offset];
 
-            holder = holder == null ? new MethodHolder(method) : holder
-                .addMethod(method);
+            holder = holder == null 
+                ? new MethodHolder(method) 
+                : holder.addMethod(method);
 
             holders_[offset] = holder;
         }

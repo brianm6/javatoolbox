@@ -6,7 +6,7 @@ import toolbox.util.thread.ThreadDispatcher;
 /**
  * AsyncConnectionHandler decorates a connection handler by providing 
  * asynchronous dispatching (when handle() is called) on a separate pooled 
- * thread. The call to handle() returns immediately and is not a blocking call.
+ * thread. The call to handle() returns immediately and is non-blocking call.
  */
 public class AsyncConnectionHandler implements IConnectionHandler, IThreadable
 {
@@ -25,7 +25,7 @@ public class AsyncConnectionHandler implements IConnectionHandler, IThreadable
     private IConnectionHandler handler_;
 
     /** 
-     * Dispatcher responsible for pooling the connection handlers. 
+     * Dispatcher responsible for pooling the connection handlers.
      */
     private ThreadDispatcher dispatcher_;
 
@@ -36,15 +36,15 @@ public class AsyncConnectionHandler implements IConnectionHandler, IThreadable
     /**
      * Creates an AsyncConnectionHandler.
      * 
-     * @param newHandler Handler to wrap with async behavior.
-     * @param newDispatcher Dispatcher to use for thread 
-     *        acquisition/dispatching.
+     * @param handler Handler to wrap with async behavior.
+     * @param dispatcher Dispatcher to use for thread acquisition/dispatching.
      */
     public AsyncConnectionHandler(
-        IConnectionHandler newHandler, ThreadDispatcher newDispatcher)
+        IConnectionHandler handler, 
+        ThreadDispatcher dispatcher)
     {
-        setConnectionHandler(newHandler);
-        setDispatcher(newDispatcher);
+        setConnectionHandler(handler);
+        setDispatcher(dispatcher);
     }
 
     //--------------------------------------------------------------------------
@@ -80,22 +80,22 @@ public class AsyncConnectionHandler implements IConnectionHandler, IThreadable
     /**
      * Mutator for the connection handler.
      * 
-     * @param newHandler IConnectionHandler.
+     * @param handler IConnectionHandler.
      */
-    public void setConnectionHandler(IConnectionHandler newHandler)
+    public void setConnectionHandler(IConnectionHandler handler)
     {
-        handler_ = newHandler;
+        handler_ = handler;
     }
 
 
     /**
      * Mutator for the connection.
      * 
-     * @param newConn IConnection.
+     * @param connection IConnection.
      */
-    public void setConnection(IConnection newConn)
+    public void setConnection(IConnection connection)
     {
-        conn_ = newConn;
+        conn_ = connection;
     }
 
 
@@ -124,11 +124,11 @@ public class AsyncConnectionHandler implements IConnectionHandler, IThreadable
     /**
      * Mutator for the dispatcher.
      * 
-     * @param newDispatcher Dispatcher.
+     * @param dispatcher Dispatcher.
      */
-    public void setDispatcher(ThreadDispatcher newDispatcher)
+    public void setDispatcher(ThreadDispatcher dispatcher)
     {
-        dispatcher_ = newDispatcher;
+        dispatcher_ = dispatcher;
     }
 
 

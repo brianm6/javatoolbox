@@ -45,10 +45,12 @@ public class IntSequence extends AbstractSequence implements RandomSequence
     {
         super(nonRepeating);
         
-        Validate.isTrue(
-            low <= high, 
-            "Lower bound " + low + " must be less than or equal to upper bound "
-            + high + ".");
+        Validate.isTrue(low <= high, 
+            "Lower bound " 
+            + low 
+            + " must be less than or equal to upper bound "
+            + high 
+            + ".");
         
         setLow(low);
         setHigh(high);

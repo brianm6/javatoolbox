@@ -6,15 +6,20 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 
 /**
- * Symbol
+ * Symbol.
  */
 public class Symbol implements Externalizable
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     private int hashCode_;
     private String string_;
 
-
-    // CONSTRUCTORS
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
 
     /**
      * Creates a new Symbol object.
@@ -26,13 +31,12 @@ public class Symbol implements Externalizable
         setString(string);
     }
 
-
-    // STANDARD METHODS
+    //--------------------------------------------------------------------------
+    // Overrides java.lang.Object
+    //--------------------------------------------------------------------------
 
     /**
-     * DOCUMENT ME!
-     * 
-     * @return DOCUMENT ME!
+     * @see java.lang.Object#hashCode()
      */
     public int hashCode()
     {
@@ -41,10 +45,7 @@ public class Symbol implements Externalizable
 
 
     /**
-     * DOCUMENT ME!
-     * 
-     * @param another DOCUMENT ME!
-     * @return DOCUMENT ME!
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     public boolean equals(Object another)
     {
@@ -58,17 +59,16 @@ public class Symbol implements Externalizable
 
 
     /**
-     * DOCUMENT ME!
-     * 
-     * @return DOCUMENT ME!
+     * @see java.lang.Object#toString()
      */
     public String toString()
     {
         return string_;
     }
 
-
-    // ACCESSING METHODS
+    //--------------------------------------------------------------------------
+    // Protected
+    //--------------------------------------------------------------------------
 
     /**
      * DOCUMENT ME!
@@ -81,15 +81,12 @@ public class Symbol implements Externalizable
         hashCode_ = string.hashCode();
     }
 
-
-    // EXTERNALIZABLE METHODS
+    //--------------------------------------------------------------------------
+    // Externalizable Interface
+    //--------------------------------------------------------------------------
 
     /**
-     * DOCUMENT ME!
-     * 
-     * @param in DOCUMENT ME!
-     * @throws IOException DOCUMENT ME!
-     * @throws ClassNotFoundException DOCUMENT ME!
+     * @see java.io.Externalizable#readExternal(java.io.ObjectInput)
      */
     public void readExternal(ObjectInput in) throws IOException,
         ClassNotFoundException
@@ -102,10 +99,7 @@ public class Symbol implements Externalizable
 
 
     /**
-     * DOCUMENT ME!
-     * 
-     * @param out DOCUMENT ME!
-     * @throws IOException DOCUMENT ME!
+     * @see java.io.Externalizable#writeExternal(java.io.ObjectOutput)
      */
     public void writeExternal(ObjectOutput out) throws IOException
     {

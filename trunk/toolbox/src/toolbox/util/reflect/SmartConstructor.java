@@ -4,12 +4,13 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 /**
- * SmartConstructor
+ * SmartConstructor.
  */
 public class SmartConstructor extends SmartMethod
 {
-
-    // CONSTRUCTORS
+    //--------------------------------------------------------------------------
+    // Constructors
+    //-------------------------------------------------------------------------- 
 
     /**
      * Creates a new SmartConstructor object.
@@ -21,13 +22,12 @@ public class SmartConstructor extends SmartMethod
         super(constructor);
     }
 
-
-    // ACCESSING
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
 
     /**
-     * DOCUMENT ME!
-     * 
-     * @return DOCUMENT ME!
+     * @return Constructor
      */
     public final Constructor getConstructor()
     {
@@ -36,9 +36,7 @@ public class SmartConstructor extends SmartMethod
 
 
     /**
-     * DOCUMENT ME!
-     * 
-     * @return DOCUMENT ME!
+     * @return Class[]
      */
     public Class[] getExceptionTypes()
     {
@@ -47,15 +45,12 @@ public class SmartConstructor extends SmartMethod
 
 
     /**
-     * DOCUMENT ME!
-     * 
-     * @return DOCUMENT ME!
+     * @return Class[]
      */
     public Class[] getParameterTypes()
     {
         return getConstructor().getParameterTypes();
     }
-
 
     // INSTATIONATION METHODS
 
@@ -69,16 +64,20 @@ public class SmartConstructor extends SmartMethod
      * @throws IllegalArgumentException DOCUMENT ME!
      * @throws InvocationTargetException DOCUMENT ME!
      */
-    public Object newInstance(Object[] parameters)
-        throws InstantiationException, IllegalAccessException,
-        IllegalArgumentException, InvocationTargetException
+    public Object newInstance(Object[] parameters) throws 
+        InstantiationException, 
+        IllegalAccessException,
+        IllegalArgumentException, 
+        InvocationTargetException
     {
         try
         {
             if (parameters != null)
                 for (int i = 0; i < parameters.length; i++)
-                    parameters[i] = patterns_[i] == null ? parameters[i]
-                        : patterns_[i].convert(parameters[i]);
+                    parameters[i] = 
+                        patterns_[i] == null 
+                            ? parameters[i]
+                            : patterns_[i].convert(parameters[i]);
         }
         catch (Exception ex)
         {
@@ -87,7 +86,6 @@ public class SmartConstructor extends SmartMethod
 
         return getConstructor().newInstance(parameters);
     }
-
 
     // INVOKATION METHODS
 
@@ -101,8 +99,9 @@ public class SmartConstructor extends SmartMethod
      * @throws IllegalArgumentException DOCUMENT ME!
      * @throws InvocationTargetException DOCUMENT ME!
      */
-    public Object invoke(Object object, Object[] parameters)
-        throws IllegalAccessException, IllegalArgumentException,
+    public Object invoke(Object object, Object[] parameters) throws 
+        IllegalAccessException, 
+        IllegalArgumentException,
         InvocationTargetException
     {
         try

@@ -58,7 +58,7 @@ public class SocketConnection extends AbstractConnection implements IConnection
     /** 
      * Connected state of the connection.
      */
-    private boolean connected_ = false;
+    private boolean connected_;
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -166,8 +166,10 @@ public class SocketConnection extends AbstractConnection implements IConnection
     public void connect() throws IOException
     {
         if (forceConnect_)
+        {
             socket_ = SocketUtil.connectWithRetry(
                 getHost(), getPort(), retryInterval_, Integer.MAX_VALUE);
+        }
         else
             socket_ = new Socket(getHost(), getPort());
             
@@ -232,11 +234,11 @@ public class SocketConnection extends AbstractConnection implements IConnection
     /**
      * Mutator for the socket.
      * 
-     * @param newSocket Socket.
+     * @param socket Socket.
      */
-    protected void setSocket(Socket newSocket)
+    protected void setSocket(Socket socket)
     {
-        socket_ = newSocket;
+        socket_ = socket;
     }
 
 

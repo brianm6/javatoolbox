@@ -48,11 +48,11 @@ public class StringConnection extends AbstractConnection implements IConnection
     /**
      * Creates a StringConnection with the given input string.
      * 
-     * @param str Input stream contents.
+     * @param input Input stream contents.
      */
-    public StringConnection(String str)
+    public StringConnection(String input)
     {
-        sis_ = new StringInputStream(str);
+        sis_ = new StringInputStream(input);
         sos_ = new StringOutputStream();
         connected_ = false;
     }

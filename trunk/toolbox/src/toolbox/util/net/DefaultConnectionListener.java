@@ -21,22 +21,37 @@ public class DefaultConnectionListener implements IConnectionListener
     /**
      * Queue for connection closed events.
      */    
-    private BlockingQueue closed_ = new LinkedBlockingQueue();
+    private BlockingQueue closed_;
     
     /**
      * Queue for connection closing events.
      */
-    private BlockingQueue closing_ = new LinkedBlockingQueue();
+    private BlockingQueue closing_;
     
     /**
      * Queue for connection interrupted events.
      */
-    private BlockingQueue interrupted_ = new LinkedBlockingQueue();
+    private BlockingQueue interrupted_;
     
     /**
      * Queue for connection started events.
      */
-    private BlockingQueue started_ = new LinkedBlockingQueue(); 
+    private BlockingQueue started_; 
+    
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Creates a DefaultConnectionListener.
+     */
+    public DefaultConnectionListener()
+    {
+        closed_      = new LinkedBlockingQueue();
+        closing_     = new LinkedBlockingQueue();
+        interrupted_ = new LinkedBlockingQueue();
+        started_     = new LinkedBlockingQueue(); 
+    }
     
     //--------------------------------------------------------------------------
     // IConnectionListener Interface
@@ -44,7 +59,7 @@ public class DefaultConnectionListener implements IConnectionListener
 
     /**
      * @see toolbox.util.net.IConnectionListener#connectionClosed(
-     *          toolbox.util.net.IConnection)
+     *      toolbox.util.net.IConnection)
      */
     public void connectionClosed(IConnection connection)
     {
@@ -63,7 +78,7 @@ public class DefaultConnectionListener implements IConnectionListener
     
     /**
      * @see toolbox.util.net.IConnectionListener#connectionClosing(
-     *          toolbox.util.net.IConnection)
+     *      toolbox.util.net.IConnection)
      */
     public void connectionClosing(IConnection connection)
     {
@@ -82,7 +97,7 @@ public class DefaultConnectionListener implements IConnectionListener
     
     /**
      * @see toolbox.util.net.IConnectionListener#connectionInterrupted(
-     *          toolbox.util.net.IConnection)
+     *      toolbox.util.net.IConnection)
      */
     public void connectionInterrupted(IConnection connection)
     {
@@ -101,7 +116,7 @@ public class DefaultConnectionListener implements IConnectionListener
     
     /**
      * @see toolbox.util.net.IConnectionListener#connectionStarted(
-     *          toolbox.util.net.IConnection)
+     *      toolbox.util.net.IConnection)
      */
     public void connectionStarted(IConnection connection)
     {
@@ -124,7 +139,7 @@ public class DefaultConnectionListener implements IConnectionListener
     /**
      * Blocks indefinitely until a close event is received.
      * 
-     * @return IConnection.
+     * @return IConnection
      * @throws InterruptedException on error.
      */
     public IConnection waitForClose() throws InterruptedException
@@ -136,7 +151,7 @@ public class DefaultConnectionListener implements IConnectionListener
     /**
      * Blocks indefinitely until a closing event is received.
      * 
-     * @return IConnection.
+     * @return IConnection
      * @throws InterruptedException on error.
      */
     public IConnection waitForClosing() throws InterruptedException
@@ -148,7 +163,7 @@ public class DefaultConnectionListener implements IConnectionListener
     /**
      * Blocks indefinitely until a interrupted event is received.
      * 
-     * @return IConnection.
+     * @return IConnection
      * @throws InterruptedException on error.
      */
     public IConnection waitForInterrupted() throws InterruptedException
@@ -160,7 +175,7 @@ public class DefaultConnectionListener implements IConnectionListener
     /**
      * Blocks indefinitely until a started event is received.
      * 
-     * @return IConnection.
+     * @return IConnection
      * @throws InterruptedException on error.
      */
     public IConnection waitForStarted() throws InterruptedException

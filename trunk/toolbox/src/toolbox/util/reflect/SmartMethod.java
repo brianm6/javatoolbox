@@ -9,12 +9,17 @@ import java.lang.reflect.Method;
  */
 public class SmartMethod
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     protected Member method_;
     protected ParamPattern[] patterns_;
     private Symbol selector_;
 
-
-    // CONSTRUCTORS
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
 
     /**
      * Creates a new SmartMethod object.
@@ -53,13 +58,12 @@ public class SmartMethod
         patterns_ = patterns;
     }
 
-
-    // STANDARD METHODS
-
+    //--------------------------------------------------------------------------
+    // Overrides java.lang.Object
+    //--------------------------------------------------------------------------
+    
     /**
-     * DOCUMENT ME!
-     * 
-     * @return DOCUMENT ME!
+     * @see java.lang.Object#hashCode()
      */
     public int hashCode()
     {
@@ -68,10 +72,7 @@ public class SmartMethod
 
 
     /**
-     * DOCUMENT ME!
-     * 
-     * @param another DOCUMENT ME!
-     * @return DOCUMENT ME!
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     public boolean equals(Object another)
     {
@@ -83,18 +84,17 @@ public class SmartMethod
 
 
     /**
-     * DOCUMENT ME!
-     * 
-     * @return DOCUMENT ME!
+     * @see java.lang.Object#toString()
      */
     public String toString()
     {
         return method_.toString();
     }
 
-
-    // ACCESSING
-
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
     /**
      * DOCUMENT ME!
      * 
@@ -206,8 +206,9 @@ public class SmartMethod
      * @throws IllegalArgumentException DOCUMENT ME!
      * @throws InvocationTargetException DOCUMENT ME!
      */
-    public Object invoke(Object object, Object[] parameters)
-        throws IllegalAccessException, IllegalArgumentException,
+    public Object invoke(Object object, Object[] parameters) throws 
+        IllegalAccessException, 
+        IllegalArgumentException,
         InvocationTargetException
     {
         try
@@ -245,8 +246,9 @@ public class SmartMethod
         }
     }
 
-
-    // SUPPORT METHODS
+    //--------------------------------------------------------------------------
+    // Protected
+    //--------------------------------------------------------------------------
 
     /**
      * DOCUMENT ME!

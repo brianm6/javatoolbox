@@ -9,6 +9,8 @@ import toolbox.util.service.Nameable;
 /**
  * IConnection models the basic characteristics of a bi-directional stream
  * based connection.
+ * 
+ * @see toolbox.util.net.IConnectionListener
  */
 public interface IConnection extends Nameable
 {
@@ -21,9 +23,10 @@ public interface IConnection extends Nameable
 
 
     /**
-     * Checks the connection to the endpoint has been establisthed.
+     * Returns true if this connection is connected to an endpoint, false 
+     * otherwise.
      * 
-     * @return True if connected, false otherwise.
+     * @return boolean
      */
     boolean isConnected();
     

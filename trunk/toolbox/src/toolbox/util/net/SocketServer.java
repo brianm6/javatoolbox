@@ -18,7 +18,8 @@ import toolbox.util.thread.strategy.ThreadPoolStrategy;
 import toolbox.util.thread.strategy.ThreadedDispatcherStrategy;
 
 /**
- * Simple SocketServer implementation with conveniences built it.
+ * Simple socket server based on {@link IConnection} and 
+ * {@link IConnectionHandler}s.
  * <p>
  * Features include:
  * <ul>
@@ -64,7 +65,7 @@ public class SocketServer implements Runnable
     /**
      * Shutdown flag.
      */
-    private boolean shutdown_ = false;
+    private boolean shutdown_;
 
     /**
      * List of socket server listeners.
@@ -78,11 +79,11 @@ public class SocketServer implements Runnable
     /**
      * Create a SocketServer with the given server configuration.
      *
-     * @param newConfig Server configuration.
+     * @param config Server configuration.
      */
-    public SocketServer(SocketServerConfig newConfig)
+    public SocketServer(SocketServerConfig config)
     {
-        config_ = newConfig;
+        config_ = config;
         listeners_ = new ISocketServerListener[0];
     }
 

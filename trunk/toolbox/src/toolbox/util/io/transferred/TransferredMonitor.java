@@ -10,8 +10,8 @@ import toolbox.util.io.MonitoredChannel;
  * @see toolbox.util.io.transferred.TransferredListener
  * @see toolbox.util.io.transferred.TransferredEvent
  */
-public interface TransferredMonitor extends MonitoredChannel {
-
+public interface TransferredMonitor extends MonitoredChannel 
+{
     /**
      * Adds a listener to the list of transferred listeners.
      * 
@@ -21,7 +21,7 @@ public interface TransferredMonitor extends MonitoredChannel {
     
     
     /**
-     * Removes a listener from the lsit of transferred listeners.
+     * Removes a listener from the list of transferred listeners.
      * 
      * @param listener Transferred listener to remove.
      */
@@ -55,7 +55,7 @@ public interface TransferredMonitor extends MonitoredChannel {
 
 
     /**
-     * Polling interface to access the total number of bytes transferred.
+     * Returns the total number of bytes transferred.
      * 
      * @return long
      */

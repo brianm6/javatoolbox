@@ -10,10 +10,24 @@ import java.util.Vector;
  */
 public class CollectionParamPattern extends ParamPattern
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     private Method convertMethod_;
 
+    //--------------------------------------------------------------------------
+    // Static Initializer
+    //--------------------------------------------------------------------------
 
-    // CONSTRUCTORS
+    static
+    {
+        ParamPattern.register(new CollectionParamPattern());
+    }
+
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
 
     /**
      * Creates a new CollectionParamPattern object.
@@ -34,14 +48,12 @@ public class CollectionParamPattern extends ParamPattern
         initializeConvertMethod();
     }
 
-
-    // PARAMPATTERN METHODS
+    //--------------------------------------------------------------------------
+    // Overrides ParamPattern
+    //--------------------------------------------------------------------------
 
     /**
-     * DOCUMENT ME!
-     * 
-     * @param clazz DOCUMENT ME!
-     * @return DOCUMENT ME!
+     * @see toolbox.util.reflect.ParamPattern#isApplicable(java.lang.Class)
      */
     protected boolean isApplicable(Class clazz)
     {
@@ -50,10 +62,7 @@ public class CollectionParamPattern extends ParamPattern
 
 
     /**
-     * DOCUMENT ME!
-     * 
-     * @param clazz DOCUMENT ME!
-     * @return DOCUMENT ME!
+     * @see toolbox.util.reflect.ParamPattern#getFactor(java.lang.Class)
      */
     protected int getFactor(Class clazz)
     {
@@ -62,10 +71,7 @@ public class CollectionParamPattern extends ParamPattern
 
 
     /**
-     * DOCUMENT ME!
-     * 
-     * @param object DOCUMENT ME!
-     * @return DOCUMENT ME!
+     * @see toolbox.util.reflect.ParamPattern#advancedConvert(java.lang.Object)
      */
     protected Object advancedConvert(Object object)
     {
@@ -75,21 +81,22 @@ public class CollectionParamPattern extends ParamPattern
             return super.advancedConvert(object);
     }
 
-
-    // SUPPORT METHODS
-
+    //--------------------------------------------------------------------------
+    // Protected
+    //--------------------------------------------------------------------------
+    
     /**
      * DOCUMENT ME!
      * 
      * @param object DOCUMENT ME!
-     * @return DOCUMENT ME!
+     * @return Object
      */
     protected Object invoke(Object object)
     {
         try
         {
-            return convertMethod_.invoke(null, new Object[]{getParamType(),
-                object});
+            return convertMethod_.invoke(
+                null, new Object[]{getParamType(), object});
         }
         catch (Exception ex)
         {
@@ -105,9 +112,18 @@ public class CollectionParamPattern extends ParamPattern
     {
         try
         {
-            convertMethod_ = getParamType().isArray() ? getClass().getMethod(
-                "toArray", new Class[]{Class.class, Vector.class}) : getClass()
-                .getMethod("toVector", new Class[]{Class.class, Object.class});
+            convertMethod_ = 
+                getParamType().isArray() 
+                    ? getClass().getMethod(
+                        "toArray", 
+                        new Class[] {
+                            Class.class, 
+                            Vector.class}) 
+                    : getClass().getMethod(
+                        "toVector", 
+                        new Class[]{
+                            Class.class, 
+                            Object.class});
         }
         catch (Exception ex)
         {
@@ -115,15 +131,16 @@ public class CollectionParamPattern extends ParamPattern
         }
     }
 
-
-    // CONVERSION METHODS
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
 
     /**
      * DOCUMENT ME!
      * 
      * @param paramType DOCUMENT ME!
      * @param v DOCUMENT ME!
-     * @return DOCUMENT ME!
+     * @return Object
      */
     public static Object toArray(Class paramType, Vector v)
     {
@@ -143,7 +160,7 @@ public class CollectionParamPattern extends ParamPattern
      * 
      * @param paramType DOCUMENT ME!
      * @param array DOCUMENT ME!
-     * @return DOCUMENT ME!
+     * @return Vector
      */
     public static Vector toVector(Class paramType, Object array)
     {
@@ -154,11 +171,5 @@ public class CollectionParamPattern extends ParamPattern
             vector.addElement(Array.get(array, i));
 
         return vector;
-    }
-
-    // STATIC INITIALIZER
-    static
-    {
-        ParamPattern.register(new CollectionParamPattern());
     }
 }

@@ -5,17 +5,22 @@ package toolbox.util.reflect;
  */
 public class CompoundPattern extends ParamPattern
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     private ParamPattern pattern1_;
     private ParamPattern pattern2_;
 
-    // CONSTRUCTORS
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
 
     /**
      * Creates a new CompoundPattern object.
      */
     public CompoundPattern()
     {
-        super();
     }
 
 
@@ -55,14 +60,12 @@ public class CompoundPattern extends ParamPattern
         }
     }
 
-
-    // PARAMPATTERN METHODS
+    //--------------------------------------------------------------------------
+    // Overrides ParamPattern
+    //--------------------------------------------------------------------------
 
     /**
-     * DOCUMENT ME!
-     * 
-     * @param clazz DOCUMENT ME!
-     * @return DOCUMENT ME!
+     * @see toolbox.util.reflect.ParamPattern#getFactor(java.lang.Class)
      */
     protected int getFactor(Class clazz)
     {
@@ -76,10 +79,7 @@ public class CompoundPattern extends ParamPattern
 
 
     /**
-     * DOCUMENT ME!
-     * 
-     * @param clazz DOCUMENT ME!
-     * @return DOCUMENT ME!
+     * @see toolbox.util.reflect.ParamPattern#isApplicable(java.lang.Class)
      */
     protected boolean isApplicable(Class clazz)
     {
@@ -88,27 +88,24 @@ public class CompoundPattern extends ParamPattern
 
 
     /**
-     * DOCUMENT ME!
-     * 
-     * @param object DOCUMENT ME!
-     * @return DOCUMENT ME!
+     * @see toolbox.util.reflect.ParamPattern#advancedConvert(java.lang.Object)
      */
     protected Object advancedConvert(Object object)
     {
-        return pattern1_.isApplicable(object.getClass()) ? pattern1_
-            .convert(object) : pattern2_.convert(object);
+        return 
+            pattern1_.isApplicable(object.getClass()) 
+                ? pattern1_.convert(object) 
+                : pattern2_.convert(object);
     }
 
 
     /**
-     * DOCUMENT ME!
-     * 
-     * @param clazz DOCUMENT ME!
-     * @return DOCUMENT ME!
+     * @see toolbox.util.reflect.ParamPattern#newPattern(java.lang.Class)
      */
     protected ParamPattern newPattern(Class clazz)
     {
-        return new CompoundPattern(pattern1_.newPattern(clazz), pattern2_
-            .newPattern(clazz));
+        return new CompoundPattern(
+            pattern1_.newPattern(clazz), 
+            pattern2_.newPattern(clazz));
     }
 }

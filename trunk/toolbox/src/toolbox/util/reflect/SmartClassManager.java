@@ -8,13 +8,22 @@ import java.util.Map;
  */
 public class SmartClassManager
 {
+    //--------------------------------------------------------------------------
+    // Static
+    //--------------------------------------------------------------------------
+    
     private static SmartClassManager DefaultClassManager = 
         new SmartClassManager();
 
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     private Map cache_;
 
-
-    // CONSTRUCTORS
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
 
     /**
      * Creates a new SmartClassManager object.
@@ -35,8 +44,9 @@ public class SmartClassManager
         cache_ = cache;
     }
 
-
-    // API
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
 
     /**
      * DOCUMENT ME!
@@ -50,12 +60,12 @@ public class SmartClassManager
 
         if (siClass == null)
         {
-
             //System.out.println( "SmartClassManager: " + javaClass.getName()
             // );
 
-            cache_
-                .put(javaClass.getName(), siClass = new SmartClass(javaClass));
+            cache_.put(
+                javaClass.getName(), 
+                siClass = new SmartClass(javaClass));
 
             siClass.constructClass();
         }

@@ -5,10 +5,15 @@ package toolbox.util.reflect;
  */
 public class MethodHolder implements IMethodHolder
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     private SmartMethod method_;
 
-
-    // CONSTRUCTORS
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
 
     /**
      * Creates a new MethodHolder object.
@@ -20,15 +25,12 @@ public class MethodHolder implements IMethodHolder
         method_ = method;
     }
 
-
-    // METHODHOLDER METHODS
+    //--------------------------------------------------------------------------
+    // IMethodHolder Interface
+    //--------------------------------------------------------------------------
 
     /**
-     * DOCUMENT ME!
-     * 
-     * @param paramType DOCUMENT ME!
-     * @return DOCUMENT ME!
-     * @throws NoSuchMethodException DOCUMENT ME!
+     * @see toolbox.util.reflect.IMethodHolder#getMethod(java.lang.Class[])
      */
     public SmartMethod getMethod(Class[] paramType)
         throws NoSuchMethodException
@@ -38,10 +40,8 @@ public class MethodHolder implements IMethodHolder
 
 
     /**
-     * DOCUMENT ME!
-     * 
-     * @param newMethod DOCUMENT ME!
-     * @return DOCUMENT ME!
+     * @see toolbox.util.reflect.IMethodHolder#addMethod(
+     *      toolbox.util.reflect.SmartMethod)
      */
     public IMethodHolder addMethod(SmartMethod newMethod)
     {

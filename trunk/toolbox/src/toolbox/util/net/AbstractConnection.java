@@ -18,15 +18,28 @@ public abstract class AbstractConnection implements IConnection
     //--------------------------------------------------------------------------
     
     /**
-     * List of connection listeners.
+     * List of this connection's listeners.
      */
-    private IConnectionListener[] listeners_ = new IConnectionListener[0];
+    private IConnectionListener[] listeners_;
 
     /**
-     * Connection's name.
+     * This connection's name.
      */
-    private String name_ = "";
-        
+    private String name_;
+
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Creates a AbstractConnection.
+     */
+    protected AbstractConnection()
+    {
+        listeners_ = new IConnectionListener[0];
+        setName("");
+    }
+    
     //--------------------------------------------------------------------------
     // IConnection Abstract methods 
     //--------------------------------------------------------------------------
@@ -36,16 +49,19 @@ public abstract class AbstractConnection implements IConnection
      */
     public abstract void connect() throws IOException;
 
+    
     /**
      * @see toolbox.util.net.IConnection#close()
      */
     public abstract void close() throws IOException;
 
+    
     /**
      * @see toolbox.util.net.IConnection#getInputStream()
      */
     public abstract InputStream getInputStream() throws IOException;
 
+    
     /**
      * @see toolbox.util.net.IConnection#getOutputStream()
      */
@@ -56,7 +72,8 @@ public abstract class AbstractConnection implements IConnection
     //--------------------------------------------------------------------------
     
     /**
-     * Returns name used to easily identify connection's context.
+     * Returns this connection's name or an empty string if the name has not
+     * been set.
      * 
      * @see toolbox.util.service.Nameable#getName()
      */
@@ -67,7 +84,7 @@ public abstract class AbstractConnection implements IConnection
 
     
     /**
-     * Sets the connection name.
+     * Sets this connection's name.
      * 
      * @see toolbox.util.service.Nameable#setName(java.lang.String)
      */

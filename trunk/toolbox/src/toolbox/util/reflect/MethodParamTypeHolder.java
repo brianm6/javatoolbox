@@ -9,12 +9,17 @@ import java.util.Vector;
  */
 public class MethodParamTypeHolder implements IMethodHolder
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     private int paramCount_ = -1;
     private Vector holders_ = new Vector(5);
     private Vector patterns_ = new Vector(5);
 
-
-    // CONSTRUCTORS
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
 
     /**
      * Creates a new MethodParamTypeHolder object.
@@ -32,13 +37,13 @@ public class MethodParamTypeHolder implements IMethodHolder
     }
 
 
-    // METHODHOLDER METHODS
+    //--------------------------------------------------------------------------
+    // IMethodHolder Interface
+    //--------------------------------------------------------------------------
 
     /**
-     * DOCUMENT ME!
-     * 
-     * @param method DOCUMENT ME!
-     * @return DOCUMENT ME!
+     * @see toolbox.util.reflect.IMethodHolder#addMethod(
+     *      toolbox.util.reflect.SmartMethod)
      */
     public IMethodHolder addMethod(SmartMethod method)
     {
@@ -58,11 +63,7 @@ public class MethodParamTypeHolder implements IMethodHolder
 
 
     /**
-     * DOCUMENT ME!
-     * 
-     * @param paramTypes DOCUMENT ME!
-     * @return DOCUMENT ME!
-     * @throws NoSuchMethodException DOCUMENT ME!
+     * @see toolbox.util.reflect.IMethodHolder#getMethod(java.lang.Class[])
      */
     public SmartMethod getMethod(Class[] paramTypes)
         throws NoSuchMethodException
@@ -97,25 +98,29 @@ public class MethodParamTypeHolder implements IMethodHolder
         }
 
         // Check if we have something
-        if (map.size() == 0)
+        if (map.isEmpty())
             throw new NoSuchMethodException();
 
         Integer last = (Integer) map.lastKey();
         Integer key = (Integer) map.get(last);
 
-        IMethodHolder holderRes = (IMethodHolder) holders_.elementAt(key
-            .intValue());
+        IMethodHolder holderRes = 
+            (IMethodHolder) holders_.elementAt(key.intValue());
 
         return holderRes.getMethod(paramTypes);
     }
 
-    // COMPARATOR
+    //--------------------------------------------------------------------------
+    // IntegerComparator
+    //--------------------------------------------------------------------------
 
+    /**
+     * IntegerComparator is responsible for comparing two integers.
+     */
     protected static class IntegerComparator implements Comparator
     {
         protected static final IntegerComparator defComparator_ = 
             new IntegerComparator();
-
 
         /**
          * @see java.util.Comparator#compare(java.lang.Object,

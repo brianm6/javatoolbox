@@ -10,28 +10,54 @@ import java.util.Vector;
  */
 public class ParamPattern
 {
-    /** Not match */
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
+    /** 
+     * Not match 
+     */
     public static final int MATCH_NOT = Integer.MIN_VALUE;
 
-    /** Convert match */
+    /** 
+     * Convert match 
+     */
     public static final int MATCH_CONVERT = 50;
 
-    /** Primitive match */
+    /** 
+     * Primitive match 
+     */
     public static final int MATCH_PRIMITIVE = 70;
 
-    /** Superclass match */
+    /** 
+     * Superclass match 
+     */
     public static final int MATCH_SUPERCLASS = 80;
 
-    /** Exact match */
+    /** 
+     * Exact match 
+     */
     public static final int MATCH_EXACT = 100;
 
+    //--------------------------------------------------------------------------
+    // Static Fields
+    //--------------------------------------------------------------------------
+    
     private static Hashtable CachedPatterns = new Hashtable(50);
     private static Vector RegisteredPatterns = new Vector(10);
     private static Hashtable Wrappers = new Hashtable(15);
+    
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     private Class paramType_;
     private Constructor patternConstructor_;
-
-    // STATIC INITIALIZER
+    
+    //--------------------------------------------------------------------------
+    // Static Initializer
+    //--------------------------------------------------------------------------
+    
     static
     {
         Wrappers.put(Integer.class, Integer.TYPE);
@@ -52,8 +78,9 @@ public class ParamPattern
         c = CollectionParamPattern.class;
     }
 
-
-    // CONSTRUCTORS
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
 
     /**
      * Creates a new ParamPattern object.
@@ -70,34 +97,36 @@ public class ParamPattern
      */
     protected ParamPattern(Class paramType)
     {
-        this.paramType_ = paramType;
+        paramType_ = paramType;
     }
 
 
-    // FACTORY METHODS
+    //--------------------------------------------------------------------------
+    // Public Static
+    //--------------------------------------------------------------------------
 
     /**
      * DOCUMENT ME!
      * 
-     * @param aClass DOCUMENT ME!
+     * @param clazz DOCUMENT ME!
      * @return DOCUMENT ME!
      */
-    public static ParamPattern createPattern(Class aClass)
+    public static ParamPattern createPattern(Class clazz)
     {
-        ParamPattern pattern = (ParamPattern) CachedPatterns.get(aClass);
+        ParamPattern pattern = (ParamPattern) CachedPatterns.get(clazz);
 
         if (pattern == null)
         {
-            pattern = new ParamPattern(aClass);
+            pattern = new ParamPattern(clazz);
 
-            for (Enumeration enum = RegisteredPatterns.elements(); enum
-                .hasMoreElements();)
+            for (Enumeration enum = RegisteredPatterns.elements(); 
+                 enum.hasMoreElements();)
 
-                pattern = ((ParamPattern) enum.nextElement()).applyTo(pattern,
-                    aClass);
+                pattern = ((ParamPattern) 
+                    enum.nextElement()).applyTo(pattern, clazz);
 
             if (pattern != null)
-                CachedPatterns.put(aClass, pattern);
+                CachedPatterns.put(clazz, pattern);
         }
 
         return pattern;
@@ -114,48 +143,52 @@ public class ParamPattern
         RegisteredPatterns.addElement(factoryPattern);
     }
 
-
+    //--------------------------------------------------------------------------
+    // Protected
+    //--------------------------------------------------------------------------
+    
     /**
      * DOCUMENT ME!
      * 
      * @param current DOCUMENT ME!
-     * @param aClass DOCUMENT ME!
+     * @param clazz DOCUMENT ME!
      * @return DOCUMENT ME!
      */
-    protected ParamPattern applyTo(ParamPattern current, Class aClass)
+    protected ParamPattern applyTo(ParamPattern current, Class clazz)
     {
         ParamPattern pattern;
 
-        if (isApplicable(aClass))
-            pattern = newPattern(aClass);
+        if (isApplicable(clazz))
+            pattern = newPattern(clazz);
         else
             return current;
 
         if (current == null)
             return pattern;
-        else if (current.getFactor(aClass) >= pattern.getFactor(aClass))
+        else if (current.getFactor(clazz) >= pattern.getFactor(clazz))
             return new CompoundPattern(current, pattern);
         else
             return new CompoundPattern(pattern, current);
     }
 
-
-    // MATCHING METHODS
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
 
     /**
      * DOCUMENT ME!
      * 
-     * @param aClass DOCUMENT ME!
+     * @param clazz DOCUMENT ME!
      * @return DOCUMENT ME!
      */
-    public int getMatchingFactor(Class aClass)
+    public int getMatchingFactor(Class clazz)
     {
-        if (aClass == paramType_
-            || (aClass.isPrimitive() && isWrapperFor(paramType_, aClass))
-            || (paramType_.isPrimitive() && isWrapperFor(aClass, paramType_)))
+        if (clazz == paramType_
+            || (clazz.isPrimitive() && isWrapperFor(paramType_, clazz))
+            || (paramType_.isPrimitive() && isWrapperFor(clazz, paramType_)))
             return MATCH_EXACT;
-        else if (isApplicable(aClass))
-            return getFactor(aClass);
+        else if (isApplicable(clazz))
+            return getFactor(clazz);
         else
             return MATCH_NOT;
     }
@@ -164,10 +197,10 @@ public class ParamPattern
     /**
      * DOCUMENT ME!
      * 
-     * @param aClass DOCUMENT ME!
+     * @param clazz DOCUMENT ME!
      * @return DOCUMENT ME!
      */
-    public ParamPattern getConverter(Class aClass)
+    public ParamPattern getConverter(Class clazz)
     {
         return this;
     }
@@ -207,12 +240,12 @@ public class ParamPattern
     /**
      * DOCUMENT ME!
      * 
-     * @param aClass DOCUMENT ME!
+     * @param clazz DOCUMENT ME!
      * @return DOCUMENT ME!
      */
-    protected boolean isApplicable(Class aClass)
+    protected boolean isApplicable(Class clazz)
     {
-        return paramType_.isAssignableFrom(aClass);
+        return paramType_.isAssignableFrom(clazz);
     }
 
 
@@ -234,10 +267,10 @@ public class ParamPattern
     /**
      * DOCUMENT ME!
      * 
-     * @param aClass DOCUMENT ME!
+     * @param clazz DOCUMENT ME!
      * @return DOCUMENT ME!
      */
-    protected int getFactor(Class aClass)
+    protected int getFactor(Class clazz)
     {
         return MATCH_SUPERCLASS;
     }
@@ -269,9 +302,8 @@ public class ParamPattern
     {
         if (paramType_.isPrimitive())
         {
-            Class aClass = (Class) Wrappers.get(object.getClass());
-
-            return aClass.isAssignableFrom(paramType_);
+            Class clazz = (Class) Wrappers.get(object.getClass());
+            return clazz.isAssignableFrom(paramType_);
         }
 
         return false;
@@ -281,10 +313,10 @@ public class ParamPattern
     /**
      * DOCUMENT ME!
      * 
-     * @param aClass DOCUMENT ME!
+     * @param clazz DOCUMENT ME!
      * @return DOCUMENT ME!
      */
-    protected ParamPattern newPattern(Class aClass)
+    protected ParamPattern newPattern(Class clazz)
     {
         try
         {
@@ -293,11 +325,10 @@ public class ParamPattern
                     new Class[]{Class.class});
 
             return (ParamPattern) patternConstructor_
-                .newInstance(new Object[]{aClass});
+                .newInstance(new Object[]{clazz});
         }
         catch (Exception ex)
         {
-
             // should never happen
             return null;
         }
@@ -313,5 +344,4 @@ public class ParamPattern
     {
         return paramType_;
     }
-
 }

@@ -45,7 +45,7 @@ public class FileConnection extends AbstractConnection implements IConnection
     /**
      * Flag that tracks the connected state of the connection.
      */
-    private boolean connected_ = false;
+    private boolean connected_;
 
     //--------------------------------------------------------------------------
     // Constructors

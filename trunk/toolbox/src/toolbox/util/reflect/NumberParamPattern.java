@@ -9,11 +9,18 @@ import java.util.Hashtable;
  */
 public class NumberParamPattern extends ParamPattern
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     private static Hashtable PrimitiveNumbers_;
     private static Hashtable WrapperNumbers_;
     private Method convertMethod_;
 
-    // STATIC INITIALIZER
+    //--------------------------------------------------------------------------
+    // Static Initializers
+    //--------------------------------------------------------------------------
+    
     static
     {
         PrimitiveNumbers_ = new Hashtable(20);
@@ -47,8 +54,9 @@ public class NumberParamPattern extends ParamPattern
         ParamPattern.register(new NumberParamPattern());
     }
 
-
-    // CONSTRUCTORS
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
 
     /**
      * Creates a new NumberParamPattern object.
@@ -69,27 +77,22 @@ public class NumberParamPattern extends ParamPattern
         initializeConvertMethod();
     }
 
-
-    // PARAMPATTERN METHODS
+    //--------------------------------------------------------------------------
+    // Overrides ParamPattern
+    //--------------------------------------------------------------------------
 
     /**
-     * DOCUMENT ME!
-     * 
-     * @param aClass DOCUMENT ME!
-     * @return DOCUMENT ME!
+     * @see toolbox.util.reflect.ParamPattern#isApplicable(java.lang.Class)
      */
-    protected boolean isApplicable(Class aClass)
+    protected boolean isApplicable(Class clazz)
     {
-        return Number.class.isAssignableFrom(aClass)
-            || PrimitiveNumbers_.get(aClass) != null;
+        return Number.class.isAssignableFrom(clazz)
+            || PrimitiveNumbers_.get(clazz) != null;
     }
 
 
     /**
-     * DOCUMENT ME!
-     * 
-     * @param aClass DOCUMENT ME!
-     * @return DOCUMENT ME!
+     * @see toolbox.util.reflect.ParamPattern#getFactor(java.lang.Class)
      */
     protected int getFactor(Class aClass)
     {
@@ -98,10 +101,7 @@ public class NumberParamPattern extends ParamPattern
 
 
     /**
-     * DOCUMENT ME!
-     * 
-     * @param object DOCUMENT ME!
-     * @return DOCUMENT ME!
+     * @see toolbox.util.reflect.ParamPattern#advancedConvert(java.lang.Object)
      */
     protected Object advancedConvert(Object object)
     {
@@ -111,8 +111,9 @@ public class NumberParamPattern extends ParamPattern
             return super.advancedConvert(object);
     }
 
-
-    // SUPPORT METHODS
+    //--------------------------------------------------------------------------
+    // Protected
+    //--------------------------------------------------------------------------
 
     /**
      * DOCUMENT ME!

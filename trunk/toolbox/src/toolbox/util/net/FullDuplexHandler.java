@@ -109,11 +109,11 @@ public abstract class FullDuplexHandler implements IConnectionHandler
     /**
      * Mutator for the connection.
      * 
-     * @param newConnection The connection.
+     * @param connection The connection.
      */
-    public void setConnection(IConnection newConnection)
+    public void setConnection(IConnection connection)
     {
-        conn_ = newConnection;
+        conn_ = connection;
     }
 
 
