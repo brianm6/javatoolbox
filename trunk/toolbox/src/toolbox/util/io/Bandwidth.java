@@ -2,6 +2,8 @@ package toolbox.util.io;
 
 import org.apache.log4j.Logger;
 
+import toolbox.util.collections.AsMap;
+
 /**
  * Bandwidth from http://freenet.sf.net
  */
@@ -21,71 +23,75 @@ public final class Bandwidth
     // Units of Time Constants
     //--------------------------------------------------------------------------
     
-    private static final int ticksPerSecond = 10;
-    private static final int millisPerTick = 1000 / ticksPerSecond;
-    private static final int preferredMinFragmentSize = 2000;
-    private static final long millisPerWeek = 1000L * 60L * 60L * 24L * 7L;
-    private static final long millisPerSecond = 1000L;
-    private static final long millisPerAverageCheckingTick = 1000L * 10L;
-    private static final long millisPerReportTick = 1000L * 60L * 60L;
+    private static final int TICKS_PER_SECOND = 10;
+    private static final int MILLIS_PER_TICK = 1000 / TICKS_PER_SECOND;
+    private static final int PREFFERED_MIN_FRAGMENT_SIZE = 2000;
+    private static final long MILLIS_PER_WEEK = 1000L * 60L * 60L * 24L * 7L;
+    private static final long MILLIS_PER_SECOND = 1000L;
+    private static final long MILLIS_PER_AVERAGE_CHECKING_TICK = 1000L * 10L;
+    private static final long MILLIS_PER_REPORT_TICK = 1000L * 60L * 60L;
 
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
     
     /**
-     * set to one of the above TYPE_const
+     * Type of bandwidth.
+     * 
+     * @see #TYPE_BOTH
+     * @see #TYPE_RECEIVED
+     * @see #TYPE_SENT
      */
     private String type_;
 
     /**
-     * quantity to increment every tick. This might be adjusted up or down to
-     * keep the average on target
+     * Quantity to increment every tick. This might be adjusted up or down to
+     * keep the average on target.
      */
     protected int bandwidthPerTick_;
 
     /**
-     * how much is available right now
+     * How much bandwidth is available right now.
      */
     private int available_ = 0;
 
     /**
-     * when more bandwidth is available
+     * When will more bandwidth be available.
      */
     private long moreBandwidthTime_ = 0L;
 
     /**
-     * when to check the long term averages
+     * When to check the long term averages.
      */
     private long checkAverageTime_ = 0L;
     
     /**
-     * report time
+     * Report time.
      */
     private long reportTime_ = 0L;
 
     /**
-     * original constructor arg
+     * Original bandwidth specified in the constructor.
      */
     private int origBandwidth_;
 
     /**
-     * original constructor arg
+     * Original average bandwidth specified in the constructor.
      */
     private int origAverageBandwidth_;
 
     /**
-     * total bytes since startup
+     * Total bytes consumed since startup.
      */
     private long totalUsed_ = 0L;
 
     /**
-     * total allowance since startup based on
+     * Total allowance since startup based on.
      */
     private long totalEarned_ = 0L;
 
     /**
-     * time of startup
+     * Time of startup.
      */
     private long timeStarted_ = 0L; 
 
@@ -94,22 +100,20 @@ public final class Bandwidth
     //--------------------------------------------------------------------------
     
     /**
-     * Sets the upper bandwidth limit, in multiples of 10Bps (Bytes, not bits),
-     * for all ThrottledOutputStreams. This class will treat any bandwidth under
-     * 100Bps as equals to 0Bps! A setting of 0 or less will turn bandwidth
-     * limiting off for all ThrottledOutputStreams, and prevent new ones from
-     * being created.
+     * Sets the upper bandwidth limit, in multiples of 10Bps (Bytes, not bits).
+     * This class will treat any bandwidth under 100Bps as equal to 0Bps! A 
+     * setting of 0 or less will turn bandwidth limiting off.
      * 
-     * @param bandwidth the upper bandwidth limit in multiples of 10 bytes/sec
+     * @param bandwidth Upper bandwidth limit in multiples of 10 bytes/sec
      * @param averageBandwidth Average bandwidth in multiples of 10 bytes/sec
-     * @param type Bandwidth type. See {@link #TYPE_SENT} 
+     * @param type Bandwidth type. See {@link #type_} 
      */
     public Bandwidth(int bandwidth, int averageBandwidth, String type)
     {
         type_ = type;
         origBandwidth_ = bandwidth;
         origAverageBandwidth_ = averageBandwidth;
-        bandwidthPerTick_ = bandwidth / ticksPerSecond;
+        bandwidthPerTick_ = bandwidth / TICKS_PER_SECOND;
         
         // to ensure new connections stay throttled
         if (averageBandwidth > 0 && bandwidthPerTick_ < 1)
@@ -117,8 +121,14 @@ public final class Bandwidth
         
         timeStarted_ = System.currentTimeMillis();
         
-        logger_.debug("new Bandwidth(" + bandwidth + "," + averageBandwidth
-            + "," + type + ")");
+        logger_.debug(
+            "new Bandwidth(" 
+            + bandwidth 
+            + "," 
+            + averageBandwidth
+            + "," 
+            + type 
+            + ")");
     }
 
     //--------------------------------------------------------------------------
@@ -126,15 +136,19 @@ public final class Bandwidth
     //--------------------------------------------------------------------------
     
     /**
+     * Returns the current bandwidth per second allowed.
+     * 
      * @return int
      */
     public int getCurrentBandwidthPerSecondAllowed()
     {
-        return ticksPerSecond * bandwidthPerTick_;
+        return TICKS_PER_SECOND * bandwidthPerTick_;
     }
 
 
     /**
+     * Returns the maximum packet length.
+     * 
      * @return int
      */
     public int getMaximumPacketLength()
@@ -145,6 +159,8 @@ public final class Bandwidth
 
 
     /**
+     * Returns the available bandwidth.
+     * 
      * @return int
      */
     public int getAvailableBandwidth()
@@ -154,7 +170,9 @@ public final class Bandwidth
 
     
     /**
-     * @return Returns the bandwidthPerTick.
+     * Returns the bandwidth per tick.
+     * 
+     * @return int
      */
     public int getBandwidthPerTick()
     {
@@ -163,7 +181,9 @@ public final class Bandwidth
     
     
     /**
-     * @param bandwidthPerTick The bandwidthPerTick to set.
+     * Sets the bandwidth per tick.
+     * 
+     * @param bandwidthPerTick BandwidthPerTick to set.
      */
     public void setBandwidthPerTick(int bandwidthPerTick)
     {
@@ -172,10 +192,10 @@ public final class Bandwidth
 
     
     /**
-     * account for bandwidth already used for input
+     * Account for bandwidth already used for input.
      * 
-     * @param used the number of bytes read from input may wait up to 4 seconds
-     *        if low on bandwidth.
+     * @param used Number of bytes transferred. May wait up to 4 seconds if low 
+     *        on bandwidth.
      */
     public void chargeBandwidth(int used)
     {
@@ -195,6 +215,7 @@ public final class Bandwidth
             {
                 logger_.debug(
                     "used=" + used + " seems unreasonable bandwidth to charge");
+                
                 return;
             }
             
@@ -209,12 +230,12 @@ public final class Bandwidth
 
     
     /**
-     * account for bandwidth used already for input asynchronous version. Do not
-     * mix the two! Do not multiplex async bandwidth limiting.
+     * Account for bandwidth used already for input in the asynchronous version.
+     * Do not mix the two! Do not multiplex async bandwidth limiting.
      * 
-     * @param used the number of bytes read from input
-     * @return number of millis that must be slept before can read again will
-     *         never block
+     * @param used Number of bytes transferred.
+     * @return Number of millis that must be slept before a read will never 
+     *         block
      */
     public BandwidthToken chargeBandwidthAsync(int used)
     {
@@ -309,11 +330,11 @@ public final class Bandwidth
     //--------------------------------------------------------------------------
     
     /**
-     * wait until some desired bytes of bandwidth are available may return even
-     * if less are available but will try for up to 4 seconds
+     * Wait until some desired bytes of bandwidth are available. May return even
+     * if less are available but will try for up to 4 seconds.
      * 
-     * @param desired the number of bytes of bandwidth wanted
-     * @return the number of bytes granted.
+     * @param desired Number of bytes of bandwidth wanted.
+     * @return Number of bytes granted.
      */
     protected int getBandwidth(int desired)
     {
@@ -351,7 +372,9 @@ public final class Bandwidth
 
 
     /**
-     * @param returnedUnused
+     * Returns unused bandwidth back to the pool of available bandwidth.
+     * 
+     * @param returnedUnused Unused bandwidth.
      */
     protected synchronized void putBandwidth(int returnedUnused)
     {
@@ -367,7 +390,9 @@ public final class Bandwidth
 
 
     /**
-     * @param desired
+     * Waits for the desired amount of bandwidth to become available.
+     * 
+     * @param desired Bandwidth desired.
      */
     protected synchronized void waitForBandwidth(int desired)
     {
@@ -388,7 +413,10 @@ public final class Bandwidth
 
 
     /**
-     * @param desired
+     * Waits for the desired amount of bandwidth to become available for the
+     * async version.
+     * 
+     * @param desired Bandwidth desired.
      * @return int
      */
     protected synchronized int waitForBandwidthAsync(int desired)
@@ -410,7 +438,7 @@ public final class Bandwidth
         for (;;)
         {
             // quick test to see if we can avoid the system call
-            if (available_ >= desired || available_ > preferredMinFragmentSize)
+            if (available_ >= desired || available_ > PREFFERED_MIN_FRAGMENT_SIZE)
                 break;
             
             long now = System.currentTimeMillis();
@@ -420,7 +448,7 @@ public final class Bandwidth
             if (eeek != 0)
                 return eeek;
             
-            if (available_ >= desired || available_ > preferredMinFragmentSize)
+            if (available_ >= desired || available_ > PREFFERED_MIN_FRAGMENT_SIZE)
                 break;
             
             long millisToSleep = moreBandwidthTime_ - now;
@@ -455,12 +483,15 @@ public final class Bandwidth
                 return (int) millisToSleep;
             }
         }
+        
         return 0;
     }
 
 
     /**
-     * @param now
+     * Refills the available bandwidth.
+     * 
+     * @param now Current time.
      * @return int
      */
     protected synchronized int refillAvailableBandwidth(long now)
@@ -468,76 +499,95 @@ public final class Bandwidth
         if (now >= moreBandwidthTime_)
         {
 
-            if (now > moreBandwidthTime_ + 10 * millisPerTick)
+            if (now > moreBandwidthTime_ + 10 * MILLIS_PER_TICK)
             {
                 available_ += bandwidthPerTick_;
-                moreBandwidthTime_ = now + millisPerTick;
+                moreBandwidthTime_ = now + MILLIS_PER_TICK;
             }
             else
             {
                 available_ += bandwidthPerTick_;
-                moreBandwidthTime_ = moreBandwidthTime_ + millisPerTick;
+                moreBandwidthTime_ = moreBandwidthTime_ + MILLIS_PER_TICK;
             }
 
-            // take the oppportunity to check long term averages 
+            // Take the oppportunity to check long term averages 
             if (origAverageBandwidth_ != 0)
             {
                 long uptimeThisWeek = now - timeStarted_;
                 
-                if (timeStarted_ == 0L || (uptimeThisWeek) > millisPerWeek)
+                if (timeStarted_ == 0L || (uptimeThisWeek) > MILLIS_PER_WEEK)
                 {
                     timeStarted_ = now;
                     totalEarned_ = 0L;
                     totalUsed_ = 0L;
-                    checkAverageTime_ = now + millisPerAverageCheckingTick;
-                    reportTime_ = now + millisPerReportTick;
+                    checkAverageTime_ = now + MILLIS_PER_AVERAGE_CHECKING_TICK;
+                    reportTime_ = now + MILLIS_PER_REPORT_TICK;
                 }
                 else if (now > checkAverageTime_)
                 {
-                    checkAverageTime_ = now + millisPerAverageCheckingTick;
+                    checkAverageTime_ = now + MILLIS_PER_AVERAGE_CHECKING_TICK;
                     
                     totalEarned_ = 
                         (uptimeThisWeek * origAverageBandwidth_) / 
-                        millisPerSecond;
+                        MILLIS_PER_SECOND;
                     
                     if (totalEarned_ > totalUsed_)
                     {
-                        // restore original bandwidthLimit
-                        bandwidthPerTick_ = origBandwidth_ / ticksPerSecond;
+                        // Restore original bandwidthLimit
+                        bandwidthPerTick_ = origBandwidth_ / TICKS_PER_SECOND;
                     }
                     else if (totalEarned_ + 400000L < totalUsed_)
                     {
-                        // throttle to long term average and pause activity
+                        // Throttle to long term average and pause activity
                         bandwidthPerTick_ = 
-                            origAverageBandwidth_ / ticksPerSecond;
+                            origAverageBandwidth_ / TICKS_PER_SECOND;
+                        
                         return 10000;
                     }
                     else if (totalEarned_ + 200000L < totalUsed_)
                     {
-                        //throttle to long term average
+                        //Throttle to long term average
                         bandwidthPerTick_ = 
-                            origAverageBandwidth_ / ticksPerSecond;
+                            origAverageBandwidth_ / TICKS_PER_SECOND;
                     }
                     else if (totalEarned_ + 100000L < totalUsed_)
                     {
-                        //less serious. see if half the bandwidth will do
-                        bandwidthPerTick_ = origBandwidth_ / 2 / ticksPerSecond;
+                        // Less serious. see if half the bandwidth will do
+                        bandwidthPerTick_ = 
+                            origBandwidth_ / 2 / TICKS_PER_SECOND;
                     }
                     
-                    if (bandwidthPerTick_ < 1) //must never go less than 1
+                    if (bandwidthPerTick_ < 1) // Must never go less than 1
                         bandwidthPerTick_ = 1;
 
                     if (now > reportTime_)
                     {
-                        reportTime_ = now + millisPerReportTick;
+                        reportTime_ = now + MILLIS_PER_REPORT_TICK;
+                        
                         logger_.debug(
-                            "bytes " + type_ + "=" + totalUsed_ + 
-                            " bytes earned=" + totalEarned_);
+                            "bytes " 
+                            + type_ 
+                            + "=" 
+                            + totalUsed_ 
+                            + " bytes earned = " 
+                            + totalEarned_);
                     }
                 }
             }
         }
         return 0;
+    }
+    
+    //--------------------------------------------------------------------------
+    // Overrides java.lang.Object
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see java.lang.Object#toString()
+     */
+    public String toString()
+    {
+        return AsMap.of(this).toString();
     }
     
     //--------------------------------------------------------------------------
