@@ -1,0 +1,97 @@
+package toolbox.util.dump;
+
+import java.lang.reflect.Field;
+
+/**
+ * Information (value) stored for each object (key) in the object cache.
+ */
+public class ObjectInfo
+{
+    /**
+     * Object being traversed
+     */
+    private Object object_;
+    
+    /**
+     * Traversal flag
+     */
+    private boolean traversed_;
+    
+    /**
+     * Unique sequence number for referring back to multiple references
+     * in the object graph
+     */
+    private String seqNum_;
+    
+    /**
+     * Field that the object as associated with in its parent class
+     */
+    private Field field_;
+    
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Creates an ObjectInfo
+     * 
+     * @param  object  Object to store traversal information on
+     * @param  seqNum  Assigned sequence number
+     */
+    public ObjectInfo(Object object, String seqNum)
+    {
+        this(object, seqNum, null);
+    }
+
+    /**
+     * Creates an ObjectInfo
+     * 
+     * @param  object  Object to store traversal information on
+     * @param  seqNum  Assigned sequence number
+     * @param  field   Field associated with the object
+     */
+    public ObjectInfo(Object object, String seqNum, Field field)
+    {
+        object_ = object;
+        seqNum_ = seqNum;
+        field_  = field;            
+    }
+    
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @return Sequence number for unique identification
+     */
+    public String getSequenceNumber()
+    {
+        return seqNum_;
+    }
+    
+    /**
+     * @return True if the object has been traversed previously, false otherwise
+     */
+    public boolean hasTraversed()
+    {
+        return traversed_;
+    }
+
+    /**
+     * Set the flag for whether the object has been traversed already
+     * 
+     * @param  traversed  Traversed flag
+     */
+    public void setTraversed(boolean traversed)
+    {
+        traversed_ = traversed;
+    }
+    
+    /**
+     * @return Field if any that was related to this object
+     */
+    public Field getField()
+    {
+        return field_;
+    }
+}
