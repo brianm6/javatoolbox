@@ -32,6 +32,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.ArrayUtil;
 import toolbox.util.PropertiesUtil;
 import toolbox.util.ResourceUtil;
+import toolbox.util.StringUtil;
 
 /**
  * JFlipPane is a panel with flipper like behavior to hide a and show any
@@ -49,9 +50,9 @@ public class JFlipPane extends JPanel
         Logger.getLogger(JFlipPane.class);
 
     // Property keys for storing/retreiving preferences
-    private static final String PROP_COLLAPSED = ".jflippane.collapsed";
-    private static final String PROP_HEIGHT    = ".jflippane.height";
-    private static final String PROP_WIDTH     = ".jflippane.width";
+    private static final String PROP_COLLAPSED = ".flippane.collapsed";
+    private static final String PROP_DIMENSION = ".flippane.dimension";
+    private static final String PROP_ACTIVE    = ".flippane.active";
     
     /** 
      * Flippane attached to the top wall 
@@ -122,7 +123,7 @@ public class JFlipPane extends JPanel
     private List listeners_;
     
     /**
-     * Hashtable mapping flippane components to a name (used as the button text)
+     * Hashtable mapping a name (button text) to a flippane component
      */
     private Hashtable flippers_;
             
@@ -216,7 +217,7 @@ public class JFlipPane extends JPanel
 
         // Make newly added flipper selected by default
         if (!isCollapsed())
-            setSelectedFlipper(flipper);
+            setActiveFlipper(flipper);
         
         // TODO: find proper way to do this
         revalidate();
@@ -249,7 +250,7 @@ public class JFlipPane extends JPanel
      * 
      * @param  flipper  Flipper to select
      */
-    public void setSelectedFlipper(JComponent flipper)
+    public void setActiveFlipper(JComponent flipper)
     {
         // Already selected
         if (current_ == flipper)
@@ -280,12 +281,30 @@ public class JFlipPane extends JPanel
     } 
 
     /**
+     * Sets the active flipper by name
+     * 
+     * @param name  Name of the flipper to activate
+     */
+    public void setActiveFlipper(String name)
+    {
+       setActiveFlipper((JComponent) flippers_.get(name)); 
+    }
+
+    /**
+     * @return  Currently active flipper
+     */
+    public JComponent getActiveFlipper()
+    {
+        return current_;    
+    }
+
+    /**
      * Determines if a flipper is selected
      * 
      * @param   flipper  Flipper to test if selected
      * @return  True if the given flipper is selected, false otherwise
      */
-    public boolean isFlipperSelected(JComponent flipper)
+    public boolean isFlipperActive(JComponent flipper)
     {
         return current_ == flipper;
     } 
@@ -366,19 +385,19 @@ public class JFlipPane extends JPanel
         return pref;
     }
 
-        public Dimension getMinimumSize()
-        {
-            if (isCollapsed())
-                return buttonPanel_.getMinimumSize();
-            else
-                return new Dimension(200, 0);
-        }
-    
-    
-        public Dimension getMaximumSize()
-        {
-            return getPreferredSize();
-        }
+//        public Dimension getMinimumSize()
+//        {
+//            if (isCollapsed())
+//                return buttonPanel_.getMinimumSize();
+//            else
+//                return new Dimension(200, 0);
+//        }
+//    
+//    
+//        public Dimension getMaximumSize()
+//        {
+//            return getPreferredSize();
+//        }
 
     //--------------------------------------------------------------------------
     // Preferences Support
@@ -392,16 +411,15 @@ public class JFlipPane extends JPanel
      */
     public void savePrefs(Properties prefs, String prefix)
     {
-        Dimension size = getSize();
-        
         PropertiesUtil.setBoolean(
             prefs, prefix + PROP_COLLAPSED, isCollapsed());
         
         PropertiesUtil.setInteger(
-            prefs, prefix + PROP_WIDTH, size.width);
+            prefs, prefix + PROP_DIMENSION, getDimension());
             
-        PropertiesUtil.setInteger(
-            prefs, prefix + PROP_HEIGHT, size.height);
+        String flipper = getActiveFlipper().getName();
+        if (!StringUtil.isNullOrEmpty(flipper))
+            prefs.setProperty(prefix + PROP_ACTIVE , flipper);
     }
     
     /**
@@ -412,20 +430,18 @@ public class JFlipPane extends JPanel
      */
     public void applyPrefs(Properties prefs, String prefix)
     {
-        Dimension size = new Dimension();
-        size.width = PropertiesUtil.getInteger(prefs, prefix + PROP_WIDTH, 100);
-        size.height = PropertiesUtil.getInteger(prefs,prefix+ PROP_HEIGHT, 100);
-        //setSize(size);
-        
-        
-
         boolean collapsed = 
             PropertiesUtil.getBoolean(prefs, prefix + PROP_COLLAPSED, false); 
         
         if (collapsed != isCollapsed())
             toggleFlipper();
         
-        setDimension(size.width);
+        int dim = PropertiesUtil.getInteger(prefs, prefix + PROP_DIMENSION,100);
+        setDimension(dim);
+        
+        String flipper = prefs.getProperty(prefix + PROP_ACTIVE );
+        if (!StringUtil.isNullOrEmpty(flipper))
+            setActiveFlipper(flipper);
     }
 
     //--------------------------------------------------------------------------
@@ -711,7 +727,7 @@ public class JFlipPane extends JPanel
         {
             if (evt.getSource() == closeButton_)
             {
-                setSelectedFlipper(null);
+                setActiveFlipper( (JComponent) null);
             }
             else
             {
@@ -720,7 +736,7 @@ public class JFlipPane extends JPanel
                 logger_.debug("Flipper " + name + " selected");
                 JComponent flipper = (JComponent) flippers_.get(name);
                 
-                if (isFlipperSelected(flipper))
+                if (isFlipperActive(flipper))
                 {
                     logger_.debug("Toggeling flipper");
                     toggleFlipper();
@@ -733,7 +749,7 @@ public class JFlipPane extends JPanel
                     if (isCollapsed())
                         toggleFlipper();
                         
-                    setSelectedFlipper(flipper);
+                    setActiveFlipper(flipper);
                 }
      
                 // TODO: find correct way to do this           
