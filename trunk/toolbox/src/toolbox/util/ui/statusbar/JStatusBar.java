@@ -21,14 +21,14 @@ public class JStatusBar extends JPanel
     //--------------------------------------------------------------------------
     
     /** 
-     * Statusbar component that size is adjusted relative to the contents and
-     * space availability on the status bar.
+     * Specifies that a statusbar component's size is adjusted relative to the 
+     * contents and space availability on the status bar.
      */
     public static final boolean RELATIVE = true;
     
     /**
-     * Statusbar component thats size will remain fixed regardless of the 
-     * contraints of the other status bar components around it.
+     * Specifies that a Statusbar component's will remain fixed regardless of 
+     * the contraints of the other status bar components around it.
      */
     public static final boolean FIXED = false;
 
