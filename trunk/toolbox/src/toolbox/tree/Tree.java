@@ -24,7 +24,6 @@ import toolbox.util.io.filter.FileFilter;
  *
  *   apache
  *   |
- *   |
  *   +---org
  *   |   +---apache
  *   |       +---log4j
@@ -52,21 +51,39 @@ import toolbox.util.io.filter.FileFilter;
  */
 public class Tree
 {
+    /** Spaces indentation per tree branch */
+    private static final String SPACER = "    ";
+    
+    /** Tree branch with a continuation */
+    private static final String BAR = "|   ";
+    
+    /** Junction in the tree */
+    private static final String JUNCTION = "+";
+    
+    /** Tree arm */
+    private static final String ARM = "---";
+    
+    /** Files are not shown by default */
     private static final boolean DEFAULT_SHOWFILES = false;
     
-    private static final Writer  DEFAULT_WRITER = 
+    /** Output is send to System.out by default */
+    private static final Writer DEFAULT_WRITER = 
         new OutputStreamWriter(System.out);
-        
+    
+    /** Output writer */    
     private PrintWriter writer_;
+    
+    /** Filter to identify directories */
     private FilenameFilter dirFilter_;
+    
+    /** Filter to identigy files */
     private FilenameFilter fileFilter_;
+    
+    /** Flag that controls the showing of files */
     private boolean showFiles_;
+    
+    /** Root directory of the tree */
     private File rootDir_;
-        
-    private static final String SPACER   = "    ";
-    private static final String BAR      = "|   ";
-    private static final String JUNCTION = "+";
-    private static final String ARM      = "---";
 
     //--------------------------------------------------------------------------
     // Main
@@ -150,7 +167,6 @@ public class Tree
     {
         this(rootDir, DEFAULT_SHOWFILES, DEFAULT_WRITER);
     }
-    
 
     /**
      * Creates a tree with the given root directory and output
@@ -162,7 +178,6 @@ public class Tree
     {
         this(rootDir, DEFAULT_SHOWFILES, writer);    
     }
-
 
     /**
      * Creates a tree with the given root directory and flag to show files
@@ -200,7 +215,6 @@ public class Tree
         if (!rootDir_.canRead())
             throw new IllegalArgumentException("Cannot read from " + 
                 rootDir_);
-        
         
         showFiles_ = showFiles;
         writer_ = new PrintWriter(writer, true);
@@ -279,7 +293,7 @@ public class Tree
 
         int len = dirs.length; 
 
-        // we know theres at least one child so go ahead and print a BAR
+        // Theres at least one child so go ahead and print a BAR
         if (atRoot)
             writer_.println(BAR);
             
@@ -291,7 +305,7 @@ public class Tree
             writer_.print(level);
             writer_.print(JUNCTION);
             writer_.print(ARM);
-              writer_.print(current.getName());
+            writer_.print(current.getName());
             writer_.println();
             
             // Recurse            
