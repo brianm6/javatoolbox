@@ -7,7 +7,7 @@ import javax.swing.UIManager;
 import org.apache.log4j.Logger;
 
 import toolbox.util.SwingUtil;
-import toolbox.util.ui.plugin.WorkspaceAction;
+import toolbox.workspace.WorkspaceAction;
 
 /**
  * Action that activates a given {@LookAndFeel}

@@ -53,10 +53,10 @@ import toolbox.util.file.FileComparator;
 import toolbox.util.io.filter.DirectoryFilter;
 import toolbox.util.io.filter.FileFilter;
 import toolbox.util.ui.list.JSmartList;
-import toolbox.util.ui.plugin.IPreferenced;
 import toolbox.util.ui.statusbar.JStatusBar;
 import toolbox.util.ui.tree.JSmartTree;
 import toolbox.util.ui.tree.SmartTreeCellRenderer;
+import toolbox.workspace.IPreferenced;
 
 /**
  * Explorer like tree based file browser component.

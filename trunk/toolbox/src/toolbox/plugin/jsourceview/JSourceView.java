@@ -29,10 +29,10 @@ import javax.swing.UIManager;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
-import org.apache.log4j.Logger;
-
 import nu.xom.Attribute;
 import nu.xom.Element;
+
+import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
 import toolbox.util.ElapsedTime;
@@ -50,14 +50,14 @@ import toolbox.util.ui.JSmartMenu;
 import toolbox.util.ui.JSmartMenuItem;
 import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.SmartAction;
-import toolbox.util.ui.plugin.IPreferenced;
-import toolbox.util.ui.plugin.IStatusBar;
-import toolbox.util.ui.plugin.WorkspaceAction;
 import toolbox.util.ui.table.JSmartTable;
 import toolbox.util.ui.table.JSmartTableHeader;
 import toolbox.util.ui.table.SmartTableCellRenderer;
 import toolbox.util.ui.table.SmartTableModel;
 import toolbox.util.ui.table.TableSorter;
+import toolbox.workspace.IPreferenced;
+import toolbox.workspace.IStatusBar;
+import toolbox.workspace.WorkspaceAction;
 
 /**
  * JSourceView gathers statistics on one or more source files and presents

@@ -5,16 +5,11 @@ import java.util.Properties;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
-import org.apache.log4j.Appender;
 import org.apache.log4j.Logger;
-import org.apache.log4j.xml.DOMConfigurator;
 
 import toolbox.log4j.im.AIMMessenger;
 import toolbox.log4j.im.InstantMessenger;
-import toolbox.log4j.im.YahooMessenger;
-import toolbox.util.ResourceUtil;
 import toolbox.util.ThreadUtil;
-import toolbox.util.XMLUtil;
 
 /**
  * Unit tests for YahooMessenger

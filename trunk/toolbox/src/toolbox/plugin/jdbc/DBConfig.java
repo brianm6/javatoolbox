@@ -9,11 +9,11 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 
-import org.apache.log4j.Logger;
-
 import nu.xom.Attribute;
 import nu.xom.Element;
 import nu.xom.Elements;
+
+import org.apache.log4j.Logger;
 
 import toolbox.util.ExceptionUtil;
 import toolbox.util.JDBCUtil;
@@ -24,9 +24,9 @@ import toolbox.util.ui.JSmartComboBox;
 import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.layout.ParagraphLayout;
-import toolbox.util.ui.plugin.IPreferenced;
-import toolbox.util.ui.plugin.IStatusBar;
-import toolbox.util.ui.plugin.WorkspaceAction;
+import toolbox.workspace.IPreferenced;
+import toolbox.workspace.IStatusBar;
+import toolbox.workspace.WorkspaceAction;
 
 /**
  * JDBC Drivers configuration panel

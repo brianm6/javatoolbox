@@ -4,12 +4,12 @@ import java.util.Map;
 
 import javax.swing.JComponent;
 
-import org.apache.log4j.Logger;
-
 import nu.xom.Element;
 
+import org.apache.log4j.Logger;
+
 import toolbox.util.ExceptionUtil;
-import toolbox.util.ui.plugin.IPlugin;
+import toolbox.workspace.IPlugin;
 
 /**
  * Plugin wrapper for JFindClass

@@ -21,12 +21,12 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import nu.xom.Element;
+
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
 import org.apache.regexp.RESyntaxException;
-
-import nu.xom.Element;
 
 import toolbox.jtail.filter.RegexLineFilter;
 import toolbox.util.Banner;
@@ -41,6 +41,9 @@ import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.SmartAction;
 import toolbox.util.ui.flippane.JFlipPane;
+import toolbox.workspace.IPlugin;
+import toolbox.workspace.IStatusBar;
+import toolbox.workspace.PluginWorkspace;
 
 /**
  * Plugin for simple text manipulation.

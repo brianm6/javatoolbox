@@ -20,13 +20,10 @@ import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
-import com.adobe.acrobat.Viewer;
-
 import nu.xom.Element;
 
 import org.apache.fop.apps.Fop;
 import org.apache.log4j.Logger;
-
 import org.jedit.syntax.SyntaxStyle;
 import org.jedit.syntax.TextAreaDefaults;
 import org.jedit.syntax.Token;
@@ -46,10 +43,12 @@ import toolbox.util.ui.JFileExplorerAdapter;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartSplitPane;
 import toolbox.util.ui.flippane.JFlipPane;
-import toolbox.util.ui.plugin.IPlugin;
-import toolbox.util.ui.plugin.IStatusBar;
-import toolbox.util.ui.plugin.PluginWorkspace;
-import toolbox.util.ui.plugin.WorkspaceAction;
+import toolbox.workspace.IPlugin;
+import toolbox.workspace.IStatusBar;
+import toolbox.workspace.PluginWorkspace;
+import toolbox.workspace.WorkspaceAction;
+
+import com.adobe.acrobat.Viewer;
 
 /**
  * XSLFO Plugin is a simple GUI interface to edit, process and view transformed

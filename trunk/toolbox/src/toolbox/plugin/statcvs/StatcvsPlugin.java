@@ -15,17 +15,15 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 
-import org.apache.log4j.Logger;
-
-import org.netbeans.lib.cvsclient.commandLine.CVSCommand;
-
 import net.sf.statcvs.Main;
 import net.sf.statcvs.output.CommandLineParser;
-
 import nu.xom.Attribute;
 import nu.xom.Builder;
 import nu.xom.Element;
 import nu.xom.Elements;
+
+import org.apache.log4j.Logger;
+import org.netbeans.lib.cvsclient.commandLine.CVSCommand;
 
 import toolbox.util.ArrayUtil;
 import toolbox.util.FileUtil;
@@ -42,6 +40,10 @@ import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.NativeBrowser;
 import toolbox.util.ui.layout.GridLayoutPlus;
 import toolbox.util.ui.layout.ParagraphLayout;
+import toolbox.workspace.IPlugin;
+import toolbox.workspace.IStatusBar;
+import toolbox.workspace.PluginWorkspace;
+import toolbox.workspace.WorkspaceAction;
 
 /**
  * StatcvsPlugin is a GUI wrapper for the 

@@ -45,7 +45,7 @@ import toolbox.util.concurrent.IBatchingQueueListener;
 import toolbox.util.io.NullWriter;
 import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.SmartAction;
-import toolbox.util.ui.plugin.IStatusBar;
+import toolbox.workspace.IStatusBar;
 
 /**
  * A UI component that serves as the view for the tailing one or more files to

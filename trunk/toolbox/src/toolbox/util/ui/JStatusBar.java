@@ -11,7 +11,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 
 import toolbox.util.SwingUtil;
-import toolbox.util.ui.plugin.IStatusBar;
+import toolbox.workspace.IStatusBar;
 
 /**
  * JStatusBar is a simple component to show a text message as status.

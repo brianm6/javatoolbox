@@ -35,9 +35,9 @@ import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.list.JListPopupMenu;
 import toolbox.util.ui.list.JSmartList;
 import toolbox.util.ui.list.RegexListModelFilter;
-import toolbox.util.ui.plugin.IPlugin;
-import toolbox.util.ui.plugin.IStatusBar;
-import toolbox.util.ui.plugin.PluginWorkspace;
+import toolbox.workspace.IPlugin;
+import toolbox.workspace.IStatusBar;
+import toolbox.workspace.PluginWorkspace;
 
 /**
  * Simple plugin that allows running of JUnit tests by package

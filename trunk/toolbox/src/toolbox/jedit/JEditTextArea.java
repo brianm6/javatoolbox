@@ -17,7 +17,7 @@ import toolbox.util.FontUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.ui.AntiAliased;
-import toolbox.util.ui.plugin.IPreferenced;
+import toolbox.workspace.IPreferenced;
 
 /**
  * Modified JEditTextArea that supports a host of convenient features.<br>

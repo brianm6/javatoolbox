@@ -6,9 +6,9 @@ import javax.swing.JComponent;
 
 import nu.xom.Element;
 
-import toolbox.util.ui.plugin.IPlugin;
-import toolbox.util.ui.plugin.IStatusBar;
-import toolbox.util.ui.plugin.PluginWorkspace;
+import toolbox.workspace.IPlugin;
+import toolbox.workspace.IStatusBar;
+import toolbox.workspace.PluginWorkspace;
 
 /**
  * Plugin wrapper for {@link JTail}

@@ -14,7 +14,7 @@ import toolbox.jtail.config.ITailPaneConfig;
 import toolbox.util.FontUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
-import toolbox.util.ui.plugin.IPreferenced;
+import toolbox.workspace.IPreferenced;
 
 /**
  * TailConfig is a data object that captures the configuration of a given tail 

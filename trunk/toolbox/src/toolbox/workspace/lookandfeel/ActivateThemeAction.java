@@ -8,7 +8,7 @@ import com.jgoodies.plaf.plastic.PlasticLookAndFeel;
 import com.jgoodies.plaf.plastic.PlasticTheme;
 
 import toolbox.util.SwingUtil;
-import toolbox.util.ui.plugin.WorkspaceAction;
+import toolbox.workspace.WorkspaceAction;
 
 
 /**

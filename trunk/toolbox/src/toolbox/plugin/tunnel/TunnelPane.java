@@ -33,8 +33,8 @@ import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.SmartAction;
 import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.util.ui.layout.ParagraphLayout;
-import toolbox.util.ui.plugin.IPreferenced;
-import toolbox.util.ui.plugin.IStatusBar;
+import toolbox.workspace.IPreferenced;
+import toolbox.workspace.IStatusBar;
 
 /**
  * Panel which houses the majority of the UI controls. 

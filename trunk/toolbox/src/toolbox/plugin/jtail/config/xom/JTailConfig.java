@@ -1,15 +1,15 @@
 package toolbox.jtail.config.xom;
 
-import org.apache.log4j.Logger;
-
 import nu.xom.Element;
 import nu.xom.Elements;
+
+import org.apache.log4j.Logger;
 
 import toolbox.jtail.config.IJTailConfig;
 import toolbox.jtail.config.ITailPaneConfig;
 import toolbox.util.ArrayUtil;
 import toolbox.util.XOMUtil;
-import toolbox.util.ui.plugin.IPreferenced;
+import toolbox.workspace.IPreferenced;
 
 /**
  * Tiny XML implemenation of IJTailConfig interface that marshals configuration 

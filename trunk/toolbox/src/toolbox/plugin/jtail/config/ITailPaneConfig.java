@@ -2,7 +2,7 @@ package toolbox.jtail.config;
 
 import java.awt.Font;
 
-import toolbox.util.ui.plugin.IPreferenced;
+import toolbox.workspace.IPreferenced;
 
 /**
  * ITailPaneConfig describes the interface necessary to configure a TailPane

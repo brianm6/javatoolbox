@@ -18,13 +18,14 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
+import nu.xom.Element;
+import nu.xom.Elements;
+
 import org.apache.log4j.Logger;
 
 import org.jedit.syntax.KeywordMap;
 import org.jedit.syntax.SQLTokenMarker;
 import org.jedit.syntax.TextAreaDefaults;
-import nu.xom.Element;
-import nu.xom.Elements;
 
 import toolbox.jedit.JEditTextArea;
 import toolbox.jedit.JavaDefaults;
@@ -40,10 +41,10 @@ import toolbox.util.ui.JSmartSplitPane;
 import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.SmartAction;
 import toolbox.util.ui.flippane.JFlipPane;
-import toolbox.util.ui.plugin.IPlugin;
-import toolbox.util.ui.plugin.IStatusBar;
-import toolbox.util.ui.plugin.PluginWorkspace;
-import toolbox.util.ui.plugin.WorkspaceAction;
+import toolbox.workspace.IPlugin;
+import toolbox.workspace.IStatusBar;
+import toolbox.workspace.PluginWorkspace;
+import toolbox.workspace.WorkspaceAction;
 
 /**
  * Simple SQL Plugin that allows you to query and update a database via JDBC.

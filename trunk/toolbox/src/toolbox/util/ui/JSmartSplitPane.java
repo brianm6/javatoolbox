@@ -8,7 +8,7 @@ import nu.xom.Attribute;
 import nu.xom.Element;
 
 import toolbox.util.XOMUtil;
-import toolbox.util.ui.plugin.IPreferenced;
+import toolbox.workspace.IPreferenced;
 
 /**
  * JSmartSplitPane

@@ -17,7 +17,7 @@ import toolbox.util.Assert;
 import toolbox.util.FontUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
-import toolbox.util.ui.plugin.IPreferenced;
+import toolbox.workspace.IPreferenced;
 
 /**
  * Extends the functionality of JTextArea by adding the following features.

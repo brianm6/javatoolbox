@@ -39,6 +39,7 @@ import toolbox.util.SwingUtil;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.tabbedpane.JSmartTabbedPane;
+import toolbox.workspace.IPlugin;
 
 /**
  * Shows UIDefaults for each widget in Swing's library for a given Look and Feel

@@ -71,14 +71,14 @@ import toolbox.util.ui.JSmartPopupMenu;
 import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.util.ui.list.JSmartList;
-import toolbox.util.ui.plugin.IPreferenced;
-import toolbox.util.ui.plugin.IStatusBar;
-import toolbox.util.ui.plugin.PluginWorkspace;
-import toolbox.util.ui.plugin.WorkspaceAction;
 import toolbox.util.ui.table.JSmartTable;
 import toolbox.util.ui.table.JSmartTableHeader;
 import toolbox.util.ui.table.SmartTableCellRenderer;
 import toolbox.util.ui.table.TableSorter;
+import toolbox.workspace.IPreferenced;
+import toolbox.workspace.IStatusBar;
+import toolbox.workspace.PluginWorkspace;
+import toolbox.workspace.WorkspaceAction;
 
 /**
  * GUI for finding class files by regular expression from the classpath

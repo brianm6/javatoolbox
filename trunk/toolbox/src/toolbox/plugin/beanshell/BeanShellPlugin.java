@@ -9,13 +9,14 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
 import bsh.util.JConsole;
+
 import nu.xom.Element;
 
 import org.apache.log4j.Logger;
 
 import toolbox.util.io.JTextAreaOutputStream;
 import toolbox.util.ui.JSmartTextArea;
-import toolbox.util.ui.plugin.IPlugin;
+import toolbox.workspace.IPlugin;
 
 /**
  * Beanshell Plugin

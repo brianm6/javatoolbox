@@ -46,8 +46,8 @@ import toolbox.util.ui.font.FontChooserException;
 import toolbox.util.ui.font.IFontChooserDialogListener;
 import toolbox.util.ui.font.JFontChooser;
 import toolbox.util.ui.font.JFontChooserDialog;
-import toolbox.util.ui.plugin.IPreferenced;
-import toolbox.util.ui.plugin.IStatusBar;
+import toolbox.workspace.IPreferenced;
+import toolbox.workspace.IStatusBar;
 
 /**
  * JTail is a GUI front end for {@link toolbox.tail.Tail}. <p>
