@@ -25,6 +25,7 @@ public class ImageCache
     public static final String IMAGE_CROSS   = ROOT + "Cross.gif";
     public static final String IMAGE_TRIANGLE= ROOT + "Triangle.gif";
     public static final String IMAGE_REFRESH = ROOT + "Refresh.gif";
+    public static final String IMAGE_TRASHCAN= ROOT + "TrashCan.png";
     
     public static final String IMAGE_SORT_ASCENDING = ROOT+"SortAscending.gif";
     public static final String IMAGE_SORT_DESCENDING= ROOT+"SortDescending.gif";
