@@ -54,14 +54,17 @@ public class AOLMessengerTest extends TestCase
         
         InstantMessenger messenger = new AOLMessenger();
         
-        logger_.debug("Before init...");     
-        messenger.initialize(new Properties());
+        logger_.debug("Before init...");   
+        Properties props = new Properties();
+        props.setProperty(InstantMessenger.PROP_DELAY, 500+"");  
+        messenger.initialize(props);
         
         logger_.debug("Before login...");    
-        messenger.login("supahfuzz", "techno");
+        messenger.login("supahfuzzy", "techno");
         
         logger_.debug("Before send...");     
-        messenger.send("analogue", "Hello from the testLifeCycle unit test."); 
+        messenger.send("analogue", "Hello from the " + 
+            getClass().getName() + ".testLifeCycle unit test."); 
         ThreadUtil.sleep(10000);
         
         logger_.debug("Before logout...");   
@@ -83,8 +86,10 @@ public class AOLMessengerTest extends TestCase
         logger_.info("Running testSendMany...");
         
         InstantMessenger messenger = new AOLMessenger();
-        messenger.initialize(new Properties());
-        messenger.login("supahfuzz", "techno");
+        Properties props = new Properties();
+        props.setProperty(InstantMessenger.PROP_DELAY, 500+"");  
+
+        messenger.login("supahfuzzy", "techno");
         
         for (int i=0; i<100; i++)
         {
