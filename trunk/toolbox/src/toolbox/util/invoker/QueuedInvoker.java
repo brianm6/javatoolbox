@@ -170,8 +170,6 @@ public class QueuedInvoker implements Invoker
      */
     class Invokable implements Runnable
     {
-        private boolean running_ = false;
-
         /**
          * @see java.lang.Runnable#run()
          */
@@ -184,9 +182,7 @@ public class QueuedInvoker implements Invoker
                 try
                 {
                     Runnable r = (Runnable) queue_.take();
-                    running_ = true;
                     r.run();
-                    running_ = false;
                     Thread.sleep(delay_);
                 }
                 catch (InterruptedException ie)
