@@ -390,8 +390,11 @@ public class JTcpTunnel extends JFrame
                                     " ...");
 
                     // relay the stuff thru
-                    new Thread(new Relay(sc.getInputStream(), st.getOutputStream())).start();
-                    new Thread(new Relay(st.getInputStream(), sc.getOutputStream())).start();
+                    new Thread(new Relay(sc.getInputStream(), 
+                        st.getOutputStream())).start();
+                        
+                    new Thread(new Relay(st.getInputStream(), 
+                        sc.getOutputStream())).start();
 
                     // that's it .. they're off
                 }
