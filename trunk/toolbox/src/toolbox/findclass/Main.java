@@ -6,18 +6,19 @@ import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Category;
 import org.apache.regexp.RESyntaxException;
 import toolbox.util.ArrayUtil;
+import toolbox.util.args.ArgumentParser;
+import toolbox.util.args.Option;
+import toolbox.util.args.OptionException;
 
 /**
  * Utility that finds all occurences of a given class in the 
  * CLASSPATH, current directory, and archives (recursively)
  */
-public class Main implements IFindClassListener
+public class Main extends FindClassAdapter
 { 
     /** Logger **/
     private static final Category logger_ = Category.getInstance(Main.class);
-    
-    /** command line flag to specify case sensetivity **/
-    private static final String caseSensetiveFlag_ = "-cs";
+
     
     /**
      * FindClass entry point
@@ -28,42 +29,57 @@ public class Main implements IFindClassListener
     {
         try
         {
+            ArgumentParser parser = new ArgumentParser();
+            Option caseSensetiveOpt  = parser.addBooleanOption('c', "caseSensetive");
+            Option verboseOpt     = parser.addBooleanOption('v', "verbose");
+        
+            try
+            {
+                parser.parse(args);
+            }
+            catch (OptionException e)
+            {
+                System.err.println(e.getMessage());
+                printUsage();
+                System.exit(2);
+            }
+            
+            Boolean caseSensetiveValue = 
+                (Boolean) parser.getOptionValue(caseSensetiveOpt);        
+            
+            boolean caseSensetive = false;
+            if (caseSensetiveValue != null)    
+                caseSensetive = caseSensetiveValue.booleanValue();
+
+            Boolean verboseValue = 
+                (Boolean) parser.getOptionValue(verboseOpt);        
+            
+            boolean verbose = false;
+            if (verboseValue != null)    
+                verbose = verboseValue.booleanValue();
+            
+            if (verbose)
+                System.setProperty("findclass.debug","true");
+            else
+                System.getProperties().remove("findclass.debug");
+
+            String[] otherArgs = parser.getRemainingArgs();
+            String classToFind="";
+                        
+            if (otherArgs.length != 1)
+            {
+                printUsage();
+                System.exit(2);
+            }
+            else
+                classToFind = otherArgs[0];
+            
             /* init log4j */
             BasicConfigurator.configure();
             
             FindClass finder = new FindClass();
             finder.addFindClassListener(new Main());
-            String classToFind;
-            boolean ignoreCase;
-    
-            /* handle args */        
-            if (args.length == 1) 
-            {
-                classToFind = args[0];
-                ignoreCase  = true;
-                
-                finder.findClass(classToFind, ignoreCase);
-            }
-            else if (args.length == 2)
-            { 
-                switch (ArrayUtil.indexOf(args, caseSensetiveFlag_))
-                {
-                    case -1: printUsage(); 
-                             break;
-                    
-                    case  0: classToFind = args[1]; 
-                             ignoreCase = false;
-                             finder.findClass(classToFind, ignoreCase);
-                             break;                
-                    
-                    case  1: classToFind = args[0]; 
-                             ignoreCase = false;
-                             finder.findClass(classToFind, ignoreCase);                 
-                             break; 
-                }
-            }
-            else 
-                printUsage();
+            finder.findClass(classToFind, !caseSensetive);
         }
         catch (RESyntaxException re)
         {
@@ -75,6 +91,7 @@ public class Main implements IFindClassListener
         }
     }
 
+
     /**
      * Prints program usage
      */
@@ -85,10 +102,13 @@ public class Main implements IFindClassListener
         System.out.println("current directory.");
         System.out.println();
         
-        System.out.println("Usage  : java toolbox.findclass.Main -cs " +
-                           "<regular expression>");
+        System.out.println("Usage  : java toolbox.findclass.Main -i " +
+                           "<classToFind>");
                            
-        System.out.println("Options: -cs => Case sensetive search");
+        System.out.println("Options: -o, --caseSensetive => Case insensetive search");
+        System.out.println("         -v, --verbose       => Turn on verbose debug");
+        System.out.println("         <classToFind>       => Name of class to find. Can be a regular expression or "); 
+        System.out.println("                                substring occurring anywhere in the FQN of a class.");
     }
  
     /**
@@ -101,9 +121,5 @@ public class Main implements IFindClassListener
         System.out.println(
             searchResult.getClassLocation() + " => " + 
             searchResult.getClassFQN());   
-    }
-    
-    public void searchingTarget(String target)    
-    {
     }
 }
