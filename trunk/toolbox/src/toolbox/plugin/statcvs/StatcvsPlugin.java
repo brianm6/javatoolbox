@@ -35,36 +35,75 @@ import toolbox.util.ui.layout.GridLayoutPlus;
 import toolbox.util.ui.layout.ParagraphLayout;
 
 /**
- * Statcvs Plugin
+ * StatcvsPlugin is a GUI wrapper for the 
+ * <a href=http://statcvs.sourceforge.net>StatCVS</a> command line application. 
+ * The plugin also does all the upfront work that is not apparent in StatCVS to
+ * generate a report. This includes checking out the module from cvs, 
+ * generating a cvs log file and then running StatCVS to generate a HTML report. 
+ * This is all 100% java and does not rely on a native cvs executable to run 
+ * (thanks to the <a href=http://javacvs.netbeans.org/>javacvs</a> module from 
+ * <a href=http://www.netbeans.org>Netbeans</a>).
  */
 public class StatcvsPlugin extends JPanel implements IPlugin
 {
     // TODO: Add nuke checkout dir
     // TODO: Add one button to do everything
     // TODO: Implement recent pattern
- 
     
     private static final Logger logger_ = Logger.getLogger(StatcvsPlugin.class);
     
-    private static final String PROP_PROJECT     = "statcvs.plugin.project";
-    private static final String PROP_BASEDIR     = "statcvs.plugin.checkout.directory";
-    private static final String PROP_DEBUG       = "statcvs.plugin.debug";        
-    private static final String PROP_CVSMODULE   = "statcvs.plugin.module";
-    private static final String PROP_CVSROOT     = "statcvs.plugin.cvsroot";
-    private static final String PROP_CVSPASSWORD = "statcvs.plugin.cvspassword";
+    /** Property key for the unique project name */
+    private static final String PROP_PROJECT = "statcvs.plugin.project";
     
+    /** Property key for the checkout directory */
+    private static final String PROP_BASEDIR = "statcvs.plugin.co.directory";
+    
+    /** Property key for the debug flag for the cvslib.jar library */
+    private static final String PROP_DEBUG = "statcvs.plugin.debug";
+    
+    /** Property key for the cvs module name */        
+    private static final String PROP_CVSMODULE = "statcvs.plugin.cvsmodule";
+    
+    /** Property key for the cvs root */
+    private static final String PROP_CVSROOT    = "statcvs.plugin.cvsroot";
+    
+    /** Property key for the cvs password */
+    private static final String PROP_CVSPASSWORD= "statcvs.plugin.cvspassword";
+    
+    /** Reference to the workspace statusbar */
     private IStatusBar statusBar_;
+    
+    /** Output text area for application activity */
     private JSmartTextArea outputArea_;
     
+    /** Field for the project name (optional) */
     private JTextField projectField_;
+    
+    /** Field for the cvs module name (required) */
     private JTextField cvsModuleField_;
+    
+    /** Field for the cvs root (required) */
     private JTextField cvsRootField_;
+    
+    /** Field for the cvs password (required by empty strings are OK) */
     private JTextField cvsPasswordField_;
+    
+    /** Field for the checkout directory (must already exist) */
     private JTextField checkoutDirField_;
+    
+    /** Checkbox to toggle the cvslib.jar debug flag */
     private JCheckBox  debugCheckBox_;
+    
+    /** Field that contains the URL to view the generated statcvs report */
     private JTextField launchURLField_;
     
+    /** Saved user.dir before being overwritten (cvs commands require this) */
     private String      originalUserDir_;
+    
+    /** 
+     * Saved System.out before being overwritten (hijacked to capture the
+     * output of cvs log command).
+     */
     private PrintStream originalSystemOut_;
     
     //--------------------------------------------------------------------------
@@ -76,6 +115,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
      */
     public StatcvsPlugin()
     {
+        // Needed since created via newInstance()
     }
     
     //--------------------------------------------------------------------------
@@ -152,7 +192,8 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     }
 
     /**
-     * Sets debug flags based on the debugCheckBox's selected state
+     * Sets debug flags for the external 3rd party cvslib.jar based on the 
+     * debugCheckBox's selected state.
      */
     protected void setDebug()
     {    
@@ -168,27 +209,48 @@ public class StatcvsPlugin extends JPanel implements IPlugin
             org.netbeans.lib.cvsclient.util.Logger.setLogging(null);
         }
     }
-    
+
+    /**
+     * Sets the system property user.dir to the given value
+     * 
+     * @param dir Directory
+     */    
     protected void setUserDir(String dir)
     {
         System.setProperty("user.dir", dir);
     }
-    
+
+    /**
+     * Restores the value of system property user.dir
+     */    
     protected void restoreUserDir()
     {
         System.setProperty("user.dir", originalUserDir_);
     }
 
+    /**
+     * Sets System.out to the given stream
+     * 
+     * @param os  Stream to set to System.out
+     */
     protected void setSystemOut(OutputStream os)
     {
         System.setOut(new PrintStream(os));
     }
     
+    /**
+     * Restores System.out to the value before it was changed
+     */
     protected void restoreSystemOut()
     {
         System.setOut(originalSystemOut_);
     }
     
+    /**
+     * Verifies that all the fields pass simple verification checks.
+     * 
+     * @throws Exception if one or more of the fields did not pass verification.
+     */
     protected void verify() throws Exception
     {
         checkEmpty(cvsModuleField_, "CVS module");
@@ -197,6 +259,13 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         checkTrailer(checkoutDirField_);
     }
     
+    /**
+     * Checks to make sure that the given field contains some data.
+     * 
+     * @param  field  Field to check
+     * @param  name   Name to use in throw exception is field is blank
+     * @throws IllegalArgumentException if field is blank
+     */
     protected void checkEmpty(JTextField field, String name)
     {
         String text = field.getText();
@@ -206,23 +275,38 @@ public class StatcvsPlugin extends JPanel implements IPlugin
                 "Field '" + name + "' must have a value.");        
     }
     
+    /**
+     * Checks the trailing character on directory fields to make sure then
+     * have a terminating File.separator.
+     * 
+     * @param field  Field to check
+     */
     protected void checkTrailer(JTextField field)
     {
         String text = field.getText();
         field.setText(FileUtil.trailWithSeparator(text));    
     }
 
+    /**
+     * Returns a log file name based on the cvs module. Takes into account that
+     * the module name may be a hierarchy (a/b/c/b) and replaces file separators
+     * with periods.
+     * 
+     * @param   module  Module to use for creating the log file name.
+     * @return  Log file name 
+     */
     protected String moduleToLogFile(String module)
     {
         return StringUtil.replace(
             FileUtil.matchPlatformSeparator(cvsModuleField_.getText()),
             File.separator,
             ".") + ".log";
-        
     }
     
     /**
-     * @return Absolute path to the cvs generated log file
+     * Returns the absolute path to the cvs generated log file
+     * 
+     * @return Path to log file
      */
     protected String getCVSLogFile()
     {
@@ -232,6 +316,11 @@ public class StatcvsPlugin extends JPanel implements IPlugin
                moduleToLogFile(cvsModuleField_.getText());
     }
 
+    /**
+     * Returns the base CVS checkout directory
+     * 
+     * @return Base CVS checkout directory
+     */
     protected String getCVSBaseDir()
     {
         return checkoutDirField_.getText() + 
@@ -239,6 +328,13 @@ public class StatcvsPlugin extends JPanel implements IPlugin
                File.separator;
     }
     
+    /**
+     * Examines the cvs log and makes sure the first few lines don't contain
+     * junk that will throw off the statcvs log file parser.
+     * 
+     * @param   contents  Log file contents
+     * @return  Fixed Log file contents
+     */
     protected String fixLogFile(String contents)
     {
         boolean firstBlank = false;
@@ -308,7 +404,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
 
     public void init()
     {
-        //buildView();
+        // moved to setStatusBar() since its is need to init
     }
 
     public void setStatusBar(IStatusBar statusBar)
@@ -490,12 +586,15 @@ public class StatcvsPlugin extends JPanel implements IPlugin
             statusBar_.setStatus("Generating log done.");            
         }
     }
-    
+
+    /**
+     * Runs statcvs against the generatted cvs log file to create a HTML report
+     */    
     class StatcvsAction extends WorkspaceAction
     {
         public StatcvsAction()
         {
-            super("Run Statcvs", true, null, statusBar_);
+            super("Generate stats", true, null, statusBar_);
         }
         
         public void runAction(ActionEvent e) throws Exception
@@ -535,11 +634,14 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         }
     }
     
+    /**
+     * Launches web browser to view the generated Statcvs reports
+     */
     class LaunchAction extends WorkspaceAction
     {
         public LaunchAction()
         {
-            super("View Stats", false, null, null);
+            super("View stats report", false, null, null);
         }
         
         public void runAction(ActionEvent e) throws Exception
