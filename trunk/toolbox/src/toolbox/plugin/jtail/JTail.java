@@ -47,13 +47,14 @@ import toolbox.util.ui.font.FontChooserException;
 import toolbox.util.ui.font.IFontChooserDialogListener;
 import toolbox.util.ui.font.JFontChooser;
 import toolbox.util.ui.font.JFontChooserDialog;
+import toolbox.util.ui.plugin.IPreferenced;
 import toolbox.util.ui.plugin.IStatusBar;
 import toolbox.util.xml.XMLParser;
 
 /**
  * JTail is a GUI front end for {@link toolbox.tail.Tail}.
  */
-public class JTail extends JFrame
+public class JTail extends JFrame implements IPreferenced
 {
     /*
      * TODO: Add configurable "aggregator" for existing tails 
@@ -120,7 +121,7 @@ public class JTail extends JFrame
         SwingUtil.setPreferredLAF();        
         JTail jtail = new JTail();
         jtail.setVisible(true);
-        jtail.applyConfiguration(null);
+        jtail.applyPrefs(null);
     }
 
     //--------------------------------------------------------------------------
@@ -307,7 +308,7 @@ public class JTail extends JFrame
     }
     
     //--------------------------------------------------------------------------
-    // Preferences Support
+    // IPreferenced Interface
     //--------------------------------------------------------------------------    
 
     /**
@@ -316,7 +317,7 @@ public class JTail extends JFrame
      * 
      * @param  props  Used to save file explorer and flip pane properties
      */
-    protected void saveConfiguration(Properties props)
+    public void savePrefs(Properties props)
     {
         try
         {
@@ -404,7 +405,7 @@ public class JTail extends JFrame
      * 
      * @param  props  File explorer and flip pane properties read from here
      */
-    protected void applyConfiguration(Properties props)
+    public void applyPrefs(Properties props)
     {
         // Window size
         if (jtailConfig_.getSize() != null)
@@ -556,7 +557,7 @@ public class JTail extends JFrame
     {
         public void windowClosing(WindowEvent e)
         {
-            saveConfiguration(null);
+            savePrefs(null);
         }
     }
 
@@ -625,7 +626,7 @@ public class JTail extends JFrame
     
         public void actionPerformed(ActionEvent e)
         {
-            saveConfiguration(null);
+            savePrefs(null);
             statusBar_.setStatus("Saved configuration");
         }
     }

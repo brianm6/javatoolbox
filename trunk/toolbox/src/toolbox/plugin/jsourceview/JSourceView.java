@@ -36,6 +36,7 @@ import toolbox.util.io.filter.DirectoryFilter;
 import toolbox.util.io.filter.ExtensionFilter;
 import toolbox.util.io.filter.OrFilter;
 import toolbox.util.ui.ThreadSafeTableModel;
+import toolbox.util.ui.plugin.IPreferenced;
 import toolbox.util.ui.table.TableSorter;
 
 /**
@@ -53,7 +54,7 @@ import toolbox.util.ui.table.TableSorter;
  * TODO: Add regex filter to include/exclude files
  * </pre> 
  */
-public class JSourceView extends JFrame implements ActionListener
+public class JSourceView extends JFrame implements ActionListener, IPreferenced
 {
     private static final Logger logger_ = 
         Logger.getLogger(JSourceView.class);
@@ -177,6 +178,30 @@ public class JSourceView extends JFrame implements ActionListener
         SwingUtil.centerWindow(this);
     }
 
+	//--------------------------------------------------------------------------
+	// Public 
+	//--------------------------------------------------------------------------
+    
+	/**
+	 * Sets the text of the scan status
+	 * 
+	 * @param  status  Status of the scan activity
+	 */
+	public void setScanStatus(String status)
+	{
+		scanStatusLabel_.setText(status);
+	}
+
+	/**
+	 * Sets the text of the parse status
+	 * 
+	 * @param  status  Status of the parse activity
+	 */
+	public void setParseStatus(String status)
+	{
+		parseStatusLabel_.setText(status);
+	}
+
     //--------------------------------------------------------------------------
     //  ActionListener Interface
     //--------------------------------------------------------------------------
@@ -207,29 +232,9 @@ public class JSourceView extends JFrame implements ActionListener
         }
     }
 
-    //--------------------------------------------------------------------------
-    // Public 
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Sets the text of the scan status
-     * 
-     * @param  status  Status of the scan activity
-     */
-    public void setScanStatus(String status)
-    {
-        scanStatusLabel_.setText(status);
-    }
-
-    /**
-     * Sets the text of the parse status
-     * 
-     * @param  status  Status of the parse activity
-     */
-    public void setParseStatus(String status)
-    {
-        parseStatusLabel_.setText(status);
-    }
+	//--------------------------------------------------------------------------
+	// IPreferenced Interface
+	//--------------------------------------------------------------------------
 
     /**
      * Saves preferences 
@@ -261,12 +266,10 @@ public class JSourceView extends JFrame implements ActionListener
     }
 
     //--------------------------------------------------------------------------
-    //  Private
+    // Protected
     //--------------------------------------------------------------------------
     
     /**
-     * Creates the menu bar 
-     * 
      * @return  Menubar
      */
     protected JMenuBar createMenuBar()
