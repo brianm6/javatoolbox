@@ -44,45 +44,46 @@ public class QueryPlugin extends JPanel implements IPlugin
     public static final Logger logger_ =
         Logger.getLogger(QueryPlugin.class);   
 
-    /** 
-     * Property key for history 
-     */
-    public static final String KEY_HISTORY = "query.plugin.history";
-    
-    /** 
-     * Property key for driver name 
-     */
-    public static final String KEY_DRIVER = "query.plugin.driver";
-    
-    /** 
-     * Property key for driver URL 
-     */
-    public static final String KEY_URL = "query.plugin.url";
-    
-    /** 
-     * Property key for user 
-     */
-    public static final String KEY_USER = "query.plugin.user";
-    
-    /** 
-     * Property key for password 
-     */
-    public static final String KEY_PASSWORD = "query.plugin.password";
-    
     /**
-     * Newline character
-     */    
-    public static final String NEWLINE = "\n";
-
+     * Prefix for children that support preferences
+     */
+    public static final String PROP_PREFIX = "query";
+    
+    /** 
+     * Property key for SQL history 
+     */
+    public static final String PROP_HISTORY = "query.plugin.history";
+    
+    /** 
+     * Property key for JDBC driver name 
+     */
+    public static final String PROP_DRIVER = "query.plugin.driver";
+    
+    /** 
+     * Property key for JDBC driver URL 
+     */
+    public static final String PROP_URL = "query.plugin.url";
+    
+    /** 
+     * Property key for JDBC user 
+     */
+    public static final String PROP_USER = "query.plugin.user";
+    
+    /** 
+     * Property key for JDBC password 
+     */
+    public static final String PROP_PASSWORD = "query.plugin.password";
+    
     // SQL query & results stuff
     private IStatusBar  statusBar_;    
-    private JTextArea   inputArea_;
-    private JTextArea   outputArea_;
+    private JTextArea   sqlArea_;
+    private JTextArea   resultsArea_;
     private JButton     queryButton_;
     private JButton     clearButton_;
     private JPopupMenu  sqlPopup_;
     private Map         sqlHistory_;
-   
+    private JFlipPane   leftFlipPane_;
+    
     // JDBC config stuff 
     private JTextField driverField_;
     private JTextField urlField_;
@@ -112,30 +113,30 @@ public class QueryPlugin extends JPanel implements IPlugin
         sqlHistory_ = new HashMap();
         sqlPopup_ = new JPopupMenu("History");
                 
-        inputArea_ = new JTextArea();
-        inputArea_.setFont(SwingUtil.getPreferredMonoFont());
-        inputArea_.addMouseListener(new PopupListener());
+        sqlArea_ = new JTextArea();
+        sqlArea_.setFont(SwingUtil.getPreferredMonoFont());
+        sqlArea_.addMouseListener(new PopupListener());
         
         // Wire CTRL-Enter to execute the query
-        inputArea_.addKeyListener( new KeyAdapter()
+        sqlArea_.addKeyListener( new KeyAdapter()
         {
             public void keyTyped(KeyEvent e)
             {
                 if ((e.getKeyChar() ==  '\n') && ((KeyEvent.getKeyModifiersText(
                     e.getModifiers()).equals("Ctrl"))))
                         (new RunQueryAction()).actionPerformed(
-                            new ActionEvent(inputArea_, 0, "" ));
+                            new ActionEvent(sqlArea_, 0, "" ));
             }
         });
         
-        outputArea_ = new JTextArea();
-        outputArea_.setFont(SwingUtil.getPreferredMonoFont());
-        new JTextComponentPopupMenu(outputArea_);
+        resultsArea_ = new JTextArea();
+        resultsArea_.setFont(SwingUtil.getPreferredMonoFont());
+        new JTextComponentPopupMenu(resultsArea_);
         
         JSplitPane splitPane = 
             new JSplitPane(JSplitPane.VERTICAL_SPLIT,
-                new JScrollPane(inputArea_), 
-                new JScrollPane(outputArea_));
+                new JScrollPane(sqlArea_), 
+                new JScrollPane(resultsArea_));
 
         // Buttons 
         JPanel buttonPanel = new JPanel(new FlowLayout());
@@ -176,10 +177,9 @@ public class QueryPlugin extends JPanel implements IPlugin
 
         cp.add(new JButton(new ConnectAction()), ParagraphLayout.NEW_PARAGRAPH);
 
-        JFlipPane jfp = new JFlipPane(JFlipPane.LEFT);
-        jfp.addFlipper("JDBC Config", cp);
-        jfp.setExpanded(false);
-        return jfp;
+        leftFlipPane_ = new JFlipPane(JFlipPane.LEFT);
+        leftFlipPane_.addFlipper("JDBC Config", cp);
+        return leftFlipPane_;
     }
     
     /**
@@ -292,7 +292,7 @@ public class QueryPlugin extends JPanel implements IPlugin
      */
     public void applyPrefs(Properties prefs)
     {
-        String history = prefs.getProperty(KEY_HISTORY);
+        String history = prefs.getProperty(PROP_HISTORY);
         
         if (!StringUtil.isNullOrEmpty(history))
         {            
@@ -305,10 +305,12 @@ public class QueryPlugin extends JPanel implements IPlugin
                 addToHistory(historyItems[i]);
         }
             
-        driverField_.setText(prefs.getProperty(KEY_DRIVER, ""));
-        urlField_.setText(prefs.getProperty(KEY_URL, ""));
-        userField_.setText(prefs.getProperty(KEY_USER, ""));
-        passwordField_.setText(prefs.getProperty(KEY_PASSWORD, ""));
+        driverField_.setText(prefs.getProperty(PROP_DRIVER, ""));
+        urlField_.setText(prefs.getProperty(PROP_URL, ""));
+        userField_.setText(prefs.getProperty(PROP_USER, ""));
+        passwordField_.setText(prefs.getProperty(PROP_PASSWORD, ""));
+        
+        leftFlipPane_.applyPrefs(prefs, PROP_PREFIX);
     }
 
     /**
@@ -328,11 +330,13 @@ public class QueryPlugin extends JPanel implements IPlugin
             sb.append(sql + "|");
         }
         
-        prefs.setProperty(KEY_HISTORY, sb.toString());
-        prefs.setProperty(KEY_DRIVER, driverField_.getText().trim());
-        prefs.setProperty(KEY_URL, urlField_.getText().trim());
-        prefs.setProperty(KEY_USER, userField_.getText().trim());
-        prefs.setProperty(KEY_PASSWORD, passwordField_.getText().trim());
+        prefs.setProperty(PROP_HISTORY, sb.toString());
+        prefs.setProperty(PROP_DRIVER, driverField_.getText().trim());
+        prefs.setProperty(PROP_URL, urlField_.getText().trim());
+        prefs.setProperty(PROP_USER, userField_.getText().trim());
+        prefs.setProperty(PROP_PASSWORD, passwordField_.getText().trim());
+        
+        leftFlipPane_.savePrefs(prefs, PROP_PREFIX);
     }
 
     /**
@@ -396,7 +400,7 @@ public class QueryPlugin extends JPanel implements IPlugin
     
         public void actionPerformed(ActionEvent e)
         {
-            String sql = inputArea_.getText();        
+            String sql = sqlArea_.getText();        
             
             if (StringUtil.isNullOrEmpty(sql))
             {
@@ -405,7 +409,7 @@ public class QueryPlugin extends JPanel implements IPlugin
             else
             {
                 String results = executeSQL(sql);        
-                outputArea_.append(results);
+                resultsArea_.append(results);
             }
         }
     }
@@ -426,7 +430,7 @@ public class QueryPlugin extends JPanel implements IPlugin
     
         public void actionPerformed(ActionEvent e)
         {
-            inputArea_.setText(sql_);
+            sqlArea_.setText(sql_);
             new RunQueryAction().actionPerformed(e);
         }
     }
@@ -445,7 +449,7 @@ public class QueryPlugin extends JPanel implements IPlugin
     
         public void actionPerformed(ActionEvent e)
         {
-            outputArea_.setText("");            
+            resultsArea_.setText("");            
         }
     }
     
