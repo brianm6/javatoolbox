@@ -18,9 +18,7 @@ public class NotFilterTest extends TestCase
     private static final Logger logger_ = 
         Logger.getLogger(NotFilterTest.class);
      
-    /** 
-     * Test directory for filtering files 
-     */
+    /** Test directory for filtering files */
     private File testDir_;
      
     //--------------------------------------------------------------------------
@@ -38,7 +36,7 @@ public class NotFilterTest extends TestCase
     }
     
     //--------------------------------------------------------------------------
-    // Overridden from TestCase
+    // Overrides junit.framework.TestCase
     //--------------------------------------------------------------------------
     
     /** 
@@ -79,7 +77,7 @@ public class NotFilterTest extends TestCase
     }
     
     /**
-     * Tests accept() for (!true)
+     * Tests accept() for (&#33;true)
      */
     public void testAcceptNotTrue()
     {
@@ -93,7 +91,7 @@ public class NotFilterTest extends TestCase
     }
     
     /**
-     * Tests accept() for (!false)
+     * Tests accept() for (&#33;false)
      */
     public void testAcceptNotFalse()
     {
