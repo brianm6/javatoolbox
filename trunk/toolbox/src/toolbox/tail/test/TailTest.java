@@ -1,5 +1,6 @@
 package toolbox.tail.test;
 
+import java.io.File;
 import java.io.PipedReader;
 import java.io.PipedWriter;
 import java.io.PrintWriter;
@@ -17,7 +18,7 @@ import toolbox.util.RandomUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.ThreadUtil;
 import toolbox.util.concurrent.BlockingQueue;
-import toolbox.util.io.StringOutputStream;
+import toolbox.util.io.NullWriter;
 
 /**
  * Unit test for Tail
@@ -86,8 +87,7 @@ public class TailTest extends TestCase
         TestTailListener listener = new TestTailListener();
                
         Tail tail = new Tail();
-        tail.setTailFile(file);
-        tail.addOutputStream(System.out);
+        tail.follow(new File(file), new NullWriter());
         tail.addTailListener(listener);
         tail.start();
         listener.waitForStart();
@@ -119,20 +119,17 @@ public class TailTest extends TestCase
 
         Tail tail = new Tail();
         
-        // Create sinks for tail and attach them to the tail
-        StringOutputStream sos = new StringOutputStream();
-        StringWriter sw = new StringWriter();
-        tail.addOutputStream(sos);
-        tail.addWriter(sw);
 
         // Create a listener so we can test event
         TestTailListener listener = new TestTailListener();        
         tail.addTailListener(listener);
         
         logger_.info(tail.toString());
-        
-        // Attach the input reader to the tail
-        tail.setTailReader(reader);
+
+        // Create sinks for tail and attach them to the tail
+        // Attach the input reader to the tail        
+        StringWriter sw = new StringWriter();
+        tail.follow(reader, sw);
         
         // Lifecycle of tail
         tail.start();
@@ -151,11 +148,8 @@ public class TailTest extends TestCase
         listener.waitForStop();
         
         // Dump contents of the sinks
-        logger_.info("OutputStream sink:\n" + sos.getBuffer());
         logger_.info("OutputWriter sink:\n" + sw.toString());
         
-        tail.removeOutputStream(sos);
-        tail.removeWriter(sw);
         tail.removeTailListener(listener);
     }
 

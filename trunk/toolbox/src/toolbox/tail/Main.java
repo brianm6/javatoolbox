@@ -1,6 +1,8 @@
 package toolbox.tail;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.OutputStreamWriter;
 
 import org.apache.log4j.Logger;
 
@@ -51,8 +53,11 @@ public class Main extends TailAdapter
             try
             {
                 Tail tail = new Tail();
-                tail.addTailListener(this);
-                tail.setTailFile(files[i]);
+                
+                tail.follow(
+                    new File(files[i]), 
+                    new OutputStreamWriter(System.out));
+                        
                 tail.start();
             }
             catch (FileNotFoundException fnfe)
@@ -77,19 +82,5 @@ public class Main extends TailAdapter
             "Usage   : java toolbox.tail.Main [file1 file2 ... file8]");
         System.out.println(
             "Example : java toolbox.tail.Main appserver.log");
-    }
- 
-    //--------------------------------------------------------------------------
-    // Overridden from TailAdapter
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Override and print out the next line 
-     * 
-     * @param  line  Next line of tail
-     */    
-    public void nextLine(String line)
-    {
-        System.out.println(line);
     }
 }

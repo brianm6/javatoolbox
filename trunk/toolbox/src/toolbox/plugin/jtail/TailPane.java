@@ -4,8 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.util.ArrayList;
@@ -37,6 +39,7 @@ import toolbox.util.SwingUtil;
 import toolbox.util.concurrent.BatchingQueueReader;
 import toolbox.util.concurrent.BlockingQueue;
 import toolbox.util.concurrent.IBatchingQueueListener;
+import toolbox.util.io.NullWriter;
 import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.plugin.IStatusBar;
 
@@ -165,11 +168,11 @@ public class TailPane extends JPanel
             PipedOutputStream pos = new PipedOutputStream();
             PipedInputStream  pis = new PipedInputStream();
             pos.connect(pis);
-            tail_.setTailStream(pis);
+            tail_.follow(new InputStreamReader(pis), new NullWriter());
             logger_.debug("Tailing System.out...");
         }
         else
-            tail_.setTailFile(config_.getFilename());
+            tail_.follow(new File(config_.getFilename()), new NullWriter());
 
         // Start tail through action so button states are OK
         if (config_.isAutoStart())
