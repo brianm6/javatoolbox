@@ -3,6 +3,8 @@ package toolbox.util.io.throughput;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.apache.log4j.Logger;
+
 import toolbox.util.ArrayUtil;
 
 /**
@@ -13,6 +15,9 @@ import toolbox.util.ArrayUtil;
  */
 public class DefaultThroughputMonitor implements ThroughputMonitor {
 
+    private static final Logger logger_ = 
+        Logger.getLogger(DefaultThroughputMonitor.class);
+    
     //--------------------------------------------------------------------------
     // Defaults Constants
     //--------------------------------------------------------------------------
@@ -67,7 +72,11 @@ public class DefaultThroughputMonitor implements ThroughputMonitor {
 	 */
 	public void addThroughputListener(ThroughputListener listener) 
     {
-        listeners_ = (ThroughputListener[]) ArrayUtil.add(listeners_, listener);
+        if (listener != null)
+            listeners_ = (ThroughputListener[]) 
+                ArrayUtil.add(listeners_, listener);
+        else
+            logger_.error("Cannot add a null ThroughputListener!");
 	}
 
     
@@ -160,8 +169,8 @@ public class DefaultThroughputMonitor implements ThroughputMonitor {
         ThroughputEvent event = null;
         
         // Sync on reset of bytesTransferred
-        synchronized (this) 
-        {
+        //synchronized (this) 
+        //{
             
             event = new ThroughputEvent(
                 DefaultThroughputMonitor.this,
@@ -169,7 +178,7 @@ public class DefaultThroughputMonitor implements ThroughputMonitor {
                 bytesTransferred_);
             
             bytesTransferred_ = 0;
-        }
+        //}
         
         for (int i = 0, n = listeners_.length; i < n; i++)
             listeners_[i].currentThroughput(event);
