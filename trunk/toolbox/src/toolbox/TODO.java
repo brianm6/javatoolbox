@@ -23,7 +23,16 @@ package toolbox;
  * TODO: Writer a proper multisplit pane.
  * TODO: Figure out how to use forms
  * TODO: Add tile and cascade to Desktop plugin host
- * TODO: JDBC Plugin : icons for execute all, execute selected, execute current
+ * 
+ * ========================= JDBC Plugin =======================================
+ * TODO: icons for execute all, execute selected, execute current
+ * TODO: Ctrl-Up/Down should scroll through query history
+ * TODO: Enable connect/disconnect buttons based on state
+ * TODO: Build error pane because dialog boxes are annoying
+ * TODO: Change prefs saver to save editor contents to a separate file instead
+ *       of trying to embed it in toolbox.xml
+ * TODO: Update ExecuteCurrentAction to execute multiple sql statements within
+ *       a selection.
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
