@@ -370,6 +370,7 @@ Commands:
                 <include name="bsh.jar"/>
                 <include name="statcvs.jar"/>
                 <include name="l2fprod-common.jar"/>
+                <include name="concurrent.jar"/>
 
                 <!-- Doc viewer plugin -->
                 <include name="calphahtml.jar"/>
