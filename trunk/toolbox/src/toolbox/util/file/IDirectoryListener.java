@@ -12,7 +12,8 @@ public interface IDirectoryListener extends EventListener
     /**
      * Called when a file has met the criteria for an IFileActivity
      *
-     * @param  file   File that meets activity criteria
+     * @oaram  activity  Activity that caused this notification
+     * @param  file      File that meets activity criteria
      */
     public void fileActivity(IFileActivity activity, File[] files) 
         throws Exception;

@@ -2,7 +2,6 @@ package toolbox.util.file;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -10,13 +9,14 @@ import java.util.Set;
 import java.util.TreeSet;
 
 /**
- * An activity that monitors the creation of new files
+ * An activity that is capable of recognizing when new files
+ * are added to a directory.
  */
 public class FileCreatedActivity implements IFileActivity
 {
-    
+    /** Map of directories with their associated snapshot **/   
     private Map snapshots_ = new HashMap();
-    
+
     
     /**
      * Constructor for FileCreatedActivity.
@@ -25,8 +25,13 @@ public class FileCreatedActivity implements IFileActivity
     {
     }
 
+
     /**
-     * @see toolbox.util.file.IFileActivity#getFiles(File)
+     * Determines new files in a directory since the last time a snapshot was
+     * taken.
+     * 
+     * @param  dir  Directory to analyze
+     * @return List of new files
      */
     public File[] getFiles(File dir)
     {
@@ -67,6 +72,7 @@ public class FileCreatedActivity implements IFileActivity
         
         return newFiles;
     }
+
 
     /**
      * @return  Simple name
