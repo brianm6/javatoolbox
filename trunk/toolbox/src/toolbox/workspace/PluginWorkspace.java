@@ -1,16 +1,8 @@
 package toolbox.util.ui.plugin;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Container;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -26,7 +18,6 @@ import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -137,7 +128,6 @@ public class PluginWorkspace extends JFrame implements IStatusBar
         SwingUtilities.invokeLater(new PostInit());
     }
 
-
     //--------------------------------------------------------------------------
     //  Public
     //--------------------------------------------------------------------------
@@ -234,33 +224,6 @@ public class PluginWorkspace extends JFrame implements IStatusBar
         contentPane.add(statusLabel_, BorderLayout.SOUTH);
         
         setJMenuBar(createMenuBar());
-
-        // Prepare the glass pane for display of a 'Please wait' message:
-        JComponent glassPane = (JComponent)getGlassPane();
-        GridBagLayout layout = new GridBagLayout();
-        glassPane.setLayout(layout);
-    
-        // Create a JLabel centered in the glass pane, to be displayed
-        // when the glass pane is made visible:
-        JLabel waitLabel = new JLabel("Please wait...");
-        waitLabel.setOpaque(true);
-        waitLabel.setForeground(Color.blue);
-        waitLabel.setBackground(Color.yellow);
-
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.anchor = GridBagConstraints.CENTER;
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.gridwidth = 1;
-        gbc.gridheight = 1;
-        layout.setConstraints(waitLabel, gbc);
-        glassPane.add(waitLabel);
-
-        // Add dummy listeners to the glass pane to disable all input
-        // when it is visible:
-        glassPane.addKeyListener(new DummyKeyAdapter());
-        glassPane.addMouseListener(new DummyMouseAdapter());
-        glassPane.addMouseMotionListener(new DummyMouseMotionAdapter());
         
         addWindowListener(new CloseWindowListener());
     }
@@ -290,6 +253,7 @@ public class PluginWorkspace extends JFrame implements IStatusBar
             lafMenu_.add(lafItem);
         }
         
+        fileMenu.add(new SavePreferencesAction());
         fileMenu.add(lafMenu_);
         fileMenu.add(new ExitAction());            
         
@@ -373,8 +337,6 @@ public class PluginWorkspace extends JFrame implements IStatusBar
      */
     protected void savePrefs()
     {
-        logger_.debug("Saving preferences");
-
         // Save window location
         PropertiesUtil.setInteger(prefs_, KEY_XCOORD, getLocation().x);
         PropertiesUtil.setInteger(prefs_, KEY_YCOORD, getLocation().y);
@@ -420,6 +382,8 @@ public class PluginWorkspace extends JFrame implements IStatusBar
         {
             ResourceCloser.close(fos);
         }
+        
+        setStatus("Saved preferences");
     }
 
     /**
@@ -565,74 +529,6 @@ public class PluginWorkspace extends JFrame implements IStatusBar
         }        
     }
     
-    /**
-     * Consumes key events when the glass pane is active
-     */
-    private class DummyKeyAdapter extends KeyAdapter
-    {
-        public void keyPressed(KeyEvent ke)
-        {
-            ke.consume();
-        }
-
-        public void keyTyped(KeyEvent ke)
-        {
-            ke.consume();
-        }
-
-        public void keyReleased(KeyEvent ke)
-        {
-            ke.consume();
-        }
-    }
-
-    /**
-     * Consumes mouse events when the glass pane is active
-     */
-    private class DummyMouseAdapter extends MouseAdapter
-    {
-        public void mouseClicked(MouseEvent me)
-        {
-            me.consume();
-        }
-
-        public void mouseEntered(MouseEvent me)
-        {
-            me.consume();
-        }
-
-        public void mouseExited(MouseEvent me)
-        {
-            me.consume();
-        }
-
-        public void mousePressed(MouseEvent me)
-        {
-            me.consume();
-        }
-
-        public void mouseReleased(MouseEvent me)
-        {
-            me.consume();
-        }
-    }
-
-    /**
-     * Consumes mouse movement events when the glasspane is active
-     */
-    private class DummyMouseMotionAdapter extends MouseMotionAdapter
-    {
-        public void mouseDragged(MouseEvent me)
-        {
-            me.consume();
-        }
-
-        public void mouseMoved(MouseEvent me)
-        {
-            me.consume();
-        }
-    }
-    
     //--------------------------------------------------------------------------
     //  Actions
     //--------------------------------------------------------------------------
@@ -674,6 +570,23 @@ public class PluginWorkspace extends JFrame implements IStatusBar
         {
             JDialog dialog = new ManagePluginsDialog(PluginWorkspace.this);
             dialog.setVisible(true);    
+        }
+    }
+
+    /**
+     * Saves the preferences for the workspaces in addition to all the
+     * active plugins.
+     */
+    class SavePreferencesAction extends AbstractAction
+    {
+        public SavePreferencesAction()
+        {
+            super("Save prefs");
+        }
+        
+        public void actionPerformed(ActionEvent e)
+        {
+            savePrefs();
         }
     }
 
