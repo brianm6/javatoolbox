@@ -12,10 +12,12 @@ import toolbox.log4j.im.InstantMessenger;
 import toolbox.util.ThreadUtil;
 
 /**
- * Unit tests for YahooMessenger
+ * Unit tests for AIMMessenger.
  */
 public class AIMMessengerTest extends TestCase
 {
+	// TODO: Still broken...
+
     private static final Logger logger_ =
         Logger.getLogger(AIMMessengerTest.class);
 
