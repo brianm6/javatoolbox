@@ -26,6 +26,7 @@ public class TcpTunnel
 	 */
     public static void main(String args[]) throws IOException
     {
+        String method = "[main  ] ";
 
         if (args.length != 3)
         {
@@ -46,22 +47,25 @@ public class TcpTunnel
         while (true)
         {
             // accept the connection from my client
-            logger_.debug("Waiting to accept...");
+            logger_.debug(method + "Waiting to accept...");
             Socket sc = ss.accept();
 
             // connect to the thing I'm tunnelling for
-            logger_.debug("Creating new socket to tunnel " + tunnelhost + ":" + tunnelport);
+            logger_.debug(method + "Creating new socket to tunnel " + 
+                tunnelhost + ":" + tunnelport);
+                
             Socket st = new Socket(tunnelhost, tunnelport);
 
-            logger_.debug("Tunnelling port " + listenport + " to port " + 
-                tunnelport + " on host " + tunnelhost);
+            logger_.debug(method + "Tunnelling port " + listenport + 
+                " to port " + tunnelport + " on host " + tunnelhost);
 
             // relay the stuff thru
-            logger_.debug("Settup in relays...");
+            logger_.debug(method + "Settup in relays...");
+            
             new Relay(sc.getInputStream(), st.getOutputStream()).start();
             new Relay(st.getInputStream(), sc.getOutputStream()).start();
 
-            logger_.debug("Done!");
+            logger_.debug(method + "Done!");
             // that's it .. they're off; now I go back to my stuff.
         }
     }

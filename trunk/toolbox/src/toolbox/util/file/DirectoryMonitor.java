@@ -72,7 +72,9 @@ public class DirectoryMonitor
      */
     public void stop() throws InterruptedException
     {
-        logger_.debug("[termin] Shutting down..");
+        String method = "[stop  ]";
+        
+        logger_.debug(method + "Shutting down..");
         shutdown_ = true;
         
         // wait at most 10 secs for monitor to shutdown
@@ -93,7 +95,7 @@ public class DirectoryMonitor
             // DEBUG 
             logger_.debug(method + "Monitoring: " + getDirectory());
             for (Iterator i = activities_.iterator(); i.hasNext(); )
-                logger_.debug("Activity: " + i.next());
+                logger_.debug(method + "Activity: " + i.next());
 
     
             // Check termination flag
