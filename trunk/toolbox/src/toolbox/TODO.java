@@ -12,6 +12,7 @@ package toolbox;
  * TODO: Integrate automatic build number generation into the build process.
  * TODO: Get PropertyPrompt working properly
  * TODO: Add tabs to FIndClass -> Decompiler. One per file
+ * TODO: Fix tailing of Log4j in JTail
  * </pre>
  */
 public class TODO
