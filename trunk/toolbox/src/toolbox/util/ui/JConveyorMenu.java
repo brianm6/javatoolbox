@@ -52,7 +52,7 @@ public class JConveyorMenu extends JSmartMenu
      */
     public JMenuItem add(Action action)
     {
-        insert(action, 0);
+        insert(new JSmartMenuItem(action), 0);
         
         if (getItemCount() > capacity_)
             remove(capacity_);
