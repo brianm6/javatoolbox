@@ -137,9 +137,38 @@ public class DynamicFilterView extends JHeaderPanel implements IPreferenced
     }
 
     //--------------------------------------------------------------------------
+    // IPreferenced Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
+     */
+    public void applyPrefs(Element prefs) throws Exception
+    {
+        Element root = XOMUtil.getFirstChildElement(prefs, 
+            NODE_DYNAMIC_FILTER_VIEW, new Element(NODE_DYNAMIC_FILTER_VIEW));
+        
+        sourceArea_.applyPrefs(root);
+    }
+
+    
+    /**
+     * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
+     */
+    public void savePrefs(Element prefs) throws Exception
+    {
+        Element root = new Element(NODE_DYNAMIC_FILTER_VIEW);
+        sourceArea_.savePrefs(root);
+        XOMUtil.insertOrReplace(prefs, root);
+    }
+
+    //--------------------------------------------------------------------------
     // FormatAction
     //--------------------------------------------------------------------------
 
+    /**
+     * Formats the source code.
+     */
     class FormatAction extends SmartAction
     {
         public FormatAction()
@@ -162,6 +191,9 @@ public class DynamicFilterView extends JHeaderPanel implements IPreferenced
     // CompileAction
     //--------------------------------------------------------------------------
     
+    /**
+     * Compiles the source code to an ILineFilter.
+     */
     class CompileAction extends SmartAction
     {
         public CompileAction()
@@ -180,6 +212,7 @@ public class DynamicFilterView extends JHeaderPanel implements IPreferenced
             //
             // Extract the classname using QDox
             //
+            
             JavaDocBuilder builder = new JavaDocBuilder();
             builder.addSource(new StringReader(sourceCode));
             JavaClass[] classes = builder.getClasses();
@@ -193,6 +226,7 @@ public class DynamicFilterView extends JHeaderPanel implements IPreferenced
             //
             // Compile to bytecode using Janino
             //
+            
             SimpleCompiler compiler = new SimpleCompiler(
                 className, new StringInputStream(sourceCode));
             
@@ -206,29 +240,6 @@ public class DynamicFilterView extends JHeaderPanel implements IPreferenced
             filter.filter(crap);
             logger_.debug(crap);
         }
-    }
-
-    
-    /**
-     * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
-     */
-    public void applyPrefs(Element prefs) throws Exception
-    {
-        Element root = XOMUtil.getFirstChildElement(prefs, 
-            NODE_DYNAMIC_FILTER_VIEW, new Element(NODE_DYNAMIC_FILTER_VIEW));
-        
-        sourceArea_.applyPrefs(root);
-    }
-
-    
-    /**
-     * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
-     */
-    public void savePrefs(Element prefs) throws Exception
-    {
-        Element root = new Element(NODE_DYNAMIC_FILTER_VIEW);
-        sourceArea_.savePrefs(root);
-        XOMUtil.insertOrReplace(prefs, root);
     }
 }
 

@@ -1,8 +1,8 @@
 package toolbox.plugin.jtail.filter;
 
 /**
- * Base abstract implementation of an ILineFilter that adds behavior to keep
- * track of whether the filter is enabled or not.
+ * Abstract base class implementation of an ILineFilter that adds behavior to 
+ * keep track of the enabled state of the filter.
  */
 public abstract class AbstractLineFilter implements ILineFilter
 {
@@ -20,7 +20,7 @@ public abstract class AbstractLineFilter implements ILineFilter
     //--------------------------------------------------------------------------
 
     /**
-     * Creates an AbstractLineFilter that is not enabled by default.
+     * Creates an AbstractLineFilter that is <b>disabled</b> by default.
      */
     public AbstractLineFilter()
     {
@@ -29,7 +29,7 @@ public abstract class AbstractLineFilter implements ILineFilter
         
         
     /**
-     * Creates an AbstractLineFilter with the given state.
+     * Creates an AbstractLineFilter with the given enabled state.
      * 
      * @param enabled Set to true to enable the filter or false to disable the 
      *        filter.
@@ -44,9 +44,7 @@ public abstract class AbstractLineFilter implements ILineFilter
     //--------------------------------------------------------------------------
     
     /**
-     * Returns true if the filter is enabled, false otherwise.
-     * 
-     * @return boolean
+     * @see toolbox.util.service.Enableable#isEnabled()
      */
     public boolean isEnabled()
     {
@@ -55,9 +53,7 @@ public abstract class AbstractLineFilter implements ILineFilter
 
 
     /**
-     * Enables/disables.
-     * 
-     * @param b Set enabled flag.
+     * @see toolbox.util.service.Enableable#setEnabled(boolean)
      */
     public void setEnabled(boolean b)
     {

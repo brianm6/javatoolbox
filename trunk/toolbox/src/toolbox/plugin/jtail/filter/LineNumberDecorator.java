@@ -8,7 +8,7 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 
 /**
- * Appends a line number to the beginning of the line.
+ * Appends a line number to the beginning of a line of text.
  */
 public class LineNumberDecorator extends AbstractLineFilter
 {
@@ -22,7 +22,7 @@ public class LineNumberDecorator extends AbstractLineFilter
     private int lineNumber_;
     
     /**
-     * Formatting style for the number line number.
+     * Formatting style for the line number.
      */
     private Style style_;
     
@@ -48,7 +48,7 @@ public class LineNumberDecorator extends AbstractLineFilter
     //--------------------------------------------------------------------------
     
     /**
-     * Resets the number number to one. 
+     * Resets the line number to one. 
      */
     public void reset()
     {

@@ -3,7 +3,12 @@ package toolbox.plugin.jtail.filter;
 import javax.swing.text.Style;
 
 /**
- * StyledSegment is responsible for _____.
+ * StyledSegment defines following attributes for a segment of text.
+ * <ul>
+ *  <li>Starting index in a string
+ *  <li>Ending index in a string
+ *  <li>Style associated with text between the staring and ending indices.
+ * </ul>
  */
 public class StyledSegment
 {
@@ -11,8 +16,19 @@ public class StyledSegment
     // Fields
     //--------------------------------------------------------------------------
     
+    /**
+     * Start index.
+     */
     private int begin_;
+    
+    /**
+     * End index.
+     */
     private int end_;
+    
+    /**
+     * Style associated with the text.
+     */
     private Style style_;
 
     //--------------------------------------------------------------------------
@@ -22,9 +38,9 @@ public class StyledSegment
     /**
      * Creates a StyledSegment.
      * 
-     * @param begin
-     * @param end
-     * @param style
+     * @param begin Starting index.
+     * @param end Ending index.
+     * @param style Style associated with the segment of text.
      */
     public StyledSegment(int begin, int end, Style style)
     {

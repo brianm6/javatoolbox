@@ -8,8 +8,8 @@ import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
- * Filter that cuts a specified number of columns from a line base on a simple
- * cut expression. The expression is as follows: beginColumn-endColumn.
+ * Filter that cuts a specified number of columns from a line of text based on 
+ * a simple cut expression. The expression is as follows: beginColumn-endColumn.
  */
 public class CutLineFilter extends AbstractLineFilter
 {
@@ -82,7 +82,8 @@ public class CutLineFilter extends AbstractLineFilter
     }
     
     /**
-     * @see toolbox.plugin.jtail.filter.ILineFilter#filter(java.lang.StringBuffer, java.util.List)
+     * @see toolbox.plugin.jtail.filter.ILineFilter#filter(
+     *      java.lang.StringBuffer, java.util.List)
      */
     public boolean filter(StringBuffer line, List segments)
     {
