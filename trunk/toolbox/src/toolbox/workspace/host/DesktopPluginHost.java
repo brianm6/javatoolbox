@@ -32,7 +32,6 @@ import toolbox.util.ExceptionUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.beans.BeanPropertyFilter;
-import toolbox.util.service.ServiceException;
 import toolbox.util.ui.JSmartInternalFrame;
 import toolbox.util.ui.JSmartMenu;
 import toolbox.util.ui.JSmartMenuItem;
@@ -280,7 +279,7 @@ public class DesktopPluginHost extends AbstractPluginHost implements PluginHost,
     /**
      * @see toolbox.util.service.Destroyable#destroy()
      */
-    public void destroy() throws ServiceException
+    public void destroy()
     {
         removeWindowMenu();
         desktop_.removeAll();
@@ -289,7 +288,7 @@ public class DesktopPluginHost extends AbstractPluginHost implements PluginHost,
         pluginMap_.clear();
         pluginMap_ = null;
         
-        super.shutdown();
+        super.destroy();
     }
     
     //--------------------------------------------------------------------------

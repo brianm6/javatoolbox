@@ -10,6 +10,7 @@ import org.apache.commons.lang.ClassUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
+import toolbox.util.service.ServiceException;
 import toolbox.workspace.IPlugin;
 import toolbox.workspace.IPreferenced;
 
@@ -47,18 +48,18 @@ public abstract class AbstractPluginHost implements PluginHost, IPreferenced
     private String name_;
     
     //--------------------------------------------------------------------------
-    // PluginHost Interface
+    // Initializable Interface
     //--------------------------------------------------------------------------
     
     /**
      * Saves a copy of the initialization props that will be passed to each
      * plugin on startup().
      * 
-     * @see toolbox.workspace.host.PluginHost#initialize(java.util.Map)
+     * @see toolbox.util.service.Initializable#initialize(java.util.Map)
      */
     public void initialize(Map props)
     {
-        logger_.debug("Starting up " + ClassUtils.getShortClassName(getClass()));
+        logger_.debug("Startng up " + ClassUtils.getShortClassName(getClass()));
         
         // Make sure map is ordered by insertion.
         plugins_ = new LinkedHashMap();
@@ -66,6 +67,9 @@ public abstract class AbstractPluginHost implements PluginHost, IPreferenced
         pluginHostListeners_ = new PluginHostListener[0];
     }
 
+    //--------------------------------------------------------------------------
+    // PluginHost Interface
+    //--------------------------------------------------------------------------
     
     /**
      * Adds the plugin to the registry and calls startup()
@@ -78,7 +82,15 @@ public abstract class AbstractPluginHost implements PluginHost, IPreferenced
         logger_.debug("Adding plugin " + 
             ClassUtils.getShortClassName(plugin.getClass()));
         
-        plugin.startup(init_);
+        try
+        {
+            plugin.initialize(init_);
+        }
+        catch (ServiceException e)
+        {
+            logger_.error("plugin.initialize", e);
+        }
+        
         importPlugin(plugin);
         firePluginAdded(plugin);
     }
@@ -92,11 +104,21 @@ public abstract class AbstractPluginHost implements PluginHost, IPreferenced
      */
     public void removePlugin(IPlugin plugin)
     {
-        logger_.debug("Removing plugin " + 
-            ClassUtils.getShortClassName(plugin.getClass()));
+        logger_.debug(
+            "Removing plugin " 
+            + ClassUtils.getShortClassName(plugin.getClass()));
         
         exportPlugin(plugin);
-        plugin.shutdown();
+        
+        try
+        {
+            plugin.destroy();
+        }
+        catch (ServiceException e)
+        {
+            logger_.error("Destroy failed", e);
+        }
+        
         firePluginRemoved(plugin);
     }
 
@@ -179,13 +201,16 @@ public abstract class AbstractPluginHost implements PluginHost, IPreferenced
         return init_;
     }
     
+    //--------------------------------------------------------------------------
+    // Destroyable Interface
+    //--------------------------------------------------------------------------
     
     /**
      * Nulls out the plugin registry.
      * 
-     * @see toolbox.workspace.host.PluginHost#shutdown()
+     * @see toolbox.util.service.Destroyable#destroy()
      */
-    public void shutdown()
+    public void destroy()
     {
         logger_.debug(
             "Shutting down " + ClassUtils.getShortClassName(getClass()));

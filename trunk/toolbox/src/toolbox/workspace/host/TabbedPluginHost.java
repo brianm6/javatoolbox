@@ -11,7 +11,6 @@ import org.apache.commons.collections.bidimap.DualHashBidiMap;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ExceptionUtil;
-import toolbox.util.service.ServiceException;
 import toolbox.util.ui.tabbedpane.JSmartTabbedPane;
 import toolbox.util.ui.tabbedpane.SmartTabbedPaneListener;
 import toolbox.workspace.IPlugin;
@@ -192,7 +191,7 @@ public class TabbedPluginHost extends AbstractPluginHost
     /**
      * @see toolbox.util.service.Destroyable#destroy()
      */
-    public void destroy() throws ServiceException
+    public void destroy()
     {
         tabPanel_.removeAll();
         tabPanel_ = null;
@@ -200,7 +199,7 @@ public class TabbedPluginHost extends AbstractPluginHost
         uiComponentMap_.clear();
         uiComponentMap_ = null;
         
-        super.shutdown();
+        super.destroy();
     }
     
     //--------------------------------------------------------------------------
