@@ -36,23 +36,22 @@ package toolbox;
  * TODO: Added number of files/selected files to the JFileExplorer InfoBar
  * TODO: Add Swing preferences (window drag, resize outline, etc)
  * TODO: Update NetMeter to use MonitoredInput/Output streams.
- * TODO: Customize SQLFormatter formatting options
- *       Change formatter to leave "select *" on the same line. Apply to all
- * TODO: check out sql formatter in http://quantum.sourceforge.net/screen_shots.html
- * TODO: Add junit assertions for serialization
- * TODO: Add property sheel for sqlformatter
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
  * 								JDBCPlugin
  * =============================================================================
+ * TODO: Fix sql history list getting too big
+ * TODO: Fix ClassCastException on execute async
+ * TODO: Customize SQLFormatter formatting options
+ *       Change formatter to leave "select *" on the same line. Apply to all
+ * TODO: check out sql formatter in http://quantum.sourceforge.net/screen_shots.html
+ * TODO: Build error pane because dialog boxes are annoying
  * TODO: icons for execute all, execute selected, execute current
  * TODO: Ctrl-Up/Down should scroll through query history
- * TODO: Build error pane because dialog boxes are annoying
  * TODO: Update ExecuteCurrentAction to execute multiple sql statements within
  *       a selection.
  * TODO: Switch between grid and text view
- * TODO: Add sql formatter preferences to prefsview
  * TODO: Lift more stuff from hsqldb manager
  * TODO: Move benchmark to its own panel with preferences.
  * TODO: Base 64 encode passwords (statcvs, jdbcplugin, etc)
@@ -99,7 +98,9 @@ package toolbox;
  *  - Service state transitions can be strict or relaxed
  *  - Updated InstantMessenger to the Service interface
  *  - Added capitalization modes to SQLFormatter and sliced up format()
- * 
+ *  - Added configuration editor for SQLFormatter so settings can be saved
+ *  - Added JUnitUtil which contains assertions for serialization
+ *
  * May 2004
  *  - Added JDBC benchmark to JDBC plugin
  *  - Added NapkinLookAndFeel to the Look and Feel menu
