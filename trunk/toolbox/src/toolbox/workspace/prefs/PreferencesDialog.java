@@ -27,18 +27,20 @@ import toolbox.util.ui.JSmartDialog;
 import toolbox.util.ui.JSmartSplitPane;
 import toolbox.util.ui.tree.JSmartTree;
 import toolbox.util.ui.tree.SmartTreeCellRenderer;
+import toolbox.workspace.IPlugin;
+import toolbox.workspace.PluginWorkspace;
 
 /**
  * The PreferencesDialog is invoked by the PluginWorkspace to allow the user 
  * to change various preferences supported by the program. Preferences are
  * grouped together on different panels and can be switched between be selecting
  * that panel's node on the configuration tree. New panels can easily be
- * added by implementing the PreferencesView interface and providing the 
+ * added by implementing the Preferences interface and providing the 
  * necessary information.
  * 
  * @see toolbox.workspace.PluginWorkspace
  * @see toolbox.workspace.prefs.PreferencesManager
- * @see toolbox.workspace.prefs.PreferencesView
+ * @see toolbox.workspace.prefs.Preferences
  */
 public class PreferencesDialog extends JSmartDialog
 {
@@ -50,13 +52,13 @@ public class PreferencesDialog extends JSmartDialog
     //--------------------------------------------------------------------------
 
     /**
-     * Preferences tree. Each node in the tree corresponds to a PreferencesView
+     * Preferences tree. Each node in the tree corresponds to a Preferences
      * which is displayed on the right side of the dialog.
      */
     private JSmartTree tree_;
 
     /**
-     * Card panel used to switch out the currently visisble PreferencesView
+     * Card panel used to switch out the currently visisble Preferences
      * based on which node in the tree is selected.
      */
     private JPanel cardPanel_;
@@ -71,6 +73,11 @@ public class PreferencesDialog extends JSmartDialog
      */
     private PreferencesManager preferencesManager_;
 
+    /**
+     * Parent workspace.
+     */
+    private final PluginWorkspace workspace_;
+    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -86,10 +93,11 @@ public class PreferencesDialog extends JSmartDialog
         PreferencesManager preferencesManager)
     {
         super(parent, "Toolbox Preferences", true);
+        workspace_ = (PluginWorkspace) parent;
         preferencesManager_ = preferencesManager;
         buildView();
         pack();
-        SwingUtil.setSizeAsPercentage(this, 20, -15); // May have to tweak later
+        SwingUtil.setSizeAsDesktopPercentage(this, 40, 40); // May have to tweak later
         SwingUtil.centerWindow(parent, this);
     }
 
@@ -103,7 +111,7 @@ public class PreferencesDialog extends JSmartDialog
      * 
      * @param view Preferences view to add to the prefs tree.
      */
-    public void registerView(PreferencesView view)
+    public void registerView(Preferences view)
     {
         logger_.debug("Registering prefs view = " + view.getLabel());
 
@@ -135,8 +143,28 @@ public class PreferencesDialog extends JSmartDialog
         view.add(BorderLayout.CENTER, splitter);
         view.add(BorderLayout.SOUTH, buildButtonPanel());
 
-        PreferencesView[] prefs = preferencesManager_.getPreferences();
+        // Non-plugin based preferences
+        Preferences[] prefs = preferencesManager_.getPreferences();
         for (int i = 0; i < prefs.length; registerView(prefs[i++]));
+
+        // Plugin based preferences
+        IPlugin[] plugins = workspace_.getPluginHost().getPlugins();
+        
+        for (int i = 0; i < plugins.length; i++)
+        {
+            
+            IPlugin plugin = plugins[i];
+            
+            logger_.debug("Checking " + plugin.getPluginName());
+            
+            Preferences p = plugin.getPreferences();
+            
+            if (p != null)
+            {
+                logger_.debug("Registering " + plugin.getPluginName());
+                registerView(p);
+            }
+        } 
 
         SwingUtil.expandAll(tree_, true);
         tree_.setSelectionRow(1);
@@ -202,7 +230,7 @@ public class PreferencesDialog extends JSmartDialog
          */
         public void actionPerformed(ActionEvent e)
         {
-            PreferencesView[] prefs = preferencesManager_.getPreferences();
+            Preferences[] prefs = preferencesManager_.getPreferences();
             for (int i = 0; i < prefs.length; prefs[i++].onOK());
             dispose();
         }
@@ -229,7 +257,7 @@ public class PreferencesDialog extends JSmartDialog
          */
         public void actionPerformed(ActionEvent e)
         {
-            PreferencesView[] prefs = preferencesManager_.getPreferences();
+            Preferences[] prefs = preferencesManager_.getPreferences();
             for (int i = 0; i < prefs.length; prefs[i++].onApply());
         }
     }
@@ -256,7 +284,7 @@ public class PreferencesDialog extends JSmartDialog
          */
         public void actionPerformed(ActionEvent e)
         {
-            PreferencesView[] prefs = preferencesManager_.getPreferences();
+            Preferences[] prefs = preferencesManager_.getPreferences();
             for (int i = 0; i < prefs.length; prefs[i++].onCancel());
             dispose();
         }
@@ -268,7 +296,7 @@ public class PreferencesDialog extends JSmartDialog
 
     /**
      * Custom cell renderer for the prefs tree. The user object in each non-root
-     * node is expected to be an instance of PreferencesView. The label of the
+     * node is expected to be an instance of Preferences. The label of the
      * node is set to the name of the view.
      */
     class PrefsTreeCellRenderer extends SmartTreeCellRenderer
@@ -299,9 +327,9 @@ public class PreferencesDialog extends JSmartDialog
             DefaultMutableTreeNode d = (DefaultMutableTreeNode) value;
 
             if (d.getUserObject() != null &&
-                d.getUserObject() instanceof PreferencesView)
+                d.getUserObject() instanceof Preferences)
             {
-                PreferencesView pp = (PreferencesView) d.getUserObject();
+                Preferences pp = (Preferences) d.getUserObject();
                 setText(pp.getLabel());
             }
 
@@ -329,9 +357,9 @@ public class PreferencesDialog extends JSmartDialog
                 (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
 
             if (node.getUserObject() != null &&
-                node.getUserObject() instanceof PreferencesView)
+                node.getUserObject() instanceof Preferences)
             {
-                PreferencesView pp = (PreferencesView) node.getUserObject();
+                Preferences pp = (Preferences) node.getUserObject();
                 cardLayout_.show(cardPanel_, pp.getLabel());
             }
         }
