@@ -15,7 +15,10 @@ import toolbox.util.SwingUtil;
  * JSmartCheckBox adds the following behavior.
  * <p>
  * <ul>
- *   <li>Support for antialised text
+ *   <li>Support for antialised text.
+ *   <li>Ability to wire the checkbox directly to a boolean property on a 
+ *       Component.
+ *   <li>Toggle method to invert the checked state.
  * </ul>
  * @see toolbox.util.SwingUtil
  */
@@ -143,6 +146,15 @@ public class JSmartCheckBox extends JCheckBox implements AntiAliased
                 setSelected(((Boolean) evt.getNewValue()).booleanValue());
             }
         });
+    }
+    
+    
+    /**
+     * Toggles the checked state.
+     */
+    public void toggle()
+    {
+        setSelected(!isSelected());
     }
     
     //--------------------------------------------------------------------------
