@@ -36,7 +36,7 @@ import javax.swing.event.ListSelectionListener;
 
 
 /**
- * JFontChooser
+ * Component that allows the selection of a font
  */
 public class JFontChooser extends JPanel
 {
@@ -211,7 +211,6 @@ public class JFontChooser extends JPanel
 
         // Configure font size field
         fontSize_ = new JTextField();
-        fontSize_.setHorizontalAlignment(JTextField.RIGHT);
         fontSize_.setColumns(4);
         
         // Add to gridbag
@@ -227,7 +226,6 @@ public class JFontChooser extends JPanel
             
         fontSizeList_.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         fontSizeList_.setVisibleRowCount(4);
-        fontSizeList_.setCellRenderer(new ListCellRenderer());
         
         // Add to gridbag
         gbc.weightx    = 0.5; gbc.weighty   = 1;
@@ -657,32 +655,6 @@ public class JFontChooser extends JPanel
         }
     }
 
-
-    /**
-     * An implementation of {@link javax.swing.ListCellRenderer} which right
-     * justifies all cells.
-     */
-    protected class ListCellRenderer extends DefaultListCellRenderer
-    {
-        public Component getListCellRendererComponent(
-            JList list,
-            Object value,
-            int index,
-            boolean isSelected,
-            boolean cellHasFocus)
-        {
-            JLabel label =
-                (JLabel) super.getListCellRendererComponent(
-                    list,
-                    value,
-                    index,
-                    isSelected,
-                    cellHasFocus);
-            label.setHorizontalAlignment(JLabel.RIGHT);
-            return label;
-        }
-    }
-    
     
     /**
      * Listener for the font name list
