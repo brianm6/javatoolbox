@@ -205,7 +205,7 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
         {
             try
             {
-                textArea_.append(NL + Banner.convert(textArea_.getText()));
+                textArea_.append(NL + Banner.getBanner(textArea_.getText()));
             }
             catch (Throwable t)
             {

@@ -42,7 +42,7 @@ public class BannerTest extends TestCase
     {
         logger_.info("Running testFiglet...");
         
-        String s = Banner.convert("Howdy!");
+        String s = Banner.getBanner("Howdy!");
         logger_.info("\n" + s);
     }
     
