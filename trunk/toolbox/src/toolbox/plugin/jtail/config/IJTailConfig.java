@@ -6,7 +6,7 @@ import java.awt.Point;
 
 
 /**
- * enclosing_type
+ * Interface for JTail configuration preferences
  */
 public interface IJTailConfig
 {
@@ -57,4 +57,40 @@ public interface IJTailConfig
      * @param tailPaneConfigs The tailPaneConfigs to set
      */
     public void setTailPaneConfigs(ITailPaneConfig[] tailPaneConfigs);
+    
+    /**
+     * Returns the autoScroll.
+     * @return boolean
+     */
+    public boolean getDefaultAutoScroll();
+
+    /**
+     * Returns the filter.
+     * @return String
+     */
+    public String getDefaultFilter();
+
+    /**
+     * Returns the showLineNumbers.
+     * @return boolean
+     */
+    public boolean getDefaultShowLineNumbers();
+
+    /**
+     * Sets the autoScroll.
+     * @param autoScroll The autoScroll to set
+     */
+    public void setDefaultAutoScroll(boolean autoScroll);
+
+    /**
+     * Sets the filter.
+     * @param filter The filter to set
+     */
+    public void setDefaultFilter(String filter);
+
+    /**
+     * Sets the showLineNumbers.
+     * @param showLineNumbers The showLineNumbers to set
+     */
+    public void setDefaultShowLineNumbers(boolean showLineNumbers);
 }
