@@ -73,6 +73,7 @@ public class JFindClass extends JFrame implements IPreferenced
     /*
      * TODO: Update tablecell renderer to highlight the matching substring
      * TODO: Add sorting to table
+     * TODO: Add button to search for all duplicates
      */
     
     private static final Logger logger_ = 
