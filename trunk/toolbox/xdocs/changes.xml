@@ -42,6 +42,7 @@
  * TODO: Redo ObservableService using decorator pattern
  * TODO: Look into JXTA shell
  * TODO: Implements Service Transitions using Aspects
+ * TODO: JFileExplorer - color code directories and file names based on  file attribs
  * =============================================================================
  *                              Build
  * =============================================================================
