@@ -391,7 +391,7 @@ public class JFindClass extends JFrame implements IPreferenced
     {
         // Left flip pane - file explorer
         fileExplorer_ = new JFileExplorer(false);
-        fileExplorer_.addJFileExplorerListener(new FileExplorerListener());
+        fileExplorer_.addFileExplorerListener(new FileExplorerListener());
         leftFlipPane_ = new JFlipPane(JFlipPane.LEFT);
         leftFlipPane_.addFlipper("File Explorer", fileExplorer_);
         leftFlipPane_.setExpanded(false);

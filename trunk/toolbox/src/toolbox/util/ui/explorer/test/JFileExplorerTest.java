@@ -62,7 +62,12 @@ public class JFileExplorerTest extends TestCase
         JDialog dialog = new TestDialog();
         dialog.pack();
         SwingUtil.centerWindow(dialog);
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         dialog.setVisible(true);
+        logger_.info("After setVisible()");
+        dialog.dispose();
+        logger_.info("After dispose()");
+        
     }
     
     //--------------------------------------------------------------------------
@@ -73,19 +78,20 @@ public class JFileExplorerTest extends TestCase
      * Test dialog.
      */
     static class TestDialog extends JDialog 
-        implements JFileExplorerListener, ActionListener
+                            implements JFileExplorerListener, 
+                                       ActionListener
     {
         private JTextField testField_;
         private JButton testButton_;
         private JFileExplorer jfe_;
-
+        //private static JFrame frame_ = ;
+        
         public TestDialog()
         {
-            super(new JFrame(), "JFileExplorer", true);
-            setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+            super((JFrame) null , "JFileExplorer", true);
 
             jfe_ = new JFileExplorer(false);
-            jfe_.addJFileExplorerListener(this);
+            jfe_.addFileExplorerListener(this);
             getContentPane().setLayout(new BorderLayout());
             getContentPane().add(jfe_, BorderLayout.CENTER);
             

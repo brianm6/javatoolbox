@@ -389,7 +389,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
      *
      * @param listener Listener to add
      */
-    public void addJFileExplorerListener(JFileExplorerListener listener)
+    public void addFileExplorerListener(JFileExplorerListener listener)
     {
         fileExplorerListeners_ = 
             (JFileExplorerListener[]) 
@@ -402,7 +402,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
      *
      * @param listener Listener to remove
      */
-    public void removeJFileExplorerListener(JFileExplorerListener listener)
+    public void removeFileExplorerListener(JFileExplorerListener listener)
     {
         fileExplorerListeners_ = 
             (JFileExplorerListener[]) 
@@ -555,7 +555,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
         gridbag.setConstraints(infoBar_, constraints);
         add(infoBar_);
               
-        addJFileExplorerListener(new InfoBarUpdater());              
+        addFileExplorerListener(new InfoBarUpdater());              
               
         splitPane_.setDividerLocation(150);
     }

@@ -269,7 +269,7 @@ public class JTail extends JFrame implements IPreferenced
     protected void wireView()
     {
         fileSelectionPane_.getFileExplorer().
-            addJFileExplorerListener(new FileSelectionListener());
+            addFileExplorerListener(new FileSelectionListener());
             
         fileSelectionPane_.getTailButton().
             addActionListener(new TailButtonListener());

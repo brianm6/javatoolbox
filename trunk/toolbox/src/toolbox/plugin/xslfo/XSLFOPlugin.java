@@ -244,7 +244,7 @@ public class XSLFOPlugin extends JPanel implements IPlugin
         
         setLayout(new BorderLayout());
         explorer_ = new JFileExplorer(false);
-        explorer_.addJFileExplorerListener(new FileSelectionListener());
+        explorer_.addFileExplorerListener(new FileSelectionListener());
                 
         flipPane_ = new JFlipPane(JFlipPane.LEFT);
         flipPane_.addFlipper("File Explorer", explorer_);

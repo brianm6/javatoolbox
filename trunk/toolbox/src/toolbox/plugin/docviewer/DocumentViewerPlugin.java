@@ -93,11 +93,15 @@ public class PDFPlugin extends JPanel implements IPlugin
     protected void buildView()
     {
         setLayout(new BorderLayout());
+        
         explorer_ = new JFileExplorer(false);
-        explorer_.addJFileExplorerListener(new FileSelectionListener());
+        explorer_.addFileExplorerListener(new FileSelectionListener());
+        
         flipPane_ = new JFlipPane(JFlipPane.LEFT);
         flipPane_.addFlipper("File Explorer", explorer_);
+        
         outputPanel_ = new JPanel(new BorderLayout());
+        
         add(BorderLayout.WEST, flipPane_);
         add(BorderLayout.CENTER, outputPanel_);
     }
@@ -189,6 +193,7 @@ public class PDFPlugin extends JPanel implements IPlugin
         flipPane_.applyPrefs(root);
     }
 
+    
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
@@ -201,7 +206,7 @@ public class PDFPlugin extends JPanel implements IPlugin
     }
 
     //--------------------------------------------------------------------------
-    // Listeners
+    // FileSelectionListener
     //--------------------------------------------------------------------------
     
     /**
@@ -209,6 +214,10 @@ public class PDFPlugin extends JPanel implements IPlugin
      */
     class FileSelectionListener extends JFileExplorerAdapter
     {
+        /**
+         * @see toolbox.util.ui.JFileExplorerListener#fileDoubleClicked(
+         *      java.lang.String)
+         */
         public void fileDoubleClicked(String file)
         {
             try
@@ -219,6 +228,16 @@ public class PDFPlugin extends JPanel implements IPlugin
             {
                 ExceptionUtil.handleUI(fnfe, logger_);
             }
+        }
+        
+        
+        /**
+         * @see toolbox.util.ui.JFileExplorerAdapter#fileSelected(
+         *      java.lang.String)
+         */
+        public void fileSelected(String file)
+        {
+            logger_.info("File selected: " + file);
         }
     }
 }
