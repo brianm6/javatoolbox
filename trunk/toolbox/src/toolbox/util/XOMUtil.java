@@ -5,6 +5,7 @@ import java.io.IOException;
 import nu.xom.Document;
 import nu.xom.Element;
 import nu.xom.Elements;
+import nu.xom.Node;
 import nu.xom.Serializer;
 
 import toolbox.util.io.StringOutputStream;
@@ -176,13 +177,13 @@ public class XOMUtil
      * @return Node as XML
      * @throws IOException on I/O error
      */
-    public static String toXML(Element node) throws IOException
+    public static String toXML(Node node) throws IOException
     {    
         StringOutputStream sos = new StringOutputStream();
         Serializer serializer = new Serializer(sos);
         serializer.setIndent(3);
         serializer.setLineSeparator("\n");
-        serializer.write(new Document(node));
+        serializer.write(new Document((Element)node.copy()));
         return sos.toString();
     }    
 }
