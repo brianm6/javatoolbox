@@ -6,10 +6,10 @@ import java.util.Date;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import org.apache.commons.lang.math.RandomUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.FileUtil;
-import toolbox.util.RandomUtil;
 
 /**
  * Unit test for FileComparator.
@@ -87,8 +87,8 @@ public class FileComparatorTest extends TestCase
         logger_.info("Running testCompareByName...");
         
         File tmpDir = FileUtil.getTempDir();
-        File fileA = new File(tmpDir, "a" + RandomUtil.nextInt());
-        File fileB = new File(tmpDir, "b" + RandomUtil.nextInt());
+        File fileA = new File(tmpDir, "a" + RandomUtils.nextInt());
+        File fileB = new File(tmpDir, "b" + RandomUtils.nextInt());
         
         try
         {

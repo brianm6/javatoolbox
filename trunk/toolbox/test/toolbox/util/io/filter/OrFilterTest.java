@@ -5,13 +5,15 @@ import java.io.File;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import org.apache.commons.lang.math.RandomUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.FileUtil;
-import toolbox.util.RandomUtil;
 
 /**
  * Unit test for OrFilter.
+ * 
+ * @see toolbox.util.io.filter.OrFilter
  */
 public class OrFilterTest extends TestCase
 {
@@ -148,7 +150,7 @@ public class OrFilterTest extends TestCase
         OrFilter filter = new OrFilter();
         
         for (int i = 0; i < 100; i++)
-            filter.addFilter(new MockFilter(RandomUtil.nextBoolean()));
+            filter.addFilter(new MockFilter(RandomUtils.nextBoolean()));
         
         filter.addFilter(new MockFilter(true));
             
