@@ -116,29 +116,34 @@ public class MonitoredOutputStreamTest extends TestCase
 //    }
 //    
 //    
-//    /**
-//     * Tests the event generation and listener notification.
-//     *
-//     * @throws Exception on error.
-//     */
-//    public void testListener() throws Exception
-//    {
-//        logger_.info("Running testListener...");
-//        
-//        MonitoredOutputStream eos = new MonitoredOutputStream(new NullOutputStream());
-//        OutputStreamListener listener = new OutputStreamListener();
-//        eos.addListener(listener);
-//        
-//        eos.write(1);
-//        assertEquals(1, listener.waitForWrite());
-//        assertEquals(1, eos.getCount());
-//        
-//        eos.flush();
-//        assertNotNull(listener.waitForFlush());
-//        
-//        eos.close();
-//        assertNotNull(listener.waitForClose());
-//    }
+    /**
+     * Tests the event generation and listener notification.
+     *
+     * @throws Exception on error.
+     */
+    public void testListener() throws Exception
+    {
+        logger_.info("Running testListener...");
+        
+        MonitoredOutputStream mos = 
+            new MonitoredOutputStream("MyStream", new NullOutputStream());
+        
+        assertEquals("MyStream", mos.getName());
+        
+        OutputStreamListener listener = new OutputStreamListener();
+        mos.addOutputStreamListener(listener);
+        
+        mos.write(1);
+        assertEquals(1, mos.getCount());
+        
+        mos.flush();
+        assertNotNull(listener.waitForFlush());
+        
+        mos.close();
+        assertNotNull(listener.waitForClose());
+        
+        mos.removeOutputStreamListener(listener);
+    }
 
     
     /**
@@ -196,7 +201,6 @@ public class MonitoredOutputStreamTest extends TestCase
     public void testCurrentThroughput() throws Exception
     {
         logger_.info("Running testStreamThroughput...");
-        
 
         MonitoredOutputStream mos = 
             new MonitoredOutputStream(new NullOutputStream());
