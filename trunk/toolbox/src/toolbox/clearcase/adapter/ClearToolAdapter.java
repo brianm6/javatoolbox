@@ -139,16 +139,23 @@ public class ClearToolAdapter implements IClearCaseAdapter
             for (int i = 0, n = histories.size(); i < n; i++) 
             {
                 Element history = histories.get(i);
-                String user = history.getFirstChildElement(NODE_USER).getValue();
+                
+                String user = 
+                    history.getFirstChildElement(NODE_USER).getValue();
                 
                 String file = 
                     FileUtil.trailWithSeparator(
                         getViewPath().getAbsolutePath()) 
                         + history.getFirstChildElement(NODE_FILE).getValue();
                 
-                String comment = history.getFirstChildElement(NODE_COMMENT).getValue();
-                String action = history.getFirstChildElement(NODE_ACTION).getValue();
-                String date = history.getFirstChildElement(NODE_DATE).getValue();
+                String comment = 
+                    history.getFirstChildElement(NODE_COMMENT).getValue();
+                
+                String action = 
+                    history.getFirstChildElement(NODE_ACTION).getValue();
+                
+                String date = 
+                    history.getFirstChildElement(NODE_DATE).getValue();
                 
                 File f = new File(file);
                 
