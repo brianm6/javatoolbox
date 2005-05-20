@@ -1,7 +1,7 @@
 package toolbox.util.ui.plaf;
 
-import com.jgoodies.plaf.plastic.PlasticLookAndFeel;
-import com.jgoodies.plaf.plastic.PlasticTheme;
+import com.jgoodies.looks.plastic.PlasticLookAndFeel;
+import com.jgoodies.looks.plastic.PlasticTheme;
 
 /**
  * Action that activates the plastic look and feel.
