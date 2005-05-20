@@ -12,12 +12,12 @@ import javax.swing.JToolBar;
 import com.thoughtworks.qdox.JavaDocBuilder;
 import com.thoughtworks.qdox.model.JavaClass;
 
-import net.janino.SimpleCompiler;
-
 import nu.xom.Element;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
+
+import org.codehaus.janino.SimpleCompiler;
 
 import org.jedit.syntax.JavaTokenMarker;
 
