@@ -59,7 +59,7 @@ public class RepositoryAuditor
     /**
      * Property for the number of days of history to include in the audit.
      */
-    private static final String PROP_HISTORY_DAYS = "clearcase.history.days";
+    private static final String PROP_HISTORY_DAYS = "clearcase.audit.span.days";
     
     /**
      * Maps usernames to real names.
@@ -94,17 +94,28 @@ public class RepositoryAuditor
     // Main
     //--------------------------------------------------------------------------
     
+    /**
+     * Launches the RepositoryAuditor. The only argument supported is the name
+     * of the properties file containing configuration information. If no
+     * file name is specified, then clearcase.properties is used as the default.
+     * 
+     * @param args Name of the properties file to use for configuration. Should
+     *        exist on the classpath.
+     */
     public static void main(String[] args)
     {
         // Hardcode config defaults
         Properties props = new Properties();
         props.setProperty(PROP_VIEW_PATH, "m:\\x1700_sandbox\\staffplanning");
         props.setProperty(PROP_HISTORY_DAYS, "15");
+
+        String propsFile = 
+            args.length == 0 ? FILENAME_CLEARCASE_PROPS : args[0];
         
         try
         {
             // Override with settings from props file if available
-            InputStream is = ResourceUtil.getResource(FILENAME_CLEARCASE_PROPS);
+            InputStream is = ResourceUtil.getResource(propsFile);
 
             if (is != null)
             {
@@ -117,7 +128,7 @@ public class RepositoryAuditor
         }
         catch (IOException e)
         {
-            logger_.error(e);
+            logger_.error("main", e);
         }
     }
     
