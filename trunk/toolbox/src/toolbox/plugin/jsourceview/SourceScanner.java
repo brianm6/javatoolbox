@@ -56,10 +56,10 @@ public class SourceScanner implements Runnable, Cancelable
         canceled_   = false;
         
         sourceFilter_ = new OrFileFilter();
-        sourceFilter_.addFileFilter(new RegexFileFilter(".c$", false));
-        sourceFilter_.addFileFilter(new RegexFileFilter(".cpp$", false));
-        sourceFilter_.addFileFilter(new RegexFileFilter(".java$", false));
-        sourceFilter_.addFileFilter(new RegexFileFilter(".h$", false));
+        sourceFilter_.addFileFilter(new RegexFileFilter("\\.c$", false));
+        sourceFilter_.addFileFilter(new RegexFileFilter("\\.cpp$", false));
+        sourceFilter_.addFileFilter(new RegexFileFilter("\\.java$", false));
+        sourceFilter_.addFileFilter(new RegexFileFilter("\\.h$", false));
     }
     
     //--------------------------------------------------------------------------
