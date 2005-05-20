@@ -190,7 +190,7 @@
 
   <LookAndFeel
       name="JGoodies Windows"
-      class="com.jgoodies.plaf.windows.ExtWindowsLookAndFeel"
+      class="com.jgoodies.looks.windows.WindowsLookAndFeel"
       action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
 
       <Property name="group.name"  value="JGoodies"/>
@@ -198,7 +198,7 @@
 
   <LookAndFeel
       name="Plastic"
-      class="com.jgoodies.plaf.plastic.PlasticLookAndFeel"
+      class="com.jgoodies.looks.plastic.PlasticLookAndFeel"
       action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
 
       <Property name="group.name"  value="JGoodies"/>
@@ -206,29 +206,29 @@
 
   <LookAndFeel
       name="Plastic"
-      class="com.jgoodies.plaf.plastic.PlasticLookAndFeel"
+      class="com.jgoodies.looks.plastic.PlasticLookAndFeel"
       action="toolbox.util.ui.plaf.ActivatePlasticLookAndFeelAction">
 
       <Property name="group.name"  value="JGoodies"/>
       <Property name="theme.name"  value="Dark Star"/>
-      <Property name="theme.class" value="com.jgoodies.plaf.plastic.theme.DarkStar"/>
+      <Property name="theme.class" value="com.jgoodies.looks.plastic.theme.DarkStar"/>
   </LookAndFeel>
 
   <LookAndFeel
       name="Plastic"
-      class="com.jgoodies.plaf.plastic.PlasticLookAndFeel"
+      class="com.jgoodies.looks.plastic.PlasticLookAndFeel"
       action="toolbox.util.ui.plaf.ActivatePlasticLookAndFeelAction">
 
       <Property name="group.name"  value="JGoodies"/>
       <Property	name="theme.name"  value="Desert Red"/>
-      <Property	name="theme.class" value="com.jgoodies.plaf.plastic.theme.DesertRed"/>
+      <Property	name="theme.class" value="com.jgoodies.looks.plastic.theme.DesertRed"/>
   </LookAndFeel>
 
   <!-- -->
 
   <LookAndFeel
       name="Plastic 3D"
-      class="com.jgoodies.plaf.plastic.Plastic3DLookAndFeel"
+      class="com.jgoodies.looks.plastic.Plastic3DLookAndFeel"
       action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
 
       <Property name="group.name"  value="JGoodies"/>
@@ -236,29 +236,29 @@
 
   <LookAndFeel
       name="Plastic 3D"
-      class="com.jgoodies.plaf.plastic.Plastic3DLookAndFeel"
+      class="com.jgoodies.looks.plastic.Plastic3DLookAndFeel"
       action="toolbox.util.ui.plaf.ActivatePlasticLookAndFeelAction">
 
       <Property name="group.name"  value="JGoodies"/>
       <Property name="theme.name"  value="Dark Star"/>
-      <Property name="theme.class" value="com.jgoodies.plaf.plastic.theme.DarkStar"/>
+      <Property name="theme.class" value="com.jgoodies.looks.plastic.theme.DarkStar"/>
   </LookAndFeel>
 
   <LookAndFeel
       name="Plastic 3D"
-      class="com.jgoodies.plaf.plastic.Plastic3DLookAndFeel"
+      class="com.jgoodies.looks.plastic.Plastic3DLookAndFeel"
       action="toolbox.util.ui.plaf.ActivatePlasticLookAndFeelAction">
 
       <Property name="group.name"  value="JGoodies"/>
       <Property	name="theme.name"  value="Desert Red"/>
-      <Property	name="theme.class" value="com.jgoodies.plaf.plastic.theme.DesertRed"/>
+      <Property	name="theme.class" value="com.jgoodies.looks.plastic.theme.DesertRed"/>
   </LookAndFeel>
 
   <!-- -->
 
   <LookAndFeel
       name="Plastic XP"
-      class="com.jgoodies.plaf.plastic.PlasticXPLookAndFeel"
+      class="com.jgoodies.looks.plastic.PlasticXPLookAndFeel"
       action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
 
       <Property name="group.name"  value="JGoodies"/>
@@ -266,22 +266,22 @@
 
   <LookAndFeel
       name="Plastic XP"
-      class="com.jgoodies.plaf.plastic.PlasticXPLookAndFeel"
+      class="com.jgoodies.looks.plastic.PlasticXPLookAndFeel"
       action="toolbox.util.ui.plaf.ActivatePlasticLookAndFeelAction">
 
       <Property name="group.name"  value="JGoodies"/>
       <Property name="theme.name"  value="Dark Star"/>
-      <Property name="theme.class" value="com.jgoodies.plaf.plastic.theme.DarkStar"/>
+      <Property name="theme.class" value="com.jgoodies.looks.plastic.theme.DarkStar"/>
   </LookAndFeel>
 
   <LookAndFeel
       name="Plastic XP"
-      class="com.jgoodies.plaf.plastic.PlasticXPLookAndFeel"
+      class="com.jgoodies.looks.plastic.PlasticXPLookAndFeel"
       action="toolbox.util.ui.plaf.ActivatePlasticLookAndFeelAction">
 
       <Property name="group.name"  value="JGoodies"/>
       <Property	name="theme.name"  value="Desert Red"/>
-      <Property	name="theme.class" value="com.jgoodies.plaf.plastic.theme.DesertRed"/>
+      <Property	name="theme.class" value="com.jgoodies.looks.plastic.theme.DesertRed"/>
   </LookAndFeel>
 
   <!-- ==================================================================== -->
