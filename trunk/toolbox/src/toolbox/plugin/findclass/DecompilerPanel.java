@@ -196,11 +196,10 @@ public class DecompilerPanel extends JHeaderPanel
                 {
                     source = d.decompile(clazz, location);
                 }
-                catch (IllegalArgumentException iae)
+                catch (UnsupportedOperationException iae)
                 {
                     if (ClassUtil.isArchive(location))
                     {   
-                    
                         // Collect all inner and anonymous innerclasses since 
                         // they're requires as Files to by the decompiler.
                         
