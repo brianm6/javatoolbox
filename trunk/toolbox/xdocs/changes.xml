@@ -111,24 +111,14 @@
     </properties>
 
     <body>
-        <!-- =================================================================== -->
-        <!-- May 2005                                                          -->
-        <!-- =================================================================== -->
 
-        <release version="2.0" date="May 2005">
-            <action type="update"   >JSourceViewPlugin - Fixed regular expression source file filters</action>
-            <action type="update"   >Lib - Upgraded to Squarness Look and Feel to squarenesslf-2.0.2</action>
-            <action type="update"   >Lib - Upgraded Office Look and Feel to officelf-1.0.6</action>
-            <action type="update"   >Lib - Upgraded JGoodies Looks to looks-1.3.1</action>
-            <action type="update"   >Lib - Upgraded Liquid Look and Feel to liquidlf-0.2.9-alpha5</action>
-            <action type="update"   >Lib - Upgraded L2FProd Common to l2fprod-common-0.1-dev-05-13-2005</action>
-            <action type="update"   >Lib - Upgraded Javassist to javassist-3.0</action>
-            <action type="update"   >Lib - Upgraded Jar Jar Links to jarjar-0.6</action>
-            <action type="update"   >Lib - Upgraded Janino to janino-2.3.3</action>
-            <action type="update"   >Lib - Upgraded Infonode Look and and Feel to infonodelf-1.3.0</action>
-            <action type="update"   >Lib - Upgraded HSQLDB to hsqldb-1.7.3.3</action>
-            <action type="update"   >Lib - Upgraded JGoodies Forms to forms-1.0.5</action>
-            <action type="update"   >Lib - Upgraded Jakarta Commons-Net to commons-net-1.4.0</action>
+
+        <!-- =================================================================== -->
+        <!-- June 2005                                                          -->
+        <!-- =================================================================== -->
+        <release version="2.0" date="June 2005">
+            <action type="update"   >Lib - Upgraded Janino to janino-2.3.4</action>
+            <action type="update"   >Lib - Upgraded JReversePro to jreversepro-1.4.1</action>
         </release>
 
         <!-- =================================================================== -->
