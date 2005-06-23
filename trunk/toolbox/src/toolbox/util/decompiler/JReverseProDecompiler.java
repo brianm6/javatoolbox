@@ -2,6 +2,7 @@ package toolbox.util.decompiler;
 
 import java.io.File;
 
+import jreversepro.reflect.JClassInfo;
 import jreversepro.revengine.JSerializer;
 
 import org.apache.log4j.Logger;
@@ -52,8 +53,9 @@ public class JReverseProDecompiler extends AbstractDecompiler
         
         try
         {
-            decompiler_.loadClass(classFile);
-            javaSource = decompiler_.reverseEngineer(true);
+            JClassInfo classInfo = decompiler_.loadClass(classFile);
+            classInfo.reverseEngineer(false);
+            javaSource = classInfo.getStringifiedClass(false);
         }
         catch (Exception e)
         {
