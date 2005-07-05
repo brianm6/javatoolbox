@@ -564,6 +564,7 @@
             depends     = "init"
             description = "Launches report containing results of the JUnit test cases">
 
+        <mkdir dir="${junit.xml}"/>
         <junitreport todir="${junit.xml}">
             <fileset dir="${junit.xml}">
                 <include name="TEST-*.xml"/>
