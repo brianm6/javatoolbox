@@ -44,7 +44,7 @@ public class PrefuseGraphLib implements GraphLib
     // GraphLib Interface
     //--------------------------------------------------------------------------
     
-    /**
+    /*
      * @see toolbox.graph.GraphLib#createEdge(toolbox.graph.Vertex, 
      *      toolbox.graph.Vertex)
      */
@@ -55,7 +55,7 @@ public class PrefuseGraphLib implements GraphLib
     }
     
     
-    /**
+    /*
      * @see toolbox.graph.GraphLib#createGraph()
      */
     public Graph createGraph()
@@ -65,7 +65,7 @@ public class PrefuseGraphLib implements GraphLib
     }
     
     
-    /**
+    /*
      * @see toolbox.graph.GraphLib#createVertex(toolbox.graph.Graph, 
      *      java.lang.String)
      */
@@ -75,8 +75,7 @@ public class PrefuseGraphLib implements GraphLib
         return v;
     }
     
-    
-    /**
+    /*
      * @see toolbox.graph.GraphLib#createView(toolbox.graph.Graph)
      */
     public GraphView createView(Graph graph)
@@ -86,8 +85,8 @@ public class PrefuseGraphLib implements GraphLib
     }
     
     
-    /**
-     * @see toolbox.graph.GraphLib#getLayouts()
+    /*
+     * @see toolbox.graph.GraphLib#getLayouts(toolbox.graph.Graph)
      */
     public List getLayouts(Graph graph)
     {
@@ -117,7 +116,7 @@ public class PrefuseGraphLib implements GraphLib
     /**
      * Looks up an edge.
      * 
-     * @param dest Edge to lookup.
+     * @param edge Edge to lookup.
      * @return Edge
      */
     public static Edge lookupEdge(edu.berkeley.guir.prefuse.graph.Edge edge)

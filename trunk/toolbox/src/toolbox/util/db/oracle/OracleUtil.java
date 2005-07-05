@@ -167,7 +167,7 @@ public class OracleUtil
      * @param session Name of database session obtained via 
      *        <code>JDBCSession.init()</code>.
      * @param sequenceName Name of the sequence to update.
-     * @param value Value to update the sequence to.
+     * @param newValue Value to update the sequence to.
      * @throws SQLException on database error.
      */
     public static void setSequenceValue(

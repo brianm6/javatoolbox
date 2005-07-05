@@ -88,7 +88,7 @@ public class ValidatorContext implements ValidatorContextIfc
     // ValidatorContextIfc Interface
     //--------------------------------------------------------------------------
 
-    /**
+    /*
      * @see toolbox.util.validator.ValidatorContextIfc#isValid()
      */
     public boolean isValid()
@@ -97,8 +97,8 @@ public class ValidatorContext implements ValidatorContextIfc
     }
 
 
-    /**
-     * @see toolbox.util.validator.ValidatorContextIfc#getErrors()
+    /*
+     * @see toolbox.util.validator.ValidatorContextIfc#getFailures()
      */
     public List getFailures()
     {
@@ -106,7 +106,7 @@ public class ValidatorContext implements ValidatorContextIfc
     }
 
 
-    /**
+    /*
      * @see toolbox.util.validator.ValidatorContextIfc#getWarnings()
      */
     public List getWarnings()
@@ -115,7 +115,7 @@ public class ValidatorContext implements ValidatorContextIfc
     }
 
 
-    /**
+    /*
      * @see toolbox.util.validator.ValidatorContextIfc#isFailFast()
      */
     public boolean isFailFast()
@@ -124,7 +124,7 @@ public class ValidatorContext implements ValidatorContextIfc
     }
 
 
-    /**
+    /*
      * @see toolbox.util.validator.ValidatorContextIfc#setFailFast(boolean)
      */
     public void setFailFast(boolean failfast)
@@ -133,7 +133,7 @@ public class ValidatorContext implements ValidatorContextIfc
     }
 
 
-    /**
+    /*
      * @see toolbox.util.validator.ValidatorContextIfc#addParticipant(
      *      java.lang.Object, java.lang.Object)
      */
@@ -143,7 +143,7 @@ public class ValidatorContext implements ValidatorContextIfc
     }
 
 
-    /**
+    /*
      * @see toolbox.util.validator.ValidatorContextIfc#getParticipant(
      *      java.lang.Object)
      */
@@ -153,7 +153,7 @@ public class ValidatorContext implements ValidatorContextIfc
     }
 
 
-    /**
+    /*
      * @see toolbox.util.validator.ValidatorContextIfc#removeParticipant(
      *      java.lang.Object)
      */
@@ -163,7 +163,7 @@ public class ValidatorContext implements ValidatorContextIfc
     }
 
 
-    /**
+    /*
      * @see toolbox.util.validator.ValidatorContextIfc#addFailure(
      *      java.lang.String)
      */
@@ -173,7 +173,7 @@ public class ValidatorContext implements ValidatorContextIfc
     }
 
 
-    /**
+    /*
      * @see toolbox.util.validator.ValidatorContextIfc#addFailure(
      *      java.lang.String, java.lang.Throwable)
      */
@@ -183,7 +183,7 @@ public class ValidatorContext implements ValidatorContextIfc
     }
 
 
-    /**
+    /*
      * @see toolbox.util.validator.ValidatorContextIfc#addWarning(
      *      java.lang.String)
      */
@@ -193,7 +193,7 @@ public class ValidatorContext implements ValidatorContextIfc
     }
 
 
-    /**
+    /*
      * @see toolbox.util.validator.ValidatorContextIfc#addWarning(
      *      java.lang.String, java.lang.Throwable)
      */
@@ -203,7 +203,7 @@ public class ValidatorContext implements ValidatorContextIfc
     }
 
 
-    /**
+    /*
      * @see toolbox.util.validator.ValidatorContextIfc#getConstraint()
      */
     public Predicate getConstraint()
@@ -212,7 +212,7 @@ public class ValidatorContext implements ValidatorContextIfc
     }
 
 
-    /**
+    /*
      * @see toolbox.util.validator.ValidatorContextIfc#setConstraint(
      *      org.apache.commons.collections.Predicate)
      */

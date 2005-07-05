@@ -32,8 +32,6 @@ import toolbox.util.ArrayUtil;
  *      IOUtils.closeQuietly(mos);
  * }
  * </pre>
- *
- * @see toolbox.util.io.MulticastOutputStreamTest
  */
 public class MulticastOutputStream extends OutputStream
 {
@@ -104,7 +102,7 @@ public class MulticastOutputStream extends OutputStream
     // Overrides java.io.InputStream
     //--------------------------------------------------------------------------
 
-    /**
+    /*
      * Writes an integer to each stream in the multicast group. If one of the 
      * writes should fail, the failure is logged and the operation continues. 
      * 
@@ -127,7 +125,7 @@ public class MulticastOutputStream extends OutputStream
     }
 
     
-    /**
+    /*
      * Flushes all streams in the multicast group. If one of the streams should
      * fail, the failure is logged and the operation continues.
      * 
@@ -149,7 +147,7 @@ public class MulticastOutputStream extends OutputStream
     }
 
     
-    /**
+    /*
      * Closes all streams in the multicast group. If one of the streams should
      * fail, the failure is logged and the operation continues.
      * 

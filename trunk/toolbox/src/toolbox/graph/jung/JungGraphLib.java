@@ -47,7 +47,7 @@ public class JungGraphLib implements GraphLib
     // GraphLib Interface
     //--------------------------------------------------------------------------
     
-    /**
+    /*
      * @see toolbox.graph.GraphLib#createEdge(toolbox.graph.Vertex, 
      *      toolbox.graph.Vertex)
      */
@@ -59,7 +59,7 @@ public class JungGraphLib implements GraphLib
     }
     
     
-    /**
+    /*
      * @see toolbox.graph.GraphLib#createGraph()
      */
     public Graph createGraph()
@@ -69,7 +69,7 @@ public class JungGraphLib implements GraphLib
     }
     
     
-    /**
+    /*
      * @see toolbox.graph.GraphLib#createVertex(toolbox.graph.Graph, 
      *      java.lang.String)
      */
@@ -80,8 +80,7 @@ public class JungGraphLib implements GraphLib
         return v;
     }
     
-    
-    /**
+    /*
      * @see toolbox.graph.GraphLib#createView(toolbox.graph.Graph)
      */
     public GraphView createView(Graph graph)
@@ -91,8 +90,8 @@ public class JungGraphLib implements GraphLib
     }
     
     
-    /**
-     * @see toolbox.graph.GraphLib#getLayouts()
+    /*
+     * @see toolbox.graph.GraphLib#getLayouts(toolbox.graph.Graph)
      */
     public List getLayouts(Graph graph)
     {
@@ -120,8 +119,10 @@ public class JungGraphLib implements GraphLib
     //--------------------------------------------------------------------------
     
     /**
-     * @param dest
-     * @return
+     * Looks up a vertex.
+     * 
+     * @param dest Destination vertex.
+     * @return Vertex
      */
     public static Vertex lookupVertex(edu.uci.ics.jung.graph.Vertex dest)
     {
@@ -131,8 +132,10 @@ public class JungGraphLib implements GraphLib
 
     
     /**
-     * @param dest
-     * @return
+     * Returns the edge for the specified jung graph edge.
+     * 
+     * @param edge Edge to lookup.
+     * @return Edge
      */
     public static Edge lookupEdge(edu.uci.ics.jung.graph.Edge edge)
     {
@@ -144,7 +147,7 @@ public class JungGraphLib implements GraphLib
     // Overrides java.lang.Object
     //--------------------------------------------------------------------------
     
-    /**
+    /*
      * Overridden so name is rendered correctly in comboboxes.
      * 
      * @see java.lang.Object#toString()
