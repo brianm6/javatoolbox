@@ -141,7 +141,7 @@ public class Tail implements Startable, Suspendable
     // Startable Interface
     //--------------------------------------------------------------------------
     
-    /**
+    /*
      * Starts the tail.
      * 
      * @see toolbox.util.service.Startable#start()
@@ -168,7 +168,7 @@ public class Tail implements Startable, Suspendable
     }
 
 
-    /**
+    /*
      * Stops the tail.
      * 
      * @see toolbox.util.service.Startable#stop()
@@ -201,7 +201,7 @@ public class Tail implements Startable, Suspendable
     }
 
 
-    /**
+    /*
      * Returns true if the tail is running, false otherwise. This has no
      * bearing on whether the tail is paused or not.
      *
@@ -216,7 +216,7 @@ public class Tail implements Startable, Suspendable
     // Service Interface
     //--------------------------------------------------------------------------
     
-    /**
+    /*
      * @see toolbox.util.service.Service#getState()
      */
     public ServiceState getState()
@@ -228,7 +228,7 @@ public class Tail implements Startable, Suspendable
     // Suspendable Interface
     //--------------------------------------------------------------------------
     
-    /**
+    /*
      * Returns true if the tail is suspended, false otherwise.
      *
      * @see toolbox.util.service.Suspendable#isSuspended()
@@ -239,7 +239,7 @@ public class Tail implements Startable, Suspendable
     }
     
     
-    /**
+    /*
      * Suspends the tail.
      * 
      * @see toolbox.util.service.Suspendable#suspend()
@@ -251,7 +251,7 @@ public class Tail implements Startable, Suspendable
     }
 
 
-    /**
+    /*
      * Resumes the tail.
      * 
      * @see toolbox.util.service.Suspendable#resume()
@@ -353,7 +353,7 @@ public class Tail implements Startable, Suspendable
     // Overrides java.lang.Object
     //--------------------------------------------------------------------------
 
-    /**
+    /*
      * Dumps tail a debug string.
      * 
      * @see java.lang.Object#toString()
@@ -556,7 +556,7 @@ public class Tail implements Startable, Suspendable
      */
     class Tailer implements Runnable
     {
-        /**
+        /*
          * @see java.lang.Runnable#run()
          */
         public void run()
