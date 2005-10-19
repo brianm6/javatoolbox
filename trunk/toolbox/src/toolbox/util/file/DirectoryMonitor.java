@@ -2,9 +2,13 @@ package toolbox.util.file;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.io.find.FileFinder;
+import org.apache.commons.io.find.Finder;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
@@ -84,8 +88,15 @@ public class DirectoryMonitor implements Startable {
     /** 
      * Directory to monitor. 
      */
-    private File directory_;
+    //private File directory_;
 
+    /** 
+     * List of directories to monitor for file activity.
+     * 
+     * @see java.io.File
+     */
+    private List directories_;
+    
     /** 
      * Thread that interested listeners are notified on. 
      */
@@ -105,37 +116,68 @@ public class DirectoryMonitor implements Startable {
      * 
      * @param dir Directory to monitor.
      */
-    public DirectoryMonitor(File dir)
-    {
-        stateMachine_ = ServiceUtil.createStateMachine(this);
-        listeners_ = new ArrayList();
-        activities_ = new ArrayList();
-        setDirectory(dir);
-        setDelay(5000);
+    public DirectoryMonitor(File dir) {
+        this(dir, false);
     }
 
+    /**
+     * Creates a DirectoryMonitor for the given directory and all known 
+     * subdirectories.
+     * 
+     * @param dir Directory to monitor.
+     * @param subdirs Set to true to also monitor subdirectories.
+     */
+    public DirectoryMonitor(File dir, boolean subdirs) {
+        stateMachine_ = ServiceUtil.createStateMachine(this);
+        directories_ = new ArrayList();
+        listeners_ = new ArrayList();
+        activities_ = new ArrayList();
+        setDelay(5000);
+        
+        if (subdirs) {
+            // Find all subdirs of the starting dir
+            FileFinder finder = new FileFinder();
+            Map findOptions = new HashMap();
+            findOptions.put(Finder.TYPE, "d");
+            
+            logger_.debug("Finding all subdirs of " + dir + "...");
+            
+            File[] subdirectories = finder.find(dir, findOptions);
+            
+            logger_.debug("Found " + subdirectories.length + " subdirs total!");
+            logger_.debug(ArrayUtil.toString(subdirectories, true));
+            
+            for (int i = 0; i < subdirectories.length; i++) 
+                addDirectory(subdirectories[i]);
+        }
+        else {
+            addDirectory(dir);
+        }
+    }
+    
     //--------------------------------------------------------------------------
     // Startable Interface
     //--------------------------------------------------------------------------
     
     /**
-     * Starts execution of the directory monitor.
+     * Starts execution of this directory monitor.
      * 
-     * @throws IllegalStateException if monitor already running.
+     * @throws IllegalStateException if monitor is already running.
      */
-    public void start() throws IllegalStateException
-    {
+    public void start() throws IllegalStateException {
         stateMachine_.checkTransition(ServiceTransition.START);
         
         if (monitor_ != null && monitor_.isAlive())
             throw new IllegalStateException(
                 "The directory monitor for " + 
-                directory_.getName() +
+                " ???" + //directory_.getName() +
                 "already running.");
 
         monitor_ = 
             new Thread(new ActivityRunner(),
-                "DirectoryMonitor[" + directory_.getName() + "]");
+                "DirectoryMonitor[" 
+                + " ??? " //directory_.getName() 
+                + "]");
                         
         monitor_.start();
         stateMachine_.transition(ServiceTransition.START);
@@ -143,36 +185,32 @@ public class DirectoryMonitor implements Startable {
 
     
     /**
-     * Requests termination of the monitor. Does not block on termination
+     * Requests termination of this monitor. Does not block on termination
      * nor does it guarantee termination.
      * 
      * @see toolbox.util.service.Startable#stop()
      */
-    public void stop() throws ServiceException
-    {
+    public void stop() throws ServiceException {
         stateMachine_.checkTransition(ServiceTransition.STOP);
         
-        try
-        {
+        try {
             logger_.debug("Shutting down..");
             stateMachine_.transition(ServiceTransition.STOP);
-            
+
             // wait at most 10 secs for monitor to shutdown
             monitor_.join(10000);
             monitor_ = null;
         }
-        catch (InterruptedException e)
-        {
+        catch (InterruptedException e) {
             throw new ServiceException(e);
         }
     }
 
     
-    /**
+    /*
      * @see toolbox.util.service.Startable#isRunning()
      */
-    public boolean isRunning()
-    {
+    public boolean isRunning() {
         return getState() == ServiceState.RUNNING;
     }
     
@@ -180,11 +218,10 @@ public class DirectoryMonitor implements Startable {
     // Service Interface
     //--------------------------------------------------------------------------
     
-    /**
+    /*
      * @see toolbox.util.service.Service#getState()
      */
-    public ServiceState getState()
-    {
+    public ServiceState getState() {
         return (ServiceState) stateMachine_.getState();
     }
     
@@ -193,12 +230,27 @@ public class DirectoryMonitor implements Startable {
     //--------------------------------------------------------------------------
     
     /**
+     * @param directory
+     */
+    public void addDirectory(File directory) {
+        directories_.add(directory);
+    }
+    
+    
+    /**
+     * @param directory
+     */
+    public void removeDirectory(File directory) {
+        directories_.remove(directory);
+    }
+
+    
+    /**
      * Returns the polling delay in milliseconds.
      *
      * @return int
      */
-    public int getDelay()
-    {
+    public int getDelay() {
         return delay_;
     }
 
@@ -208,32 +260,29 @@ public class DirectoryMonitor implements Startable {
      *
      * @param newDelay Delay
      */
-    public void setDelay(int newDelay)
-    {
+    public void setDelay(int newDelay) {
         delay_ = newDelay;
     }
 
     
-    /**
-     * Returns the directory being monitored for activity.
-     * 
-     * @return File
-     */
-    public File getDirectory()
-    {
-        return directory_;
-    }
-
-    
-    /**
-     * Sets the directory being monitored for activity.
-     * 
-     * @param directory The directory to monitor.
-     */
-    public void setDirectory(File directory)
-    {
-        directory_ = directory;
-    }
+//    /**
+//     * Returns the directory being monitored for activity.
+//     * 
+//     * @return File
+//     */
+//    public File getDirectory() {
+//        return directory_;
+//    }
+//
+//    
+//    /**
+//     * Sets the directory being monitored for activity.
+//     * 
+//     * @param directory The directory to monitor.
+//     */
+//    public void setDirectory(File directory) {
+//        directory_ = directory;
+//    }
 
     
     /**
@@ -241,8 +290,7 @@ public class DirectoryMonitor implements Startable {
      * 
      * @param activity Activity to monitor
      */
-    public void addFileActivity(IFileActivity activity)
-    {
+    public void addFileActivity(IFileActivity activity) {
         activities_.add(activity);
     }
 
@@ -252,8 +300,7 @@ public class DirectoryMonitor implements Startable {
      * 
      * @param activity Activity to remove
      */
-    public void removeFileActivity(IFileActivity activity)
-    {
+    public void removeFileActivity(IFileActivity activity) {
         activities_.remove(activity);
     }
 
@@ -269,11 +316,10 @@ public class DirectoryMonitor implements Startable {
      * @throws Exception on error.
      */
     protected void fireFileActivity(IFileActivity activity, File[] files) 
-        throws Exception
-    {
+        throws Exception {
+        
         // Iterator through listeners and file event
-        for (Iterator i = listeners_.iterator(); i.hasNext();)
-        {
+        for (Iterator i = listeners_.iterator(); i.hasNext();) {
             IDirectoryListener dirListener = (IDirectoryListener) i.next();
             dirListener.fileActivity(activity, files);
         }
@@ -286,8 +332,7 @@ public class DirectoryMonitor implements Startable {
      * 
      * @param listener Listener to remove from the notification list.
      */
-    public void removeDirectoryListener(IDirectoryListener listener)
-    {
+    public void removeDirectoryListener(IDirectoryListener listener) {
         listeners_.remove(listener);
     }
 
@@ -298,8 +343,7 @@ public class DirectoryMonitor implements Startable {
      *
      * @param listener Listener to add to notification list.
      */
-    public void addDirectoryListener(IDirectoryListener listener)
-    {
+    public void addDirectoryListener(IDirectoryListener listener) {
         listeners_.add(listener);
     }
 
@@ -310,44 +354,54 @@ public class DirectoryMonitor implements Startable {
     /**
      * Runnable object that encapsulates the monitoring activity.
      */
-    class ActivityRunner implements Runnable
-    {
-        /**
+    class ActivityRunner implements Runnable {
+        
+        /*
          * @see java.lang.Runnable#run()
          */
-        public void run()
-        {
-            // DEBUG 
-            logger_.debug("Monitoring: " + getDirectory());
-            
+        public void run() {
+
             for (Iterator i = activities_.iterator(); i.hasNext();)
                 logger_.debug("Checking activity: " + i.next());
-    
+            
             // Check termination flag
-            while (isRunning())
-            {
-                // Loop through each activity
-                for (Iterator i = activities_.iterator(); i.hasNext();)
-                {
-                    IFileActivity activity = (IFileActivity) i.next();
+            while (isRunning()) {
+
+                logger_.debug("New scan started...");
+                
+                for (Iterator di = directories_.iterator(); di.hasNext();) {
+                    File dir = (File) di.next();
+
+                    // DEBUG 
+                    //logger_.debug("Scanning " + dir);
                     
-                    File[] activeFiles = activity.getFiles(getDirectory());
-             
-                    logger_.debug("Active files in monitored dir= " + 
-                        ArrayUtil.toString(activeFiles));
+                        
+                    // Loop through each activity
+                    for (Iterator i = activities_.iterator(); i.hasNext();) {
     
-                    // Eat exceptions so rest of listeners get serviced
-                    try
-                    {
-                        fireFileActivity(activity, activeFiles);
+                        IFileActivity activity = (IFileActivity) i.next();
+                        File[] activeFiles = activity.getFiles(dir);
+                 
+                        //logger_.debug(
+                        //    "Active files in monitored dir "
+                        //    + dir.getName()
+                        //    + " = "
+                        //    + ArrayUtil.toString(activeFiles));
+        
+                        // Eat exceptions so rest of listeners get serviced
+                        try {
+                            if (activeFiles.length > 0)
+                                fireFileActivity(activity, activeFiles);
+                        }
+                        catch (Exception e) {
+                            logger_.error("ActivityRunner.run", e);
+                        }
+                        
+                        Thread.yield();
                     }
-                    catch (Exception e)
-                    {
-                        logger_.error("ActivityRunner.run", e);
-                    }
-                    
-                    ThreadUtil.sleep(getDelay());
                 }
+                
+                ThreadUtil.sleep(getDelay());
             }
         }
     }
