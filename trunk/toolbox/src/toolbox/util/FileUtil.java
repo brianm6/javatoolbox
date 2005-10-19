@@ -263,11 +263,28 @@ public final class FileUtil
      */
     public static File createTempDir() throws IOException
     {
-        File f = new File(createTempFilename(getTempDir()));
+        return createTempDir(getTempDir());
+        
+        //File f = new File(createTempFilename(getTempDir()));
+        //f.mkdir();
+        //return f;
+    }
+
+    
+    /**
+     * Creates a temporary directory using the given directory as the parent.
+     * 
+     * @param parent Directory in which to create a temporary directory.
+     * @return Created temporary directory.
+     * @throws IOException on I/O error.
+     */
+    public static File createTempDir(File parent) throws IOException
+    {
+        File f = new File(createTempFilename(parent));
         f.mkdir();
         return f;
     }
-
+    
     
     /**
      * Creates a temporary file for arbitrary use based on the system's 
