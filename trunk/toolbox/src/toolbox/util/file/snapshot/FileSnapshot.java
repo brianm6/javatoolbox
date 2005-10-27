@@ -18,8 +18,6 @@ public class FileSnapshot {
 
     private String absolutePath;
 
-    //private String canonicalPath;
-
     private String name;
 
     private boolean directory;
@@ -40,14 +38,14 @@ public class FileSnapshot {
         //setReadable(file.canRead());
         //setWritable(file.canRead());
         //setExists(file.exists());
-        setAbsolutePath(file.getAbsolutePath());
-        //setCanonicalPath(file.getCanonicalPath());
         //setName(file.getName());
         //setDirectory(file.isDirectory());
         //setHidden(file.isHidden());
-        setLastModified(file.lastModified());
         //setLength(file.length());
         //setSnapshotTimestamp(new Date());
+        
+        setAbsolutePath(file.getAbsolutePath());
+        setLastModified(file.lastModified());
     }
 
     // -------------------------------------------------------------------------
@@ -107,16 +105,6 @@ public class FileSnapshot {
     public void setAbsolutePath(String absolutePath) {
         this.absolutePath = absolutePath;
     }
-
-
-//    public String getCanonicalPath() {
-//        return canonicalPath;
-//    }
-//
-//
-//    public void setCanonicalPath(String canonicalPath) {
-//        this.canonicalPath = canonicalPath;
-//    }
 
 
     public boolean isReadable() {
