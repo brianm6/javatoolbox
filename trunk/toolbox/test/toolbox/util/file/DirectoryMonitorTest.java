@@ -1,6 +1,8 @@
 package toolbox.util.file;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
@@ -49,30 +51,30 @@ public class DirectoryMonitorTest extends TestCase {
 
         try {
             DirectoryMonitor dm = new DirectoryMonitor(dir);
-            dm.setDelay(500);
 
             // Dummy activity
             IFileActivity activity = new IFileActivity() {
 
-                public File[] getFiles(File dir) {
-
-                    return new File[0];
+                public List getAffectedFiles(File dir) {
+                    return new ArrayList();
                 }
             };
 
             // Dummy listener
             IDirectoryListener listener = new IDirectoryListener() {
 
-                public void fileActivity(IFileActivity activity, File[] files)
-                    throws Exception {
-
+                public void fileActivity(
+                    IFileActivity activity, 
+                    List affectedFiles) throws Exception {
+                    
                     logger_.info("File activity reported: "
-                        + ArrayUtil.toString(files));
+                        + ArrayUtil.toString(affectedFiles.toArray()));
                 }
             };
 
             dm.addDirectoryListener(listener);
             dm.addFileActivity(activity);
+            dm.setDelay(100);
             dm.start();
 
             ThreadUtil.sleep(1000);
@@ -129,26 +131,28 @@ public class DirectoryMonitorTest extends TestCase {
         
         logger_.info("Running testDirectoryMonitorWithSubDirs...");
         
-        File root = FileUtil.createTempDir();
-        File sub1 = FileUtil.createTempDir(root);
-        File sub11 = FileUtil.createTempDir(sub1);
-        File sub2 = FileUtil.createTempDir(root);
+        //File root = FileUtil.createTempDir();
+        //File sub1 = FileUtil.createTempDir(root);
+        //File sub11 = FileUtil.createTempDir(sub1);
+        //File sub2 = FileUtil.createTempDir(root);
         
-        root = new File("c:\\eclipse-3.0");
+        //root = new File("c:\\eclipse-3.0");
+        
+        File root = new File("M:\\x1700_vacany_10_dynamic\\staffplanning\\vacancy\\dev\\Ophelia\\src");
         
         try {
             DirectoryMonitor dm = new DirectoryMonitor(root, true);
             dm.addFileActivity(new FileCreatedActivity());
             dm.addDirectoryListener(new IDirectoryListener() {
             
-                public void fileActivity(IFileActivity activity, File[] files)
+                public void fileActivity(
+                    IFileActivity activity, 
+                    List affectedFiles) 
                     throws Exception {
                     
                     logger_.info(
-                        "FileActivity: " 
-                        + activity 
-                        + " " 
-                        + ArrayUtil.toString(files));
+                        "fileCreated = " 
+                        + ArrayUtil.toString(affectedFiles.toArray()));
                 }
             });
             

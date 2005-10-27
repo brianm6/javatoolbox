@@ -1,6 +1,7 @@
 package toolbox.util.file;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * Acceptance criteria for file activity within a directory.
@@ -14,5 +15,5 @@ public interface IFileActivity
      * @param dir Directory to check for activity.
      * @return List of files that meet this activity's criteria.
      */
-    File[] getFiles(File dir);
+    List getAffectedFiles(File dir);
 }

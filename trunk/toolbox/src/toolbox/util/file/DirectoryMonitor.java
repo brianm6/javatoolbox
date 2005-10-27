@@ -315,17 +315,18 @@ public class DirectoryMonitor implements Startable {
      * @param files Files affected by the activity.
      * @throws Exception on error.
      */
-    protected void fireFileActivity(IFileActivity activity, File[] files) 
+    protected void fireFileActivity(
+        IFileActivity activity, 
+        List affectedFileSnapshots) 
         throws Exception {
         
         // Iterator through listeners and file event
         for (Iterator i = listeners_.iterator(); i.hasNext();) {
             IDirectoryListener dirListener = (IDirectoryListener) i.next();
-            dirListener.fileActivity(activity, files);
+            dirListener.fileActivity(activity, affectedFileSnapshots);
         }
     }
 
-    
     /**
      * Removes a listener from the list that is notified each time a file
      * becomes available.
@@ -380,8 +381,10 @@ public class DirectoryMonitor implements Startable {
                     for (Iterator i = activities_.iterator(); i.hasNext();) {
     
                         IFileActivity activity = (IFileActivity) i.next();
-                        File[] activeFiles = activity.getFiles(dir);
+                        //File[] activeFiles = activity.getFiles(dir);
                  
+                        List affectedFiles = activity.getAffectedFiles(dir);
+                        
                         //logger_.debug(
                         //    "Active files in monitored dir "
                         //    + dir.getName()
@@ -390,14 +393,14 @@ public class DirectoryMonitor implements Startable {
         
                         // Eat exceptions so rest of listeners get serviced
                         try {
-                            if (activeFiles.length > 0)
-                                fireFileActivity(activity, activeFiles);
+                            if (!affectedFiles.isEmpty())
+                                fireFileActivity(activity, affectedFiles);
                         }
                         catch (Exception e) {
                             logger_.error("ActivityRunner.run", e);
                         }
                         
-                        Thread.yield();
+                        ThreadUtil.sleep(100);
                     }
                 }
                 
