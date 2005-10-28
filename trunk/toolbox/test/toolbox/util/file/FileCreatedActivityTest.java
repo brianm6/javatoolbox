@@ -10,9 +10,10 @@ import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
 import toolbox.util.FileUtil;
+import toolbox.util.file.activity.FileCreatedActivity;
 
 /**
- * Unit test for {@link toolbox.util.file.FileCreatedActivity}.
+ * Unit test for {@link toolbox.util.file.activity.FileCreatedActivity}.
  */
 public class FileCreatedActivityTest extends TestCase {
 

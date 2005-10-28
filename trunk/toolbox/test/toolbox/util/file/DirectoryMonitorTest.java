@@ -8,10 +8,15 @@ import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
+import org.netbeans.lib.cvsclient.event.FileUpdatedEvent;
+import org.netbeans.lib.cvsclient.file.FileMode;
 
 import toolbox.util.ArrayUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.ThreadUtil;
+import toolbox.util.file.activity.FileChangedActivity;
+import toolbox.util.file.activity.FileCreatedActivity;
+import toolbox.util.file.activity.FileDeletedActivity;
 
 /**
  * Unit test for {@link toolbox.util.file.DirectoryMonitor}.
@@ -136,22 +141,38 @@ public class DirectoryMonitorTest extends TestCase {
         //File sub11 = FileUtil.createTempDir(sub1);
         //File sub2 = FileUtil.createTempDir(root);
         
-        //root = new File("c:\\eclipse-3.0");
+        File root = new File("c:\\tmp\\crap");
         
-        File root = new File("M:\\x1700_vacany_10_dynamic\\staffplanning\\vacancy\\dev\\Ophelia\\src");
+        //File root = new File("M:\\x1700_vacany_10_dynamic\\staffplanning\\vacancy\\dev\\Ophelia\\src");
         
         try {
             DirectoryMonitor dm = new DirectoryMonitor(root, true);
+            
             dm.addFileActivity(new FileCreatedActivity());
+            dm.addFileActivity(new FileDeletedActivity());
+            dm.addFileActivity(new FileChangedActivity());
+            dm.setDelay(1000);
             dm.addDirectoryListener(new IDirectoryListener() {
             
                 public void fileActivity(
                     IFileActivity activity, 
                     List affectedFiles) 
                     throws Exception {
+
+                    String msg = null;
+                    
+                    if (activity instanceof FileCreatedActivity) {
+                        msg = "File created = ";
+                    }
+                    else if (activity instanceof FileDeletedActivity) { 
+                        msg = "File deleted = ";
+                    }
+                    else if (activity instanceof FileChangedActivity) {
+                        msg = "File changed = ";
+                    }
                     
                     logger_.info(
-                        "fileCreated = " 
+                        msg   
                         + ArrayUtil.toString(affectedFiles.toArray()));
                 }
             });

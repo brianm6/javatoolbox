@@ -54,7 +54,7 @@ import toolbox.util.statemachine.StateMachine;
  * 
  * @see toolbox.util.file.IFileActivity
  * @see toolbox.util.file.IDirectoryListener
- * @see toolbox.util.file.FileCreatedActivity
+ * @see toolbox.util.file.activity.FileCreatedActivity
  */
 public class DirectoryMonitor implements Startable {
     
