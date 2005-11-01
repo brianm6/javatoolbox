@@ -30,11 +30,11 @@ import toolbox.graph.Edge;
 import toolbox.graph.Graph;
 import toolbox.graph.GraphConfigurator;
 import toolbox.graph.GraphLib;
-import toolbox.graph.GraphLibFactory;
 import toolbox.graph.GraphView;
 import toolbox.graph.Layout;
 import toolbox.graph.Vertex;
 import toolbox.util.FileUtil;
+import toolbox.util.StringUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.service.ServiceException;
 import toolbox.util.service.ServiceTransition;
@@ -106,8 +106,8 @@ public class JarDepsPlugin extends AbstractPlugin
     /**
      * Graphing library implementation.
      */
-    private GraphLib graphLib_ = 
-        GraphLibFactory.create(GraphLibFactory.TYPE_JUNG);
+    private GraphLib graphLib_; 
+        //GraphLibFactory.create(GraphLibFactory.TYPE_JUNG);
     
     /**
      * Allows configuration of the graph library and layout at runtime.
@@ -318,7 +318,7 @@ public class JarDepsPlugin extends AbstractPlugin
             DepHandler handler = new TextDepHandler(w, DepHandler.LEVEL_JAR);
             new DepFind().run(classpath, classpath, handler);
             w.flush();            
-            logger_.info(jarjarOutput.toString());
+            logger_.info(StringUtil.banner(jarjarOutput.toString()));
 
             // Parse output into node----edge--->node
             LineNumberReader lnr = 
@@ -326,6 +326,8 @@ public class JarDepsPlugin extends AbstractPlugin
             
             String line = null;
             Map nodes = new HashMap();
+            
+            graphLib_ = graphConfigurator_.getGraphLib();
             graph_ = graphLib_.createGraph();
             
             while ( (line = lnr.readLine()) !=  null)
@@ -367,6 +369,7 @@ public class JarDepsPlugin extends AbstractPlugin
             }
             
             graphView_ = graphLib_.createView(graph_);
+            //graphView_.setLayout(graphConfigurator_.getGraphLayout());
         }
         catch (Exception e)
         {
@@ -484,6 +487,11 @@ public class JarDepsPlugin extends AbstractPlugin
         
         public void runAction(ActionEvent e) throws Exception
         {
+            runAction();
+        }
+        
+        public void runAction() throws Exception 
+        {
             String path = 
                 FileUtil.trailWithSeparator(explorer_.getCurrentPath());
             
@@ -513,6 +521,7 @@ public class JarDepsPlugin extends AbstractPlugin
          */
         public void graphLibChanged(GraphLib graphLib)
         {
+            
         }
         
         
@@ -522,7 +531,15 @@ public class JarDepsPlugin extends AbstractPlugin
          */
         public void layoutChanged(Layout layout)
         {
-            graphView_.setLayout(layout);
+            try {
+                new ViewJarDepsAction().runAction();
+            }
+            catch (Exception e) {
+                logger_.error(e);
+            }
+            
+            //if ((graphView_ != null) && (layout.getDelegate() != null))                
+            //    graphView_.setLayout(layout);
         }
     }
 }
