@@ -390,7 +390,7 @@ public final class LookAndFeelUtil
     public static void setPreferredLAF() throws Exception
     { 
         UIManager.setLookAndFeel(
-            "com.jgoodies.plaf.plastic.PlasticXPLookAndFeel");
+            "com.jgoodies.looks.plastic.PlasticXPLookAndFeel");
         
         propagateChangeInLAF();            
     }
