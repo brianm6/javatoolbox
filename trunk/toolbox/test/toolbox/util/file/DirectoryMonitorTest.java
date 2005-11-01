@@ -8,8 +8,6 @@ import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
-import org.netbeans.lib.cvsclient.event.FileUpdatedEvent;
-import org.netbeans.lib.cvsclient.file.FileMode;
 
 import toolbox.util.ArrayUtil;
 import toolbox.util.FileUtil;
@@ -49,7 +47,6 @@ public class DirectoryMonitorTest extends TestCase {
      * @throws Exception on I/O error.
      */
     public void testDirectoryMonitor() throws Exception {
-
         logger_.info("Running testDirectoryMonitor...");
 
         File dir = FileUtil.createTempDir();
@@ -101,7 +98,6 @@ public class DirectoryMonitorTest extends TestCase {
      * @throws Exception on I/O error.
      */
     public void testDirectoryMonitorFalseStart() throws Exception {
-
         logger_.info("Running testDirectoryMonitorFalseStart...");
 
         File dir = FileUtil.createTempDir();
@@ -133,7 +129,6 @@ public class DirectoryMonitorTest extends TestCase {
      * @throws Exception
      */
     public void testDirectoryMonitorWithSubDirs() throws Exception {
-        
         logger_.info("Running testDirectoryMonitorWithSubDirs...");
         
         //File root = FileUtil.createTempDir();
