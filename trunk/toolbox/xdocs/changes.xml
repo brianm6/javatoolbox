@@ -112,6 +112,13 @@
 
     <body>
 
+        <!-- =================================================================== -->
+        <!-- Nov 2005                                                          -->
+        <!-- =================================================================== -->
+        <release version="2.0" date="November 2005">
+            <action type="update"   >Lib - Upgraded Jung graphing library to jung-1.7.2</action>
+            <action type="update"   >Util - Updated directory monitor to recognize deleted and modified files</action>
+        </release>
 
         <!-- =================================================================== -->
         <!-- June 2005                                                          -->
