@@ -21,7 +21,7 @@ public class FileDiff {
     // -------------------------------------------------------------------------
 
     public boolean isModified() {
-        return beforeSnapshot.getLastModified() == afterSnapshot.getLastModified();
+        return beforeSnapshot.getLastModified() != afterSnapshot.getLastModified();
     }
     
     // -------------------------------------------------------------------------
