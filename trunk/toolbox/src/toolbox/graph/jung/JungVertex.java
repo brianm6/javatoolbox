@@ -4,13 +4,11 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
+
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.Vertex;
-import edu.uci.ics.jung.graph.decorators.StringLabeller;
-import edu.uci.ics.jung.graph.decorators.StringLabeller.UniqueLabelException;
 import edu.uci.ics.jung.graph.impl.DirectedSparseVertex;
-
-import org.apache.log4j.Logger;
 
 /**
  * Jung implemenation of a {@link toolbox.graph.Vertex}.
@@ -22,6 +20,8 @@ public class JungVertex implements toolbox.graph.Vertex
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
+    
+    private String label_;
     
     /**
      * Jung vertex delegate.
@@ -47,7 +47,7 @@ public class JungVertex implements toolbox.graph.Vertex
     {
         vertex_ = new DirectedSparseVertex();
         graph_ = (Graph) graph.getDelegate();
-        setText(label);
+        label_ = label;
     }
 
     //--------------------------------------------------------------------------
@@ -77,7 +77,8 @@ public class JungVertex implements toolbox.graph.Vertex
      */
     public String getText()
     {
-        return StringLabeller.getLabeller(graph_).getLabel(vertex_);
+        return label_;
+        //return StringLabeller.getLabeller(graph_).getLabel(vertex_);
     }
     
     
@@ -86,26 +87,35 @@ public class JungVertex implements toolbox.graph.Vertex
      */
     public void setText(String text)
     {
-        boolean remove = false;
+        label_ = text;
         
-        if (!graph_.getVertices().contains(vertex_))
-        {
-            // Temporarily add to graph so that StringLabeller will work
-            graph_.addVertex(vertex_);
-            remove = true;
-        }
+//        boolean remove = false;
+//        
+//        if (graph_.getVertices().contains(vertex_))
+//        {
+//            // Temporarily add to graph so that StringLabeller will work
+//            //graph_.addVertex(vertex_);
+//            //remove = true;
+//            
+//            try {
+//                StringLabeller.getLabeller(graph_).setLabel(vertex_, text);
+//            }
+//            catch (UniqueLabelException e) {
+//                logger_.error(e);
+//            }
+//        }
         
-        try
-        {
-            StringLabeller.getLabeller(graph_).setLabel(vertex_, text);
-        }
-        catch (UniqueLabelException e)
-        {
-            logger_.error(e);
-        }
-
-        if (remove)
-            graph_.removeVertex(vertex_);
+//        try
+//        {
+//            
+//        }
+//        catch (UniqueLabelException e)
+//        {
+//            logger_.error(e);
+//        }
+//
+//        if (remove)
+//            graph_.removeVertex(vertex_);
     }
     
     //--------------------------------------------------------------------------
