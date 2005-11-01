@@ -1,8 +1,13 @@
 package toolbox.graph.jung;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import edu.uci.ics.jung.graph.Edge;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.Vertex;
+import edu.uci.ics.jung.graph.decorators.StringLabeller;
+import edu.uci.ics.jung.graph.decorators.StringLabeller.UniqueLabelException;
 import edu.uci.ics.jung.graph.impl.DirectedSparseGraph;
 
 /**
@@ -10,6 +15,8 @@ import edu.uci.ics.jung.graph.impl.DirectedSparseGraph;
  */
 public class JungGraph implements toolbox.graph.Graph
 {
+    private static final Log logger_ = LogFactory.getLog(JungGraph.class);
+    
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
@@ -42,6 +49,13 @@ public class JungGraph implements toolbox.graph.Graph
     {
         Vertex v = (Vertex) vertex.getDelegate();
         graph_.addVertex(v);
+        
+        try {
+            StringLabeller.getLabeller(graph_).setLabel(v, vertex.getText());
+        }
+        catch (UniqueLabelException e) {
+            logger_.error(e);
+        }
     }
 
     
