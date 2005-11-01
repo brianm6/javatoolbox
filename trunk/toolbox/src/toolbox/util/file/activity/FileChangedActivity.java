@@ -12,6 +12,7 @@ import org.apache.commons.lang.ClassUtils;
 import toolbox.util.file.IFileActivity;
 import toolbox.util.file.snapshot.DirDiff;
 import toolbox.util.file.snapshot.DirSnapshot;
+import toolbox.util.file.snapshot.FileDiff;
 import toolbox.util.file.snapshot.FileSnapshot;
 
 /**
@@ -67,9 +68,13 @@ public class FileChangedActivity implements IFileActivity {
             List modifiedFileDiffs =  diff.getModifiedFiles();
             
             for (Iterator i = modifiedFileDiffs.iterator(); i.hasNext();) {
-                FileSnapshot fileSnapshot = (FileSnapshot) i.next();
+                FileDiff fileDiff = (FileDiff) i.next();
+                FileSnapshot fileSnapshot = fileDiff.getAfterSnapshot();
                 modifiedFiles.add(fileSnapshot);
             }
+            
+            // Update the snapshot to the latest
+            dirSnapshots_.put(dirKey, afterDirSnapshot);
         }
 
         return modifiedFiles;
