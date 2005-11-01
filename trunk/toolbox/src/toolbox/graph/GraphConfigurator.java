@@ -10,6 +10,8 @@ import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JPanel;
 
+import org.apache.log4j.Logger;
+
 import toolbox.util.ui.JSmartComboBox;
 import toolbox.util.ui.JSmartLabel;
 
@@ -19,6 +21,9 @@ import toolbox.util.ui.JSmartLabel;
  */
 public class GraphConfigurator extends JPanel
 {
+    private static final Logger logger_ = 
+        Logger.getLogger(GraphConfigurator.class);
+    
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
@@ -65,7 +70,17 @@ public class GraphConfigurator extends JPanel
     {
         listeners_.add(listener);
     }
-    
+
+    public GraphLib getGraphLib()
+    {
+        return (GraphLib) graphLibComboBox_.getSelectedItem();
+    }
+
+    public Layout getGraphLayout()
+    {
+        return (Layout) layoutComboBox_.getSelectedItem();
+    }
+
     //--------------------------------------------------------------------------
     // Protected
     //--------------------------------------------------------------------------
@@ -123,6 +138,20 @@ public class GraphConfigurator extends JPanel
                     }
                 }
             });
+        
+        addListener(new GraphConfigurator.Listener() {
+            
+            public void graphLibChanged(GraphLib graphLib)
+            {
+                logger_.debug("Graph lib changed to " + graphLib);
+                populateLayout();
+            }
+            
+            public void layoutChanged(Layout layout)
+            {
+            }
+        });
+        
     }
     
     
@@ -132,6 +161,7 @@ public class GraphConfigurator extends JPanel
      */
     protected void populateGraphLib()
     {
+        graphLibComboBox_.removeAllItems();
         graphLibComboBox_.setModel(
             new DefaultComboBoxModel(
                 GraphLibFactory.createAll().toArray()));
@@ -146,6 +176,7 @@ public class GraphConfigurator extends JPanel
      */
     protected void populateLayout()
     {
+        layoutComboBox_.removeAllItems();
         GraphLib graphLib = (GraphLib) graphLibComboBox_.getSelectedItem();
         Graph tmpGraph = graphLib.createGraph();
         
