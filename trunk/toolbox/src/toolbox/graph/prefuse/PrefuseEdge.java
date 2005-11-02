@@ -9,20 +9,20 @@ import edu.berkeley.guir.prefuse.graph.Node;
 /**
  * Prefuse implementation of an {@link toolbox.graph.Edge}.
  */
-public class PrefuseEdge implements toolbox.graph.Edge  
-{
-    //--------------------------------------------------------------------------
+public class PrefuseEdge implements toolbox.graph.Edge {
+
+    // --------------------------------------------------------------------------
     // Fields
-    //--------------------------------------------------------------------------
-    
+    // --------------------------------------------------------------------------
+
     /**
      * Prefuse lib version of an edge.
      */
     private Edge edge_;
- 
-    //--------------------------------------------------------------------------
+
+    // --------------------------------------------------------------------------
     // Constructors
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     /**
      * Creates a non-directed PrefuseEdge.
@@ -30,12 +30,11 @@ public class PrefuseEdge implements toolbox.graph.Edge
      * @param from Source vertex of this edge.
      * @param to Destination vertext of this edge.
      */
-    public PrefuseEdge(toolbox.graph.Vertex from, toolbox.graph.Vertex to) 
-    {
+    public PrefuseEdge(toolbox.graph.Vertex from, toolbox.graph.Vertex to) {
         this(from, to, true);
     }
 
-    
+
     /**
      * Creates a PrefuseEdge.
      * 
@@ -44,44 +43,40 @@ public class PrefuseEdge implements toolbox.graph.Edge
      * @param directed True for directed edge, false otherwise.
      */
     public PrefuseEdge(
-        toolbox.graph.Vertex from, 
-        toolbox.graph.Vertex to, 
-        boolean directed)
-    {
+        toolbox.graph.Vertex from,
+        toolbox.graph.Vertex to,
+        boolean directed) {
         Node fromVertex = (Node) from.getDelegate();
-        Node toVertex   = (Node) to.getDelegate();
+        Node toVertex = (Node) to.getDelegate();
         edge_ = new DefaultEdge(fromVertex, toVertex, directed);
     }
-    
-    //--------------------------------------------------------------------------
+
+    // --------------------------------------------------------------------------
     // Edge Interface
-    //--------------------------------------------------------------------------
-    
-    /**
+    // --------------------------------------------------------------------------
+
+    /*
      * @see toolbox.graph.Edge#getDestination()
      */
-    public Vertex getDestination()
-    {
+    public Vertex getDestination() {
         return PrefuseGraphLib.lookupVertex(edge_.getSecondNode());
     }
-    
-    /**
+
+    /*
      * @see toolbox.graph.Edge#getSource()
      */
-    public Vertex getSource()
-    {
+    public Vertex getSource() {
         return PrefuseGraphLib.lookupVertex(edge_.getFirstNode());
     }
-    
-    //--------------------------------------------------------------------------
+
+    // --------------------------------------------------------------------------
     // Delegator Interface
-    //--------------------------------------------------------------------------
-    
-    /**
+    // --------------------------------------------------------------------------
+
+    /*
      * @see toolbox.graph.Delegator#getDelegate()
      */
-    public Object getDelegate()
-    {
+    public Object getDelegate() {
         return edge_;
     }
 }

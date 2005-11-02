@@ -3,8 +3,8 @@ package toolbox.graph;
 /**
  * A Delegator is an object that delegates behavior to another object.
  */
-public interface Delegator
-{
+public interface Delegator {
+
     /**
      * Returns the delegate.
      * 

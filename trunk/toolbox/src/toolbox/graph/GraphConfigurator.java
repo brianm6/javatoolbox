@@ -19,189 +19,171 @@ import toolbox.util.ui.JSmartLabel;
  * GraphConfigurator is a UI component that allows dynamic selection of the
  * graph library and any one of its supported graph layout algorithms.
  */
-public class GraphConfigurator extends JPanel
-{
+public class GraphConfigurator extends JPanel {
+
     private static final Logger logger_ = 
         Logger.getLogger(GraphConfigurator.class);
-    
-    //--------------------------------------------------------------------------
+
+    // --------------------------------------------------------------------------
     // Fields
-    //--------------------------------------------------------------------------
-    
+    // --------------------------------------------------------------------------
+
     /**
      * Selector for the graph library.
      */
     private JSmartComboBox graphLibComboBox_;
-    
+
     /**
      * Selector for the graph layout algorithm.
      */
     private JSmartComboBox layoutComboBox_;
-    
+
     /**
      * Listeners interested in the selection of graph library or graph layout
      * algorithm.
      */
     private List listeners_;
-    
-    //--------------------------------------------------------------------------
+
+    // --------------------------------------------------------------------------
     // Constructors
-    //--------------------------------------------------------------------------
-    
+    // --------------------------------------------------------------------------
+
     /**
      * Creates a GraphConfigurator.
      */
-    public GraphConfigurator()
-    {
+    public GraphConfigurator() {
         buildView();
         wireView();
     }
-    
-    //--------------------------------------------------------------------------
+
+    // --------------------------------------------------------------------------
     // Public
-    //--------------------------------------------------------------------------
-    
+    // --------------------------------------------------------------------------
+
     /**
      * Adds a listener to this GraphConfigurator.
      * 
      * listener Listener to add.
      */
-    public void addListener(GraphConfigurator.Listener listener)
-    {
+    public void addListener(GraphConfigurator.Listener listener) {
         listeners_.add(listener);
     }
 
-    public GraphLib getGraphLib()
-    {
+    public GraphLib getGraphLib() {
         return (GraphLib) graphLibComboBox_.getSelectedItem();
     }
 
-    public Layout getGraphLayout()
-    {
+    public Layout getGraphLayout() {
         return (Layout) layoutComboBox_.getSelectedItem();
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     // Protected
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     /**
      * Builds the user interface.
      */
-    protected void buildView()
-    {
+    protected void buildView() {
         setLayout(new FlowLayout());
         graphLibComboBox_ = new JSmartComboBox();
         layoutComboBox_ = new JSmartComboBox();
-        
+
         add(new JSmartLabel("Graph Library"));
         add(graphLibComboBox_);
-        
+
         add(new JSmartLabel("Layout"));
         add(layoutComboBox_);
-        
+
         populateGraphLib();
     }
-    
-    
+
+
     /**
      * Wires events and listeners to the user interface.
      */
-    protected void wireView()
-    {
+    protected void wireView() {
         listeners_ = new ArrayList();
-        
-        graphLibComboBox_.addActionListener(
-            new ActionListener()
-            {
-                public void actionPerformed(ActionEvent e)
-                {
-                    for (Iterator i = listeners_.iterator(); i.hasNext();)
-                    {
-                        Listener listener = (Listener) i.next();
-                        listener.graphLibChanged((GraphLib)
-                            graphLibComboBox_.getSelectedItem());
-                    }
+
+        graphLibComboBox_.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                for (Iterator i = listeners_.iterator(); i.hasNext();) {
+                    Listener listener = (Listener) i.next();
+                    listener.graphLibChanged((GraphLib) graphLibComboBox_
+                        .getSelectedItem());
                 }
-            });
-        
-        layoutComboBox_.addActionListener(
-            new ActionListener()
-            {
-                public void actionPerformed(ActionEvent e)
-                {
-                    for (Iterator i = listeners_.iterator(); i.hasNext();)
-                    {
-                        Listener listener = (Listener) i.next();
-                        listener.layoutChanged((Layout) 
-                            layoutComboBox_.getSelectedItem());
-                    }
+            }
+        });
+
+        layoutComboBox_.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                for (Iterator i = listeners_.iterator(); i.hasNext();) {
+                    Listener listener = (Listener) i.next();
+                    listener.layoutChanged((Layout) layoutComboBox_
+                        .getSelectedItem());
                 }
-            });
-        
+            }
+        });
+
         addListener(new GraphConfigurator.Listener() {
-            
-            public void graphLibChanged(GraphLib graphLib)
-            {
+
+            public void graphLibChanged(GraphLib graphLib) {
                 logger_.debug("Graph lib changed to " + graphLib);
                 populateLayout();
             }
-            
-            public void layoutChanged(Layout layout)
-            {
+
+            public void layoutChanged(Layout layout) {
             }
         });
-        
+
     }
-    
-    
+
+
     /**
-     * Populates the graph library combobox with teh available graphing 
+     * Populates the graph library combobox with teh available graphing
      * libraries.
      */
-    protected void populateGraphLib()
-    {
+    protected void populateGraphLib() {
         graphLibComboBox_.removeAllItems();
-        graphLibComboBox_.setModel(
-            new DefaultComboBoxModel(
-                GraphLibFactory.createAll().toArray()));
-        
+        graphLibComboBox_.setModel(new DefaultComboBoxModel(GraphLibFactory
+            .createAll().toArray()));
+
         populateLayout();
     }
-    
-    
+
+
     /**
      * Populates the graph layout combobox with the available graph layout
      * algorithms.
      */
-    protected void populateLayout()
-    {
+    protected void populateLayout() {
         layoutComboBox_.removeAllItems();
         GraphLib graphLib = (GraphLib) graphLibComboBox_.getSelectedItem();
         Graph tmpGraph = graphLib.createGraph();
-        
-        layoutComboBox_.setModel(
-            new DefaultComboBoxModel(
-                graphLib.getLayouts(tmpGraph).toArray()));
+
+        layoutComboBox_.setModel(new DefaultComboBoxModel(graphLib.getLayouts(
+            tmpGraph).toArray()));
     }
-    
-    //--------------------------------------------------------------------------
+
+    // --------------------------------------------------------------------------
     // Listener Interface
-    //--------------------------------------------------------------------------
-    
+    // --------------------------------------------------------------------------
+
     /**
      * Exposes events generated by this UI component.
      */
-    public interface Listener 
-    {
+    public interface Listener {
+
         /**
          * Provides notification that the graph library selection has changed.
          * 
          * @param graphLib Newly selected graphing library.
          */
         void graphLibChanged(GraphLib graphLib);
-        
-        
+
+
         /**
          * Provides notification that the graph layout algorithm has changed.
          * 

@@ -6,27 +6,27 @@ import java.util.List;
  * A GraphLib represents the interface of a graphing library with the basic
  * operations to create graphs.
  */
-public interface GraphLib
-{
+public interface GraphLib {
+
     /**
      * Returns a newly created graph.
      * 
      * @return Graph
      */
     Graph createGraph();
-    
-    
+
+
     /**
-     * Returns a newly created edge between the two vertices and adds it to
-     * the graph in which the vertices lie.
-     *  
+     * Returns a newly created edge between the two vertices and adds it to the
+     * graph in which the vertices lie.
+     * 
      * @param from Source vertex.
      * @param to Destination vertex.
      * @return Edge
      */
     Edge createEdge(Vertex from, Vertex to);
-    
-    
+
+
     /**
      * Returns a newly created Vertex with the given label and adds it to the
      * passed in Graph.
@@ -36,8 +36,8 @@ public interface GraphLib
      * @return Vertex
      */
     Vertex createVertex(Graph graph, String label);
-    
-    
+
+
     /**
      * Returns a newly created GraphView associated with the passed in Graph.
      * 
@@ -45,8 +45,8 @@ public interface GraphLib
      * @return GraphView
      */
     GraphView createView(Graph graph);
-    
-    
+
+
     /**
      * Returns a list of the layouts that the passed in Graph supports.
      * 
