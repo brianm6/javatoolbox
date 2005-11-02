@@ -116,6 +116,8 @@
         <!-- Nov 2005                                                          -->
         <!-- =================================================================== -->
         <release version="2.0" date="November 2005">
+            <action type="add"      >Lib - Added Systray4J version systray4j-2.4.1</action>
+            <action type="update"   >Lib - Upgraded Log4J to log4j-1.2.12</action>
             <action type="update"   >Lib - Upgraded Jung graphing library to jung-1.7.2</action>
             <action type="update"   >Util - Updated directory monitor to recognize deleted and modified files</action>
         </release>
