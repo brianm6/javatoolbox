@@ -104,7 +104,6 @@ public class JungGraphView implements GraphView {
      * @see toolbox.graph.GraphView#getComponent()
      */
     public JComponent getComponent() {
-
         return delegate_;
     }
 
@@ -113,10 +112,8 @@ public class JungGraphView implements GraphView {
      * @see toolbox.graph.GraphView#setLayout(toolbox.graph.Layout)
      */
     public void setLayout(toolbox.graph.Layout layout) {
-
         Layout l = (Layout) layout.getDelegate();
         delegate_.setGraphLayout(l);
-
         delegate_.restart();
 
         // SettableRenderer renderer = (SettableRenderer)

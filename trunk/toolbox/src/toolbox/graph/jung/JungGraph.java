@@ -13,43 +13,41 @@ import edu.uci.ics.jung.graph.impl.DirectedSparseGraph;
 /**
  * Jung implemenation of a {@link toolbox.graph.Graph}.
  */
-public class JungGraph implements toolbox.graph.Graph
-{
+public class JungGraph implements toolbox.graph.Graph {
+
     private static final Log logger_ = LogFactory.getLog(JungGraph.class);
-    
-    //--------------------------------------------------------------------------
+
+    // --------------------------------------------------------------------------
     // Fields
-    //--------------------------------------------------------------------------
-    
+    // --------------------------------------------------------------------------
+
     /**
      * Jung version of a graph.
      */
     private Graph graph_;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     // Constructors
-    //--------------------------------------------------------------------------
-    
+    // --------------------------------------------------------------------------
+
     /**
      * Creates a JungGraph.
      */
-    public JungGraph()
-    {
+    public JungGraph() {
         graph_ = new DirectedSparseGraph();
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     // toolbox.graph.Graph Interface
-    //--------------------------------------------------------------------------
-    
-    /**
+    // --------------------------------------------------------------------------
+
+    /*
      * @see toolbox.graph.Graph#addVertex(toolbox.graph.Vertex)
      */
-    public void addVertex(toolbox.graph.Vertex vertex)
-    {
+    public void addVertex(toolbox.graph.Vertex vertex) {
         Vertex v = (Vertex) vertex.getDelegate();
         graph_.addVertex(v);
-        
+
         try {
             StringLabeller.getLabeller(graph_).setLabel(v, vertex.getText());
         }
@@ -58,25 +56,23 @@ public class JungGraph implements toolbox.graph.Graph
         }
     }
 
-    
-    /**
+
+    /*
      * @see toolbox.graph.Graph#addEdge(toolbox.graph.Edge)
      */
-    public void addEdge(toolbox.graph.Edge edge)
-    {
+    public void addEdge(toolbox.graph.Edge edge) {
         Edge e = (Edge) edge.getDelegate();
         graph_.addEdge(e);
     }
-    
-    //--------------------------------------------------------------------------
+
+    // --------------------------------------------------------------------------
     // Delegator Interface
-    //--------------------------------------------------------------------------
-    
-    /**
+    // --------------------------------------------------------------------------
+
+    /*
      * @see toolbox.graph.Delegator#getDelegate()
      */
-    public Object getDelegate()
-    {
+    public Object getDelegate() {
         return graph_;
     }
 }
