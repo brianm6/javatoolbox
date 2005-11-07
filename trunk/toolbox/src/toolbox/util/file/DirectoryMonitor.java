@@ -263,27 +263,7 @@ public class DirectoryMonitor implements Startable {
     public void setDelay(int newDelay) {
         delay_ = newDelay;
     }
-
-    
-//    /**
-//     * Returns the directory being monitored for activity.
-//     * 
-//     * @return File
-//     */
-//    public File getDirectory() {
-//        return directory_;
-//    }
-//
-//    
-//    /**
-//     * Sets the directory being monitored for activity.
-//     * 
-//     * @param directory The directory to monitor.
-//     */
-//    public void setDirectory(File directory) {
-//        directory_ = directory;
-//    }
-
+   
     
     /**
      * Adds an activity to monitor.
@@ -365,10 +345,12 @@ public class DirectoryMonitor implements Startable {
             for (Iterator i = activities_.iterator(); i.hasNext();)
                 logger_.debug("Checking activity: " + i.next());
             
+            boolean first = true;
+            
             // Check termination flag
             while (isRunning()) {
 
-                logger_.debug("New scan started...");
+                logger_.debug("New scan started for " + directories_.get(0));
                 
                 for (Iterator di = directories_.iterator(); di.hasNext();) {
                     File dir = (File) di.next();
@@ -403,8 +385,13 @@ public class DirectoryMonitor implements Startable {
                         ThreadUtil.sleep(100);
                     }
                 }
-                
-                ThreadUtil.sleep(getDelay());
+            
+                if (!first) { 
+                    ThreadUtil.sleep(getDelay());
+                }
+                else {
+                    first = false;
+                }
             }
         }
     }
