@@ -15,8 +15,8 @@ import toolbox.util.ArrayUtil;
  * java -jar toolbox.jar <program name> <program args...> 
  * </pre>
  */
-public class Main
-{
+public class Main {
+    
     //--------------------------------------------------------------------------
     // Static Fields
     //--------------------------------------------------------------------------
@@ -35,6 +35,7 @@ public class Main
         // Map program names to class names
         programMap_ = new HashMap(15);
         
+        programMap_.put("dirmon",       "toolbox.dirmon.DirMon");
         programMap_.put("figlet",        "toolbox.util.Figlet");
         programMap_.put("findclass",     "toolbox.findclass.Main");
         programMap_.put("rtelnet",       "toolbox.rtelnet.RemoteTelnet");
@@ -142,6 +143,7 @@ public class Main
             "                                                       \n" +
             "       where program is:                               \n" +
             "                                                       \n" +
+            "       dirmon        => directory monitor              \n" +
             "       figlet        => creates a text banner          \n" +
             "       findclass     => find a java class file         \n" +
             "       rtelnet       => executes a telnet command      \n" +
