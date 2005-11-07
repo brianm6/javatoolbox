@@ -38,6 +38,7 @@ import toolbox.util.file.activity.FileChangedActivity;
 import toolbox.util.file.activity.FileCreatedActivity;
 import toolbox.util.file.activity.FileDeletedActivity;
 import toolbox.util.file.snapshot.FileSnapshot;
+import toolbox.util.service.ServiceView;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartOptionPane;
 import toolbox.util.ui.JSmartTextArea;
@@ -364,7 +365,8 @@ public class DirMon extends JFrame implements ActionListener,
                     }
                 });
                 dm.start();
-
+                
+                ServiceView view = new ServiceView(dm);
             }
         };
     }
