@@ -3,14 +3,14 @@ package toolbox.util.service;
 /**
  * Implemented by services which can be started and stopped.
  */
-public interface Startable extends Service
-{
+public interface Startable extends Service {
+
     /**
      * Starts the service.
      * 
      * @throws IllegalStateException if the service cannot be started from its
      *         current state.
-     * @throws ServiceException if the service encounters problems starting 
+     * @throws ServiceException if the service encounters problems starting
      *         itself.
      */
     void start() throws IllegalStateException, ServiceException;
@@ -18,7 +18,7 @@ public interface Startable extends Service
 
     /**
      * Stops the service.
-
+     * 
      * @throws IllegalStateException if the service cannot be stopped from its
      *         current state.
      * @throws ServiceException if the service encounters problems stopping
