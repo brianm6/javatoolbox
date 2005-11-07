@@ -18,8 +18,8 @@ import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.SmartAction;
 
 /**
- * ServiceView a user interface component that presents a view on an object that
- * implements the Service interface. Features include:
+ * ServiceView is a user interface component that presents a view on an object 
+ * that implements the Service interface. Features include:
  * <ul>
  *  <li>Initialize, start, stop, suspend, resume, and destroy a Service
  *  <li>Displays the current state of the Service.
