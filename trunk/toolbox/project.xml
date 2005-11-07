@@ -792,6 +792,16 @@
     </dependency>
 
     <dependency>
+      <id>systray4j</id>
+      <version></version>
+      <url>http://systray4j.sf.net</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
       <id>tinylaf</id>
       <version></version>
       <url>http://www.muntjak.de/hans/java/tinylaf</url>  
