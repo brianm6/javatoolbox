@@ -38,11 +38,11 @@ import toolbox.util.file.activity.FileChangedActivity;
 import toolbox.util.file.activity.FileCreatedActivity;
 import toolbox.util.file.activity.FileDeletedActivity;
 import toolbox.util.file.snapshot.FileSnapshot;
-import toolbox.util.service.ServiceView;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartOptionPane;
 import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.JSmartTextField;
+import toolbox.util.ui.layout.StackLayout;
 
 /**
  * Directory Monitor GUI
@@ -82,6 +82,8 @@ public class DirMon extends JFrame implements ActionListener,
 
     private JSmartTextField dirField_;
 
+    private JPanel viewStack_;
+    
     // -------------------------------------------------------------------------
     // Main
     // -------------------------------------------------------------------------
@@ -197,8 +199,8 @@ public class DirMon extends JFrame implements ActionListener,
     
     private void buildView() {
 
-        setIconImage(ResourceUtil
-            .getResourceAsImage("/toolbox/util/ui/images/Toolbox.png"));
+        setIconImage(ResourceUtil.getResourceAsImage(
+            "/toolbox/util/ui/images/Toolbox.png"));
 
         Dimension dimScreen = Toolkit.getDefaultToolkit().getScreenSize();
 
@@ -218,13 +220,18 @@ public class DirMon extends JFrame implements ActionListener,
         p.add(addDirButton_);
 
         messageArea_ = new JSmartTextArea("Welcome!", true, true);
+        messageArea_.setRows(10);
+        messageArea_.setColumns(80);
         messageArea_.setFont(FontUtil.getPreferredMonoFont());
 
         Container contentPane = getContentPane();
         contentPane.setLayout(new BorderLayout());
         contentPane.add(BorderLayout.CENTER, new JScrollPane(messageArea_));
         contentPane.add(BorderLayout.NORTH, p);
-
+        
+        viewStack_ = new JPanel(new StackLayout(StackLayout.VERTICAL));
+        contentPane.add(BorderLayout.SOUTH, viewStack_);
+        
         // change this according to the number of buttons used
         // getContentPane().setLayout(new GridLayout(4, 1));
 
@@ -365,9 +372,8 @@ public class DirMon extends JFrame implements ActionListener,
                     }
                 });
                 
-                ServiceView view = new ServiceView(dm);
-                getContentPane().add(BorderLayout.SOUTH, view);
-                
+                DirectoryMonitorView monitorView = new DirectoryMonitorView(dm);
+                viewStack_.add(monitorView);
                 dm.start();
                 pack();
             }
