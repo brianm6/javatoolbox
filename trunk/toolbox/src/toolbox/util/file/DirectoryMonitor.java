@@ -307,6 +307,14 @@ public class DirectoryMonitor
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
+
+    /**
+     * @return List of directories being monitored.
+     */
+    public List getMonitoredDirectories() {
+        return directories_;
+    }
+
     
     /**
      * @param directory
