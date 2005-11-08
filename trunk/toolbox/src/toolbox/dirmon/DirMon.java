@@ -110,7 +110,7 @@ public class DirMon extends JFrame implements ActionListener,
     public DirMon() {
         super("Directory Monitor");
         buildView();
-        show();
+        setVisible(true);
     }
 
     // -------------------------------------------------------------------------
@@ -367,6 +367,7 @@ public class DirMon extends JFrame implements ActionListener,
                 dm.start();
                 
                 ServiceView view = new ServiceView(dm);
+                getContentPane().add(BorderLayout.SOUTH, view);
             }
         };
     }
