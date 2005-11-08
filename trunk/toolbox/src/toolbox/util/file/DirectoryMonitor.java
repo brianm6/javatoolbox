@@ -13,7 +13,10 @@ import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
 import toolbox.util.ThreadUtil;
+import toolbox.util.service.ObservableService;
 import toolbox.util.service.ServiceException;
+import toolbox.util.service.ServiceListener;
+import toolbox.util.service.ServiceNotifier;
 import toolbox.util.service.ServiceState;
 import toolbox.util.service.ServiceTransition;
 import toolbox.util.service.ServiceUtil;
@@ -56,7 +59,7 @@ import toolbox.util.statemachine.StateMachine;
  * @see toolbox.util.file.IDirectoryListener
  * @see toolbox.util.file.activity.FileCreatedActivity
  */
-public class DirectoryMonitor implements Startable {
+public class DirectoryMonitor implements Startable, ObservableService {
     
     private static Logger logger_ =  Logger.getLogger(DirectoryMonitor.class);
 
@@ -86,11 +89,6 @@ public class DirectoryMonitor implements Startable {
     private int delay_;
 
     /** 
-     * Directory to monitor. 
-     */
-    //private File directory_;
-
-    /** 
      * List of directories to monitor for file activity.
      * 
      * @see java.io.File
@@ -106,7 +104,12 @@ public class DirectoryMonitor implements Startable {
      * State machine for the this monitors lifecycle.
      */
     private StateMachine stateMachine_;
-    
+
+    /**
+     * Handles notification of service state changes.
+     */
+    private ServiceNotifier notifier_;
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -120,6 +123,7 @@ public class DirectoryMonitor implements Startable {
         this(dir, false);
     }
 
+    
     /**
      * Creates a DirectoryMonitor for the given directory and all known 
      * subdirectories.
@@ -128,7 +132,9 @@ public class DirectoryMonitor implements Startable {
      * @param subdirs Set to true to also monitor subdirectories.
      */
     public DirectoryMonitor(File dir, boolean subdirs) {
+        
         stateMachine_ = ServiceUtil.createStateMachine(this);
+        notifier_ = new ServiceNotifier(this);
         directories_ = new ArrayList();
         listeners_ = new ArrayList();
         activities_ = new ArrayList();
@@ -194,11 +200,21 @@ public class DirectoryMonitor implements Startable {
         stateMachine_.checkTransition(ServiceTransition.STOP);
         
         try {
-            logger_.debug("Shutting down..");
+            logger_.debug("Stopping directory monitor..");
             stateMachine_.transition(ServiceTransition.STOP);
 
             // wait at most 10 secs for monitor to shutdown
-            monitor_.join(10000);
+            monitor_.join(1000);
+            
+            if (monitor_.isAlive()) {
+                logger_.debug("Monitor did not die gracefully. Interrupting...");
+                monitor_.interrupt();
+            }
+            
+            logger_.debug("Waiting for monitor to die...");
+            monitor_.join();
+            
+            logger_.debug("Monitor stopped!");
             monitor_ = null;
         }
         catch (InterruptedException e) {
@@ -214,6 +230,34 @@ public class DirectoryMonitor implements Startable {
         return getState() == ServiceState.RUNNING;
     }
     
+    
+    // --------------------------------------------------------------------------
+    // ObservableService Interface
+    // --------------------------------------------------------------------------
+
+    /*
+     * @see toolbox.util.service.ObservableService#addServiceListener(toolbox.util.service.ServiceListener)
+     */
+    public void addServiceListener(ServiceListener listener){
+        notifier_.addServiceListener(listener);
+    }
+
+
+    /*
+     * @see toolbox.util.service.ObservableService#removeServiceListener(toolbox.util.service.ServiceListener)
+     */
+    public void removeServiceListener(ServiceListener listener){
+        notifier_.removeServiceListener(listener);
+    }
+
+    
+    /*
+     * @see toolbox.util.service.ObservableService#getStateMachine()
+     */
+    public StateMachine getStateMachine() {
+        return stateMachine_;
+    }
+
     //--------------------------------------------------------------------------
     // Service Interface
     //--------------------------------------------------------------------------
@@ -352,18 +396,18 @@ public class DirectoryMonitor implements Startable {
 
                 logger_.debug("New scan started for " + directories_.get(0));
                 
-                for (Iterator di = directories_.iterator(); di.hasNext();) {
+                for (Iterator di = directories_.iterator(); 
+                    di.hasNext() && isRunning();) {
+                    
                     File dir = (File) di.next();
 
                     // DEBUG 
                     //logger_.debug("Scanning " + dir);
-                    
                         
-                    // Loop through each activity
-                    for (Iterator i = activities_.iterator(); i.hasNext();) {
+                    for (Iterator i = activities_.iterator(); 
+                         i.hasNext() && isRunning();) {
     
                         IFileActivity activity = (IFileActivity) i.next();
-                        //File[] activeFiles = activity.getFiles(dir);
                  
                         List affectedFiles = activity.getAffectedFiles(dir);
                         
@@ -386,8 +430,17 @@ public class DirectoryMonitor implements Startable {
                     }
                 }
             
-                if (!first) { 
-                    ThreadUtil.sleep(getDelay());
+                if (!first) {
+                    synchronized(this) {
+                        try {
+                            wait(getDelay());
+                        }
+                        catch (InterruptedException e) {
+                            logger_.debug("Monitor thread interrupted!");
+                        }
+                    }
+                    
+                    //ThreadUtil.sleep(getDelay());
                 }
                 else {
                     first = false;
