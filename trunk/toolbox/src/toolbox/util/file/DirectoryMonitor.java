@@ -21,6 +21,7 @@ import toolbox.util.service.ServiceState;
 import toolbox.util.service.ServiceTransition;
 import toolbox.util.service.ServiceUtil;
 import toolbox.util.service.Startable;
+import toolbox.util.service.Suspendable;
 import toolbox.util.statemachine.StateMachine;
 
 /**
@@ -59,7 +60,8 @@ import toolbox.util.statemachine.StateMachine;
  * @see toolbox.util.file.IDirectoryListener
  * @see toolbox.util.file.activity.FileCreatedActivity
  */
-public class DirectoryMonitor implements Startable, ObservableService {
+public class DirectoryMonitor 
+    implements Startable, Suspendable, ObservableService {
     
     private static Logger logger_ =  Logger.getLogger(DirectoryMonitor.class);
 
@@ -87,6 +89,11 @@ public class DirectoryMonitor implements Startable, ObservableService {
      * seconds.
      */
     private int delay_;
+
+    /**
+     * Delay between each directory being processed in list of directories.
+     */
+    private int perDirectoryDelay_ = 100;
 
     /** 
      * List of directories to monitor for file activity.
@@ -187,6 +194,7 @@ public class DirectoryMonitor implements Startable, ObservableService {
                         
         monitor_.start();
         stateMachine_.transition(ServiceTransition.START);
+        notifier_.fireServiceStateChanged();
     }
 
     
@@ -216,6 +224,8 @@ public class DirectoryMonitor implements Startable, ObservableService {
             
             logger_.debug("Monitor stopped!");
             monitor_ = null;
+            
+            notifier_.fireServiceStateChanged();
         }
         catch (InterruptedException e) {
             throw new ServiceException(e);
@@ -230,6 +240,39 @@ public class DirectoryMonitor implements Startable, ObservableService {
         return getState() == ServiceState.RUNNING;
     }
     
+    // -------------------------------------------------------------------------
+    // Suspendable Interface
+    // -------------------------------------------------------------------------
+    
+    /*
+     * @see toolbox.util.service.Suspendable#suspend()
+     */
+    public void suspend() throws IllegalStateException, ServiceException {
+        stateMachine_.checkTransition(ServiceTransition.SUSPEND);
+        logger_.debug("Suspending directory monitor..");
+        stateMachine_.transition(ServiceTransition.SUSPEND);
+        notifier_.fireServiceStateChanged();
+    }
+    
+    /*
+     * @see toolbox.util.service.Suspendable#resume()
+     */
+    public void resume() throws IllegalStateException, ServiceException {
+        stateMachine_.checkTransition(ServiceTransition.RESUME);
+        logger_.debug("Resuming directory monitor..");
+        stateMachine_.transition(ServiceTransition.RESUME);
+        synchronized(monitor_) {
+            monitor_.notify();
+        }
+        notifier_.fireServiceStateChanged();
+    }
+    
+    /*
+     * @see toolbox.util.service.Suspendable#isSuspended()
+     */
+    public boolean isSuspended() {
+        return getState() == ServiceState.SUSPENDED;
+    }
     
     // --------------------------------------------------------------------------
     // ObservableService Interface
@@ -248,14 +291,6 @@ public class DirectoryMonitor implements Startable, ObservableService {
      */
     public void removeServiceListener(ServiceListener listener){
         notifier_.removeServiceListener(listener);
-    }
-
-    
-    /*
-     * @see toolbox.util.service.ObservableService#getStateMachine()
-     */
-    public StateMachine getStateMachine() {
-        return stateMachine_;
     }
 
     //--------------------------------------------------------------------------
@@ -393,8 +428,12 @@ public class DirectoryMonitor implements Startable, ObservableService {
             
             // Check termination flag
             while (isRunning()) {
-
-                logger_.debug("New scan started for " + directories_.get(0));
+                
+                logger_.debug(
+                    (first ? "First" : "Update") 
+                    + " scan started for " 
+                    + directories_.size()
+                    + " directories.");
                 
                 for (Iterator di = directories_.iterator(); 
                     di.hasNext() && isRunning();) {
@@ -426,21 +465,30 @@ public class DirectoryMonitor implements Startable, ObservableService {
                             logger_.error("ActivityRunner.run", e);
                         }
                         
-                        ThreadUtil.sleep(100);
+                        ThreadUtil.sleep(perDirectoryDelay_);
                     }
                 }
             
                 if (!first) {
-                    synchronized(this) {
+                    synchronized (monitor_) {
                         try {
-                            wait(getDelay());
+                            if (isSuspended()) {
+                                // Wait indefinitely until resumed
+                                monitor_.wait();
+                            }
+                            else {
+                                logger_.trace("Waiting "
+                                    + getDelay()
+                                    + "ms until next scan...");
+                                
+                                // Wait until delay expires
+                                monitor_.wait(getDelay()); 
+                            }
                         }
                         catch (InterruptedException e) {
                             logger_.debug("Monitor thread interrupted!");
                         }
                     }
-                    
-                    //ThreadUtil.sleep(getDelay());
                 }
                 else {
                     first = false;
