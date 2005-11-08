@@ -18,7 +18,7 @@ public class ServiceNotifier implements ObservableService {
     /**
      * Service of origin.
      */
-    private Service service_;
+    private ObservableService service_;
 
     /**
      * Array of listeners interested in events that this service generates.
@@ -35,7 +35,7 @@ public class ServiceNotifier implements ObservableService {
      * 
      * @param service Service instance.
      */
-    public ServiceNotifier(Service service) {
+    public ServiceNotifier(ObservableService service) {
         service_ = service;
         listeners_ = new ServiceListener[0];
     }
@@ -44,29 +44,27 @@ public class ServiceNotifier implements ObservableService {
     // ObservableService Interface
     // --------------------------------------------------------------------------
 
-    /**
-     * @see toolbox.util.service.ObservableService#addServiceListener(
-     *      toolbox.util.service.ServiceListener)
+    /*
+     * @see toolbox.util.service.ObservableService#addServiceListener(toolbox.util.service.ServiceListener)
      */
     public void addServiceListener(ServiceListener listener) {
         listeners_ = (ServiceListener[]) ArrayUtil.add(listeners_, listener);
     }
 
 
-    /**
-     * @see toolbox.util.service.ObservableService#removeServiceListener(
-     *      toolbox.util.service.ServiceListener)
+    /*
+     * @see toolbox.util.service.ObservableService#removeServiceListener(toolbox.util.service.ServiceListener)
      */
     public void removeServiceListener(ServiceListener listener) {
         listeners_ = (ServiceListener[]) ArrayUtil.remove(listeners_, listener);
     }
 
 
-    /**
+    /*
      * @see toolbox.util.service.ObservableService#getStateMachine()
      */
     public StateMachine getStateMachine() {
-        return null;
+        return service_.getStateMachine();
     }
 
     // --------------------------------------------------------------------------
@@ -79,8 +77,9 @@ public class ServiceNotifier implements ObservableService {
      * @throws ServiceException on service related error.
      */
     protected void fireServiceStateChanged() throws ServiceException {
-        for (int i = 0; i < listeners_.length; listeners_[i++]
-            .serviceStateChanged(service_))
-            ;
+        for (
+            int i = 0; 
+            i < listeners_.length; 
+            listeners_[i++].serviceStateChanged(service_));
     }
 }
