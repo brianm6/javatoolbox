@@ -364,10 +364,12 @@ public class DirMon extends JFrame implements ActionListener,
                         }
                     }
                 });
-                dm.start();
                 
                 ServiceView view = new ServiceView(dm);
                 getContentPane().add(BorderLayout.SOUTH, view);
+                
+                dm.start();
+                pack();
             }
         };
     }
