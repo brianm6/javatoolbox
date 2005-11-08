@@ -3,8 +3,6 @@ package toolbox.util.service;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import javax.swing.Action;
@@ -13,7 +11,6 @@ import javax.swing.JPanel;
 import org.apache.commons.collections.MapUtils;
 import org.apache.log4j.Logger;
 
-import toolbox.util.statemachine.StateMachine;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.SmartAction;
@@ -67,7 +64,6 @@ public class ServiceView extends JPanel
     public ServiceView(ObservableService service){
         myServiceListener_ = new MyServiceListener();
         currentStateLabel_ = new JSmartLabel();
-        service.addServiceListener(myServiceListener_);
         setService(service);
         actions_ = new HashMap(4);
         buildView();
@@ -100,11 +96,10 @@ public class ServiceView extends JPanel
 
         service_ = service;
 
-        // Transsfer the listener to the newly appointed service.
+        // Transfer the listener to the newly appointed service.
         service_.addServiceListener(myServiceListener_);
         
-        currentStateLabel_.setText(
-            service_.getStateMachine().getState().toString());
+        currentStateLabel_.setText(service_.getState().toString());
     }
 
 
@@ -172,28 +167,37 @@ public class ServiceView extends JPanel
         /*
          * @see toolbox.util.service.ServiceListener#serviceStateChanged(toolbox.util.service.Service)
          */
-        public void serviceStateChanged(Service service)
-            throws ServiceException{
-            ServiceState current = service.getState();
+        public void serviceStateChanged(Service service) 
+            throws ServiceException {
 
-            logger_.debug("New state = " + service.getState());
-
-            if (service instanceof ObservableService) {
-                ObservableService obs = (ObservableService) service;
-                StateMachine sm = obs.getStateMachine();
-                List transitions = sm.getTransitionsFrom(current);
-
-                for (Iterator iter = actions_.entrySet().iterator(); iter
-                    .hasNext();) {
-                    Map.Entry entry = (Map.Entry) iter.next();
-
-                    ServiceTransition tran = (ServiceTransition) entry.getKey();
-                    Action action = (Action) entry.getValue();
-                    action.setEnabled(transitions.contains(tran));
-                }
-                
-                currentStateLabel_.setText(sm.getState().toString());
-            }
+            logger_.debug("Service state changed to " + service.getState());
+            
+            currentStateLabel_.setText(service.getState().toString());
+            
+//            ServiceState current = service.getState();
+//
+//            logger_.debug("New state = " + service.getState());
+//
+//            if (service instanceof ObservableService) {
+//                
+//                ObservableService obs = (ObservableService) service;
+//                StateMachine sm = obs.getStateMachine();
+//                List transitions = sm.getTransitionsFrom(current);
+//
+//                for (Iterator iter = actions_.entrySet().iterator(); 
+//                    iter.hasNext();) {
+//                    
+//                    Map.Entry entry = (Map.Entry) iter.next();
+//                    ServiceTransition tran = (ServiceTransition) entry.getKey();
+//                    Action action = (Action) entry.getValue();
+//                    action.setEnabled(transitions.contains(tran));
+//                }
+//                
+//                currentStateLabel_.setText(sm.getState().toString());
+//            }
+//            else {
+//                
+//            }
         }
     }
 
