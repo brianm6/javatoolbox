@@ -39,6 +39,7 @@ import toolbox.util.file.activity.FileDeletedActivity;
 import toolbox.util.file.snapshot.FileSnapshot;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartFileChooser;
+import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartOptionPane;
 import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.JSmartTextField;
@@ -212,6 +213,7 @@ public class DirMon extends JFrame implements ActionListener,
         addDirButton_ = new JSmartButton(new AddDirAction());
         dirChooserButton_ = new JSmartButton(new PickDirectoryAction());
 
+        p.add(new JSmartLabel("Directory"));
         p.add(dirField_);
         p.add(dirChooserButton_);
         p.add(addDirButton_);
@@ -320,7 +322,7 @@ public class DirMon extends JFrame implements ActionListener,
     class AddDirAction extends AbstractAction {
 
         public AddDirAction() {
-            super("Monitor directory");
+            super("Monitor");
         }
 
         /*

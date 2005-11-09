@@ -70,6 +70,8 @@ public class DirDiff {
 
     /**
      * @return List of FileSnapshot of the newly created files
+     * 
+     * @deprecated
      */
     public List getCreatedFiles() {
         List created = new ArrayList();
