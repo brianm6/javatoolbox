@@ -2,37 +2,34 @@ package toolbox.dirmon;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
 
 import javax.swing.AbstractAction;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.UIManager;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 
-import snoozesoft.systray4j.CheckableMenuItem;
-import snoozesoft.systray4j.SubMenu;
 import snoozesoft.systray4j.SysTrayMenu;
 import snoozesoft.systray4j.SysTrayMenuEvent;
 import snoozesoft.systray4j.SysTrayMenuIcon;
 import snoozesoft.systray4j.SysTrayMenuItem;
 import snoozesoft.systray4j.SysTrayMenuListener;
-import toolbox.util.ArrayUtil;
+
 import toolbox.util.FontUtil;
 import toolbox.util.ResourceUtil;
+import toolbox.util.SwingUtil;
 import toolbox.util.file.DirectoryMonitor;
 import toolbox.util.file.IDirectoryListener;
 import toolbox.util.file.IFileActivity;
@@ -41,50 +38,62 @@ import toolbox.util.file.activity.FileCreatedActivity;
 import toolbox.util.file.activity.FileDeletedActivity;
 import toolbox.util.file.snapshot.FileSnapshot;
 import toolbox.util.ui.JSmartButton;
+import toolbox.util.ui.JSmartFileChooser;
 import toolbox.util.ui.JSmartOptionPane;
 import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.JSmartTextField;
+import toolbox.util.ui.SmartAction;
 import toolbox.util.ui.layout.StackLayout;
+import toolbox.util.ui.plaf.LookAndFeelUtil;
 
 /**
- * Directory Monitor GUI
+ * Directory Monitor GUI that sits in the Windows System Tray.
  */
 public class DirMon extends JFrame implements ActionListener,
     SysTrayMenuListener {
 
+    private static Logger logger_ =  Logger.getLogger(DirectoryMonitor.class);
+    
     // -------------------------------------------------------------------------
     // Constants
     // -------------------------------------------------------------------------
     
-    static final int INIT_WIDTH = 500;
-
-    static final int INIT_HEIGHT = 300;
-
-    private static final String[] toolTips = {
-        "SysTray for Java rules!",
-        "brought to you by\nSnoozeSoft 2004" };
-
-    static final SysTrayMenuIcon[] icons = {
-        new SysTrayMenuIcon("toolbox/util/ui/images/Toolbox"),
-        new SysTrayMenuIcon("toolbox/util/ui/images/Toolbox") };
-
+    private static SysTrayMenuIcon ICON_DIRMON;
+            
+    private static SysTrayMenuIcon ICON_DIRMON_ALERT; 
+            
+    static {
+        try {
+            ICON_DIRMON = 
+                new SysTrayMenuIcon(ResourceUtil.getClassResourceURL(
+                    "/toolbox/dirmon/DirMon.ico"));
+            
+            ICON_DIRMON_ALERT = 
+                new SysTrayMenuIcon(ResourceUtil.getClassResourceURL(
+                    "/toolbox/dirmon/DirMonAlert.ico"));
+        }
+        catch (IOException e) {
+            logger_.error(e);
+        }
+    }
+    
     // -------------------------------------------------------------------------
     // Fields
     // -------------------------------------------------------------------------
     
-    private SysTrayMenu menu;
-
-    private int currentIndexIcon;
-
-    private int currentIndexTooltip;
+    private SysTrayMenu menu_;
 
     private JSmartTextArea messageArea_;
 
     private JSmartButton addDirButton_;
 
+    private JSmartButton dirChooserButton_;
+    
     private JSmartTextField dirField_;
 
     private JPanel viewStack_;
+    
+    private JSmartFileChooser dirChooser_;
     
     // -------------------------------------------------------------------------
     // Main
@@ -92,19 +101,21 @@ public class DirMon extends JFrame implements ActionListener,
 
     public static void main(String[] args) {
 
-        System.out.println("java.library.path = "
-            + System.getProperty("java.library.path"));
-
-        System.out.println(ArrayUtil.toString(StringUtils.split(System
-            .getProperty("java.library.path"), ";"), true));
+//        System.out.println("java.library.path = "
+//            + System.getProperty("java.library.path"));
+//
+//        System.out.println(ArrayUtil.toString(StringUtils.split(System
+//            .getProperty("java.library.path"), ";"), true));
 
         try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            LookAndFeelUtil.setPreferredLAF();
         }
         catch (Exception e) {
+            logger_.error(e);
         }
 
-        new DirMon();
+        DirMon dirMon = new DirMon();
+        dirMon.setVisible(true);        
     }
 
     // -------------------------------------------------------------------------
@@ -114,7 +125,6 @@ public class DirMon extends JFrame implements ActionListener,
     public DirMon() {
         super("Directory Monitor");
         buildView();
-        setVisible(true);
     }
 
     // -------------------------------------------------------------------------
@@ -126,35 +136,19 @@ public class DirMon extends JFrame implements ActionListener,
      */
     public void actionPerformed(ActionEvent e) {
 
-        if (e.getActionCommand().equals("change tooltip")) {
-            if (currentIndexTooltip == 0)
-                currentIndexTooltip = 1;
-            else
-                currentIndexTooltip = 0;
-
-            menu.setToolTip(toolTips[currentIndexTooltip]);
-        }
-        else if (e.getActionCommand().equals("change icon")) {
-            if (currentIndexIcon == 0)
-                currentIndexIcon = 1;
-            else
-                currentIndexIcon = 0;
-
-            menu.setIcon(icons[currentIndexIcon]);
-        }
-        else if (e.getActionCommand().equals("show/hide icon")) {
-            if (menu.isIconVisible())
-                menu.hideIcon();
-            else
-                menu.showIcon();
-        }
-        else if (e.getActionCommand().equals("enable/disable submenu")) {
-            SysTrayMenuItem item = menu.getItem("Communication");
-            if (item.isEnabled())
-                item.setEnabled(false);
-            else
-                item.setEnabled(true);
-        }
+//        if (e.getActionCommand().equals("show/hide icon")) {
+//            if (menu_.isIconVisible())
+//                menu_.hideIcon();
+//            else
+//                menu_.showIcon();
+//        }
+//        else if (e.getActionCommand().equals("enable/disable submenu")) {
+//            SysTrayMenuItem item = menu_.getItem("Communication");
+//            if (item.isEnabled())
+//                item.setEnabled(false);
+//            else
+//                item.setEnabled(true);
+//        }
     }
 
     // -------------------------------------------------------------------------
@@ -185,9 +179,10 @@ public class DirMon extends JFrame implements ActionListener,
         setVisible(!isVisible());
         if (isVisible())
             toFront();
+        menu_.setIcon(ICON_DIRMON);
     }
 
- 
+
     /*
      * @see snoozesoft.systray4j.SysTrayMenuListener#iconLeftDoubleClicked(snoozesoft.systray4j.SysTrayMenuEvent)
      */
@@ -204,25 +199,20 @@ public class DirMon extends JFrame implements ActionListener,
 
         setIconImage(ResourceUtil.getResourceAsImage(
             "/toolbox/util/ui/images/Toolbox.png"));
-
-        Dimension dimScreen = Toolkit.getDefaultToolkit().getScreenSize();
-
-        int xPos = (dimScreen.width - INIT_WIDTH) / 2;
-        int yPos = (dimScreen.height - INIT_HEIGHT) / 2;
-
-        setBounds(xPos, yPos, INIT_WIDTH, INIT_HEIGHT);
-
-        // don´t forget to assign listeners to the icons
-        icons[0].addSysTrayMenuListener(this);
-        icons[1].addSysTrayMenuListener(this);
+        
+        ICON_DIRMON.addSysTrayMenuListener(this);
+        ICON_DIRMON_ALERT.addSysTrayMenuListener(this);
 
         JPanel p = new JPanel(new FlowLayout());
         dirField_ = new JSmartTextField(20);
         addDirButton_ = new JSmartButton(new AddDirAction());
+        dirChooserButton_ = new JSmartButton(new PickDirectoryAction());
+
         p.add(dirField_);
+        p.add(dirChooserButton_);
         p.add(addDirButton_);
 
-        messageArea_ = new JSmartTextArea("Welcome!", true, true);
+        messageArea_ = new JSmartTextArea("Welcome!\n", true, true);
         messageArea_.setRows(10);
         messageArea_.setColumns(80);
         messageArea_.setFont(FontUtil.getPreferredMonoFont());
@@ -235,73 +225,69 @@ public class DirMon extends JFrame implements ActionListener,
         viewStack_ = new JPanel(new StackLayout(StackLayout.VERTICAL));
         contentPane.add(BorderLayout.SOUTH, viewStack_);
         
-        // change this according to the number of buttons used
-        // getContentPane().setLayout(new GridLayout(4, 1));
-
-        // addButton("change icon");
-        // addButton("change tooltip");
-        // addButton("show/hide icon");
-        // addButton("enable/disable submenu");
-
         // create the menu
         createMenu();
+        
+        pack();
+        
+        SwingUtil.centerWindow(this);
     }
 
     private void createMenu() {
 
-        // create some labeled menu items
-        SysTrayMenuItem subItem1 = new SysTrayMenuItem(
-            "Windows 98", "windows 98");
-        subItem1.addSysTrayMenuListener(this);
-        // disable this item
-        subItem1.setEnabled(false);
-
-        SysTrayMenuItem subItem2 = new SysTrayMenuItem(
-            "Windows 2000", "windows 2000");
-        subItem2.addSysTrayMenuListener(this);
-        SysTrayMenuItem subItem3 = new SysTrayMenuItem(
-            "Windows XP", "windows xp");
-        subItem3.addSysTrayMenuListener(this);
-
-        SysTrayMenuItem subItem4 = new SysTrayMenuItem("GNOME", "gnome");
-        subItem4.addSysTrayMenuListener(this);
-        subItem4.setEnabled(false);
-
-        SysTrayMenuItem subItem5 = new SysTrayMenuItem("KDE 3", "kde 3");
-        subItem5.addSysTrayMenuListener(this);
-
-        Vector items = new Vector();
-        items.add(subItem1);
-        items.add(subItem2);
-        items.add(subItem3);
-        items.add(subItem4);
-        items.add(subItem5);
-
-        // create a submenu and insert the previously created items
-        SubMenu subMenu = new SubMenu("Supported", items);
-
-        // create some checkable menu items
-        CheckableMenuItem chItem1 = new CheckableMenuItem("IPC", "ipc");
-        chItem1.addSysTrayMenuListener(this);
-
-        CheckableMenuItem chItem2 = new CheckableMenuItem("Sockets", "sockets");
-        chItem2.addSysTrayMenuListener(this);
-
-        CheckableMenuItem chItem3 = new CheckableMenuItem("JNI", "jni");
-        chItem3.addSysTrayMenuListener(this);
-
-        // check this item
-        chItem2.setState(true);
-        chItem3.setState(true);
-
-        // create another submenu and insert the items through addItem()
-        SubMenu chSubMenu = new SubMenu("Communication");
-        // disable this submenu
-        chSubMenu.setEnabled(false);
-
-        chSubMenu.addItem(chItem1);
-        chSubMenu.addItem(chItem2);
-        chSubMenu.addItem(chItem3);
+//        // create some labeled menu items
+//        SysTrayMenuItem subItem1 = new SysTrayMenuItem(
+//            "Windows 98", "windows 98");
+//        subItem1.addSysTrayMenuListener(this);
+//        // disable this item
+//        subItem1.setEnabled(false);
+//
+//        SysTrayMenuItem subItem2 = new SysTrayMenuItem(
+//            "Windows 2000", "windows 2000");
+//        subItem2.addSysTrayMenuListener(this);
+//        SysTrayMenuItem subItem3 = new SysTrayMenuItem(
+//            "Windows XP", "windows xp");
+//        subItem3.addSysTrayMenuListener(this);
+//
+//        SysTrayMenuItem subItem4 = new SysTrayMenuItem("GNOME", "gnome");
+//        subItem4.addSysTrayMenuListener(this);
+//        subItem4.setEnabled(false);
+//
+//        SysTrayMenuItem subItem5 = new SysTrayMenuItem("KDE 3", "kde 3");
+//        subItem5.addSysTrayMenuListener(this);
+//
+//        Vector items = new Vector();
+//        items.add(subItem1);
+//        items.add(subItem2);
+//        items.add(subItem3);
+//        items.add(subItem4);
+//        items.add(subItem5);
+//
+//        // create a submenu and insert the previously created items
+//        SubMenu subMenu = new SubMenu("Supported", items);
+//
+//        // create some checkable menu items
+//        CheckableMenuItem chItem1 = new CheckableMenuItem("IPC", "ipc");
+//        chItem1.addSysTrayMenuListener(this);
+//
+//        CheckableMenuItem chItem2 = new CheckableMenuItem("Sockets", "sockets");
+//        chItem2.addSysTrayMenuListener(this);
+//
+//        CheckableMenuItem chItem3 = new CheckableMenuItem("JNI", "jni");
+//        chItem3.addSysTrayMenuListener(this);
+//
+//        // check this item
+//        chItem2.setState(true);
+//        chItem3.setState(true);
+//
+//        // create another submenu and insert the items through addItem()
+//        SubMenu chSubMenu = new SubMenu("Communication");
+//        // disable this submenu
+//        chSubMenu.setEnabled(false);
+//
+//        chSubMenu.addItem(chItem1);
+//        chSubMenu.addItem(chItem2);
+//        chSubMenu.addItem(chItem3);
 
         // create an exit item
         SysTrayMenuItem itemExit = new SysTrayMenuItem("Exit", "exit");
@@ -312,15 +298,15 @@ public class DirMon extends JFrame implements ActionListener,
         itemAbout.addSysTrayMenuListener(this);
 
         // create the main menu
-        menu = new SysTrayMenu(icons[0], toolTips[0]);
+        menu_ = new SysTrayMenu(ICON_DIRMON, "Directory Monitor");
 
         // insert items
-        menu.addItem(itemExit);
-        menu.addSeparator();
-        menu.addItem(itemAbout);
-        menu.addSeparator();
-        menu.addItem(subMenu);
-        menu.addItem(chSubMenu);
+        menu_.addItem(itemExit);
+        menu_.addSeparator();
+        menu_.addItem(itemAbout);
+//        menu_.addSeparator();
+//        menu_.addItem(subMenu);
+//        menu_.addItem(chSubMenu);
     }
     
     // -------------------------------------------------------------------------
@@ -371,16 +357,21 @@ public class DirMon extends JFrame implements ActionListener,
                         for (Iterator i = affectedFiles.iterator(); i.hasNext();) {
                             FileSnapshot snapshot = (FileSnapshot) i.next();
 
-                            messageArea_.append(msg);
-                            messageArea_.append(snapshot.toString());
-                            messageArea_.append(" at ");
+                            StringBuffer sb = new StringBuffer();
+                            sb.append(msg);
+                            sb.append(snapshot.toString());
+                            sb.append(" at ");
                             
-                            messageArea_.append(
+                            sb.append(
                                 new SimpleDateFormat().format(
                                     new Date(snapshot.getLastModified())));
-                                
+
+                            messageArea_.append(sb.toString());
                             messageArea_.append("\n");
+                            menu_.setToolTip(sb.toString());
                         }
+                        
+                        menu_.setIcon(ICON_DIRMON_ALERT);
                     }
                 });
                 
@@ -391,4 +382,38 @@ public class DirMon extends JFrame implements ActionListener,
             }
         };
     }
+    
+    //--------------------------------------------------------------------------
+    // PickDirectoryAction
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Allows user to pick a source directory through the file chooser instead 
+     * of typing one in.
+     */
+    class PickDirectoryAction extends SmartAction {
+
+        PickDirectoryAction() {
+            super("...", true, false, null);
+        }
+
+
+        /*
+         * @see toolbox.util.ui.SmartAction#runAction(java.awt.event.ActionEvent)
+         */
+        public void runAction(ActionEvent e) throws Exception {
+            
+            if (dirChooser_ ==  null) {
+                dirChooser_ = new JSmartFileChooser();
+                dirChooser_.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            }
+
+            if (dirChooser_.showDialog(DirMon.this, "Select Directory") == 
+                JFileChooser.APPROVE_OPTION) {
+                
+                dirField_.setText(
+                    dirChooser_.getSelectedFile().getCanonicalPath());
+            }
+        }
+    }    
 }
