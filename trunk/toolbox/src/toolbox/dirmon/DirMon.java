@@ -52,6 +52,10 @@ import toolbox.util.ui.plaf.LookAndFeelUtil;
 public class DirMon extends JFrame implements ActionListener,
     SysTrayMenuListener {
 
+    // TODO: Add input for delay to GUI
+    // TODO: Merge create/deleted/updates activities for scan optimization
+    // TODO: 
+    
     private static Logger logger_ =  Logger.getLogger(DirectoryMonitor.class);
     
     // -------------------------------------------------------------------------
@@ -334,46 +338,10 @@ public class DirMon extends JFrame implements ActionListener,
 
                 dm.setDelay(30000);
                 dm.addDirectory(f);
-                // dm.addFileActivity(new FileCreatedActivity());
+                dm.addFileActivity(new FileCreatedActivity());
                 dm.addFileActivity(new FileChangedActivity());
-                dm.addDirectoryListener(new IDirectoryListener() {
-
-                    public void fileActivity(
-                        IFileActivity activity,
-                        List affectedFiles) throws Exception {
-
-                        String msg = null;
-                        if (activity instanceof FileChangedActivity) {
-                            msg = "File changed: ";
-                        }
-                        else if (activity instanceof FileCreatedActivity) {
-                            msg = "File created: ";
-                        }
-                        else if (activity instanceof FileDeletedActivity) {
-                            msg = "File deleted: ";
-                        }
-
-
-                        for (Iterator i = affectedFiles.iterator(); i.hasNext();) {
-                            FileSnapshot snapshot = (FileSnapshot) i.next();
-
-                            StringBuffer sb = new StringBuffer();
-                            sb.append(msg);
-                            sb.append(snapshot.toString());
-                            sb.append(" at ");
-                            
-                            sb.append(
-                                new SimpleDateFormat().format(
-                                    new Date(snapshot.getLastModified())));
-
-                            messageArea_.append(sb.toString());
-                            messageArea_.append("\n");
-                            menu_.setToolTip(sb.toString());
-                        }
-                        
-                        menu_.setIcon(ICON_DIRMON_ALERT);
-                    }
-                });
+                dm.addFileActivity(new FileDeletedActivity());
+                dm.addDirectoryListener(new DirectoryMonitorListener());
                 
                 DirectoryMonitorView monitorView = new DirectoryMonitorView(dm);
                 viewStack_.add(monitorView);
@@ -381,6 +349,50 @@ public class DirMon extends JFrame implements ActionListener,
                 pack();
             }
         };
+    }
+
+    // -------------------------------------------------------------------------
+    // DirectoryMonitorListener
+    // -------------------------------------------------------------------------
+    
+    class DirectoryMonitorListener implements IDirectoryListener {
+
+        public void fileActivity(
+            IFileActivity activity,
+            List affectedFiles) throws Exception {
+        
+            String msg = null;
+            
+            if (activity instanceof FileChangedActivity) {
+                msg = "File changed: ";
+            }
+            else if (activity instanceof FileCreatedActivity) {
+                msg = "File created: ";
+            }
+            else if (activity instanceof FileDeletedActivity) {
+                msg = "File deleted: ";
+            }
+        
+        
+            for (Iterator i = affectedFiles.iterator(); i.hasNext();) {
+                FileSnapshot snapshot = (FileSnapshot) i.next();
+        
+                StringBuffer sb = new StringBuffer();
+                sb.append(msg);
+                sb.append(snapshot.toString());
+                sb.append(" at ");
+                
+                sb.append(
+                    new SimpleDateFormat().format(
+                        new Date(snapshot.getLastModified())));
+        
+                messageArea_.append(sb.toString());
+                messageArea_.append("\n");
+                menu_.setToolTip(sb.toString());
+            }
+            
+            menu_.setIcon(ICON_DIRMON_ALERT);
+        }
     }
     
     //--------------------------------------------------------------------------
