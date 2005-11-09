@@ -8,6 +8,8 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
@@ -193,6 +195,7 @@ public class DirMon extends JFrame implements ActionListener,
         JOptionPane.showMessageDialog(
             this, "You may prefer double-clicking the icon.");
     }    
+    
     // -------------------------------------------------------------------------
     // Private
     // -------------------------------------------------------------------------
@@ -330,6 +333,9 @@ public class DirMon extends JFrame implements ActionListener,
             super("Monitor directory");
         }
 
+        /*
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e) {
             File f = new File(dirField_.getText().trim());
 
@@ -367,6 +373,12 @@ public class DirMon extends JFrame implements ActionListener,
 
                             messageArea_.append(msg);
                             messageArea_.append(snapshot.toString());
+                            messageArea_.append(" at ");
+                            
+                            messageArea_.append(
+                                new SimpleDateFormat().format(
+                                    new Date(snapshot.getLastModified())));
+                                
                             messageArea_.append("\n");
                         }
                     }
