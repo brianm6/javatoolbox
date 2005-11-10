@@ -5,6 +5,8 @@ import java.util.List;
 
 /**
  * Acceptance criteria for file activity within a directory.
+ * 
+ * @deprecated
  */
 public interface IFileActivity
 {

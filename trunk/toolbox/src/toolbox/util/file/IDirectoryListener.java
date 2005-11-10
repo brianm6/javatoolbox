@@ -6,6 +6,8 @@ import java.util.List;
 /**
  * Listener interface for notification of certain file activity that meets an 
  * IFileActivity criteria.
+ * 
+ * @deprecated 
  */
 public interface IDirectoryListener extends EventListener
 {
