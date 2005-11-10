@@ -13,6 +13,8 @@ import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
 import toolbox.util.ThreadUtil;
+import toolbox.util.file.activity.IDirectoryRecognizer;
+import toolbox.util.file.snapshot.DirSnapshot;
 import toolbox.util.service.ObservableService;
 import toolbox.util.service.ServiceException;
 import toolbox.util.service.ServiceListener;
@@ -116,6 +118,14 @@ public class DirectoryMonitor
      * Handles notification of service state changes.
      */
     private ServiceNotifier notifier_;
+    
+    /**
+     * Key = String which is File.getAbsolutePath() for a directory
+     * Value = DirSnapshot
+     */
+    private Map dirSnapshots_;
+    
+    private List recognizers_;
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -140,6 +150,8 @@ public class DirectoryMonitor
      */
     public DirectoryMonitor(File dir, boolean subdirs) {
         
+        dirSnapshots_ = new HashMap();
+        recognizers_ = new ArrayList();
         stateMachine_ = ServiceUtil.createStateMachine(this);
         notifier_ = new ServiceNotifier(this);
         directories_ = new ArrayList();
@@ -187,7 +199,7 @@ public class DirectoryMonitor
                 "already running.");
 
         monitor_ = 
-            new Thread(new ActivityRunner(),
+            new Thread(new ActivityRunner2(),
                 "DirectoryMonitor[" 
                 + " ??? " //directory_.getName() 
                 + "]");
@@ -356,6 +368,7 @@ public class DirectoryMonitor
      * Adds an activity to monitor.
      * 
      * @param activity Activity to monitor
+     * @deprecated
      */
     public void addFileActivity(IFileActivity activity) {
         activities_.add(activity);
@@ -366,11 +379,32 @@ public class DirectoryMonitor
      * Removes an activity from the list of monitored activities.
      * 
      * @param activity Activity to remove
+     * @deprecated
      */
     public void removeFileActivity(IFileActivity activity) {
         activities_.remove(activity);
     }
 
+    
+    /**
+     * Adds an activity to monitor.
+     * 
+     * @param activity Activity to monitor
+     */
+    public void addRecognizer(IDirectoryRecognizer r) {
+        recognizers_.add(r);
+    }
+
+    
+    /**
+     * Removes an activity from the list of monitored activities.
+     * 
+     * @param activity Activity to remove
+     */
+    public void removeRecognier(IDirectoryRecognizer r) {
+        recognizers_.remove(r);
+    }
+    
     //--------------------------------------------------------------------------
     // Event Notification Support
     //--------------------------------------------------------------------------
@@ -381,6 +415,7 @@ public class DirectoryMonitor
      * @param activity Activity that generated this event.
      * @param files Files affected by the activity.
      * @throws Exception on error.
+     * @deprecated
      */
     protected void fireFileActivity(
         IFileActivity activity, 
@@ -394,11 +429,22 @@ public class DirectoryMonitor
         }
     }
 
+    protected void fireDirectoryActivity(DirectoryMonitorEvent event)
+        throws Exception {
+
+        // Iterator through listeners and file event
+        for (Iterator i = listeners_.iterator(); i.hasNext();) {
+            IDirectoryMonitorListener dirListener = (IDirectoryMonitorListener) i.next();
+            dirListener.directoryActivity(event);
+        }
+    }
+    
     /**
      * Removes a listener from the list that is notified each time a file
      * becomes available.
      * 
      * @param listener Listener to remove from the notification list.
+     * @deprecated
      */
     public void removeDirectoryListener(IDirectoryListener listener) {
         listeners_.remove(listener);
@@ -410,17 +456,40 @@ public class DirectoryMonitor
      * available.
      *
      * @param listener Listener to add to notification list.
+     * @deprecated
      */
     public void addDirectoryListener(IDirectoryListener listener) {
         listeners_.add(listener);
     }
 
+    /**
+     * Removes a listener from the list that is notified each time a file
+     * becomes available.
+     * 
+     * @param listener Listener to remove from the notification list.
+     */
+    public void removeMonitorDirectoryListener(IDirectoryMonitorListener listener) {
+        listeners_.remove(listener);
+    }
+
+    
+    /**
+     * Adds a listener to the list that's notified each time a new file is 
+     * available.
+     *
+     * @param listener Listener to add to notification list.
+     */
+    public void addDirectoryMonitorListener(IDirectoryMonitorListener listener) {
+        listeners_.add(listener);
+    }
+    
     //--------------------------------------------------------------------------
     // ActivityRunner
     //--------------------------------------------------------------------------
     
     /**
      * Runnable object that encapsulates the monitoring activity.
+     * @deprecated
      */
     class ActivityRunner implements Runnable {
         
@@ -474,6 +543,104 @@ public class DirectoryMonitor
                         }
                         
                         ThreadUtil.sleep(perDirectoryDelay_);
+                    }
+                }
+            
+                if (!first) {
+                    synchronized (monitor_) {
+                        try {
+                            if (isSuspended()) {
+                                // Wait indefinitely until resumed
+                                monitor_.wait();
+                            }
+                            else {
+                                logger_.trace("Waiting "
+                                    + getDelay()
+                                    + "ms until next scan...");
+                                
+                                // Wait until delay expires
+                                monitor_.wait(getDelay()); 
+                            }
+                        }
+                        catch (InterruptedException e) {
+                            logger_.debug("Monitor thread interrupted!");
+                        }
+                    }
+                }
+                else {
+                    first = false;
+                }
+            }
+        }
+    }
+
+    
+    class ActivityRunner2 implements Runnable {
+        
+        /*
+         * @see java.lang.Runnable#run()
+         */
+        public void run() {
+
+            for (Iterator i = activities_.iterator(); i.hasNext();)
+                logger_.debug("Checking activity: " + i.next());
+            
+            boolean first = true;
+            
+            // Check termination flag
+            while (isRunning()) {
+                
+                logger_.debug(
+                    (first ? "First" : "Update") 
+                    + " scan started for " 
+                    + directories_.size()
+                    + " directories.");
+                
+                for (Iterator di = directories_.iterator(); 
+                    di.hasNext() && isRunning();) {
+                    
+                    File dir = (File) di.next();
+                    String dirKey = dir.getAbsolutePath();
+                    
+                    DirSnapshot beforeDirSnapshot = (DirSnapshot) 
+                        dirSnapshots_.get(dirKey);
+
+                    if (beforeDirSnapshot == null) {
+                        dirSnapshots_.put(dirKey, new DirSnapshot(dir));
+                    }
+                    else {
+                        DirSnapshot afterDirSnapshot = new DirSnapshot(dir);
+
+                        for (Iterator i = recognizers_.iterator(); 
+                            i.hasNext() && isRunning();) {
+   
+                            IDirectoryRecognizer recognizer = 
+                                (IDirectoryRecognizer) i.next();
+                
+                            List recognizedEvents = 
+                                recognizer.getRecognizedEvents(
+                                    beforeDirSnapshot, 
+                                    afterDirSnapshot);
+                            
+                            for (Iterator r = recognizedEvents.iterator();
+                                r.hasNext(); ) {
+                                
+                                try {
+                                    DirectoryMonitorEvent event = 
+                                        (DirectoryMonitorEvent) 
+                                            r.next();
+                                   fireDirectoryActivity(event);
+                                }
+                                catch (Exception e) {
+                                   logger_.error("ActivityRunner.run", e);
+                                }
+                            }
+                           
+                            ThreadUtil.sleep(perDirectoryDelay_);
+                        }
+                        
+                        // Update the snapshot to the latest
+                        dirSnapshots_.put(dirKey, afterDirSnapshot);
                     }
                 }
             
