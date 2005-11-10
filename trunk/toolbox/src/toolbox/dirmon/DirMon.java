@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
@@ -31,10 +32,13 @@ import toolbox.util.FontUtil;
 import toolbox.util.ResourceUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.file.DirectoryMonitor;
+import toolbox.util.file.DirectoryMonitorEvent;
 import toolbox.util.file.IDirectoryListener;
+import toolbox.util.file.IDirectoryMonitorListener;
 import toolbox.util.file.IFileActivity;
 import toolbox.util.file.activity.FileChangedActivity;
 import toolbox.util.file.activity.FileCreatedActivity;
+import toolbox.util.file.activity.FileCreatedRecognizer;
 import toolbox.util.file.activity.FileDeletedActivity;
 import toolbox.util.file.snapshot.FileSnapshot;
 import toolbox.util.ui.JSmartButton;
@@ -62,6 +66,11 @@ public class DirMon extends JFrame implements ActionListener,
     // -------------------------------------------------------------------------
     // Constants
     // -------------------------------------------------------------------------
+
+    /**
+     * Default delay in minutes.
+     */
+    private static final int DEFAULT_DELAY = 30;
     
     private static SysTrayMenuIcon ICON_DIRMON;
             
@@ -95,10 +104,13 @@ public class DirMon extends JFrame implements ActionListener,
     private JSmartButton dirChooserButton_;
     
     private JSmartTextField dirField_;
+    
+    private JSmartTextField delayField_;
 
     private JPanel viewStack_;
     
     private JSmartFileChooser dirChooser_;
+
     
     // -------------------------------------------------------------------------
     // Main
@@ -209,14 +221,18 @@ public class DirMon extends JFrame implements ActionListener,
         ICON_DIRMON_ALERT.addSysTrayMenuListener(this);
 
         JPanel p = new JPanel(new FlowLayout());
-        dirField_ = new JSmartTextField(20);
-        addDirButton_ = new JSmartButton(new AddDirAction());
+        dirField_ = new JSmartTextField(40);
+        delayField_ = new JSmartTextField(DEFAULT_DELAY + "", 4);
+        addDirButton_ = new JSmartButton(new MonitorDirectoryAction());
         dirChooserButton_ = new JSmartButton(new PickDirectoryAction());
 
         p.add(new JSmartLabel("Directory"));
         p.add(dirField_);
         p.add(dirChooserButton_);
         p.add(addDirButton_);
+        p.add(new JSmartLabel("Delay"));
+        p.add(delayField_);
+        p.add(new JSmartLabel("minutes"));
 
         messageArea_ = new JSmartTextArea("Welcome!\n", true, true);
         messageArea_.setRows(10);
@@ -316,12 +332,12 @@ public class DirMon extends JFrame implements ActionListener,
     }
     
     // -------------------------------------------------------------------------
-    // AddDirAction
+    // MonitorDirectoryAction
     // -------------------------------------------------------------------------
     
-    class AddDirAction extends AbstractAction {
+    class MonitorDirectoryAction extends AbstractAction {
 
-        public AddDirAction() {
+        public MonitorDirectoryAction() {
             super("Monitor");
         }
 
@@ -338,13 +354,16 @@ public class DirMon extends JFrame implements ActionListener,
             else {
                 DirectoryMonitor dm = new DirectoryMonitor(f, true);
 
-                dm.setDelay(30000);
-                dm.addDirectory(f);
-                dm.addFileActivity(new FileCreatedActivity());
-                dm.addFileActivity(new FileChangedActivity());
-                dm.addFileActivity(new FileDeletedActivity());
-                dm.addDirectoryListener(new DirectoryMonitorListener());
+                dm.setDelay(
+                    Integer.parseInt(delayField_.getText().trim()) * 1000 * 60);
                 
+                dm.addDirectory(f);
+                dm.addRecognizer(new FileCreatedRecognizer(dm));
+                //dm.addFileActivity(new FileCreatedActivity());
+                //dm.addFileActivity(new FileChangedActivity());
+                //dm.addFileActivity(new FileDeletedActivity());
+                //dm.addDirectoryListener(new DirectoryMonitorListener());
+                dm.addDirectoryMonitorListener(new DirectoryMonitorListener());
                 DirectoryMonitorView monitorView = new DirectoryMonitorView(dm);
                 viewStack_.add(monitorView);
                 dm.start();
@@ -357,8 +376,97 @@ public class DirMon extends JFrame implements ActionListener,
     // DirectoryMonitorListener
     // -------------------------------------------------------------------------
     
-    class DirectoryMonitorListener implements IDirectoryListener {
+    DateFormat dateTimeFormat = SimpleDateFormat.getDateTimeInstance();
+    
+    class DirectoryMonitorListener implements IDirectoryListener, IDirectoryMonitorListener {
 
+        public void directoryActivity(
+            DirectoryMonitorEvent event) throws Exception {
+            
+            StringBuffer sb = new StringBuffer();
+            
+            switch (event.getEventType()) {
+            
+                case DirectoryMonitorEvent.CHANGED :
+                    
+                    sb.append(
+                        "File changed: " 
+                        + event.getAfterSnapshot().getAbsolutePath() 
+                        + "\n");
+                    
+                    sb.append(
+                        "Size        : " 
+                        + event.getBeforeSnapshot().getLength() 
+                        + " -> " 
+                        + event.getAfterSnapshot().getLength()
+                        + "\n");
+                    
+                    sb.append(
+                        "Timestamp   : " 
+                        + dateTimeFormat.format(new Date(
+                            event.getBeforeSnapshot().getLastModified())) 
+                        + " -> " 
+                        + dateTimeFormat.format(new Date(
+                            event.getAfterSnapshot().getLastModified()))
+                        + "\n");
+                    
+                    break;
+                    
+                case DirectoryMonitorEvent.CREATED :
+                    
+                    sb.append(
+                        "File created: " 
+                        + event.getAfterSnapshot().getAbsolutePath() 
+                        + "\n");
+                    
+                    sb.append(
+                        "Size        : " 
+                        + event.getAfterSnapshot().getLength()
+                        + "\n");
+                    
+                    sb.append(
+                        "Timestamp   : " 
+                        + dateTimeFormat.format(new Date(
+                            event.getAfterSnapshot().getLastModified()))
+                        + "\n");
+                    
+                    break;
+
+                case DirectoryMonitorEvent.DELETED :
+                    
+                    sb.append(
+                        "File deleted: " 
+                        + event.getBeforeSnapshot().getAbsolutePath() 
+                        + "\n");
+                    
+                    sb.append(
+                        "Size        : " 
+                        + event.getBeforeSnapshot().getLength() 
+                        + "\n");
+                    
+                    sb.append(
+                        "Timestamp   : " 
+                        + dateTimeFormat.format(new Date(
+                            event.getBeforeSnapshot().getLastModified())) 
+                        + "\n");
+                    
+                    break;
+
+                default:
+                    throw new IllegalArgumentException(
+                        "unrecognized event type: " 
+                        + event.getEventType());
+            }
+    
+            messageArea_.append(sb.toString());
+            messageArea_.append("\n");
+            menu_.setToolTip(sb.toString());
+            menu_.setIcon(ICON_DIRMON_ALERT);
+        }
+        
+        /**
+         * @deprecated
+         */
         public void fileActivity(
             IFileActivity activity,
             List affectedFiles) throws Exception {
