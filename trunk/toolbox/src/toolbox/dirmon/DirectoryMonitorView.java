@@ -1,6 +1,7 @@
 package toolbox.dirmon;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.util.List;
@@ -10,6 +11,7 @@ import javax.swing.JPanel;
 import toolbox.util.SwingUtil;
 import toolbox.util.file.DirectoryMonitor;
 import toolbox.util.service.ServiceView;
+import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.SmartAction;
@@ -50,8 +52,11 @@ public class DirectoryMonitorView extends JPanel {
         
         add(BorderLayout.CENTER, serviceView_);
         
-        add(BorderLayout.EAST, 
-            new JSmartButton(new RemoveDirectoryMonitorViewAction()));
+        JSmartButton removeButton = 
+            new JSmartButton(new RemoveDirectoryMonitorViewAction());
+        
+        removeButton.setMaximumSize(new Dimension(16,16));
+        add(BorderLayout.EAST, removeButton);
     }
     
     // -------------------------------------------------------------------------
@@ -61,7 +66,8 @@ public class DirectoryMonitorView extends JPanel {
     class RemoveDirectoryMonitorViewAction extends SmartAction {
     
         public RemoveDirectoryMonitorViewAction() {
-            super("X", true, false, null);
+            super(null, true, false, null);
+            putValue(SMALL_ICON, ImageCache.getIcon(ImageCache.IMAGE_DELETE));
         }
 
         
