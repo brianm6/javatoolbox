@@ -1,22 +1,18 @@
 package toolbox.util.file.activity;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import junit.framework.Assert;
-
-import org.apache.commons.lang.ClassUtils;
-
 import toolbox.util.CollectionUtil;
-import toolbox.util.file.IFileActivity;
-import toolbox.util.file.snapshot.DirDiff;
+import toolbox.util.file.DirectoryMonitor;
+import toolbox.util.file.DirectoryMonitorEvent;
 import toolbox.util.file.snapshot.DirSnapshot;
+import toolbox.util.file.snapshot.FileSnapshot;
 
 /**
  * An activity that is capable of recognizing when new files are added to a
@@ -24,24 +20,14 @@ import toolbox.util.file.snapshot.DirSnapshot;
  */
 public class FileCreatedRecognizer implements IDirectoryRecognizer {
 
-    // --------------------------------------------------------------------------
-    // Fields
-    // --------------------------------------------------------------------------
-
-    /**
-     * Map of directories with their associated snapshot.
-     */
-    private Map dirSnapshots_;
-
+    private DirectoryMonitor monitor_;
+    
     // --------------------------------------------------------------------------
     // Constructors
     // --------------------------------------------------------------------------
 
-    /**
-     * Creates a FileCreatedActivity.
-     */
-    public FileCreatedRecognizer() {
-        dirSnapshots_ = new HashMap();
+    public FileCreatedRecognizer(DirectoryMonitor monitor) {
+        monitor_ = monitor;
     }
 
     // --------------------------------------------------------------------------
@@ -52,11 +38,10 @@ public class FileCreatedRecognizer implements IDirectoryRecognizer {
      * @see toolbox.util.file.activity.IDirectoryRecognizer#getRecognizedEvents(toolbox.util.file.snapshot.DirSnapshot, toolbox.util.file.snapshot.DirSnapshot)
      */
     public List getRecognizedEvents(DirSnapshot before, DirSnapshot after) {
+        
         Assert.assertTrue(before.getDirectory().equals(after.getDirectory()));
         
         List createdFileEvents = new ArrayList();
-        //DirDiff diff = new DirDiff(before, after);
-        
         Map beforeFileSnapshots = before.getFileSnapshots();
         Map afterFileSnapshots = after.getFileSnapshots();
         
@@ -72,24 +57,16 @@ public class FileCreatedRecognizer implements IDirectoryRecognizer {
         for (Iterator i = createdFileKeys.iterator(); i.hasNext();) {
             String fileKey = (String) i.next();
 
-            //created.add(afterFileSnapshots.get(fileKey));
+            DirectoryMonitorEvent event = 
+                new DirectoryMonitorEvent(
+                    DirectoryMonitorEvent.CREATED,
+                    monitor_, 
+                    (FileSnapshot) null, 
+                    (FileSnapshot) after.getFileSnapshots().get(fileKey));
             
-            DirectoryMonitorEvent event = new DirectoryMonitorEvent()
-            
+            createdFileEvents.add(event);
         }
         
-        createdFileEvents =  diff.getCreatedFiles();
         return createdFileEvents;
     }
-    
-//    // -------------------------------------------------------------------------
-//    // Overrides java.lang.Object 
-//    // -------------------------------------------------------------------------
-//    
-//    /*
-//     * @see java.lang.Object#toString()
-//     */
-//    public String toString() {
-//        return ClassUtils.getShortClassName(getClass());
-//    }
 }
