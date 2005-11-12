@@ -10,25 +10,29 @@ import java.util.Date;
  */
 public class FileSnapshot {
 
-    private boolean readable;
-
-    private boolean writable;
-
-    private boolean exists;
-
-    private String absolutePath;
-
-    private String name;
-
-    private boolean directory;
-
-    private boolean hidden;
-
-    private long lastModified;
-
-    private long length;
+    // -------------------------------------------------------------------------
+    // Fields
+    // -------------------------------------------------------------------------
     
-    private Date snapshotTimestamp;
+    private boolean readable_;
+
+    private boolean writable_;
+
+    private boolean exists_;
+
+    private String absolutePath_;
+
+    private String name_;
+
+    private boolean directory_;
+
+    private boolean hidden_;
+
+    private long lastModified_;
+
+    private long length_;
+    
+    private Date snapshotTimestamp_;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -41,7 +45,7 @@ public class FileSnapshot {
         //setName(file.getName());
         //setDirectory(file.isDirectory());
         //setHidden(file.isHidden());
-        //setLength(file.length());
+        setLength(file.length());
         //setSnapshotTimestamp(new Date());
         
         setAbsolutePath(file.getAbsolutePath());
@@ -98,101 +102,101 @@ public class FileSnapshot {
     // -------------------------------------------------------------------------
     
     public String getAbsolutePath() {
-        return absolutePath;
+        return absolutePath_;
     }
 
 
     public void setAbsolutePath(String absolutePath) {
-        this.absolutePath = absolutePath;
+        this.absolutePath_ = absolutePath;
     }
 
 
-    public boolean isReadable() {
-        return readable;
+    public boolean isReadable_() {
+        return readable_;
     }
 
 
-    public void setReadable(boolean canRead) {
-        this.readable = canRead;
+    public void setReadable_(boolean canRead) {
+        this.readable_ = canRead;
     }
 
 
     public boolean isWritable() {
-        return writable;
+        return writable_;
     }
 
 
     public void setWritable(boolean canWrite) {
-        this.writable = canWrite;
+        this.writable_ = canWrite;
     }
 
 
     public boolean isDirectory() {
-        return directory;
+        return directory_;
     }
 
 
     public void setDirectory(boolean directory) {
-        this.directory = directory;
+        this.directory_ = directory;
     }
 
 
     public boolean isExists() {
-        return exists;
+        return exists_;
     }
 
 
     public void setExists(boolean exists) {
-        this.exists = exists;
+        this.exists_ = exists;
     }
 
 
     public boolean isHidden() {
-        return hidden;
+        return hidden_;
     }
 
 
     public void setHidden(boolean hidden) {
-        this.hidden = hidden;
+        this.hidden_ = hidden;
     }
 
 
     public long getLastModified() {
-        return lastModified;
+        return lastModified_;
     }
 
 
     public void setLastModified(long lastModified) {
-        this.lastModified = lastModified;
+        this.lastModified_ = lastModified;
     }
 
 
     public long getLength() {
-        return length;
+        return length_;
     }
 
 
     public void setLength(long length) {
-        this.length = length;
+        this.length_ = length;
     }
 
 
     public String getName() {
-        return name;
+        return name_;
     }
 
 
     public void setName(String name) {
-        this.name = name;
+        this.name_ = name;
     }
 
     
     public Date getSnapshotTimestamp() {
-        return snapshotTimestamp;
+        return snapshotTimestamp_;
     }
 
     
     public void setSnapshotTimestamp(Date snapshotTimestamp) {
-        this.snapshotTimestamp = snapshotTimestamp;
+        this.snapshotTimestamp_ = snapshotTimestamp;
     }
 }

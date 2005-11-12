@@ -13,7 +13,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -34,11 +33,9 @@ import toolbox.util.SwingUtil;
 import toolbox.util.file.DirectoryMonitor;
 import toolbox.util.file.DirectoryMonitorEvent;
 import toolbox.util.file.IDirectoryListener;
-import toolbox.util.file.IDirectoryMonitorListener;
 import toolbox.util.file.IFileActivity;
 import toolbox.util.file.activity.FileChangedActivity;
 import toolbox.util.file.activity.FileCreatedActivity;
-import toolbox.util.file.activity.FileCreatedRecognizer;
 import toolbox.util.file.activity.FileDeletedActivity;
 import toolbox.util.file.snapshot.FileSnapshot;
 import toolbox.util.ui.JSmartButton;
@@ -335,16 +332,13 @@ public class DirMon extends JFrame implements ActionListener,
     // MonitorDirectoryAction
     // -------------------------------------------------------------------------
     
-    class MonitorDirectoryAction extends AbstractAction {
+    class MonitorDirectoryAction extends SmartAction {
 
         public MonitorDirectoryAction() {
-            super("Monitor");
+            super("Monitor", true, true, null);
         }
 
-        /*
-         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-         */
-        public void actionPerformed(ActionEvent e) {
+        public void runAction(ActionEvent e) throws Exception {
             File f = new File(dirField_.getText().trim());
 
             if (!f.isDirectory()) {
@@ -359,10 +353,8 @@ public class DirMon extends JFrame implements ActionListener,
                 
                 dm.addDirectory(f);
                 dm.addRecognizer(new FileCreatedRecognizer(dm));
-                //dm.addFileActivity(new FileCreatedActivity());
-                //dm.addFileActivity(new FileChangedActivity());
-                //dm.addFileActivity(new FileDeletedActivity());
-                //dm.addDirectoryListener(new DirectoryMonitorListener());
+                dm.addRecognizer(new FileDeletedRecognizer(dm));
+                dm.addRecognizer(new FileChangedRecognizer(dm));
                 dm.addDirectoryMonitorListener(new DirectoryMonitorListener());
                 DirectoryMonitorView monitorView = new DirectoryMonitorView(dm);
                 viewStack_.add(monitorView);

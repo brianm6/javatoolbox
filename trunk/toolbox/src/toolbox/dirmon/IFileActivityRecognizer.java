@@ -1,13 +1,14 @@
-package toolbox.util.file.activity;
+package toolbox.dirmon;
 
 import java.util.List;
 
 import toolbox.util.file.snapshot.DirSnapshot;
 
+
 /**
  * Acceptance criteria for file activity within a directory.
  */
-public interface IDirectoryRecognizer {
+public interface IFileActivityRecognizer {
 
     /**
      * 

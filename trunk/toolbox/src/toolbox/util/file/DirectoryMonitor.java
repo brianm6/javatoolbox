@@ -11,9 +11,10 @@ import org.apache.commons.io.find.FileFinder;
 import org.apache.commons.io.find.Finder;
 import org.apache.log4j.Logger;
 
+import toolbox.dirmon.IDirectoryMonitorListener;
+import toolbox.dirmon.IFileActivityRecognizer;
 import toolbox.util.ArrayUtil;
 import toolbox.util.ThreadUtil;
-import toolbox.util.file.activity.IDirectoryRecognizer;
 import toolbox.util.file.snapshot.DirSnapshot;
 import toolbox.util.service.ObservableService;
 import toolbox.util.service.ServiceException;
@@ -57,10 +58,6 @@ import toolbox.util.statemachine.StateMachine;
  * // All done..shutdown 
  * dm.stop();
  * </pre>
- * 
- * @see toolbox.util.file.IFileActivity
- * @see toolbox.util.file.IDirectoryListener
- * @see toolbox.util.file.activity.FileCreatedActivity
  */
 public class DirectoryMonitor 
     implements Startable, Suspendable, ObservableService {
@@ -125,6 +122,12 @@ public class DirectoryMonitor
      */
     private Map dirSnapshots_;
     
+    /**
+     * List of recognizers that are able to discern file differences given
+     * two directory snapshots.
+     * 
+     * @see IFileActivityRecognizer
+     */
     private List recognizers_;
 
     //--------------------------------------------------------------------------
@@ -194,14 +197,14 @@ public class DirectoryMonitor
         
         if (monitor_ != null && monitor_.isAlive())
             throw new IllegalStateException(
-                "The directory monitor for " + 
-                " ???" + //directory_.getName() +
-                "already running.");
+                "The directory monitor for " 
+                + directories_.get(0)
+                + "already running.");
 
         monitor_ = 
             new Thread(new ActivityRunner2(),
                 "DirectoryMonitor[" 
-                + " ??? " //directory_.getName() 
+                + directories_.get(0) 
                 + "]");
                         
         monitor_.start();
@@ -391,7 +394,7 @@ public class DirectoryMonitor
      * 
      * @param activity Activity to monitor
      */
-    public void addRecognizer(IDirectoryRecognizer r) {
+    public void addRecognizer(IFileActivityRecognizer r) {
         recognizers_.add(r);
     }
 
@@ -401,7 +404,7 @@ public class DirectoryMonitor
      * 
      * @param activity Activity to remove
      */
-    public void removeRecognier(IDirectoryRecognizer r) {
+    public void removeRecognier(IFileActivityRecognizer r) {
         recognizers_.remove(r);
     }
     
@@ -432,9 +435,9 @@ public class DirectoryMonitor
     protected void fireDirectoryActivity(DirectoryMonitorEvent event)
         throws Exception {
 
-        // Iterator through listeners and file event
         for (Iterator i = listeners_.iterator(); i.hasNext();) {
-            IDirectoryMonitorListener dirListener = (IDirectoryMonitorListener) i.next();
+            IDirectoryMonitorListener dirListener = 
+                (IDirectoryMonitorListener) i.next();
             dirListener.directoryActivity(event);
         }
     }
@@ -614,8 +617,8 @@ public class DirectoryMonitor
                         for (Iterator i = recognizers_.iterator(); 
                             i.hasNext() && isRunning();) {
    
-                            IDirectoryRecognizer recognizer = 
-                                (IDirectoryRecognizer) i.next();
+                            IFileActivityRecognizer recognizer = 
+                                (IFileActivityRecognizer) i.next();
                 
                             List recognizedEvents = 
                                 recognizer.getRecognizedEvents(

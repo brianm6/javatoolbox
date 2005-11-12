@@ -12,6 +12,7 @@ import toolbox.util.CollectionUtil;
 
 /**
  * Difference of two directory snapshots.
+ * @deprecated
  */
 public class DirDiff {
 
@@ -37,6 +38,7 @@ public class DirDiff {
     
     /**
      * @return List of FileDiff of modified files.
+     * @deprecated
      */
     public List getModifiedFiles() {
         List modified = new ArrayList();
@@ -103,6 +105,7 @@ public class DirDiff {
     
     /**
      * @return List of FileSnapshot of the deleted files.
+     * @deprecated
      */
     public List getDeletedFiles() {
         List deleted = new ArrayList();

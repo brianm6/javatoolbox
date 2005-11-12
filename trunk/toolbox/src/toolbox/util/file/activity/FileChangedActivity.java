@@ -18,6 +18,8 @@ import toolbox.util.file.snapshot.FileSnapshot;
 /**
  * An activity that is capable of recognizing when new files are added to a
  * directory.
+ * 
+ * @deprecated
  */
 public class FileChangedActivity implements IFileActivity {
 

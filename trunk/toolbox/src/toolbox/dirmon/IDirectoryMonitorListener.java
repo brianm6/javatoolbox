@@ -1,6 +1,9 @@
-package toolbox.util.file;
+package toolbox.dirmon;
 
 import java.util.EventListener;
+
+import toolbox.util.file.DirectoryMonitorEvent;
+
 
 /**
  * Listener interface for notification of certain file activity that meets an 

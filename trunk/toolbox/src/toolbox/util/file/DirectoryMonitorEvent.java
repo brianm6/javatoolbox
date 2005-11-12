@@ -4,6 +4,7 @@ import java.util.EventObject;
 
 import toolbox.util.file.snapshot.FileSnapshot;
 
+
 public class DirectoryMonitorEvent extends EventObject {
 
     // -------------------------------------------------------------------------

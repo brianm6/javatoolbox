@@ -15,6 +15,8 @@ import toolbox.util.file.snapshot.DirSnapshot;
 /**
  * An activity that is capable of recognizing when files are deleted from a
  * directory.
+ * 
+ * @deprecated
  */
 public class FileDeletedActivity implements IFileActivity {
 

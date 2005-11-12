@@ -1,4 +1,4 @@
-package toolbox.util.file.activity;
+package toolbox.dirmon;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,7 +18,7 @@ import toolbox.util.file.snapshot.FileSnapshot;
  * An activity that is capable of recognizing when new files are added to a
  * directory.
  */
-public class FileCreatedRecognizer implements IDirectoryRecognizer {
+public class FileDeletedRecognizer implements IFileActivityRecognizer {
 
     private DirectoryMonitor monitor_;
     
@@ -26,22 +26,22 @@ public class FileCreatedRecognizer implements IDirectoryRecognizer {
     // Constructors
     // --------------------------------------------------------------------------
 
-    public FileCreatedRecognizer(DirectoryMonitor monitor) {
+    public FileDeletedRecognizer(DirectoryMonitor monitor) {
         monitor_ = monitor;
     }
 
     // --------------------------------------------------------------------------
-    // IDirectoryRecognizer Interface
+    // IFileActivityRecognizer Interface
     // --------------------------------------------------------------------------
 
     /*
-     * @see toolbox.util.file.activity.IDirectoryRecognizer#getRecognizedEvents(toolbox.util.file.snapshot.DirSnapshot, toolbox.util.file.snapshot.DirSnapshot)
+     * @see toolbox.util.file.activity.IFileActivityRecognizer#getRecognizedEvents(toolbox.util.file.snapshot.DirSnapshot, toolbox.util.file.snapshot.DirSnapshot)
      */
     public List getRecognizedEvents(DirSnapshot before, DirSnapshot after) {
         
         Assert.assertTrue(before.getDirectory().equals(after.getDirectory()));
         
-        List createdFileEvents = new ArrayList();
+        List deletedFileEvents = new ArrayList();
         Map beforeFileSnapshots = before.getFileSnapshots();
         Map afterFileSnapshots = after.getFileSnapshots();
         
@@ -51,22 +51,22 @@ public class FileCreatedRecognizer implements IDirectoryRecognizer {
         Collection allFileKeys = 
             CollectionUtil.union(beforeFileKeys, afterFileKeys);
         
-        Collection createdFileKeys =
-            CollectionUtil.difference(allFileKeys, beforeFileKeys);
+        Collection deletedFileKeys =
+            CollectionUtil.difference(allFileKeys, afterFileKeys);
         
-        for (Iterator i = createdFileKeys.iterator(); i.hasNext();) {
+        for (Iterator i = deletedFileKeys.iterator(); i.hasNext();) {
             String fileKey = (String) i.next();
 
             DirectoryMonitorEvent event = 
                 new DirectoryMonitorEvent(
-                    DirectoryMonitorEvent.CREATED,
+                    DirectoryMonitorEvent.DELETED,
                     monitor_, 
-                    (FileSnapshot) null, 
-                    (FileSnapshot) after.getFileSnapshots().get(fileKey));
+                    (FileSnapshot) before.getFileSnapshots().get(fileKey),
+                    (FileSnapshot) null); 
             
-            createdFileEvents.add(event);
+            deletedFileEvents.add(event);
         }
         
-        return createdFileEvents;
+        return deletedFileEvents;
     }
 }

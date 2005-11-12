@@ -2,6 +2,13 @@ package toolbox.util.file.snapshot;
 
 
 
+
+/**
+ * 
+ * @author x1700
+ *
+ * @deprecated Merge into FileChangedRecognizer
+ */
 public class FileDiff {
 
     private FileSnapshot beforeSnapshot;
