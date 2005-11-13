@@ -10,8 +10,6 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -26,18 +24,15 @@ import snoozesoft.systray4j.SysTrayMenuEvent;
 import snoozesoft.systray4j.SysTrayMenuIcon;
 import snoozesoft.systray4j.SysTrayMenuItem;
 import snoozesoft.systray4j.SysTrayMenuListener;
-
 import toolbox.util.FontUtil;
 import toolbox.util.ResourceUtil;
 import toolbox.util.SwingUtil;
-import toolbox.util.file.DirectoryMonitor;
-import toolbox.util.file.DirectoryMonitorEvent;
-import toolbox.util.file.IDirectoryListener;
-import toolbox.util.file.IFileActivity;
-import toolbox.util.file.activity.FileChangedActivity;
-import toolbox.util.file.activity.FileCreatedActivity;
-import toolbox.util.file.activity.FileDeletedActivity;
-import toolbox.util.file.snapshot.FileSnapshot;
+import toolbox.util.dirmon.DirectoryMonitor;
+import toolbox.util.dirmon.DirectoryMonitorEvent;
+import toolbox.util.dirmon.IDirectoryMonitorListener;
+import toolbox.util.dirmon.recognizer.FileChangedRecognizer;
+import toolbox.util.dirmon.recognizer.FileCreatedRecognizer;
+import toolbox.util.dirmon.recognizer.FileDeletedRecognizer;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartFileChooser;
 import toolbox.util.ui.JSmartLabel;
@@ -54,10 +49,6 @@ import toolbox.util.ui.plaf.LookAndFeelUtil;
 public class DirMon extends JFrame implements ActionListener,
     SysTrayMenuListener {
 
-    // TODO: Add input for delay to GUI
-    // TODO: Merge create/deleted/updates activities for scan optimization
-    // TODO: 
-    
     private static Logger logger_ =  Logger.getLogger(DirectoryMonitor.class);
     
     // -------------------------------------------------------------------------
@@ -108,18 +99,13 @@ public class DirMon extends JFrame implements ActionListener,
     
     private JSmartFileChooser dirChooser_;
 
+    DateFormat dateTimeFormat = SimpleDateFormat.getDateTimeInstance();
     
     // -------------------------------------------------------------------------
     // Main
     // -------------------------------------------------------------------------
 
     public static void main(String[] args) {
-
-//        System.out.println("java.library.path = "
-//            + System.getProperty("java.library.path"));
-//
-//        System.out.println(ArrayUtil.toString(StringUtils.split(System
-//            .getProperty("java.library.path"), ";"), true));
 
         try {
             LookAndFeelUtil.setPreferredLAF();
@@ -368,9 +354,7 @@ public class DirMon extends JFrame implements ActionListener,
     // DirectoryMonitorListener
     // -------------------------------------------------------------------------
     
-    DateFormat dateTimeFormat = SimpleDateFormat.getDateTimeInstance();
-    
-    class DirectoryMonitorListener implements IDirectoryListener, IDirectoryMonitorListener {
+    class DirectoryMonitorListener implements IDirectoryMonitorListener {
 
         public void directoryActivity(
             DirectoryMonitorEvent event) throws Exception {
@@ -379,7 +363,7 @@ public class DirMon extends JFrame implements ActionListener,
             
             switch (event.getEventType()) {
             
-                case DirectoryMonitorEvent.CHANGED :
+                case DirectoryMonitorEvent.TYPE_CHANGED :
                     
                     sb.append(
                         "File changed: " 
@@ -404,7 +388,7 @@ public class DirMon extends JFrame implements ActionListener,
                     
                     break;
                     
-                case DirectoryMonitorEvent.CREATED :
+                case DirectoryMonitorEvent.TYPE_CREATED :
                     
                     sb.append(
                         "File created: " 
@@ -424,7 +408,7 @@ public class DirMon extends JFrame implements ActionListener,
                     
                     break;
 
-                case DirectoryMonitorEvent.DELETED :
+                case DirectoryMonitorEvent.TYPE_DELETED :
                     
                     sb.append(
                         "File deleted: " 
@@ -453,46 +437,6 @@ public class DirMon extends JFrame implements ActionListener,
             messageArea_.append(sb.toString());
             messageArea_.append("\n");
             menu_.setToolTip(sb.toString());
-            menu_.setIcon(ICON_DIRMON_ALERT);
-        }
-        
-        /**
-         * @deprecated
-         */
-        public void fileActivity(
-            IFileActivity activity,
-            List affectedFiles) throws Exception {
-        
-            String msg = null;
-            
-            if (activity instanceof FileChangedActivity) {
-                msg = "File changed: ";
-            }
-            else if (activity instanceof FileCreatedActivity) {
-                msg = "File created: ";
-            }
-            else if (activity instanceof FileDeletedActivity) {
-                msg = "File deleted: ";
-            }
-        
-        
-            for (Iterator i = affectedFiles.iterator(); i.hasNext();) {
-                FileSnapshot snapshot = (FileSnapshot) i.next();
-        
-                StringBuffer sb = new StringBuffer();
-                sb.append(msg);
-                sb.append(snapshot.toString());
-                sb.append(" at ");
-                
-                sb.append(
-                    new SimpleDateFormat().format(
-                        new Date(snapshot.getLastModified())));
-        
-                messageArea_.append(sb.toString());
-                messageArea_.append("\n");
-                menu_.setToolTip(sb.toString());
-            }
-            
             menu_.setIcon(ICON_DIRMON_ALERT);
         }
     }

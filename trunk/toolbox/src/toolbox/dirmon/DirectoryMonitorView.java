@@ -9,7 +9,7 @@ import java.util.List;
 import javax.swing.JPanel;
 
 import toolbox.util.SwingUtil;
-import toolbox.util.file.DirectoryMonitor;
+import toolbox.util.dirmon.DirectoryMonitor;
 import toolbox.util.service.ServiceView;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JSmartButton;

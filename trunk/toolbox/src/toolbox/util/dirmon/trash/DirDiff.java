@@ -1,4 +1,4 @@
-package toolbox.util.file.snapshot;
+package toolbox.util.dirmon.trash;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,6 +9,8 @@ import java.util.Set;
 
 import junit.framework.Assert;
 import toolbox.util.CollectionUtil;
+import toolbox.util.dirmon.DirSnapshot;
+import toolbox.util.dirmon.FileSnapshot;
 
 /**
  * Difference of two directory snapshots.

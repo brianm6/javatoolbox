@@ -1,8 +1,7 @@
-package toolbox.dirmon;
+package toolbox.util.dirmon;
 
 import java.util.List;
 
-import toolbox.util.file.snapshot.DirSnapshot;
 
 
 /**

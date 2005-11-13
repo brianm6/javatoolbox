@@ -1,4 +1,4 @@
-package toolbox.dirmon;
+package toolbox.util.dirmon.recognizer;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,10 +9,11 @@ import java.util.Set;
 
 import junit.framework.Assert;
 import toolbox.util.CollectionUtil;
-import toolbox.util.file.DirectoryMonitor;
-import toolbox.util.file.DirectoryMonitorEvent;
-import toolbox.util.file.snapshot.DirSnapshot;
-import toolbox.util.file.snapshot.FileSnapshot;
+import toolbox.util.dirmon.DirSnapshot;
+import toolbox.util.dirmon.DirectoryMonitor;
+import toolbox.util.dirmon.DirectoryMonitorEvent;
+import toolbox.util.dirmon.FileSnapshot;
+import toolbox.util.dirmon.IFileActivityRecognizer;
 
 /**
  * An activity that is capable of recognizing when new files are added to a
@@ -59,7 +60,7 @@ public class FileCreatedRecognizer implements IFileActivityRecognizer {
 
             DirectoryMonitorEvent event = 
                 new DirectoryMonitorEvent(
-                    DirectoryMonitorEvent.CREATED,
+                    DirectoryMonitorEvent.TYPE_CREATED,
                     monitor_, 
                     (FileSnapshot) null, 
                     (FileSnapshot) after.getFileSnapshots().get(fileKey));

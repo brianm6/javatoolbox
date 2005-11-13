@@ -1,8 +1,7 @@
-package toolbox.dirmon;
+package toolbox.util.dirmon;
 
 import java.util.EventListener;
 
-import toolbox.util.file.DirectoryMonitorEvent;
 
 
 /**

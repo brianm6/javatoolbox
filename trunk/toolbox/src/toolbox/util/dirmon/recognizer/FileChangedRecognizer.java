@@ -1,4 +1,4 @@
-package toolbox.dirmon;
+package toolbox.util.dirmon.recognizer;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,31 +9,30 @@ import java.util.Set;
 
 import junit.framework.Assert;
 import toolbox.util.CollectionUtil;
-import toolbox.util.file.DirectoryMonitor;
-import toolbox.util.file.DirectoryMonitorEvent;
-import toolbox.util.file.snapshot.DirSnapshot;
-import toolbox.util.file.snapshot.FileDiff;
-import toolbox.util.file.snapshot.FileSnapshot;
+import toolbox.util.dirmon.DirSnapshot;
+import toolbox.util.dirmon.DirectoryMonitor;
+import toolbox.util.dirmon.DirectoryMonitorEvent;
+import toolbox.util.dirmon.FileSnapshot;
+import toolbox.util.dirmon.IFileActivityRecognizer;
 
 /**
- * An activity that is capable of recognizing when new files are added to a
- * directory.
+ * Recognizes when a file has changed based on the last modified timestamp.
  */
 public class FileChangedRecognizer implements IFileActivityRecognizer {
 
     private DirectoryMonitor monitor_;
     
-    // --------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Constructors
-    // --------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     public FileChangedRecognizer(DirectoryMonitor monitor) {
         monitor_ = monitor;
     }
 
-    // --------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // IFileActivityRecognizer Interface
-    // --------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     /*
      * @see toolbox.util.file.activity.IFileActivityRecognizer#getRecognizedEvents(toolbox.util.file.snapshot.DirSnapshot, toolbox.util.file.snapshot.DirSnapshot)
@@ -55,18 +54,21 @@ public class FileChangedRecognizer implements IFileActivityRecognizer {
         for (Iterator i = commonFileKeys.iterator(); i.hasNext();) {
             String fileKey = (String) i.next();
             
-            FileDiff diff = new FileDiff(
-                (FileSnapshot) beforeFileSnapshots.get(fileKey),
-                (FileSnapshot) afterFileSnapshots.get(fileKey));
+            FileSnapshot beforeFileSnapshot = 
+                (FileSnapshot) beforeFileSnapshots.get(fileKey);
+                
+            FileSnapshot afterFileSnapshot = 
+                (FileSnapshot) afterFileSnapshots.get(fileKey);
             
-            if (diff.isModified()) {
-            
+            if (beforeFileSnapshot.getLastModified() != 
+                afterFileSnapshot.getLastModified()) {
+                
                 DirectoryMonitorEvent event = 
                     new DirectoryMonitorEvent(
-                        DirectoryMonitorEvent.CHANGED,
+                        DirectoryMonitorEvent.TYPE_CHANGED,
                         monitor_, 
-                        (FileSnapshot) before.getFileSnapshots().get(fileKey),
-                        (FileSnapshot) after.getFileSnapshots().get(fileKey));
+                        beforeFileSnapshot,
+                        afterFileSnapshot);
                 
                 changedFileEvents.add(event);
             }

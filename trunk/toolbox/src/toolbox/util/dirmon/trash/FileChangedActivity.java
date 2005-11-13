@@ -1,33 +1,31 @@
-package toolbox.util.file.activity;
+package toolbox.util.dirmon.trash;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.ClassUtils;
 
-import toolbox.util.file.IFileActivity;
-import toolbox.util.file.snapshot.DirDiff;
-import toolbox.util.file.snapshot.DirSnapshot;
+import toolbox.util.dirmon.DirSnapshot;
+import toolbox.util.dirmon.FileSnapshot;
 
 /**
- * An activity that is capable of recognizing when files are deleted from a
+ * An activity that is capable of recognizing when new files are added to a
  * directory.
  * 
  * @deprecated
  */
-public class FileDeletedActivity implements IFileActivity {
+public class FileChangedActivity implements IFileActivity {
 
     // --------------------------------------------------------------------------
     // Fields
     // --------------------------------------------------------------------------
 
     /**
-     * Map of directories with their associated snapshot.
-     * 
-     * Key = String from File.getAbsolutePath() of a directory
+     * Key = String which is File.getAbsolutePath() for a directory
      * Value = DirSnapshot
      */
     private Map dirSnapshots_;
@@ -37,9 +35,9 @@ public class FileDeletedActivity implements IFileActivity {
     // --------------------------------------------------------------------------
 
     /**
-     * Creates a FileDeletedActivity.
+     * Creates a FileCreatedActivity.
      */
-    public FileDeletedActivity() {
+    public FileChangedActivity() {
         dirSnapshots_ = new HashMap();
     }
 
@@ -48,14 +46,15 @@ public class FileDeletedActivity implements IFileActivity {
     // --------------------------------------------------------------------------
 
     /**
-     * Determines deleted files in a directory since the last time a snapshot 
-     * was taken.
+     * Determines new files in a directory since the last time a snapshot was
+     * taken.
      * 
-     * @see toolbox.util.file.IFileActivity#getAffectedFiles(java.io.File)
+     * @param dir Directory to analyze.
+     * @return List of FileDiff of modified files.
      */
     public List getAffectedFiles(File dir) {
 
-        List deletedFileSnapshots = new ArrayList();
+        List modifiedFiles = new ArrayList();
         String dirKey = dir.getAbsolutePath();
         DirSnapshot beforeDirSnapshot = (DirSnapshot) dirSnapshots_.get(dirKey);
 
@@ -65,14 +64,21 @@ public class FileDeletedActivity implements IFileActivity {
         else {
             DirSnapshot afterDirSnapshot = new DirSnapshot(dir);
             DirDiff diff = new DirDiff(beforeDirSnapshot, afterDirSnapshot);
-            deletedFileSnapshots =  diff.getDeletedFiles();
+            List modifiedFileDiffs =  diff.getModifiedFiles();
+            
+            for (Iterator i = modifiedFileDiffs.iterator(); i.hasNext();) {
+                FileDiff fileDiff = (FileDiff) i.next();
+                FileSnapshot fileSnapshot = fileDiff.getAfterSnapshot();
+                modifiedFiles.add(fileSnapshot);
+            }
             
             // Update the snapshot to the latest
             dirSnapshots_.put(dirKey, afterDirSnapshot);
         }
-        return deletedFileSnapshots;
+
+        return modifiedFiles;
     }
-    
+
     // -------------------------------------------------------------------------
     // Overrides java.lang.Object 
     // -------------------------------------------------------------------------

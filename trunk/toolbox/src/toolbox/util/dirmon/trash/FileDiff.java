@@ -1,7 +1,6 @@
-package toolbox.util.file.snapshot;
+package toolbox.util.dirmon.trash;
 
-
-
+import toolbox.util.dirmon.FileSnapshot;
 
 /**
  * 
