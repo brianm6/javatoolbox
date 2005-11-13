@@ -7,6 +7,9 @@ import java.util.List;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import edu.emory.mathcs.backport.java.util.concurrent.ArrayBlockingQueue;
+import edu.emory.mathcs.backport.java.util.concurrent.BlockingQueue;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
@@ -15,8 +18,6 @@ import toolbox.util.ThreadUtil;
 import toolbox.util.dirmon.recognizer.FileChangedRecognizer;
 import toolbox.util.dirmon.recognizer.FileCreatedRecognizer;
 import toolbox.util.dirmon.recognizer.FileDeletedRecognizer;
-import edu.emory.mathcs.util.concurrent.ArrayBlockingQueue;
-import edu.emory.mathcs.util.concurrent.BlockingQueue;
 
 /**
  * Unit test for {@link toolbox.util.dirmon.DirectoryMonitor}.

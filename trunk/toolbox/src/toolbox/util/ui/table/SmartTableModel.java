@@ -7,8 +7,8 @@ import java.util.Vector;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
-import edu.emory.mathcs.util.concurrent.BlockingQueue;
-import edu.emory.mathcs.util.concurrent.LinkedBlockingQueue;
+import edu.emory.mathcs.backport.java.util.concurrent.BlockingQueue;
+import edu.emory.mathcs.backport.java.util.concurrent.LinkedBlockingQueue;
 
 import org.apache.log4j.Logger;
 

@@ -4,8 +4,6 @@ import java.io.File;
 import java.util.Iterator;
 import java.util.List;
 
-import edu.emory.mathcs.util.concurrent.Semaphore;
-
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
@@ -17,6 +15,8 @@ import toolbox.util.FileUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.ThreadUtil;
 import toolbox.util.collections.AsMap;
+import edu.emory.mathcs.backport.java.util.concurrent.Semaphore;
+
 
 /**
  * Unit test for {@link toolbox.findclass.FindClass}.

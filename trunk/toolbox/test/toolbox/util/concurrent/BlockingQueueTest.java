@@ -1,11 +1,11 @@
 package toolbox.util.concurrent;
 
-import edu.emory.mathcs.util.concurrent.BlockingQueue;
-import edu.emory.mathcs.util.concurrent.LinkedBlockingQueue;
-import edu.emory.mathcs.util.concurrent.TimeUnit;
-
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
+
+import edu.emory.mathcs.backport.java.util.concurrent.BlockingQueue;
+import edu.emory.mathcs.backport.java.util.concurrent.LinkedBlockingQueue;
+import edu.emory.mathcs.backport.java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 

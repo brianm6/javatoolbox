@@ -6,10 +6,10 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 
-import edu.emory.mathcs.util.concurrent.Semaphore;
-
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
+
+import edu.emory.mathcs.backport.java.util.concurrent.Semaphore;
 
 import org.apache.log4j.Logger;
 

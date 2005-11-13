@@ -5,11 +5,11 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Date;
 
-import edu.emory.mathcs.util.concurrent.BlockingQueue;
-import edu.emory.mathcs.util.concurrent.LinkedBlockingQueue;
-
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
+
+import edu.emory.mathcs.backport.java.util.concurrent.BlockingQueue;
+import edu.emory.mathcs.backport.java.util.concurrent.LinkedBlockingQueue;
 
 import org.apache.commons.io.output.NullOutputStream;
 import org.apache.log4j.Logger;

@@ -1,7 +1,7 @@
 package toolbox.util.thread.strategy;
 
-import edu.emory.mathcs.util.concurrent.ArrayBlockingQueue;
-import edu.emory.mathcs.util.concurrent.BlockingQueue;
+import edu.emory.mathcs.backport.java.util.concurrent.ArrayBlockingQueue;
+import edu.emory.mathcs.backport.java.util.concurrent.BlockingQueue;
 
 import org.apache.log4j.Logger;
 

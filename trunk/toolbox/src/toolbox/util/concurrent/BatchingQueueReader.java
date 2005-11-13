@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import edu.emory.mathcs.util.concurrent.BlockingQueue;
-import edu.emory.mathcs.util.concurrent.TimeUnit;
+import edu.emory.mathcs.backport.java.util.concurrent.BlockingQueue;
+import edu.emory.mathcs.backport.java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 

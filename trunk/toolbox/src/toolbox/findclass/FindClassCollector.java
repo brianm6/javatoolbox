@@ -3,7 +3,7 @@ package toolbox.findclass;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.emory.mathcs.util.concurrent.Semaphore;
+import edu.emory.mathcs.backport.java.util.concurrent.Semaphore;
 
 /**
  * FindClassCollector collects the results of a FindClass operation.

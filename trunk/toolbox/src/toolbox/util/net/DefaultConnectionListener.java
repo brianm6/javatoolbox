@@ -1,7 +1,7 @@
 package toolbox.util.net;
 
-import edu.emory.mathcs.util.concurrent.BlockingQueue;
-import edu.emory.mathcs.util.concurrent.LinkedBlockingQueue;
+import edu.emory.mathcs.backport.java.util.concurrent.BlockingQueue;
+import edu.emory.mathcs.backport.java.util.concurrent.LinkedBlockingQueue;
 
 import org.apache.log4j.Logger;
 

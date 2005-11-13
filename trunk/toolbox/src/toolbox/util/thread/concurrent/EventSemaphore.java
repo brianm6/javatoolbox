@@ -1,9 +1,9 @@
 package toolbox.util.thread.concurrent;
 
-import edu.emory.mathcs.util.concurrent.TimeUnit;
-import edu.emory.mathcs.util.concurrent.locks.Condition;
-import edu.emory.mathcs.util.concurrent.locks.Lock;
-import edu.emory.mathcs.util.concurrent.locks.ReentrantLock;
+import edu.emory.mathcs.backport.java.util.concurrent.TimeUnit;
+import edu.emory.mathcs.backport.java.util.concurrent.locks.Condition;
+import edu.emory.mathcs.backport.java.util.concurrent.locks.Lock;
+import edu.emory.mathcs.backport.java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.log4j.Logger;
 

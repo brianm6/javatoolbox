@@ -11,11 +11,6 @@ import hamsam.protocol.ProtocolManager;
 
 import java.util.Map;
 
-import edu.emory.mathcs.util.concurrent.BlockingQueue;
-import edu.emory.mathcs.util.concurrent.ExecutorService;
-import edu.emory.mathcs.util.concurrent.Executors;
-import edu.emory.mathcs.util.concurrent.LinkedBlockingQueue;
-
 import org.apache.commons.collections.MapUtils;
 import org.apache.log4j.Logger;
 import org.apache.log4j.helpers.LogLog;
@@ -29,6 +24,11 @@ import toolbox.util.service.ServiceState;
 import toolbox.util.service.ServiceTransition;
 import toolbox.util.service.ServiceUtil;
 import toolbox.util.statemachine.StateMachine;
+
+import edu.emory.mathcs.backport.java.util.concurrent.BlockingQueue;
+import edu.emory.mathcs.backport.java.util.concurrent.ExecutorService;
+import edu.emory.mathcs.backport.java.util.concurrent.Executors;
+import edu.emory.mathcs.backport.java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Abstract Instant Messenger client that supports login, send message, and
