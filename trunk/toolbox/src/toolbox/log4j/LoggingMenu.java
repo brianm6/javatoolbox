@@ -195,6 +195,7 @@ public class LoggingMenu extends JSmartMenu implements IPreferenced
         Level[] levels = new Level[]
         {
             Level.ALL, 
+            Level.TRACE,
             Level.DEBUG, 
             Level.INFO, 
             Level.ERROR, 
