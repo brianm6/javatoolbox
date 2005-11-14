@@ -82,7 +82,7 @@ public class LoggingMenu extends JSmartMenu implements IPreferenced
     /**
      * Name of the toolbox logger in /resources/log4j.xml.
      */
-    private static final String LOGGER_TOOLBOX = "toolbox";
+    public static final String LOGGER_TOOLBOX = "toolbox";
     
     /**
      * Name of the console appender in /resources/log4j.xml.

@@ -787,8 +787,11 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
         //
         // Save log level
         //
-        root.addAttribute(new Attribute(
-            ATTR_LOG_LEVEL, Logger.getRootLogger().getLevel().toString()));
+        root.addAttribute(
+            new Attribute(
+                ATTR_LOG_LEVEL, 
+                Logger.getLogger(
+                    LoggingMenu.LOGGER_TOOLBOX).getLevel().toString()));
 
         try
         {
