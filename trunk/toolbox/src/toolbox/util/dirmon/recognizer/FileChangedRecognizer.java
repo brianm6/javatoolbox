@@ -19,7 +19,11 @@ import toolbox.util.dirmon.IFileActivityRecognizer;
  * Recognizes when a file has changed based on the last modified timestamp.
  */
 public class FileChangedRecognizer implements IFileActivityRecognizer {
-
+    
+    // -------------------------------------------------------------------------
+    // Fields
+    // -------------------------------------------------------------------------
+    
     private DirectoryMonitor monitor_;
     
     // -------------------------------------------------------------------------

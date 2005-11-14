@@ -16,24 +16,27 @@ import toolbox.util.dirmon.FileSnapshot;
 import toolbox.util.dirmon.IFileActivityRecognizer;
 
 /**
- * An activity that is capable of recognizing when new files are added to a
- * directory.
+ * Recognizes when files are deleted from a directory.
  */
 public class FileDeletedRecognizer implements IFileActivityRecognizer {
 
+    // -------------------------------------------------------------------------
+    // Fields
+    // -------------------------------------------------------------------------
+
     private DirectoryMonitor monitor_;
     
-    // --------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Constructors
-    // --------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     public FileDeletedRecognizer(DirectoryMonitor monitor) {
         monitor_ = monitor;
     }
 
-    // --------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // IFileActivityRecognizer Interface
-    // --------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     /*
      * @see toolbox.util.file.activity.IFileActivityRecognizer#getRecognizedEvents(toolbox.util.file.snapshot.DirSnapshot, toolbox.util.file.snapshot.DirSnapshot)

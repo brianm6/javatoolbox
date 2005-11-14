@@ -4,9 +4,9 @@ import java.io.File;
 import java.util.Date;
 
 /**
- * Equality is based on the absolute path regardless of all the other
- * attributs.
- * 
+ * FileSnapshot represents the relevant attributes of a file at a given point
+ * in time. A reference to the originating {@link java.io.File} is not retained
+ * but can be regenerated via {@link #toFile()}. 
  */
 public class FileSnapshot {
 

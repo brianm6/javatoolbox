@@ -16,10 +16,13 @@ import toolbox.util.dirmon.FileSnapshot;
 import toolbox.util.dirmon.IFileActivityRecognizer;
 
 /**
- * An activity that is capable of recognizing when new files are added to a
- * directory.
+ * Recognizes when new files are added to a directory.
  */
 public class FileCreatedRecognizer implements IFileActivityRecognizer {
+
+    // -------------------------------------------------------------------------
+    // Fields
+    // -------------------------------------------------------------------------
 
     private DirectoryMonitor monitor_;
     

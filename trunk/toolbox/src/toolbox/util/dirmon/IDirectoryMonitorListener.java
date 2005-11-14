@@ -2,20 +2,17 @@ package toolbox.util.dirmon;
 
 import java.util.EventListener;
 
-
-
 /**
- * Listener interface for notification of certain file activity that meets an 
- * IFileActivity criteria.
+ * Listener interface for notification of events from a DirectoryMonitor.
  */
-public interface IDirectoryMonitorListener extends EventListener
-{
+public interface IDirectoryMonitorListener extends EventListener {
+    
     /**
-     * Called when a file has met the criteria for a given IFileActivity.
-     *
-     * @param DirectoryMonitorEvent
+     * Delivers an event to the DirectoryMonitor listener.
+     * 
+     * @param DirectoryMonitorEvent Event to deliver.
      * @throws Exception on error.
      */
-    void directoryActivity(DirectoryMonitorEvent directoryMonitorEvent) 
+    void directoryActivity(DirectoryMonitorEvent directoryMonitorEvent)
         throws Exception;
 }
