@@ -1,14 +1,12 @@
 package toolbox.util.dirmon.recognizer;
 
 import java.io.File;
-import java.util.List;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
 
-import toolbox.util.ArrayUtil;
 import toolbox.util.FileUtil;
 
 /**
