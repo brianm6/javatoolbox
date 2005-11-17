@@ -140,7 +140,7 @@ public class SQLFormatterView extends JHeaderPanel
 
         // Create and init the property sheet
         sheet_ = new PropertySheetPanel();
-        sheet_.setEditorRegistry(registry);
+        sheet_.setEditorFactory(registry);
         sheet_.setProperties(dArray);
         sheet_.setDescriptionVisible(true);
         sheet_.addPropertySheetChangeListener(new MyPropertyChangeListener());
