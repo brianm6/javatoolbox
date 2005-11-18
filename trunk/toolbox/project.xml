@@ -595,6 +595,16 @@
     </dependency>
 
     <dependency>
+      <id>jtoaster</id>
+      <version></version>
+      <url>http://jtoaster.sf.net</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
       <id>jung</id>
       <version></version>
       <url>http://jung.sf.net</url>
