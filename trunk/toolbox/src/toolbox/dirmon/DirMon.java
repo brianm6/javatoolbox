@@ -11,19 +11,24 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.swing.Icon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
+
+import com.nitido.utils.toaster.Toaster;
 
 import snoozesoft.systray4j.SysTrayMenu;
 import snoozesoft.systray4j.SysTrayMenuEvent;
 import snoozesoft.systray4j.SysTrayMenuIcon;
 import snoozesoft.systray4j.SysTrayMenuItem;
 import snoozesoft.systray4j.SysTrayMenuListener;
+
 import toolbox.util.FontUtil;
 import toolbox.util.ResourceUtil;
 import toolbox.util.SwingUtil;
@@ -33,6 +38,7 @@ import toolbox.util.dirmon.IDirectoryMonitorListener;
 import toolbox.util.dirmon.recognizer.FileChangedRecognizer;
 import toolbox.util.dirmon.recognizer.FileCreatedRecognizer;
 import toolbox.util.dirmon.recognizer.FileDeletedRecognizer;
+import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartFileChooser;
 import toolbox.util.ui.JSmartLabel;
@@ -99,7 +105,9 @@ public class DirMon extends JFrame implements ActionListener,
     
     private JSmartFileChooser dirChooser_;
 
-    DateFormat dateTimeFormat = SimpleDateFormat.getDateTimeInstance();
+    private DateFormat dateTimeFormat = SimpleDateFormat.getDateTimeInstance();
+    
+    private Toaster toaster_;
     
     // -------------------------------------------------------------------------
     // Main
@@ -236,6 +244,10 @@ public class DirMon extends JFrame implements ActionListener,
         pack();
         
         SwingUtil.centerWindow(this);
+        
+        toaster_ = new Toaster();
+        toaster_.setDisplayTime(5000);
+        toaster_.setToasterMessageFont(FontUtil.getPreferredSerifFont());
     }
 
     private void createMenu() {
@@ -359,25 +371,27 @@ public class DirMon extends JFrame implements ActionListener,
         public void directoryActivity(
             DirectoryMonitorEvent event) throws Exception {
             
-            StringBuffer sb = new StringBuffer();
+            StringBuffer msg = new StringBuffer();
+            StringBuffer shortMsg = new StringBuffer();
+            Icon toasterIcon = null;
             
             switch (event.getEventType()) {
             
                 case DirectoryMonitorEvent.TYPE_CHANGED :
                     
-                    sb.append(
+                    msg.append(
                         "File changed: " 
                         + event.getAfterSnapshot().getAbsolutePath() 
                         + "\n");
                     
-                    sb.append(
+                    msg.append(
                         "Size        : " 
                         + event.getBeforeSnapshot().getLength() 
                         + " -> " 
                         + event.getAfterSnapshot().getLength()
                         + "\n");
                     
-                    sb.append(
+                    msg.append(
                         "Timestamp   : " 
                         + dateTimeFormat.format(new Date(
                             event.getBeforeSnapshot().getLastModified())) 
@@ -386,46 +400,61 @@ public class DirMon extends JFrame implements ActionListener,
                             event.getAfterSnapshot().getLastModified()))
                         + "\n");
                     
+                    shortMsg.append("Modified: ");
+                    shortMsg.append(FilenameUtils.getName(
+                        event.getAfterSnapshot().getAbsolutePath()));
+                    
+                    toasterIcon = ImageCache.getIcon(ImageCache.IMAGE_COPY);
                     break;
                     
                 case DirectoryMonitorEvent.TYPE_CREATED :
                     
-                    sb.append(
+                    msg.append(
                         "File created: " 
                         + event.getAfterSnapshot().getAbsolutePath() 
                         + "\n");
                     
-                    sb.append(
+                    msg.append(
                         "Size        : " 
                         + event.getAfterSnapshot().getLength()
                         + "\n");
                     
-                    sb.append(
+                    msg.append(
                         "Timestamp   : " 
                         + dateTimeFormat.format(new Date(
                             event.getAfterSnapshot().getLastModified()))
                         + "\n");
                     
+                    shortMsg.append("Created: ");
+                    shortMsg.append(FilenameUtils.getName(
+                        event.getAfterSnapshot().getAbsolutePath()));
+                    
+                    toasterIcon = ImageCache.getIcon(ImageCache.IMAGE_INFO);
                     break;
 
                 case DirectoryMonitorEvent.TYPE_DELETED :
                     
-                    sb.append(
+                    msg.append(
                         "File deleted: " 
                         + event.getBeforeSnapshot().getAbsolutePath() 
                         + "\n");
                     
-                    sb.append(
+                    msg.append(
                         "Size        : " 
                         + event.getBeforeSnapshot().getLength() 
                         + "\n");
                     
-                    sb.append(
+                    msg.append(
                         "Timestamp   : " 
                         + dateTimeFormat.format(new Date(
                             event.getBeforeSnapshot().getLastModified())) 
                         + "\n");
                     
+                    shortMsg.append("Deleted: ");
+                    shortMsg.append(FilenameUtils.getName(
+                        event.getBeforeSnapshot().getAbsolutePath()));
+                    
+                    toasterIcon = ImageCache.getIcon(ImageCache.IMAGE_DELETE);
                     break;
 
                 default:
@@ -434,10 +463,12 @@ public class DirMon extends JFrame implements ActionListener,
                         + event.getEventType());
             }
     
-            messageArea_.append(sb.toString());
+            messageArea_.append(msg.toString());
             messageArea_.append("\n");
-            menu_.setToolTip(sb.toString());
+            menu_.setToolTip(shortMsg.toString());
             menu_.setIcon(ICON_DIRMON_ALERT);
+            
+            toaster_.showToaster(toasterIcon, shortMsg.toString());
         }
     }
     
