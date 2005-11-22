@@ -372,6 +372,16 @@
     </dependency>
 
     <dependency>
+      <id>dbunit</id>
+      <version></version>
+      <url>http://dbunit.sf.net</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
       <id>fhlaf</id>
       <version></version>
       <url>http://fhlaf.sf.net</url>
@@ -845,6 +855,16 @@
       <id>webwindow</id>
       <version></version>
       <url>http://www.javio.com</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>velocity</id>
+      <version></version>
+      <url></url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
         <fatjar>toolbox</fatjar>
