@@ -116,6 +116,9 @@
         <!-- Nov 2005                                                          -->
         <!-- =================================================================== -->
         <release version="2.0" date="November 2005">
+            <action type="add"      >DbConsole - Added DbConsole which depends on DbUnit and Velocity</action>
+            <action type="add"      >Lib - Added DbUnit version dbunit-1.2</action>
+            <action type="add"      >Lib - Added Apache Jakarta Velocity version velocity-1.4</action>
             <action type="add"      >DirMon - Added Directory Monitor application as toolbox.dirmon.DirMon</action>
             <action type="add"      >Lib - Added Systray4J version systray4j-2.4.1</action>
             <action type="update"   >Lib - Upgraded Log4J to log4j-1.2.12</action>
