@@ -5,39 +5,34 @@ import java.io.Writer;
 /**
  * NullWriter sends all characters written to it to /dev/null.
  */
-public class NullWriter extends Writer
-{
-    //--------------------------------------------------------------------------
+public class NullWriter extends Writer {
+
+    // -------------------------------------------------------------------------
     // Overrides java.io.Writer
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Closes the stream.
+    // -------------------------------------------------------------------------
+
+    /*
+     * @see java.io.Writer#close()
      */
-    public void close()
-    {
+    public void close() {
         // Nothing to do
     }
 
-    
-    /**
-     * Flushes the stream.
+
+    /*
+     * @see java.io.Writer#flush()
      */
-    public void flush()
-    {
+    public void flush() {
         // Nothing to do
     }
 
-    
+
     /**
      * Eat written characters.
      * 
-     * @param cbuf Character buffer to write.
-     * @param off Offset into character buffer.
-     * @param len Number of characters to write.
+     * @see java.io.Writer#write(char[], int, int)
      */
-    public void write(char[] cbuf, int off, int len)
-    {
+    public void write(char[] cbuf, int off, int len) {
         // Do nothing
     }
 }
