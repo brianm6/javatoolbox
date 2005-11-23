@@ -29,6 +29,7 @@ import toolbox.tunnel.TcpTunnel;
 import toolbox.tunnel.TcpTunnelListener;
 import toolbox.util.FontUtil;
 import toolbox.util.XOMUtil;
+import toolbox.util.io.DetachableOutputStream;
 import toolbox.util.io.JTextAreaOutputStream;
 import toolbox.util.io.MonitoredOutputStream;
 import toolbox.util.ui.ImageCache;
@@ -127,6 +128,9 @@ public class TunnelPane extends JPanel implements IPreferenced {
     private TcpTunnel tunnel_;
 
     private JPanel trackerView_;
+
+    DetachableOutputStream outgoingDetachable;
+    DetachableOutputStream incomingDetachable;
     
     // -------------------------------------------------------------------------
     // Constructors
@@ -299,11 +303,10 @@ public class TunnelPane extends JPanel implements IPreferenced {
 
         SmartAction startAction = new StartTunnelAction();
         
-        //tunnel_.addTcpTunnelListener((TcpTunnelListener) startAction);
-        
         buttonPanel.add(new JSmartButton(startAction));
         buttonPanel.add(new JSmartButton(new StopTunnelAction()));
         buttonPanel.add(new JSmartButton(new ClearAction()));
+        buttonPanel.add(new JSmartButton(new DetachAction()));
 
         actionPanel.add(BorderLayout.CENTER, buttonPanel);
         add(BorderLayout.SOUTH, actionPanel);
@@ -496,6 +499,20 @@ public class TunnelPane extends JPanel implements IPreferenced {
         }
     }
 
+    class DetachAction extends AbstractAction {
+
+        public DetachAction() {
+            super("Detach" /*, ImageCache.getIcon(ImageCache.IMAGE_STOP) */);
+        }
+        
+        public void actionPerformed(ActionEvent e) {
+            putValue(NAME, incomingDetachable.isDetached() ? "Detach" : "Attach");
+            incomingDetachable.setDetached(!incomingDetachable.isDetached());
+            outgoingDetachable.setDetached(!outgoingDetachable.isDetached());
+        }
+    }
+    
+
     // -------------------------------------------------------------------------
     // StartTunnelAction
     // -------------------------------------------------------------------------
@@ -598,11 +615,15 @@ public class TunnelPane extends JPanel implements IPreferenced {
             tunnel_.setRemoteHost(getRemoteHost());
             tunnel_.setRemotePort(getRemotePort());
 
-            tunnel_.setIncomingSink(new BufferedOutputStream(//System.out));
-                new JTextAreaOutputStream(outgoingArea_) /*, 20480 */ ));
+            incomingDetachable = new DetachableOutputStream(
+                new JTextAreaOutputStream(outgoingArea_), false);
+            
+            tunnel_.setIncomingSink(new BufferedOutputStream(incomingDetachable));
+                 
+            outgoingDetachable = new DetachableOutputStream(
+                new JTextAreaOutputStream(incomingArea_), false);
 
-            tunnel_.setOutgoingSink(new BufferedOutputStream(//System.err));
-                new JTextAreaOutputStream(incomingArea_) /*, 20480 */ ));
+            tunnel_.setOutgoingSink(new BufferedOutputStream(outgoingDetachable));
 
             tunnel_.addTcpTunnelListener(StartTunnelAction.this);
             tunnel_.start();
