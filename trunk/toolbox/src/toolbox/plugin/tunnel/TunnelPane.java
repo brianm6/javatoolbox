@@ -1,12 +1,14 @@
 package toolbox.plugin.tunnel;
 
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.BufferedOutputStream;
 
 import javax.swing.AbstractAction;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -14,13 +16,13 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 
-import com.jgoodies.forms.builder.DefaultFormBuilder;
-import com.jgoodies.forms.layout.FormLayout;
-
 import nu.xom.Element;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+
+import com.jgoodies.forms.builder.DefaultFormBuilder;
+import com.jgoodies.forms.layout.FormLayout;
 
 import toolbox.forms.SmartComponentFactory;
 import toolbox.tunnel.TcpTunnel;
@@ -28,6 +30,7 @@ import toolbox.tunnel.TcpTunnelListener;
 import toolbox.util.FontUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.io.JTextAreaOutputStream;
+import toolbox.util.io.MonitoredOutputStream;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JHeaderPanel;
 import toolbox.util.ui.JSmartButton;
@@ -47,21 +50,21 @@ import toolbox.workspace.PreferencedException;
  * 
  * @see toolbox.tunnel.TcpTunnel
  */
-public class TunnelPane extends JPanel implements IPreferenced
-{
+public class TunnelPane extends JPanel implements IPreferenced {
+    
     private static final Logger logger_ = Logger.getLogger(TunnelPane.class);
 
-    //--------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // IPreferenced Constants
-    //--------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     public static final String NODE_TCPTUNNEL_PLUGIN = "TCPTunnelPlugin";
     public static final String   NODE_INCOMING       =   "Incoming";
     public static final String   NODE_OUTGOING       =   "Outgoing";
     
-    //--------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Fields
-    //--------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     /**
      * Textarea that incoming data from the tunnel is dumped to.
@@ -123,29 +126,29 @@ public class TunnelPane extends JPanel implements IPreferenced
      */
     private TcpTunnel tunnel_;
 
-    //--------------------------------------------------------------------------
+    private JPanel trackerView_;
+    
+    // -------------------------------------------------------------------------
     // Constructors
-    //--------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     /**
      * Creates a TunnelPane.
      */
-    public TunnelPane()
-    {
-        buildView();
+    public TunnelPane() {
         tunnel_ = new TcpTunnel();
+        buildView();
     }
 
 
     /**
      * Creates a TunnelPane with the given parameters.
-     *
+     * 
      * @param listenPort Port to listen on.
      * @param remoteHost Host to tunnel to.
      * @param remotePort Port to tunnel to.
      */
-    public TunnelPane(int listenPort, String remoteHost, int remotePort)
-    {
+    public TunnelPane(int listenPort, String remoteHost, int remotePort) {
         buildView();
         setListenPort(listenPort);
         setRemoteHost(remoteHost);
@@ -153,17 +156,16 @@ public class TunnelPane extends JPanel implements IPreferenced
         tunnel_ = new TcpTunnel(listenPort, remoteHost, remotePort);
     }
 
-    //--------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Public
-    //--------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     /**
      * Returns the local listen port number.
-     *
+     * 
      * @return int
      */
-    public int getListenPort()
-    {
+    public int getListenPort() {
         return Integer.parseInt(listenPortField_.getText().trim());
     }
 
@@ -173,30 +175,27 @@ public class TunnelPane extends JPanel implements IPreferenced
      * 
      * @param listenPort Listen port.
      */
-    public void setListenPort(int listenPort)
-    {
+    public void setListenPort(int listenPort) {
         listenPortField_.setText(listenPort + "");
     }
     
 
     /**
      * Returns the text area for incoming data.
-     *
+     * 
      * @return JTextArea
      */
-    public JTextArea getIncomingTextArea()
-    {
+    public JTextArea getIncomingTextArea() {
         return incomingArea_;
     }
 
 
     /**
      * Returns host to forward traffic to.
-     *
+     * 
      * @return String
      */
-    public String getRemoteHost()
-    {
+    public String getRemoteHost() {
         return remoteHostField_.getText().trim();
     }
 
@@ -206,19 +205,17 @@ public class TunnelPane extends JPanel implements IPreferenced
      * 
      * @param remoteHost Remote host.
      */
-    public void setRemoteHost(String remoteHost)
-    {
+    public void setRemoteHost(String remoteHost) {
         remoteHostField_.setText(remoteHost);
     }
     
     
     /**
      * Returns port to forward traffic to.
-     *
+     * 
      * @return int
      */
-    public int getRemotePort()
-    {
+    public int getRemotePort() {
         return Integer.parseInt(remotePortField_.getText().trim());
     }
 
@@ -228,42 +225,38 @@ public class TunnelPane extends JPanel implements IPreferenced
      * 
      * @param remotePort Remote port.
      */
-    public void setRemotePort(int remotePort)
-    {
+    public void setRemotePort(int remotePort) {
         remotePortField_.setText(remotePort + "");
     }
 
     
     /**
      * Returns the text area for incoming data.
-     *
+     * 
      * @return JTextArea
      */
-    public JTextArea getOutgoingTextArea()
-    {
+    public JTextArea getOutgoingTextArea() {
         return outgoingArea_;
     }
 
 
     /**
      * Sets the status bar.
-     *
+     * 
      * @param statusBar Statusbar
      */
-    public void setStatusBar(IStatusBar statusBar)
-    {
+    public void setStatusBar(IStatusBar statusBar) {
         statusBar_ = statusBar;
     }
 
-    //--------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Protected
-    //--------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     /**
      * Constructs the user interface.
      */
-    protected void buildView()
-    {
+    protected void buildView() {
         setLayout(new BorderLayout());
 
         // Center
@@ -284,10 +277,12 @@ public class TunnelPane extends JPanel implements IPreferenced
                 new JSmartSplitPane(
                     JSplitPane.HORIZONTAL_SPLIT,
                     true,
+                    
                     incomingHeader_ = new JHeaderPanel(
                         "Sent to Remote Host",
                         createHeaderToolBar(incomingArea_),
                         new JScrollPane(incomingArea_)),
+                        
                     outgoingHeader_ = new JHeaderPanel(
                         "Received from Remote Host",
                         createHeaderToolBar(outgoingArea_),
@@ -302,7 +297,11 @@ public class TunnelPane extends JPanel implements IPreferenced
         JPanel actionPanel = new JPanel(new BorderLayout());
         JPanel buttonPanel = new JPanel();
 
-        buttonPanel.add(new JSmartButton(new StartTunnelAction()));
+        SmartAction startAction = new StartTunnelAction();
+        
+        //tunnel_.addTcpTunnelListener((TcpTunnelListener) startAction);
+        
+        buttonPanel.add(new JSmartButton(startAction));
         buttonPanel.add(new JSmartButton(new StopTunnelAction()));
         buttonPanel.add(new JSmartButton(new ClearAction()));
 
@@ -314,11 +313,22 @@ public class TunnelPane extends JPanel implements IPreferenced
         configFlipPane_.addFlipper(
             ImageCache.getIcon(ImageCache.IMAGE_CONFIG),
             "Config",
+            
             new JHeaderPanel(
                 ImageCache.getIcon(ImageCache.IMAGE_CONFIG),
                 "Config",
                 null,
                 buildConfigView()));
+
+        configFlipPane_.addFlipper(
+            ImageCache.getIcon(ImageCache.IMAGE_BAR_CHART),
+            "Tracker",
+            
+            new JHeaderPanel(
+                ImageCache.getIcon(ImageCache.IMAGE_BAR_CHART),
+                "Tracker",
+                null,
+                trackerView_ = buildTrackerView()));
 
         configFlipPane_.setExpanded(false);
 
@@ -327,10 +337,9 @@ public class TunnelPane extends JPanel implements IPreferenced
         // Done
 
         // Keep divider location in the middle if the window is resized
-        addComponentListener(new ComponentAdapter()
-        {
-            public void componentResized(ComponentEvent e)
-            {
+        addComponentListener(new ComponentAdapter() {
+
+            public void componentResized(ComponentEvent e) {
                 splitter_.setDividerLocation(0.5f);
             }
         });
@@ -342,8 +351,7 @@ public class TunnelPane extends JPanel implements IPreferenced
      * 
      * @return JPanel
      */
-    protected JPanel buildConfigView()
-    {
+    protected JPanel buildConfigView() {
         FormLayout layout = new FormLayout("r:p:n, p, f:p:g", "");
         DefaultFormBuilder builder = new DefaultFormBuilder(layout);
         builder.setComponentFactory(SmartComponentFactory.getInstance());
@@ -367,6 +375,12 @@ public class TunnelPane extends JPanel implements IPreferenced
 
         return builder.getPanel();
     }
+    
+    protected JPanel buildTrackerView() {
+        JPanel p = new JPanel(new GridLayout(10, 1));
+        p.add(new JLabel("TrackerView"));
+        return p;
+    }
 
     
     /**
@@ -376,8 +390,7 @@ public class TunnelPane extends JPanel implements IPreferenced
      * @param area Textarea.
      * @return JToolBar
      */
-    protected JToolBar createHeaderToolBar(JSmartTextArea area)
-    {
+    protected JToolBar createHeaderToolBar(JSmartTextArea area) {
         JToolBar tb = JHeaderPanel.createToolBar();
 
         tb.add(JHeaderPanel.createToggleButton(
@@ -401,15 +414,14 @@ public class TunnelPane extends JPanel implements IPreferenced
         return tb;
     }
 
-    //--------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // IPreferenced Interface
-    //--------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
-    /**
+    /*
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs) throws PreferencedException
-    {
+    public void applyPrefs(Element prefs) throws PreferencedException {
         Element root =
             XOMUtil.getFirstChildElement(
                 prefs,
@@ -438,11 +450,10 @@ public class TunnelPane extends JPanel implements IPreferenced
     }
 
 
-    /**
+    /*
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs) throws PreferencedException
-    {
+    public void savePrefs(Element prefs) throws PreferencedException {
         Element root = new Element(NODE_TCPTUNNEL_PLUGIN);
         tunnel_.savePrefs(root);
         configFlipPane_.savePrefs(root);
@@ -461,116 +472,121 @@ public class TunnelPane extends JPanel implements IPreferenced
         XOMUtil.insertOrReplace(prefs, root);
     }
 
-    //--------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // ClearAction
-    //--------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     /**
      * Clears the contents of the input and output text areas.
      */
-    class ClearAction extends AbstractAction
-    {
-        /**
-         * Creates a ClearAction.
-         */
-        ClearAction()
-        {
+    class ClearAction extends AbstractAction {
+        
+        ClearAction() {
             super("Clear", ImageCache.getIcon(ImageCache.IMAGE_CLEAR));
             putValue(SHORT_DESCRIPTION, "Clears both textareas");
         }
 
 
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
+        /*
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
-        public void actionPerformed(ActionEvent e)
-        {
+        public void actionPerformed(ActionEvent e) {
             incomingArea_.setText("");
             outgoingArea_.setText("");
         }
     }
 
-    //--------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // StartTunnelAction
-    //--------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     /**
      * Starts the tunnel.
      */
-    class StartTunnelAction extends SmartAction implements TcpTunnelListener
-    {
-        //----------------------------------------------------------------------
+    class StartTunnelAction extends SmartAction implements TcpTunnelListener {
+
+        // ---------------------------------------------------------------------
         // Constructors
-        //----------------------------------------------------------------------
+        // ---------------------------------------------------------------------
 
         /**
          * Creates a StartTunnelAction.
          */
-        StartTunnelAction()
-        {
+        StartTunnelAction() {
             super("Start", true, false, null);
             putValue(SMALL_ICON, ImageCache.getIcon(ImageCache.IMAGE_PLAY));
             putValue(SHORT_DESCRIPTION, "Starts the tunnel");
         }
 
-        //----------------------------------------------------------------------
+        // ---------------------------------------------------------------------
         // TcpTunnelListener Interface
-        //----------------------------------------------------------------------
+        // ---------------------------------------------------------------------
 
-        /**
-         * @see toolbox.tunnel.TcpTunnelListener#statusChanged(
-         *      toolbox.tunnel.TcpTunnel, java.lang.String)
+        /*
+         * @see toolbox.tunnel.TcpTunnelListener#statusChanged(toolbox.tunnel.TcpTunnel, java.lang.String)
          */
-        public void statusChanged(TcpTunnel tunnel, String status)
-        {
+        public void statusChanged(TcpTunnel tunnel, String status) {
+            logger_.debug("tunnel status changed: " + status);
             statusBar_.setInfo(status);
         }
 
 
-        /**
-         * @see toolbox.tunnel.TcpTunnelListener#bytesRead(
-         *      toolbox.tunnel.TcpTunnel, int, int)
+        /*
+         * @see toolbox.tunnel.TcpTunnelListener#bytesRead(toolbox.tunnel.TcpTunnel, int, int)
          */
         public void bytesRead(
             TcpTunnel tunnel,
             int connBytesRead,
-            int totalBytesRead)
-        {
-            incomingHeader_.setTitle(
-                "Sent to Remote Host: " + connBytesRead + " conn  " +
-                totalBytesRead + " total");
+            int totalBytesRead) {
+            incomingHeader_.setTitle("Sent to Remote Host: "
+                + connBytesRead
+                + " conn  "
+                + totalBytesRead
+                + " total");
         }
 
 
-        /**
-         * @see toolbox.tunnel.TcpTunnelListener#bytesWritten(
-         *      toolbox.tunnel.TcpTunnel, int, int)
+        /*
+         * @see toolbox.tunnel.TcpTunnelListener#bytesWritten(toolbox.tunnel.TcpTunnel, int, int)
          */
         public void bytesWritten(
             TcpTunnel tunnel,
             int connBytesWritten,
-            int totalBytesWritten)
-        {
-            outgoingHeader_.setTitle(
-                "Received from Remote Host: " + connBytesWritten + " conn  " +
-                totalBytesWritten + " total");
+            int totalBytesWritten) {
+            outgoingHeader_.setTitle("Received from Remote Host: "
+                + connBytesWritten
+                + " conn  "
+                + totalBytesWritten
+                + " total");
         }
 
 
-        /**
-         * @see toolbox.tunnel.TcpTunnelListener#tunnelStarted(
-         *      toolbox.tunnel.TcpTunnel)
+        /*
+         * @see toolbox.tunnel.TcpTunnelListener#tunnelStarted(toolbox.tunnel.TcpTunnel)
          */
-        public void tunnelStarted(TcpTunnel tunnel)
-        {
+        public void tunnelStarted(TcpTunnel tunnel) {
+            logger_.debug("tunnel started");
             statusBar_.setInfo("Tunnel started");
         }
 
-
-        /**
-         * @see toolbox.util.ui.SmartAction#runAction(
-         *      java.awt.event.ActionEvent)
+        
+        /*
+         * @see toolbox.tunnel.TcpTunnelListener#newConnection(toolbox.util.io.MonitoredOutputStream, toolbox.util.io.MonitoredOutputStream)
+         */
+        public void newConnection(
+            MonitoredOutputStream incomingSink, 
+            MonitoredOutputStream outgoingSink) {
+            
+            logger_.debug("newConnection!");
+            
+            ConnectionTrackerView tracker = 
+                new ConnectionTrackerView(incomingSink, outgoingSink);
+            
+            trackerView_.add(tracker);
+        }
+        
+        /*
+         * @see toolbox.util.ui.SmartAction#runAction(java.awt.event.ActionEvent)
          */
         public void runAction(ActionEvent e) throws Exception
         {
@@ -588,62 +604,56 @@ public class TunnelPane extends JPanel implements IPreferenced
             tunnel_.setOutgoingSink(new BufferedOutputStream(//System.err));
                 new JTextAreaOutputStream(incomingArea_) /*, 20480 */ ));
 
-            tunnel_.addTcpTunnelListener(this);
+            tunnel_.addTcpTunnelListener(StartTunnelAction.this);
             tunnel_.start();
         }
     }
 
-    //--------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // StopTunnelAction
-    //--------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     /**
      * Stops the tunnel.
      */
-    class StopTunnelAction extends AbstractAction
-    {
+    class StopTunnelAction extends AbstractAction {
+
         /**
          * Creates a StopTunnelAction.
          */
-        StopTunnelAction()
-        {
+        StopTunnelAction() {
             super("Stop", ImageCache.getIcon(ImageCache.IMAGE_STOP));
             putValue(SHORT_DESCRIPTION, "Stops the tunnel");
         }
 
 
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
+        /*
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
-        public void actionPerformed(ActionEvent e)
-        {
+        public void actionPerformed(ActionEvent e) {
             tunnel_.stop();
         }
     }
 
-    //--------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // SupressBinaryAction
-    //--------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     /**
      * Toggles suppressing of binary data from showing up in the output.
      */
-    public class SupressBinaryAction extends AbstractAction
-    {
-        public SupressBinaryAction()
-        {
+    public class SupressBinaryAction extends AbstractAction {
+
+        public SupressBinaryAction() {
             super(null, ImageCache.getIcon(ImageCache.IMAGE_FUNNEL));
             putValue(SHORT_DESCRIPTION, "Supresses Binary Data");
         }
-        
-        
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
+
+
+        /*
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
-        public void actionPerformed(ActionEvent e)
-        {
+        public void actionPerformed(ActionEvent e) {
             tunnel_.setSuppressBinary(!tunnel_.isSuppressBinary());
         }
     }
