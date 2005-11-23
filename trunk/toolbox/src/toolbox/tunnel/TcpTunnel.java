@@ -515,7 +515,7 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
     }
 
     
-    /**
+    /*
      * @see toolbox.util.service.Startable#isRunning()
      */
     public boolean isRunning()
@@ -527,7 +527,7 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
     // Service Interface
     //--------------------------------------------------------------------------
     
-    /**
+    /*
      * @see toolbox.util.service.Service#getState()
      */
     public ServiceState getState()
@@ -539,7 +539,7 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
     // IPreferenced Interface
     //--------------------------------------------------------------------------
 
-    /**
+    /*
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
     public void applyPrefs(Element prefs) throws PreferencedException
@@ -550,7 +550,7 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
     }
 
 
-    /**
+    /*
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
     public void savePrefs(Element prefs) throws PreferencedException
@@ -624,51 +624,68 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
             ((TcpTunnelListener) i.next()).tunnelStarted(this);
     }
 
+    
+    protected void fireNewConnection(
+        MonitoredOutputStream mis, 
+        MonitoredOutputStream mos) {
+        
+        logger_.debug("fireNewConnection: " + listeners_);
+        
+        for (Iterator i = listeners_.iterator(); i.hasNext();)
+            ((TcpTunnelListener) i.next()).newConnection(mis, mos);
+    }
+    
     //--------------------------------------------------------------------------
     // TcpTunnelListener Interface
     //--------------------------------------------------------------------------
 
-    /**
-     * @see toolbox.tunnel.TcpTunnelListener#statusChanged(
-     *      toolbox.tunnel.TcpTunnel, java.lang.String)
+    /*
+     * @see toolbox.tunnel.TcpTunnelListener#statusChanged(toolbox.tunnel.TcpTunnel, java.lang.String)
      */
-    public void statusChanged(TcpTunnel tunnel, String status)
-    {
+    public void statusChanged(TcpTunnel tunnel, String status) {
         System.out.println("[Status changed: " + status + "]");
     }
 
 
-    /**
-     * @see toolbox.tunnel.TcpTunnelListener#bytesRead(
-     *      toolbox.tunnel.TcpTunnel, int, int)
+    /*
+     * @see toolbox.tunnel.TcpTunnelListener#bytesRead(toolbox.tunnel.TcpTunnel, int, int)
      */
-    public void bytesRead(TcpTunnel tunnel, int connBytesRead,
-                          int totalBytesRead)
-    {
+    public void bytesRead(
+        TcpTunnel tunnel,
+        int connBytesRead,
+        int totalBytesRead) {
         System.out.println("[Bytes read: " + connBytesRead + "]");
     }
 
 
-    /**
-     * @see toolbox.tunnel.TcpTunnelListener#bytesWritten(
-     *      toolbox.tunnel.TcpTunnel, int, int)
+    /*
+     * @see toolbox.tunnel.TcpTunnelListener#bytesWritten(toolbox.tunnel.TcpTunnel, int, int)
      */
-    public void bytesWritten(TcpTunnel tunnel, int connBytesWritten,
-                             int totalBytesWritten)
-    {
+    public void bytesWritten(
+        TcpTunnel tunnel,
+        int connBytesWritten,
+        int totalBytesWritten) {
         System.out.println("[Bytes written: " + connBytesWritten + "]");
     }
 
 
-    /**
-     * @see toolbox.tunnel.TcpTunnelListener#tunnelStarted(
-     *      toolbox.tunnel.TcpTunnel)
+    /*
+     * @see toolbox.tunnel.TcpTunnelListener#tunnelStarted(toolbox.tunnel.TcpTunnel)
      */
-    public void tunnelStarted(TcpTunnel tunnel)
-    {
+    public void tunnelStarted(TcpTunnel tunnel) {
         System.out.println("Tunnel started");
     }
 
+    
+    /*
+     * @see toolbox.tunnel.TcpTunnelListener#newConnection(toolbox.util.io.MonitoredOutputStream, toolbox.util.io.MonitoredOutputStream)
+     */
+    public void newConnection(
+        MonitoredOutputStream incomingSink, 
+        MonitoredOutputStream outgoingSink) {
+        System.out.println("New connection!");
+    }
+    
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
@@ -705,7 +722,7 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
      */
     class ServerThread implements Runnable
     {
-        /**
+        /*
          * @see java.lang.Runnable#run()
          */
         public void run()
@@ -739,36 +756,35 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
                     
 //==============================================================================
 //
-//                                                              +--------> outgoingSink_
-//                                                              |
-//                                                              +--------> eos (event output stream)
-//                                                 |outStreams  |
-//        cs.getInputStream()------------>| =====> |---------------------> rs.getOutputStream()
+//                                                              +---output to console------> printableOutgoingSink_(outgoingSink_)
+//                                        | tunnel |            |
+//                                        |        |            +---monitor stream---------> MonitoredOutputStream mos
+//                                        |        | outStreams |
+//    client.getInputStream()------------>| r--w-> |----------------intended recipient-----> remote.getOutputStream()
 //                                        |        |
-//                            instreams   | tunnel |
 //                                        |        |
-//     cs.getOutputStream()<--------------| <===== |<------------ rs.geInputStream()
+//                            inStreams   |        |
+// client.getOutputStream()<--------------| <-w--r |<------------ remote.geInputStream()
 //                          |             |        |
-//     eventinputstream<----+
-//                          |
+//     eventinputstream<----+             |        |
+//                          |             |        |
 //     incomingSink_<-------+
 //
 // =============================================================================
 
                     //----------Outgoing streams--------------------------------
-                    
-                    MulticastOutputStream outStreams = new MulticastOutputStream();
-                    outStreams.addStream(remote.getOutputStream());
 
                     MonitoredOutputStream mos = new MonitoredOutputStream(
                         NAME_STREAM_OUT, new NullOutputStream());
 
                     mos.addOutputStreamListener(new MyOutputStreamListener());
-                    outStreams.addStream(mos);
 
                     printableOutgoingSink_ = new PrintableOutputStream(
                         outgoingSink_, supressBinary_, SUBSTITUTION_CHAR);
 
+                    MulticastOutputStream outStreams = new MulticastOutputStream();
+                    outStreams.addStream(remote.getOutputStream());
+                    outStreams.addStream(mos);
                     outStreams.addStream(printableOutgoingSink_);
 
                     //----------Incoming streams--------------------------------
@@ -788,6 +804,8 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
                     inStreams.addStream(printableIncomingSink_);
 
                     //----------------------------------------------------------
+                    
+                    fireNewConnection(mis, mos);
                     
                     new Thread(new Relay(
                         new BufferedInputStream(client.getInputStream()),
@@ -859,9 +877,8 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
         }
      
         
-        /**
-         * @see toolbox.util.io.MonitoredOutputStream.OutputStreamListener
-         *      #streamFlushed(toolbox.util.io.MonitoredOutputStream)
+        /*
+         * @see toolbox.util.io.MonitoredOutputStream.OutputStreamListener#streamFlushed(toolbox.util.io.MonitoredOutputStream)
          */
         public void streamFlushed(MonitoredOutputStream stream)
         {
