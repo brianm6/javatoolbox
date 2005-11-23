@@ -3,10 +3,12 @@
  */
 package toolbox.plugin.tunnel;
 
-import java.awt.FlowLayout;
+import java.awt.GridLayout;
 
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.BevelBorder;
 
 import toolbox.util.io.MonitoredOutputStream;
 import toolbox.util.io.MonitoredOutputStream.OutputStreamListener;
@@ -20,6 +22,8 @@ public class ConnectionTrackerView extends JPanel {
     private OutputStreamListener incomingListener;
     private OutputStreamListener outgoingListener;
     
+    private JLabel incomingLabel;
+    private JLabel outgoingLabel;
     private JLabel transferredLabel;
     
     
@@ -40,22 +44,38 @@ public class ConnectionTrackerView extends JPanel {
     }
 
     protected void buildView() {
-        setLayout(new FlowLayout());
-        transferredLabel = new JSmartLabel("0");
-        add(transferredLabel);
+        setLayout(new GridLayout(3,2));
+        
+        add(new JLabel("Incoming bytes:"));
+        add(incomingLabel = new JLabel("0"));
+        add(new JLabel("Outgoing bytes:"));
+        add(outgoingLabel = new JLabel("0"));
+        add(new JLabel("Total butes:"));
+        add(transferredLabel = new JSmartLabel("0"));
+        
+        setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
     }
     
     
     class UniDirectionalListener implements OutputStreamListener {
     
         public void streamClosed(MonitoredOutputStream stream) {
+            long in = incomingSink.getCount();
+            long out = outgoingSink.getCount();
+            
+            incomingLabel.setText("" + in);
+            outgoingLabel.setText("" + out);
             transferredLabel.setText(
-                "Closed " + (incomingSink.getCount() + outgoingSink.getCount()));
+                "Closed " + (in + out));
         }
         
         public void streamFlushed(MonitoredOutputStream stream) {
-            transferredLabel.setText(
-                "" + (incomingSink.getCount() + outgoingSink.getCount()));
+            long in = incomingSink.getCount();
+            long out = outgoingSink.getCount();
+            
+            incomingLabel.setText("" + in);
+            outgoingLabel.setText("" + out);
+            transferredLabel.setText("" + (in + out));
         }
     }
 }
