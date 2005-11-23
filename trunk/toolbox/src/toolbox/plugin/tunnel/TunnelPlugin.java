@@ -16,28 +16,27 @@ import toolbox.workspace.PreferencedException;
 /**
  * Plugin wrapper for JTcpTunnel.
  */
-public class TunnelPlugin extends AbstractPlugin
-{
-    //--------------------------------------------------------------------------
+public class TunnelPlugin extends AbstractPlugin {
+
+    // -------------------------------------------------------------------------
     // Fields
-    //--------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     /**
      * UI Delegate.
      */
     private TunnelPane delegate_;
 
-    //--------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Initializable Interface
-    //--------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
-    /**
+    /*
      * @see toolbox.util.service.Initializable#initialize(java.util.Map)
      */
-    public void initialize(Map params) throws ServiceException
-    {
+    public void initialize(Map params) throws ServiceException {
         checkTransition(ServiceTransition.INITIALIZE);
-        
+
         IStatusBar statusBar = null;
 
         if (params != null)
@@ -45,72 +44,66 @@ public class TunnelPlugin extends AbstractPlugin
 
         delegate_ = new TunnelPane();
         delegate_.setStatusBar(statusBar);
-        
+
         transition(ServiceTransition.INITIALIZE);
     }
 
-    //--------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // IPlugin Interface
-    //--------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
-    /**
+    /*
      * @see toolbox.workspace.IPlugin#getPluginName()
      */
-    public String getPluginName()
-    {
+    public String getPluginName() {
         return "TCP Tunnel";
     }
 
 
-    /**
+    /*
      * @see toolbox.workspace.IPlugin#getDescription()
      */
-    public String getDescription()
-    {
-        return "TCP Tunnel allows you to snoop on incoming/outgoing traffic " +
-               "by creating an intermediate 'tunnel proxy' between two TCP " +
-               "connection endpoints.";
+    public String getDescription() {
+        return "TCP Tunnel allows you to snoop on incoming/outgoing traffic "
+            + "by creating an intermediate 'tunnel proxy' between two TCP "
+            + "connection endpoints.";
     }
 
 
-    /**
+    /*
      * @see toolbox.workspace.IPlugin#getView()
      */
-    public JComponent getView()
-    {
+    public JComponent getView() {
         return delegate_;
     }
 
-    //--------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // IPreferenced Interface
-    //--------------------------------------------------------------------------
-    
-    /**
+    // -------------------------------------------------------------------------
+
+    /*
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs) throws PreferencedException
-    {
+    public void applyPrefs(Element prefs) throws PreferencedException {
         delegate_.applyPrefs(prefs);
     }
 
 
-    /**
+    /*
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs) throws PreferencedException
-    {
+    public void savePrefs(Element prefs) throws PreferencedException {
         delegate_.savePrefs(prefs);
     }
 
-    //--------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Destroyable Interface
-    //--------------------------------------------------------------------------
-    
-    /**
+    // -------------------------------------------------------------------------
+
+    /*
      * @see toolbox.util.service.Destroyable#destroy()
      */
-    public void destroy() throws ServiceException
-    {
+    public void destroy() throws ServiceException {
         checkTransition(ServiceTransition.DESTROY);
         delegate_ = null;
         transition(ServiceTransition.DESTROY);
