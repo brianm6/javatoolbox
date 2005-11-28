@@ -1,4 +1,3 @@
-
 package toolbox.util.ui.table;
 
 import java.awt.Color;
@@ -62,6 +61,15 @@ import org.apache.log4j.Logger;
  * </ul>
  * <p/>This is a long overdue rewrite of a class of the same name that first
  * appeared in the swing table demos in 1997.
+ * <p>
+ * 
+ * Example:
+ * <pre>
+ * DefaultTableModel model = new DefaultTableModel(new String[] {"Co1", "Col2"}, 0);
+ * TableSorter sorter = new TableSorter(model);
+ * JTable table = new JTable(sorter);
+ * sorter.setTableHeader(table.getTableHeader());
+ * </pre>
  * 
  * @author Philip Milne
  * @author Brendon McLean
