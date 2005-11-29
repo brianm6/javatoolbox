@@ -9,14 +9,12 @@ import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import javax.swing.Icon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
@@ -43,11 +41,11 @@ import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartFileChooser;
 import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartOptionPane;
-import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.SmartAction;
 import toolbox.util.ui.layout.StackLayout;
 import toolbox.util.ui.plaf.LookAndFeelUtil;
+import toolbox.util.ui.tabbedpane.JSmartTabbedPane;
 
 /**
  * Directory Monitor GUI that sits in the Windows System Tray.
@@ -91,7 +89,7 @@ public class DirMon extends JFrame implements ActionListener,
     
     private SysTrayMenu menu_;
 
-    private JSmartTextArea messageArea_;
+    //private JSmartTextArea messageArea_;
 
     private JSmartButton addDirButton_;
 
@@ -108,6 +106,10 @@ public class DirMon extends JFrame implements ActionListener,
     private DateFormat dateTimeFormat = SimpleDateFormat.getDateTimeInstance();
     
     private Toaster toaster_;
+    
+    private ConsoleView consoleView_;
+
+    private TableView tableView_;
     
     // -------------------------------------------------------------------------
     // Main
@@ -211,6 +213,14 @@ public class DirMon extends JFrame implements ActionListener,
         ICON_DIRMON.addSysTrayMenuListener(this);
         ICON_DIRMON_ALERT.addSysTrayMenuListener(this);
 
+        JSmartTabbedPane tabbedPane = new JSmartTabbedPane(false);
+        
+        consoleView_ = new ConsoleView();
+        tableView_ = new TableView();
+        
+        tabbedPane.addTab("Console", consoleView_);
+        tabbedPane.addTab("Table", tableView_);
+        
         JPanel p = new JPanel(new FlowLayout());
         dirField_ = new JSmartTextField(40);
         delayField_ = new JSmartTextField(DEFAULT_DELAY + "", 4);
@@ -224,18 +234,13 @@ public class DirMon extends JFrame implements ActionListener,
         p.add(new JSmartLabel("Delay"));
         p.add(delayField_);
         p.add(new JSmartLabel("minutes"));
-
-        messageArea_ = new JSmartTextArea("Welcome!\n", true, true);
-        messageArea_.setRows(10);
-        messageArea_.setColumns(80);
-        messageArea_.setFont(FontUtil.getPreferredMonoFont());
+        
+        viewStack_ = new JPanel(new StackLayout(StackLayout.VERTICAL));
 
         Container contentPane = getContentPane();
         contentPane.setLayout(new BorderLayout());
-        contentPane.add(BorderLayout.CENTER, new JScrollPane(messageArea_));
+        contentPane.add(BorderLayout.CENTER, tabbedPane);
         contentPane.add(BorderLayout.NORTH, p);
-        
-        viewStack_ = new JPanel(new StackLayout(StackLayout.VERTICAL));
         contentPane.add(BorderLayout.SOUTH, viewStack_);
         
         // create the menu
@@ -346,14 +351,26 @@ public class DirMon extends JFrame implements ActionListener,
             else {
                 DirectoryMonitor dm = new DirectoryMonitor(f, true);
 
-                dm.setDelay(
-                    Integer.parseInt(delayField_.getText().trim()) * 1000 * 60);
+                String delayValue = delayField_.getText().trim();
+                
+                // seconds
+                if (delayValue.endsWith("s")) {
+                    delayValue = delayValue.substring(0, delayValue.length() - 1);
+                    dm.setDelay(Integer.parseInt(delayValue) * 1000);
+                }
+                
+                // minutes
+                else {
+                    dm.setDelay(Integer.parseInt(delayValue) * 1000 * 60);
+                }
                 
                 dm.addDirectory(f);
                 dm.addRecognizer(new FileCreatedRecognizer(dm));
                 dm.addRecognizer(new FileDeletedRecognizer(dm));
                 dm.addRecognizer(new FileChangedRecognizer(dm));
-                dm.addDirectoryMonitorListener(new DirectoryMonitorListener());
+                dm.addDirectoryMonitorListener(new SystemTrayUpdater());
+                dm.addDirectoryMonitorListener(consoleView_);
+                dm.addDirectoryMonitorListener(tableView_);
                 DirectoryMonitorView monitorView = new DirectoryMonitorView(dm);
                 viewStack_.add(monitorView);
                 dm.start();
@@ -363,42 +380,21 @@ public class DirMon extends JFrame implements ActionListener,
     }
 
     // -------------------------------------------------------------------------
-    // DirectoryMonitorListener
+    // SystemTrayUpdater
     // -------------------------------------------------------------------------
     
-    class DirectoryMonitorListener implements IDirectoryMonitorListener {
+    class SystemTrayUpdater implements IDirectoryMonitorListener {
 
         public void directoryActivity(
             DirectoryMonitorEvent event) throws Exception {
             
-            StringBuffer msg = new StringBuffer();
+            //StringBuffer msg = new StringBuffer();
             StringBuffer shortMsg = new StringBuffer();
             Icon toasterIcon = null;
             
             switch (event.getEventType()) {
             
                 case DirectoryMonitorEvent.TYPE_CHANGED :
-                    
-                    msg.append(
-                        "File changed: " 
-                        + event.getAfterSnapshot().getAbsolutePath() 
-                        + "\n");
-                    
-                    msg.append(
-                        "Size        : " 
-                        + event.getBeforeSnapshot().getLength() 
-                        + " -> " 
-                        + event.getAfterSnapshot().getLength()
-                        + "\n");
-                    
-                    msg.append(
-                        "Timestamp   : " 
-                        + dateTimeFormat.format(new Date(
-                            event.getBeforeSnapshot().getLastModified())) 
-                        + " -> " 
-                        + dateTimeFormat.format(new Date(
-                            event.getAfterSnapshot().getLastModified()))
-                        + "\n");
                     
                     shortMsg.append("Modified: ");
                     shortMsg.append(FilenameUtils.getName(
@@ -409,22 +405,6 @@ public class DirMon extends JFrame implements ActionListener,
                     
                 case DirectoryMonitorEvent.TYPE_CREATED :
                     
-                    msg.append(
-                        "File created: " 
-                        + event.getAfterSnapshot().getAbsolutePath() 
-                        + "\n");
-                    
-                    msg.append(
-                        "Size        : " 
-                        + event.getAfterSnapshot().getLength()
-                        + "\n");
-                    
-                    msg.append(
-                        "Timestamp   : " 
-                        + dateTimeFormat.format(new Date(
-                            event.getAfterSnapshot().getLastModified()))
-                        + "\n");
-                    
                     shortMsg.append("Created: ");
                     shortMsg.append(FilenameUtils.getName(
                         event.getAfterSnapshot().getAbsolutePath()));
@@ -433,22 +413,6 @@ public class DirMon extends JFrame implements ActionListener,
                     break;
 
                 case DirectoryMonitorEvent.TYPE_DELETED :
-                    
-                    msg.append(
-                        "File deleted: " 
-                        + event.getBeforeSnapshot().getAbsolutePath() 
-                        + "\n");
-                    
-                    msg.append(
-                        "Size        : " 
-                        + event.getBeforeSnapshot().getLength() 
-                        + "\n");
-                    
-                    msg.append(
-                        "Timestamp   : " 
-                        + dateTimeFormat.format(new Date(
-                            event.getBeforeSnapshot().getLastModified())) 
-                        + "\n");
                     
                     shortMsg.append("Deleted: ");
                     shortMsg.append(FilenameUtils.getName(
@@ -463,11 +427,8 @@ public class DirMon extends JFrame implements ActionListener,
                         + event.getEventType());
             }
     
-            messageArea_.append(msg.toString());
-            messageArea_.append("\n");
             menu_.setToolTip(shortMsg.toString());
             menu_.setIcon(ICON_DIRMON_ALERT);
-            
             toaster_.showToaster(toasterIcon, shortMsg.toString());
         }
     }
