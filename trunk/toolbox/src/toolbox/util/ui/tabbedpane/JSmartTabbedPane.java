@@ -147,12 +147,35 @@ public class JSmartTabbedPane extends JTabbedPane implements AntiAliased
     // Overrides JTabbedPane
     //--------------------------------------------------------------------------
 
-    /**
+    /*
      * @see javax.swing.JTabbedPane#addTab(java.lang.String, java.awt.Component)
      */
     public void addTab(String title, Component component)
     {
         addTab(title, component, closeIcon_);
+    }
+    
+    /*
+     * @see javax.swing.JTabbedPane#insertTab(java.lang.String, javax.swing.Icon, java.awt.Component, java.lang.String, int)
+     */
+    public void insertTab(
+        String title, 
+        Icon icon, 
+        Component component, 
+        String tip, 
+        int index) {
+        
+        if (closeable_ && icon == null)
+            icon = new SmartTabbedPaneIcon(closeIcon_);
+        else if (closeable_ && icon != null)
+            icon = new SmartTabbedPaneIcon(icon);
+        
+        super.insertTab(
+            title, 
+            icon, 
+            component, 
+            tip, 
+            index);
     }
     
     //--------------------------------------------------------------------------
