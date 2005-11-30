@@ -1,12 +1,12 @@
 package toolbox.util.service;
 
 /**
- * Implemented by services which are destroyable. 
+ * Implemented by services which are destroyable.
  * 
  * @see toolbox.util.service.Initializable
  */
-public interface Destroyable extends Service
-{
+public interface Destroyable extends Service {
+
     /**
      * Destroys this service.
      * 
@@ -14,4 +14,6 @@ public interface Destroyable extends Service
      * @throws ServiceException on destroy error.
      */
     void destroy() throws IllegalStateException, ServiceException;
+
+    // TODO: add method isDestroyed()
 }
