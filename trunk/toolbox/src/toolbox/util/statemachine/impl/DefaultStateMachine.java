@@ -22,8 +22,34 @@ import toolbox.util.statemachine.Transition;
  * 
  * @see toolbox.util.statemachine.StateMachineFactory
  */
-public class DefaultStateMachine implements StateMachine
-{
+public class DefaultStateMachine implements StateMachine {
+    
+    // TODO: How to handle a state transition where the current and target 
+    //       states are the same? What to do if trying to stop a machine that
+    //       is already stopped?
+    //
+    //       1. warning - hey you can't do that but it doesn't generate an
+    //                    exception
+    //       2. allow flag in state machine to ignore these requests
+    //       3. allow flag in state machine to ignore these requests with a warning
+    
+    // TODO: How to handle automatic state transition for convenience sake?
+    //       
+    //       For given machine: [SUSPENDED]-->resume-->[RUNNING]-->stop-->[STOPPED]-->destroy-->[DESTROYED]
+    //
+    //       Given current state = SUSPENDED
+    // 
+    //       Request transition = DESTROY
+    //
+    //       What should the state machine do? 
+    //
+    //       1. Currently, transiton is not supported and exception is thrown
+    //       2. Have the machine automatically resume and stop to get to destroy
+    //          Is this really the responsibility of the machine or a smart agent
+    //          that enhances the operation of the machine? Decorate the machine???
+    //       
+    
+    
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
@@ -81,8 +107,7 @@ public class DefaultStateMachine implements StateMachine
     /**
      * Creates a DefaultStateMachine.
      */
-    public DefaultStateMachine()
-    {
+    public DefaultStateMachine() {
         this("");
     }
 
@@ -92,8 +117,7 @@ public class DefaultStateMachine implements StateMachine
      * 
      * @param name Name of the state machine.
      */
-    public DefaultStateMachine(String name)
-    {
+    public DefaultStateMachine(String name) {
         setName(name);
         listeners_    = new ArrayList(1);
         states_       = new ArrayList();
@@ -111,8 +135,7 @@ public class DefaultStateMachine implements StateMachine
      * 
      * @see toolbox.util.statemachine.StateMachine#reset()
      */
-    public void reset()
-    {
+    public void reset() {
         currentState_   = beginState_;
         previousState_  = null;
         lastTransition_ = null;
@@ -120,12 +143,10 @@ public class DefaultStateMachine implements StateMachine
     }
     
     
-    /**
-     * @see toolbox.util.statemachine.StateMachine#setBeginState(
-     *      toolbox.util.statemachine.State)
+    /*
+     * @see toolbox.util.statemachine.StateMachine#setBeginState(toolbox.util.statemachine.State)
      */
-    public void setBeginState(State state)
-    {
+    public void setBeginState(State state) {
         // Validate state exists
         Validate.isTrue(states_.contains(state), 
             "State '" 
@@ -138,12 +159,10 @@ public class DefaultStateMachine implements StateMachine
     }
     
     
-    /**
-     * @see toolbox.util.statemachine.StateMachine#addState(
-     *      toolbox.util.statemachine.State)
+    /*
+     * @see toolbox.util.statemachine.StateMachine#addState(toolbox.util.statemachine.State)
      */
-    public void addState(State state)
-    {
+    public void addState(State state) {
         Validate.isTrue(!states_.contains(state), 
             "State '" 
             + state.getName() 
@@ -155,16 +174,14 @@ public class DefaultStateMachine implements StateMachine
     }
 
 
-    /**
-     * @see toolbox.util.statemachine.StateMachine#addTransition(
-     *      toolbox.util.statemachine.Transition,
-     *      toolbox.util.statemachine.State, toolbox.util.statemachine.State)
+    /*
+     * @see toolbox.util.statemachine.StateMachine#addTransitiontoolbox.util.statemachine.Transition, toolbox.util.statemachine.State, toolbox.util.statemachine.State)
      */
     public void addTransition(
         Transition transition, 
         State fromState, 
-        State toState)
-    {
+        State toState) {
+        
         // Verify fromState exists ---------------------------------------------
         
         Validate.isTrue(states_.contains(fromState), 
@@ -203,14 +220,12 @@ public class DefaultStateMachine implements StateMachine
     }
 
     
-    /**
-     * @see toolbox.util.statemachine.StateMachine#transition(
-     *      toolbox.util.statemachine.Transition)
+    /*
+     * @see toolbox.util.statemachine.StateMachine#transition(toolbox.util.statemachine.Transition)
      */
-    public State transition(Transition stimulus)
-    {
+    public State transition(Transition stimulus) {
         checkTransition(stimulus);
-        
+
         State targetState = (State) fromStateMap_.get(currentState_, stimulus);
         previousState_ = currentState_;
         currentState_ = targetState;
@@ -220,23 +235,19 @@ public class DefaultStateMachine implements StateMachine
     }
 
 
-    /**
-     * @see toolbox.util.statemachine.StateMachine#canTransition(
-     *      toolbox.util.statemachine.Transition)
+    /*
+     * @see toolbox.util.statemachine.StateMachine#canTransition(toolbox.util.statemachine.Transition)
      */
-    public boolean canTransition(Transition transition)
-    {
+    public boolean canTransition(Transition transition) {
         return fromStateMap_.containsKey(currentState_, transition);
     }
 
     
-    /**
-     * @see toolbox.util.statemachine.StateMachine#checkTransition(
-     *      toolbox.util.statemachine.Transition)
+    /*
+     * @see toolbox.util.statemachine.StateMachine#checkTransition(toolbox.util.statemachine.Transition)
      */
-    public void checkTransition(Transition transition) 
-        throws IllegalStateException
-    {
+    public void checkTransition(Transition transition)
+        throws IllegalStateException {
         if (!canTransition(transition))
             throw new IllegalStateException(
                 "No transitions exist from state '" 
@@ -247,11 +258,10 @@ public class DefaultStateMachine implements StateMachine
     }
     
     
-    /**
+    /*
      * @see toolbox.util.statemachine.StateMachine#getStates()
      */
-    public List getStates()
-    {
+    public List getStates() {
         Transformer fromTrans = 
             TransformerUtils.invokerTransformer("getFromState");
         
@@ -276,11 +286,10 @@ public class DefaultStateMachine implements StateMachine
     }
 
     
-    /**
+    /*
      * @see toolbox.util.statemachine.StateMachine#getTransitions()
      */
-    public List getTransitions()
-    {
+    public List getTransitions() {
         Set transitions = new HashSet(tuples_);
         
         CollectionUtils.transform(
@@ -291,16 +300,14 @@ public class DefaultStateMachine implements StateMachine
     }
     
     
-    /**
-     * @see toolbox.util.statemachine.StateMachine#getTransitionsFrom(
-     *      toolbox.util.statemachine.State)
+    /*
+     * @see toolbox.util.statemachine.StateMachine#getTransitionsFrom(toolbox.util.statemachine.State)
      */
-    public List getTransitionsFrom(final State state)
-    {
-        Transformer t = new Transformer()
-        {
-            public Object transform(Object input)
-            {
+    public List getTransitionsFrom(final State state) {
+        
+        Transformer t = new Transformer() {
+            
+            public Object transform(Object input) {
                 Transition result = null;
                 Tuple tuple = (Tuple) input;
                 
@@ -317,16 +324,14 @@ public class DefaultStateMachine implements StateMachine
     }
     
     
-    /**
-     * @see toolbox.util.statemachine.StateMachine#getTransitionsTo(
-     *      toolbox.util.statemachine.State)
+    /*
+     * @see toolbox.util.statemachine.StateMachine#getTransitionsTo(toolbox.util.statemachine.State)
      */
-    public List getTransitionsTo(final State state)
-    {
-        Transformer t = new Transformer()
-        {
-            public Object transform(Object input)
-            {
+    public List getTransitionsTo(final State state) {
+        
+        Transformer t = new Transformer() {
+            
+            public Object transform(Object input) {
                 Transition result = null;
                 Tuple tuple = (Tuple) input;
                 
@@ -343,49 +348,42 @@ public class DefaultStateMachine implements StateMachine
     }
     
     
-    /**
+    /*
      * @see toolbox.util.statemachine.StateMachine#getState()
      */
-    public State getState()
-    {
+    public State getState() {
         return currentState_;
     }
 
 
-    /**
+    /*
      * @see toolbox.util.statemachine.StateMachine#getLastTransition()
      */
-    public Transition getLastTransition()
-    {
+    public Transition getLastTransition() {
         return lastTransition_;
     }
 
 
-    /**
+    /*
      * @see toolbox.util.statemachine.StateMachine#getPreviousState()
      */
-    public State getPreviousState()
-    {
+    public State getPreviousState() {
         return previousState_;
     }
 
 
-    /**
-     * @see toolbox.util.statemachine.StateMachine#addStateMachineListener(
-     *      toolbox.util.statemachine.StateMachineListener)
+    /*
+     * @see toolbox.util.statemachine.StateMachine#addStateMachineListener(toolbox.util.statemachine.StateMachineListener)
      */
-    public void addStateMachineListener(StateMachineListener listener)
-    {
+    public void addStateMachineListener(StateMachineListener listener) {
         listeners_.add(listener);
     }
 
 
-    /**
-     * @see toolbox.util.statemachine.StateMachine#removeStateMachineListener(
-     *      toolbox.util.statemachine.StateMachineListener)
+    /*
+     * @see toolbox.util.statemachine.StateMachine#removeStateMachineListener(toolbox.util.statemachine.StateMachineListener)
      */
-    public void removeStateMachineListener(StateMachineListener listener)
-    {
+    public void removeStateMachineListener(StateMachineListener listener) {
         listeners_.remove(listener);
     }
     
@@ -393,20 +391,18 @@ public class DefaultStateMachine implements StateMachine
     // Nameable Interface
     //--------------------------------------------------------------------------
     
-    /**
+    /*
      * @see toolbox.util.service.Nameable#getName()
      */
-    public String getName()
-    {
+    public String getName() {
         return name_;
     }
 
     
-    /**
+    /*
      * @see toolbox.util.service.Nameable#setName(java.lang.String)
      */
-    public void setName(String name)
-    {
+    public void setName(String name) {
         name_ = name;
     }
     
@@ -417,10 +413,8 @@ public class DefaultStateMachine implements StateMachine
     /**
      * Notifies listeners of a change in state.
      */
-    protected void fireStateChanged()
-    {
-        for (Iterator iter = listeners_.iterator(); iter.hasNext();)
-        {
+    protected void fireStateChanged() {
+        for (Iterator iter = listeners_.iterator(); iter.hasNext();) {
             StateMachineListener listener = (StateMachineListener) iter.next();
             listener.stateChanged(this);
         }
@@ -430,10 +424,8 @@ public class DefaultStateMachine implements StateMachine
     /**
      * Notifies listeners of a machine reset.
      */
-    protected void fireMachineReset()
-    {
-        for (Iterator iter = listeners_.iterator(); iter.hasNext();)
-        {
+    protected void fireMachineReset() {
+        for (Iterator iter = listeners_.iterator(); iter.hasNext();) {
             StateMachineListener listener = (StateMachineListener) iter.next();
             listener.machineReset(this);
         }
