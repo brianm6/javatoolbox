@@ -19,7 +19,10 @@ import toolbox.util.dirmon.IDirectoryMonitorListener;
 import toolbox.util.ui.table.JSmartTable;
 import toolbox.util.ui.table.TableSorter;
 
-public class TableView extends JPanel implements IDirectoryMonitorListener {
+/**
+ * 
+ */
+public class EventTableView extends JPanel implements IDirectoryMonitorListener {
 
     // -------------------------------------------------------------------------
     // Fields
@@ -59,7 +62,7 @@ public class TableView extends JPanel implements IDirectoryMonitorListener {
     // Constructors
     // -------------------------------------------------------------------------
     
-    public TableView() {
+    public EventTableView() {
         this.sequenceNum = 1;
         buildView();
     }
