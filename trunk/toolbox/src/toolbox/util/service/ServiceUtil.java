@@ -33,7 +33,7 @@ public class ServiceUtil
     
     /**
      * Creates a state machine for the given list of Service attribute classes.
-     * Returns null if the passed in list of services is not recognized as 
+     * Throws exception if the passed in list of services is not recognized as 
      * forming a valid finite state machine. The idea is to support a subset
      * of the various Service attributes (Initializable, Startable, Suspendable,
      * etc) that form the more popular combinations. If a given configuration
@@ -42,40 +42,48 @@ public class ServiceUtil
      * @param serviceClasses Array of interfaces which extend Service (in other
      *        words, an array of characteristics which the serviec exhibits).
      * @return StateMachine
+     * @throws IllegalArgumentException on unrecognized set of states.
      */
     public static StateMachine createStateMachine(Class[] serviceClasses)
+        throws IllegalArgumentException
     {
         Set serviceAttr = new HashSet();
         CollectionUtils.addAll(serviceAttr, serviceClasses);
 
+        // Initializable
+        // =====================================================================
         Set initSet = new HashSet(
             Arrays.asList(new Class[] { Initializable.class }));
         
         if (CollectionUtils.isEqualCollection(initSet, serviceAttr))
             return createInitializable();
         
+        // Startable
+        // =====================================================================
         Set startSet = new HashSet(
             Arrays.asList(new Class[] { Startable.class }));
         
         if (CollectionUtils.isEqualCollection(startSet, serviceAttr))
             return createStartable();
 
-        //----------------------------------------------------------------------
-        
+        // Initializable and Startable
+        // =====================================================================
         Set initStartSet = new HashSet(
             Arrays.asList(new Class[] { Initializable.class, Startable.class }));
         
         if (CollectionUtils.isEqualCollection(initStartSet, serviceAttr))
             return createInitializableStartable();
 
-        //----------------------------------------------------------------------
-        
+        // Startable and Suspendable
+        // =====================================================================
         Set startSuspendSet = new HashSet(
             Arrays.asList(new Class[] { Startable.class, Suspendable.class }));
         
         if (CollectionUtils.isEqualCollection(startSuspendSet, serviceAttr))
             return createStartableSuspendable();
-
+        
+        // All States
+        // =====================================================================
         Set allSet = new HashSet(
             Arrays.asList(new Class[] { 
                 Initializable.class, 
@@ -87,12 +95,16 @@ public class ServiceUtil
         if (CollectionUtils.isEqualCollection(allSet, serviceAttr))
             return createAll();
 
+        // Initializable and Destroyable
+        // =====================================================================
         Set initDestroySet = new HashSet(
             Arrays.asList(new Class[] { Initializable.class, Destroyable.class }));
         
         if (CollectionUtils.isEqualCollection(initDestroySet, serviceAttr))
             return createInitializableDestroyable();
 
+        // Initializable, Startable, and Destroyable
+        // =====================================================================
         Set initStartDestroySet = new HashSet(
             Arrays.asList(new Class[] { 
                 Initializable.class, 
@@ -102,121 +114,24 @@ public class ServiceUtil
         
         if (CollectionUtils.isEqualCollection(initStartDestroySet, serviceAttr))
             return createInitializableStartableDestroyable();
+
+        // Startable, Suspendable, Destroyable
+        // =====================================================================
+        Set startSuspendDestroySet = new HashSet(
+            Arrays.asList(new Class[] { 
+                Startable.class, 
+                Suspendable.class,
+                Destroyable.class
+            }));
         
-        return null;
-        
-//        StateMachine machine = 
-//            StateMachineFactory.createStateMachine("ServiceStateMachine");
-//        
-//        Set natures = new HashSet();
-//        CollectionUtils.addAll(natures, serviceClasses);
-//    
-//        Set initDestroy = new HashSet(
-//            Arrays.asList(new Class[]{Initializable.class, Destroyable.class}));
-//    
-//        // Initializable/Destroyable -------------------------------------------
-//        
-//        if (CollectionUtils.isEqualCollection(natures, initDestroy))
-//        {
-//            // uninit    --> init
-//            // init      --> destroyed
-//            // destroyed --> init
-//            
-//            machine.addState(ServiceState.UNINITIALIZED);
-//            machine.addState(ServiceState.INITIALIZED);
-//            machine.addState(ServiceState.DESTROYED);
-//            
-//            machine.setBeginState(ServiceState.UNINITIALIZED);
-//            
-//            machine.addTransition(
-//                ServiceTransition.INITIALIZE, 
-//                ServiceState.UNINITIALIZED, 
-//                ServiceState.INITIALIZED);
-//            
-//            machine.addTransition(
-//                ServiceTransition.DESTROY, 
-//                ServiceState.INITIALIZED,
-//                ServiceState.DESTROYED);
-//                
-//            machine.addTransition(
-//                ServiceTransition.INITIALIZE, 
-//                ServiceState.DESTROYED, 
-//                ServiceState.INITIALIZED);
-//            
-//            machine.reset();
-//            return machine;
-//        }            
-//        
-//        
-//        if (ArrayUtil.contains(serviceClasses, Startable.class))
-//        {
-//            machine.addState(ServiceState.RUNNING);
-//            machine.addState(ServiceState.STOPPED);
-//            machine.setBeginState(ServiceState.STOPPED);
-//            
-//            machine.addTransition(
-//                ServiceTransition.START, 
-//                ServiceState.STOPPED, 
-//                ServiceState.RUNNING);
-//            
-//            machine.addTransition(
-//                ServiceTransition.STOP, 
-//                ServiceState.RUNNING,
-//                ServiceState.STOPPED);
-//        }
-//        
-//        if (ArrayUtil.contains(serviceClasses,Suspendable.class))
-//        {
-//            machine.addState(ServiceState.SUSPENDED);
-//            
-//            machine.addTransition(
-//                ServiceTransition.SUSPEND, 
-//                ServiceState.RUNNING, 
-//                ServiceState.SUSPENDED);
-//            
-//            machine.addTransition(
-//                ServiceTransition.RESUME, 
-//                ServiceState.SUSPENDED,
-//                ServiceState.RUNNING);
-//        }
-//        
-//        if (ArrayUtil.contains(serviceClasses, Initializable.class))
-//        {
-//            machine.addState(ServiceState.UNINITIALIZED);
-//            machine.addState(ServiceState.INITIALIZED);
-//            machine.setBeginState(ServiceState.UNINITIALIZED);
-//            
-//            machine.addTransition(
-//                ServiceTransition.INITIALIZE, 
-//                ServiceState.UNINITIALIZED, 
-//                ServiceState.INITIALIZED);
-//            
-//            machine.addTransition(
-//                ServiceTransition.START, 
-//                ServiceState.INITIALIZED,
-//                ServiceState.RUNNING);
-//        }
-//        
-//        if (ArrayUtil.contains(serviceClasses, Destroyable.class))
-//        {
-//            machine.addState(ServiceState.DESTROYED);
-//            
-//            machine.addTransition(
-//                ServiceTransition.DESTROY, 
-//                ServiceState.STOPPED, 
-//                ServiceState.DESTROYED);
-//            
-//            if ((ArrayUtil.contains(serviceClasses, Initializable.class)))
-//            {
-//                machine.addTransition(
-//                    ServiceTransition.DESTROY, 
-//                    ServiceState.INITIALIZED, 
-//                    ServiceState.DESTROYED);
-//            }
-//        }
-//        
-//        machine.reset();
-//        return machine;
+        if (CollectionUtils.isEqualCollection(startSuspendDestroySet, serviceAttr))
+            return createStartableSuspendableDestroyable();
+ 
+        // State machine not supported
+        // =====================================================================
+        throw new IllegalArgumentException(
+            "The state machine with your set of states is not supported: " 
+            + serviceAttr);
     }
 
     /**
@@ -412,6 +327,52 @@ public class ServiceUtil
         return machine;
     }
 
+    
+    /**
+     * Returns a state machine which is Startable, Suspendable, and Destroyable.
+     * 
+     * @return StateMachine
+     */
+    private static StateMachine createStartableSuspendableDestroyable()
+    {
+        StateMachine machine = 
+            StateMachineFactory.createStateMachine("Start/Suspend/Destroy");
+
+        machine.addState(ServiceState.DESTROYED);
+        machine.addState(ServiceState.RUNNING);
+        machine.addState(ServiceState.STOPPED);
+        machine.addState(ServiceState.SUSPENDED);
+        
+        machine.setBeginState(ServiceState.STOPPED);
+
+        machine.addTransition(
+            ServiceTransition.START, 
+            ServiceState.STOPPED, 
+            ServiceState.RUNNING);
+        
+        machine.addTransition(
+            ServiceTransition.STOP, 
+            ServiceState.RUNNING,
+            ServiceState.STOPPED);
+    
+        machine.addTransition(
+            ServiceTransition.SUSPEND, 
+            ServiceState.RUNNING,
+            ServiceState.SUSPENDED);
+        
+        machine.addTransition(
+            ServiceTransition.RESUME, 
+            ServiceState.SUSPENDED,
+            ServiceState.RUNNING);
+        
+        machine.addTransition(
+            ServiceTransition.DESTROY,
+            ServiceState.STOPPED,
+            ServiceState.DESTROYED);
+        
+        machine.reset();
+        return machine;
+    }
     
     /**
      * Returns a state machine which is Intitializable and Destroyable.
