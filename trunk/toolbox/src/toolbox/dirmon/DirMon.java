@@ -1,58 +1,62 @@
 package toolbox.dirmon;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 
-import javax.swing.Icon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 
-import com.nitido.utils.toaster.Toaster;
-
-import snoozesoft.systray4j.SysTrayMenu;
-import snoozesoft.systray4j.SysTrayMenuEvent;
-import snoozesoft.systray4j.SysTrayMenuIcon;
-import snoozesoft.systray4j.SysTrayMenuItem;
-import snoozesoft.systray4j.SysTrayMenuListener;
-
-import toolbox.util.FontUtil;
 import toolbox.util.ResourceUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.dirmon.DirectoryMonitor;
-import toolbox.util.dirmon.DirectoryMonitorEvent;
-import toolbox.util.dirmon.IDirectoryMonitorListener;
 import toolbox.util.dirmon.recognizer.FileChangedRecognizer;
 import toolbox.util.dirmon.recognizer.FileCreatedRecognizer;
 import toolbox.util.dirmon.recognizer.FileDeletedRecognizer;
-import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartFileChooser;
 import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartOptionPane;
 import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.SmartAction;
-import toolbox.util.ui.layout.StackLayout;
 import toolbox.util.ui.plaf.LookAndFeelUtil;
 import toolbox.util.ui.tabbedpane.JSmartTabbedPane;
+import toolbox.util.ui.tabbedpane.SmartTabbedPaneListener;
 
 /**
  * Directory Monitor GUI that sits in the Windows System Tray.
  */
 public class DirMon extends JFrame implements ActionListener,
-    SysTrayMenuListener {
+     SmartTabbedPaneListener {
 
+    // TODO: Change event table to show amount of time elapsed since event was
+    //       generated.
+    
+    // TODO: Change table ui to pad values or center to make that look less
+    //       bunched up at the columns ends
+    
+    // TODO: Change the ServiceView/ControllerView to used toggle buttons for
+    //       start/stop and suspend/resume instead of two buttons for each.
+    //       Also allow optionally icons or text or both.
+    
+    // TODO: Make tables auto tailing via the gui
+    
+    // TODO: Find someway to save all the preferences set on the UI
+    
+    // TODO: For directories that are deleted, remove subdirectories from the
+    //       list of scanned dirs. THis is really a DirectoryMonitor thing.
+    
+    // TODO: For directories that are creates, add subdirectories to the list
+    //       of scanned dirs. THis is really a DirectoryMonitor thing.
+    
     private static Logger logger_ =  Logger.getLogger(DirectoryMonitor.class);
     
     // -------------------------------------------------------------------------
@@ -64,33 +68,17 @@ public class DirMon extends JFrame implements ActionListener,
      */
     private static final int DEFAULT_DELAY = 30;
     
-    private static SysTrayMenuIcon ICON_DIRMON;
-            
-    private static SysTrayMenuIcon ICON_DIRMON_ALERT; 
-            
-    static {
-        try {
-            ICON_DIRMON = 
-                new SysTrayMenuIcon(ResourceUtil.getClassResourceURL(
-                    "/toolbox/dirmon/DirMon.ico"));
-            
-            ICON_DIRMON_ALERT = 
-                new SysTrayMenuIcon(ResourceUtil.getClassResourceURL(
-                    "/toolbox/dirmon/DirMonAlert.ico"));
-        }
-        catch (IOException e) {
-            logger_.error(e);
-        }
-    }
+    // Directory Monitor Listeners
+    // =========================================================================
     
-    // -------------------------------------------------------------------------
-    // Fields
-    // -------------------------------------------------------------------------
+    private DesktopNotifier desktopNotifier_;
     
-    private SysTrayMenu menu_;
+    private SystemTrayUpdater systemTrayUpdater_;
 
-    //private JSmartTextArea messageArea_;
+    private ConsoleView consoleView_;
 
+    private EventTableView tableView_;
+    
     private JSmartButton addDirButton_;
 
     private JSmartButton dirChooserButton_;
@@ -99,17 +87,9 @@ public class DirMon extends JFrame implements ActionListener,
     
     private JSmartTextField delayField_;
 
-    private JPanel viewStack_;
-    
     private JSmartFileChooser dirChooser_;
 
-    private DateFormat dateTimeFormat = SimpleDateFormat.getDateTimeInstance();
-    
-    private Toaster toaster_;
-    
-    private ConsoleView consoleView_;
-
-    private TableView tableView_;
+    private JSmartTabbedPane tabbedPane_;
     
     // -------------------------------------------------------------------------
     // Main
@@ -162,46 +142,6 @@ public class DirMon extends JFrame implements ActionListener,
     }
 
     // -------------------------------------------------------------------------
-    // SysTrayMenuListener Interface
-    // -------------------------------------------------------------------------
-
-    /*
-     * @see snoozesoft.systray4j.SysTrayMenuListener#menuItemSelected(snoozesoft.systray4j.SysTrayMenuEvent)
-     */
-    public void menuItemSelected(SysTrayMenuEvent e) {
-
-        if (e.getActionCommand().equals("exit")) {
-            System.exit(0);
-        }
-        else if (e.getActionCommand().equals("about")) {
-            JOptionPane.showMessageDialog(this, "Directory Monitor v1.0");
-        }
-        else {
-            JOptionPane.showMessageDialog(this, e.getActionCommand());
-        }
-    }
-
-    
-    /*
-     * @see snoozesoft.systray4j.SysTrayMenuListener#iconLeftClicked(snoozesoft.systray4j.SysTrayMenuEvent)
-     */
-    public void iconLeftClicked(SysTrayMenuEvent e) {
-        setVisible(!isVisible());
-        if (isVisible())
-            toFront();
-        menu_.setIcon(ICON_DIRMON);
-    }
-
-
-    /*
-     * @see snoozesoft.systray4j.SysTrayMenuListener#iconLeftDoubleClicked(snoozesoft.systray4j.SysTrayMenuEvent)
-     */
-    public void iconLeftDoubleClicked(SysTrayMenuEvent e) {
-        JOptionPane.showMessageDialog(
-            this, "You may prefer double-clicking the icon.");
-    }    
-    
-    // -------------------------------------------------------------------------
     // Private
     // -------------------------------------------------------------------------
     
@@ -210,49 +150,39 @@ public class DirMon extends JFrame implements ActionListener,
         setIconImage(ResourceUtil.getResourceAsImage(
             "/toolbox/util/ui/images/Toolbox.png"));
         
-        ICON_DIRMON.addSysTrayMenuListener(this);
-        ICON_DIRMON_ALERT.addSysTrayMenuListener(this);
-
-        JSmartTabbedPane tabbedPane = new JSmartTabbedPane(false);
-        
         consoleView_ = new ConsoleView();
-        tableView_ = new TableView();
+        tableView_ = new EventTableView();
+        systemTrayUpdater_ = new SystemTrayUpdater(this);
+        desktopNotifier_ = new DesktopNotifier();
         
-        tabbedPane.addTab("Console", consoleView_);
-        tabbedPane.addTab("Table", tableView_);
+        tabbedPane_ = new JSmartTabbedPane(true);
+        tabbedPane_.addSmartTabbedPaneListener(this);
+        tabbedPane_.addTab("Console", consoleView_);
+        tabbedPane_.addTab("All Events", tableView_);
         
-        JPanel p = new JPanel(new FlowLayout());
+        JPanel inputPanel = new JPanel(new FlowLayout());
         dirField_ = new JSmartTextField(40);
         delayField_ = new JSmartTextField(DEFAULT_DELAY + "", 4);
         addDirButton_ = new JSmartButton(new MonitorDirectoryAction());
         dirChooserButton_ = new JSmartButton(new PickDirectoryAction());
 
-        p.add(new JSmartLabel("Directory"));
-        p.add(dirField_);
-        p.add(dirChooserButton_);
-        p.add(addDirButton_);
-        p.add(new JSmartLabel("Delay"));
-        p.add(delayField_);
-        p.add(new JSmartLabel("minutes"));
+        inputPanel.add(new JSmartLabel("Directory"));
+        inputPanel.add(dirField_);
+        inputPanel.add(dirChooserButton_);
+        inputPanel.add(addDirButton_);
+        inputPanel.add(new JSmartLabel("Delay"));
+        inputPanel.add(delayField_);
+        inputPanel.add(new JSmartLabel("minutes"));
         
-        viewStack_ = new JPanel(new StackLayout(StackLayout.VERTICAL));
-
         Container contentPane = getContentPane();
         contentPane.setLayout(new BorderLayout());
-        contentPane.add(BorderLayout.CENTER, tabbedPane);
-        contentPane.add(BorderLayout.NORTH, p);
-        contentPane.add(BorderLayout.SOUTH, viewStack_);
-        
-        // create the menu
+        contentPane.add(BorderLayout.CENTER, tabbedPane_);
+        contentPane.add(BorderLayout.NORTH, inputPanel);
+
         createMenu();
-        
-        pack();
-        
+
+        SwingUtil.setSizeAsDesktopPercentage(this, 50, 50); 
         SwingUtil.centerWindow(this);
-        
-        toaster_ = new Toaster();
-        toaster_.setDisplayTime(5000);
-        toaster_.setToasterMessageFont(FontUtil.getPreferredSerifFont());
     }
 
     private void createMenu() {
@@ -311,24 +241,48 @@ public class DirMon extends JFrame implements ActionListener,
 //        chSubMenu.addItem(chItem2);
 //        chSubMenu.addItem(chItem3);
 
-        // create an exit item
-        SysTrayMenuItem itemExit = new SysTrayMenuItem("Exit", "exit");
-        itemExit.addSysTrayMenuListener(this);
-
-        // create an about item
-        SysTrayMenuItem itemAbout = new SysTrayMenuItem("About...", "about");
-        itemAbout.addSysTrayMenuListener(this);
-
-        // create the main menu
-        menu_ = new SysTrayMenu(ICON_DIRMON, "Directory Monitor");
-
-        // insert items
-        menu_.addItem(itemExit);
-        menu_.addSeparator();
-        menu_.addItem(itemAbout);
+//        // create an exit item
+//        SysTrayMenuItem itemExit = new SysTrayMenuItem("Exit", "exit");
+//        itemExit.addSysTrayMenuListener(this);
+//
+//        // create an about item
+//        SysTrayMenuItem itemAbout = new SysTrayMenuItem("About...", "about");
+//        itemAbout.addSysTrayMenuListener(this);
+//
+//        // create the main menu
+//        menu_ = new SysTrayMenu(ICON_DIRMON, "Directory Monitor");
+//
+//        // insert items
+//        menu_.addItem(itemExit);
+//        menu_.addSeparator();
+//        menu_.addItem(itemAbout);
 //        menu_.addSeparator();
 //        menu_.addItem(subMenu);
 //        menu_.addItem(chSubMenu);
+    }
+ 
+    /**
+     * When a tab is closed, deregister the console and event table views from
+     * the directory monitor associated with that tab.
+     * 
+     * who is responsible..
+     * 
+     * when the tab is closed, the service should destroy itself.
+     * 
+     * who should listen for the tab closing and who should tell the service to
+     * destroy and clean up after itself?
+     * 
+     * @see toolbox.util.ui.tabbedpane.SmartTabbedPaneListener#tabClosing(toolbox.util.ui.tabbedpane.JSmartTabbedPane, int)
+     */
+    public void tabClosing(JSmartTabbedPane tabbedPane, int tabIndex) {
+        
+        Component source = tabbedPane.getComponentAt(tabIndex);
+        
+        if (source instanceof SingleMonitorView) {
+            SingleMonitorView singleView = (SingleMonitorView) source;
+            DirectoryMonitor monitor = singleView.getMonitor();
+            monitor.destroy();
+        }
     }
     
     // -------------------------------------------------------------------------
@@ -338,7 +292,7 @@ public class DirMon extends JFrame implements ActionListener,
     class MonitorDirectoryAction extends SmartAction {
 
         public MonitorDirectoryAction() {
-            super("Monitor", true, true, null);
+            super("Monitor", true, false, null);
         }
 
         public void runAction(ActionEvent e) throws Exception {
@@ -364,78 +318,42 @@ public class DirMon extends JFrame implements ActionListener,
                     dm.setDelay(Integer.parseInt(delayValue) * 1000 * 60);
                 }
                 
-                dm.addDirectory(f);
+                // Events for the directory monitor to recognize
                 dm.addRecognizer(new FileCreatedRecognizer(dm));
                 dm.addRecognizer(new FileDeletedRecognizer(dm));
                 dm.addRecognizer(new FileChangedRecognizer(dm));
-                dm.addDirectoryMonitorListener(new SystemTrayUpdater());
+                
+                // Components interested in directtory monitor events
+                dm.addDirectoryMonitorListener(systemTrayUpdater_);
+                dm.addDirectoryMonitorListener(desktopNotifier_);
                 dm.addDirectoryMonitorListener(consoleView_);
                 dm.addDirectoryMonitorListener(tableView_);
-                DirectoryMonitorView monitorView = new DirectoryMonitorView(dm);
-                viewStack_.add(monitorView);
+                
                 dm.start();
-                pack();
+                
+                // TODO: Fix me
+                // has to be after service is started cuz ServiceView (which
+                // is a aggregated by SingleMonitorView) requires that the
+                // service state be something
+                
+                SingleMonitorView singleView = new SingleMonitorView(dm);
+                
+                String dirName = 
+                    dm.getMonitoredDirectories().iterator().next().toString();
+                
+                tabbedPane_.insertTab(
+                    FilenameUtils.getName(dirName), // last dir name as tab name
+                    null,
+                    singleView,
+                    dirName,                        // full dir name as tooltip
+                    0);                             // insert as first tab
             }
         };
     }
 
     // -------------------------------------------------------------------------
-    // SystemTrayUpdater
-    // -------------------------------------------------------------------------
-    
-    class SystemTrayUpdater implements IDirectoryMonitorListener {
-
-        public void directoryActivity(
-            DirectoryMonitorEvent event) throws Exception {
-            
-            //StringBuffer msg = new StringBuffer();
-            StringBuffer shortMsg = new StringBuffer();
-            Icon toasterIcon = null;
-            
-            switch (event.getEventType()) {
-            
-                case DirectoryMonitorEvent.TYPE_CHANGED :
-                    
-                    shortMsg.append("Modified: ");
-                    shortMsg.append(FilenameUtils.getName(
-                        event.getAfterSnapshot().getAbsolutePath()));
-                    
-                    toasterIcon = ImageCache.getIcon(ImageCache.IMAGE_COPY);
-                    break;
-                    
-                case DirectoryMonitorEvent.TYPE_CREATED :
-                    
-                    shortMsg.append("Created: ");
-                    shortMsg.append(FilenameUtils.getName(
-                        event.getAfterSnapshot().getAbsolutePath()));
-                    
-                    toasterIcon = ImageCache.getIcon(ImageCache.IMAGE_INFO);
-                    break;
-
-                case DirectoryMonitorEvent.TYPE_DELETED :
-                    
-                    shortMsg.append("Deleted: ");
-                    shortMsg.append(FilenameUtils.getName(
-                        event.getBeforeSnapshot().getAbsolutePath()));
-                    
-                    toasterIcon = ImageCache.getIcon(ImageCache.IMAGE_DELETE);
-                    break;
-
-                default:
-                    throw new IllegalArgumentException(
-                        "unrecognized event type: " 
-                        + event.getEventType());
-            }
-    
-            menu_.setToolTip(shortMsg.toString());
-            menu_.setIcon(ICON_DIRMON_ALERT);
-            toaster_.showToaster(toasterIcon, shortMsg.toString());
-        }
-    }
-    
-    //--------------------------------------------------------------------------
     // PickDirectoryAction
-    //--------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     
     /**
      * Allows user to pick a source directory through the file chooser instead 
