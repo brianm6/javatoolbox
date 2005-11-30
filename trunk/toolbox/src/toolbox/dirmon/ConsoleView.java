@@ -13,6 +13,10 @@ import toolbox.util.dirmon.DirectoryMonitorEvent;
 import toolbox.util.dirmon.IDirectoryMonitorListener;
 import toolbox.util.ui.JSmartTextArea;
 
+/**
+ * Raw console for directory monitor generated events. Just a text area with
+ * the events converted into strings with no formatting.
+ */
 public class ConsoleView extends JPanel implements IDirectoryMonitorListener {
 
     // -------------------------------------------------------------------------
