@@ -16,7 +16,13 @@ import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.SmartAction;
 
-public class DirectoryMonitorView extends JPanel {
+/**
+ * Simple panel that smacks a UI on top of a 
+ * {@link toolbox.util.dirmon.DirectoryMonitor} to start/stop/suspend/destroy
+ * it. Aggregates the {@link toolbox.util.service.ServiceView} to reuse as
+ * mush as possible.
+ */
+public class ControllerView extends JPanel {
 
     // -------------------------------------------------------------------------
     // Fields
@@ -29,7 +35,7 @@ public class DirectoryMonitorView extends JPanel {
     // Constructors
     // -------------------------------------------------------------------------
     
-    public DirectoryMonitorView(DirectoryMonitor directoryMonitor) {
+    public ControllerView(DirectoryMonitor directoryMonitor) {
         directoryMonitor_ = directoryMonitor;
         buildView();
     }
@@ -75,8 +81,8 @@ public class DirectoryMonitorView extends JPanel {
          * @see toolbox.util.ui.SmartAction#runAction(java.awt.event.ActionEvent)
          */
         public void runAction(ActionEvent e) throws Exception {
-            Frame f = SwingUtil.getFrameAncestor(DirectoryMonitorView.this);
-            getParent().remove(DirectoryMonitorView.this);
+            Frame f = SwingUtil.getFrameAncestor(ControllerView.this);
+            getParent().remove(ControllerView.this);
             f.validate();
         }
     }
