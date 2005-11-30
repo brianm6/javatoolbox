@@ -107,7 +107,8 @@ public abstract class SmartAction extends AbstractAction
      * Creates a SmartAction with the given options.
      * 
      * @param name Name of action.
-     * @param tryCatch True to surround the action with a try/catch block.
+     * @param tryCatch True to surround the action with a try/catch block or
+     *        false to eat exceptions (not a good thing to do).
      * @param async Set to true to execute the action asynchronously.
      * @param scope Component to set the busy cursor on (implies that you want 
      *        the busy cursor set). Pass in null to ignore.
