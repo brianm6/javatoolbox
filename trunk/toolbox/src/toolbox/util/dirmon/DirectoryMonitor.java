@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
 import toolbox.util.ThreadUtil;
+import toolbox.util.service.Destroyable;
 import toolbox.util.service.ObservableService;
 import toolbox.util.service.ServiceException;
 import toolbox.util.service.ServiceListener;
@@ -59,7 +60,7 @@ import toolbox.util.statemachine.StateMachine;
  * </pre>
  */
 public class DirectoryMonitor 
-    implements Startable, Suspendable, ObservableService {
+    implements Startable, Suspendable, Destroyable, ObservableService {
     
     private static Logger logger_ =  Logger.getLogger(DirectoryMonitor.class);
 
@@ -284,6 +285,43 @@ public class DirectoryMonitor
      */
     public boolean isSuspended() {
         return getState() == ServiceState.SUSPENDED;
+    }
+    
+    //--------------------------------------------------------------------------
+    //
+    //--------------------------------------------------------------------------
+    
+    /**
+     * When destroyed, remove all associated resources including listeners.
+     * 
+     * @see toolbox.util.service.Destroyable#destroy()
+     */
+    public void destroy() throws IllegalStateException, ServiceException {
+        
+        // TODO:
+        // Make the service easily support transition to destroy..refactor
+        // later to make a feature of a state machine decorator to run the
+        // service through a given set of states.
+        
+        if (getState() == ServiceState.DESTROYED) {
+            logger_.warn("Service " + this + " already destroyed.");
+        }
+        else if (getState() == ServiceState.RUNNING) {
+            stop();
+            destroy();
+        }
+        else if (getState() == ServiceState.SUSPENDED) {
+            resume();
+            stop();
+            destroy();
+        }
+        else {
+            stateMachine_.checkTransition(ServiceTransition.DESTROY);
+            logger_.debug("Destroying directory monitor..");
+            stateMachine_.transition(ServiceTransition.DESTROY);
+            listeners_.clear();
+            notifier_.fireServiceStateChanged();
+        }
     }
     
     // --------------------------------------------------------------------------
