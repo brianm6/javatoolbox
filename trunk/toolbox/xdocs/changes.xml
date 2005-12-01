@@ -116,6 +116,7 @@
         <!-- Nov 2005                                                            -->
         <!-- =================================================================== -->
         <release version="2.0" date="November 2005">
+            <action type="add"      >Util - Added toolbox.util.ui.table.BorderedCellRenderer as a decorator which can be used to pad a cell with empty space or any kind of inner border</action>
             <action type="update"   >Util - Refactored toolbox.util.ui.table.LeftClippingCellRenderer as a decorator pattern</action>
             <action type="add"      >DbConsole - Added DbConsole which depends on DbUnit and Velocity</action>
             <action type="add"      >Lib - Added DbUnit version dbunit-1.2</action>
