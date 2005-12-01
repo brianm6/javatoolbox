@@ -3,8 +3,10 @@ package toolbox.util.ui.table;
 import java.awt.Component;
 import java.awt.FontMetrics;
 
+import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
+import javax.swing.table.TableCellRenderer;
 
 /**
  * LeftClippingCellRenderer left clips text in a table cell instead of the right
@@ -15,17 +17,31 @@ import javax.swing.SwingUtilities;
  * A cell with a value of "Hello World" with a width of 6 will show "...rld"
  * </pre>
  */
-public class LeftClippingCellRenderer extends SmartTableCellRenderer
-{
-    // TODO: Update to use Decorator pattern ala BorderedCellRenderer
+public class LeftClippingCellRenderer implements TableCellRenderer {
+    
+    // -------------------------------------------------------------------------
+    // Fields
+    // -------------------------------------------------------------------------
+    
+    private TableCellRenderer delegate_;
+    
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+    
+    public LeftClippingCellRenderer(TableCellRenderer delegate) {
+        
+        if (!(delegate instanceof JComponent)) 
+            throw new IllegalArgumentException(
+                "Delegate must be ain instnace of JComponent");
+        
+        delegate_ = delegate;
+    }
     
     //--------------------------------------------------------------------------
-    // Overrides DefaultTableCellRender
+    // TableCellRenderer Interface
     //--------------------------------------------------------------------------
     
-    /*
-     * @see javax.swing.table.TableCellRenderer#getTableCellRendererComponent(javax.swing.JTable, java.lang.Object, boolean, boolean, int, int)
-     */
     public Component getTableCellRendererComponent(
         JTable table, 
         Object value,
@@ -38,10 +54,12 @@ public class LeftClippingCellRenderer extends SmartTableCellRenderer
             getLeftClippedText(value.toString(), table, row, column);
         
         Component component = 
-            super.getTableCellRendererComponent(
+            delegate_.getTableCellRendererComponent(
                 table, clippedText, isSelected, hasFocus, row, column);
         
-        setToolTipText((String) value);
+        // TODO: Move tooltip to another Decorator
+        //delegate_.setToolTipText((String) value);
+        
         return component;
     }
 
@@ -68,22 +86,24 @@ public class LeftClippingCellRenderer extends SmartTableCellRenderer
         int stringWidth;
         int strValueLen = strValue.length();
         
+        JComponent c = (JComponent) delegate_;
+        
         // I needed to give some extra space to get the clipping to work
         // correctly. Dirty but works.
         int extraSpace = 
-            SwingUtilities.computeStringWidth(getFontMetrics(getFont()), "W");
+            SwingUtilities.computeStringWidth(c.getFontMetrics(c.getFont()), "W");
         
         int availableWidth = 
             table.getCellRect(row, column, false).width - extraSpace;
         
         widthForPainting = 
-            availableWidth - getInsets().left + getInsets().right;
+            availableWidth - c.getInsets().left + c.getInsets().right;
         
-        FontMetrics fm = getFontMetrics(this.getFont());
+        FontMetrics fm = c.getFontMetrics(c.getFont());
         
         stringWidth = 
             SwingUtilities.computeStringWidth(
-                getFontMetrics(getFont()), strValue);
+                c.getFontMetrics(c.getFont()), strValue);
         
         int index = 0;
         
