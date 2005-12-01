@@ -7,17 +7,24 @@ import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 
 /**
- * LeftClippingRenderer left clips text in a table cell.
+ * LeftClippingCellRenderer left clips text in a table cell instead of the right
+ * which is the default. Also sets the tooltip to the full value of the text.
+ * <p>
+ * Example:
+ * <pre>
+ * A cell with a value of "Hello World" with a width of 6 will show "...rld"
+ * </pre>
  */
 public class LeftClippingCellRenderer extends SmartTableCellRenderer
 {
+    // TODO: Update to use Decorator pattern ala BorderedCellRenderer
+    
     //--------------------------------------------------------------------------
     // Overrides DefaultTableCellRender
     //--------------------------------------------------------------------------
     
-    /**
-     * @see javax.swing.table.TableCellRenderer#getTableCellRendererComponent(
-     *      javax.swing.JTable, java.lang.Object, boolean, boolean, int, int)
+    /*
+     * @see javax.swing.table.TableCellRenderer#getTableCellRendererComponent(javax.swing.JTable, java.lang.Object, boolean, boolean, int, int)
      */
     public Component getTableCellRendererComponent(
         JTable table, 
@@ -25,13 +32,14 @@ public class LeftClippingCellRenderer extends SmartTableCellRenderer
         boolean isSelected, 
         boolean hasFocus, 
         int row, 
-        int column)
-    {
-        String clippedText = getLeftClippedText(
-            (String) value, table, row, column);
+        int column) {
         
-        Component component = super.getTableCellRendererComponent(
-            table, clippedText, isSelected, hasFocus, row, column);
+        String clippedText = 
+            getLeftClippedText(value.toString(), table, row, column);
+        
+        Component component = 
+            super.getTableCellRendererComponent(
+                table, clippedText, isSelected, hasFocus, row, column);
         
         setToolTipText((String) value);
         return component;
@@ -54,8 +62,8 @@ public class LeftClippingCellRenderer extends SmartTableCellRenderer
         String strValue, 
         JTable table, 
         int row,
-        int column)
-    {
+        int column) {
+        
         int widthForPainting;
         int stringWidth;
         int strValueLen = strValue.length();
