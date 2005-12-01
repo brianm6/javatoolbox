@@ -44,7 +44,7 @@ public class SmartTableCellRenderer extends DefaultTableCellRenderer implements
     // AntiAliased Interface
     // --------------------------------------------------------------------------
 
-    /**
+    /*
      * @see toolbox.util.ui.AntiAliased#isAntiAliased()
      */
     public boolean isAntiAliased() {
@@ -52,7 +52,7 @@ public class SmartTableCellRenderer extends DefaultTableCellRenderer implements
     }
 
 
-    /**
+    /*
      * @see toolbox.util.ui.AntiAliased#setAntiAliased(boolean)
      */
     public void setAntiAliased(boolean b) {
