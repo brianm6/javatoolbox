@@ -40,14 +40,11 @@ public class DirMon extends JFrame implements ActionListener,
     // TODO: Change event table to show amount of time elapsed since event was
     //       generated.
     
-    // TODO: Change table ui to pad values or center to make that look less
-    //       bunched up at the columns ends
-    
     // TODO: Change the ServiceView/ControllerView to used toggle buttons for
     //       start/stop and suspend/resume instead of two buttons for each.
     //       Also allow optionally icons or text or both.
     
-    // TODO: Make tables auto tailing via the gui
+    // TODO: Make tables auto tailing user toggleable via the GUI
     
     // TODO: Find someway to save all the preferences set on the UI
     
