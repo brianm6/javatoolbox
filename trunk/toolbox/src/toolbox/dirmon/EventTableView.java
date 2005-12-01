@@ -5,36 +5,38 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.border.Border;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.log4j.Logger;
 
 import com.l2fprod.common.swing.renderer.DateRenderer;
 
+import toolbox.util.dirmon.DirectoryMonitor;
 import toolbox.util.dirmon.DirectoryMonitorEvent;
 import toolbox.util.dirmon.FileSnapshot;
 import toolbox.util.dirmon.IDirectoryMonitorListener;
+import toolbox.util.ui.table.BorderedCellRenderer;
 import toolbox.util.ui.table.JSmartTable;
 import toolbox.util.ui.table.TableSorter;
 
 /**
- * 
+ * Directory monitor view that shows DirectoryMonitorEvents in a table. 
  */
 public class EventTableView extends JPanel implements IDirectoryMonitorListener {
 
-    // -------------------------------------------------------------------------
-    // Fields
-    // -------------------------------------------------------------------------
-    
-    private DateFormat dateTimeFormat = 
-        SimpleDateFormat.getDateTimeInstance(
-            SimpleDateFormat.SHORT, 
-            SimpleDateFormat.MEDIUM);
+    private static Logger logger_ =  Logger.getLogger(DirectoryMonitor.class);
 
-    private JSmartTable table_;
-    private DefaultTableModel model_;
+    // -------------------------------------------------------------------------
+    // Constants
+    // -------------------------------------------------------------------------
     
     private static final int INDEX_SEQUENCE = 0;
     private static final int INDEX_ACTIVITY = 1;
@@ -45,7 +47,7 @@ public class EventTableView extends JPanel implements IDirectoryMonitorListener 
     private static final int INDEX_BEFORE_DATE = 6;
     private static final int INDEX_AFTER_DATE = 7;
     
-    private String[] columnHeaders = new String[] {
+    private static final String[] columnHeaders = new String[] {
         "#",
         "Activity", 
         "Dir", 
@@ -56,14 +58,25 @@ public class EventTableView extends JPanel implements IDirectoryMonitorListener 
         "New Date"
     };
     
-    private int sequenceNum;
+    private static final DateFormat dateTimeFormat = 
+        SimpleDateFormat.getDateTimeInstance(
+            SimpleDateFormat.SHORT, 
+            SimpleDateFormat.SHORT);
+
+    // -------------------------------------------------------------------------
+    // Fields
+    // -------------------------------------------------------------------------
+    
+    private JSmartTable table_;
+    private DefaultTableModel model_;
+    private int sequenceNum_;
     
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
     
     public EventTableView() {
-        this.sequenceNum = 1;
+        this.sequenceNum_ = 1;
         buildView();
     }
 
@@ -73,20 +86,43 @@ public class EventTableView extends JPanel implements IDirectoryMonitorListener 
     
     protected void buildView() {
         setLayout(new BorderLayout());
+        
         model_ = new EventTableModel(columnHeaders, 0);
         TableSorter sorter = new TableSorter(model_);
         table_ = new JSmartTable(sorter);
         sorter.setTableHeader(table_.getTableHeader());
         add(BorderLayout.CENTER, new JScrollPane(table_));
 
+        // Decorate the default cell renderer with extra padding so its not so
+        // scrunched up together
+        
+        TableCellRenderer tcr = new DefaultTableCellRenderer();
+        Border paddedBorder = BorderFactory.createEmptyBorder(0,5,0,5);
+        
+        TableCellRenderer paddedRenderer = 
+            new BorderedCellRenderer(tcr, paddedBorder);;
+                
+        table_.setDefaultRenderer(Object.class, paddedRenderer);
+        table_.setDefaultRenderer(Integer.class, paddedRenderer);
+        table_.setDefaultRenderer(Long.class, paddedRenderer);
+        
         // Format dates specially with shortened mm/dd/yyyy
-        table_.setDefaultRenderer(Date.class, new DateRenderer(dateTimeFormat));
+        table_.setDefaultRenderer(Date.class, 
+            new BorderedCellRenderer(
+                new DateRenderer(dateTimeFormat),
+                paddedBorder));
+        
+        table_.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        table_.setAutoTail(true);
     }
-    
+
     // -------------------------------------------------------------------------
     // IDirectoryMonitorListener Interface 
     // -------------------------------------------------------------------------
     
+    /*
+     * @see toolbox.util.dirmon.IDirectoryMonitorListener#directoryActivity(toolbox.util.dirmon.DirectoryMonitorEvent)
+     */
     public void directoryActivity(DirectoryMonitorEvent event) throws Exception{
         TableRow row = new TableRow(event);
         model_.addRow(row.toData());
@@ -108,7 +144,7 @@ public class EventTableView extends JPanel implements IDirectoryMonitorListener 
             Object[] data = new Object[columnHeaders.length];
             FileSnapshot before = event.getBeforeSnapshot();
             FileSnapshot after = event.getAfterSnapshot();
-            data[INDEX_SEQUENCE] = new Integer(sequenceNum++);
+            data[INDEX_SEQUENCE] = new Integer(sequenceNum_++);
                 
             switch (event.getEventType()) {
                 
