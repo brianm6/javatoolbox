@@ -113,9 +113,10 @@
     <body>
 
         <!-- =================================================================== -->
-        <!-- Nov 2005                                                          -->
+        <!-- Nov 2005                                                            -->
         <!-- =================================================================== -->
         <release version="2.0" date="November 2005">
+            <action type="update"   >Util - Refactored toolbox.util.ui.table.LeftClippingCellRenderer as a decorator pattern</action>
             <action type="add"      >DbConsole - Added DbConsole which depends on DbUnit and Velocity</action>
             <action type="add"      >Lib - Added DbUnit version dbunit-1.2</action>
             <action type="add"      >Lib - Added Apache Jakarta Velocity version velocity-1.4</action>
@@ -127,7 +128,7 @@
         </release>
 
         <!-- =================================================================== -->
-        <!-- June 2005                                                          -->
+        <!-- June 2005                                                           -->
         <!-- =================================================================== -->
         <release version="2.0" date="June 2005">
             <action type="update"   >Lib - Upgraded Jakarta Commons-BeanUtils to commons-beanutils-1.7.0</action>
@@ -143,7 +144,6 @@
             <action type="update"   >QueryPlugin - Added preference for sql decorators to the query output</action>
         </release>
 
-
         <!-- =================================================================== -->
         <!-- February 2005                                                       -->
         <!-- =================================================================== -->
@@ -153,7 +153,7 @@
         </release>
 
         <!-- =================================================================== -->
-        <!-- January 2005                                                       -->
+        <!-- January 2005                                                        -->
         <!-- =================================================================== -->
 
         <release version="2.0" date="January 2005">
