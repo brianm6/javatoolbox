@@ -13,12 +13,13 @@ import toolbox.util.ui.AntiAliased;
  * <ul>
  * <li>Antialiased text
  * </ul>
+ * <p>
+ * The antialiasing cannot be achieved via a decorator since the paintComponent
+ * method of the delegate would have to be overridden (there is no other way
+ * to get to the Graphics context that is passed in as an argument).
  */
 public class SmartTableCellRenderer extends DefaultTableCellRenderer implements
     AntiAliased {
-
-    // TODO: Update to use decorator pattern.
-    // TODO: Rename to AntiAliasingCellRenderer
 
     // --------------------------------------------------------------------------
     // Fields
