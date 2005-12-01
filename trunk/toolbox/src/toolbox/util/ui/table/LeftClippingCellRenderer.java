@@ -1,7 +1,9 @@
 package toolbox.util.ui.table;
 
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.FontMetrics;
+import java.awt.Insets;
 
 import javax.swing.JComponent;
 import javax.swing.JTable;
@@ -18,6 +20,8 @@ import javax.swing.table.TableCellRenderer;
  * </pre>
  */
 public class LeftClippingCellRenderer implements TableCellRenderer {
+
+    private static final String CLIP = "..";
     
     // -------------------------------------------------------------------------
     // Fields
@@ -82,41 +86,31 @@ public class LeftClippingCellRenderer implements TableCellRenderer {
         int row,
         int column) {
         
-        int widthForPainting;
-        int stringWidth;
-        int strValueLen = strValue.length();
-        
         JComponent c = (JComponent) delegate_;
+        Font font = c.getFont();
+        FontMetrics fontMetrics = c.getFontMetrics(font);
         
         // I needed to give some extra space to get the clipping to work
         // correctly. Dirty but works.
-        int extraSpace = 
-            SwingUtilities.computeStringWidth(c.getFontMetrics(c.getFont()), "W");
+        int extraSpace = SwingUtilities.computeStringWidth(fontMetrics, "W");
         
         int availableWidth = 
             table.getCellRect(row, column, false).width - extraSpace;
         
-        widthForPainting = 
-            availableWidth - c.getInsets().left + c.getInsets().right;
-        
-        FontMetrics fm = c.getFontMetrics(c.getFont());
-        
-        stringWidth = 
-            SwingUtilities.computeStringWidth(
-                c.getFontMetrics(c.getFont()), strValue);
-        
+        Insets insets = c.getInsets();
+        int widthForPainting = availableWidth - insets.left + insets.right;
+        int stringWidth = SwingUtilities.computeStringWidth(fontMetrics, strValue);
         int index = 0;
         
-        if (widthForPainting > 0 && stringWidth > widthForPainting)
-        {
-            while (stringWidth > widthForPainting && index < strValueLen)
-            {
+        if (widthForPainting > 0 && stringWidth > widthForPainting) {
+            
+            while (stringWidth > widthForPainting && index < strValue.length()) {
                 index += 1;
-                String testStr = "..." + strValue.substring(index);
-                stringWidth = fm.stringWidth(testStr);
+                String testStr = CLIP + strValue.substring(index);
+                stringWidth = fontMetrics.stringWidth(testStr);
             }
             
-            strValue = "..." + strValue.substring(index);
+            strValue = CLIP + strValue.substring(index);
         }
         
         return strValue;
