@@ -9,8 +9,10 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.table.TableCellRenderer;
 
 /**
- * Decorator for a TableCellRenderer that is based on a JComponent which adds
- * to the existing border of the component on the inside.
+ * Decorates a TableCellRenderer with an arbitrary inner border (uses a 
+ * {@link javax.swing.border.CompoundBorder} internally). Useful for 
+ * creating various kinds of padding since the existing border is used to draw
+ * the square of the table cell. 
  */
 public class BorderedCellRenderer implements TableCellRenderer {
 
@@ -44,7 +46,8 @@ public class BorderedCellRenderer implements TableCellRenderer {
         
         if (!(delegate instanceof JComponent))
             throw new IllegalArgumentException(
-                "Renderer must be based on a JComponent");
+                "TabelCellRenderer must be an instance of a JComponent to " +
+                "set the border.");
             
         delegate_ = delegate;
         setBorder(border);
