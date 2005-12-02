@@ -134,6 +134,12 @@ public class EventTableView extends JPanel implements IDirectoryMonitorListener 
                 "Diff File",
                 new DiffAction());
 
+        JButton historyButton =
+            JHeaderPanel.createButton(
+                ImageCache.getIcon(ImageCache.IMAGE_COLUMNS),
+                "File History",
+                new HistoryAction());
+        
         JSmartToggleButton autoTailButton =
             JHeaderPanel.createToggleButton(
                 ImageCache.getIcon(ImageCache.IMAGE_LOCK),
@@ -164,8 +170,9 @@ public class EventTableView extends JPanel implements IDirectoryMonitorListener 
         }
         
         JToolBar tb = JHeaderPanel.createToolBar();
-        tb.add(autoTailButton);
         tb.add(diffButton);
+        tb.add(historyButton);
+        tb.add(autoTailButton);
         
         JHeaderPanel tablePanel = 
             new JHeaderPanel("Activity", tb, new JScrollPane(table_));
@@ -290,6 +297,9 @@ public class EventTableView extends JPanel implements IDirectoryMonitorListener 
         }         
     }
     
+    // -------------------------------------------------------------------------
+    // DiffAction 
+    // -------------------------------------------------------------------------
     
     class DiffAction extends SmartAction {
         
@@ -331,5 +341,37 @@ public class EventTableView extends JPanel implements IDirectoryMonitorListener 
             }
         }
     }
+
+    // -------------------------------------------------------------------------
+    // HistoryAction 
+    // -------------------------------------------------------------------------
     
+    class HistoryAction extends SmartAction {
+        
+        HistoryAction() {
+            super("History", true, false, null);
+            putValue(SHORT_DESCRIPTION, "File history");
+        }
+        
+        
+        public void runAction(ActionEvent e) throws Exception {
+            
+            int idx = table_.getSelectedRow();
+            
+            if (idx >= 0) {
+                String dir = (String) model_.getValueAt(idx, INDEX_DIR); 
+                String file  = (String) model_.getValueAt(idx,INDEX_FILE);
+                String path = dir + File.separator + file;
+                String command = "cleartool lshistory -graphical " + path;
+                //String command = "ls -l";
+                
+                Process p = Runtime.getRuntime().exec(command);
+                InputStream out = p.getInputStream();
+                InputStream err = p.getErrorStream();
+                logger_.debug("History Output: " + IOUtils.toString(out));
+                logger_.debug("History Error: " + IOUtils.toString(err));
+                logger_.debug("History Exit value: " + p.exitValue());
+            }
+        }
+    }
 }
