@@ -5,7 +5,6 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 
 import javax.swing.JFileChooser;
@@ -34,8 +33,7 @@ import toolbox.util.ui.tabbedpane.SmartTabbedPaneListener;
 /**
  * Directory Monitor GUI that sits in the Windows System Tray.
  */
-public class DirMon extends JFrame implements ActionListener,
-     SmartTabbedPaneListener {
+public class DirMon extends JFrame implements SmartTabbedPaneListener {
 
     // TODO: Change event table to show amount of time elapsed since event was
     //       generated.
@@ -64,9 +62,10 @@ public class DirMon extends JFrame implements ActionListener,
      * Default delay in minutes.
      */
     private static final int DEFAULT_DELAY = 30;
-    
-    // Directory Monitor Listeners
-    // =========================================================================
+
+    // -------------------------------------------------------------------------
+    // Fields
+    // -------------------------------------------------------------------------
     
     private DesktopNotifier desktopNotifier_;
     
@@ -115,30 +114,6 @@ public class DirMon extends JFrame implements ActionListener,
     }
 
     // -------------------------------------------------------------------------
-    // ActionListerner Interface
-    // -------------------------------------------------------------------------
-    
-    /* 
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-     */
-    public void actionPerformed(ActionEvent e) {
-
-//        if (e.getActionCommand().equals("show/hide icon")) {
-//            if (menu_.isIconVisible())
-//                menu_.hideIcon();
-//            else
-//                menu_.showIcon();
-//        }
-//        else if (e.getActionCommand().equals("enable/disable submenu")) {
-//            SysTrayMenuItem item = menu_.getItem("Communication");
-//            if (item.isEnabled())
-//                item.setEnabled(false);
-//            else
-//                item.setEnabled(true);
-//        }
-    }
-
-    // -------------------------------------------------------------------------
     // Private
     // -------------------------------------------------------------------------
     
@@ -176,88 +151,14 @@ public class DirMon extends JFrame implements ActionListener,
         contentPane.add(BorderLayout.CENTER, tabbedPane_);
         contentPane.add(BorderLayout.NORTH, inputPanel);
 
-        createMenu();
-
         SwingUtil.setSizeAsDesktopPercentage(this, 50, 50); 
         SwingUtil.centerWindow(this);
     }
 
-    private void createMenu() {
-
-//        // create some labeled menu items
-//        SysTrayMenuItem subItem1 = new SysTrayMenuItem(
-//            "Windows 98", "windows 98");
-//        subItem1.addSysTrayMenuListener(this);
-//        // disable this item
-//        subItem1.setEnabled(false);
-//
-//        SysTrayMenuItem subItem2 = new SysTrayMenuItem(
-//            "Windows 2000", "windows 2000");
-//        subItem2.addSysTrayMenuListener(this);
-//        SysTrayMenuItem subItem3 = new SysTrayMenuItem(
-//            "Windows XP", "windows xp");
-//        subItem3.addSysTrayMenuListener(this);
-//
-//        SysTrayMenuItem subItem4 = new SysTrayMenuItem("GNOME", "gnome");
-//        subItem4.addSysTrayMenuListener(this);
-//        subItem4.setEnabled(false);
-//
-//        SysTrayMenuItem subItem5 = new SysTrayMenuItem("KDE 3", "kde 3");
-//        subItem5.addSysTrayMenuListener(this);
-//
-//        Vector items = new Vector();
-//        items.add(subItem1);
-//        items.add(subItem2);
-//        items.add(subItem3);
-//        items.add(subItem4);
-//        items.add(subItem5);
-//
-//        // create a submenu and insert the previously created items
-//        SubMenu subMenu = new SubMenu("Supported", items);
-//
-//        // create some checkable menu items
-//        CheckableMenuItem chItem1 = new CheckableMenuItem("IPC", "ipc");
-//        chItem1.addSysTrayMenuListener(this);
-//
-//        CheckableMenuItem chItem2 = new CheckableMenuItem("Sockets", "sockets");
-//        chItem2.addSysTrayMenuListener(this);
-//
-//        CheckableMenuItem chItem3 = new CheckableMenuItem("JNI", "jni");
-//        chItem3.addSysTrayMenuListener(this);
-//
-//        // check this item
-//        chItem2.setState(true);
-//        chItem3.setState(true);
-//
-//        // create another submenu and insert the items through addItem()
-//        SubMenu chSubMenu = new SubMenu("Communication");
-//        // disable this submenu
-//        chSubMenu.setEnabled(false);
-//
-//        chSubMenu.addItem(chItem1);
-//        chSubMenu.addItem(chItem2);
-//        chSubMenu.addItem(chItem3);
-
-//        // create an exit item
-//        SysTrayMenuItem itemExit = new SysTrayMenuItem("Exit", "exit");
-//        itemExit.addSysTrayMenuListener(this);
-//
-//        // create an about item
-//        SysTrayMenuItem itemAbout = new SysTrayMenuItem("About...", "about");
-//        itemAbout.addSysTrayMenuListener(this);
-//
-//        // create the main menu
-//        menu_ = new SysTrayMenu(ICON_DIRMON, "Directory Monitor");
-//
-//        // insert items
-//        menu_.addItem(itemExit);
-//        menu_.addSeparator();
-//        menu_.addItem(itemAbout);
-//        menu_.addSeparator();
-//        menu_.addItem(subMenu);
-//        menu_.addItem(chSubMenu);
-    }
- 
+    // -------------------------------------------------------------------------
+    // SmartTabbedPaneListener Interface
+    // -------------------------------------------------------------------------
+    
     /**
      * When a tab is closed, deregister the console and event table views from
      * the directory monitor associated with that tab.
@@ -289,7 +190,7 @@ public class DirMon extends JFrame implements ActionListener,
     class MonitorDirectoryAction extends SmartAction {
 
         public MonitorDirectoryAction() {
-            super("Monitor", true, false, null);
+            super("Monitor", true, true, null);
         }
 
         public void runAction(ActionEvent e) throws Exception {
