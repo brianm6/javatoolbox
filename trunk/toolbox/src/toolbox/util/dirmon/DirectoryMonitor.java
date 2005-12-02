@@ -41,11 +41,11 @@ import toolbox.util.statemachine.StateMachine;
  * dm.addRecognizer(new FileCreatedRecognizer());
  * 
  * // Register a listener
- * dm.addDirectoryListener(new IDirectoryMonitorListener() {
+ * dm.addDirectoryMonitorListener(new IDirectoryMonitorListener() {
  * 
  *     public void directoryActivity(DirectoryMonitorEvent event)
  *         throws Exception {
- *         System.out.println("File created: " + event);  
+ *         System.out.println("File activity: " + event);  
  *      }
  *  });
  *
@@ -57,6 +57,7 @@ import toolbox.util.statemachine.StateMachine;
  *
  * // All done..shutdown 
  * dm.stop();
+ * dm.destroy();
  * </pre>
  */
 public class DirectoryMonitor 
@@ -68,7 +69,7 @@ public class DirectoryMonitor
     // Constants 
     //--------------------------------------------------------------------------
     
-    private static final int DEFAULT_DELAY = 60000; // 60 seconds
+    private static final int DEFAULT_DELAY = 60000;       // 60 seconds
     private static final int DEFAULT_PER_DIR_DELAY = 100; // 100 milliseconds
 
     //--------------------------------------------------------------------------
