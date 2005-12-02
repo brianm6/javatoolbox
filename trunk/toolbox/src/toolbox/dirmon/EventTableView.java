@@ -95,25 +95,26 @@ public class EventTableView extends JPanel implements IDirectoryMonitorListener 
 
         // Decorate the default cell renderer with extra padding so its not so
         // scrunched up together
-        
-        TableCellRenderer tcr = new DefaultTableCellRenderer();
         Border paddedBorder = BorderFactory.createEmptyBorder(0,5,0,5);
         
-        TableCellRenderer paddedRenderer = 
-            new BorderedCellRenderer(tcr, paddedBorder);;
+        TableCellRenderer decoratedRenderer =
+            new BorderedCellRenderer(
+                new DefaultTableCellRenderer(), 
+                paddedBorder);
                 
-        table_.setDefaultRenderer(Object.class, paddedRenderer);
-        table_.setDefaultRenderer(Integer.class, paddedRenderer);
-        table_.setDefaultRenderer(Long.class, paddedRenderer);
+        table_.setDefaultRenderer(Object.class, decoratedRenderer);
+        table_.setDefaultRenderer(Integer.class, decoratedRenderer);
+        table_.setDefaultRenderer(Long.class, decoratedRenderer);
         
         // Format dates specially with shortened mm/dd/yyyy
-        table_.setDefaultRenderer(Date.class, 
+        table_.setDefaultRenderer(Date.class,
             new BorderedCellRenderer(
                 new DateRenderer(dateTimeFormat),
                 paddedBorder));
         
-        table_.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        table_.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
         table_.setAutoTail(true);
+        table_.setRowHeight((int) (table_.getRowHeight() * 1.1));
     }
 
     // -------------------------------------------------------------------------
