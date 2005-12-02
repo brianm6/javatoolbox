@@ -21,16 +21,17 @@ public class HistoryUpAction extends AbstractAction {
     private final SwingConsole console;
     
     /**
-     * @param SwingConsole
+     * Creates a HistoryUpAction.
+     * 
+     * @param console Swing console.
      */
     public HistoryUpAction(SwingConsole console) {
         this.console = console;
     }
     
     
-    /**
-     * @see javax.swing.AbstractAction#actionPerformed(
-     *      java.awt.event.ActionEvent)
+    /*
+     * @see javax.swing.AbstractAction#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent arg0) {
 

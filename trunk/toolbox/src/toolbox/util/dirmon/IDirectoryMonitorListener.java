@@ -10,7 +10,7 @@ public interface IDirectoryMonitorListener extends EventListener {
     /**
      * Delivers an event to the DirectoryMonitor listener.
      * 
-     * @param DirectoryMonitorEvent Event to deliver.
+     * @param directoryMonitorEvent Event to deliver.
      * @throws Exception on error.
      */
     void directoryActivity(DirectoryMonitorEvent directoryMonitorEvent)

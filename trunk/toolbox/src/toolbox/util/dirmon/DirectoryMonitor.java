@@ -405,7 +405,7 @@ public class DirectoryMonitor
     /**
      * Adds an activity to monitor.
      * 
-     * @param activity Activity to monitor
+     * @param r Recognizer to add.
      */
     public void addRecognizer(IFileActivityRecognizer r) {
         recognizers_.add(r);
@@ -415,7 +415,7 @@ public class DirectoryMonitor
     /**
      * Removes an activity from the list of monitored activities.
      * 
-     * @param activity Activity to remove
+     * @param r Recognizer to remove.
      */
     public void removeRecognizer(IFileActivityRecognizer r) {
         recognizers_.remove(r);

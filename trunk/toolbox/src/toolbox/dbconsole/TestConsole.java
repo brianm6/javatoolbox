@@ -239,7 +239,7 @@ public class TestConsole extends Console {
      * Sets the currently active TestEnvironment. Can be null so indicate no
      * TestEnvironment has been set.
      *
-     * @param profile Test environment.
+     * @param testEnvironment Test environment.
      */
     public void setTestEnv(TestEnvironment testEnvironment) {
         testEnv = testEnvironment;

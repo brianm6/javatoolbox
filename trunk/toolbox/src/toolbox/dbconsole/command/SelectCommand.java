@@ -105,7 +105,7 @@ public class SelectCommand implements Command {
      *
      * @param env Test environment.
      * @param table Name of table.
-     * @return
+     * @return TestDatabase
      */
     public static TestDatabase getDatabaseForTable(
         TestEnvironment env,

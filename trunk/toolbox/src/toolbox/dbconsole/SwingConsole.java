@@ -437,7 +437,7 @@ public class SwingConsole extends JFrame implements ConsoleIfc {
     /**
      * getTextConsole
      * 
-     * @return
+     * @return Console
      */
     public Console getTextConsole() {
         return textConsole;

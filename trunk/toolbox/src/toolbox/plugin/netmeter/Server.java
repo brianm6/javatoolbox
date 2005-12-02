@@ -266,15 +266,6 @@ public class Server implements Startable, Initializable, ObservableService
         notifier_.removeServiceListener(listener);
     }
     
-    
-    /**
-     * @see toolbox.util.service.ObservableService#getStateMachine()
-     */
-    public StateMachine getStateMachine()
-    {
-        return machine_;
-    }
-    
     //--------------------------------------------------------------------------
     // MySocketServer
     //--------------------------------------------------------------------------

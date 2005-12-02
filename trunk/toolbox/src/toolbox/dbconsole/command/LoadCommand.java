@@ -188,7 +188,7 @@ public class LoadCommand implements Command {
     /**
      * Loads the given datasuites into the database.
      *
-     * @param dataSuite Name of the data suite.
+     * @param dataSuites Names of the data suite.
      */
     protected void handleCommand(Object[] dataSuites) {
 
