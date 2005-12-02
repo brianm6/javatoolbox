@@ -40,8 +40,7 @@ import toolbox.workspace.PreferencedException;
  * @see toolbox.util.ui.table.SmartTableModel
  * @see toolbox.util.ui.table.SmartTableCellRenderer
  */
-public class JSmartTable extends JTable implements AntiAliased, IPreferenced
-{
+public class JSmartTable extends JTable implements AntiAliased, IPreferenced {
     // TODO: Cut/copy/paste popup menu
     
     private static final Logger logger_ = Logger.getLogger(JSmartTable.class);
@@ -63,8 +62,10 @@ public class JSmartTable extends JTable implements AntiAliased, IPreferenced
     /**
      * List of properties that are saved via the IPreferenced interface.
      */
-    private static final String[] SAVED_PROPS = 
-        { PROP_AUTOTAIL, PROP_ANTIALIAS};
+    private static final String[] SAVED_PROPS = { 
+        PROP_AUTOTAIL, 
+        PROP_ANTIALIAS
+    };
 
     //--------------------------------------------------------------------------
     // Fields
@@ -101,20 +102,18 @@ public class JSmartTable extends JTable implements AntiAliased, IPreferenced
     /**
      * Creates a JSmartTable.
      */
-    public JSmartTable()
-    {
+    public JSmartTable() {
         smartInit();
     }
 
 
     /**
      * Creates a JSmartTable.
-     *
+     * 
      * @param numRows Number of rows.
      * @param numColumns Number of columns.
      */
-    public JSmartTable(int numRows, int numColumns)
-    {
+    public JSmartTable(int numRows, int numColumns) {
         super(numRows, numColumns);
         smartInit();
     }
@@ -122,11 +121,10 @@ public class JSmartTable extends JTable implements AntiAliased, IPreferenced
 
     /**
      * Creates a JSmartTable.
-     *
+     * 
      * @param dm Table model.
      */
-    public JSmartTable(TableModel dm)
-    {
+    public JSmartTable(TableModel dm) {
         super(dm);
         smartInit();
     }
@@ -134,12 +132,11 @@ public class JSmartTable extends JTable implements AntiAliased, IPreferenced
 
     /**
      * Creates a JSmartTable.
-     *
+     * 
      * @param rowData Row data.
      * @param columnNames Column names.
      */
-    public JSmartTable(Object[][] rowData, Object[] columnNames)
-    {
+    public JSmartTable(Object[][] rowData, Object[] columnNames) {
         super(rowData, columnNames);
         smartInit();
     }
@@ -147,12 +144,11 @@ public class JSmartTable extends JTable implements AntiAliased, IPreferenced
 
     /**
      * Creates a JSmartTable.
-     *
+     * 
      * @param rowData Row data.
      * @param columnNames Column names.
      */
-    public JSmartTable(Vector rowData, Vector columnNames)
-    {
+    public JSmartTable(Vector rowData, Vector columnNames) {
         super(rowData, columnNames);
         smartInit();
     }
@@ -160,12 +156,11 @@ public class JSmartTable extends JTable implements AntiAliased, IPreferenced
 
     /**
      * Creates a JSmartTable.
-     *
+     * 
      * @param dm Table model.
      * @param cm Column model.
      */
-    public JSmartTable(TableModel dm, TableColumnModel cm)
-    {
+    public JSmartTable(TableModel dm, TableColumnModel cm) {
         super(dm, cm);
         smartInit();
     }
@@ -173,29 +168,24 @@ public class JSmartTable extends JTable implements AntiAliased, IPreferenced
 
     /**
      * Creates a JSmartTable.
-     *
+     * 
      * @param dm Table model.
      * @param cm Column model.
      * @param sm Selection model.
      */
-    public JSmartTable(
-        TableModel dm,
-        TableColumnModel cm,
-        ListSelectionModel sm)
-    {
+    public JSmartTable(TableModel dm, TableColumnModel cm, ListSelectionModel sm) {
         super(dm, cm, sm);
         smartInit();
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     // Protected
     //--------------------------------------------------------------------------
 
     /**
      * Initializes the table.
      */
-    protected void smartInit()
-    {
+    protected void smartInit() {
         setTableHeader(new JSmartTableHeader(getColumnModel(), this));
         autoTailTracker_ = new AutoTailTracker();
 
@@ -204,6 +194,7 @@ public class JSmartTable extends JTable implements AntiAliased, IPreferenced
             tableModelTracker_ = new TableModelTracker());
 
         getModel().addTableModelListener(autoTailTracker_);
+        setAutoTail(false);
     }
 
     //--------------------------------------------------------------------------
@@ -215,8 +206,7 @@ public class JSmartTable extends JTable implements AntiAliased, IPreferenced
      *
      * @return boolean
      */
-    public boolean isAutoTail()
-    {
+    public boolean isAutoTail() {
         return autoTail_;
     }
 
@@ -227,24 +217,20 @@ public class JSmartTable extends JTable implements AntiAliased, IPreferenced
      *
      * @param autoTail True to activate tailing, false otherwise.
      */
-    public void setAutoTail(boolean autoTail)
-    {
-        if (autoTail == isAutoTail())
-            return;
-
+    public void setAutoTail(boolean autoTail) {
+        boolean oldValue = isAutoTail();
         autoTail_ = autoTail;
-        firePropertyChange(PROP_AUTOTAIL, !autoTail, autoTail);
+        firePropertyChange(PROP_AUTOTAIL, !oldValue, !autoTail_);
     }
 
     //--------------------------------------------------------------------------
     // IPreferenced Interface
     //--------------------------------------------------------------------------
 
-    /**
+    /*
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs) throws PreferencedException
-    {
+    public void applyPrefs(Element prefs) throws PreferencedException {
         Element root = XOMUtil.getFirstChildElement(
             prefs, NODE_JSMARTTABLE, new Element(NODE_JSMARTTABLE));
 
@@ -252,11 +238,10 @@ public class JSmartTable extends JTable implements AntiAliased, IPreferenced
     }
 
 
-    /**
+    /*
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs) throws PreferencedException
-    {
+    public void savePrefs(Element prefs) throws PreferencedException {
         Element root = new Element(NODE_JSMARTTABLE);
         PreferencedUtil.writePreferences(this, root, SAVED_PROPS);
         XOMUtil.insertOrReplace(prefs, root);
@@ -266,20 +251,18 @@ public class JSmartTable extends JTable implements AntiAliased, IPreferenced
     // AntiAliased Interface
     //--------------------------------------------------------------------------
 
-    /**
+    /*
      * @see toolbox.util.ui.AntiAliased#isAntiAliased()
      */
-    public boolean isAntiAliased()
-    {
+    public boolean isAntiAliased() {
         return antiAliased_;
     }
 
 
-    /**
+    /*
      * @see toolbox.util.ui.AntiAliased#setAntiAliased(boolean)
      */
-    public void setAntiAliased(boolean b)
-    {
+    public void setAntiAliased(boolean b) {
         antiAliased_ = b;
 
         // TODO: Is this necessary?
@@ -288,8 +271,7 @@ public class JSmartTable extends JTable implements AntiAliased, IPreferenced
         if ((header != null) && (header instanceof AntiAliased))
             ((AntiAliased) header).setAntiAliased(b);
 
-        for (int i = 0, c = getColumnCount(); i < c; i++)
-        {
+        for (int i = 0, c = getColumnCount(); i < c; i++) {
             TableCellRenderer tcr = getCellRenderer(0, i);
 
             if (tcr != null && tcr instanceof AntiAliased)
@@ -306,8 +288,7 @@ public class JSmartTable extends JTable implements AntiAliased, IPreferenced
      * 
      * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
      */
-    public void paintComponent(Graphics gc)
-    {
+    public void paintComponent(Graphics gc) {
         SwingUtil.makeAntiAliased(gc, isAntiAliased());
         super.paintComponent(gc);
     }
@@ -335,14 +316,13 @@ public class JSmartTable extends JTable implements AntiAliased, IPreferenced
      * table. Whenever the  model is switched out, the followTracker is removed
      * from the old table and associated with the replacement.
      */
-    class TableModelTracker implements PropertyChangeListener
-    {
-        /**
-         * @see java.beans.PropertyChangeListener#propertyChange(
-         *      java.beans.PropertyChangeEvent)
+    class TableModelTracker implements PropertyChangeListener {
+        
+        /*
+         * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
          */
-        public void propertyChange(PropertyChangeEvent evt)
-        {
+        public void propertyChange(PropertyChangeEvent evt) {
+            
             TableModel old = (TableModel) evt.getOldValue();
             TableModel knew = (TableModel) evt.getNewValue();
 
@@ -363,24 +343,21 @@ public class JSmartTable extends JTable implements AntiAliased, IPreferenced
      * happens, if the follow flag is active, the table will automatically be
      * scrolled to the end.
      */
-    class AutoTailTracker implements TableModelListener
-    {
-        /**
-         * @see javax.swing.event.TableModelListener#tableChanged(
-         *      javax.swing.event.TableModelEvent)
+    class AutoTailTracker implements TableModelListener {
+        
+        /*
+         * @see javax.swing.event.TableModelListener#tableChanged(javax.swing.event.TableModelEvent)
          */
-        public void tableChanged(TableModelEvent e)
-        {
+        public void tableChanged(TableModelEvent e) {
             // Only update scrolly bar if a row was inserted or deleted.
 
             if (isAutoTail() &&
                 (e.getType() == TableModelEvent.INSERT ||
-                 e.getType() == TableModelEvent.DELETE))
-            {
-                SwingUtilities.invokeLater(new Runnable()
-                {
-                    public void run()
-                    {
+                 e.getType() == TableModelEvent.DELETE)) {
+                
+                SwingUtilities.invokeLater(new Runnable() {
+                    
+                    public void run() {
                         Rectangle rect = getCellRect(
                             getRowCount(), getColumnCount(), true);
 
