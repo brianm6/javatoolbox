@@ -64,17 +64,12 @@ public class BorderedCellRenderer implements TableCellRenderer {
         boolean hasFocus,
         int row,
         int column) {
-        
+
         JComponent c = (JComponent) 
             delegate_.getTableCellRendererComponent(
                 table, value, isSelected, hasFocus, row, column);
-        
-        CompoundBorder paddedBorder = 
-            new CompoundBorder(
-                c.getBorder(),  
-                getBorder());
-        
-        c.setBorder(paddedBorder);
+
+        c.setBorder(new CompoundBorder(c.getBorder(), getBorder()));
         return c;
     }
 
