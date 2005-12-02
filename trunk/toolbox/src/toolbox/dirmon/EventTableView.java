@@ -1,20 +1,28 @@
 package toolbox.dirmon;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JToolBar;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
 import com.l2fprod.common.swing.renderer.DateRenderer;
@@ -23,9 +31,14 @@ import toolbox.util.dirmon.DirectoryMonitor;
 import toolbox.util.dirmon.DirectoryMonitorEvent;
 import toolbox.util.dirmon.FileSnapshot;
 import toolbox.util.dirmon.IDirectoryMonitorListener;
+import toolbox.util.ui.ImageCache;
+import toolbox.util.ui.JHeaderPanel;
+import toolbox.util.ui.JSmartToggleButton;
+import toolbox.util.ui.SmartAction;
 import toolbox.util.ui.table.BorderedCellRenderer;
 import toolbox.util.ui.table.JSmartTable;
 import toolbox.util.ui.table.TableSorter;
+import toolbox.util.ui.table.action.AutoTailAction;
 
 /**
  * Directory monitor view that shows DirectoryMonitorEvents in a table. 
@@ -91,7 +104,8 @@ public class EventTableView extends JPanel implements IDirectoryMonitorListener 
         TableSorter sorter = new TableSorter(model_);
         table_ = new JSmartTable(sorter);
         sorter.setTableHeader(table_.getTableHeader());
-        add(BorderLayout.CENTER, new JScrollPane(table_));
+        
+        //add(BorderLayout.CENTER, new JScrollPane(table_));
 
         // Decorate the default cell renderer with extra padding so its not so
         // scrunched up together
@@ -112,8 +126,55 @@ public class EventTableView extends JPanel implements IDirectoryMonitorListener 
                 new DateRenderer(dateTimeFormat),
                 paddedBorder));
         
+        ////////////////////////////////////////////////////////////////////////
+        
+        JButton diffButton =
+            JHeaderPanel.createButton(
+                ImageCache.getIcon(ImageCache.IMAGE_BRACES),
+                "Diff File",
+                new DiffAction());
+
+        JSmartToggleButton autoTailButton =
+            JHeaderPanel.createToggleButton(
+                ImageCache.getIcon(ImageCache.IMAGE_LOCK),
+                "Automatically tail output",
+                new AutoTailAction(table_));
+
+        autoTailButton.toggleOnProperty(
+            table_, 
+            JSmartTable.PROP_AUTOTAIL);
+        
+        try {
+            // TODO: Move to JSmartToggleButton
+            autoTailButton.setSelected(
+                !(new Boolean(BeanUtils.getProperty(
+                    table_, JSmartTable.PROP_AUTOTAIL)).booleanValue()));
+        }
+        catch (IllegalAccessException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        catch (InvocationTargetException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        catch (NoSuchMethodException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+        JToolBar tb = JHeaderPanel.createToolBar();
+        tb.add(autoTailButton);
+        tb.add(diffButton);
+        
+        JHeaderPanel tablePanel = 
+            new JHeaderPanel("Activity", tb, new JScrollPane(table_));
+
+        add(BorderLayout.CENTER, tablePanel);
+        
         table_.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
-        table_.setAutoTail(true);
+        logger_.debug("Setting tail flag in eventtable...");
+        table_.setAutoTail(false);
         table_.setRowHeight((int) (table_.getRowHeight() * 1.1));
     }
 
@@ -226,6 +287,49 @@ public class EventTableView extends JPanel implements IDirectoryMonitorListener 
             }
             
             return dataType;
-          }         
+        }         
     }
+    
+    
+    class DiffAction extends SmartAction {
+        
+        DiffAction() {
+            super("Diff", true, false, null);
+            putValue(SHORT_DESCRIPTION, "Diffs the selected file");
+        }
+        
+        
+        public void runAction(ActionEvent e) throws Exception {
+            
+            int idx = table_.getSelectedRow();
+            
+            if (idx >= 0) {
+                String dir = (String) model_.getValueAt(idx, INDEX_DIR); 
+                String file  = (String) model_.getValueAt(idx,INDEX_FILE);
+                String path = dir + File.separator + file;
+                String command = "cleartool diff -graphical -predecessor  " + path;
+                //String command = "ls -l";
+                
+                Process p = Runtime.getRuntime().exec(command);
+                InputStream out = p.getInputStream();
+                InputStream err = p.getErrorStream();
+                logger_.debug("Diff Output: " + IOUtils.toString(out));
+                logger_.debug("Diff Error: " + IOUtils.toString(err));
+                logger_.debug("Diff Exit value: " + p.exitValue());
+                
+//                JTextArea textArea = new JTextArea(40, 80);
+//                textArea.setFont(FontUtil.getPreferredMonoFont());
+//                textArea.setText(
+//                    "Output:\n"
+//                    + output
+//                    +"\n\nError:\n"
+//                    + IOUtils.toString(err));
+//                
+//                JSmartOptionPane.showMessageDialog(
+//                    SwingUtil.getFrameAncestor(EventTableView.this),
+//                    new JScrollPane(textArea));
+            }
+        }
+    }
+    
 }
