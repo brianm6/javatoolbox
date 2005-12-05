@@ -26,6 +26,8 @@ package toolbox.util.service;
  */              
 public interface Service {
     
+    // TODO: Rename to LifeCycle
+    
     /**
      * Returns the current state of this service.
      * 
