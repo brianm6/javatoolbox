@@ -67,8 +67,15 @@ public class FileCreatedRecognizer implements IFileActivityRecognizer {
                     monitor_, 
                     (FileSnapshot) null, 
                     (FileSnapshot) after.getFileSnapshots().get(fileKey));
-            
+
             createdFileEvents.add(event);
+            
+            // This really shouldn't be the responsiblity of the recognizer but
+            // its the easiest to put here for right now
+            
+            // If the new file is a directory, add it to the master list...
+            if (event.getAfterSnapshot().isDirectory())
+                monitor_.addDirectory(event.getAfterSnapshot().toFile());
         }
         
         return createdFileEvents;
