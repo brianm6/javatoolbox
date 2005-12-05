@@ -50,6 +50,9 @@ public class DirMon extends JFrame implements SmartTabbedPaneListener {
     // TODO: For directories that are creates, add subdirectories to the list
     //       of scanned dirs. THis is really a DirectoryMonitor thing.
     
+    // TODO: Clicking on the toaster should bring the application to the 
+    //       foreground 
+    
     private static Logger logger_ =  Logger.getLogger(DirectoryMonitor.class);
     
     // -------------------------------------------------------------------------
