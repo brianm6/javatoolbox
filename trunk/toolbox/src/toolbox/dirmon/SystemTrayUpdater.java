@@ -1,6 +1,7 @@
 package toolbox.dirmon;
 
 import java.awt.Window;
+import java.awt.event.WindowFocusListener;
 import java.io.IOException;
 
 import javax.swing.JOptionPane;
@@ -39,16 +40,28 @@ class SystemTrayUpdater
     // Constants
     //--------------------------------------------------------------------------
     
+    /**
+     * System tray icon when there are no alerts.
+     */
     private static SysTrayMenuIcon ICON_DIRMON;
     
+    /**
+     * System tray icon when there are alerts.
+     */
     private static SysTrayMenuIcon ICON_DIRMON_ALERT; 
             
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
 
+    /**
+     * Window associated with the SystemTray.
+     */
     private Window parent_;
     
+    /**
+     * Manages the platform native system tray icon and submenus.
+     */
     private SysTrayMenu menu_;
     
     //--------------------------------------------------------------------------
@@ -74,6 +87,11 @@ class SystemTrayUpdater
     // Constructors
     //--------------------------------------------------------------------------
 
+    /**
+     * Creates a SystemTrayUpdater.
+     * 
+     * @param parent Parent window.
+     */
     SystemTrayUpdater(Window parent) {
         parent_ = parent;
         
@@ -92,8 +110,56 @@ class SystemTrayUpdater
         menu_.addItem(exitMenuItem);
         menu_.addSeparator();
         menu_.addItem(aboutMenuItem);
+        
+        parent_.addWindowFocusListener(new WindowFocusListener() {
+            
+            public void windowGainedFocus(java.awt.event.WindowEvent e) {
+                //logger_.debug("gained focus");
+                resetAlert();
+            };
+            
+            public void windowLostFocus(java.awt.event.WindowEvent e) {
+                //logger_.debug("lost focus");
+                resetAlert();
+            };
+        });
+
+//        logger_.debug("Adding window listener...");
+//        
+//        parent_.addWindowStateListener(new WindowStateListener() {
+//            
+//            public void windowStateChanged(WindowEvent e) {
+//                logger_.debug("widnow state changed: " + e.paramString());
+//                resetAlert();
+//            }
+//        });
+        
+//        parent_.addPropertyChangeListener(new PropertyChangeListener() {
+//            
+//            public void propertyChange(PropertyChangeEvent evt) {
+//                logger_.debug(evt.getPropertyName());
+//                logger_.debug(evt.getOldValue());
+//                logger_.debug(evt.getNewValue());
+//            }
+//        });
     }
 
+    
+    /**
+     * Changes the systray icon to show that an alert is available.
+     */
+    public void showAlert() {
+        menu_.setIcon(ICON_DIRMON_ALERT);
+    }
+
+    
+    /**
+     * Resets the systray icon to show no alerts.
+     */
+    public void resetAlert() {
+        menu_.setIcon(ICON_DIRMON);
+    }
+    
     //--------------------------------------------------------------------------
     // IDirectoryMonitorListener Interface
     //--------------------------------------------------------------------------
@@ -135,7 +201,7 @@ class SystemTrayUpdater
         }
         
         menu_.setToolTip(shortMsg.toString());
-        menu_.setIcon(ICON_DIRMON_ALERT);
+        showAlert();
     }
     
     // -------------------------------------------------------------------------
@@ -166,7 +232,7 @@ class SystemTrayUpdater
         parent_.setVisible(!parent_.isVisible());
         if (parent_.isVisible())
             parent_.toFront();
-        menu_.setIcon(ICON_DIRMON);
+        resetAlert();
     }
 
 
