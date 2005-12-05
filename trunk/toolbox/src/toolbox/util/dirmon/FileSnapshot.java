@@ -14,19 +14,21 @@ public class FileSnapshot {
     // Fields
     // -------------------------------------------------------------------------
     
+    // Left out of snapshot for performance reasons
     private boolean readable_;
 
     private boolean writable_;
 
     private boolean exists_;
 
+    private String name_;
+    
+    private boolean hidden_;
+
+    // Included in snapshot
     private String absolutePath_;
 
-    private String name_;
-
     private boolean directory_;
-
-    private boolean hidden_;
 
     private long lastModified_;
 
@@ -38,18 +40,23 @@ public class FileSnapshot {
     // Constructors
     // -------------------------------------------------------------------------
     
+    /**
+     * Creates a FileSnapshot for the given file.
+     * 
+     * @param file File to create a snapshot for.
+     */
     public FileSnapshot(File file) {
         //setReadable(file.canRead());
         //setWritable(file.canRead());
         //setExists(file.exists());
         //setName(file.getName());
-        //setDirectory(file.isDirectory());
         //setHidden(file.isHidden());
-        setLength(file.length());
-        //setSnapshotTimestamp(new Date());
         
-        setAbsolutePath(file.getAbsolutePath());
-        setLastModified(file.lastModified());
+        setDirectory(file.isDirectory());
+        setLength(file.length());
+        setSnapshotTimestamp(new Date());
+        setAbsolutePath(file.getAbsolutePath());  // canonical path is very expensive
+        setLastModified(file.lastModified()); 
     }
 
     // -------------------------------------------------------------------------
