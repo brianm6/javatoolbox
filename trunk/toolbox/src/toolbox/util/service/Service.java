@@ -24,8 +24,8 @@ package toolbox.util.service;
  *                                    start
  *</pre>                                      
  */              
-public interface Service 
-{
+public interface Service {
+    
     /**
      * Returns the current state of this service.
      * 

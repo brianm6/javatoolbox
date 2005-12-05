@@ -43,12 +43,10 @@ import toolbox.util.service.Nameable;
  *      System.out.println("Bingo..buy comes before cooking!");
  *  
  *   // Passively check transitions..
- *   try
- *   {
+ *   try {
  *       cooker.checkTransition(buyFood);     
  *   }
- *   catch (IllegalStateException ise)
- *   {
+ *   catch (IllegalStateException ise) {
  *       System.out.println("Bingo..buy comes before cooking!");
  *   }
  * 
@@ -57,8 +55,8 @@ import toolbox.util.service.Nameable;
  *   
  * </pre>
  */
-public interface StateMachine extends Nameable
-{
+public interface StateMachine extends Nameable {
+    
     /**
      * Sets the initial state of this state machine. This given state must
      * already have been added to the state machine.

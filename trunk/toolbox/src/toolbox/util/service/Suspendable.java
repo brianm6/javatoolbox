@@ -2,9 +2,9 @@ package toolbox.util.service;
 
 /**
  * Implemented by services which can suspend and resume operation.
- */              
-public interface Suspendable extends Service
-{
+ */
+public interface Suspendable extends Service {
+    
     /**
      * Suspends this service.
      * 
@@ -14,8 +14,8 @@ public interface Suspendable extends Service
      *         itself.
      */
     void suspend() throws IllegalStateException, ServiceException;
-    
-    
+
+
     /**
      * Resumes the service.
      * 
@@ -25,8 +25,8 @@ public interface Suspendable extends Service
      *         itself.
      */
     void resume() throws IllegalStateException, ServiceException;
-    
-    
+
+
     /**
      * Returns true if the service is suspended, false otherwise.
      * 

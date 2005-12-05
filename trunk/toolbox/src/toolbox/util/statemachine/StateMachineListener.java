@@ -6,11 +6,11 @@ import toolbox.util.statemachine.impl.DefaultStateMachine;
  * StateMachineListener provides a notification interface for events generated
  * by a {@link StateMachine}.
  */
-public interface StateMachineListener
-{
+public interface StateMachineListener {
+    
     /**
      * Notification that the state of the machine has changed.
-     *  
+     * 
      * @param machine Originating state machine.
      */
     public void stateChanged(StateMachine machine);
