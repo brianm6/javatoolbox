@@ -29,6 +29,7 @@ import toolbox.util.ui.SmartAction;
 import toolbox.util.ui.plaf.LookAndFeelUtil;
 import toolbox.util.ui.tabbedpane.JSmartTabbedPane;
 import toolbox.util.ui.tabbedpane.SmartTabbedPaneListener;
+import toolbox.util.ui.textcomponent.FileAutoCompleter;
 
 /**
  * Directory Monitor GUI that sits in the Windows System Tray.
@@ -135,6 +136,9 @@ public class DirMon extends JFrame implements SmartTabbedPaneListener {
         
         JPanel inputPanel = new JPanel(new FlowLayout());
         dirField_ = new JSmartTextField(40);
+        
+        new FileAutoCompleter(dirField_);
+        
         delayField_ = new JSmartTextField(DEFAULT_DELAY + "", 4);
         addDirButton_ = new JSmartButton(new MonitorDirectoryAction());
         dirChooserButton_ = new JSmartButton(new PickDirectoryAction());
