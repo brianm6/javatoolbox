@@ -42,6 +42,7 @@ import toolbox.util.ui.table.JSmartTable;
 import toolbox.util.ui.table.SmartTableModel;
 import toolbox.util.ui.table.TableSorter;
 import toolbox.util.ui.table.action.AutoTailAction;
+import toolbox.util.ui.textcomponent.FileAutoCompleter;
 import toolbox.workspace.IPreferenced;
 import toolbox.workspace.IStatusBar;
 import toolbox.workspace.PreferencedException;
@@ -67,7 +68,7 @@ public class JSourceView extends JPanel implements IPreferenced
     public static final String LABEL_GO_BUTTON         = "Go!";
     public static final String LABEL_CANCEL_BUTTON     = "Cancel";
     
-    // Names
+    // Names referenced by the Jemmy unit test.
     public static final String NAME_DIRECTORY_FIELD    = "directory.field";
     public static final String NAME_CHART_BUTTON       = "chart.button";
     public static final String NAME_SCROLL_LOCK_BUTTON = "scrollLock.button";
@@ -369,6 +370,7 @@ public class JSourceView extends JPanel implements IPreferenced
         
         dirField_ = new JSmartTextField(35);
         dirField_.setName(NAME_DIRECTORY_FIELD);
+        new FileAutoCompleter(dirField_);
         
         goButton_ = new JSmartButton();
         pickDirButton_ = new JSmartButton(new PickDirectoryAction());
