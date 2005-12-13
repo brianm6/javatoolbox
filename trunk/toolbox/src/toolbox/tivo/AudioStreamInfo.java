@@ -4,7 +4,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
 
-public class AudioStream extends Stream {
+public class AudioStreamInfo extends StreamInfo {
 
     Integer hertz_;
 
@@ -73,7 +73,7 @@ public class AudioStream extends Stream {
     }
     
     public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SIMPLE_STYLE);
     }
     
 }
