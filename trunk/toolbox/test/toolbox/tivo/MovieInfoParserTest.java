@@ -22,12 +22,11 @@ public class MovieInfoParserTest extends TivoTestCase {
     // Unit Tests
     // -------------------------------------------------------------------------
     
-    public void testParse() throws Exception {
-        logger_.info("Running testParse...");
+    public void testParse_H264() throws Exception {
+        logger_.info("Running testParse_H264...");
         
         MovieInfoParser parser = new MovieInfoParser();
-        MovieInfo movie = parser.parse(getTestFilename());
-       //logger_.debug("\n" + StringUtil.banner(movie.toString()));
+        MovieInfo movie = parser.parse(getH264Filename());
         logger_.debug("\n\n" + movie.toString());
     }
 }
