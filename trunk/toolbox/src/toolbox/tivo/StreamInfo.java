@@ -1,7 +1,7 @@
 package toolbox.tivo;
 
 
-public class Stream {
+public class StreamInfo {
 
     String number_;
     String id_;
