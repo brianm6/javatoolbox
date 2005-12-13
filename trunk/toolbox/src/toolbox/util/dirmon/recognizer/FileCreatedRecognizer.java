@@ -11,9 +11,9 @@ import junit.framework.Assert;
 import toolbox.util.CollectionUtil;
 import toolbox.util.dirmon.DirSnapshot;
 import toolbox.util.dirmon.DirectoryMonitor;
-import toolbox.util.dirmon.DirectoryMonitorEvent;
 import toolbox.util.dirmon.FileSnapshot;
 import toolbox.util.dirmon.IFileActivityRecognizer;
+import toolbox.util.dirmon.event.FileEvent;
 
 /**
  * Recognizes when new files are added to a directory.
@@ -61,9 +61,9 @@ public class FileCreatedRecognizer implements IFileActivityRecognizer {
         for (Iterator i = createdFileKeys.iterator(); i.hasNext();) {
             String fileKey = (String) i.next();
 
-            DirectoryMonitorEvent event = 
-                new DirectoryMonitorEvent(
-                    DirectoryMonitorEvent.TYPE_CREATED,
+            FileEvent event = 
+                new FileEvent(
+                    FileEvent.TYPE_FILE_CREATED,
                     monitor_, 
                     (FileSnapshot) null, 
                     (FileSnapshot) after.getFileSnapshots().get(fileKey));

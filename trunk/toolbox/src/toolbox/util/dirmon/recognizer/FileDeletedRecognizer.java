@@ -11,9 +11,9 @@ import junit.framework.Assert;
 import toolbox.util.CollectionUtil;
 import toolbox.util.dirmon.DirSnapshot;
 import toolbox.util.dirmon.DirectoryMonitor;
-import toolbox.util.dirmon.DirectoryMonitorEvent;
 import toolbox.util.dirmon.FileSnapshot;
 import toolbox.util.dirmon.IFileActivityRecognizer;
+import toolbox.util.dirmon.event.FileEvent;
 
 /**
  * Recognizes when files are deleted from a directory.
@@ -61,9 +61,9 @@ public class FileDeletedRecognizer implements IFileActivityRecognizer {
         for (Iterator i = deletedFileKeys.iterator(); i.hasNext();) {
             String fileKey = (String) i.next();
 
-            DirectoryMonitorEvent event = 
-                new DirectoryMonitorEvent(
-                    DirectoryMonitorEvent.TYPE_DELETED,
+            FileEvent event = 
+                new FileEvent(
+                    FileEvent.TYPE_FILE_DELETED,
                     monitor_, 
                     (FileSnapshot) before.getFileSnapshots().get(fileKey),
                     (FileSnapshot) null); 

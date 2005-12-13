@@ -11,9 +11,9 @@ import junit.framework.Assert;
 import toolbox.util.CollectionUtil;
 import toolbox.util.dirmon.DirSnapshot;
 import toolbox.util.dirmon.DirectoryMonitor;
-import toolbox.util.dirmon.DirectoryMonitorEvent;
 import toolbox.util.dirmon.FileSnapshot;
 import toolbox.util.dirmon.IFileActivityRecognizer;
+import toolbox.util.dirmon.event.FileEvent;
 
 /**
  * Recognizes when a file has changed based on the last modified timestamp.
@@ -67,9 +67,9 @@ public class FileChangedRecognizer implements IFileActivityRecognizer {
             if (beforeFileSnapshot.getLastModified() != 
                 afterFileSnapshot.getLastModified()) {
                 
-                DirectoryMonitorEvent event = 
-                    new DirectoryMonitorEvent(
-                        DirectoryMonitorEvent.TYPE_CHANGED,
+                FileEvent event = 
+                    new FileEvent(
+                        FileEvent.TYPE_FILE_CHANGED,
                         monitor_, 
                         beforeFileSnapshot,
                         afterFileSnapshot);
