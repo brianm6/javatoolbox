@@ -7,8 +7,9 @@ import com.nitido.utils.toaster.Toaster;
 import org.apache.commons.io.FilenameUtils;
 
 import toolbox.util.FontUtil;
-import toolbox.util.dirmon.DirectoryMonitorEvent;
 import toolbox.util.dirmon.IDirectoryMonitorListener;
+import toolbox.util.dirmon.event.FileEvent;
+import toolbox.util.dirmon.event.StatusEvent;
 import toolbox.util.ui.ImageCache;
 
 /**
@@ -37,14 +38,17 @@ class DesktopNotifier implements IDirectoryMonitorListener {
     // IDirectoryMonitorListener Interface
     //--------------------------------------------------------------------------
     
-    public void directoryActivity(DirectoryMonitorEvent event) throws Exception {
+    public void statusChanged(StatusEvent statusEvent) throws Exception {
+    }
+    
+    public void directoryActivity(FileEvent event) throws Exception {
         
         StringBuffer shortMsg = new StringBuffer();
         Icon toasterIcon = null;
         
         switch (event.getEventType()) {
         
-            case DirectoryMonitorEvent.TYPE_CHANGED :
+            case FileEvent.TYPE_FILE_CHANGED :
                 
                 shortMsg.append("Modified: ");
                 shortMsg.append(
@@ -54,7 +58,7 @@ class DesktopNotifier implements IDirectoryMonitorListener {
                 toasterIcon = ImageCache.getIcon(ImageCache.IMAGE_COPY);
                 break;
                 
-            case DirectoryMonitorEvent.TYPE_CREATED :
+            case FileEvent.TYPE_FILE_CREATED :
                 
                 shortMsg.append("Created: ");
                 shortMsg.append(
@@ -64,7 +68,7 @@ class DesktopNotifier implements IDirectoryMonitorListener {
                 toasterIcon = ImageCache.getIcon(ImageCache.IMAGE_INFO);
                 break;
 
-            case DirectoryMonitorEvent.TYPE_DELETED :
+            case FileEvent.TYPE_FILE_DELETED :
                 
                 shortMsg.append("Deleted: ");
                 shortMsg.append(

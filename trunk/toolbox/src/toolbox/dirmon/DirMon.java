@@ -234,6 +234,7 @@ public class DirMon extends JFrame implements SmartTabbedPaneListener {
                 dm.addDirectoryMonitorListener(desktopNotifier_);
                 dm.addDirectoryMonitorListener(consoleView_);
                 dm.addDirectoryMonitorListener(tableView_);
+                SingleMonitorView singleView = new SingleMonitorView(dm);
                 
                 dm.start();
                 
@@ -242,10 +243,9 @@ public class DirMon extends JFrame implements SmartTabbedPaneListener {
                 // is a aggregated by SingleMonitorView) requires that the
                 // service state be something
                 
-                SingleMonitorView singleView = new SingleMonitorView(dm);
                 
-                String dirName = 
-                    dm.getMonitoredDirectories().iterator().next().toString();
+                String dirName = dm.getName(); 
+                    //dm.getMonitoredDirectories().iterator().next().toString();
                 
                 tabbedPane_.insertTab(
                     FilenameUtils.getName(dirName), // last dir name as tab name

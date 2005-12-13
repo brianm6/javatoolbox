@@ -16,8 +16,9 @@ import snoozesoft.systray4j.SysTrayMenuItem;
 import snoozesoft.systray4j.SysTrayMenuListener;
 
 import toolbox.util.ResourceUtil;
-import toolbox.util.dirmon.DirectoryMonitorEvent;
 import toolbox.util.dirmon.IDirectoryMonitorListener;
+import toolbox.util.dirmon.event.FileEvent;
+import toolbox.util.dirmon.event.StatusEvent;
 
 /**
  * Manages the system tray component of the directory monitor.
@@ -164,13 +165,16 @@ class SystemTrayUpdater
     // IDirectoryMonitorListener Interface
     //--------------------------------------------------------------------------
     
-    public void directoryActivity(DirectoryMonitorEvent event) throws Exception {
+    public void statusChanged(StatusEvent statusEvent) throws Exception {
+    }
+    
+    public void directoryActivity(FileEvent event) throws Exception {
         
         StringBuffer shortMsg = new StringBuffer();
         
         switch (event.getEventType()) {
         
-            case DirectoryMonitorEvent.TYPE_CHANGED :
+            case FileEvent.TYPE_FILE_CHANGED :
                 
                 shortMsg.append("Modified: ");
                 shortMsg.append(FilenameUtils.getName(
@@ -178,7 +182,7 @@ class SystemTrayUpdater
                 
                 break;
                 
-            case DirectoryMonitorEvent.TYPE_CREATED :
+            case FileEvent.TYPE_FILE_CREATED :
                 
                 shortMsg.append("Created: ");
                 shortMsg.append(FilenameUtils.getName(
@@ -186,7 +190,7 @@ class SystemTrayUpdater
                 
                 break;
 
-            case DirectoryMonitorEvent.TYPE_DELETED :
+            case FileEvent.TYPE_FILE_DELETED :
                 
                 shortMsg.append("Deleted: ");
                 shortMsg.append(FilenameUtils.getName(

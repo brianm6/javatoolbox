@@ -54,7 +54,7 @@ public class ControllerView extends JPanel {
             "Monitoring " 
             + dirs.size() 
             + " directories in "   
-            + directoryMonitor_.getMonitoredDirectories().get(0)));
+            + directoryMonitor_.getName()));
         
         add(BorderLayout.CENTER, serviceView_);
         

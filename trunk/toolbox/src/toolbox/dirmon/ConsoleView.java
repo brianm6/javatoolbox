@@ -4,13 +4,19 @@ import java.awt.BorderLayout;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import toolbox.util.ElapsedTime;
 import toolbox.util.FontUtil;
-import toolbox.util.dirmon.DirectoryMonitorEvent;
+import toolbox.util.dirmon.DirectoryMonitor;
+import toolbox.util.dirmon.FileSnapshot;
 import toolbox.util.dirmon.IDirectoryMonitorListener;
+import toolbox.util.dirmon.event.FileEvent;
+import toolbox.util.dirmon.event.StatusEvent;
 import toolbox.util.ui.JSmartTextArea;
 
 /**
@@ -18,21 +24,37 @@ import toolbox.util.ui.JSmartTextArea;
  * the events converted into strings with no formatting.
  */
 public class ConsoleView extends JPanel implements IDirectoryMonitorListener {
-
+    
+    private static final DateFormat dateTimeFormat = 
+        SimpleDateFormat.getDateTimeInstance();
+    
     // -------------------------------------------------------------------------
     // Fields
     // -------------------------------------------------------------------------
     
     private JSmartTextArea messageArea_;
 
-    private DateFormat dateTimeFormat = SimpleDateFormat.getDateTimeInstance();
-
+    /**
+     * Map of start times for each directory scan. Used to sync up with the 
+     * end time to determine the elapsed time for each scan.
+     * <ul>
+     *   <li>key = DirectoryMonitor.getName()
+     *   <li>value = Date
+     * </ul>
+     * @see #statusChanged(StatusEvent)
+     */
+    private Map scanMap_;
+    
+    private Map discoveryMap_;
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
     
     public ConsoleView() {
         buildView();
+        scanMap_ = new HashMap();
+        discoveryMap_ = new HashMap();
     }
 
     // -------------------------------------------------------------------------
@@ -54,72 +76,150 @@ public class ConsoleView extends JPanel implements IDirectoryMonitorListener {
     // IDirectoryMonitorListener Interface 
     // -------------------------------------------------------------------------
     
-    public void directoryActivity(DirectoryMonitorEvent event) throws Exception{
+    /*
+     * @see toolbox.util.dirmon.IDirectoryMonitorListener#statusChanged(toolbox.util.dirmon.event.StatusEvent)
+     */
+    public void statusChanged(StatusEvent statusEvent) throws Exception {
+
+        DirectoryMonitor monitor = statusEvent.getDirectoryMonitor();
+        String name = monitor.getName();
+        
+        switch (statusEvent.getEventType()) {
+            
+            case StatusEvent.TYPE_START_SCAN :
+                // Put scan start time in map
+                scanMap_.put(monitor, new Date());
+                break;
+            
+            case StatusEvent.TYPE_END_SCAN :
+                // Extract scan start time from map and figure out elapsed time...
+                Date endTime = new Date();
+                Date startTime = (Date) scanMap_.remove(monitor);
+                
+                if (startTime != null) {
+                    ElapsedTime elapsed = new ElapsedTime(startTime, endTime);
+                    messageArea_.append(
+                        "Scanned " 
+                        + monitor.getMonitoredDirectories().size() 
+                        + " dir(s) in " 
+                        + name 
+                        + " in " 
+                        + elapsed 
+                        + ". Snoozing for "
+                        + new ElapsedTime(0, monitor.getDelay())
+                        + "...\n");
+                }
+                else {
+                    messageArea_.append(
+                        "Start time map entry for scan " + name + " not found!\n");
+                }
+                break;
+            
+            case StatusEvent.TYPE_START_DISCOVERY:
+                discoveryMap_.put(monitor, new Date());
+                messageArea_.append("Discovery started for " + name + " ...\n");
+                break;
+                
+            case StatusEvent.TYPE_END_DISCOVERY:
+                // Extract scan start time from map and figure out elapsed time...
+                Date end = new Date();
+                Date start = (Date) discoveryMap_.remove(monitor);
+                
+                if (start != null) {
+                    ElapsedTime elapsed = new ElapsedTime(start, end);
+                    messageArea_.append(
+                        "Discovered " 
+                        + monitor.getMonitoredDirectories().size() 
+                        + " dir(s) in " 
+                        + name 
+                        + " in " 
+                        + elapsed 
+                        + "\n");
+                }
+                else {
+                    messageArea_.append("Start time map entry for discovery " + name + " not found!\n");
+                }
+                break;
+                
+            default:
+                throw new IllegalArgumentException(
+                    "Unrecognized event type: " 
+                    + statusEvent.getEventType());
+        }
+    }
+    
+    /*
+     * @see toolbox.util.dirmon.IDirectoryMonitorListener#directoryActivity(toolbox.util.dirmon.event.FileEvent)
+     */
+    public void directoryActivity(FileEvent event) throws Exception {
         
         StringBuffer msg = new StringBuffer();
         
+        FileSnapshot afterSnapshot = event.getAfterSnapshot();
+        FileSnapshot beforeSnapshot = event.getBeforeSnapshot();
+        
         switch (event.getEventType()) {
         
-            case DirectoryMonitorEvent.TYPE_CHANGED :
+            case FileEvent.TYPE_FILE_CHANGED :
                 msg.append(
                     "File changed: " 
-                    + event.getAfterSnapshot().getAbsolutePath() 
+                    + afterSnapshot.getAbsolutePath() 
                     + "\n");
                 
                 msg.append(
                     "Size        : " 
-                    + event.getBeforeSnapshot().getLength() 
+                    + beforeSnapshot.getLength() 
                     + " -> " 
-                    + event.getAfterSnapshot().getLength()
+                    + afterSnapshot.getLength()
                     + "\n");
                 
                 msg.append(
                     "Timestamp   : " 
                     + dateTimeFormat.format(new Date(
-                        event.getBeforeSnapshot().getLastModified())) 
+                        beforeSnapshot.getLastModified())) 
                     + " -> " 
                     + dateTimeFormat.format(new Date(
-                        event.getAfterSnapshot().getLastModified()))
+                        afterSnapshot.getLastModified()))
                     + "\n");
                 
                 break;
                 
                 
-            case DirectoryMonitorEvent.TYPE_CREATED :
+            case FileEvent.TYPE_FILE_CREATED :
                 msg.append(
                     "File created: " 
-                    + event.getAfterSnapshot().getAbsolutePath() 
+                    + afterSnapshot.getAbsolutePath() 
                     + "\n");
                 
                 msg.append(
                     "Size        : " 
-                    + event.getAfterSnapshot().getLength()
+                    + afterSnapshot.getLength()
                     + "\n");
                 
                 msg.append(
                     "Timestamp   : " 
                     + dateTimeFormat.format(new Date(
-                        event.getAfterSnapshot().getLastModified()))
+                        afterSnapshot.getLastModified()))
                     + "\n");
                 
                 break;
 
                 
-            case DirectoryMonitorEvent.TYPE_DELETED :
+            case FileEvent.TYPE_FILE_DELETED :
                 msg.append(
                     "File deleted: " 
-                    + event.getBeforeSnapshot().getAbsolutePath() 
+                    + beforeSnapshot.getAbsolutePath() 
                     + "\n");
                 
                 msg.append(
                     "Size        : " 
-                    + event.getBeforeSnapshot().getLength() 
+                    + beforeSnapshot.getLength() 
                     + "\n");
                 
                 msg.append(
                     "Timestamp   : " 
                     + dateTimeFormat.format(new Date(
-                        event.getBeforeSnapshot().getLastModified())) 
+                        beforeSnapshot.getLastModified())) 
                     + "\n");
                 
                 break;

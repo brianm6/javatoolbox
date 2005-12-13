@@ -28,9 +28,10 @@ import org.apache.log4j.Logger;
 import com.l2fprod.common.swing.renderer.DateRenderer;
 
 import toolbox.util.dirmon.DirectoryMonitor;
-import toolbox.util.dirmon.DirectoryMonitorEvent;
 import toolbox.util.dirmon.FileSnapshot;
 import toolbox.util.dirmon.IDirectoryMonitorListener;
+import toolbox.util.dirmon.event.FileEvent;
+import toolbox.util.dirmon.event.StatusEvent;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JHeaderPanel;
 import toolbox.util.ui.JSmartToggleButton;
@@ -190,9 +191,15 @@ public class EventTableView extends JPanel implements IDirectoryMonitorListener 
     // -------------------------------------------------------------------------
     
     /*
+     * @see toolbox.util.dirmon.IDirectoryMonitorListener#statusChanged(toolbox.util.dirmon.event.StatusEvent)
+     */
+    public void statusChanged(StatusEvent statusEvent) throws Exception {
+    }
+    
+    /*
      * @see toolbox.util.dirmon.IDirectoryMonitorListener#directoryActivity(toolbox.util.dirmon.DirectoryMonitorEvent)
      */
-    public void directoryActivity(DirectoryMonitorEvent event) throws Exception{
+    public void directoryActivity(FileEvent event) throws Exception{
         TableRow row = new TableRow(event);
         model_.addRow(row.toData());
     }
@@ -203,9 +210,9 @@ public class EventTableView extends JPanel implements IDirectoryMonitorListener 
     
     class TableRow {
         
-        DirectoryMonitorEvent event;
+        FileEvent event;
         
-        public TableRow(DirectoryMonitorEvent event) {
+        public TableRow(FileEvent event) {
             this.event = event;
         }
         
@@ -217,7 +224,7 @@ public class EventTableView extends JPanel implements IDirectoryMonitorListener 
                 
             switch (event.getEventType()) {
                 
-                case DirectoryMonitorEvent.TYPE_CHANGED :
+                case FileEvent.TYPE_FILE_CHANGED :
                     data[INDEX_ACTIVITY] = "Modified";
                     data[INDEX_DIR] = FilenameUtils.getPath(after.getAbsolutePath());
                     data[INDEX_FILE] = FilenameUtils.getName(after.getAbsolutePath());
@@ -227,7 +234,7 @@ public class EventTableView extends JPanel implements IDirectoryMonitorListener 
                     data[INDEX_AFTER_DATE] = new Date(after.getLastModified());
                     break;
                     
-                case DirectoryMonitorEvent.TYPE_CREATED :
+                case FileEvent.TYPE_FILE_CREATED :
                     data[INDEX_ACTIVITY] = "New";
                     data[INDEX_DIR] = FilenameUtils.getPath(after.getAbsolutePath());
                     data[INDEX_FILE] = FilenameUtils.getName(after.getAbsolutePath());
@@ -237,7 +244,7 @@ public class EventTableView extends JPanel implements IDirectoryMonitorListener 
                     data[INDEX_AFTER_DATE] = new Date(after.getLastModified());
                     break;
                     
-                case DirectoryMonitorEvent.TYPE_DELETED :
+                case FileEvent.TYPE_FILE_DELETED :
                     data[INDEX_ACTIVITY] = "Deleted";
                     data[INDEX_DIR] = FilenameUtils.getPath(before.getAbsolutePath());
                     data[INDEX_FILE] = FilenameUtils.getName(before.getAbsolutePath());
