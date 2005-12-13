@@ -5,32 +5,34 @@ import junit.framework.Assert;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
-import toolbox.tunnel.Relay;
+import toolbox.util.ProcessUtil;
 import toolbox.util.StringUtil;
-import toolbox.util.io.StringOutputStream;
 
 
 public class MovieInfoParser {
     
-    private static final Logger logger_ = 
+    static public final Logger logger_ = 
         Logger.getLogger(MovieInfoParser.class);
     
-
-    public Movie parse(String filename) throws Exception {
+    // -------------------------------------------------------------------------
+    // Public 
+    // -------------------------------------------------------------------------
     
-        String command = "ffmpeg -i \"" + filename + "\"";
+    public MovieInfo parse(String filename) throws Exception {
+    
+        String command = "c:\\bin\\ffmpeg -i \"" + filename + "\"";
         logger_.debug("Command: " + command);
         
         Process p = Runtime.getRuntime().exec(command);
         StringBuffer stdout = new StringBuffer();
         StringBuffer stderr = new StringBuffer();
-        int exitValue = getProcessResults(p, stdout, stderr);
+        int exitValue = ProcessUtil.getProcessOutput(p, stdout, stderr);
         
         logger_.debug(StringUtil.banner("Output: \n" + stdout));
         logger_.debug(StringUtil.banner("Error: \n" + stderr));
         
         String[] lines = StringUtil.tokenize(stderr.toString(), "\n");
-        Movie movie = new Movie();
+        MovieInfo movie = new MovieInfo();
         movie.setFilename(filename);
         boolean found = false;
         
@@ -51,101 +53,111 @@ public class MovieInfoParser {
         return movie;
     }
 
-    private void parseAudioLine(String line, Movie movie) {
+    // -------------------------------------------------------------------------
+    // Private
+    // -------------------------------------------------------------------------
+    
+    private void parseAudioLine(String line, MovieInfo movie) {
         
         // Stream #0.1  Id:   1: Audio: mp3, 22050 Hz, stereo, 47 kb/s
-        
-        AudioStream audio = new AudioStream();
+        // Stream #0.1: Audio: mp3, 22050 Hz, mono, 31 kb/s
+                
+        AudioStreamInfo audio = new AudioStreamInfo();
         String[] tokens = StringUtils.split(line);
         
-        Assert.assertEquals(
-            "Expected 11 tokens for audio line: " + line, 11, tokens.length);
+        int i = 0;
+        
+        //Assert.assertEquals(
+        //    "Expected 11 tokens for audio line: " + line, 11, tokens.length);
         
         Assert.assertEquals(
             "Expected 'Stream' as first token",
             "Stream",
-            tokens[0]);
+            tokens[i++]);
 
         Assert.assertEquals(
             "Expected '#0.1' as 2nd token",
             "#0.1",
-            tokens[1]);
+            StringUtils.chomp(tokens[i++], ":"));
         
         audio.setNumber("0.1");
         
-        Assert.assertEquals(
-            "Expected 'Id:' as 3rd token",
-            "Id:",
-            tokens[2]);
+//        Assert.assertEquals(
+//            "Expected 'Id:' as 3rd token",
+//            "Id:",
+//            tokens[2]);
         
         audio.setId("1");
         
-        Assert.assertEquals(
-            "Expected '1:' as 4th token",
-            "1:",
-            tokens[3]);
+//        Assert.assertEquals(
+//            "Expected '1:' as 4th token",
+//            "1:",
+//            tokens[3]);
         
         
         Assert.assertEquals(
             "Expected 'Audio:' as 5th token",
             "Audio:",
-            tokens[4]);
+            tokens[i++]);
         
-        audio.setFormat(StringUtils.chomp(tokens[5], ","));
-        audio.setHertz(new Integer(tokens[6]));
+        audio.setFormat(StringUtils.chomp(tokens[i++], ","));
+        audio.setHertz(new Integer(tokens[i++]));
         
-        Assert.assertEquals("Expected 'Hz,' as 8th token", "Hz,", tokens[7]);
+        Assert.assertEquals("Expected 'Hz,' as 8th token", "Hz,", tokens[i++]);
         
-        audio.setStereo(tokens[8].equals("stereo,"));
-        audio.setBitrate(new Integer(tokens[9]));
+        audio.setStereo(tokens[i++].equals("stereo,"));
+        audio.setBitrate(new Integer(tokens[i++]));
 
-        Assert.assertEquals("11th token", "kb/s", tokens[10]);
+        Assert.assertEquals("11th token", "kb/s", tokens[i++]);
         
         movie.setAudioStream(audio);
     }
 
-    private void parseVideoLine(String line, Movie movie) {
+    private void parseVideoLine(String line, MovieInfo movie) {
         
         // Stream #0.0  Id:   0: Video: mpeg4, 416x304, 25.00 fps
+        // Stream #0.0: Video: h264, 416x304, 25.00 fps
         
-        VideoStream video = new VideoStream();
+        VideoStreamInfo video = new VideoStreamInfo();
         String[] tokens = StringUtils.split(line);
         
-        Assert.assertEquals(
-            "Expected 9 tokens for video line: " + line, 9, tokens.length);
+        int i = 0;
+        
+        //Assert.assertEquals(
+        //    "Expected 9 tokens for video line: " + line, 9, tokens.length);
         
         Assert.assertEquals(
             "Expected 'Stream' as first token",
             "Stream",
-            tokens[0]);
+            tokens[i++]);
 
         Assert.assertEquals(
             "Expected '#0.0' as 2nd token",
             "#0.0",
-            tokens[1]);
+            StringUtils.chomp(tokens[i++], ":"));
 
         video.setNumber("0.0");
         
-        Assert.assertEquals(
-            "Expected 'Id:' as 3rd token",
-            "Id:",
-            tokens[2]);
+//        Assert.assertEquals(
+//            "Expected 'Id:' as 3rd token",
+//            "Id:",
+//            tokens[i++]);
         
         video.setId("0");
         
-        Assert.assertEquals(
-            "Expected '0:' as 4th token",
-            "0:",
-            tokens[3]);
+//        Assert.assertEquals(
+//            "Expected '0:' as 4th token",
+//            "0:",
+//            tokens[3]);
         
         Assert.assertEquals(
             "Expected 'Video:' as 5th token",
             "Video:",
-            tokens[4]);
+            tokens[i++]);
         
-        video.setFormat(StringUtils.chomp(tokens[5], ","));
+        video.setFormat(StringUtils.chomp(tokens[i++], ","));
         
-        String dims = StringUtils.chomp(tokens[6], ",");
+        String dims = StringUtils.chomp(tokens[i++], ",");
         String[] dimensions = StringUtils.split(dims, "x");
         
         Assert.assertEquals(
@@ -154,9 +166,9 @@ public class MovieInfoParser {
         video.setWidth(new Integer(dimensions[0]));
         video.setHeight(new Integer(dimensions[1]));
         
-        video.setFramesPerSecond(tokens[7]);
+        video.setFramesPerSecond(tokens[i++]);
         
-        Assert.assertEquals("Expected 'fps' as 9th token", "fps", tokens[8]);
+        Assert.assertEquals("Expected 'fps' as 9th token", "fps", tokens[i++]);
         
         movie.setVideoStream(video);
     }
@@ -166,7 +178,7 @@ public class MovieInfoParser {
      * @param movie
      * @param i
      */
-    private void parseLine1(String line, Movie movie) {
+    private void parseLine1(String line, MovieInfo movie) {
         
         // Duration: 00:32:27.2, start: 0.000000, bitrate: 521 kb/s
         
@@ -195,35 +207,6 @@ public class MovieInfoParser {
             tokens[4]);
 
         movie.setBitrate(new Integer(tokens[5]));
-    }
-    
-    public static int getProcessResults(
-        Process process,
-        StringBuffer stdout,
-        StringBuffer stderr) throws InterruptedException {
-        
-        StringOutputStream stdoutStream = new StringOutputStream();
-        Relay stdoutRelay = new Relay(process.getInputStream(), stdoutStream);
-        Thread stdoutThread = new Thread(stdoutRelay, "stdoutRelay");
-        stdoutThread.start();
-        
-        StringOutputStream stderrStream = new StringOutputStream();
-        Relay stderrRelay = new Relay(process.getErrorStream(), stderrStream);
-        Thread stderrThread = new Thread(stderrRelay, "stderrRelay");
-        stderrThread.start();
-        
-        logger_.debug("Waiting for exit...");
-        int exitValue = process.waitFor();
-
-        logger_.debug("Joining stdout thread...");
-        stdoutThread.join();
-        
-        logger_.debug("Joining stderr thread...");
-        stderrThread.join();
-        
-        stdout.append(stdoutStream.toString());
-        stderr.append(stderrStream.toString());
-        return exitValue;
     }
 }
 

@@ -1,13 +1,16 @@
 package toolbox.tivo;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
+import java.io.File;
+import java.text.NumberFormat;
+
+import toolbox.util.StringUtil;
 
 public class MovieInfo {
 
     private String filename_;
     private String duration_;
     private Integer bitrate_;
+    private Long length_;
     
     private VideoStreamInfo videoStream_;
     private AudioStreamInfo audioStream_;
@@ -83,6 +86,8 @@ public class MovieInfo {
      */
     public void setFilename(String filename) {
         filename_ = filename;
+        File f = new File(filename_);
+        length_ = new Long(f.length());
     }
     
     /**
@@ -103,10 +108,28 @@ public class MovieInfo {
         videoStream_ = videoStream;
     }
     
+    public Long getLength() {
+        return length_;
+    }
+    
     /*
      * @see java.lang.Object#toString()
      */
     public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
+        
+        NumberFormat nf = NumberFormat.getInstance();
+        
+        StringBuffer sb = new StringBuffer();
+        sb.append("Movie Info\n");
+        sb.append("----------\n");
+        sb.append("File     = " + getFilename() + "\n");
+        sb.append("Size     = " + nf.format(getLength()) + " bytes\n");
+        sb.append("Bitrate  = " + nf.format(getBitrate()) + " kb/s\n");
+        sb.append("Length   = " + getDuration() + "\n");
+        sb.append("\n");
+        sb.append(StringUtil.indent(getVideoStream().toString(), 2));
+        sb.append("\n");
+        sb.append(StringUtil.indent(getAudioStream().toString(), 2));
+        return sb.toString();
     }
 }

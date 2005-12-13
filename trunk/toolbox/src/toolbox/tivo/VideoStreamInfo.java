@@ -1,7 +1,6 @@
 package toolbox.tivo;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
+import java.text.NumberFormat;
 
 public class VideoStreamInfo extends StreamInfo {
 
@@ -64,7 +63,17 @@ public class VideoStreamInfo extends StreamInfo {
     }
     
     public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.SIMPLE_STYLE);
+        //return ToStringBuilder.reflectionToString(this, ToStringStyle.SIMPLE_STYLE);
+        
+        NumberFormat nf = NumberFormat.getInstance();
+        
+        StringBuffer sb = new StringBuffer();
+        sb.append("Video Stream\n");
+        sb.append("------------\n");
+        sb.append("Format   = " + getFormat() + "\n");
+        sb.append("FPS      = " + getFramesPerSecond() + " fps\n");
+        sb.append("Width    = " + nf.format(getWidth()) + " pixels\n");
+        sb.append("Height   = " + nf.format(getHeight()) + " pixels\n");
+        return sb.toString();
     }
-
 }

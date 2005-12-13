@@ -1,7 +1,6 @@
 package toolbox.tivo;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
+import java.text.NumberFormat;
 
 
 public class AudioStreamInfo extends StreamInfo {
@@ -73,7 +72,17 @@ public class AudioStreamInfo extends StreamInfo {
     }
     
     public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.SIMPLE_STYLE);
+        //return ToStringBuilder.reflectionToString(this, ToStringStyle.SIMPLE_STYLE);
+        
+        NumberFormat nf = NumberFormat.getInstance();
+        
+        StringBuffer sb = new StringBuffer();
+        sb.append("Audio Stream\n");
+        sb.append("------------\n");
+        sb.append("Format   = " + getFormat() + "\n");
+        sb.append("Bitrate  = " + nf.format(getBitrate()) + " kb/s\n");
+        sb.append("Hertz    = " + nf.format(getHertz()) + " Hz\n");
+        return sb.toString();
     }
     
 }
