@@ -3,14 +3,14 @@ package toolbox.tivo;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
-public class Movie {
+public class MovieInfo {
 
     private String filename_;
     private String duration_;
     private Integer bitrate_;
     
-    private VideoStream videoStream_;
-    private AudioStream audioStream_;
+    private VideoStreamInfo videoStream_;
+    private AudioStreamInfo audioStream_;
  
     
     /**
@@ -18,7 +18,7 @@ public class Movie {
      * 
      * @return AudioStream
      */
-    public AudioStream getAudioStream() {
+    public AudioStreamInfo getAudioStream() {
         return audioStream_;
     }
     
@@ -27,7 +27,7 @@ public class Movie {
      * 
      * @param audioStream The audioStream to set.
      */
-    public void setAudioStream(AudioStream audioStream) {
+    public void setAudioStream(AudioStreamInfo audioStream) {
         audioStream_ = audioStream;
     }
     
@@ -90,7 +90,7 @@ public class Movie {
      * 
      * @return VideoStream
      */
-    public VideoStream getVideoStream() {
+    public VideoStreamInfo getVideoStream() {
         return videoStream_;
     }
     
@@ -99,7 +99,7 @@ public class Movie {
      * 
      * @param videoStream The videoStream to set.
      */
-    public void setVideoStream(VideoStream videoStream) {
+    public void setVideoStream(VideoStreamInfo videoStream) {
         videoStream_ = videoStream;
     }
     
