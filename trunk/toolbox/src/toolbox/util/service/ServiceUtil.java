@@ -147,14 +147,14 @@ public class ServiceUtil
     {
         List natures = new ArrayList();
         
+        if (service instanceof Initializable)
+            natures.add(Initializable.class);
+        
         if (service instanceof Startable)
             natures.add(Startable.class);
     
         if (service instanceof Suspendable)
             natures.add(Suspendable.class);
-    
-        if (service instanceof Initializable)
-            natures.add(Initializable.class);
     
         if (service instanceof Destroyable)
             natures.add(Destroyable.class);
@@ -276,10 +276,10 @@ public class ServiceUtil
 
         machine.addState(ServiceState.UNINITIALIZED);
         machine.addState(ServiceState.INITIALIZED);
-        machine.addState(ServiceState.DESTROYED);
         machine.addState(ServiceState.RUNNING);
         machine.addState(ServiceState.STOPPED);
         machine.addState(ServiceState.SUSPENDED);
+        machine.addState(ServiceState.DESTROYED);
         
         machine.setBeginState(ServiceState.UNINITIALIZED);
 
@@ -322,6 +322,11 @@ public class ServiceUtil
             ServiceTransition.RESUME, 
             ServiceState.SUSPENDED,
             ServiceState.RUNNING);
+
+        machine.addTransition(
+            ServiceTransition.DESTROY,
+            ServiceState.STOPPED,
+            ServiceState.DESTROYED);
         
         machine.reset();
         return machine;
