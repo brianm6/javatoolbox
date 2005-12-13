@@ -15,6 +15,8 @@ import org.apache.log4j.Logger;
 
 import toolbox.util.FileUtil;
 import toolbox.util.ThreadUtil;
+import toolbox.util.dirmon.event.FileEvent;
+import toolbox.util.dirmon.event.StatusEvent;
 import toolbox.util.dirmon.recognizer.FileChangedRecognizer;
 import toolbox.util.dirmon.recognizer.FileCreatedRecognizer;
 import toolbox.util.dirmon.recognizer.FileDeletedRecognizer;
@@ -71,12 +73,16 @@ public class DirectoryMonitorTest extends TestCase {
                 new IDirectoryMonitorListener() {
 
                 public void directoryActivity(
-                    DirectoryMonitorEvent directoryMonitorEvent) 
+                    FileEvent directoryMonitorEvent) 
                     throws Exception{
                     
                     logger_.info(
                         "File activity reported: " 
                         + directoryMonitorEvent);
+                }
+                
+                public void statusChanged(StatusEvent statusEvent) 
+                    throws Exception {
                 }
             };
 
@@ -160,26 +166,30 @@ public class DirectoryMonitorTest extends TestCase {
             dm.addDirectoryMonitorListener(new IDirectoryMonitorListener() {
                 
                 public void directoryActivity(
-                    DirectoryMonitorEvent event) 
+                    FileEvent event) 
                     throws Exception{
                     
                     switch (event.getEventType()) {
                         
-                        case DirectoryMonitorEvent.TYPE_CREATED:
+                        case FileEvent.TYPE_FILE_CREATED:
                             eventQueue.offer(event);
                             break;
                             
-                        case DirectoryMonitorEvent.TYPE_CHANGED:
+                        case FileEvent.TYPE_FILE_CHANGED:
                             eventQueue.offer(event);
                             break;
                             
-                        case DirectoryMonitorEvent.TYPE_DELETED:
+                        case FileEvent.TYPE_FILE_DELETED:
                             eventQueue.offer(event);
                             break;
                             
                         default:
                             fail("Event not recognized.");
                     }
+                }
+                
+                public void statusChanged(StatusEvent statusEvent) 
+                    throws Exception {
                 }
             });
             
@@ -194,8 +204,8 @@ public class DirectoryMonitorTest extends TestCase {
             // Test file created
             // =================================================================            
             FileUtils.writeStringToFile(mockFile, "testing", "utf-8");
-            DirectoryMonitorEvent e = (DirectoryMonitorEvent) eventQueue.take();
-            assertEquals(DirectoryMonitorEvent.TYPE_CREATED, e.getEventType());
+            FileEvent e = (FileEvent) eventQueue.take();
+            assertEquals(FileEvent.TYPE_FILE_CREATED, e.getEventType());
             
             assertEquals(
                 mockFile.getAbsolutePath(), 
@@ -206,8 +216,8 @@ public class DirectoryMonitorTest extends TestCase {
             // Test file changed
             // =================================================================
             FileUtils.touch(mockFile);
-            DirectoryMonitorEvent e2 = (DirectoryMonitorEvent) eventQueue.take();
-            assertEquals(DirectoryMonitorEvent.TYPE_CHANGED, e2.getEventType());
+            FileEvent e2 = (FileEvent) eventQueue.take();
+            assertEquals(FileEvent.TYPE_FILE_CHANGED, e2.getEventType());
             
             assertEquals(
                 mockFile.getAbsolutePath(), 
@@ -218,8 +228,8 @@ public class DirectoryMonitorTest extends TestCase {
             // Test file deleted            
             // =================================================================            
             mockFile.delete();
-            DirectoryMonitorEvent e3 = (DirectoryMonitorEvent) eventQueue.take();
-            assertEquals(DirectoryMonitorEvent.TYPE_DELETED, e3.getEventType());
+            FileEvent e3 = (FileEvent) eventQueue.take();
+            assertEquals(FileEvent.TYPE_FILE_DELETED, e3.getEventType());
             
             assertEquals(
                 mockFile.getAbsolutePath(), 
