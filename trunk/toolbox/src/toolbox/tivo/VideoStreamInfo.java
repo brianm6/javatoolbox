@@ -3,7 +3,7 @@ package toolbox.tivo;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
-public class VideoStream extends Stream {
+public class VideoStreamInfo extends StreamInfo {
 
     Integer width_;
     Integer height_;
@@ -64,7 +64,7 @@ public class VideoStream extends Stream {
     }
     
     public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SIMPLE_STYLE);
     }
 
 }
