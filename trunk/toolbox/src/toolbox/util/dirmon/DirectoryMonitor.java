@@ -13,7 +13,10 @@ import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
 import toolbox.util.ThreadUtil;
+import toolbox.util.dirmon.event.FileEvent;
+import toolbox.util.dirmon.event.StatusEvent;
 import toolbox.util.service.Destroyable;
+import toolbox.util.service.Nameable;
 import toolbox.util.service.ObservableService;
 import toolbox.util.service.ServiceException;
 import toolbox.util.service.ServiceListener;
@@ -43,7 +46,7 @@ import toolbox.util.statemachine.StateMachine;
  * // Register a listener
  * dm.addDirectoryMonitorListener(new IDirectoryMonitorListener() {
  * 
- *     public void directoryActivity(DirectoryMonitorEvent event)
+ *     public void directoryActivity(FileEvent event)
  *         throws Exception {
  *         System.out.println("File activity: " + event);  
  *      }
@@ -61,7 +64,7 @@ import toolbox.util.statemachine.StateMachine;
  * </pre>
  */
 public class DirectoryMonitor 
-    implements Startable, Suspendable, Destroyable, ObservableService {
+    implements Startable, Suspendable, Destroyable, ObservableService, Nameable {
     
     private static Logger logger_ =  Logger.getLogger(DirectoryMonitor.class);
 
@@ -129,6 +132,13 @@ public class DirectoryMonitor
      */
     private List recognizers_;
 
+    /**
+     * Friendly name of this directory monitor.
+     */
+    private String name_;
+
+    private boolean recurse_;
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -160,26 +170,40 @@ public class DirectoryMonitor
         notifier_ = new ServiceNotifier(this);
         monitoredDirectories_ = new ArrayList();
         listeners_ = new ArrayList();
-                
-        if (subdirs) {
-            // Find all subdirs of the starting dir
-            FileFinder finder = new FileFinder();
-            Map findOptions = new HashMap();
-            findOptions.put(Finder.TYPE, "d");
-            
-            logger_.debug("Finding all subdirs of " + dir + "...");
-            
-            File[] subdirectories = finder.find(dir, findOptions);
-            
-            logger_.debug("Found " + subdirectories.length + " subdirs total!");
-            logger_.debug(ArrayUtil.toString(subdirectories, true));
-            
-            for (int i = 0; i < subdirectories.length; i++) 
-                addDirectory(subdirectories[i]);
-        }
-        else {
-            addDirectory(dir);
-        }
+        setName(dir.getAbsolutePath());
+        recurse_ = subdirs;
+        
+//        fireStatusChanged(
+//            new StatusEvent(
+//                StatusEvent.TYPE_START_DISCOVERY, 
+//                this, 
+//                "Started discovery"));
+//
+//        if (subdirs) {
+//            // Find all subdirs of the starting dir
+//            FileFinder finder = new FileFinder();
+//            Map findOptions = new HashMap();
+//            findOptions.put(Finder.TYPE, "d");
+//            
+//            logger_.debug("Finding all subdirs of " + dir + "...");
+//            
+//            File[] subdirectories = finder.find(dir, findOptions);
+//            
+//            logger_.debug("Found " + subdirectories.length + " subdirs total!");
+//            logger_.debug(ArrayUtil.toString(subdirectories, true));
+//            
+//            for (int i = 0; i < subdirectories.length; i++) 
+//                addDirectory(subdirectories[i]);
+//        }
+//        else {
+//            addDirectory(dir);
+//        }
+//        
+//        fireStatusChanged(
+//            new StatusEvent(
+//                StatusEvent.TYPE_END_DISCOVERY, 
+//                this, 
+//                "Ended discovery"));
     }
     
     //--------------------------------------------------------------------------
@@ -197,13 +221,13 @@ public class DirectoryMonitor
         if (monitor_ != null && monitor_.isAlive())
             throw new IllegalStateException(
                 "The directory monitor for " 
-                + monitoredDirectories_.get(0)
+                + getName()
                 + "already running.");
-
+        
         monitor_ = 
             new Thread(new DirectoryScanner(),
                 "DirectoryMonitor[" 
-                + monitoredDirectories_.get(0) 
+                + getName() 
                 + "]");
                         
         monitor_.start();
@@ -355,6 +379,21 @@ public class DirectoryMonitor
         return (ServiceState) stateMachine_.getState();
     }
     
+    // -------------------------------------------------------------------------
+    // Nameable Interface
+    // -------------------------------------------------------------------------
+
+    /*
+     * @see toolbox.util.service.Nameable#getName()
+     */
+    public String getName() {
+        return name_;
+    }
+    
+    public void setName(String name) {
+        name_ = name;
+    }
+    
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
@@ -426,7 +465,7 @@ public class DirectoryMonitor
     // Event Notification Support
     //--------------------------------------------------------------------------
 
-    protected void fireDirectoryActivity(DirectoryMonitorEvent event)
+    protected void fireDirectoryActivity(FileEvent event)
         throws Exception {
 
         for (Iterator i = listeners_.iterator(); i.hasNext();) {
@@ -435,7 +474,23 @@ public class DirectoryMonitor
             dirListener.directoryActivity(event);
         }
     }
+
     
+    protected void fireStatusChanged(StatusEvent event) {
+
+        for (Iterator i = listeners_.iterator(); i.hasNext();) {
+            
+            try {
+                IDirectoryMonitorListener dirListener = 
+                    (IDirectoryMonitorListener) i.next();
+                dirListener.statusChanged(event);
+            }
+            catch (Exception e) {
+                logger_.error("Error delivering status changed event", e);
+            }
+        }
+    }
+
 
     /**
      * Removes a listener from the list that is notified each time a file
@@ -471,74 +526,132 @@ public class DirectoryMonitor
          */
         public void run() {
 
+            // =======================================
+            fireStatusChanged(
+                new StatusEvent(
+                    StatusEvent.TYPE_START_DISCOVERY, 
+                    DirectoryMonitor.this, 
+                    "Started discovery"));
+
+            // Hack alert...
+            File baseDir = new File(getName());
+            
+            if (recurse_) {
+                // Find all subdirs of the starting dir
+                FileFinder finder = new FileFinder();
+                Map findOptions = new HashMap();
+                findOptions.put(Finder.TYPE, "d");
+                
+                logger_.debug("Finding all subdirs of " + baseDir + "...");
+                
+                File[] subdirectories = finder.find(baseDir, findOptions);
+                
+                logger_.debug("Found " + subdirectories.length + " subdirs total!");
+                logger_.debug(ArrayUtil.toString(subdirectories, true));
+                
+                for (int i = 0; i < subdirectories.length; i++) 
+                    addDirectory(subdirectories[i]);
+            }
+            else {
+                addDirectory(baseDir);
+            }
+            
+            fireStatusChanged(
+                new StatusEvent(
+                    StatusEvent.TYPE_END_DISCOVERY, 
+                    DirectoryMonitor.this, 
+                    "Ended discovery"));
+            
+            // =======================================
+            
             for (Iterator i = recognizers_.iterator(); i.hasNext();)
                 logger_.debug("Recognizer registered: " + i.next());
             
             boolean first = true;
             
             // Check termination flag
-            while (isRunning()) {
+            while (isRunning() || isSuspended()) {
                 
-                logger_.debug(
-                    (first ? "First" : "Update") 
-                    + " scan started for " 
-                    + monitoredDirectories_.size()
-                    + " directories.");
                 
-                for (Iterator di = monitoredDirectories_.iterator(); 
-                    di.hasNext() && isRunning();) {
+                if (!isSuspended()) {
+                    logger_.debug(
+                        (first ? "First" : "Update") 
+                        + " scan started for " 
+                        + monitoredDirectories_.size()
+                        + " directories.");
                     
-                    File dir = (File) di.next();
-                    String dirKey = dir.getAbsolutePath();
+                    fireStatusChanged(
+                        new StatusEvent(
+                            StatusEvent.TYPE_START_SCAN, 
+                            DirectoryMonitor.this, 
+                            "Started scan"));
                     
-                    DirSnapshot beforeDirSnapshot = (DirSnapshot) 
-                        dirSnapshots_.get(dirKey);
-
-                    if (beforeDirSnapshot == null) {
-                        dirSnapshots_.put(dirKey, new DirSnapshot(dir));
-                    }
-                    else {
-                        DirSnapshot afterDirSnapshot = new DirSnapshot(dir);
-
-                        for (Iterator i = recognizers_.iterator(); 
-                            i.hasNext() && isRunning();) {
-   
-                            IFileActivityRecognizer recognizer = 
-                                (IFileActivityRecognizer) i.next();
-                
-                            List recognizedEvents = 
-                                recognizer.getRecognizedEvents(
-                                    beforeDirSnapshot, 
-                                    afterDirSnapshot);
-                            
-                            for (Iterator r = recognizedEvents.iterator();
-                                r.hasNext(); ) {
-                                
-                                try {
-                                    DirectoryMonitorEvent event = 
-                                        (DirectoryMonitorEvent) r.next();
-                                    
-                                   fireDirectoryActivity(event);
-                                }
-                                catch (Exception e) {
-                                   logger_.error("ActivityRunner.run", e);
-                                }
-                            }
-                           
-                            ThreadUtil.sleep(perDirectoryDelay_);
-                        }
+                    for (Iterator di = monitoredDirectories_.iterator(); 
+                        di.hasNext() && isRunning();) {
                         
-                        // Update the snapshot to the latest
-                        dirSnapshots_.put(dirKey, afterDirSnapshot);
+                        File dir = (File) di.next();
+                        String dirKey = dir.getAbsolutePath();
+                        
+                        DirSnapshot beforeDirSnapshot = (DirSnapshot) 
+                            dirSnapshots_.get(dirKey);
+    
+                        if (beforeDirSnapshot == null) {
+                            dirSnapshots_.put(dirKey, new DirSnapshot(dir));
+                        }
+                        else {
+                            DirSnapshot afterDirSnapshot = new DirSnapshot(dir);
+    
+                            for (Iterator i = recognizers_.iterator(); 
+                                i.hasNext() && isRunning();) {
+       
+                                IFileActivityRecognizer recognizer = 
+                                    (IFileActivityRecognizer) i.next();
+                    
+                                List recognizedEvents = 
+                                    recognizer.getRecognizedEvents(
+                                        beforeDirSnapshot, 
+                                        afterDirSnapshot);
+                                
+                                for (Iterator r = recognizedEvents.iterator();
+                                    r.hasNext(); ) {
+                                    
+                                    try {
+                                        FileEvent event = 
+                                            (FileEvent) r.next();
+                                        
+                                       fireDirectoryActivity(event);
+                                    }
+                                    catch (Exception e) {
+                                       logger_.error("ActivityRunner.run", e);
+                                    }
+                                }
+                               
+                                ThreadUtil.sleep(perDirectoryDelay_);
+                            }
+                            
+                            // Update the snapshot to the latest
+                            dirSnapshots_.put(dirKey, afterDirSnapshot);
+                        }
                     }
+    
+                    fireStatusChanged(
+                        new StatusEvent(
+                            StatusEvent.TYPE_END_SCAN, 
+                            DirectoryMonitor.this, 
+                            "Ended scan"));
                 }
-            
+                else {
+                    logger_.debug("Skipping scan due to suspension...");
+                }
+                
                 if (!first) {
                     synchronized (monitor_) {
                         try {
                             if (isSuspended()) {
                                 // Wait indefinitely until resumed
+                                logger_.debug("Suspending gracefully..");
                                 monitor_.wait();
+                                logger_.debug("Woken up from suspended..");
                             }
                             else {
                                 logger_.trace("Waiting "
@@ -546,7 +659,8 @@ public class DirectoryMonitor
                                     + "ms until next scan...");
                                 
                                 // Wait until delay expires
-                                monitor_.wait(getDelay()); 
+                                monitor_.wait(getDelay());
+                                logger_.debug("Woken up from suspended or delay expired");
                             }
                         }
                         catch (InterruptedException e) {
@@ -558,6 +672,8 @@ public class DirectoryMonitor
                     first = false;
                 }
             }
+            
+            logger_.debug("Exiting thread run()");
         }
     }
 }
