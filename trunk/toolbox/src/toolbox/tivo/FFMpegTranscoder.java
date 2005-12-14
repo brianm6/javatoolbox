@@ -3,6 +3,7 @@ package toolbox.tivo;
 import java.awt.Dimension;
 import java.io.IOException;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ElapsedTime;
@@ -61,6 +62,17 @@ public class FFMpegTranscoder implements ITranscoder {
         fixer.calc();
         
         sb.append("c:\\bin\\ffmpeg.exe ");
+        
+        // only do the last minute
+        sb.append(
+            "-ss " 
+            + StringUtils.leftPad(movieInfo.getHours() + "", 2, '0')
+            + ":"
+            + StringUtils.leftPad((movieInfo.getMinutes() - 1) + "", 2, '0')
+            + ":"
+            + StringUtils.leftPad(movieInfo.getSeconds() + "", 2, '0')
+            + " ");
+        
         sb.append(" -i ");
         sb.append("\"" + movieInfo.getFilename()  + "\" ");
         sb.append("-hq ");
@@ -79,7 +91,7 @@ public class FFMpegTranscoder implements ITranscoder {
         sb.append("-async 1 ");
         sb.append("-y ");
         
-        
+
         sb.append("\"" + destFilename + "\"");
 
         logger_.debug("Command: " + sb);
