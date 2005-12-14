@@ -71,9 +71,11 @@ public class AudioStreamInfo extends StreamInfo {
         stereo_ = stereo;
     }
     
+    // -------------------------------------------------------------------------
+    // Overrides java.lang.Object
+    // -------------------------------------------------------------------------
+    
     public String toString() {
-        //return ToStringBuilder.reflectionToString(this, ToStringStyle.SIMPLE_STYLE);
-        
         NumberFormat nf = NumberFormat.getInstance();
         
         StringBuffer sb = new StringBuffer();
@@ -85,4 +87,27 @@ public class AudioStreamInfo extends StreamInfo {
         return sb.toString();
     }
     
+    public boolean equals(Object obj) {
+        
+        if (obj == null)
+            return false;
+        
+        if (this == obj)
+            return true;
+        
+        if (getClass() != obj.getClass())
+            return false;
+        
+        AudioStreamInfo info = (AudioStreamInfo) obj;
+        
+        return ( 
+            getBitrate().equals(info.getBitrate()) &&
+            getFormat().equals(info.getFormat()) &&
+            getHertz().equals(info.getHertz()) &&
+            isStereo() == info.isStereo());
+    }
+    
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

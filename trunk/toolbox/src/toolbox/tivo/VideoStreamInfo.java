@@ -76,4 +76,25 @@ public class VideoStreamInfo extends StreamInfo {
         sb.append("Height   = " + nf.format(getHeight()) + " pixels\n");
         return sb.toString();
     }
+    
+    public boolean equals(Object obj) {
+        
+        if (obj == null)
+            return false;
+        
+        if (this == obj)
+            return true;
+        
+        if (getClass() != obj.getClass())
+            return false;
+        
+        VideoStreamInfo info = (VideoStreamInfo) obj;
+        
+        return ( 
+            getFramesPerSecond().equals(info.getFramesPerSecond()) &&
+            getFormat().equals(info.getFormat()) &&
+            getHeight().equals(info.getHeight()) &&
+            getWidth().equals(info.getWidth()));
+    }
+
 }
