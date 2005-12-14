@@ -31,17 +31,29 @@ public class FFMpegTranscoderTest extends TivoTestCase {
     public void testTranscode_H264() throws Exception {
         logger_.info("Running testTranscode...");
         
+        // Setup
+        // =====================================================================
         MovieInfoParser parser = new MovieInfoParser();
-        MovieInfo info = parser.parse(getH264Filename());
-        
+        MovieInfo input = parser.parse(getH264Filename());
         String destFilename = 
             FileUtil.getTempDir() + File.separator + "tivoH264.mpg";
-        
+
+        // Test
+        // =====================================================================
         ITranscoder transcoder = new FFMpegTranscoder();
-        transcoder.transcode(info, destFilename);
+        transcoder.transcode(input, destFilename);
         
+        // Verify
+        // =====================================================================
+        assertTrue(new File(destFilename).exists());
         MovieInfo result = parser.parse(destFilename);
-        
         logger_.info(result);
+
+        assertNotNull(result.getDuration());
+        assertEquals(destFilename, result.getFilename());
+        assertTrue(input.getBitrate().intValue() <= result.getBitrate().intValue());
+        assertTrue(input.getLength().longValue() <= result.getLength().longValue());
+        assertEquals(TivoStandards.AUDIO_224, result.getAudioStream());
+        assertEquals(TivoStandards.VIDEO_720, result.getVideoStream());
     }
 }
