@@ -64,14 +64,15 @@ public class FFMpegTranscoder implements ITranscoder {
         sb.append("c:\\bin\\ffmpeg.exe ");
         
         // only do the last minute
-        sb.append(
-            "-ss " 
-            + StringUtils.leftPad(movieInfo.getHours() + "", 2, '0')
-            + ":"
-            + StringUtils.leftPad((movieInfo.getMinutes() - 1) + "", 2, '0')
-            + ":"
-            + StringUtils.leftPad(movieInfo.getSeconds() + "", 2, '0')
-            + " ");
+
+//        sb.append(
+//            "-ss " 
+//            + StringUtils.leftPad(movieInfo.getHours() + "", 2, '0')
+//            + ":"
+//            + StringUtils.leftPad((movieInfo.getMinutes() - 1) + "", 2, '0')
+//            + ":"
+//            + StringUtils.leftPad(movieInfo.getSeconds() + "", 2, '0')
+//            + " ");
         
         sb.append(" -i ");
         sb.append("\"" + movieInfo.getFilename()  + "\" ");
