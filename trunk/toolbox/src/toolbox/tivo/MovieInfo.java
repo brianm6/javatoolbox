@@ -112,6 +112,18 @@ public class MovieInfo {
         return length_;
     }
     
+    public int getHours() {
+        return Integer.parseInt(duration_.substring(0, 2));
+    }
+    
+    public int getMinutes() {
+        return Integer.parseInt(duration_.substring(3, 5));
+    }
+    
+    public int getSeconds() {
+        return Integer.parseInt(duration_.substring(6, 8));
+    }
+    
     /*
      * @see java.lang.Object#toString()
      */
