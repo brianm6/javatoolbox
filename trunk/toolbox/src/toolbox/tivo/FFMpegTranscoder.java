@@ -104,6 +104,9 @@ public class FFMpegTranscoder implements ITranscoder {
         StringBuffer stderr = new StringBuffer();
         int exitValue = ProcessUtil.getProcessOutput(p, stdout, stderr);
         
+        logger_.info("stdout length = " + stdout.length());
+        logger_.info("stderr length = " + stderr.length());
+
         timer.setEndTime();
         
         logger_.debug("Exit value: " + exitValue);

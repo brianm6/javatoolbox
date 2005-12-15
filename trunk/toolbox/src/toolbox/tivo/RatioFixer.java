@@ -71,8 +71,15 @@ public class RatioFixer {
             }
         }
         else {
-            throw new IllegalArgumentException(
-                "Source " + source_ + " is larget than the target " + target_);
+            logger_.warn(
+                "Source " 
+                + source_ 
+                + " is larger than the target "
+                + target_);
+            
+            fixed_ = target_;
+            padLR_ = false;
+            pad_ = 0;
         }
     }
     

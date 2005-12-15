@@ -5,6 +5,7 @@ import java.util.Date;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import edu.emory.mathcs.backport.java.util.concurrent.BlockingQueue;
@@ -21,7 +22,7 @@ public class TivoConverter{
     static public final Logger logger_ = 
         Logger.getLogger(TivoConverter.class);
     
-    private String rootDir = "c:\\tivo";
+    private String rootDir = "z:\\tivo";
     private String incomingDir = rootDir + "\\incoming";
     private String workingDir = rootDir + "\\working";
     private String errorDir = rootDir + "\\error";
@@ -43,6 +44,7 @@ public class TivoConverter{
     
     
     public void start() {
+        Logger.getRootLogger().setLevel(Level.DEBUG);
         logger_.info("Starting TivoConverter...");
         makeDirStructure();
         setupDirMon();
@@ -55,11 +57,12 @@ public class TivoConverter{
         MovieInfoParser parser = new MovieInfoParser();
         ITranscoder transcoder = new FFMpegTranscoder();
         String shortSourceFilename = FilenameUtils.getName(filename);
+        MovieInfo movieInfo = null;
         
         try {
             logger_.info(shorten(filename) + " : Querying info ...");
             
-            MovieInfo movieInfo = parser.parse(filename);
+            movieInfo = parser.parse(filename);
             logger_.debug("\n\n" + movieInfo);
             
             String destFilename = buildTargetFilename(movieInfo);

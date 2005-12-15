@@ -31,26 +31,34 @@ public class MovieInfoParser {
         logger_.debug(StringUtil.banner("Output: \n" + stdout));
         logger_.debug(StringUtil.banner("Error: \n" + stderr));
         
-        String[] lines = StringUtil.tokenize(stderr.toString(), "\n");
-        MovieInfo movie = new MovieInfo();
-        movie.setFilename(filename);
-        boolean found = false;
-        
-        for (int i = 0; i < lines.length; i++) {
+        try {
+            String[] lines = StringUtil.tokenize(stderr.toString(), "\n");
+            MovieInfo movie = new MovieInfo();
+            movie.setFilename(filename);
+            boolean found = false;
             
-            if (lines[i].startsWith("Input #0")) {
-                parseLine1(lines[i+1], movie);    
-                parseVideoLine(lines[i+2], movie);
-                parseAudioLine(lines[i+3], movie);
-                found = true;
-                break;
+            for (int i = 0; i < lines.length; i++) {
+                
+                if (lines[i].startsWith("Input #0")) {
+                    parseLine1(lines[i+1], movie);    
+                    parseVideoLine(lines[i+2], movie);
+                    parseAudioLine(lines[i+3], movie);
+                    found = true;
+                    break;
+                }
             }
+            if (found)
+                logger_.debug("Success!");
+            
+            return movie;
+
+        }
+        catch (Exception e) {
+            logger_.error("\nstdout:\n" + stdout);
+            logger_.error("\nstderr:\n" + stderr);
+            throw e;
         }
         
-        if (found)
-            logger_.debug("Success!");
-        
-        return movie;
     }
 
     // -------------------------------------------------------------------------
