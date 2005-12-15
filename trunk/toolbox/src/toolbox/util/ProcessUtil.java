@@ -1,5 +1,8 @@
 package toolbox.util;
 
+import java.io.OutputStream;
+
+import org.apache.commons.io.output.NullOutputStream;
 import org.apache.log4j.Logger;
 
 import toolbox.tunnel.Relay;
@@ -35,12 +38,12 @@ public final class ProcessUtil {
         StringBuffer stderr) 
         throws InterruptedException {
         
-        StringOutputStream stdoutStream = new StringOutputStream();
+        OutputStream stdoutStream = new StringOutputStream();
         Relay stdoutRelay = new Relay(process.getInputStream(), stdoutStream);
         Thread stdoutThread = new Thread(stdoutRelay, "stdoutRelay");
         stdoutThread.start();
         
-        StringOutputStream stderrStream = new StringOutputStream();
+        OutputStream stderrStream = new StringOutputStream();
         Relay stderrRelay = new Relay(process.getErrorStream(), stderrStream);
         Thread stderrThread = new Thread(stderrRelay, "stderrRelay");
         stderrThread.start();
@@ -56,6 +59,7 @@ public final class ProcessUtil {
         
         stdout.append(stdoutStream.toString());
         stderr.append(stderrStream.toString());
+        
         return exitValue;
     }
 }
