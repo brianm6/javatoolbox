@@ -3,7 +3,6 @@ package toolbox.tivo;
 import java.awt.Dimension;
 import java.io.IOException;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ElapsedTime;
@@ -110,6 +109,6 @@ public class FFMpegTranscoder implements ITranscoder {
         logger_.debug("Exit value: " + exitValue);
         logger_.debug(StringUtil.banner("stdout:\n" + stdout));
         logger_.debug(StringUtil.banner("stderr:\n" + stderr));
-        logger_.info("Transcoded in " + timer);
+        logger_.debug(movieInfo.getFilename() + " transcoded in " + timer);
     }
 }
