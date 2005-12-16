@@ -2,18 +2,20 @@ package toolbox.tivo;
 
 import java.text.NumberFormat;
 
-
+/**
+ * Audio stream information.
+ */
 public class AudioStreamInfo extends StreamInfo {
 
-    Integer hertz_;
+    private Integer hertz_;
 
-    boolean stereo_;
+    private boolean stereo_;
 
-    Integer bitrate_;
+    private Integer bitrate_;
 
 
     /**
-     * Returns the bitrate.
+     * Returns the bitrate or null if the bitrate was not obtainable.
      * 
      * @return Integer
      */
@@ -33,7 +35,7 @@ public class AudioStreamInfo extends StreamInfo {
 
 
     /**
-     * Returns the hertz.
+     * Returns the hertz or null if the hertz was not obtainable.
      * 
      * @return Integer
      */
@@ -81,11 +83,28 @@ public class AudioStreamInfo extends StreamInfo {
         StringBuffer sb = new StringBuffer();
         sb.append("Audio Stream\n");
         sb.append("------------\n");
-        sb.append("Format   = " + getFormat() + "\n");
-        sb.append("Bitrate  = " + nf.format(getBitrate()) + " kb/s\n");
-        sb.append("Hertz    = " + nf.format(getHertz()) + " Hz\n");
+        
+        sb.append(
+            "Format   = " 
+            + (getFormat() != null 
+                ? getFormat() + "\n" 
+                : "N/A\n"));
+        
+        sb.append(
+            "Bitrate  = " 
+            + (getBitrate() != null 
+                ? nf.format(getBitrate()) + " kb/s\n" 
+                : "N/A\n"));
+        
+        sb.append(
+            "Hertz    = " 
+            + (getHertz() != null 
+                ? nf.format(getHertz()) + " Hz\n" 
+                : "N/A\n"));
+        
         return sb.toString();
     }
+    
     
     public boolean equals(Object obj) {
         
@@ -106,6 +125,7 @@ public class AudioStreamInfo extends StreamInfo {
             getHertz().equals(info.getHertz()) &&
             isStereo() == info.isStereo());
     }
+    
     
     public int hashCode() {
         return super.hashCode();
