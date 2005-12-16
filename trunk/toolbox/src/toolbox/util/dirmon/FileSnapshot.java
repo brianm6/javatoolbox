@@ -15,15 +15,15 @@ public class FileSnapshot {
     // -------------------------------------------------------------------------
     
     // Left out of snapshot for performance reasons
-    private boolean readable_;
-
-    private boolean writable_;
-
-    private boolean exists_;
-
-    private String name_;
-    
-    private boolean hidden_;
+//    private boolean readable_;
+//
+//    private boolean writable_;
+//
+//    private boolean exists_;
+//
+//    private String name_;
+//    
+//    private boolean hidden_;
 
     // Included in snapshot
     private String absolutePath_;
@@ -46,11 +46,12 @@ public class FileSnapshot {
      * @param file File to create a snapshot for.
      */
     public FileSnapshot(File file) {
-        //setReadable(file.canRead());
-        //setWritable(file.canRead());
-        //setExists(file.exists());
-        //setName(file.getName());
-        //setHidden(file.isHidden());
+        
+//        setReadable(file.canRead());
+//        setWritable(file.canWrite());
+//        setExists(file.exists());
+//        setName(file.getName());
+//        setHidden(file.isHidden());
         
         setDirectory(file.isDirectory());
         setLength(file.length());
@@ -118,24 +119,24 @@ public class FileSnapshot {
     }
 
 
-    public boolean isReadable_() {
-        return readable_;
-    }
-
-
-    public void setReadable_(boolean canRead) {
-        this.readable_ = canRead;
-    }
-
-
-    public boolean isWritable() {
-        return writable_;
-    }
-
-
-    public void setWritable(boolean canWrite) {
-        this.writable_ = canWrite;
-    }
+//    public boolean isReadable() {
+//        return readable_;
+//    }
+//
+//
+//    public void setReadable(boolean canRead) {
+//        this.readable_ = canRead;
+//    }
+//
+//
+//    public boolean isWritable() {
+//        return writable_;
+//    }
+//
+//
+//    public void setWritable(boolean canWrite) {
+//        this.writable_ = canWrite;
+//    }
 
 
     public boolean isDirectory() {
@@ -148,24 +149,24 @@ public class FileSnapshot {
     }
 
 
-    public boolean isExists() {
-        return exists_;
-    }
-
-
-    public void setExists(boolean exists) {
-        this.exists_ = exists;
-    }
-
-
-    public boolean isHidden() {
-        return hidden_;
-    }
-
-
-    public void setHidden(boolean hidden) {
-        this.hidden_ = hidden;
-    }
+//    public boolean isExists() {
+//        return exists_;
+//    }
+//
+//
+//    public void setExists(boolean exists) {
+//        this.exists_ = exists;
+//    }
+//
+//
+//    public boolean isHidden() {
+//        return hidden_;
+//    }
+//
+//
+//    public void setHidden(boolean hidden) {
+//        this.hidden_ = hidden;
+//    }
 
 
     public long getLastModified() {
@@ -188,14 +189,14 @@ public class FileSnapshot {
     }
 
 
-    public String getName() {
-        return name_;
-    }
-
-
-    public void setName(String name) {
-        this.name_ = name;
-    }
+//    public String getName() {
+//        return name_;
+//    }
+//
+//
+//    public void setName(String name) {
+//        this.name_ = name;
+//    }
 
     
     public Date getSnapshotTimestamp() {
