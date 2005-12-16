@@ -9,14 +9,14 @@ import toolbox.util.ElapsedTime;
 import toolbox.util.ProcessUtil;
 import toolbox.util.StringUtil;
 
+/**
+ * Transcodes a movie to a Tivo supported format using ffmpeg.
+ */
 public class FFMpegTranscoder implements ITranscoder {
 
     public static final Logger logger_ = 
         Logger.getLogger(FFMpegTranscoder.class);
     
-    public FFMpegTranscoder() {
-    }
-
     // -------------------------------------------------------------------------
     // ITranscoder Interface
     // -------------------------------------------------------------------------
@@ -80,11 +80,15 @@ public class FFMpegTranscoder implements ITranscoder {
         sb.append("-b " + movieInfo.getBitrate() + " ");
         sb.append("-aspect 4:3 "); 
         sb.append("-s " + fixer.getWidth() + "x" + fixer.getHeight() + " ");
-        sb.append(fixer.getPadLeftRight() 
-            ? "-padleft " + fixer.getPad() + " -padright " + fixer.getPad() + " "
-            : "-padtop " + fixer.getPad() + " -padbottom " + fixer.getPad() + " ");
+        
+        if (fixer.getPad() > 0 ) {
+            sb.append(fixer.getPadLeftRight() 
+                ? "-padleft " + fixer.getPad() + " -padright " + fixer.getPad() + " "
+                : "-padtop " + fixer.getPad() + " -padbottom " + fixer.getPad() + " ");
+        }
+        
         sb.append("-acodec mp2 ");
-        sb.append("-ab 224 ");
+        sb.append("-ab 224 "); // can this be 128?
         sb.append("-ac 2 ");
         sb.append("-mbd 2 ");
         sb.append("-qmin 2 ");
@@ -109,9 +113,11 @@ public class FFMpegTranscoder implements ITranscoder {
 
         timer.setEndTime();
         
-        logger_.debug("Exit value: " + exitValue);
-        logger_.debug(StringUtil.banner("stdout:\n" + stdout));
-        logger_.debug(StringUtil.banner("stderr:\n" + stderr));
-        logger_.debug(movieInfo.getFilename() + " transcoded in " + timer);
+        if (logger_.isDebugEnabled()) {
+            logger_.debug("Exit value: " + exitValue);
+            logger_.debug(StringUtil.banner("stdout:\n" + stdout));
+            logger_.debug(StringUtil.banner("stderr:\n" + stderr));
+            logger_.debug(movieInfo.getFilename() + " transcoded in " + timer);
+        }
     }
 }
