@@ -51,7 +51,7 @@ public class TivoConverter{
     // -------------------------------------------------------------------------
     
     public static void main(String args[]) {
-        Logger.getRootLogger().setLevel(Level.DEBUG);
+        Logger.getRootLogger().setLevel(Level.INFO);
         TivoConverter converter = new TivoConverter();
         converter.start();
     }
@@ -157,7 +157,7 @@ public class TivoConverter{
             shorten(sourceFilename) 
             + " : Transcoding failed with error '" 
             + e.getMessage()
-            + "'");
+            + "'", e);
         
         // move original to error directory
         ElapsedTime timer = new ElapsedTime(new Date());
