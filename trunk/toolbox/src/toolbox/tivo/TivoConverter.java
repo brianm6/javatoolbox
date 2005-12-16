@@ -41,6 +41,7 @@ public class TivoConverter{
     private String errorDir = rootDir + "\\error";
     private String originalsDir = rootDir + "\\originals"; 
     private String goBackDir = rootDir + "\\goback";
+    private String logDir = rootDir + "\\logs";
 
     private DirectoryMonitor monitor_; 
     
@@ -93,6 +94,7 @@ public class TivoConverter{
         new File(errorDir).mkdir();
         new File(originalsDir).mkdir();
         new File(goBackDir).mkdir();
+        new File(logDir).mkdir();
     }
     
     
@@ -128,7 +130,7 @@ public class TivoConverter{
 
         File sourceFile = new File(sourceFilename);
         MovieInfoParser parser = new MovieInfoParser();
-        ITranscoder transcoder = new FFMpegTranscoder();
+        ITranscoder transcoder = new FFMpegTranscoder(logDir);
         MovieInfo movieInfo = null;
         
         try {
