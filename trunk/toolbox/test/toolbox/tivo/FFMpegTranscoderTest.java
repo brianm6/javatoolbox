@@ -40,7 +40,9 @@ public class FFMpegTranscoderTest extends TivoTestCase {
 
         // Test
         // =====================================================================
-        ITranscoder transcoder = new FFMpegTranscoder();
+        ITranscoder transcoder = 
+            new FFMpegTranscoder(FileUtil.getTempDir().getAbsolutePath());
+        
         transcoder.transcode(input, destFilename);
         
         // Verify
