@@ -465,7 +465,15 @@ public class DirectoryMonitor
     // Event Notification Support
     //--------------------------------------------------------------------------
 
-    protected void fireDirectoryActivity(FileEvent event)
+    /**
+     * Do not use this method even though it is public. 
+     * FileCreationFinishedRecognizer needs visibility to this method to fire
+     * events that don't originate from {@link 
+     * IFileActivityRecognizer#getRecognizedEvents(DirSnapshot, DirSnapshot)}.
+     * In particular, {@link 
+     * toolbox.util.dirmon.recognizer.FileCreationFinishedRecognizer}.
+     */
+    public void fireDirectoryActivity(FileEvent event)
         throws Exception {
 
         for (Iterator i = listeners_.iterator(); i.hasNext();) {
