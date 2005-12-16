@@ -2,11 +2,14 @@ package toolbox.tivo;
 
 import java.text.NumberFormat;
 
+/**
+ * Video stream info.
+ */
 public class VideoStreamInfo extends StreamInfo {
 
-    Integer width_;
-    Integer height_;
-    String  framesPerSecond_;
+    private Integer width_;
+    private Integer height_;
+    private String  framesPerSecond_;
     
     /**
      * Returns the framesPerSecond.
@@ -63,7 +66,6 @@ public class VideoStreamInfo extends StreamInfo {
     }
     
     public String toString() {
-        //return ToStringBuilder.reflectionToString(this, ToStringStyle.SIMPLE_STYLE);
         
         NumberFormat nf = NumberFormat.getInstance();
         
