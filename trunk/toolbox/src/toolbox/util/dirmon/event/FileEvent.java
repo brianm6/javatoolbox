@@ -17,6 +17,7 @@ public class FileEvent extends BaseEvent {
     public static final int TYPE_FILE_CREATED = 0;
     public static final int TYPE_FILE_CHANGED = 1;
     public static final int TYPE_FILE_DELETED = 2;
+    public static final int TYPE_FILE_CREATION_FINISHED = 3;
 
     // -------------------------------------------------------------------------
     // Fields
