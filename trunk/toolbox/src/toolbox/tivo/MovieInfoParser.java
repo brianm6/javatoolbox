@@ -54,8 +54,14 @@ public class MovieInfoParser {
 
         }
         catch (Exception e) {
-            logger_.error("\nstdout:\n" + stdout);
-            logger_.error("\nstderr:\n" + stderr);
+            logger_.error(
+                "Query info error:" 
+                + e.getMessage()
+                + "\n\nstdout:\n" 
+                + StringUtil.indent(stdout.toString()) 
+                + "\n\nstderr:\n" 
+                + StringUtil.indent(stderr.toString()), e);
+            
             throw e;
         }
         
@@ -69,7 +75,8 @@ public class MovieInfoParser {
         
         // Stream #0.1  Id:   1: Audio: mp3, 22050 Hz, stereo, 47 kb/s
         // Stream #0.1: Audio: mp3, 22050 Hz, mono, 31 kb/s
-                
+        // Stream #0.1: Audio: aac, 48000 Hz, stereo
+        
         AudioStreamInfo audio = new AudioStreamInfo();
         String[] tokens = StringUtils.split(line);
         
@@ -114,9 +121,14 @@ public class MovieInfoParser {
         Assert.assertEquals("Expected 'Hz,' as 8th token", "Hz,", tokens[i++]);
         
         audio.setStereo(tokens[i++].equals("stereo,"));
-        audio.setBitrate(new Integer(tokens[i++]));
-
-        Assert.assertEquals("11th token", "kb/s", tokens[i++]);
+        
+        try {
+            audio.setBitrate(new Integer(tokens[i++]));
+            Assert.assertEquals("11th token", "kb/s", tokens[i++]);
+        }
+        catch (Exception e) {
+            ; // Ignore 
+        }
         
         movie.setAudioStream(audio);
     }
