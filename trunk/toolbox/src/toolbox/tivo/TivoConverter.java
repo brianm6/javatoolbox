@@ -1,21 +1,24 @@
 package toolbox.tivo;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Date;
+
+import edu.emory.mathcs.backport.java.util.concurrent.BlockingQueue;
+import edu.emory.mathcs.backport.java.util.concurrent.LinkedBlockingQueue;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
-import edu.emory.mathcs.backport.java.util.concurrent.BlockingQueue;
-import edu.emory.mathcs.backport.java.util.concurrent.LinkedBlockingQueue;
 import toolbox.util.ElapsedTime;
 import toolbox.util.dirmon.DirectoryMonitor;
 import toolbox.util.dirmon.IDirectoryMonitorListener;
 import toolbox.util.dirmon.event.FileEvent;
 import toolbox.util.dirmon.event.StatusEvent;
 import toolbox.util.dirmon.recognizer.FileCreatedRecognizer;
+import toolbox.util.dirmon.recognizer.FileCreationFinishedRecognizer;
 
 /**
  * Converts movies to tivo format.
@@ -32,7 +35,7 @@ public class TivoConverter{
     // Fields
     // -------------------------------------------------------------------------
     
-    private String rootDir = "c:\\tivo";
+    private String rootDir = "z:\\tivo";
     private String incomingDir = rootDir + "\\incoming";
     private String workingDir = rootDir + "\\working";
     private String errorDir = rootDir + "\\error";
@@ -79,104 +82,7 @@ public class TivoConverter{
     // -------------------------------------------------------------------------
     // Private
     // -------------------------------------------------------------------------
-    
-    private void convert(String filename) throws Exception {
 
-        File sourceFile = new File(filename);
-        MovieInfoParser parser = new MovieInfoParser();
-        ITranscoder transcoder = new FFMpegTranscoder();
-        String shortSourceFilename = FilenameUtils.getName(filename);
-        MovieInfo movieInfo = null;
-        
-        try {
-            logger_.info(shorten(filename) + " : Querying info ...");
-            
-            movieInfo = parser.parse(filename);
-            logger_.debug("\n\n" + movieInfo);
-            
-            String destFilename = buildTargetFilename(movieInfo);
-            String shortDestFilename = FilenameUtils.getName(destFilename);
-            
-            logger_.info(shorten(filename) + " : Transcoding at " + movieInfo.getBitrate() + " kb/s ...");
-            ElapsedTime timer = new ElapsedTime(new Date());
-            transcoder.transcode(movieInfo, destFilename);
-            timer.setEndTime();
-            logger_.info(shorten(filename) + " : Transcoded in " + timer);
-            
-            logger_.info(shorten(filename) + " : Moving to completed dir ...");
-            timer = new ElapsedTime(new Date());
-            FileUtils.copyFileToDirectory(sourceFile, new File(originalsDir));
-            timer.setEndTime();
-            logger_.info(shorten(filename) + " : Move completed in " + timer); 
-            
-            logger_.info(shorten(destFilename) + " : Moving to goBack dir ...");
-            timer = new ElapsedTime(new Date());
-            File destFile = new File(destFilename);
-            FileUtils.copyFileToDirectory(destFile, new File(goBackDir));
-            timer.setEndTime();
-            logger_.info(shorten(destFilename) + " : Move completed in " + timer); 
-            
-            sourceFile.delete();
-            destFile.delete();
-        }
-        catch (Exception e) {
-            logger_.error(
-                shorten(filename) 
-                + " : Transcoding failed with error '" 
-                + e.getMessage()
-                + "'");
-            
-            // move original to error directory
-            ElapsedTime timer = new ElapsedTime(new Date());
-            logger_.info(shorten(filename) + " : Moving to error dir ...");
-            
-            FileUtils.copyFileToDirectory(sourceFile, new File(errorDir));
-            
-            timer.setEndTime();
-            logger_.info(shorten(filename) + " : Move completed in " + timer); 
-            
-            sourceFile.delete();
-        }
-    }
-
-
-    private String buildTargetFilename(MovieInfo movieInfo) {
-        String destFilename =  
-            workingDir 
-            + File.separator 
-            + FilenameUtils.removeExtension(
-                FilenameUtils.getName(movieInfo.getFilename()))
-            + ".mpg";
-        return destFilename;
-    }
-
-    
-    private void setupWorkQueue() {
-        workQueue_ = new LinkedBlockingQueue();
-        
-        while (true) {
-        
-            try {
-                String filename = (String) workQueue_.take();
-                convert(filename);
-            }
-            catch (Exception e) {
-                logger_.error("kaboom", e);
-            }
-            
-        }
-    }
-    
-    private void setupDirMon() {
-        
-        monitor_ = new DirectoryMonitor(new File(incomingDir), false);
-        monitor_.setDelay(30000);
-        //monitor_.setName("incoming");
-        monitor_.addRecognizer(new FileCreatedRecognizer(monitor_));
-        monitor_.addDirectoryMonitorListener(new IncomingDirListener());
-        monitor_.start();
-    }
-    
     private void makeDirStructure(){
         
         File f = new File(rootDir);
@@ -188,6 +94,140 @@ public class TivoConverter{
         new File(originalsDir).mkdir();
         new File(goBackDir).mkdir();
     }
+    
+    
+    private void setupWorkQueue() {
+        workQueue_ = new LinkedBlockingQueue();
+        
+        while (true) {
+        
+            try {
+                String filename = (String) workQueue_.take();
+                convert(filename);
+            }
+            catch (Exception e) {
+                logger_.error("taking from workqueue", e);
+            }
+            
+        }
+    }
+    
+    
+    private void setupDirMon() {
+        monitor_ = new DirectoryMonitor(new File(incomingDir), false);
+        monitor_.setDelay(10000);
+        //monitor_.setName("incoming"); screws things up
+        monitor_.addRecognizer(new FileCreatedRecognizer(monitor_));
+        monitor_.addRecognizer(new FileCreationFinishedRecognizer(monitor_, 10));
+        monitor_.addDirectoryMonitorListener(new IncomingDirListener());
+        monitor_.start();
+    }
+    
+
+    private void convert(String sourceFilename) throws Exception {
+
+        File sourceFile = new File(sourceFilename);
+        MovieInfoParser parser = new MovieInfoParser();
+        ITranscoder transcoder = new FFMpegTranscoder();
+        MovieInfo movieInfo = null;
+        
+        try {
+            logger_.info(shorten(sourceFilename) + " : Querying info ...");
+            
+            movieInfo = parser.parse(sourceFilename);
+            
+            logger_.debug("\n\n" + movieInfo);
+            
+            String destFilename = buildDestFilename(movieInfo);
+            transcodeMovie(sourceFilename, transcoder, movieInfo, destFilename);
+            moveDestFileToGoBackDir(destFilename); 
+            moveSourceFileToOriginalsDir(sourceFilename, sourceFile); 
+        }
+        catch (Exception e) {
+            handleFailure(sourceFilename, sourceFile, e);
+        }
+    }
+
+    private void handleFailure(
+        String sourceFilename, 
+        File sourceFile,
+        Exception e) throws IOException{
+        
+        logger_.error(
+            shorten(sourceFilename) 
+            + " : Transcoding failed with error '" 
+            + e.getMessage()
+            + "'");
+        
+        // move original to error directory
+        ElapsedTime timer = new ElapsedTime(new Date());
+        logger_.info(shorten(sourceFilename) + " : Moving to error dir ...");
+        FileUtils.copyFileToDirectory(sourceFile, new File(errorDir));
+        timer.setEndTime();
+        logger_.info(shorten(sourceFilename) 
+            + " : Move to error dir completed in " + timer); 
+        
+        sourceFile.delete();
+    }
+
+    
+    private void transcodeMovie(
+        String sourceFilename, 
+        ITranscoder transcoder, 
+        MovieInfo movieInfo, 
+        String destFilename) throws IOException, InterruptedException {
+        
+        logger_.info(shorten(sourceFilename) 
+            + " : Transcoding at " 
+            + movieInfo.getBitrate() + " kb/s ...");
+        
+        ElapsedTime t1 = new ElapsedTime();
+        transcoder.transcode(movieInfo, destFilename);
+        t1.setEndTime();
+        
+        logger_.info(shorten(sourceFilename) 
+            + " : Transcoded in " + t1 + ", "   
+            + FileUtils.byteCountToDisplaySize(
+                new File(destFilename).length()));
+    }
+
+    
+    private void moveSourceFileToOriginalsDir(
+        String sourceFilename, 
+        File sourceFile) throws IOException{
+        
+        logger_.info(shorten(sourceFilename) + " : Moving to completed dir ...");
+        ElapsedTime t3 = new ElapsedTime();
+        FileUtils.copyFileToDirectory(sourceFile, new File(originalsDir));
+        sourceFile.delete();
+        t3.setEndTime();
+        logger_.info(shorten(sourceFilename) + " : Move completed in " + t3);
+    }
+
+    
+    private void moveDestFileToGoBackDir(String destFilename) 
+        throws IOException{
+        
+        logger_.info(shorten(destFilename) + " : Moving to goBack dir ...");
+        ElapsedTime t2 = new ElapsedTime();
+        File destFile = new File(destFilename);
+        FileUtils.copyFileToDirectory(destFile, new File(goBackDir));
+        destFile.delete();
+        t2.setEndTime();
+        logger_.info(shorten(destFilename) + " : Move completed in " + t2);
+    }
+
+
+    private String buildDestFilename(MovieInfo movieInfo) {
+        String destFilename =  
+            workingDir 
+            + File.separator 
+            + FilenameUtils.removeExtension(
+                FilenameUtils.getName(movieInfo.getFilename()))
+            + ".mpg";
+        return destFilename;
+    }
+
     
     private String shorten(String filename) {
         return FilenameUtils.getName(filename);
@@ -204,10 +244,12 @@ public class TivoConverter{
             switch (changeEvent.getEventType()) {
                 
                 case FileEvent.TYPE_FILE_CREATED:
+                    String file = changeEvent.getAfterSnapshot().getAbsolutePath();
+                    logger_.info(shorten(file) + " : Recognized creation...");
+                    break;
                     
-                    String newFile = 
-                        changeEvent.getAfterSnapshot().getAbsolutePath();
-                    
+                case FileEvent.TYPE_FILE_CREATION_FINISHED:
+                    String newFile = changeEvent.getAfterSnapshot().getAbsolutePath();
                     logger_.info(shorten(newFile) + " : Adding to work queue...");
                     workQueue_.add(newFile);
                     break;
