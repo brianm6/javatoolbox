@@ -2,11 +2,10 @@ package toolbox.util;
 
 import java.io.OutputStream;
 
-import org.apache.commons.io.output.NullOutputStream;
 import org.apache.log4j.Logger;
 
-import toolbox.tunnel.Relay;
 import toolbox.util.io.StringOutputStream;
+import toolbox.util.io.relay.StreamRelay;
 
 /**
  * Process related utility methods.
@@ -39,12 +38,12 @@ public final class ProcessUtil {
         throws InterruptedException {
         
         OutputStream stdoutStream = new StringOutputStream();
-        Relay stdoutRelay = new Relay(process.getInputStream(), stdoutStream);
+        StreamRelay stdoutRelay = new StreamRelay(process.getInputStream(), stdoutStream);
         Thread stdoutThread = new Thread(stdoutRelay, "stdoutRelay");
         stdoutThread.start();
         
         OutputStream stderrStream = new StringOutputStream();
-        Relay stderrRelay = new Relay(process.getErrorStream(), stderrStream);
+        StreamRelay stderrRelay = new StreamRelay(process.getErrorStream(), stderrStream);
         Thread stderrThread = new Thread(stderrRelay, "stderrRelay");
         stderrThread.start();
         
