@@ -38,12 +38,36 @@ public final class ProcessUtil {
         throws InterruptedException {
         
         OutputStream stdoutStream = new StringOutputStream();
-        StreamRelay stdoutRelay = new StreamRelay(process.getInputStream(), stdoutStream);
+        OutputStream stderrStream = new StringOutputStream();
+        int exitValue = getProcessOutput(process, stdoutStream, stderrStream);
+        stdout.append(stdoutStream.toString());
+        stderr.append(stderrStream.toString());
+        return exitValue;
+    }
+
+    
+    /**
+     * Redirects the stdout and stderr streams from the execution of a process 
+     * via {@link Runtime#exec(java.lang.String)}. Returns the exit value 
+     * returned from the process.
+     * 
+     * @param process Process returned from Runtime.exect(...)
+     * @param stdout Stream that the process' stdout will be written to.
+     * @param stderr Stream that the process' stderr will be written to.
+     * @return int 
+     * @throws InterruptedException on error.
+     */
+    public static int getProcessOutput(
+        Process process,
+        OutputStream stdout,
+        OutputStream stderr) 
+        throws InterruptedException {
+        
+        StreamRelay stdoutRelay = new StreamRelay(process.getInputStream(), stdout);
         Thread stdoutThread = new Thread(stdoutRelay, "stdoutRelay");
         stdoutThread.start();
         
-        OutputStream stderrStream = new StringOutputStream();
-        StreamRelay stderrRelay = new StreamRelay(process.getErrorStream(), stderrStream);
+        StreamRelay stderrRelay = new StreamRelay(process.getErrorStream(), stderr);
         Thread stderrThread = new Thread(stderrRelay, "stderrRelay");
         stderrThread.start();
         
@@ -55,10 +79,6 @@ public final class ProcessUtil {
         
         logger_.trace("Joining stderr thread...");
         stderrThread.join();
-        
-        stdout.append(stdoutStream.toString());
-        stderr.append(stderrStream.toString());
-        
         return exitValue;
     }
 }
