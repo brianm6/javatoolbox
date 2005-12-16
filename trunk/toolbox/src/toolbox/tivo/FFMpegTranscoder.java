@@ -18,12 +18,20 @@ import toolbox.util.StringUtil;
 /**
  * Transcodes a movie to a Tivo supported format using ffmpeg.
  */
-public class FFMpegTranscoder implements ITranscoder {
+public class FFMpegTranscoder extends AbstractTranscoder {
 
     public static final Logger logger_ = 
         Logger.getLogger(FFMpegTranscoder.class);
+
+    // -------------------------------------------------------------------------
+    // Fields
+    // -------------------------------------------------------------------------
     
     private String logDir_;
+    
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
     
     public FFMpegTranscoder(String logDir) {
         logDir_ = logDir;
@@ -115,24 +123,34 @@ public class FFMpegTranscoder implements ITranscoder {
         ElapsedTime timer = new ElapsedTime();
         timer.setStartTime();
         
+        fireTranscodeStarted();
+        
         Process p = Runtime.getRuntime().exec(sb.toString());
         StringBuffer stdout = new StringBuffer();
         StringBuffer stderr = new StringBuffer();
         
         OutputStream fout = null;
         OutputStream ferr = null;
-        int exitValue;
+        int exitValue = -1;
         
         try {
             fout = new BufferedOutputStream(
                 new FileOutputStream(new File(logDir_, 
                     FilenameUtils.getName(movieInfo.getFilename()) 
                     + ".out.log")));
+
+            int totalSeconds = 
+                (movieInfo.getHours() * 60 * 60)
+                + (movieInfo.getMinutes() * 60)
+                + movieInfo.getSeconds();
             
-            ferr = new BufferedOutputStream(
-                new FileOutputStream(new File(logDir_, 
-                    FilenameUtils.getName(movieInfo.getFilename()) 
-                    + ".err.log")));
+            
+            ferr = 
+                new BufferedOutputStream(
+                    new FFMpegProgressOutputStream(totalSeconds, 
+                        new FileOutputStream(new File(logDir_, 
+                            FilenameUtils.getName(movieInfo.getFilename()) 
+                            + ".err.log"))));
             
             //int exitValue = ProcessUtil.getProcessOutput(p, stdout, stderr);
             
@@ -141,6 +159,11 @@ public class FFMpegTranscoder implements ITranscoder {
         finally {
             IOUtils.closeQuietly(fout);
             IOUtils.closeQuietly(ferr);
+            
+            if (exitValue != 0) 
+                fireTranscodeError();
+            else
+                fireTranscodeFinished();
         }
 
         
