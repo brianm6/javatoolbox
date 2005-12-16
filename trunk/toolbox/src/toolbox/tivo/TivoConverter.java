@@ -17,40 +17,69 @@ import toolbox.util.dirmon.event.FileEvent;
 import toolbox.util.dirmon.event.StatusEvent;
 import toolbox.util.dirmon.recognizer.FileCreatedRecognizer;
 
+/**
+ * Converts movies to tivo format.
+ */
 public class TivoConverter{
 
-    static public final Logger logger_ = 
+    // TODO: Don't consume files in incoming directory that are still growing
+    //       in size.
+    
+    public static final Logger logger_ = 
         Logger.getLogger(TivoConverter.class);
     
-    private String rootDir = "z:\\tivo";
+    // -------------------------------------------------------------------------
+    // Fields
+    // -------------------------------------------------------------------------
+    
+    private String rootDir = "c:\\tivo";
     private String incomingDir = rootDir + "\\incoming";
     private String workingDir = rootDir + "\\working";
     private String errorDir = rootDir + "\\error";
-    private String completedDir = rootDir + "\\completed"; 
+    private String originalsDir = rootDir + "\\originals"; 
     private String goBackDir = rootDir + "\\goback";
 
     private DirectoryMonitor monitor_; 
     
     private BlockingQueue workQueue_;
     
+    // -------------------------------------------------------------------------
+    // Main
+    // -------------------------------------------------------------------------
+    
     public static void main(String args[]) {
+        Logger.getRootLogger().setLevel(Level.DEBUG);
         TivoConverter converter = new TivoConverter();
         converter.start();
     }
     
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
     
     public TivoConverter() {
     }
     
+    // -------------------------------------------------------------------------
+    // Public
+    // -------------------------------------------------------------------------
     
     public void start() {
-        Logger.getRootLogger().setLevel(Level.DEBUG);
         logger_.info("Starting TivoConverter...");
+        logger_.info("Incoming  -> " + incomingDir);
+        logger_.info("Working   -> " + workingDir);
+        logger_.info("Error     -> " + errorDir);
+        logger_.info("Originals -> " + originalsDir);
+        
         makeDirStructure();
         setupDirMon();
         setupWorkQueue();
     }
 
+    // -------------------------------------------------------------------------
+    // Private
+    // -------------------------------------------------------------------------
+    
     private void convert(String filename) throws Exception {
 
         File sourceFile = new File(filename);
@@ -76,7 +105,7 @@ public class TivoConverter{
             
             logger_.info(shorten(filename) + " : Moving to completed dir ...");
             timer = new ElapsedTime(new Date());
-            FileUtils.copyFileToDirectory(sourceFile, new File(completedDir));
+            FileUtils.copyFileToDirectory(sourceFile, new File(originalsDir));
             timer.setEndTime();
             logger_.info(shorten(filename) + " : Move completed in " + timer); 
             
@@ -144,7 +173,7 @@ public class TivoConverter{
         monitor_.setDelay(30000);
         //monitor_.setName("incoming");
         monitor_.addRecognizer(new FileCreatedRecognizer(monitor_));
-        monitor_.addDirectoryMonitorListener(new IncomingListener());
+        monitor_.addDirectoryMonitorListener(new IncomingDirListener());
         monitor_.start();
     }
     
@@ -156,7 +185,7 @@ public class TivoConverter{
         new File(incomingDir).mkdir();
         new File(workingDir).mkdir();
         new File(errorDir).mkdir();
-        new File(completedDir).mkdir();
+        new File(originalsDir).mkdir();
         new File(goBackDir).mkdir();
     }
     
@@ -164,8 +193,11 @@ public class TivoConverter{
         return FilenameUtils.getName(filename);
     }
 
+    // -------------------------------------------------------------------------
+    // IncomingDirListener
+    // -------------------------------------------------------------------------
     
-    class IncomingListener implements IDirectoryMonitorListener {
+    class IncomingDirListener implements IDirectoryMonitorListener {
         
         public void directoryActivity(FileEvent changeEvent) throws Exception{
             
@@ -183,7 +215,6 @@ public class TivoConverter{
         }
         
         public void statusChanged(StatusEvent statusEvent) throws Exception{
-            //logger_.debug(statusEvent);
         }
     }
 }
