@@ -1,8 +1,14 @@
 package toolbox.tivo;
 
 import java.awt.Dimension;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ElapsedTime;
@@ -16,6 +22,12 @@ public class FFMpegTranscoder implements ITranscoder {
 
     public static final Logger logger_ = 
         Logger.getLogger(FFMpegTranscoder.class);
+    
+    private String logDir_;
+    
+    public FFMpegTranscoder(String logDir) {
+        logDir_ = logDir;
+    }
     
     // -------------------------------------------------------------------------
     // ITranscoder Interface
@@ -106,10 +118,34 @@ public class FFMpegTranscoder implements ITranscoder {
         Process p = Runtime.getRuntime().exec(sb.toString());
         StringBuffer stdout = new StringBuffer();
         StringBuffer stderr = new StringBuffer();
-        int exitValue = ProcessUtil.getProcessOutput(p, stdout, stderr);
         
-        logger_.info("stdout length = " + stdout.length());
-        logger_.info("stderr length = " + stderr.length());
+        OutputStream fout = null;
+        OutputStream ferr = null;
+        int exitValue;
+        
+        try {
+            fout = new BufferedOutputStream(
+                new FileOutputStream(new File(logDir_, 
+                    FilenameUtils.getName(movieInfo.getFilename()) 
+                    + ".out.log")));
+            
+            ferr = new BufferedOutputStream(
+                new FileOutputStream(new File(logDir_, 
+                    FilenameUtils.getName(movieInfo.getFilename()) 
+                    + ".err.log")));
+            
+            //int exitValue = ProcessUtil.getProcessOutput(p, stdout, stderr);
+            
+            exitValue = ProcessUtil.getProcessOutput(p, fout, ferr);
+        }
+        finally {
+            IOUtils.closeQuietly(fout);
+            IOUtils.closeQuietly(ferr);
+        }
+
+        
+        //logger_.info("stdout length = " + stdout.length());
+        //logger_.info("stderr length = " + stderr.length());
 
         timer.setEndTime();
         
