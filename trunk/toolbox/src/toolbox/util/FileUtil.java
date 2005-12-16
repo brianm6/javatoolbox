@@ -13,6 +13,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.RandomAccessFile;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
@@ -553,5 +554,24 @@ public final class FileUtil
         }
         
         return basket;
+    }
+
+    
+    /**
+     * Closes a {@link RandomAccessFile} and suppresses any generated 
+     * exceptions.
+     * 
+     * @param file File to close.
+     */
+    public static final void closeQuietly(RandomAccessFile file) {
+        
+        if (file != null) {
+            try {
+                file.close();
+            }
+            catch (IOException e) {
+                // Ignore
+            }
+        }
     }
 }
