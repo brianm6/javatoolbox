@@ -25,17 +25,13 @@ import toolbox.util.dirmon.recognizer.FileCreationFinishedRecognizer;
  */
 public class TivoConverter{
 
-    // TODO: Don't consume files in incoming directory that are still growing
-    //       in size.
-    
-    public static final Logger logger_ = 
-        Logger.getLogger(TivoConverter.class);
+    public static final Logger logger_ = Logger.getLogger(TivoConverter.class);
     
     // -------------------------------------------------------------------------
     // Fields
     // -------------------------------------------------------------------------
     
-    private String rootDir = "z:\\tivo";
+    private String rootDir = "c:\\tivo";
     private String incomingDir = rootDir + "\\incoming";
     private String workingDir = rootDir + "\\working";
     private String errorDir = rootDir + "\\error";
