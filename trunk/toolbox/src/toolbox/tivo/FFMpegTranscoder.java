@@ -97,7 +97,7 @@ public class FFMpegTranscoder extends AbstractTranscoder {
         sb.append("\"" + movieInfo.getFilename()  + "\" ");
         sb.append("-hq ");
         sb.append("-target ntsc-dvd ");
-        sb.append("-b " + movieInfo.getBitrate() + " ");
+        sb.append("-b " + (movieInfo.getBitrate().intValue() + 224) + " ");
         sb.append("-aspect 4:3 "); 
         sb.append("-s " + fixer.getWidth() + "x" + fixer.getHeight() + " ");
         
