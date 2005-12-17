@@ -31,16 +31,15 @@ public class TivoConverter{
     // Fields
     // -------------------------------------------------------------------------
     
-    private String rootDir = "c:\\tivo";
-    private String incomingDir = rootDir + "\\incoming";
-    private String workingDir = rootDir + "\\working";
-    private String errorDir = rootDir + "\\error";
-    private String originalsDir = rootDir + "\\originals"; 
-    private String goBackDir = rootDir + "\\goback";
-    private String logDir = rootDir + "\\logs";
+    private String rootDir_ = "c:\\tivo";
+    private String incomingDir_;
+    private String workingDir_;
+    private String errorDir_;
+    private String originalsDir_; 
+    private String goBackDir_;
+    private String logDir_;
 
     private DirectoryMonitor monitor_; 
-    
     private BlockingQueue workQueue_;
     
     // -------------------------------------------------------------------------
@@ -49,7 +48,13 @@ public class TivoConverter{
     
     public static void main(String args[]) {
         Logger.getRootLogger().setLevel(Level.INFO);
-        TivoConverter converter = new TivoConverter();
+        TivoConverter converter = null;
+        
+        if (args.length == 0)
+            converter = new TivoConverter();
+        else
+            converter = new TivoConverter(args[0]);
+        
         converter.start();
     }
     
@@ -58,6 +63,18 @@ public class TivoConverter{
     // -------------------------------------------------------------------------
     
     public TivoConverter() {
+        this("z:\\tivo");
+    }
+    
+    
+    public TivoConverter(String rootDir) {
+        rootDir_ = rootDir;
+        incomingDir_ = rootDir_ + "\\incoming";
+        workingDir_ = rootDir_ + "\\working";
+        errorDir_ = rootDir_ + "\\error";
+        originalsDir_ = rootDir_ + "\\originals"; 
+        goBackDir_ = rootDir_ + "\\goback";
+        logDir_ = rootDir_ + "\\logs";
     }
     
     // -------------------------------------------------------------------------
@@ -66,10 +83,10 @@ public class TivoConverter{
     
     public void start() {
         logger_.info("Starting TivoConverter...");
-        logger_.info("Incoming  -> " + incomingDir);
-        logger_.info("Working   -> " + workingDir);
-        logger_.info("Error     -> " + errorDir);
-        logger_.info("Originals -> " + originalsDir);
+        logger_.info("Incoming  -> " + incomingDir_);
+        logger_.info("Working   -> " + workingDir_);
+        logger_.info("Error     -> " + errorDir_);
+        logger_.info("Originals -> " + originalsDir_);
         
         makeDirStructure();
         setupDirMon();
@@ -82,15 +99,15 @@ public class TivoConverter{
 
     private void makeDirStructure(){
         
-        File f = new File(rootDir);
+        File f = new File(rootDir_);
         f.mkdir();
         
-        new File(incomingDir).mkdir();
-        new File(workingDir).mkdir();
-        new File(errorDir).mkdir();
-        new File(originalsDir).mkdir();
-        new File(goBackDir).mkdir();
-        new File(logDir).mkdir();
+        new File(incomingDir_).mkdir();
+        new File(workingDir_).mkdir();
+        new File(errorDir_).mkdir();
+        new File(originalsDir_).mkdir();
+        new File(goBackDir_).mkdir();
+        new File(logDir_).mkdir();
     }
     
     
@@ -112,7 +129,7 @@ public class TivoConverter{
     
     
     private void setupDirMon() {
-        monitor_ = new DirectoryMonitor(new File(incomingDir), false);
+        monitor_ = new DirectoryMonitor(new File(incomingDir_), false);
         monitor_.setDelay(10000);
         //monitor_.setName("incoming"); screws things up
         monitor_.addRecognizer(new FileCreatedRecognizer(monitor_));
@@ -126,7 +143,7 @@ public class TivoConverter{
 
         File sourceFile = new File(sourceFilename);
         MovieInfoParser parser = new MovieInfoParser();
-        ITranscoder transcoder = new FFMpegTranscoder(logDir);
+        ITranscoder transcoder = new FFMpegTranscoder(logDir_);
         MovieInfo movieInfo = null;
         
         try {
@@ -146,6 +163,7 @@ public class TivoConverter{
         }
     }
 
+    
     private void handleFailure(
         String sourceFilename, 
         File sourceFile,
@@ -160,7 +178,7 @@ public class TivoConverter{
         // move original to error directory
         ElapsedTime timer = new ElapsedTime(new Date());
         logger_.info(shorten(sourceFilename) + " : Moving to error dir ...");
-        FileUtils.copyFileToDirectory(sourceFile, new File(errorDir));
+        FileUtils.copyFileToDirectory(sourceFile, new File(errorDir_));
         timer.setEndTime();
         logger_.info(shorten(sourceFilename) 
             + " : Move to error dir completed in " + timer); 
@@ -196,7 +214,7 @@ public class TivoConverter{
         
         logger_.info(shorten(sourceFilename) + " : Moving to completed dir ...");
         ElapsedTime t3 = new ElapsedTime();
-        FileUtils.copyFileToDirectory(sourceFile, new File(originalsDir));
+        FileUtils.copyFileToDirectory(sourceFile, new File(originalsDir_));
         sourceFile.delete();
         t3.setEndTime();
         logger_.info(shorten(sourceFilename) + " : Move completed in " + t3);
@@ -209,7 +227,7 @@ public class TivoConverter{
         logger_.info(shorten(destFilename) + " : Moving to goBack dir ...");
         ElapsedTime t2 = new ElapsedTime();
         File destFile = new File(destFilename);
-        FileUtils.copyFileToDirectory(destFile, new File(goBackDir));
+        FileUtils.copyFileToDirectory(destFile, new File(goBackDir_));
         destFile.delete();
         t2.setEndTime();
         logger_.info(shorten(destFilename) + " : Move completed in " + t2);
@@ -218,7 +236,7 @@ public class TivoConverter{
 
     private String buildDestFilename(MovieInfo movieInfo) {
         String destFilename =  
-            workingDir 
+            workingDir_ 
             + File.separator 
             + FilenameUtils.removeExtension(
                 FilenameUtils.getName(movieInfo.getFilename()))
