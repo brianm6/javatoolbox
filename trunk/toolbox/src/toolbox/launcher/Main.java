@@ -35,7 +35,7 @@ public class Main {
         // Map program names to class names
         programMap_ = new HashMap(15);
         
-        programMap_.put("dirmon",       "toolbox.dirmon.DirMon");
+        programMap_.put("dirmon",        "toolbox.dirmon.DirMon");
         programMap_.put("figlet",        "toolbox.util.Figlet");
         programMap_.put("findclass",     "toolbox.findclass.Main");
         programMap_.put("rtelnet",       "toolbox.rtelnet.RemoteTelnet");
@@ -43,6 +43,7 @@ public class Main {
         programMap_.put("showpath",      "toolbox.showpath.Main");
         programMap_.put("tail",          "toolbox.tail.Main");
         programMap_.put("tcptunnel",     "toolbox.tunnel.TcpTunnel");
+        programMap_.put("tivo",          "toolbox.tivo.TivoConverter");
         programMap_.put("tree",          "toolbox.tree.Tree");
         programMap_.put("workspace",     "toolbox.workspace.PluginWorkspace");
         programMap_.put("laflauncher",   "toolbox.launcher.LAFLauncher");
@@ -151,6 +152,7 @@ public class Main {
             "       showpath      => show detailed path info        \n" +
             "       tail          => tails a file with follow       \n" +
             "       tcptunnel     => tcp tunnel                     \n" +
+            "       tivo          => tivo movie transcoder          \n" +
             "       tree          => prints directory as tree       \n" +
             "                                                       \n" +
             "       laflauncher   => launches program with look and feel\n" +
