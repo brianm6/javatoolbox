@@ -924,13 +924,15 @@
 
     <!--==================== EXTERNAL PLUGINS ===============================-->
 
+    <!--  
     <dependency>
       <id>commons-jelly-tags-beanshell</id>
       <groupId>commons-jelly</groupId>
       <version>SNAPSHOT</version>
       <url>http://www.ibiblio.org/maven/commons-jelly/jars/</url>
     </dependency>
-
+    -->
+      
     <!--
     <dependency>
       <groupId>statcvs</groupId>

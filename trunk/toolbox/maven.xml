@@ -223,6 +223,7 @@
 
       <!--echoproperties/-->
 
+      <!--  
       <bsh:script><![CDATA[
         import java.util.*;
         import java.io.*;
@@ -306,6 +307,8 @@
         ]]>
       </bsh:script>
 
+      -->
+        
       <!-- Copy everything over to the tomcat directory -->
       
       <copy todir="${toolbox.jnlp.deploy}"
