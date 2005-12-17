@@ -4,6 +4,7 @@ import java.awt.Dimension;
 
 import org.apache.log4j.Logger;
 
+import toolbox.util.MathUtil;
 
 /**
  * RatioFixer is responsible for _____.
@@ -84,18 +85,20 @@ public class RatioFixer {
     }
     
     public int getHeight() {
-        return fixed_.height;
+        // must be a multiple of 2
+        return MathUtil.isOdd(fixed_.height) ? fixed_.height - 1 : fixed_.height;
     }
     
     public int getWidth() {
-        return fixed_.width;
+        // must be a multiple of 2
+        return MathUtil.isOdd(fixed_.width) ? fixed_.width - 1 : fixed_.width;
     }
     
     public boolean getPadLeftRight() {
         return padLR_;
-    }
+    } 
     
     public int getPad() {
-        return pad_;
+        return MathUtil.isOdd(pad_) ? pad_ + 1 : pad_;
     }
 }
