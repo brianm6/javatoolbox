@@ -43,6 +43,7 @@ public class FFMpegProgressOutputStream extends FilterOutputStream {
     private int state_;
     private StringBuffer secs_;
     private int totalSeconds_;
+    private int lastProgress_;
     
     // -------------------------------------------------------------------------
     // Constructor
@@ -53,6 +54,7 @@ public class FFMpegProgressOutputStream extends FilterOutputStream {
         buffer_ = new CircularCharQueue(TOKEN_TIME.length());
         state_ = STATE_SCAN_TOKEN;
         secs_ = new StringBuffer();
+        lastProgress_ = -1;
     }
 
     public FFMpegProgressOutputStream(int totalSeconds, OutputStream out) {
@@ -61,6 +63,7 @@ public class FFMpegProgressOutputStream extends FilterOutputStream {
         state_ = STATE_SCAN_TOKEN;
         secs_ = new StringBuffer();
         totalSeconds_ = totalSeconds;
+        lastProgress_ = -1;        
     }
     
     // -------------------------------------------------------------------------
@@ -97,7 +100,10 @@ public class FFMpegProgressOutputStream extends FilterOutputStream {
                     state_ = STATE_SCAN_TOKEN;
                     buffer_.clear();
                     int secs = Integer.parseInt(secs_.toString());
-                    logger_.info("Progress: " + secs + "/" + totalSeconds_);
+                    if (secs != lastProgress_) {
+                        logger_.info("Progress: " + secs + "/" + totalSeconds_);
+                        lastProgress_ = secs;
+                    }
                 }
                 break;
         }
