@@ -38,6 +38,14 @@ public class FFMpegTranscoder extends AbstractTranscoder {
     }
     
     // -------------------------------------------------------------------------
+    // Public
+    // -------------------------------------------------------------------------
+    
+    public static final String getExecutablePath() {
+        return "ffmpeg.exe";
+    }
+    
+    // -------------------------------------------------------------------------
     // ITranscoder Interface
     // -------------------------------------------------------------------------
     
@@ -80,7 +88,7 @@ public class FFMpegTranscoder extends AbstractTranscoder {
         
         fixer.calc();
         
-        sb.append("c:\\bin\\ffmpeg.exe ");
+        sb.append(getExecutablePath() + " ");
         
         // only do the last minute
 
@@ -95,7 +103,11 @@ public class FFMpegTranscoder extends AbstractTranscoder {
         
         sb.append(" -i ");
         sb.append("\"" + movieInfo.getFilename()  + "\" ");
-        sb.append("-hq ");
+        
+        // latest ffmpeg does not like this
+        // sb.append("-hq "); 
+        
+        
         sb.append("-target ntsc-dvd ");
         sb.append("-b " + (movieInfo.getBitrate().intValue() + 224) + " ");
         sb.append("-aspect 4:3 "); 
