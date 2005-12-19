@@ -100,7 +100,11 @@ public class FFMpegProgressOutputStream extends FilterOutputStream {
                     state_ = STATE_SCAN_TOKEN;
                     buffer_.clear();
                     int secs = Integer.parseInt(secs_.toString());
-                    if (secs != lastProgress_) {
+                    
+                    if ((secs < 5       || 
+                         secs % 10 == 0 || 
+                         secs + 10 > totalSeconds_) && 
+                             secs != lastProgress_) {
                         logger_.info("Progress: " + secs + "/" + totalSeconds_);
                         lastProgress_ = secs;
                     }
