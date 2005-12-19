@@ -151,7 +151,7 @@ public class TivoConverter{
             
             movieInfo = parser.parse(sourceFilename);
             
-            logger_.debug("\n\n" + movieInfo);
+            logger_.info("\n\n" + movieInfo);
             
             String destFilename = buildDestFilename(movieInfo);
             transcodeMovie(sourceFilename, transcoder, movieInfo, destFilename);
