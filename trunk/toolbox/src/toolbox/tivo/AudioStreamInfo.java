@@ -9,7 +9,7 @@ public class AudioStreamInfo extends StreamInfo {
 
     private Integer hertz_;
 
-    private boolean stereo_;
+    private String channels_;
 
     private Integer bitrate_;
 
@@ -54,23 +54,13 @@ public class AudioStreamInfo extends StreamInfo {
     }
 
 
-    /**
-     * Returns the stereo.
-     * 
-     * @return boolean
-     */
-    public boolean isStereo() {
-        return stereo_;
+    public String getChannels() {
+        return channels_;
     }
 
 
-    /**
-     * Sets the value of stereo.
-     * 
-     * @param stereo The stereo to set.
-     */
-    public void setStereo(boolean stereo) {
-        stereo_ = stereo;
+    public void setChannels(String channels) {
+        channels_ = channels;
     }
     
     // -------------------------------------------------------------------------
@@ -102,6 +92,12 @@ public class AudioStreamInfo extends StreamInfo {
                 ? nf.format(getHertz()) + " Hz\n" 
                 : "N/A\n"));
         
+        sb.append(
+            "Channels = " 
+            + (getChannels() != null 
+                ? getChannels() + "\n" 
+                : "N/A\n"));
+        
         return sb.toString();
     }
     
@@ -120,10 +116,10 @@ public class AudioStreamInfo extends StreamInfo {
         AudioStreamInfo info = (AudioStreamInfo) obj;
         
         return ( 
-            getBitrate().equals(info.getBitrate()) &&
-            getFormat().equals(info.getFormat()) &&
-            getHertz().equals(info.getHertz()) &&
-            isStereo() == info.isStereo());
+            getBitrate()  != null ? getBitrate().equals(info.getBitrate())   : info.getBitrate() == null &&
+            getFormat()   != null ? getFormat().equals(info.getFormat())     : info.getFormat() == null &&
+            getHertz()    != null ? getHertz().equals(info.getHertz())       : info.getHertz() == null &&
+            getChannels() != null ? getChannels().equals(info.getChannels()) : info.getChannels() == null); 
     }
     
     

@@ -15,6 +15,6 @@ public class TivoStandards {
         AUDIO_224.setBitrate(new Integer(224));
         AUDIO_224.setFormat("mp2");
         AUDIO_224.setHertz(new Integer(48000));
-        AUDIO_224.setStereo(true);
+        AUDIO_224.setChannels("stereo");
     }
 }
