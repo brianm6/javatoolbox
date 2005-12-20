@@ -1,13 +1,13 @@
 package toolbox.plugin.tunnel;
 
 import java.awt.BorderLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.BufferedOutputStream;
 
 import javax.swing.AbstractAction;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -40,6 +40,7 @@ import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.SmartAction;
 import toolbox.util.ui.flippane.JFlipPane;
+import toolbox.util.ui.layout.VerticalLayout;
 import toolbox.util.ui.textarea.action.AutoTailAction;
 import toolbox.util.ui.textarea.action.LineWrapAction;
 import toolbox.workspace.IPreferenced;
@@ -127,10 +128,10 @@ public class TunnelPane extends JPanel implements IPreferenced {
      */
     private TcpTunnel tunnel_;
 
-    private JPanel trackerView_;
+    private JComponent trackerView_;
 
-    DetachableOutputStream outgoingDetachable;
-    DetachableOutputStream incomingDetachable;
+    private DetachableOutputStream outgoingDetachable;
+    private DetachableOutputStream incomingDetachable;
     
     // -------------------------------------------------------------------------
     // Constructors
@@ -331,7 +332,7 @@ public class TunnelPane extends JPanel implements IPreferenced {
                 ImageCache.getIcon(ImageCache.IMAGE_BAR_CHART),
                 "Tracker",
                 null,
-                trackerView_ = buildTrackerView()));
+                new JScrollPane(trackerView_ = buildTrackerView())));
 
         configFlipPane_.setExpanded(false);
 
@@ -379,8 +380,10 @@ public class TunnelPane extends JPanel implements IPreferenced {
         return builder.getPanel();
     }
     
-    protected JPanel buildTrackerView() {
-        JPanel p = new JPanel(new GridLayout(10, 1));
+    protected JComponent buildTrackerView() {
+        JPanel p = new JPanel(
+            new VerticalLayout(0, VerticalLayout.BOTH, VerticalLayout.TOP));
+        
         p.add(new JLabel("TrackerView"));
         return p;
     }
