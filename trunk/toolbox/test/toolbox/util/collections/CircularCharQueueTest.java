@@ -1,5 +1,6 @@
-package toolbox.tivo;
+package toolbox.util.collections;
 
+import toolbox.util.collections.CircularCharQueue;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
