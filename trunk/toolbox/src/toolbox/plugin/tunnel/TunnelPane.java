@@ -132,6 +132,8 @@ public class TunnelPane extends JPanel implements IPreferenced {
 
     private DetachableOutputStream outgoingDetachable;
     private DetachableOutputStream incomingDetachable;
+
+    private JHeaderPanel trackerHeader_;
     
     // -------------------------------------------------------------------------
     // Constructors
@@ -324,15 +326,17 @@ public class TunnelPane extends JPanel implements IPreferenced {
                 null,
                 buildConfigView()));
 
+        trackerView_ = buildTrackerView();
+        
         configFlipPane_.addFlipper(
             ImageCache.getIcon(ImageCache.IMAGE_BAR_CHART),
             "Tracker",
             
-            new JHeaderPanel(
+            trackerHeader_ = new JHeaderPanel(
                 ImageCache.getIcon(ImageCache.IMAGE_BAR_CHART),
                 "Tracker",
-                null,
-                new JScrollPane(trackerView_ = buildTrackerView())));
+                createTrackerToolBar(),
+                new JScrollPane(trackerView_)));
 
         configFlipPane_.setExpanded(false);
 
@@ -420,6 +424,13 @@ public class TunnelPane extends JPanel implements IPreferenced {
         return tb;
     }
 
+    
+    protected JToolBar createTrackerToolBar() {
+        JToolBar toolbar = JHeaderPanel.createToolBar();
+        toolbar.add(JHeaderPanel.createButton(new RemoveAllTrackersAction()));
+        return toolbar;
+    }
+
     // -------------------------------------------------------------------------
     // IPreferenced Interface
     // -------------------------------------------------------------------------
@@ -502,6 +513,10 @@ public class TunnelPane extends JPanel implements IPreferenced {
         }
     }
 
+    // -------------------------------------------------------------------------
+    // DetachAction
+    // -------------------------------------------------------------------------
+    
     class DetachAction extends AbstractAction {
 
         public DetachAction() {
@@ -515,6 +530,21 @@ public class TunnelPane extends JPanel implements IPreferenced {
         }
     }
     
+    // -------------------------------------------------------------------------
+    // RemoveAllTrackersAction
+    // -------------------------------------------------------------------------
+    
+    class RemoveAllTrackersAction extends AbstractAction {
+        
+        RemoveAllTrackersAction() {
+            super("", ImageCache.getIcon(ImageCache.IMAGE_CLEAR));
+        }
+        
+        public void actionPerformed(ActionEvent e) {
+            trackerView_.removeAll();
+            trackerView_.repaint();
+        }
+    }
 
     // -------------------------------------------------------------------------
     // StartTunnelAction
