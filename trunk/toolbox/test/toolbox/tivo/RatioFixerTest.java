@@ -8,7 +8,7 @@ import junit.textui.TestRunner;
 import org.apache.log4j.Logger;
 
 /**
- * RatioFixerTest is responsible for _____.
+ * Unit test for {@link toolbox.tivo.RatioFixer}.
  */
 public class RatioFixerTest extends TestCase {
 
@@ -43,5 +43,4 @@ public class RatioFixerTest extends TestCase {
         logger_.debug("Pad left-right = " + fixer.getPadLeftRight());
         logger_.debug("Pad = " + fixer.getPad());
     }
-
 }

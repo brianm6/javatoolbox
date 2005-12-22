@@ -7,7 +7,8 @@ import org.apache.log4j.Logger;
 import toolbox.util.MathUtil;
 
 /**
- * RatioFixer is responsible for _____.
+ * Adjusts the ratio of the input movie to match the dimensions of the target
+ * video dimensions.
  */
 public class RatioFixer {
     
@@ -85,13 +86,17 @@ public class RatioFixer {
     }
     
     public int getHeight() {
-        // must be a multiple of 2
-        return MathUtil.isOdd(fixed_.height) ? fixed_.height - 1 : fixed_.height;
+        // must be a multiple of 2 and can't be > target height
+        int i = MathUtil.isOdd(fixed_.height) ? fixed_.height - 1 : fixed_.height;
+        i = Math.min(i, target_.height);
+        return i;
     }
     
     public int getWidth() {
-        // must be a multiple of 2
-        return MathUtil.isOdd(fixed_.width) ? fixed_.width - 1 : fixed_.width;
+        // must be a multiple of 2 and can't be > target width
+        int i = MathUtil.isOdd(fixed_.width) ? fixed_.width - 1 : fixed_.width;
+        i = Math.min(i, target_.width);
+        return i;
     }
     
     public boolean getPadLeftRight() {
