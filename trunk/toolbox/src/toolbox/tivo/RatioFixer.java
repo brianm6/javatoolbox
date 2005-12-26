@@ -14,17 +14,29 @@ public class RatioFixer {
     
     private static final Logger logger_ = Logger.getLogger(RatioFixer.class);
     
-    Dimension target_;
-    Dimension source_;
-    Dimension fixed_;
-    int pad_;
-    boolean padLR_;
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
+    private Dimension target_;
+    private Dimension source_;
+    private Dimension fixed_;
+    private int pad_;
+    private boolean padLR_;
+    
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
     
     public RatioFixer(Dimension target, Dimension source) {
         target_ = target;
         source_ = source;
         fixed_ = new Dimension();
     }
+    
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
     
     public void calc() {
         
