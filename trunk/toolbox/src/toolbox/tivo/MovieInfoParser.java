@@ -12,7 +12,9 @@ import toolbox.util.ArrayUtil;
 import toolbox.util.ProcessUtil;
 import toolbox.util.StringUtil;
 
-
+/**
+ * Parses movie info from the output of running FFMpeg. 
+ */
 public class MovieInfoParser {
     
     static public final Logger logger_ = 

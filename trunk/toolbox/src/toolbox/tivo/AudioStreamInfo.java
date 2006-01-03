@@ -7,12 +7,17 @@ import java.text.NumberFormat;
  */
 public class AudioStreamInfo extends StreamInfo {
 
+    // -------------------------------------------------------------------------
+    // Fields
+    // -------------------------------------------------------------------------
+
     private Integer hertz_;
-
     private String channels_;
-
     private Integer bitrate_;
 
+    // -------------------------------------------------------------------------
+    // Public
+    // -------------------------------------------------------------------------
 
     /**
      * Returns the bitrate or null if the bitrate was not obtainable.
@@ -102,6 +107,9 @@ public class AudioStreamInfo extends StreamInfo {
     }
     
     
+    /*
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
     public boolean equals(Object obj) {
         
         if (obj == null)
@@ -123,6 +131,9 @@ public class AudioStreamInfo extends StreamInfo {
     }
     
     
+    /*
+     * @see java.lang.Object#hashCode()
+     */
     public int hashCode() {
         return super.hashCode();
     }

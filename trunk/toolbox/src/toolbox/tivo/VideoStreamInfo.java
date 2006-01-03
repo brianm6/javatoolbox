@@ -7,10 +7,18 @@ import java.text.NumberFormat;
  */
 public class VideoStreamInfo extends StreamInfo {
 
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+
     private Integer width_;
     private Integer height_;
     private String  framesPerSecond_;
-    
+
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+
     /**
      * Returns the framesPerSecond.
      * 
@@ -65,6 +73,13 @@ public class VideoStreamInfo extends StreamInfo {
         width_ = width;
     }
     
+    //--------------------------------------------------------------------------
+    // Overrides java.lang.Object
+    //--------------------------------------------------------------------------
+
+    /*
+     * @see java.lang.Object#toString()
+     */
     public String toString() {
         
         NumberFormat nf = NumberFormat.getInstance();
@@ -79,6 +94,9 @@ public class VideoStreamInfo extends StreamInfo {
         return sb.toString();
     }
     
+    /*
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
     public boolean equals(Object obj) {
         
         if (obj == null)
@@ -98,5 +116,4 @@ public class VideoStreamInfo extends StreamInfo {
             getHeight().equals(info.getHeight()) &&
             getWidth().equals(info.getWidth()));
     }
-
 }

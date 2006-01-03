@@ -5,7 +5,14 @@ import java.text.NumberFormat;
 
 import toolbox.util.StringUtil;
 
+/**
+ * Data object that captures the characteristics of a movie file.
+ */
 public class MovieInfo {
+
+    // -------------------------------------------------------------------------
+    // Fields
+    // -------------------------------------------------------------------------
 
     private String filename_;
     private String duration_;
@@ -15,7 +22,10 @@ public class MovieInfo {
     private VideoStreamInfo videoStream_;
     private AudioStreamInfo audioStream_;
  
-    
+    // -------------------------------------------------------------------------
+    // Public
+    // -------------------------------------------------------------------------
+
     /**
      * Returns the audioStream.
      * 
@@ -123,7 +133,11 @@ public class MovieInfo {
     public int getSeconds() {
         return Integer.parseInt(duration_.substring(6, 8));
     }
-    
+
+    // -------------------------------------------------------------------------
+    // Overrides java.lang.Object
+    // -------------------------------------------------------------------------
+
     /*
      * @see java.lang.Object#toString()
      */

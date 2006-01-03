@@ -1,6 +1,8 @@
 package toolbox.tivo;
 
-
+/**
+ * Tivo video format settings. 
+ */
 public class TivoStandards {
 
     public static final VideoStreamInfo VIDEO_720 = new VideoStreamInfo();

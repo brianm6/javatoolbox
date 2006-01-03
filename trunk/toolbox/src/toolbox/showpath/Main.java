@@ -10,53 +10,51 @@ import toolbox.util.collections.CaseInsensetiveSet;
 /**
  * Print out the contents of the system path environemnt variable.
  */
-public class Main
-{
-    //--------------------------------------------------------------------------
+public class Main {
+    
+    // -------------------------------------------------------------------------
     // Fields
-    //--------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     /**
      * Set of paths to recognize dupes.
      */
     private Set pathSet_;
 
-    //--------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Main
-    //--------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     /**
      * Entrypoint for showclasspath.
-     *
+     * 
      * @param args None recognized.
      */
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         new Main();
     }
 
-    //--------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Constructors
-    //--------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     /**
      * Creates a Main.
      */
-    public Main()
-    {
+    public Main() {
         pathSet_ = new HashSet();
-        
+
         // Make sure paths are treated as case-insensetive when not on a unix
         // platform.
         if (!Platform.isUnix())
             pathSet_ = new CaseInsensetiveSet(pathSet_);
-        
-        StringTokenizer st = new StringTokenizer(
-            System.getProperty("java.library.path"),
+
+        StringTokenizer st = 
+            new StringTokenizer(
+                System.getProperty("java.library.path"), 
                 System.getProperty("path.separator"));
 
-        while (st.hasMoreElements())
-        {
+        while (st.hasMoreElements()) {
             String path = st.nextToken();
             System.out.print(path);
 
