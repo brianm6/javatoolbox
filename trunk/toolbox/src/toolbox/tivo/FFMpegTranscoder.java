@@ -6,7 +6,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Collection;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
@@ -77,15 +80,27 @@ public class FFMpegTranscoder extends AbstractTranscoder {
         // 
         StringBuffer sb = new StringBuffer();
         
-        RatioFixer fixer = 
-            new RatioFixer(
-                new Dimension(
-                    TivoStandards.VIDEO_720_480.getWidth().intValue(),
-                    TivoStandards.VIDEO_720_480.getHeight().intValue()),
-                new Dimension(
-                    movieInfo.getVideoStream().getWidth().intValue(),
-                    movieInfo.getVideoStream().getHeight().intValue()));
+        Collection videoFormatDimensions = new ArrayList();
+        videoFormatDimensions.addAll(TivoStandards.VIDEO_FORMATS);
         
+        CollectionUtils.transform(
+            videoFormatDimensions, 
+            new VideoStreamInfoToDimensionTransformer());
+        
+//        RatioFixer fixer = 
+//            new RatioFixer(
+//                new Dimension(
+//                    TivoStandards.VIDEO_720_480.getWidth().intValue(),
+//                    TivoStandards.VIDEO_720_480.getHeight().intValue()),
+//                new Dimension(
+//                    movieInfo.getVideoStream().getWidth().intValue(),
+//                    movieInfo.getVideoStream().getHeight().intValue()));
+
+        RatioFixer2 fixer = 
+            new RatioFixer2(
+                videoFormatDimensions,
+                (Dimension) new VideoStreamInfoToDimensionTransformer().transform(movieInfo.getVideoStream()));
+                
         fixer.calc();
         
         sb.append(getExecutablePath() + " ");
@@ -109,18 +124,24 @@ public class FFMpegTranscoder extends AbstractTranscoder {
         
         
         sb.append("-target ntsc-dvd ");
-        sb.append("-b " + (movieInfo.getBitrate().intValue() + 224) + " ");
+        sb.append("-b " + (movieInfo.getBitrate().intValue() + 128) + " ");
         sb.append("-aspect 4:3 "); 
         sb.append("-s " + fixer.getWidth() + "x" + fixer.getHeight() + " ");
         
-        if (fixer.getPad() > 0 ) {
+        if (fixer.getLeftPad() > 0 || fixer.getRightPad() > 0) {
             sb.append(fixer.getPadLeftRight() 
-                ? "-padleft " + fixer.getPad() + " -padright " + fixer.getPad() + " "
-                : "-padtop " + fixer.getPad() + " -padbottom " + fixer.getPad() + " ");
+                ? "-padleft " + fixer.getLeftPad() + " -padright " + fixer.getRightPad() + " "
+                : "-padtop " + fixer.getLeftPad() + " -padbottom " + fixer.getRightPad() + " ");
         }
+
+//        if (fixer.getPad() > 0) {
+//            sb.append(fixer.getPadLeftRight() 
+//                ? "-padleft " + fixer.getPad() + " -padright " + fixer.getPad() + " "
+//                : "-padtop " + fixer.getPad() + " -padbottom " + fixer.getPad() + " ");
+//        }
         
         sb.append("-acodec mp2 ");
-        sb.append("-ab 224 "); // can this be 128?
+        sb.append("-ab " + TivoStandards.AUDIO_128.getBitrate() + " "); 
         sb.append("-ac 2 ");
         sb.append("-mbd 2 ");
         sb.append("-qmin 2 ");
