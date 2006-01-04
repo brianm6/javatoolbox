@@ -97,6 +97,13 @@ public abstract class AbstractPlugin implements IPlugin, ObservableService {
     }
 
 
+    /*
+     * @see toolbox.util.service.Destroyable#isDestroyed()
+     */
+    public boolean isDestroyed() {
+        return getState() == ServiceState.DESTROYED;
+    }
+    
     // --------------------------------------------------------------------------
     // Public
     // --------------------------------------------------------------------------

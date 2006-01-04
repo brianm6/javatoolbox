@@ -370,6 +370,13 @@ public class Client implements Initializable, Startable, Destroyable,
         machine_.transition(ServiceTransition.DESTROY);
     }
     
+    /*
+     * @see toolbox.util.service.Destroyable#isDestroyed()
+     */
+    public boolean isDestroyed() {
+        return getState() == ServiceState.DESTROYED;
+    }
+    
     //--------------------------------------------------------------------------
     // ObservableService Interface
     //--------------------------------------------------------------------------

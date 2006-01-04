@@ -313,7 +313,7 @@ public class DirectoryMonitor
     }
     
     //--------------------------------------------------------------------------
-    //
+    // Destroyable Interface
     //--------------------------------------------------------------------------
     
     /**
@@ -347,6 +347,13 @@ public class DirectoryMonitor
             listeners_.clear();
             notifier_.fireServiceStateChanged();
         }
+    }
+    
+    /*
+     * @see toolbox.util.service.Destroyable#isDestroyed()
+     */
+    public boolean isDestroyed() {
+        return getState() == ServiceState.DESTROYED;
     }
     
     // --------------------------------------------------------------------------

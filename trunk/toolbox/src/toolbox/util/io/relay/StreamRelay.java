@@ -14,10 +14,13 @@ import org.apache.log4j.Logger;
  * asynchronously in conjunction with a {@link java.lang.Thread}. When the 
  * end of the stream is reached, both stream are closed.
  * <p>
- * <pre>
  * Example:
- * 
- * TODO
+ * <pre>
+ * InputStream is = new StringInputStream();
+ * OutputStream os = new StringOutputStream();
+ * StreamRelay relay = new StreamRelay(is, os);
+ * Thread t = new Thread(relay);
+ * t.start();
  * </pre>
  */
 public class StreamRelay implements Runnable {

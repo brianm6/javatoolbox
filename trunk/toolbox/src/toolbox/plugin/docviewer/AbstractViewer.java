@@ -51,6 +51,13 @@ public abstract class AbstractViewer implements DocumentViewer
         return (ServiceState) machine_.getState();
     }
     
+    /*
+     * @see toolbox.util.service.Destroyable#isDestroyed()
+     */
+    public boolean isDestroyed() {
+        return getState() == ServiceState.DESTROYED;
+    }
+    
     //--------------------------------------------------------------------------
     // Nameable Interface
     //--------------------------------------------------------------------------

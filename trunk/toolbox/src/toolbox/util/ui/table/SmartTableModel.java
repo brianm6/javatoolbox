@@ -217,6 +217,13 @@ public class SmartTableModel extends DefaultTableModel implements
         queueReader_.stop();
     }
 
+    /*
+     * @see toolbox.util.service.Destroyable#isDestroyed()
+     */
+    public boolean isDestroyed() {
+        return queueReader_.getState() == ServiceState.STOPPED;
+    }
+    
     // -------------------------------------------------------------------------
     // Service Interface
     // -------------------------------------------------------------------------

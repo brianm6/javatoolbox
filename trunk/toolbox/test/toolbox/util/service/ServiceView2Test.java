@@ -168,7 +168,15 @@ public class ServiceView2Test extends UITestCase {
             machine.transition(ServiceTransition.DESTROY);
         }
 
-
+        
+        /*
+         * @see toolbox.util.service.Destroyable#isDestroyed()
+         */
+        public boolean isDestroyed() {
+            return getState() == ServiceState.DESTROYED;
+        }
+        
+        
         /*
          * @see toolbox.util.service.ObservableService#removeServiceListener(toolbox.util.service.ServiceListener)
          */

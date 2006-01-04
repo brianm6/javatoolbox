@@ -280,6 +280,13 @@ public abstract class AbstractPluginHost implements PluginHost, IPreferenced
         machine_.transition(ServiceTransition.DESTROY);
     }
     
+    /*
+     * @see toolbox.util.service.Destroyable#isDestroyed()
+     */
+    public boolean isDestroyed() {
+        return getState() == ServiceState.DESTROYED;
+    }
+    
     //--------------------------------------------------------------------------
     // Service Interface
     //--------------------------------------------------------------------------

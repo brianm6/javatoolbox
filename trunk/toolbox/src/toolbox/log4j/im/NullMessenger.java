@@ -68,6 +68,14 @@ public class NullMessenger implements InstantMessenger
     }
     
     
+    /*
+     * @see toolbox.util.service.Destroyable#isDestroyed()
+     */
+    public boolean isDestroyed() {
+        return false;
+    }
+    
+    
     /**
      * @see toolbox.util.service.Initializable#initialize(java.util.Map)
      */

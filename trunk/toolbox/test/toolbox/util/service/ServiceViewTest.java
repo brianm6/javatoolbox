@@ -170,6 +170,14 @@ public class ServiceViewTest extends UITestCase {
 
 
         /*
+         * @see toolbox.util.service.Destroyable#isDestroyed()
+         */
+        public boolean isDestroyed() {
+            return getState() == ServiceState.DESTROYED;
+        }
+        
+        
+        /*
          * @see toolbox.util.service.ObservableService#removeServiceListener(toolbox.util.service.ServiceListener)
          */
         public void removeServiceListener(ServiceListener listener) {
