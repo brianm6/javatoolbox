@@ -15,7 +15,8 @@ public class TivoStandards {
     public static final VideoStreamInfo VIDEO_544_480 = new VideoStreamInfo();
     public static final VideoStreamInfo VIDEO_480_480 = new VideoStreamInfo();
     public static final VideoStreamInfo VIDEO_352_480 = new VideoStreamInfo();
-    
+    public static final VideoStreamInfo VIDEO_DEFAULT = VIDEO_720_480;
+        
     public static final AudioStreamInfo AUDIO_128 = new AudioStreamInfo();
 
     
@@ -45,10 +46,10 @@ public class TivoStandards {
         VIDEO_352_480.setHeight(new Integer(480));
         VIDEO_352_480.setWidth(new Integer(352));
 
-        VIDEO_FORMATS.add(VIDEO_352_480);
-        VIDEO_FORMATS.add(VIDEO_480_480);
-        VIDEO_FORMATS.add(VIDEO_544_480);
-        VIDEO_FORMATS.add(VIDEO_704_480);
+        //VIDEO_FORMATS.add(VIDEO_352_480);
+        //VIDEO_FORMATS.add(VIDEO_480_480);
+        //VIDEO_FORMATS.add(VIDEO_544_480);
+        //VIDEO_FORMATS.add(VIDEO_704_480);
         VIDEO_FORMATS.add(VIDEO_720_480);
         
         AUDIO_128.setBitrate(new Integer(128));
