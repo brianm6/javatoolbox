@@ -55,7 +55,7 @@ public class FFMpegTranscoderTest extends TivoTestCase {
         assertEquals(destFilename, result.getFilename());
         assertTrue(input.getBitrate().intValue() <= result.getBitrate().intValue());
         assertTrue(input.getLength().longValue() <= result.getLength().longValue());
-        assertEquals(TivoStandards.AUDIO_224, result.getAudioStream());
-        assertEquals(TivoStandards.VIDEO_720, result.getVideoStream());
+        assertEquals(TivoStandards.AUDIO_128, result.getAudioStream());
+        assertEquals(TivoStandards.VIDEO_720_480, result.getVideoStream());
     }
 }

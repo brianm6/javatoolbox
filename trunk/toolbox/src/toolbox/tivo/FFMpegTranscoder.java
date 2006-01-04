@@ -80,8 +80,8 @@ public class FFMpegTranscoder extends AbstractTranscoder {
         RatioFixer fixer = 
             new RatioFixer(
                 new Dimension(
-                    TivoStandards.VIDEO_720.getWidth().intValue(),
-                    TivoStandards.VIDEO_720.getHeight().intValue()),
+                    TivoStandards.VIDEO_720_480.getWidth().intValue(),
+                    TivoStandards.VIDEO_720_480.getHeight().intValue()),
                 new Dimension(
                     movieInfo.getVideoStream().getWidth().intValue(),
                     movieInfo.getVideoStream().getHeight().intValue()));
