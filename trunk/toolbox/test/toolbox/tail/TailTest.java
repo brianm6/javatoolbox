@@ -107,7 +107,7 @@ public class TailTest extends TestCase
 
             String para = makeParagraph(total);
             FileUtil.setFileContents(file, para , false);
-            TestTailListener listener = new TestTailListener();
+            MockTailListener listener = new MockTailListener();
                    
             Tail tail = new Tail();
             tail.follow(file, new NullWriter());
@@ -206,7 +206,7 @@ public class TailTest extends TestCase
         
 
         // Create a listener so we can test event
-        TestTailListener listener = new TestTailListener();        
+        MockTailListener listener = new MockTailListener();        
         tail.addTailListener(listener);
 
         // Create sinks for tail and attach them to the tail
@@ -265,7 +265,7 @@ public class TailTest extends TestCase
         Tail tail = new Tail();
 
         // Create a listener so we can test event
-        TestTailListener listener = new TestTailListener();        
+        MockTailListener listener = new MockTailListener();        
         tail.addTailListener(listener);
 
         // Create sinks for tail and attach them to the tail
@@ -491,10 +491,10 @@ public class TailTest extends TestCase
 /**
  * Test tail listener.
  */
-class TestTailListener implements TailListener
+class MockTailListener implements TailListener
 {
     private static final Logger logger_ = 
-        Logger.getLogger(TestTailListener.class);
+        Logger.getLogger(MockTailListener.class);
         
     private BlockingQueue startEvents_    = new LinkedBlockingQueue();
     private BlockingQueue stopEvents_     = new LinkedBlockingQueue();
