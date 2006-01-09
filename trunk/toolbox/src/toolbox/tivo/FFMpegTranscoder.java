@@ -151,7 +151,7 @@ public class FFMpegTranscoder extends AbstractTranscoder {
 
         sb.append("\"" + destFilename + "\"");
 
-        logger_.debug("Command: " + sb);
+        logger_.info("Command: " + sb);
         
         ElapsedTime timer = new ElapsedTime();
         timer.setStartTime();
