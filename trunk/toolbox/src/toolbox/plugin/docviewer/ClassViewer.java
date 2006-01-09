@@ -13,66 +13,59 @@ import toolbox.util.decompiler.DecompilerFactory;
 import toolbox.util.io.StringInputStream;
 
 /**
- * Java class file viewer that decompiles a <code>class</code> file and displays
- * the resulting source code in a syntax hilighting editor. 
+ * Java class file viewer that decompiles a <code>class</code> file and
+ * displays the resulting source code in a syntax hilighting editor.
  */
-public class ClassViewer extends JavaViewer
-{
+public class ClassViewer extends JavaViewer {
+
     private static final Logger logger_ = Logger.getLogger(ClassViewer.class);
-    
-    //--------------------------------------------------------------------------
+
+    // -------------------------------------------------------------------------
     // Constructors
-    //--------------------------------------------------------------------------
-    
+    // -------------------------------------------------------------------------
+
     /**
      * Creates a ClassViewer.
      */
-    public ClassViewer()
-    {
+    public ClassViewer() {
         super("Class Viewer");
     }
-    
-    //--------------------------------------------------------------------------
+
+    // -------------------------------------------------------------------------
     // Overrides JavaViewer
-    //--------------------------------------------------------------------------
-    
-    /**
+    // -------------------------------------------------------------------------
+
+    /*
      * @see toolbox.plugin.docviewer.DocumentViewer#view(java.io.InputStream)
      */
-    public void view(InputStream is) throws DocumentViewerException
-    {
-        try
-        {
+    public void view(InputStream is) throws DocumentViewerException {
+        try {
             byte[] bytecode = IOUtils.toByteArray(is);
             String name = FileUtil.createTempFilename();
             FileUtil.setFileContents(name, bytecode, false);
             File f = new File(name);
             view(f);
         }
-        catch (IOException e)
-        {
+        catch (IOException e) {
             throw new DocumentViewerException(e);
         }
-        
     }
-    
-    
-    /**
+
+
+    /*
      * @see toolbox.plugin.docviewer.DocumentViewer#view(java.io.File)
      */
-    public void view(File file) throws DocumentViewerException
-    {
+    public void view(File file) throws DocumentViewerException {
         Decompiler d = DecompilerFactory.createPreferred();
         String javacode = d.decompile(file);
         super.view(new StringInputStream(javacode));
     }
 
-    
-    /**
+
+    /*
      * @see toolbox.plugin.docviewer.DocumentViewer#getViewableFileTypes()
      */
-    public String[] getViewableFileTypes()
-    {
-        return new String[] {"class"};
+    public String[] getViewableFileTypes() {
+        return new String[] { "class" };
     }
 }

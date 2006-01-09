@@ -10,15 +10,15 @@ import toolbox.util.service.Initializable;
 import toolbox.util.service.Nameable;
 
 /**
- * Generic interface that defines an API necessary to view any arbitrary 
- * document based on its file type (extension). 
+ * Generic interface that defines an API necessary to view any arbitrary
+ * document based on its file type (extension).
  * <p>
  * TODO: Extend to also support mime/types.
  * 
  * @see toolbox.plugin.docviewer.DocumentViewerPlugin
  */
-public interface DocumentViewer extends Initializable, Destroyable, Nameable
-{
+public interface DocumentViewer extends Initializable, Destroyable, Nameable {
+
     /**
      * Views the document associated with the given file.
      * 
@@ -26,8 +26,8 @@ public interface DocumentViewer extends Initializable, Destroyable, Nameable
      * @throws DocumentViewerException on error.
      */
     void view(File file) throws DocumentViewerException;
-    
-    
+
+
     /**
      * Views the document associated with the given InputStream.
      * 
@@ -36,17 +36,17 @@ public interface DocumentViewer extends Initializable, Destroyable, Nameable
      */
     void view(InputStream is) throws DocumentViewerException;
 
-    
+
     /**
-     * Returns true if the given file is viewable by this DocumentViewer based 
+     * Returns true if the given file is viewable by this DocumentViewer based
      * on the file's extension, false otherwise.
      * 
      * @param file File to check.
-     * @return boolean 
-      */    
+     * @return boolean
+     */
     boolean canView(File file);
-    
-    
+
+
     /**
      * Returns a list of all the file types that this document viewer supports.
      * The list of extensions is not prefixed with a dot.
@@ -54,8 +54,8 @@ public interface DocumentViewer extends Initializable, Destroyable, Nameable
      * @return String[]
      */
     String[] getViewableFileTypes();
-    
-    
+
+
     /**
      * Returns the UI component of this document viewer.
      * 

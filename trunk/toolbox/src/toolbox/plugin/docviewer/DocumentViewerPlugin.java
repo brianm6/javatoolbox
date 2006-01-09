@@ -39,118 +39,119 @@ import toolbox.workspace.PreferencedException;
 import toolbox.workspace.WorkspaceAction;
 
 /**
- * DocumentViewerPlugin is a plugin specifically targeted towards viewing 
- * different types and formats of files. Viewers must implement the 
+ * DocumentViewerPlugin is a plugin specifically targeted towards viewing
+ * different types and formats of files. Viewers must implement the
  * DocumentViewer interface and register themselves with the plugin.
  * 
  * @see toolbox.plugin.docviewer.DocumentViewer
- */ 
-public class DocumentViewerPlugin extends AbstractPlugin
-{
+ */
+public class DocumentViewerPlugin extends AbstractPlugin {
+
     private static final Logger logger_ = 
         Logger.getLogger(DocumentViewerPlugin.class);
-    
-    //--------------------------------------------------------------------------
+
+    // --------------------------------------------------------------------------
     // Constants
-    //--------------------------------------------------------------------------
-    
+    // --------------------------------------------------------------------------
+
     /**
      * File containing hard coded list of doc viewers just in case runtime
      * introspection doesn't work under Webstart.
-     * <pre>
-     *  
-     * &lt;docviewers&gt;
-     *   &lt;docviewer name=&quot;Widget Viewer&quot; class=&quot;org.viewer.WidgetViewer&quot;/&gt;
-     *   &lt;docviewer ... /&gt;
-     * &lt;/docviewers&gt;
      * 
+     * <pre>
+     *   
+     *  &lt;docviewers&gt;
+     *    &lt;docviewer name=&quot;Widget Viewer&quot; class=&quot;org.viewer.WidgetViewer&quot;/&gt;
+     *    &lt;docviewer ... /&gt;
+     *  &lt;/docviewers&gt;
+     *  
      * </pre>
      */
     private static final String FILE_DOCVIEWERS = 
         "/toolbox/plugin/docviewer/docviewers.xml";
-    
-    // XML Preferences nodes and attributes. 
+
+    // XML Preferences nodes and attributes.
     private static final String NODE_DOCVIEWER = "docviewer";
-    private static final String     ATTR_NAME  = "name";
-    private static final String     ATTR_CLASS = "class";
-    
-    /** 
+
+    private static final String ATTR_NAME = "name";
+
+    private static final String ATTR_CLASS = "class";
+
+    /**
      * Root preferences node for this plugin.
      */
     private static final String NODE_DOCVIEWER_PLUGIN = "DocumentViewerPlugin";
-    
-    //--------------------------------------------------------------------------
+
+    // --------------------------------------------------------------------------
     // Fields
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     /**
      * View for this plugin.
      */
     private JComponent view_;
-    
-    /** 
-     * Flip panel that houses the file explorer. 
+
+    /**
+     * Flip panel that houses the file explorer.
      */
-    private JFlipPane flipPane_;    
-    
-    /** 
+    private JFlipPane flipPane_;
+
+    /**
      * Shared status bar with plugin host.
      */
     private IStatusBar statusBar_;
-    
-    /** 
+
+    /**
      * XML output pane.
      */
     private JPanel outputPanel_;
-    
-    /** 
-     * File explorer used to navigate to and select documents for viewing. 
+
+    /**
+     * File explorer used to navigate to and select documents for viewing.
      */
     private JFileExplorer explorer_;
 
     /**
-     * Panel that contains a list of stacked buttons. One button for each
-     * viewer that is capable for viewing the selecting document. 
+     * Panel that contains a list of stacked buttons. One button for each viewer
+     * that is capable for viewing the selecting document.
      */
     private JPanel viewerButtons_;
-    
+
     /**
      * List of viewers registered to show documents.
      */
     private List viewers_;
-    
+
     /**
      * Last document viewer that was active.
      */
     private JComponent lastActive_;
-    
+
     /**
      * Last viewer that was used to view a document with a given extension.
      */
     private Map lastViewedWith_;
-    
-    //--------------------------------------------------------------------------
+
+    // --------------------------------------------------------------------------
     // Constructors
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     /**
      * Creates a DocumentViewerPlugin.
      */
-    public DocumentViewerPlugin()
-    {
+    public DocumentViewerPlugin() {
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     // Protected
-    //--------------------------------------------------------------------------
-    
+    // --------------------------------------------------------------------------
+
     /**
      * Builds the GUI.
      */
-    protected void buildView()
-    {
+    protected void buildView() {
         view_ = new JPanel(new BorderLayout());
-        
+
         explorer_ = new JFileExplorer(false);
         explorer_.addFileExplorerListener(new FileSelectionListener());
         viewerButtons_ = new JPanel(new StackLayout(StackLayout.VERTICAL));
@@ -158,16 +159,16 @@ public class DocumentViewerPlugin extends AbstractPlugin
         JPanel splitter = new JPanel(new BorderLayout());
         splitter.add(explorer_, BorderLayout.CENTER);
         splitter.add(viewerButtons_, BorderLayout.SOUTH);
-        
+
         flipPane_ = new JFlipPane(JFlipPane.LEFT);
         flipPane_.addFlipper(JFileExplorer.ICON, "File Explorer", splitter);
-        
+
         outputPanel_ = new JPanel(new BorderLayout());
-        
+
         view_.add(BorderLayout.CENTER, outputPanel_);
         view_.add(BorderLayout.WEST, flipPane_);
     }
-    
+
 
     /**
      * Views a document.
@@ -176,347 +177,303 @@ public class DocumentViewerPlugin extends AbstractPlugin
      * @param file File to view with the embedded PDF viewer.
      * @throws Exception on error.
      */
-    protected void viewDocument(DocumentViewer viewer, File file) 
-        throws Exception
-    {
+    protected void viewDocument(DocumentViewer viewer, File file)
+        throws Exception {
         if (lastActive_ != null)
             outputPanel_.remove(lastActive_);
-       
+
         viewer.view(file);
         lastActive_ = viewer.getComponent();
-        
-        lastViewedWith_.put(
-            FileUtil.getExtension(file).toLowerCase(),
-            viewer);
-        
+
+        lastViewedWith_.put(FileUtil.getExtension(file).toLowerCase(), viewer);
+
         outputPanel_.add(BorderLayout.CENTER, lastActive_);
         outputPanel_.validate();
         outputPanel_.repaint();
     }
 
-    
+
     /**
      * Finds all valid document viewers for the given file.
      * 
      * @param file File to find a document viewer for.
      */
-    protected void findViewersForDocument(File file)
-    {
+    protected void findViewersForDocument(File file) {
         viewerButtons_.removeAll();
-        
-        for (Iterator i = viewers_.iterator(); i.hasNext();)
-        {
+
+        for (Iterator i = viewers_.iterator(); i.hasNext();) {
             DocumentViewer dv = (DocumentViewer) i.next();
-            
-            if (dv.canView(file))
-            {
+
+            if (dv.canView(file)) {
                 JSmartButton b = new JSmartButton(new ViewAction(dv, file));
                 viewerButtons_.add("Top Wide Flush", b);
             }
         }
-        
+
         viewerButtons_.validate();
         viewerButtons_.repaint();
     }
-    
-    
+
+
     /**
      * Builds the list of document viewers by scanning the current package for
      * classes ending in the string "Viewer" and not containing the string
      * "Abstract".
      */
-    protected void buildViewerList()
-    {
+    protected void buildViewerList() {
         // The blessed list of doc viewer classes
         List classList = new ArrayList();
-        
-        String[] classes = ClassUtil.getClassesInPackage(
-            ClassUtils.getPackageName(getClass().getName()));
-       
-        logger_.info("Viewers: " + ArrayUtil.toString(classes, true)); 
-        
-        for (int i = 0; i < classes.length; i++)
-        {
+
+        String[] classes = 
+            ClassUtil.getClassesInPackage(
+                ClassUtils.getPackageName(getClass().getName()));
+
+        logger_.info("Viewers: " + ArrayUtil.toString(classes, true));
+
+        for (int i = 0; i < classes.length; i++) {
             String fqcn = classes[i];
-            
-            if (fqcn.endsWith("Viewer") && fqcn.indexOf("Abstract") < 0)
-            {
-                try
-                {
+
+            if (fqcn.endsWith("Viewer") && fqcn.indexOf("Abstract") < 0) {
+                try {
                     Class c = Class.forName(fqcn);
-                    
+
                     if (!c.isInterface())
                         if (DocumentViewer.class.isAssignableFrom(c))
                             classList.add(c);
                 }
-                catch (Exception e)
-                {
+                catch (Exception e) {
                     logger_.warn(e);
                 }
             }
         }
-        
+
         // If no viewers were found, then we're probably running as a WebStart
         // app in which case ClassUtil.getClassesInPackage() is not going to
         // work. Have to use the hardcoded list of viewers instead.
-        
-        if (classList.isEmpty())
-        {
-            try
-            {
+
+        if (classList.isEmpty()) {
+            try {
                 Element root = new Builder().build(
                     ResourceUtil.getResource(FILE_DOCVIEWERS)).getRootElement();
-                
+
                 logger_.debug(XOMUtil.toXML(root));
-                
+
                 Elements docviewers = root.getChildElements(NODE_DOCVIEWER);
-                
-                for (int i = 0, s = docviewers.size(); i < s; i++)
-                {
+
+                for (int i = 0, s = docviewers.size(); i < s; i++) {
                     Element docviewer = docviewers.get(i);
                     String clazz = docviewer.getAttributeValue(ATTR_CLASS);
-                    classList.add(Class.forName(clazz));    
+                    classList.add(Class.forName(clazz));
                 }
-                
+
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 ExceptionUtil.handleUI(ex, logger_);
             }
         }
-        
+
         // Take the class list and turn them into doc viewers
-        
-        for (int i = 0, j = classList.size(); i < j; i++)
-        {
-            try
-            {
+
+        for (int i = 0, j = classList.size(); i < j; i++) {
+            try {
                 Class c = (Class) classList.get(i);
                 DocumentViewer viewer = (DocumentViewer) c.newInstance();
                 viewer.initialize(new HashMap());
                 viewers_.add(viewer);
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 ExceptionUtil.handleUI(e, logger_);
             }
         }
     }
-    
-    //--------------------------------------------------------------------------
-    // Initializable Interface
-    //--------------------------------------------------------------------------
 
-    /**
+    // --------------------------------------------------------------------------
+    // Initializable Interface
+    // --------------------------------------------------------------------------
+
+    /*
      * @see toolbox.util.service.Initializable#initialize(java.util.Map)
      */
-    public void initialize(Map params) throws ServiceException
-    {
+    public void initialize(Map params) throws ServiceException {
         checkTransition(ServiceTransition.INITIALIZE);
-        
+
         if (params != null)
-            statusBar_ = (IStatusBar) 
-                params.get(PluginWorkspace.KEY_STATUSBAR);
-        
+            statusBar_ = (IStatusBar) params.get(PluginWorkspace.KEY_STATUSBAR);
+
         viewers_ = new ArrayList();
         lastViewedWith_ = new HashMap();
         buildView();
         buildViewerList();
-        
+
         transition(ServiceTransition.INITIALIZE);
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     // IPlugin Interface
-    //--------------------------------------------------------------------------
-    
-    /**
+    // --------------------------------------------------------------------------
+
+    /*
      * @see toolbox.workspace.IPlugin#getPluginName()
      */
-    public String getPluginName()
-    {
+    public String getPluginName() {
         return "Document Viewer";
     }
 
-    
-    /**
+
+    /*
      * @see toolbox.workspace.IPlugin#getView()
      */
-    public JComponent getView()
-    {
+    public JComponent getView() {
         return view_;
     }
 
-    
-    /**
+
+    /*
      * @see toolbox.workspace.IPlugin#getDescription()
      */
-    public String getDescription()
-    {
+    public String getDescription() {
         return "Views documents.";
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     // Destroyable Interface
-    //--------------------------------------------------------------------------
-    
-    /**
+    // --------------------------------------------------------------------------
+
+    /*
      * @see toolbox.util.service.Destroyable#destroy()
      */
-    public void destroy() throws ServiceException
-    {
+    public void destroy() throws ServiceException {
         checkTransition(ServiceTransition.DESTROY);
-        
-        for (Iterator i = viewers_.iterator(); i.hasNext();)
-        {
-            try
-            {
+
+        for (Iterator i = viewers_.iterator(); i.hasNext();) {
+            try {
                 DocumentViewer dv = (DocumentViewer) i.next();
                 dv.destroy();
                 dv = null;
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 logger_.warn(e);
             }
         }
-        
+
         viewers_.clear();
         viewers_ = null;
-        
+
         transition(ServiceTransition.DESTROY);
     }
-    
-    //--------------------------------------------------------------------------
+
+    // --------------------------------------------------------------------------
     // IPreferenced Interface
-    //--------------------------------------------------------------------------
-    
-    /**
+    // --------------------------------------------------------------------------
+
+    /*
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs) throws PreferencedException
-    {
-        Element root = 
-            XOMUtil.getFirstChildElement(
-                prefs, 
-                NODE_DOCVIEWER_PLUGIN, 
-                new Element(NODE_DOCVIEWER_PLUGIN));    
-        
+    public void applyPrefs(Element prefs) throws PreferencedException {
+        Element root = XOMUtil.getFirstChildElement(
+            prefs, NODE_DOCVIEWER_PLUGIN, new Element(NODE_DOCVIEWER_PLUGIN));
+
         explorer_.applyPrefs(root);
         flipPane_.applyPrefs(root);
     }
 
-    
-    /**
+
+    /*
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs) throws PreferencedException
-    {
+    public void savePrefs(Element prefs) throws PreferencedException {
         Element root = new Element(NODE_DOCVIEWER_PLUGIN);
         explorer_.savePrefs(root);
         flipPane_.savePrefs(root);
         XOMUtil.insertOrReplace(prefs, root);
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     // ViewAction
-    //--------------------------------------------------------------------------
-    
+    // --------------------------------------------------------------------------
+
     /**
      * Action to view a document.
      */
-    class ViewAction extends WorkspaceAction
-    {
+    class ViewAction extends WorkspaceAction {
+
         /**
          * Document viewer used to view the file.
          */
         private DocumentViewer viewer_;
-        
+
         /**
          * File to view.
          */
         private File file_;
-        
-        
+
+
         /**
          * Creates a ViewAction.
          * 
          * @param viewer Document viewer.
          * @param file File to view.
          */
-        public ViewAction(DocumentViewer viewer, File file)
-        {
+        public ViewAction(DocumentViewer viewer, File file) {
             super(viewer.getName(), true, true, view_, statusBar_);
             viewer_ = viewer;
             file_ = file;
         }
-                
-        
-        /**
-         * @see toolbox.util.ui.SmartAction#runAction(
-         *      java.awt.event.ActionEvent)
+
+
+        /*
+         * @see toolbox.util.ui.SmartAction#runAction(java.awt.event.ActionEvent)
          */
-        public void runAction(ActionEvent e) throws Exception
-        {
+        public void runAction(ActionEvent e) throws Exception {
             viewDocument(viewer_, file_);
         }
     }
-    
-    //--------------------------------------------------------------------------
+
+    // --------------------------------------------------------------------------
     // FileSelectionListener
-    //--------------------------------------------------------------------------
-    
+    // --------------------------------------------------------------------------
+
     /**
      * Populates file that is double clicked on in the file explorer.
      */
-    class FileSelectionListener extends FileExplorerAdapter
-    {
-        /**
-         * @see toolbox.util.ui.explorer.FileExplorerListener#fileDoubleClicked(
-         *      java.lang.String)
+    class FileSelectionListener extends FileExplorerAdapter {
+
+        /*
+         * @see toolbox.util.ui.explorer.FileExplorerListener#fileDoubleClicked(java.lang.String)
          */
-        public void fileDoubleClicked(String file)
-        {
-            try
-            {
+        public void fileDoubleClicked(String file) {
+            try {
                 File f = new File(file);
                 String ext = FileUtil.getExtension(f).toLowerCase();
-                
-                DocumentViewer viewer = 
-                    (DocumentViewer) lastViewedWith_.get(ext);
-                
-                if (viewer != null)
-                {    
-                    new ViewAction(viewer, f).actionPerformed(
-                        new ActionEvent(explorer_, 1, "view"));
+
+                DocumentViewer viewer = (DocumentViewer) lastViewedWith_
+                    .get(ext);
+
+                if (viewer != null) {
+                    new ViewAction(viewer, f).actionPerformed(new ActionEvent(
+                        explorer_, 1, "view"));
                 }
-                else
-                {
+                else {
                     statusBar_.setInfo("You must select a viewer.");
                     findViewersForDocument(f);
                 }
             }
-            catch (Exception fnfe)
-            {
+            catch (Exception fnfe) {
                 ExceptionUtil.handleUI(fnfe, logger_);
             }
         }
-        
-        
-        /**
-         * @see toolbox.util.ui.explorer.FileExplorerListener#fileSelected(
-         *      java.lang.String)
+
+
+        /*
+         * @see toolbox.util.ui.explorer.FileExplorerListener#fileSelected(java.lang.String)
          */
-        public void fileSelected(String file)
-        {
+        public void fileSelected(String file) {
             logger_.debug("File selected: " + file);
-            
-            try
-            {
+
+            try {
                 findViewersForDocument(new File(file));
             }
-            catch (Exception fnfe)
-            {
+            catch (Exception fnfe) {
                 ExceptionUtil.handleUI(fnfe, logger_);
             }
         }

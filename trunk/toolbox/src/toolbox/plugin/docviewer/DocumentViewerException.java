@@ -1,16 +1,15 @@
 package toolbox.plugin.docviewer;
 
 /**
- * Exception thrown by classes implementing the {@link DocumentViewer} 
+ * Exception thrown by classes implementing the {@link DocumentViewer}
  * interface.
  */
-public class DocumentViewerException extends RuntimeException
-{
+public class DocumentViewerException extends RuntimeException {
+
     /**
-     * Creates a DocumentViewerException. 
+     * Creates a DocumentViewerException.
      */
-    public DocumentViewerException()
-    {
+    public DocumentViewerException() {
     }
 
 
@@ -19,8 +18,7 @@ public class DocumentViewerException extends RuntimeException
      * 
      * @param message Error message.
      */
-    public DocumentViewerException(String message)
-    {
+    public DocumentViewerException(String message) {
         super(message);
     }
 
@@ -30,8 +28,7 @@ public class DocumentViewerException extends RuntimeException
      * 
      * @param cause Originating exception.
      */
-    public DocumentViewerException(Throwable cause)
-    {
+    public DocumentViewerException(Throwable cause) {
         super(cause);
     }
 
@@ -42,8 +39,7 @@ public class DocumentViewerException extends RuntimeException
      * @param message Error message.
      * @param cause Originating exception.
      */
-    public DocumentViewerException(String message, Throwable cause)
-    {
+    public DocumentViewerException(String message, Throwable cause) {
         super(message, cause);
     }
 }

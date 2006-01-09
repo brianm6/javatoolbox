@@ -35,33 +35,32 @@ import toolbox.util.service.ServiceException;
 /**
  * A viewer to for popular text formats with syntax hiliting.
  */
-public class JEditViewer extends AbstractViewer
-{
+public class JEditViewer extends AbstractViewer {
+
     private static final Logger logger_ = Logger.getLogger(JEditViewer.class);
-    
-    //--------------------------------------------------------------------------
+
+    // -------------------------------------------------------------------------
     // Constants
-    //--------------------------------------------------------------------------
-    
+    // -------------------------------------------------------------------------
+
     /**
      * Map of file extensions to their corresponding TokenMarker class.
      */
     protected static final Map EXT_MAP;
-    
-    //--------------------------------------------------------------------------
+
+    // -------------------------------------------------------------------------
     // Static Initializers
-    //--------------------------------------------------------------------------
-    
-    static
-    {
+    // -------------------------------------------------------------------------
+
+    static {
         EXT_MAP = new HashMap();
         EXT_MAP.put("java", JavaTokenMarker.class);
         EXT_MAP.put("groovy", JavaTokenMarker.class);
-        
+
         // XML
         for (int i = 0; i < FileTypes.XML.length; i++)
             EXT_MAP.put(FileTypes.XML[i], XMLTokenMarker.class);
-        
+
         EXT_MAP.put("bat", BatchFileTokenMarker.class);
         EXT_MAP.put("properties", PropsTokenMarker.class);
         EXT_MAP.put("props", PropsTokenMarker.class);
@@ -76,203 +75,178 @@ public class JEditViewer extends AbstractViewer
         EXT_MAP.put("h", CTokenMarker.class);
         EXT_MAP.put("cc", CCTokenMarker.class);
         EXT_MAP.put("cpp", CCTokenMarker.class);
-        
+
         // TODO: Find dtd marker
         EXT_MAP.put("dtd", JavaTokenMarker.class);
     }
-    
-    //--------------------------------------------------------------------------
+
+    // -------------------------------------------------------------------------
     // Fields
-    //--------------------------------------------------------------------------
-    
+    // -------------------------------------------------------------------------
+
     /**
      * The contents of the file are dumped into this text area.
      */
     private JEditTextArea textArea_;
-    
-    //--------------------------------------------------------------------------
+
+    // -------------------------------------------------------------------------
     // Constructors
-    //--------------------------------------------------------------------------
-    
+    // -------------------------------------------------------------------------
+
     /**
      * Creates a JEditViewer.
      */
-    public JEditViewer()
-    {
+    public JEditViewer() {
         this("JEdit Viewer");
     }
 
-    
+
     /**
      * Creates a JEditViewer.
      * 
      * @param name Viewer name.
      */
-    public JEditViewer(String name)
-    {
+    public JEditViewer(String name) {
         super(name);
     }
 
-    //--------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Protected
-    //--------------------------------------------------------------------------
-    
+    // -------------------------------------------------------------------------
+
     /**
      * Returns the textarea.
      * 
      * @return JEditTextArea
      */
-    protected JEditTextArea getTextArea() 
-    {
+    protected JEditTextArea getTextArea() {
         return textArea_;
     }
 
-    
+
     /**
      * Creates the text area
      * 
      * @param file File to create for.
      */
-    protected void createTextArea(File file) 
-    {
+    protected void createTextArea(File file) {
         createTextArea(FileUtil.getExtension(file));
     }
 
-    
+
     /**
      * Creates the text area
      * 
      * @param fileExtension File extension to activate syntax hiliting.
      */
-    protected void createTextArea(String fileExtension) 
-    {
+    protected void createTextArea(String fileExtension) {
         Class c = (Class) EXT_MAP.get(fileExtension.toLowerCase());
-        
-        if (c != null)
-        {
-            try
-            {
-                textArea_ = 
-                    new JEditTextArea(
-                        (TokenMarker) c.newInstance(), 
-                        new JavaDefaults());
+
+        if (c != null) {
+            try {
+                textArea_ = new JEditTextArea(
+                    (TokenMarker) c.newInstance(), new JavaDefaults());
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 logger_.warn("Error instantiating " + c.getName() + ".");
                 textArea_ = new JEditTextArea();
-            } 
+            }
         }
-        else
-        {    
-            textArea_ = 
-                new JEditTextArea(
-                    new PropsTokenMarker(), 
-                    new JavaDefaults());
+        else {
+            textArea_ = new JEditTextArea(
+                new PropsTokenMarker(), new JavaDefaults());
         }
-        
+
         // Set font and popup menu...
         textArea_.getPainter().setFont(FontUtil.getPreferredMonoFont());
         textArea_.setPopupMenu(new JEditPopupMenu(textArea_));
     }
 
-    //--------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Initializable Interface
-    //--------------------------------------------------------------------------
-    
-    /**
+    // -------------------------------------------------------------------------
+
+    /*
      * @see toolbox.util.service.Initializable#initialize(java.util.Map)
      */
-    public void initialize(Map configuration) throws ServiceException
-    {
+    public void initialize(Map configuration) throws ServiceException {
         ; // No-op
     }
-    
-    //--------------------------------------------------------------------------
+
+    // -------------------------------------------------------------------------
     // DocumentViewer Interface
-    //--------------------------------------------------------------------------
-    
-    /**
+    // -------------------------------------------------------------------------
+
+    /*
      * @see toolbox.plugin.docviewer.DocumentViewer#view(java.io.File)
      */
-    public void view(File file) throws DocumentViewerException
-    {
-        try
-        {
+    public void view(File file) throws DocumentViewerException {
+        try {
             createTextArea(file);
             String text = FileUtil.getFileContents(file.getCanonicalPath());
             textArea_.setText(text);
             textArea_.scrollTo(0, 0);
         }
-        catch (FileNotFoundException e)
-        {
+        catch (FileNotFoundException e) {
             throw new DocumentViewerException(e);
         }
-        catch (IOException e)
-        {
+        catch (IOException e) {
             throw new DocumentViewerException(e);
         }
     }
 
-    
-    /**
+
+    /*
      * @see toolbox.plugin.docviewer.DocumentViewer#view(java.io.InputStream)
      */
-    public void view(InputStream is) throws DocumentViewerException
-    {
+    public void view(InputStream is) throws DocumentViewerException {
         createTextArea("???");
         String text;
-        
-        try
-        {
+
+        try {
             text = IOUtils.toString(is);
         }
-        catch (IOException e)
-        {
+        catch (IOException e) {
             throw new DocumentViewerException(e);
         }
-        
+
         textArea_.setText(text);
         textArea_.scrollTo(0, 0);
     }
 
-    
-    /**
+
+    /*
      * @see toolbox.plugin.docviewer.DocumentViewer#canView(java.io.File)
      */
-    public boolean canView(File file)
-    {
+    public boolean canView(File file) {
         // View all files
         return true;
     }
 
-    
-    /**
+
+    /*
      * @see toolbox.plugin.docviewer.DocumentViewer#getViewableFileTypes()
      */
-    public String[] getViewableFileTypes()
-    {
+    public String[] getViewableFileTypes() {
         return null;
     }
 
-    
-    /**
+
+    /*
      * @see toolbox.plugin.docviewer.DocumentViewer#getComponent()
      */
-    public JComponent getComponent()
-    {
+    public JComponent getComponent() {
         return textArea_;
     }
 
-    //--------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Destroyable Interface
-    //--------------------------------------------------------------------------
-    
-    /**
+    // -------------------------------------------------------------------------
+
+    /*
      * @see toolbox.util.service.Destroyable#destroy()
      */
-    public void destroy()
-    {
+    public void destroy() {
         textArea_.setText("");
         textArea_ = null;
     }

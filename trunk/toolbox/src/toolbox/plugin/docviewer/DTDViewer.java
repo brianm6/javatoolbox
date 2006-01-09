@@ -20,42 +20,37 @@ import toolbox.util.FileUtil;
 import toolbox.util.StringUtil;
 
 /**
- * A tree viewer for DTDs that makes use of 
- * <a href=http://matra.sf.net>Matra</a>.
+ * A tree viewer for DTDs that makes use of <a href=http://matra.sf.net>Matra</a>.
  */
-public class DTDViewer extends JEditViewer
-{
+public class DTDViewer extends JEditViewer {
+
     private static final Logger logger_ = Logger.getLogger(DTDViewer.class);
-    
-    //--------------------------------------------------------------------------
+
+    // --------------------------------------------------------------------------
     // Constructors
-    //--------------------------------------------------------------------------
-    
+    // --------------------------------------------------------------------------
+
     /**
      * Creates a DTDViewer.
      */
-    public DTDViewer()
-    {
+    public DTDViewer() {
         super("DTD Viewer");
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     // Overrides JEditViewer
-    //--------------------------------------------------------------------------
-    
-    /**
+    // --------------------------------------------------------------------------
+
+    /*
      * @see toolbox.plugin.docviewer.DocumentViewer#view(java.io.File)
      */
-    public void view(File file) throws DocumentViewerException
-    {
-        try
-        {
+    public void view(File file) throws DocumentViewerException {
+        try {
             createTextArea(file);
             JEditTextArea textArea = getTextArea();
             String text = FileUtil.getFileContents(file.getCanonicalPath());
-            
-            if (StringUtil.getLine(text, 0).startsWith("<?xml")) 
-            {
+
+            if (StringUtil.getLine(text, 0).startsWith("<?xml")) {
                 logger_.debug("nuking xml decl from first line of dtd");
                 int eol = text.indexOf('\n');
                 text = text.substring(eol);
@@ -63,12 +58,11 @@ public class DTDViewer extends JEditViewer
 
             // Matra insists on writing the results to System.out so we have to
             // temporarily hijack it.
-            
+
             PrintStream original = System.out;
             OutputStream os = new JEditTextAreaOutputStream(textArea);
-            
-            try 
-            {
+
+            try {
                 System.setOut(new PrintStream(os));
                 DTDParser parser = new DTDParser();
                 parser.parse(text);
@@ -77,43 +71,36 @@ public class DTDViewer extends JEditViewer
                 textArea.setCaretPosition(0);
                 textArea.scrollToCaret();
             }
-            finally 
-            {
+            finally {
                 IOUtils.closeQuietly(os);
                 System.setOut(original);
             }
         }
-        catch (FileNotFoundException fnfe)
-        {
+        catch (FileNotFoundException fnfe) {
             throw new DocumentViewerException(fnfe);
         }
-        catch (IOException ioe)
-        {
+        catch (IOException ioe) {
             throw new DocumentViewerException(ioe);
         }
-        catch (DTDException dtde)
-        {
+        catch (DTDException dtde) {
             throw new DocumentViewerException(dtde);
         }
     }
 
-    
-    /**
+
+    /*
      * @see toolbox.plugin.docviewer.DocumentViewer#canView(java.io.File)
      */
-    public boolean canView(File file)
-    {
-        return (ArrayUtil.contains(
-            getViewableFileTypes(), 
-            FileUtil.getExtension(file).toLowerCase()));
+    public boolean canView(File file) {
+        return (ArrayUtil.contains(getViewableFileTypes(), FileUtil
+            .getExtension(file).toLowerCase()));
     }
 
-    
-    /**
+
+    /*
      * @see toolbox.plugin.docviewer.DocumentViewer#getViewableFileTypes()
      */
-    public String[] getViewableFileTypes()
-    {
-        return new String[] {"dtd"};
+    public String[] getViewableFileTypes() {
+        return new String[] { "dtd" };
     }
 }

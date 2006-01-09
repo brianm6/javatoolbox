@@ -3,13 +3,13 @@ package toolbox.plugin.docviewer;
 /**
  * Filetype to extensions mapping.
  */
-public interface FileTypes
-{
+public interface FileTypes {
+
     /**
      * File extensions that are characteristic of XML content.
      */
     String[] XML = new String[] {
-        "fo", 
+        "fo",
         "jelly",
         "jnlp",
         "jsl",
@@ -17,15 +17,11 @@ public interface FileTypes
         "xmi",
         "xml",
         "xsd",
-        "xsl", 
-        "xslt", 
-    };
-    
+        "xsl",
+        "xslt", };
+
     /**
      * File extensions that are characteristic of HTML content.
      */
-    String[] HTML = new String[] {
-        "html", 
-        "htm" 
-    };    
+    String[] HTML = new String[] { "html", "htm" };
 }

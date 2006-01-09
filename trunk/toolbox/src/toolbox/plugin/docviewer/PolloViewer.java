@@ -23,61 +23,57 @@ import toolbox.util.SwingUtil;
 /**
  * XML document viewer that uses Pollo for rendering the document.
  */
-public class PolloViewer extends AbstractViewer
-{
+public class PolloViewer extends AbstractViewer {
+
     private static final Logger logger_ = Logger.getLogger(PolloViewer.class);
-    
-    //--------------------------------------------------------------------------
+
+    // --------------------------------------------------------------------------
     // Fields
-    //--------------------------------------------------------------------------
-    
+    // --------------------------------------------------------------------------
+
     /**
      * XML UI widget.
      */
     private XmlEditor editor_;
-    
+
     /**
      * Scrollpane wrapping the XmlEditor.
      */
     private JScrollPane scroller_;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     // Constructors
-    //--------------------------------------------------------------------------
-    
+    // --------------------------------------------------------------------------
+
     /**
      * Creates a PolloViewer.
      */
-    public PolloViewer()
-    {
+    public PolloViewer() {
         super("Pollo");
     }
-    
-    //--------------------------------------------------------------------------
-    // Protected 
-    //--------------------------------------------------------------------------
+
+    // --------------------------------------------------------------------------
+    // Protected
+    // --------------------------------------------------------------------------
 
     /**
      * Lazy loads the UI component for faster plugin loading.
      */
-    protected void lazyLoad()
-    {
-        if (editor_ == null) 
-        {    
-            try
-            {
+    protected void lazyLoad() {
+        if (editor_ == null) {
+            try {
                 GenericDisplaySpecification displaySpec = 
                     new GenericDisplaySpecification();
-                
+
                 HashMap initMap = new HashMap();
-                
+
                 initMap.put("use-random-colors", "true");
-                //init.put("fixed-color", "0xffeeff");
-                //init.put("background-color", null);
-                
+                // init.put("fixed-color", "0xffeeff");
+                // init.put("background-color", null);
+
                 initMap.put("treetype", "pollo");
-                //initMap.put("treetype", "classic");
-                
+                // initMap.put("treetype", "classic");
+
                 displaySpec.init(initMap);
                 editor_ = new XmlEditor(null, displaySpec, -1);
                 editor_.setAntialiasing(SwingUtil.getDefaultAntiAlias());
@@ -85,100 +81,89 @@ public class PolloViewer extends AbstractViewer
                 editor_.setCharacterDataFont(FontUtil.getPreferredMonoFont());
                 editor_.setAttributeNameFont(FontUtil.getPreferredMonoFont());
                 editor_.setAttributeValueFont(FontUtil.getPreferredMonoFont());
-                scroller_ = new JScrollPane(editor_);                
+                scroller_ = new JScrollPane(editor_);
             }
-            catch (Exception pe)
-            {
+            catch (Exception pe) {
                 ExceptionUtil.handleUI(pe, logger_);
             }
         }
     }
-    
-    //--------------------------------------------------------------------------
+
+    // --------------------------------------------------------------------------
     // Initializable Interface
-    //--------------------------------------------------------------------------
-    
-    /**
+    // --------------------------------------------------------------------------
+
+    /*
      * @see toolbox.util.service.Initializable#initialize(java.util.Map)
      */
-    public void initialize(Map init)
-    {
+    public void initialize(Map init) {
         ; // No-op
     }
-    
-    //--------------------------------------------------------------------------
-    // DocumentViewer Interface 
-    //--------------------------------------------------------------------------
-    
-    /**
+
+    // --------------------------------------------------------------------------
+    // DocumentViewer Interface
+    // --------------------------------------------------------------------------
+
+    /*
      * @see toolbox.plugin.docviewer.DocumentViewer#getComponent()
      */
-    public JComponent getComponent()
-    {
+    public JComponent getComponent() {
         lazyLoad();
         return scroller_;
     }
-    
-    
-    /**
+
+
+    /*
      * @see toolbox.plugin.docviewer.DocumentViewer#getViewableFileTypes()
      */
-    public String[] getViewableFileTypes()
-    {
+    public String[] getViewableFileTypes() {
         return FileTypes.XML;
     }
-    
-    
-    /**
+
+
+    /*
      * @see toolbox.plugin.docviewer.DocumentViewer#canView(java.io.File)
      */
-    public boolean canView(File file)
-    {
-        return ArrayUtil.contains(
-                getViewableFileTypes(), 
-                FileUtil.getExtension(file).toLowerCase());
+    public boolean canView(File file) {
+        return ArrayUtil.contains(getViewableFileTypes(), FileUtil
+            .getExtension(file).toLowerCase());
     }
 
-    
-    /**
+
+    /*
      * @see toolbox.plugin.docviewer.DocumentViewer#view(java.io.File)
      */
-    public void view(File file) throws DocumentViewerException
-    {
+    public void view(File file) throws DocumentViewerException {
         lazyLoad();
-        
-        try
-        {
+
+        try {
             XmlModel model = new XmlModel(0);
             model.readFromResource(file);
             editor_.setXmlModel(model);
             editor_.validate();
             editor_.repaint();
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             throw new DocumentViewerException(e);
         }
     }
-    
-    
-    /**
+
+
+    /*
      * @see toolbox.plugin.docviewer.DocumentViewer#view(java.io.InputStream)
      */
-    public void view(InputStream is) throws DocumentViewerException
-    {
+    public void view(InputStream is) throws DocumentViewerException {
         throw new IllegalArgumentException("view(InputStream) not supported");
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     // Destroyable Interface
-    //--------------------------------------------------------------------------
-    
-    /**
+    // --------------------------------------------------------------------------
+
+    /*
      * @see toolbox.util.service.Destroyable#destroy()
      */
-    public void destroy()
-    {
+    public void destroy() {
         scroller_ = null;
         editor_ = null;
     }
