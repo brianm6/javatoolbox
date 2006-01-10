@@ -171,7 +171,7 @@ public class FFMpegTranscoder extends AbstractTranscoder {
                 new FileOutputStream(new File(logDir_, 
                     FilenameUtils.getName(movieInfo.getFilename()) 
                     + ".out.log")));
-
+            
             int totalSeconds = 
                 (movieInfo.getHours() * 60 * 60)
                 + (movieInfo.getMinutes() * 60)
@@ -184,8 +184,8 @@ public class FFMpegTranscoder extends AbstractTranscoder {
                         new FileOutputStream(new File(logDir_, 
                             FilenameUtils.getName(movieInfo.getFilename()) 
                             + ".err.log"))));
-            
-            //int exitValue = ProcessUtil.getProcessOutput(p, stdout, stderr);
+
+            ferr.write(new String("FFMpeg command: \n" + sb + "\n\n").getBytes());
             
             exitValue = ProcessUtil.getProcessOutput(p, fout, ferr);
         }
