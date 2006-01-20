@@ -26,8 +26,8 @@ import toolbox.util.StringUtil;
  *
  * @see toolbox.dbconsole.util.DataSuite
  */
-public class DataSet
-{
+public class DataSet {
+    
     private static final Log logger = LogFactory.getLog(DataSet.class);
 
     //--------------------------------------------------------------------------

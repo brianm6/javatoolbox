@@ -67,7 +67,6 @@ public class CountingOutputStream
                 printCount();
 
         super.write(b);
-
     }
 
 
