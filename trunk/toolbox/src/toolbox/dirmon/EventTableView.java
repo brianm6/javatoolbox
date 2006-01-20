@@ -42,7 +42,14 @@ import toolbox.util.ui.table.TableSorter;
 import toolbox.util.ui.table.action.AutoTailAction;
 
 /**
- * Directory monitor view that shows DirectoryMonitorEvents in a table. 
+ * View UI component for a {@link toolbox.util.dirmon.DirectoryMonitor} that 
+ * shows all generated {@link toolbox.util.dirmon.event.StatusEvent}s in a 
+ * table. Features include:
+ * <ul>
+ *  <li>Built in table header button to diff files.
+ *  <li>Built in table header button to show file history.
+ *  <li>Built in table header button to autoscroll tables as rows are added.
+ * </ul> 
  */
 public class EventTableView extends JPanel implements IDirectoryMonitorListener {
 
