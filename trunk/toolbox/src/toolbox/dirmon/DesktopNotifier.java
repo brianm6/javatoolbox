@@ -21,7 +21,10 @@ class DesktopNotifier implements IDirectoryMonitorListener {
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
-    
+
+    /**
+     * Manages popup message windows in bottom right hand section of the screen.
+     */
     private Toaster toaster_;
     
     //--------------------------------------------------------------------------
@@ -39,8 +42,15 @@ class DesktopNotifier implements IDirectoryMonitorListener {
     //--------------------------------------------------------------------------
     
     public void statusChanged(StatusEvent statusEvent) throws Exception {
+        // Ignore
     }
-    
+
+    /** 
+     * On any sort of directory activity, turn the event into a meaningful
+     * string with the appropriate icon and show in a toaster popup window.
+     * 
+     * @see toolbox.util.dirmon.IDirectoryMonitorListener#directoryActivity(toolbox.util.dirmon.event.FileEvent)
+     */
     public void directoryActivity(FileEvent event) throws Exception {
         
         StringBuffer shortMsg = new StringBuffer();

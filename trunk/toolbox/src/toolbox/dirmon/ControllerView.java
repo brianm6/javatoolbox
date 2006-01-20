@@ -28,7 +28,14 @@ public class ControllerView extends JPanel {
     // Fields
     // -------------------------------------------------------------------------
     
+    /**
+     * This class really decorates a {@link ServiceView}.
+     */
     private ServiceView serviceView_;
+    
+    /**
+     * Directory monitor to control with this view.
+     */
     private DirectoryMonitor directoryMonitor_;
     
     // -------------------------------------------------------------------------

@@ -32,20 +32,32 @@ public class ConsoleView extends JPanel implements IDirectoryMonitorListener {
     // Fields
     // -------------------------------------------------------------------------
     
+    /**
+     * Text area that all console worthy information is dumped to.
+     */
     private JSmartTextArea messageArea_;
 
     /**
      * Map of start times for each directory scan. Used to sync up with the 
      * end time to determine the elapsed time for each scan.
      * <ul>
-     *   <li>key = DirectoryMonitor.getName()
-     *   <li>value = Date
+     *   <li>key = DirectoryMonitor
+     *   <li>value = Date representing start time of scan
      * </ul>
      * @see #statusChanged(StatusEvent)
      */
-    private Map scanMap_;
+    private Map scanStartTimesMap_;
     
-    private Map discoveryMap_;
+    /**
+     * Map of the start times for each 'discovery scan'. Used to sync up the
+     * start and end times for a directory scan.
+     * <ul>
+     *   <li>key = DirectoryMonitor
+     *   <li>value = Date represeting start time of scan
+     * </ul>
+     * @see #statusChanged(StatusEvent)
+     */
+    private Map discoveryStartTimesMap_;
     
     // -------------------------------------------------------------------------
     // Constructors
@@ -53,8 +65,8 @@ public class ConsoleView extends JPanel implements IDirectoryMonitorListener {
     
     public ConsoleView() {
         buildView();
-        scanMap_ = new HashMap();
-        discoveryMap_ = new HashMap();
+        scanStartTimesMap_ = new HashMap(1);
+        discoveryStartTimesMap_ = new HashMap(1);
     }
 
     // -------------------------------------------------------------------------
@@ -63,12 +75,10 @@ public class ConsoleView extends JPanel implements IDirectoryMonitorListener {
     
     protected void buildView() {
         setLayout(new BorderLayout());
-        
         messageArea_ = new JSmartTextArea("Welcome!\n", true, true);
         messageArea_.setRows(10);
         messageArea_.setColumns(80);
         messageArea_.setFont(FontUtil.getPreferredMonoFont());
-        
         add(BorderLayout.CENTER, new JScrollPane(messageArea_));
     }
     
@@ -86,15 +96,21 @@ public class ConsoleView extends JPanel implements IDirectoryMonitorListener {
         
         switch (statusEvent.getEventType()) {
             
+            //
+            // When scan starts, save the time.
+            //
             case StatusEvent.TYPE_START_SCAN :
-                // Put scan start time in map
-                scanMap_.put(monitor, new Date());
+                scanStartTimesMap_.put(monitor, new Date());
                 break;
-            
+
+                
+            //
+            // When scan ends, dump elapsed time to text area
+            //
             case StatusEvent.TYPE_END_SCAN :
                 // Extract scan start time from map and figure out elapsed time...
                 Date endTime = new Date();
-                Date startTime = (Date) scanMap_.remove(monitor);
+                Date startTime = (Date) scanStartTimesMap_.remove(monitor);
                 
                 if (startTime != null) {
                     ElapsedTime elapsed = new ElapsedTime(startTime, endTime);
@@ -115,15 +131,22 @@ public class ConsoleView extends JPanel implements IDirectoryMonitorListener {
                 }
                 break;
             
+                
+            //
+            // When discovery starts, save the time
+            // 
             case StatusEvent.TYPE_START_DISCOVERY:
-                discoveryMap_.put(monitor, new Date());
+                discoveryStartTimesMap_.put(monitor, new Date());
                 messageArea_.append("Discovery started for " + name + " ...\n");
                 break;
+            
                 
+            //
+            // When discovery ends, dump the elapsed time to the text area
+            //
             case StatusEvent.TYPE_END_DISCOVERY:
-                // Extract scan start time from map and figure out elapsed time...
                 Date end = new Date();
-                Date start = (Date) discoveryMap_.remove(monitor);
+                Date start = (Date) discoveryStartTimesMap_.remove(monitor);
                 
                 if (start != null) {
                     ElapsedTime elapsed = new ElapsedTime(start, end);
@@ -137,7 +160,10 @@ public class ConsoleView extends JPanel implements IDirectoryMonitorListener {
                         + "\n");
                 }
                 else {
-                    messageArea_.append("Start time map entry for discovery " + name + " not found!\n");
+                    messageArea_.append(
+                        "Start time map entry for discovery "
+                        + name
+                        + " not found!\n");
                 }
                 break;
                 
@@ -148,7 +174,11 @@ public class ConsoleView extends JPanel implements IDirectoryMonitorListener {
         }
     }
     
-    /*
+    
+    /**
+     * For each directory activity notification, just turn into a string and 
+     * dump to the console.
+     * 
      * @see toolbox.util.dirmon.IDirectoryMonitorListener#directoryActivity(toolbox.util.dirmon.event.FileEvent)
      */
     public void directoryActivity(FileEvent event) throws Exception {
