@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.Icon;
 
 import org.apache.log4j.Logger;
 
@@ -51,8 +52,8 @@ import toolbox.util.SwingUtil;
  * 
  * </pre>
  */
-public abstract class SmartAction extends AbstractAction
-{
+public abstract class SmartAction extends AbstractAction {
+    
     private static final Logger logger_ = Logger.getLogger(SmartAction.class);
 
     //--------------------------------------------------------------------------
@@ -252,18 +253,6 @@ public abstract class SmartAction extends AbstractAction
         return caught_;
     }
     
-    
-    /**
-     * Sets the name of this action.
-     * 
-     * @param name Name this will show up on this action's associated UI
-     *        component. For example the text of a JButton.  
-     */
-    public void setName(String name)
-    {
-        putValue(Action.NAME, name);
-    }
-    
     //--------------------------------------------------------------------------
     // BusyCursorAction
     //--------------------------------------------------------------------------
@@ -320,4 +309,48 @@ public abstract class SmartAction extends AbstractAction
             ExceptionUtil.handleUI(getCaught(), logger_);
         }
     }
-}
+    
+    // -------------------------------------------------------------------------
+    // Convenience Methods
+    // -------------------------------------------------------------------------
+    
+    /**
+     * Sets the name of this action. Shortcut for Action.NAME
+     * 
+     * @param name Name this will show up on this action's associated UI
+     *        component. For example the text of a JButton.  
+     */
+    public void setName(String name) {
+        putValue(Action.NAME, name);
+    }
+
+    
+    /**
+     * Shortcut for Action.NAME value in property map.
+     * 
+     * @return String
+     */
+    public String getName() {
+        return getValue(Action.NAME).toString();
+    }
+    
+    
+    /**
+     * Shortcut for Action.SMALL_ICON.
+     * 
+     * @param icon Icon to set.
+     */
+    public void setIcon(Icon icon) {
+        putValue(Action.SMALL_ICON, icon);
+    }
+
+    
+    /**
+     * Shortcut for Action.SMALL_ICON.
+     * 
+     * @return Icon
+     */
+    public Icon getIcon() {
+        return (Icon) getValue(Action.SMALL_ICON);
+    }
+}   
