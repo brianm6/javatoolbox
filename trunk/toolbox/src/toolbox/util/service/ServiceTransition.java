@@ -1,5 +1,9 @@
 package toolbox.util.service;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import toolbox.util.statemachine.impl.DefaultTransition;
 
 /**
@@ -9,8 +13,8 @@ import toolbox.util.statemachine.impl.DefaultTransition;
  * @see toolbox.util.service.Service
  * @see toolbox.util.service.ServiceState
  */
-public class ServiceTransition extends DefaultTransition
-{
+public class ServiceTransition extends DefaultTransition {
+    
     //--------------------------------------------------------------------------
     // Transition Constants
     //--------------------------------------------------------------------------
@@ -60,9 +64,25 @@ public class ServiceTransition extends DefaultTransition
      * 
      * @param name Transition name.
      */
-    private ServiceTransition(String name)
-    {
+    private ServiceTransition(String name) {
         super(name);
+    }
+    
+    
+    /**
+     * Returns an iterator for all known service transitions.
+     *  
+     * @return Iterator
+     */
+    public static final Iterator iterator() {
+        List transitions = new ArrayList();
+        transitions.add(INITIALIZE);
+        transitions.add(START);
+        transitions.add(SUSPEND);
+        transitions.add(RESUME);
+        transitions.add(STOP);
+        transitions.add(DESTROY);
+        return transitions.iterator();
     }
     
     //--------------------------------------------------------------------------
@@ -74,8 +94,7 @@ public class ServiceTransition extends DefaultTransition
      * 
      * @see java.lang.Object#toString()
      */
-    public String toString()
-    {
+    public String toString() {
         return getName();
     }
 }
