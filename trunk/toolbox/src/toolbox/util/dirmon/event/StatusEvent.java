@@ -13,16 +13,37 @@ public class StatusEvent extends BaseEvent {
     // Constants
     // -------------------------------------------------------------------------
     
+    /**
+     * Begin of regular filesystem scan to find any differences between the
+     * current state of the filesystem and the previous snapshot. 
+     */
     public static final int TYPE_START_SCAN = 100;
-    public static final int TYPE_END_SCAN = 101;
     
+    /**
+     * End of the regular filesystem scan to find any differences between the
+     * current state of the filesystem and the previous snapshot.
+     */
+    public static final int TYPE_END_SCAN = 101;
+
+    /**
+     * Discovery of directory structure started. Discovery this occurs before
+     * a scan because we have to discover what to monitor before it can be
+     * monitored.
+     */
     public static final int TYPE_START_DISCOVERY = 102;
+    
+    /**
+     * Discovery of directory structure ended.
+     */
     public static final int TYPE_END_DISCOVERY = 103;
     
     // -------------------------------------------------------------------------
     // Fields
     // -------------------------------------------------------------------------
     
+    /**
+     * Arbitrary message associated with this status event.
+     */
     private String message_;
     
     // -------------------------------------------------------------------------
