@@ -7,8 +7,8 @@ import toolbox.util.statemachine.impl.DefaultState;
  *  
  * @see toolbox.util.service.Service
  */
-public class ServiceState extends DefaultState
-{
+public class ServiceState extends DefaultState {
+    
     //--------------------------------------------------------------------------
     // ServiceState Constants
     //--------------------------------------------------------------------------
@@ -58,8 +58,7 @@ public class ServiceState extends DefaultState
      * 
      * @param state Service state.
      */
-    private ServiceState(String state)
-    {
+    private ServiceState(String state) {
         super(state);
     }
     
@@ -72,8 +71,7 @@ public class ServiceState extends DefaultState
      * 
      * @see java.lang.Object#toString()
      */
-    public String toString()
-    {
+    public String toString() {
         return getName();
     }
 }
