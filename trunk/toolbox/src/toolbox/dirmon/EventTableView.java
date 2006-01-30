@@ -331,7 +331,7 @@ public class EventTableView extends JPanel implements IDirectoryMonitorListener 
                 String dir = (String) model_.getValueAt(idx, INDEX_DIR); 
                 String file  = (String) model_.getValueAt(idx,INDEX_FILE);
                 String path = dir + File.separator + file;
-                String command = "cleartool diff -graphical -predecessor  " + path;
+                String command = "cleartool diff -graphical -predecessor \"" + path + "\"";
                 //String command = "ls -l";
                 
                 Process p = Runtime.getRuntime().exec(command);
