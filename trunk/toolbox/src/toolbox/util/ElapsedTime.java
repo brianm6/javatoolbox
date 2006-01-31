@@ -319,21 +319,20 @@ public class ElapsedTime
      * 
      * @return long
      */
-    public long getTotalMillis()
-    {
-        int total = 0;
+    public long getTotalMillis() {
+        long total = 0;
         
         if (days_ > 0)
-            total += days_ * DAY * HOUR * MINUTE * SECOND * MILLI;
+            total += days_ * DAY;
             
         if (hours_ > 0)
-            total += hours_ * HOUR * MINUTE * SECOND * MILLI;
+            total += hours_ * HOUR;
             
         if (minutes_ > 0)
-            total += minutes_ * MINUTE * SECOND * MILLI;
+            total += minutes_ * MINUTE;
             
         if (seconds_ > 0)
-            total += seconds_ * SECOND * MILLI;
+            total += seconds_ * SECOND;
             
         if (millis_ > 0)
             total += millis_;            
