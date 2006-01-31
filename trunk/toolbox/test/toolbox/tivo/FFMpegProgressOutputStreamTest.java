@@ -27,6 +27,8 @@ public class FFMpegProgressOutputStreamTest extends TestCase {
         pos.close();
         
         logger_.debug(sos.toString());
+        assertEquals(9, pos.getProgressSecs());
+        assertEquals(299, pos.getProgressFrames());
     }
     
     
