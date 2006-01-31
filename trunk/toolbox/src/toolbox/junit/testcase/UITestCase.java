@@ -36,7 +36,7 @@ import toolbox.util.ui.plaf.LookAndFeelUtil;
  * 
  * @see toolbox.junit.CloverTestFilter
  */
-public class UITestCase extends TestCase
+public abstract class UITestCase extends TestCase
 {
     private static final Logger logger_ = Logger.getLogger(UITestCase.class);
     
