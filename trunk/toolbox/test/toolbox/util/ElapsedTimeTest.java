@@ -296,4 +296,33 @@ public class ElapsedTimeTest extends TestCase
         
         time.setStartTime(new Date());
     }
+ 
+    
+    public void testGetTotalMillis() throws Exception {
+        logger_.info("Running testGetTotalMillis...");
+        
+        
+        long[] times = new long[] {
+            ElapsedTime.MILLI,
+            ElapsedTime.SECOND,
+            ElapsedTime.MINUTE,
+            ElapsedTime.HOUR,
+            ElapsedTime.DAY
+        };
+        
+        for (int i = 0; i < times.length; i++) {
+            
+            // Right on boundary
+            ElapsedTime t = new ElapsedTime(0, times[i]);
+            assertEquals(times[i], t.getTotalMillis());
+   
+            // One before boundary
+            t = new ElapsedTime(0, times[i] - 1);
+            assertEquals(times[i] - 1, t.getTotalMillis());
+        
+            // One after boundary
+            t = new ElapsedTime(0, times[i] + 1);
+            assertEquals(times[i] + 1, t.getTotalMillis());
+        }
+    }
 }
