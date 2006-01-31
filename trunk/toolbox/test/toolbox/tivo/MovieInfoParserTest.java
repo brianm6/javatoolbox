@@ -4,7 +4,7 @@ import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
 
-public class MovieInfoParserTest extends TivoTestCase {
+public class MovieInfoParserTest extends AbstractTestCase {
 
     private static final Logger logger_ = 
         Logger.getLogger(MovieInfoParserTest.class);
@@ -33,7 +33,7 @@ public class MovieInfoParserTest extends TivoTestCase {
         expected.setFilename(getH264Filename());
 
         AudioStreamInfo audio = new AudioStreamInfo();
-        audio.setBitrate(new Integer(31));
+        audio.setBitrate(new Integer(32));
         audio.setFormat("mp3");
         audio.setHertz(new Integer(22050));
         audio.setChannels("mono");
@@ -57,7 +57,7 @@ public class MovieInfoParserTest extends TivoTestCase {
         assertEquals(expected.getDuration(), movie.getDuration());
         assertEquals(expected.getFilename(), movie.getFilename());
         assertEquals(expected.getBitrate(), movie.getBitrate());
-        assertEquals(expected.getLength(), movie.getLength());
+        assertEquals(expected.getFileSize(), movie.getFileSize());
         assertEquals(expected.getAudioStream(), movie.getAudioStream());
         assertEquals(expected.getVideoStream(), movie.getVideoStream());
     }
