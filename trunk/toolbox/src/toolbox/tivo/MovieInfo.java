@@ -17,7 +17,11 @@ public class MovieInfo {
     private String filename_;
     private String duration_;
     private Integer bitrate_;
-    private Long length_;
+    
+    /**
+     * Size of the file that contains the movie in bytes.
+     */
+    private Long fileSize_;
     
     private VideoStreamInfo videoStream_;
     private AudioStreamInfo audioStream_;
@@ -89,6 +93,7 @@ public class MovieInfo {
         return filename_;
     }
     
+    
     /**
      * Sets the value of filename.
      * 
@@ -97,8 +102,9 @@ public class MovieInfo {
     public void setFilename(String filename) {
         filename_ = filename;
         File f = new File(filename_);
-        length_ = new Long(f.length());
+        fileSize_ = new Long(f.length());
     }
+    
     
     /**
      * Returns the videoStream.
@@ -109,6 +115,7 @@ public class MovieInfo {
         return videoStream_;
     }
     
+    
     /**
      * Sets the value of videoStream.
      * 
@@ -118,22 +125,33 @@ public class MovieInfo {
         videoStream_ = videoStream;
     }
     
-    public Long getLength() {
-        return length_;
+    
+    public Long getFileSize() {
+        return fileSize_;
     }
+    
     
     public int getHours() {
         return Integer.parseInt(duration_.substring(0, 2));
     }
     
+    
     public int getMinutes() {
         return Integer.parseInt(duration_.substring(3, 5));
     }
+    
     
     public int getSeconds() {
         return Integer.parseInt(duration_.substring(6, 8));
     }
 
+    
+    public int getTotalSeconds() {
+        return (getHours() * 60 * 60) +
+               (getMinutes() * 60) +
+               getSeconds();
+    }
+    
     // -------------------------------------------------------------------------
     // Overrides java.lang.Object
     // -------------------------------------------------------------------------
@@ -149,7 +167,7 @@ public class MovieInfo {
         sb.append("Movie Info\n");
         sb.append("----------\n");
         sb.append("File     = " + getFilename() + "\n");
-        sb.append("Size     = " + nf.format(getLength()) + " bytes\n");
+        sb.append("Size     = " + nf.format(getFileSize()) + " bytes\n");
         sb.append("Bitrate  = " + nf.format(getBitrate()) + " kb/s\n");
         sb.append("Length   = " + getDuration() + "\n");
         sb.append("\n");
