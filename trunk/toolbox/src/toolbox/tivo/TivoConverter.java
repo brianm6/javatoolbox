@@ -3,6 +3,7 @@ package toolbox.tivo;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
+import java.util.Iterator;
 
 import edu.emory.mathcs.backport.java.util.concurrent.BlockingQueue;
 import edu.emory.mathcs.backport.java.util.concurrent.LinkedBlockingQueue;
@@ -13,6 +14,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ElapsedTime;
+import toolbox.util.StringUtil;
 import toolbox.util.dirmon.DirectoryMonitor;
 import toolbox.util.dirmon.IDirectoryMonitorListener;
 import toolbox.util.dirmon.event.FileEvent;
@@ -21,9 +23,10 @@ import toolbox.util.dirmon.recognizer.FileCreatedRecognizer;
 import toolbox.util.dirmon.recognizer.FileCreationFinishedRecognizer;
 
 /**
- * Converts movies to tivo format.
+ * Simple utlity application to converts movies from any format to a format that
+ * can be displayed on a Tivo.
  */
-public class TivoConverter{
+public class TivoConverter {
 
     public static final Logger logger_ = Logger.getLogger(TivoConverter.class);
     
@@ -31,21 +34,69 @@ public class TivoConverter{
     // Fields
     // -------------------------------------------------------------------------
     
+    /**
+     * Root directory that contains all files produced and consumed by this
+     * application.
+     */
     private String rootDir_ = "c:\\tivo";
+    
+    /**
+     * Movies to be converted to a Tivo compatible format are  placed in the 
+     * incoming directory.
+     */
     private String incomingDir_;
+    
+    /**
+     * During the transcoding process, the newly trancoded movie is written to
+     * this directory temporarily.
+     */
     private String workingDir_;
+    
+    /**
+     * Movies that fail transcoding are placed in the error directory.
+     */
     private String errorDir_;
-    private String originalsDir_; 
+    
+    /**
+     * The originals are always preserved and moved from the incoming directory
+     * to the originals directory after being processed regardless of success
+     * or failure.
+     */
+    private String originalsDir_;
+    
+    /**
+     * One a movie has been transcoded successfully, it is moved from the 
+     * working directory to the goBack directory. Your Tivo should be set
+     * to search this directory for movies that you want to watch on TV.
+     */
     private String goBackDir_;
+    
+    /**
+     * All log files are dumped to the log directory. This includes stdout and
+     * stderr output from the FFMpeg executable.
+     */
     private String logDir_;
 
+    /**
+     * Monitors the incoming directory for new movies to transcode.
+     */
     private DirectoryMonitor monitor_; 
+    
+    /**
+     * Transcoding occurs one movie at a time so additional movies are queued
+     * up in this work queue.
+     */
     private BlockingQueue workQueue_;
     
     // -------------------------------------------------------------------------
     // Main
     // -------------------------------------------------------------------------
     
+    /**
+     * The only supported command line argument is the name of the root 
+     * directory {@link #rootDir_}. If one is not passed, it defaults to 
+     * z:\tivo.
+     */
     public static void main(String args[]) {
         Logger.getRootLogger().setLevel(Level.INFO);
         TivoConverter converter = null;
@@ -80,7 +131,10 @@ public class TivoConverter{
     // -------------------------------------------------------------------------
     // Public
     // -------------------------------------------------------------------------
-    
+
+    /**
+     * Lets get things rolling...
+     */
     public void start() {
         logger_.info("Starting TivoConverter...");
         logger_.info("Incoming  -> " + incomingDir_);
@@ -97,6 +151,10 @@ public class TivoConverter{
     // Private
     // -------------------------------------------------------------------------
 
+    /**
+     * Creates the directory structure under the root directory if it does not
+     * already exist.
+     */
     private void makeDirStructure(){
         
         File f = new File(rootDir_);
@@ -111,6 +169,10 @@ public class TivoConverter{
     }
     
     
+    /**
+     * Sets up a blocking queue that contains the names of movie files to
+     * transcode to a Tivo compatible format.
+     */
     private void setupWorkQueue() {
         workQueue_ = new LinkedBlockingQueue();
         
@@ -123,22 +185,41 @@ public class TivoConverter{
             catch (Exception e) {
                 logger_.error("taking from workqueue", e);
             }
-            
         }
     }
     
     
+    /**
+     * Sets up a directory monitor for the incoming directory which adds files
+     * to the work queue as file creation events are received (when a user 
+     * copies or renames a file in the directory).
+     */
     private void setupDirMon() {
         monitor_ = new DirectoryMonitor(new File(incomingDir_), false);
+        
+        // Scan for new files in 'incoming' directory every 10 seconds
         monitor_.setDelay(10000);
+        
         //monitor_.setName("incoming"); screws things up
+        
         monitor_.addRecognizer(new FileCreatedRecognizer(monitor_));
+        
+        // Check file is created and stabilized 10 seconds after initial event
+        // of creation.
         monitor_.addRecognizer(new FileCreationFinishedRecognizer(monitor_, 10));
+        
         monitor_.addDirectoryMonitorListener(new IncomingDirListener());
         monitor_.start();
     }
     
 
+    /**
+     * Once a movie file name is pulled from the work queue, its time to convert
+     * it to Tivo format.
+     * 
+     * @param sourceFilename Absolute path and name of the file to transcode.
+     * @throws Exception on error.
+     */
     private void convert(String sourceFilename) throws Exception {
 
         File sourceFile = new File(sourceFilename);
@@ -155,15 +236,38 @@ public class TivoConverter{
             
             String destFilename = buildDestFilename(movieInfo);
             transcodeMovie(sourceFilename, transcoder, movieInfo, destFilename);
+            
+            // Check that the result file exists and is is not zero bytes 
+            // otherwise fail
+            
+            File f = new File(destFilename);
+            if (!f.exists())
+                throw new Exception(
+                    "Transcoded file " + destFilename + " does not exist");
+
+            if (f.length() == 0)
+                throw new Exception(
+                    "Transcoded file " + destFilename + " is ZERO bytes");
+            
             moveDestFileToGoBackDir(destFilename); 
             moveSourceFileToOriginalsDir(sourceFilename, sourceFile); 
         }
         catch (Exception e) {
             handleFailure(sourceFilename, sourceFile, e);
         }
+        
     }
 
     
+    /**
+     * Common error handler. Copies the failed transcoded file to the error
+     * directory and logs errors appropriately.
+     * 
+     * @param sourceFilename
+     * @param sourceFile
+     * @param e
+     * @throws IOException
+     */
     private void handleFailure(
         String sourceFilename, 
         File sourceFile,
@@ -249,6 +353,21 @@ public class TivoConverter{
         return FilenameUtils.getName(filename);
     }
 
+    
+    private void printQueue() {
+    
+        StringBuffer sb = new StringBuffer();
+        
+        int cnt = 1;
+        for (Iterator i = workQueue_.iterator(); i.hasNext(); ) {
+            sb.append(cnt + " " + i.next() + "\n");
+            ++cnt;
+        }
+        
+        if (sb.length() > 0)
+            logger_.info(StringUtil.banner(sb.toString()));
+    }
+    
     // -------------------------------------------------------------------------
     // IncomingDirListener
     // -------------------------------------------------------------------------
@@ -268,6 +387,7 @@ public class TivoConverter{
                     String newFile = changeEvent.getAfterSnapshot().getAbsolutePath();
                     logger_.info(shorten(newFile) + " : Adding to work queue...");
                     workQueue_.add(newFile);
+                    printQueue();
                     break;
             }
         }
