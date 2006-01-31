@@ -11,7 +11,7 @@ import toolbox.util.FileUtil;
 /**
  * Unit test for {@link toolbox.tivo.FFMpegTranscoder}.
  */
-public class FFMpegTranscoderTest extends TivoTestCase {
+public class FFMpegTranscoderTest extends AbstractTestCase {
 
     private static final Logger logger_ = 
         Logger.getLogger(FFMpegTranscoderTest.class);
@@ -54,7 +54,7 @@ public class FFMpegTranscoderTest extends TivoTestCase {
         assertNotNull(result.getDuration());
         assertEquals(destFilename, result.getFilename());
         assertTrue(input.getBitrate().intValue() <= result.getBitrate().intValue());
-        assertTrue(input.getLength().longValue() <= result.getLength().longValue());
+        assertTrue(input.getFileSize().longValue() <= result.getFileSize().longValue());
         assertEquals(TivoStandards.AUDIO_128, result.getAudioStream());
         assertEquals(TivoStandards.VIDEO_720_480, result.getVideoStream());
     }
