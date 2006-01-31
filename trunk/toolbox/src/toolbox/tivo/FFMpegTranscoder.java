@@ -15,6 +15,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ElapsedTime;
+import toolbox.util.FileUtil;
 import toolbox.util.ProcessUtil;
 import toolbox.util.StringUtil;
 
@@ -164,8 +165,12 @@ public class FFMpegTranscoder extends AbstractTranscoder {
         
         OutputStream fout = null;
         OutputStream ferr = null;
+        FFMpegProgressOutputStream fpos = null;
         int exitValue = -1;
-        
+
+        File errFile = new File(logDir_, 
+            FilenameUtils.getName(movieInfo.getFilename()) + ".err.log");
+
         try {
             fout = new BufferedOutputStream(
                 new FileOutputStream(new File(logDir_, 
@@ -178,32 +183,48 @@ public class FFMpegTranscoder extends AbstractTranscoder {
                 + movieInfo.getSeconds();
             
             
-            ferr = 
-                new BufferedOutputStream(
-                    new FFMpegProgressOutputStream(totalSeconds, 
-                        new FileOutputStream(new File(logDir_, 
-                            FilenameUtils.getName(movieInfo.getFilename()) 
-                            + ".err.log"))));
+            ferr = new BufferedOutputStream(
+                        fpos = new FFMpegProgressOutputStream(
+                            totalSeconds, 
+                            new FileOutputStream(errFile)));
 
             ferr.write(new String("FFMpeg command: \n" + sb + "\n\n").getBytes());
             
             exitValue = ProcessUtil.getProcessOutput(p, fout, ferr);
         }
         finally {
+            timer.setEndTime();
+
+            if (fpos != null) {
+                int transcodeSeconds = (int) timer.getTotalMillis()/1000;
+                int frames = fpos.getProgressFrames();
+                //logger_.info("elapsed = " + timer + " or " + timer.getTotalMillis());
+                //logger_.info("frames = " + frames);
+                //logger_.info("seconds = " + transcodeSeconds);
+                logger_.info("Frames transcoded/sec = " + (frames / transcodeSeconds));
+            }
+            
+            int movieSeconds = movieInfo.getTotalSeconds();
+            int transcodeSeconds = (int) timer.getTotalMillis()/1000;
+            float speed = (float) movieSeconds / (float) transcodeSeconds;
+            
+            logger_.info("Transcoded at " + speed + "x speed");
+            
             IOUtils.closeQuietly(fout);
             IOUtils.closeQuietly(ferr);
+            
+            FileUtil.setFileContents(errFile, 
+                "\nTranscoded at " + speed + "x speed", true);
             
             if (exitValue != 0) 
                 fireTranscodeError();
             else
                 fireTranscodeFinished();
         }
-
         
         //logger_.info("stdout length = " + stdout.length());
         //logger_.info("stderr length = " + stderr.length());
 
-        timer.setEndTime();
         
         if (logger_.isDebugEnabled()) {
             logger_.debug("Exit value: " + exitValue);
