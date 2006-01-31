@@ -3,7 +3,8 @@ package toolbox.tivo;
 import java.text.NumberFormat;
 
 /**
- * Video stream info.
+ * Pure data object that captures the characteristics common to most video
+ * streams including height, width, and frame/second.
  */
 public class VideoStreamInfo extends StreamInfo {
 
@@ -11,8 +12,20 @@ public class VideoStreamInfo extends StreamInfo {
     // Fields
     //--------------------------------------------------------------------------
 
+    /**
+     * Video width in pixels.
+     */
     private Integer width_;
+    
+    /**
+     * Video height in pixels.
+     */
     private Integer height_;
+    
+    /**
+     * Video frames per second expressed as a String that contains a floating
+     * point value with precision to 2 digits.
+     */
     private String  framesPerSecond_;
 
     //--------------------------------------------------------------------------
