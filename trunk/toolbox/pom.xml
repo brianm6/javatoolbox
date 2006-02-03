@@ -879,6 +879,7 @@
   <!-- ===================================================================== -->
 
   <build>
+
     <sourceDirectory>src</sourceDirectory>
     <testSourceDirectory>test</testSourceDirectory>
 
@@ -888,10 +889,12 @@
       </resource>
     </resources>
 
-    
-    
 
     <plugins>
+
+      <!-- ================================================================= -->
+      <!-- CheckStyle Configuration                                          -->
+      <!-- ================================================================= -->
 
       <plugin>
         <artifactId>maven-checkstyle-plugin</artifactId>
@@ -905,6 +908,32 @@
         </dependencies>
       </plugin>
 
+      <!-- ================================================================= -->
+      <!-- Unit Test Configuration                                           -->
+      <!-- ================================================================= -->
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <exclude>**/toolbox/graph/**</exclude>
+            <exclude>**/toolbox/jedit/**</exclude>
+            <exclude>**/toolbox/log4j/im/**</exclude>
+            <exclude>**/toolbox/plugin/jsourceview/JSourceViewPluginTest.java</exclude>
+            <exclude>**/toolbox/util/db/SQLFormatterViewTest.java</exclude>
+            <exclude>**/toolbox/util/service/ServiceView*Test.java</exclude>
+            <exclude>**/toolbox/util/ui/**</exclude>
+            <exclude>**/toolbox/util/BrowserLauncherTest.java</exclude>
+            <exclude>**/toolbox/util/SwingUtilTest.java</exclude>
+            <exclude>**/toolbox/workspace/PluginWorkspaceTest.java</exclude>
+            <!--            <exclude>**/DecompilerTest.java</exclude>-->
+            <!--            <exclude>**/FigletTaskTest.java</exclude>-->
+            <!--            <exclude>**/RepositoryTest.java</exclude>-->
+          </excludes>
+        </configuration>
+      </plugin>
+
     </plugins>
   </build>
 
@@ -916,15 +945,15 @@
   <reporting>
     <plugins>
 
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-project-info-reports-plugin</artifactId>
-      </plugin>
+<!--      <plugin>-->
+<!--        <groupId>org.apache.maven.plugins</groupId>-->
+<!--        <artifactId>maven-project-info-reports-plugin</artifactId>-->
+<!--      </plugin>-->
 
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-clover-plugin</artifactId>
-      </plugin>
+<!--      <plugin>-->
+<!--        <groupId>org.apache.maven.plugins</groupId>-->
+<!--        <artifactId>maven-clover-plugin</artifactId>-->
+<!--      </plugin>-->
 
       <!--
         <plugin>
@@ -933,10 +962,21 @@
         </plugin>
       -->
 
+<!--      <plugin>-->
+<!--        <groupId>org.apache.maven.plugins</groupId>-->
+<!--        <artifactId>maven-javadoc-plugin</artifactId>-->
+<!--      </plugin>-->
+
+      <!-- ================================================================= -->
+      <!-- Unit Test Report                                                  -->
+      <!-- ================================================================= -->
+
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>surefire-report-maven-plugin</artifactId>
+<!--        <version>2.0-beta-1-SNAPSHOT</version>-->
       </plugin>
+
 
     </plugins>
   </reporting>
