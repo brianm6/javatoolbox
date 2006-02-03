@@ -60,7 +60,7 @@ public class RollingCounterTest extends TestCase
             c.increment();
         }
 
-        logger_.info(sb);
+        logger_.debug(sb);
     }
     
     
@@ -228,6 +228,6 @@ public class RollingCounterTest extends TestCase
         logger_.info("Running testToString...");
         
         RollingCounter c = new RollingCounter(1, 5, 2);
-        logger_.info("toString: " + c);
+        logger_.debug("toString: " + c);
     }
 }

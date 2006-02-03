@@ -92,7 +92,7 @@ public class DecompilerTest extends TestCase
             }
             catch (IllegalArgumentException iae)
             {
-                logger_.info("Decompiler " + d.getClass().getName() + 
+                logger_.debug("Decompiler " + d.getClass().getName() + 
                     " does not support this method.");                
             }
             finally
@@ -124,7 +124,7 @@ public class DecompilerTest extends TestCase
             }
             catch (IllegalArgumentException iae)
             {
-                logger_.info("Decompiler " + 
+                logger_.debug("Decompiler " + 
                     decompilers_[i].getClass().getName() + 
                     " does not support this method.");                
             }

@@ -41,25 +41,25 @@ public class SmartLoggerTest extends TestCase
         String br = StringUtils.repeat("=", 60); 
         
         String s = "one\ntwo\nthree\nfour\nfive";
-        logger_.info("There should be 5 lines one...five");
-        logger_.info(br);
+        logger_.debug("There should be 5 lines one...five");
+        logger_.debug(br);
         SmartLogger.info(logger_, s);        
         
-        logger_.info(br);
+        logger_.debug(br);
         String b = "";
-        logger_.info("There should be 1 empty line");
-        logger_.info(br);
+        logger_.debug("There should be 1 empty line");
+        logger_.debug(br);
         SmartLogger.info(logger_, b);        
 
-        logger_.info(br);
+        logger_.debug(br);
         String c = "\n";
-        logger_.info("There should be 1 empty line");
-        logger_.info(br);
+        logger_.debug("There should be 1 empty line");
+        logger_.debug(br);
         SmartLogger.info(logger_, c);        
 
-        logger_.info(br);
-        logger_.info("There should be 2 empty lines");
-        logger_.info(br);
+        logger_.debug(br);
+        logger_.debug("There should be 2 empty lines");
+        logger_.debug(br);
         SmartLogger.info(logger_, "\n\n");        
     }
 }

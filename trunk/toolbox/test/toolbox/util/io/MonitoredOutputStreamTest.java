@@ -166,28 +166,28 @@ public class MonitoredOutputStreamTest extends TestCase
         
         int delay = 0;
         
-        logger_.info("");
-        logger_.info("[1 byte packet]");
+        logger_.debug("");
+        logger_.debug("[1 byte packet]");
         stuffStream(mos, 1, 2, delay);
         
-        logger_.info("");
-        logger_.info("[10 byte packet]");
+        logger_.debug("");
+        logger_.debug("[10 byte packet]");
         stuffStream(mos, 10, 2, delay);
         
-        logger_.info("");
-        logger_.info("[100 byte packet]");
+        logger_.debug("");
+        logger_.debug("[100 byte packet]");
         stuffStream(mos, 100, 2, delay);
         
-        logger_.info("");
-        logger_.info("[1000 byte packet]");
+        logger_.debug("");
+        logger_.debug("[1000 byte packet]");
         stuffStream(mos, 1000, 2, delay);
         
-        logger_.info("");
-        logger_.info("[10000 byte packet]");
+        logger_.debug("");
+        logger_.debug("[10000 byte packet]");
         stuffStream(mos, 10000, 2, delay);
         
-        logger_.info("");
-        logger_.info("[100000 byte packet]");
+        logger_.debug("");
+        logger_.debug("[100000 byte packet]");
         stuffStream(mos, 100000, 2, delay); 
                
         monitor.setMonitoringThroughput(false);
@@ -214,7 +214,7 @@ public class MonitoredOutputStreamTest extends TestCase
         
         int delay = 1;
         
-        logger_.info("[100000 byte packet]");
+        logger_.debug("[100000 byte packet]");
         //for (int i = 0; i< 1000000; i++)
         //    bos.write(i);
         

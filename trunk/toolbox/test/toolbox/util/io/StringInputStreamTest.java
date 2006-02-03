@@ -120,10 +120,10 @@ public class StringInputStreamTest extends TestCase
         for (int i = 0; i < iterations; i++)                  
         {
             if (i == 2)
-                logger_.info(StringUtil.NL + sis.toString());
+                logger_.debug(StringUtil.NL + sis.toString());
                 
             int c = sis.read();
-            logger_.info("Read: " + (char) c);
+            logger_.debug("Read: " + (char) c);
             assertEquals('x', (char) c);
         }
         

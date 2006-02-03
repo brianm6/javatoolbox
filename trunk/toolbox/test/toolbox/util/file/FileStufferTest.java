@@ -59,7 +59,7 @@ public class FileStufferTest extends TestCase
         
         String contents = FileUtil.getFileContents(outfile.getAbsolutePath());
 
-        logger_.info("File contents: \n" + contents);
+        logger_.debug("File contents: \n" + contents);
         
         outfile.delete();
     }

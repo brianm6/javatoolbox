@@ -45,7 +45,7 @@ public class AbstractServiceTest extends TestCase
 //     */
 //    public void testStart() throws ServiceException
 //    {
-//        logger_.info("Running testStart...");
+//        logger_.debug("Running testStart...");
 //        
 //        Service s = new MockService();
 //        s.initialize(Collections.EMPTY_MAP);
@@ -144,7 +144,7 @@ public class AbstractServiceTest extends TestCase
 //     */
 //    public void testSuspendInvalid() throws ServiceException
 //    {
-//        logger_.info("Running testSuspendInvalid...");
+//        logger_.debug("Running testSuspendInvalid...");
 //        
 //        try 
 //        {
@@ -468,7 +468,7 @@ public class AbstractServiceTest extends TestCase
          */
         public void serviceStateChanged(Service service) throws ServiceException
         {
-            logger_.info("State = " + service.getState());
+            logger_.debug("State = " + service.getState());
         }
     }
 }

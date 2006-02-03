@@ -70,7 +70,7 @@ public class FOPProcessorTest extends TestCase
         // Wait for all to complete
         for (int i = 0; i < iterations; i++)
         {
-            logger_.info("Waiting for thread " + i + " to complete...");
+            logger_.debug("Waiting for thread " + i + " to complete...");
             threads[i].join();
         }
     }
@@ -105,7 +105,7 @@ public class FOPProcessorTest extends TestCase
         
         String foXML = ResourceUtil.getResourceAsString(FILE_TEST_XSLFO);
 
-        logger_.info("Rendering...");
+        logger_.debug("Rendering...");
          
         FOProcessor fop = 
             FOProcessorFactory.create(
@@ -118,12 +118,12 @@ public class FOPProcessorTest extends TestCase
         fop.renderPostscript(input, output);
         byte[] psBytes = output.toByteArray();
         
-        logger_.info("Rendering done!");
+        logger_.debug("Rendering done!");
 
         assertNotNull(psBytes);
         assertTrue(psBytes.length > 0);
         
-        logger_.info("Input FO: " + foXML.length() + 
+        logger_.debug("Input FO: " + foXML.length() + 
             " --> Output Postscript: " + psBytes.length);
     }
     
@@ -175,12 +175,12 @@ public class FOPProcessorTest extends TestCase
                 fop.renderPDF(input, output);
                 byte[] pdfBytes = output.toByteArray();
                     
-                logger_.info("Render request " + cnt_ + " to PDF done!");
+                logger_.debug("Render request " + cnt_ + " to PDF done!");
 
                 assertNotNull(pdfBytes);
                 assertTrue(pdfBytes.length > 0);
                     
-                logger_.info(
+                logger_.debug(
                     "Input FO: " + foXML_.length() + 
                     " --> Output PDF: " + pdfBytes.length);
             }

@@ -43,6 +43,6 @@ public class ExceptionUtilTest extends TestCase
         Exception e = new Exception("wumba");
         String stackTrace = ExceptionUtil.getStackTrace(e);
         assertNotNull(stackTrace);
-        logger_.info(stackTrace);        
+        logger_.debug(stackTrace);        
     }
 }

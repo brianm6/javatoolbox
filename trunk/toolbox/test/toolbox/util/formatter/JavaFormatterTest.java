@@ -68,7 +68,7 @@ public class JavaFormatterTest extends TestCase
         Formatter f = new JavaFormatter();
         String t = f.format(JAVA_OBFUSCATED);
         assertNotNull(t);
-        logger_.info(StringUtil.banner(t));
+        logger_.debug(StringUtil.banner(t));
         assertNotSame(JAVA_OBFUSCATED, t);
     }
         
@@ -90,7 +90,7 @@ public class JavaFormatterTest extends TestCase
         f.format(sis, sos);
         out = sos.toString().trim();
         assertNotNull(out);
-        logger_.info(StringUtil.banner(out));
+        logger_.debug(StringUtil.banner(out));
         assertNotSame(JAVA_OBFUSCATED, out);
     }
 }

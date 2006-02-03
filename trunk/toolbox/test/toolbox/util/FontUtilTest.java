@@ -52,7 +52,7 @@ public class FontUtilTest extends TestCase
         Element forward = FontUtil.toElement(FontUtil.getPreferredMonoFont());
         String xml = XOMUtil.toXML(forward);
 
-        logger_.info("\n" + xml);
+        logger_.debug("\n" + xml);
 
         Font reverse = FontUtil.toFont(forward);
         assertNotNull(reverse);
@@ -83,7 +83,7 @@ public class FontUtilTest extends TestCase
         
         Font f = FontUtil.getPreferredMonoFont();
         assertNotNull(f);
-        logger_.info("Preferred mono font: " + f.getName());
+        logger_.debug("Preferred mono font: " + f.getName());
     }
 
 
@@ -96,7 +96,7 @@ public class FontUtilTest extends TestCase
         
         Font f = FontUtil.getPreferredSerifFont();
         assertNotNull(f);
-        logger_.info("Preferred serif font: " + f.getName());
+        logger_.debug("Preferred serif font: " + f.getName());
     }
 
     
@@ -180,7 +180,7 @@ public class FontUtilTest extends TestCase
         
         for (int i = 0; i < fonts.length; i++)
             if (FontUtil.isMonospaced(fonts[i]))
-                logger_.info(fonts[i].getName() + " is monospaced"); 
+                logger_.debug(fonts[i].getName() + " is monospaced"); 
     }
     
     

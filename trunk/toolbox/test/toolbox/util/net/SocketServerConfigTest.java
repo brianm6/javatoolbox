@@ -49,7 +49,7 @@ public class SocketServerConfigTest extends TestCase
         // Create properties file
         String file = FileUtil.createTempFilename();
         
-        logger_.info("Props file: " + file);
+        logger_.debug("Props file: " + file);
         
         try
         {
@@ -65,14 +65,14 @@ public class SocketServerConfigTest extends TestCase
 
             FileUtil.setFileContents(file, sb.toString(), false);
             
-            logger_.info("Generated properties file: \n" + 
+            logger_.debug("Generated properties file: \n" + 
                 FileUtil.getFileContents(file));
             
             // Create config and read props in from file
             SocketServerConfig config = new SocketServerConfig();
             config.load(file);
 
-            logger_.info("Loaded config: \n " + config);
+            logger_.debug("Loaded config: \n " + config);
             assertEquals("ports don't match", 1000, config.getServerPort());
             assertEquals("names don't match", "server", config.getName());
             
@@ -151,6 +151,6 @@ public class SocketServerConfigTest extends TestCase
             NullConnectionHandler.class.getName(), 
             config.getConnectionHandlerType());
             
-        logger_.info(config);
+        logger_.debug(config);
     }
 }

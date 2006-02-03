@@ -41,7 +41,7 @@ public class ValidatorFunctionalTest extends TestCase
     protected void setUp() throws Exception
     {
         super.setUp();
-        logger_.info(StringUtils.repeat("=", 80));
+        logger_.debug(StringUtils.repeat("=", 80));
     }
 
     //--------------------------------------------------------------------------
@@ -61,12 +61,12 @@ public class ValidatorFunctionalTest extends TestCase
         Validator validator = new BabyBellPhoneNumberValidator();
         validator.validate(context);
 
-        logger_.info("IsValid = " + context.isValid());
+        logger_.debug("IsValid = " + context.isValid());
 
-        logger_.info("Failures = "
+        logger_.debug("Failures = "
             + ArrayUtil.toString(context.getFailures().toArray(), false));
 
-        logger_.info("Warnings = "
+        logger_.debug("Warnings = "
             + ArrayUtil.toString(context.getWarnings().toArray(), false));
 
         assertTrue(context.isValid());
@@ -87,12 +87,12 @@ public class ValidatorFunctionalTest extends TestCase
         context.setFailFast(false);
         validator.validate(context);
 
-        logger_.info("IsValid = " + context.isValid());
+        logger_.debug("IsValid = " + context.isValid());
 
-        logger_.info("Failures = "
+        logger_.debug("Failures = "
             + ArrayUtil.toString(context.getFailures().toArray(), false));
 
-        logger_.info("Warnings = "
+        logger_.debug("Warnings = "
             + ArrayUtil.toString(context.getWarnings().toArray(), false));
 
         assertFalse(context.isValid());
@@ -113,12 +113,12 @@ public class ValidatorFunctionalTest extends TestCase
         context.setFailFast(true);
         validator.validate(context);
 
-        logger_.info("IsValid = " + context.isValid());
+        logger_.debug("IsValid = " + context.isValid());
 
-        logger_.info("Failures = "
+        logger_.debug("Failures = "
             + ArrayUtil.toString(context.getFailures().toArray(), false));
 
-        logger_.info("Warnings = "
+        logger_.debug("Warnings = "
             + ArrayUtil.toString(context.getWarnings().toArray(), false));
 
         assertFalse(context.isValid());

@@ -56,7 +56,7 @@ public class FileDeletedRecognizerTest extends TestCase {
 //            assertEquals(
 //                "second run should contain one file", 1, secondRun.size());
 //
-//            logger_.info("Deleted file activity: "
+//            logger_.debug("Deleted file activity: "
 //                + ArrayUtil.toString(secondRun.toArray()));
 //
 //            // Run the activity again.. should report no new files

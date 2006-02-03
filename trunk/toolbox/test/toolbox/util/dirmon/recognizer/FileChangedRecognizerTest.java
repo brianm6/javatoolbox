@@ -63,7 +63,7 @@ public class FileChangedRecognizerTest extends TestCase {
                 "second run should contain one file", 
                 1, secondRun.size());
 
-            logger_.info("Changed file activity: " + secondRun.get(0));
+            logger_.debug("Changed file activity: " + secondRun.get(0));
 
             // Run the activity again.. should report no new files
             DirSnapshot c = new DirSnapshot(dir);

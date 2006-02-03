@@ -48,7 +48,7 @@ public class JarTestCollectorTest extends TestCase
         for (Enumeration e = tc.collectTests(); e.hasMoreElements();)
         {
             String classname = (String) e.nextElement();
-            logger_.info("Testclass: " + classname);
+            logger_.debug("Testclass: " + classname);
         }
         
     }

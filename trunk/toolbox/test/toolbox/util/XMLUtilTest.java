@@ -110,7 +110,7 @@ public class XMLUtilTest extends TestCase
         
         assertNotNull(formatted);
         
-        logger_.info("Formatted XML:\n\n" + formatted);
+        logger_.debug("Formatted XML:\n\n" + formatted);
         
     }
     
@@ -137,7 +137,7 @@ public class XMLUtilTest extends TestCase
         
         assertNotNull(formatted);
         
-        logger_.info("Formatted XML:\n\n" + formatted);
+        logger_.debug("Formatted XML:\n\n" + formatted);
     }
     
     

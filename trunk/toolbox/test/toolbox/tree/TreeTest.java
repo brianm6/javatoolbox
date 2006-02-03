@@ -113,7 +113,7 @@ public class TreeTest extends TestCase
     public void testShowTreeSimpleCascade() throws Exception
     {
         logger_.info("Running testShowTreeSimpleCascade...");
-        logger_.info("Tree with cascading dirs: \n");
+        logger_.debug("Tree with cascading dirs: \n");
         
         File a = new File(rootDir_, "a");
         assertTrue(a.mkdir());
@@ -142,7 +142,7 @@ public class TreeTest extends TestCase
     public void testShowTreeSimpleFlat() throws Exception
     {
         logger_.info("Running testShowTreeSimpleFlat...");
-        logger_.info("Tree with flat struct at level 2: \n");
+        logger_.debug("Tree with flat struct at level 2: \n");
         
         File a = new File(rootDir_, "a");
         assertTrue(a.mkdir());
@@ -171,7 +171,7 @@ public class TreeTest extends TestCase
     public void testShowTreeExtensionBar() throws Exception
     {
         logger_.info("Running testShowTreeExtensionBar...");
-        logger_.info("Tree with an extension bar: \n");
+        logger_.debug("Tree with an extension bar: \n");
                 
         // Create rootDir_\a\b\c\d 
         File a = new File(rootDir_, "a");
@@ -212,7 +212,7 @@ public class TreeTest extends TestCase
     public void testShowTreeManyInRoot() throws Exception
     {
         logger_.info("Running testShowTreeManyInRoot...");
-        logger_.info("Tree with > 1 dir in root: \n");
+        logger_.debug("Tree with > 1 dir in root: \n");
                 
         File a = new File(rootDir_, "a");
         assertTrue(a.mkdir());
@@ -246,7 +246,7 @@ public class TreeTest extends TestCase
     public void testShowTreeEmptyRoot() throws Exception
     {
         logger_.info("Running testShowTreeEmptyRoot...");
-        logger_.info("Tree with an empty root: \n");
+        logger_.debug("Tree with an empty root: \n");
         Tree tree = new Tree(rootDir_);
         tree.showTree();
         
@@ -269,7 +269,7 @@ public class TreeTest extends TestCase
     public void testShowTreeOneDir() throws Exception
     {
         logger_.info("Running testShowTreeOneDir...");
-        logger_.info("Tree with a single directory: \n");
+        logger_.debug("Tree with a single directory: \n");
 
         File a = new File(rootDir_, "a");
         assertTrue(a.mkdir());
@@ -303,8 +303,8 @@ public class TreeTest extends TestCase
      */
     public void testShowTreeSimpleCascadeFile() throws Exception
     {
-        logger_.info("Running testShowTreeSimpleCascadeFile...");
-        logger_.info("Tree with cascading dirs and one file: \n");
+        logger_.debug("Running testShowTreeSimpleCascadeFile...");
+        logger_.debug("Tree with cascading dirs and one file: \n");
         
         createFile(rootDir_);
         
@@ -339,7 +339,7 @@ public class TreeTest extends TestCase
     public void testShowTreeRootFiles() throws Exception
     {
         logger_.info("Running testShowTreeRootFiles...");
-        logger_.info("Tree with cascading dirs and one file: \n");
+        logger_.debug("Tree with cascading dirs and one file: \n");
         
         createFile(rootDir_);
         createFile(rootDir_);

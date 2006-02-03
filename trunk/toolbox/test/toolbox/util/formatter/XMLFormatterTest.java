@@ -61,14 +61,14 @@ public class XMLFormatterTest extends TestCase
         
         String t1 = f.format(XML_TEST1_IN).trim();
         assertEquals(XML_TEST1_OUT, t1);
-        logger_.info(StringUtil.banner(t1));
+        logger_.debug(StringUtil.banner(t1));
         
         String t2 = f.format(XML_TEST2_IN).trim();
-        logger_.info(StringUtil.banner(t2));
+        logger_.debug(StringUtil.banner(t2));
         assertEquals(XML_TEST2_OUT, t2);
         
         String t3 = f.format(XML_TEST3_IN).trim();
-        logger_.info(StringUtil.banner(t3));
+        logger_.debug(StringUtil.banner(t3));
         assertEquals(XML_TEST3_OUT, t3);
     }
         
@@ -90,20 +90,20 @@ public class XMLFormatterTest extends TestCase
         f.format(sis, sos);
         out = sos.toString().trim();
         assertEquals(XML_TEST1_OUT, out);
-        logger_.info(StringUtil.banner(out));
+        logger_.debug(StringUtil.banner(out));
         
         sis = new StringInputStream(XML_TEST2_IN);
         sos = new StringOutputStream();
         f.format(sis, sos);
         out = sos.toString().trim();
-        logger_.info(StringUtil.banner(out));
+        logger_.debug(StringUtil.banner(out));
         assertEquals(XML_TEST2_OUT, out);
 
         sis = new StringInputStream(XML_TEST3_IN);
         sos = new StringOutputStream();
         f.format(sis, sos);
         out = sos.toString().trim();
-        logger_.info(StringUtil.banner(out));
+        logger_.debug(StringUtil.banner(out));
         assertEquals(XML_TEST3_OUT, out);
     }
 

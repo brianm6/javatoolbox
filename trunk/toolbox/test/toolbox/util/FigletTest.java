@@ -42,7 +42,7 @@ public class FigletTest extends TestCase
         logger_.info("Running testFiglet...");
         
         String s = Figlet.getBanner("Howdy!");
-        logger_.info("\n" + s);
+        logger_.debug("\n" + s);
     }
     
     

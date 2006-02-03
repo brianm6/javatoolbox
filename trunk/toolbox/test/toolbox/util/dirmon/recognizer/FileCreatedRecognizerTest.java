@@ -69,7 +69,7 @@ public class FileCreatedRecognizerTest extends TestCase {
 //            assertEquals("second run should contain one file", 1, secondRun
 //                .size());
 //
-//            logger_.info("New file activity: "
+//            logger_.debug("New file activity: "
 //                + ArrayUtil.toString(secondRun.toArray()));
 //
 //            // Run the activity again.. should report no new files

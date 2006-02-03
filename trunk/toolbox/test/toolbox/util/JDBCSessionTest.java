@@ -142,7 +142,7 @@ public class JDBCSessionTest extends TestCase
             JDBCSession.dropTable(name, table);
             JDBCSession.shutdown(name);
             cleanup(prefix);
-            logger_.info("Stress loop : " + i);
+            logger_.debug("Stress loop : " + i);
         }
         
         assertEquals(0, JDBCSession.getSessionCount());
@@ -214,8 +214,8 @@ public class JDBCSessionTest extends TestCase
                 Connection conn2 = JDBCSession.getConnection(session);
                 Connection conn3 = JDBCSession.getConnection(session);
                 
-                //logger_.info("Connection: " + conn1);
-                //logger_.info("Autocommit: " + conn1.getAutoCommit());
+                //logger_.debug("Connection: " + conn1);
+                //logger_.debug("Autocommit: " + conn1.getAutoCommit());
                 
                 assertNotNull(conn1);
                 assertNotNull(conn2);
@@ -270,7 +270,7 @@ public class JDBCSessionTest extends TestCase
             }
             catch (IllegalArgumentException iae)
             {
-                logger_.info("SUCCESS: " + iae.getMessage());
+                logger_.debug("SUCCESS: " + iae.getMessage());
             }
         }
         finally
@@ -301,8 +301,8 @@ public class JDBCSessionTest extends TestCase
                 name, DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD);
 
             Connection conn = JDBCSession.getConnection(name);
-            logger_.info("Connection: " + conn);
-            logger_.info("Autocommit: " + conn.getAutoCommit());
+            logger_.debug("Connection: " + conn);
+            logger_.debug("Autocommit: " + conn.getAutoCommit());
             assertNotNull(conn);
             JDBCUtil.releaseConnection(conn);
         }
@@ -360,7 +360,7 @@ public class JDBCSessionTest extends TestCase
                 JDBCSession.executeQuery(name, "select * from " + table);
             
             assertTrue(results.indexOf("0 rows") >= 0);
-            logger_.info("\n" + results);
+            logger_.debug("\n" + results);
         }
         finally
         {
@@ -400,7 +400,7 @@ public class JDBCSessionTest extends TestCase
             
             assertTrue(results.indexOf("1 rows") >= 0);
             assertTrue(results.indexOf("333") >= 0);
-            logger_.info("\n" + results);
+            logger_.debug("\n" + results);
         }
         finally
         {
@@ -440,7 +440,7 @@ public class JDBCSessionTest extends TestCase
                 name, "select * from " + table);
             
             assertTrue(results.indexOf("100 rows") >= 0);
-            logger_.info("\n" + StringUtil.wrap(results.replace('\n', ' ')));
+            logger_.debug("\n" + StringUtil.wrap(results.replace('\n', ' ')));
         }
         finally
         {
@@ -610,7 +610,7 @@ public class JDBCSessionTest extends TestCase
             String results = JDBCSession.executeQuery(
                 name, "select * from " + table);
             assertTrue(results.indexOf("0 rows") >= 0);
-            logger_.info("\n" + results);
+            logger_.debug("\n" + results);
         }
         finally
         {
@@ -654,7 +654,7 @@ public class JDBCSessionTest extends TestCase
 
             int size = JDBCUtil.getSize(results);
 
-            logger_.info("Resultset size: " + size);
+            logger_.debug("Resultset size: " + size);
             assertEquals("size shold be zero", 0, size);
 
         }
@@ -770,7 +770,7 @@ public class JDBCSessionTest extends TestCase
             int cursorPos = results.getRow();
             int size = JDBCUtil.getSize(results);
 
-            logger_.info("Resultset size: " + size);
+            logger_.debug("Resultset size: " + size);
             assertEquals("size mismatch", numRows, size);
 
             //
@@ -830,7 +830,7 @@ public class JDBCSessionTest extends TestCase
             int cursorPos = results.getRow();
             int size = JDBCUtil.getSize(results);
 
-            logger_.info("Resultset size: " + size);
+            logger_.debug("Resultset size: " + size);
             assertEquals("size should be one", 1, size);
 
             //
@@ -940,7 +940,7 @@ public class JDBCSessionTest extends TestCase
             String contents = JDBCSession.executeQuery(name, 
                 "select * from user");
             
-            //logger_.info("Before drop: " + contents);
+            //logger_.debug("Before drop: " + contents);
             assertTrue(contents.indexOf("ID") >= 0);
 
             JDBCSession.dropTable(name, "user");
@@ -1045,7 +1045,7 @@ public class JDBCSessionTest extends TestCase
                 "create table " + table + "(id integer)");
             
             String[] tables = JDBCSession.getTableNames(name);
-            logger_.info("Tables =\n" + ArrayUtil.toString(tables, true));
+            logger_.debug("Tables =\n" + ArrayUtil.toString(tables, true));
 
             //
             // The table names may not be in the same case so the search has

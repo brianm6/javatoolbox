@@ -46,6 +46,6 @@ public class MapUtilTest extends TestCase
         map.put("age", "34");
         map.put("misc", "stuff");
         
-        logger_.info("\n" + MapUtil.toString(map));
+        logger_.debug("\n" + MapUtil.toString(map));
     }
 }

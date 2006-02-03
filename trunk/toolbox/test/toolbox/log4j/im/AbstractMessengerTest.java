@@ -134,7 +134,7 @@ public abstract class AbstractMessengerTest extends TestCase implements
         
         // Cleanup
         Appender appender = logger.getAppender(appenderName);
-        logger_.info("Closing appender " + appender.getName());
+        logger_.debug("Closing appender " + appender.getName());
         appender.close();
         logger.removeAppender(appenderName);
     }

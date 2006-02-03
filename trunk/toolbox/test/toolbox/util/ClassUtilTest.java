@@ -183,10 +183,10 @@ public class ClassUtilTest extends TestCase
         // a directory on the classpath when the test is run from outside
         // eclipse
         
-        //logger_.info("Running testGetClassesInPackageDirectory...");
+        //logger_.debug("Running testGetClassesInPackageDirectory...");
         
         //String[] classes = ClassUtil.getClassesInPackage("toolbox.util");
-        //logger_.info("\n" + ArrayUtil.toString(classes, true));
+        //logger_.debug("\n" + ArrayUtil.toString(classes, true));
         //assertTrue(StringUtil.class.getName() + " not found in package", 
         //    ArrayUtil.contains(classes, StringUtil.class.getName()));
     }
@@ -201,7 +201,7 @@ public class ClassUtilTest extends TestCase
         
         String[] classes = ClassUtil.getClassesInPackage("junit.textui");
         
-        //logger_.info("\n"+ArrayUtil.toString(classes, true));
+        //logger_.debug("\n"+ArrayUtil.toString(classes, true));
         
         assertTrue(TestRunner.class.getName() + " not found in package", 
             ArrayUtil.contains(classes, TestRunner.class.getName()));
@@ -217,7 +217,7 @@ public class ClassUtilTest extends TestCase
         
         String[] classes = ClassUtil.getClassesInPackage("java.lang");
         
-        //logger_.info("\n" + ArrayUtil.toString(classes, true));
+        //logger_.debug("\n" + ArrayUtil.toString(classes, true));
         
         assertTrue(String.class.getName() + " not found in package", 
             ArrayUtil.contains(classes, String.class.getName()));
@@ -324,7 +324,7 @@ public class ClassUtilTest extends TestCase
             findMe = "cmd.exe";
         else
         {
-            logger_.info("Skipping testFindInPath due to current platform.");
+            logger_.debug("Skipping testFindInPath due to current platform.");
             return;
         }
         
@@ -356,7 +356,7 @@ public class ClassUtilTest extends TestCase
         
         // Try a system class
         URL loc1 = ClassUtil.getClassLocation(Object.class);
-        logger_.info("Class Location = " + loc1);
+        logger_.debug("Class Location = " + loc1);
         assertNotNull(loc1);
         assertTrue(loc1.toString().indexOf("rt.jar") >= 0);
         assertTrue(loc1.toString().indexOf("Object.class") >= 0);
@@ -372,7 +372,7 @@ public class ClassUtilTest extends TestCase
         
         // Try a toolbox class
         URL loc2 = ClassUtil.getClassLocation(ClassUtil.class);    
-        logger_.info("Class Location = " + loc2);
+        logger_.debug("Class Location = " + loc2);
         assertNotNull(loc2);
         assertTrue(loc2.toString().indexOf("toolbox") >= 0);
         assertTrue(loc2.toString().indexOf("ClassUtil.class") >= 0);
@@ -391,7 +391,7 @@ public class ClassUtilTest extends TestCase
             
         // Try a dynamically created class
         URL loc3 = ClassUtil.getClassLocation(dynoClass);    
-        logger_.info("Class Location = " + loc3);
+        logger_.debug("Class Location = " + loc3);
         assertNull(loc3);
     }
     

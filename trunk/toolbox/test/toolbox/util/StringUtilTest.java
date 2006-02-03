@@ -80,10 +80,10 @@ public class StringUtilTest extends TestCase
         
         String s = "0123456789";
         
-        logger_.info(StringUtil.wrap(s));
-        logger_.info(StringUtil.NL + StringUtil.wrap(s, 5));
-        logger_.info(StringUtil.wrap(s, 5, true));
-        logger_.info(StringUtil.wrap(s, 5, false));
+        logger_.debug(StringUtil.wrap(s));
+        logger_.debug(StringUtil.NL + StringUtil.wrap(s, 5));
+        logger_.debug(StringUtil.wrap(s, 5, true));
+        logger_.debug(StringUtil.wrap(s, 5, false));
     }
     
     //--------------------------------------------------------------------------

@@ -94,7 +94,7 @@ public class PrintableOutputStreamTest extends TestCase
             1, 2, 3, 4};
         
         pos.write(input);
-        logger_.info("output:'" + sos.toString() + "'");
+        logger_.debug("output:'" + sos.toString() + "'");
         assertEquals(expected, sos.toString());
 
         // Try with an empty replacement
@@ -102,7 +102,7 @@ public class PrintableOutputStreamTest extends TestCase
         sos.getBuffer().setLength(0);
         pos.write(input);
         expected = "abc123";
-        logger_.info("output:'" + sos.toString() + "'");
+        logger_.debug("output:'" + sos.toString() + "'");
         assertEquals(expected, sos.toString());
     }
 

@@ -89,7 +89,7 @@ public class LAFInfoTest extends TestCase
         LAFInfo info = new LAFInfo();
         info.applyPrefs(root);
 
-        logger_.info("toString:" + info);
+        logger_.debug("toString:" + info);
         
         assertEquals("name", info.getName());
         assertEquals("class", info.getClassName());

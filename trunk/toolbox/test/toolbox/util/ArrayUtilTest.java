@@ -246,8 +246,8 @@ public class ArrayUtilTest extends TestCase
         String[] objs = new String[] {"zero", "one", "two", "three"};
         String[] subset = (String[]) ArrayUtil.subset(objs, 1, 2);
         
-        logger_.info(ArrayUtil.toString(objs));
-        logger_.info(ArrayUtil.toString(subset));
+        logger_.debug(ArrayUtil.toString(objs));
+        logger_.debug(ArrayUtil.toString(subset));
         
         assertEquals("first index is incorrect", "one", subset[0]);
         assertEquals("second index is incorrect", "two", subset[1]);
@@ -353,7 +353,7 @@ public class ArrayUtilTest extends TestCase
             "[10]{one, two, three, four, five, six, seven, eight, nine, ten}";
             
         String result   = ArrayUtil.toString(s, false);
-        logger_.info(result);
+        logger_.debug(result);
         assertEquals("strings don't match", expected, result);
 
     }
@@ -367,7 +367,7 @@ public class ArrayUtilTest extends TestCase
         logger_.info("Running testToStringEmpty...");
         
         String[] s = new String[0];
-        logger_.info(ArrayUtil.toString(s));
+        logger_.debug(ArrayUtil.toString(s));
     }
 
     
@@ -379,7 +379,7 @@ public class ArrayUtilTest extends TestCase
         logger_.info("Running testToStringOne...");
         
         String[] s = new String[] {"blah"};
-        logger_.info(ArrayUtil.toString(s));
+        logger_.debug(ArrayUtil.toString(s));
     }
     
     
@@ -391,8 +391,8 @@ public class ArrayUtilTest extends TestCase
         logger_.info("Running testToStringOneElementOnePerLine...");
         
         String[] s = new String[] {"hello"};
-        logger_.info(ArrayUtil.toString(s, true));
-        logger_.info(ArrayUtil.toString(s, false));        
+        logger_.debug(ArrayUtil.toString(s, true));
+        logger_.debug(ArrayUtil.toString(s, false));        
     }
 
     
@@ -410,7 +410,7 @@ public class ArrayUtilTest extends TestCase
         };
         
         String result   = ArrayUtil.toString(s, true);
-        logger_.info("\n " + result);
+        logger_.debug("\n " + result);
     }
     
     //--------------------------------------------------------------------------
@@ -1075,7 +1075,7 @@ public class ArrayUtilTest extends TestCase
         logger_.info("Running testToStringIntArray...");
         
         int[] i = new int[] {1, 2, 3, 4, 5};
-        logger_.info(ArrayUtil.toString(i));        
+        logger_.debug(ArrayUtil.toString(i));        
     }
     
 
@@ -1087,7 +1087,7 @@ public class ArrayUtilTest extends TestCase
         logger_.info("Running testToStringDoubleArray...");
         
         double[] d = new double[] {1.1, 2.2, 3.3, 4.4, 5.5};
-        logger_.info(ArrayUtil.toString(d));        
+        logger_.debug(ArrayUtil.toString(d));        
     }
 
     
@@ -1113,7 +1113,7 @@ public class ArrayUtilTest extends TestCase
      */
     public void testAddToArray()
     {
-        logger_.info("Running testAddToArray...");
+        logger_.debug("Running testAddToArray...");
         
         String[] arr = new String[] {"one", "two", "three"};
         String four = "four";        

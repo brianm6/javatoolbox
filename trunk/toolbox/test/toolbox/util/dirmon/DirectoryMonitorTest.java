@@ -76,7 +76,7 @@ public class DirectoryMonitorTest extends TestCase {
                     FileEvent directoryMonitorEvent) 
                     throws Exception{
                     
-                    logger_.info(
+                    logger_.debug(
                         "File activity reported: " 
                         + directoryMonitorEvent);
                 }

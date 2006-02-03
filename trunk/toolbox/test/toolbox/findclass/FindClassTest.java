@@ -114,7 +114,7 @@ public class FindClassTest extends TestCase
         FindClass finder = new FindClass();
         FindClassResult[] results = finder.findClass(searchFor, false);
 
-        logger_.info("Results: " + ArrayUtil.toString(results));
+        logger_.debug("Results: " + ArrayUtil.toString(results));
         assertEquals("Couldn't find " + searchFor, 1, results.length);
     }
     
@@ -156,7 +156,7 @@ public class FindClassTest extends TestCase
         {    
             String s = (String) i.next();
             
-            logger_.info("finding jar: " + s);
+            logger_.debug("finding jar: " + s);
             
             if (ClassUtil.isArchive(s))
             {    
@@ -182,7 +182,7 @@ public class FindClassTest extends TestCase
         FindClass finder = new FindClass();
         List archives = finder.getArchivesInDir(FileUtil.getTempDir());
         
-        logger_.info(archives.size() + " found in temp dir.");
+        logger_.debug(archives.size() + " found in temp dir.");
     }
      
     
@@ -199,7 +199,7 @@ public class FindClassTest extends TestCase
         SearchListener listener = new SearchListener();
         finder.addSearchListener(listener);
         
-        logger_.info("Before search...");
+        logger_.debug("Before search...");
         
         // Searching for 'a' should have a lot of results so we're guaranteed
         // the search is going to be busy for a while.
@@ -209,18 +209,18 @@ public class FindClassTest extends TestCase
                 "findClass", 
                 new Object[] {"a", new Boolean(false)});
 
-        logger_.info("Waiting for first search target...");
+        logger_.debug("Waiting for first search target...");
         listener.waitForFirst(); 
         
         // Snooze
         ThreadUtil.sleep(500);
         
-        logger_.info("Before cancel..");
+        logger_.debug("Before cancel..");
         finder.cancel();
-        logger_.info("After cancelled..");
+        logger_.debug("After cancelled..");
         
         listener.waitForCancel();
-        logger_.info("Received notification of cancel!!");
+        logger_.debug("Received notification of cancel!!");
         
         finder.removeSearchListener(listener);
         finder.removeSearchListeners();
@@ -334,9 +334,9 @@ public class FindClassTest extends TestCase
         {
             counter_++;
             if (counter_ % 1000 == 0)
-                logger_.info("Found " + counter_ + " matching classes.");
+                logger_.debug("Found " + counter_ + " matching classes.");
             
-            //logger_.info("ClassFound " + searchResult.getClassFQN());
+            //logger_.debug("ClassFound " + searchResult.getClassFQN());
         }
 
         
@@ -346,7 +346,7 @@ public class FindClassTest extends TestCase
          */
         public void searchingTarget(String target)
         {
-            logger_.info("SearchingTarget " + target);
+            logger_.debug("SearchingTarget " + target);
             first_.release();
         }
     }

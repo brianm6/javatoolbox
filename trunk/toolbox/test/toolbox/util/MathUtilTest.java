@@ -105,10 +105,10 @@ public class MathUtilTest extends TestCase
     {
         logger_.info("Running testInvNormalCumDist...");
         
-        logger_.info("Inverse normal cumulative distribution(0.5): " + 
+        logger_.debug("Inverse normal cumulative distribution(0.5): " + 
             MathUtil.invNormalCumDist(0.5));
             
-        logger_.info("Inverse normal cumulative distribution(0.75 " + 
+        logger_.debug("Inverse normal cumulative distribution(0.75 " + 
             MathUtil.invNormalCumDist(0.75));
     }
 }

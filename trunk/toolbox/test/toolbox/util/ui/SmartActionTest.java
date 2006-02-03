@@ -162,7 +162,7 @@ public class SmartActionTest extends UITestCase
          */
         public void runAction(ActionEvent e)
         {
-            logger_.info(
+            logger_.debug(
                 "Running synchronous timed action that throws an exception");
                 
             ThreadUtil.sleep(delay_);   
@@ -201,7 +201,7 @@ public class SmartActionTest extends UITestCase
          */
         public void runAction(ActionEvent e)
         {
-            logger_.info("Running asynchronous timed action with no problems");
+            logger_.debug("Running asynchronous timed action with no problems");
             ThreadUtil.sleep(delay_);
         }
     }
@@ -237,7 +237,7 @@ public class SmartActionTest extends UITestCase
          */
         public void runAction(ActionEvent e)
         {
-            logger_.info(
+            logger_.debug(
                 "Running asynchronous timed action that throws an exception");
                 
             ThreadUtil.sleep(delay_);   

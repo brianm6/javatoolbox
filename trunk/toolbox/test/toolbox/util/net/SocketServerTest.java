@@ -68,7 +68,7 @@ public class SocketServerTest extends TestCase
 
         // Send request
         PrintWriter pw = new PrintWriter(sc.getOutputStream());
-        logger_.info("Client sent ping...");
+        logger_.debug("Client sent ping...");
         pw.println("ping");
         pw.flush();
         
@@ -77,7 +77,7 @@ public class SocketServerTest extends TestCase
             new InputStreamReader(sc.getInputStream()));
             
         String response = br.readLine();
-        logger_.info("Client received " + response);
+        logger_.debug("Client received " + response);
 
         // Cleanup        
         sc.close();
@@ -240,7 +240,7 @@ public class SocketServerTest extends TestCase
         listener.waitForAccept();
         
         // Race condition between accept() and handle()
-        ThreadUtil.sleep(2000);
+        ThreadUtil.sleep(4000);
         
         // Wait for connection handled
         listener.waitForHandled();
@@ -248,7 +248,7 @@ public class SocketServerTest extends TestCase
         server.stop();
         listener.waitForStop();
         
-        logger_.info(server.toString());
+        logger_.debug(server.toString());
         server.removeSocketServerListener(listener);
     }
 }

@@ -88,19 +88,19 @@ public class JFontChooserDialogTest extends UITestCase
         {
             public void okButtonPressed(JFontChooser fontPanel)
             {
-                logger_.info("OK button pressed");
+                logger_.debug("OK button pressed");
                 fsd.dispose();
             }
 
             public void cancelButtonPressed(JFontChooser fontPanel)
             {
-                logger_.info("Cancel button pressed");
+                logger_.debug("Cancel button pressed");
                 fsd.dispose();                
             }
 
             public void applyButtonPressed(JFontChooser fontPanel)
             {
-                logger_.info("Apply button pressed");
+                logger_.debug("Apply button pressed");
             }
         });
 
@@ -164,7 +164,7 @@ public class JFontChooserDialogTest extends UITestCase
     public void testJFontChooserDialog()
     {
         logger_.info(StringUtil.banner("testJFontChooserDialog..."));
-        logger_.info("Running testJFontChooserDialog...");
+        logger_.debug("Running testJFontChooserDialog...");
 
         //==================================================================
         // Font Size Field

@@ -86,7 +86,7 @@ public class TokenReaderTest extends TestCase
             String[] tokens = tr.readTokens();
             assertNotNull("line should not be null", tokens);
             assertEquals("number of tokens incorrect", 3, tokens.length);
-            logger_.info("Tokens: " + ArrayUtil.toString(tokens));            
+            logger_.debug("Tokens: " + ArrayUtil.toString(tokens));            
         }
         
         assertNull("next line should be null", tr.readTokens());

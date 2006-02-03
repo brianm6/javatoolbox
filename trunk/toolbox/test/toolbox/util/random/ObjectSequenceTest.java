@@ -49,7 +49,7 @@ public class ObjectSequenceTest extends TestCase
         while (gen.hasMore())
         {
             Object next = gen.nextValue();
-            logger_.info("next = " + next);
+            logger_.debug("next = " + next);
             results.add(next);
         }
         
@@ -78,7 +78,7 @@ public class ObjectSequenceTest extends TestCase
         while (sequence.hasMore())
         {
             Object next = sequence.nextValue();
-            logger_.info("next = " + next);
+            logger_.debug("next = " + next);
             results.add(next);
         }
         
@@ -113,7 +113,7 @@ public class ObjectSequenceTest extends TestCase
         }
         
         et.setEndTime();
-        logger_.info("Elapsed time = " + et);
+        logger_.debug("Elapsed time = " + et);
         
         assertEquals(data.size(), results.size());
         assertTrue(CollectionUtil.difference(data, results).isEmpty());        
@@ -155,7 +155,7 @@ public class ObjectSequenceTest extends TestCase
      */
     public void testConstructorEmptyList() throws Exception
     {
-        logger_.info("Running testConstructorEmptyList...");
+        logger_.debug("Running testConstructorEmptyList...");
         
         try
         {
@@ -164,7 +164,7 @@ public class ObjectSequenceTest extends TestCase
         catch (IllegalArgumentException iae)
         {
             // Success
-            logger_.info("SUCCESS: " + iae.getMessage());
+            logger_.debug("SUCCESS: " + iae.getMessage());
         }
     }
 }

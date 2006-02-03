@@ -65,7 +65,7 @@ public class IntSequenceTest extends TestCase
         while (gen.hasMore())
         {
             Object next = gen.nextValue();
-            logger_.info("next = " + next);
+            logger_.debug("next = " + next);
             nums.add(next);
         }
         
@@ -94,7 +94,7 @@ public class IntSequenceTest extends TestCase
         while (gen.hasMore())
         {
             Object next = gen.nextValue();
-            logger_.info("next = " + next);
+            logger_.debug("next = " + next);
             nums.add(next);
         }
         
@@ -131,7 +131,7 @@ public class IntSequenceTest extends TestCase
         }
         
         et.setEndTime();
-        logger_.info("Elapsed time = " + et);
+        logger_.debug("Elapsed time = " + et);
         
         assertEquals(size, nums.size());
         
@@ -182,7 +182,7 @@ public class IntSequenceTest extends TestCase
         }
         catch (SequenceEndedException see)
         {
-            logger_.info("SUCCESS: " + see.getMessage());
+            logger_.debug("SUCCESS: " + see.getMessage());
         }
     }
     
@@ -221,7 +221,7 @@ public class IntSequenceTest extends TestCase
         for (int j = 0; j <= numIterations; j++)
         {
             Object next = gen.nextValue();
-            //logger_.info("next = " + next);
+            //logger_.debug("next = " + next);
             int i = ((Integer) next).intValue();
             assertTrue(i >= low && i <= high);
         }
@@ -251,7 +251,7 @@ public class IntSequenceTest extends TestCase
      */
     public void testConstructorInvalidBounds() throws Exception
     {
-        logger_.info("Running testConstructorInvalidBounds...");
+        logger_.debug("Running testConstructorInvalidBounds...");
         
         int low = 5;
         int high = 4;
@@ -263,7 +263,7 @@ public class IntSequenceTest extends TestCase
         catch (IllegalArgumentException iae)
         {
             // Success
-            logger_.info("SUCCESS: " + iae.getMessage());
+            logger_.debug("SUCCESS: " + iae.getMessage());
         }
     }
     
@@ -278,7 +278,7 @@ public class IntSequenceTest extends TestCase
         IntSequence neg = new IntSequence(-50, 50, true);
         
         while (neg.hasMore())
-            logger_.info("Neg: " + neg.nextInt());
+            logger_.debug("Neg: " + neg.nextInt());
     }
     
     //--------------------------------------------------------------------------

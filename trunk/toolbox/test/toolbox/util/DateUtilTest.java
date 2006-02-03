@@ -513,6 +513,6 @@ public class DateUtilTest extends TestCase
     public void testFormat()
     {
         logger_.info("Running testFormat...");
-        logger_.info("Formatted date: " + DateUtil.format(new Date()));       
+        logger_.debug("Formatted date: " + DateUtil.format(new Date()));       
     }
 }

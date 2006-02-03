@@ -82,7 +82,7 @@ public class MonitoredInputStreamTest extends TestCase
         
         while (mis.read() != -1);
         
-        logger_.info("[100000 byte packet]");
+        logger_.debug("[100000 byte packet]");
         //for (int i = 0; i< 1000000; i++)
         //    bos.write(i);
         
@@ -220,7 +220,7 @@ public class MonitoredInputStreamTest extends TestCase
             byte[] b = new byte[RandomUtil.nextInt(1, 30)]; 
             int n = eis.read(b, 0, b.length);
             
-            //logger_.info("Read " + n + " chars..");
+            //logger_.debug("Read " + n + " chars..");
             
             for (int i = 0; i < n; i++)
                 assertEquals(str.charAt(cnt++), b[i]); 

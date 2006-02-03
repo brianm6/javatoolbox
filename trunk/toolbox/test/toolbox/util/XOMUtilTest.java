@@ -175,7 +175,7 @@ public class XOMUtilTest extends TestCase
         assertEquals(1, parent.getChildCount());
         assertEquals(child, parent.getFirstChildElement("child"));
         assertEquals(parent, child.getParent());
-        //logger_.info(XOMUtil.toXML(parent));
+        //logger_.debug(XOMUtil.toXML(parent));
     }
 
     
@@ -192,7 +192,7 @@ public class XOMUtilTest extends TestCase
         Element origChild = new Element("child");
         origChild.addAttribute(new Attribute("id", "old"));
         parent.appendChild(origChild);
-        // logger_.info("\n" + XOMUtil.toXML(parent));
+        // logger_.debug("\n" + XOMUtil.toXML(parent));
                 
         Element newChild = new Element("child");
         newChild.addAttribute(new Attribute("id", "new"));
@@ -201,7 +201,7 @@ public class XOMUtilTest extends TestCase
         assertEquals(1, parent.getChildCount());
         assertEquals(newChild, parent.getFirstChildElement("child"));
         assertEquals(parent, newChild.getParent());
-        // logger_.info("\n" + XOMUtil.toXML(parent));
+        // logger_.debug("\n" + XOMUtil.toXML(parent));
     }
 
     

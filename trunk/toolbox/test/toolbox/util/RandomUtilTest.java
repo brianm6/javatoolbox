@@ -154,7 +154,7 @@ public class RandomUtilTest extends TestCase
             assertTrue("int should be less than ceiling", i <= ceiling);
         }
         
-        logger_.info("\n" + StringUtil.wrap(sb.toString(), true));
+        logger_.debug("\n" + StringUtil.wrap(sb.toString(), true));
     }
    
     
@@ -236,7 +236,7 @@ public class RandomUtilTest extends TestCase
         for (int i = 0; i < 50; i++)
             sb.append(RandomUtil.nextElement(s) + " ");
         
-        logger_.info("\n" + StringUtil.wrap(sb.toString(), true));
+        logger_.debug("\n" + StringUtil.wrap(sb.toString(), true));
     }
 
     
@@ -284,7 +284,7 @@ public class RandomUtilTest extends TestCase
         for (int i = 0; i < 50; i++)
             sb.append(RandomUtil.nextElement(many) + " ");
         
-        logger_.info("\n" + StringUtil.wrap(sb.toString(), true));
+        logger_.debug("\n" + StringUtil.wrap(sb.toString(), true));
     }
     
     
@@ -294,7 +294,7 @@ public class RandomUtilTest extends TestCase
     public void testNextDouble()
     {
         logger_.info("Running testNextDouble...");
-        logger_.info("nextDouble: " + RandomUtil.nextDouble());
+        logger_.debug("nextDouble: " + RandomUtil.nextDouble());
     }
 
 
@@ -336,7 +336,7 @@ public class RandomUtilTest extends TestCase
             cnt++;
         }
         
-        logger_.info("Generated all 255 bytes in " + cnt + " turns!!!!");
+        logger_.debug("Generated all 255 bytes in " + cnt + " turns!!!!");
     }
     
     
@@ -356,8 +356,8 @@ public class RandomUtilTest extends TestCase
             sb2.append(RandomUtil.nextString() + " ");
         }
         
-        logger_.info(StringUtil.banner(StringUtil.wrap(sb.toString(), true)));
-        logger_.info(StringUtil.banner(StringUtil.wrap(sb2.toString(), true)));
+        logger_.debug(StringUtil.banner(StringUtil.wrap(sb.toString(), true)));
+        logger_.debug(StringUtil.banner(StringUtil.wrap(sb2.toString(), true)));
     }
     
     

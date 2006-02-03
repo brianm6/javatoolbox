@@ -146,7 +146,7 @@ public class JDBCUtilTest extends TestCase
             JDBCUtil.dropTable(table);
             JDBCUtil.shutdown();
             cleanup(prefix);
-            logger_.info("Stress loop : " + i);
+            logger_.debug("Stress loop : " + i);
         }
     }
     
@@ -191,8 +191,8 @@ public class JDBCUtilTest extends TestCase
             JDBCUtil.init(DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD);
 
             Connection conn = JDBCUtil.getConnection();
-            logger_.info("Connection: " + conn);
-            logger_.info("Autocommit: " + conn.getAutoCommit());
+            logger_.debug("Connection: " + conn);
+            logger_.debug("Autocommit: " + conn.getAutoCommit());
             assertNotNull(conn);
             JDBCUtil.releaseConnection(conn);
         }
@@ -246,7 +246,7 @@ public class JDBCUtilTest extends TestCase
             JDBCUtil.executeUpdate("create table " + table + "(id integer)");
             String results = JDBCUtil.executeQuery("select * from " + table);
             assertTrue(results.indexOf("0 rows") >= 0);
-            logger_.info("\n" + results);
+            logger_.debug("\n" + results);
         }
         finally
         {
@@ -277,7 +277,7 @@ public class JDBCUtilTest extends TestCase
             String results = JDBCUtil.executeQuery("select * from " + table);
             assertTrue(results.indexOf("1 rows") >= 0);
             assertTrue(results.indexOf("999") >= 0);
-            logger_.info("\n" + results);
+            logger_.debug("\n" + results);
         }
         finally
         {
@@ -311,7 +311,7 @@ public class JDBCUtilTest extends TestCase
 
             String results = JDBCUtil.executeQuery("select * from " + table);
             assertTrue(results.indexOf("100 rows") >= 0);
-            logger_.info("\n" + StringUtil.wrap(results.replace('\n', ' ')));
+            logger_.debug("\n" + StringUtil.wrap(results.replace('\n', ' ')));
         }
         finally
         {
@@ -463,7 +463,7 @@ public class JDBCUtilTest extends TestCase
 
             String results = JDBCUtil.executeQuery("select * from " + table);
             assertTrue(results.indexOf("0 rows") >= 0);
-            logger_.info("\n" + results);
+            logger_.debug("\n" + results);
         }
         finally
         {
@@ -502,7 +502,7 @@ public class JDBCUtilTest extends TestCase
 
             int size = JDBCUtil.getSize(results);
 
-            logger_.info("Resultset size: " + size);
+            logger_.debug("Resultset size: " + size);
             assertEquals("size shold be zero", 0, size);
 
         }
@@ -601,7 +601,7 @@ public class JDBCUtilTest extends TestCase
             int cursorPos = results.getRow();
             int size = JDBCUtil.getSize(results);
 
-            logger_.info("Resultset size: " + size);
+            logger_.debug("Resultset size: " + size);
             assertEquals("size mismatch", numRows, size);
 
             //
@@ -652,7 +652,7 @@ public class JDBCUtilTest extends TestCase
             int cursorPos = results.getRow();
             int size = JDBCUtil.getSize(results);
 
-            logger_.info("Resultset size: " + size);
+            logger_.debug("Resultset size: " + size);
             assertEquals("size should be one", 1, size);
 
             //
@@ -746,7 +746,7 @@ public class JDBCUtilTest extends TestCase
 
             // Make sure table exists
             String contents = JDBCUtil.executeQuery("select * from user");
-            //logger_.info("Before drop: " + contents);
+            //logger_.debug("Before drop: " + contents);
             assertTrue(contents.indexOf("ID") >= 0);
 
             JDBCUtil.dropTable("user");
@@ -912,7 +912,7 @@ public class JDBCUtilTest extends TestCase
         {
             JDBCUtil.executeUpdate("create table " + table + "(id integer)");
             String[] tables = JDBCUtil.getTableNames();
-            logger_.info("Tables =\n" + ArrayUtil.toString(tables, true));
+            logger_.debug("Tables =\n" + ArrayUtil.toString(tables, true));
 
             //
             // The table names may not be in the same case so the search has

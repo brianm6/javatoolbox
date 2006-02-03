@@ -66,7 +66,7 @@ public class JSmartDialogTest extends UITestCase
         SwingUtil.centerWindow(dlg);
         dlg.setVisible(true);
         
-        logger_.info("Launching second window");
+        logger_.debug("Launching second window");
         
         // Reinstantiate same dialog box and make sure the new size was 
         // retained.

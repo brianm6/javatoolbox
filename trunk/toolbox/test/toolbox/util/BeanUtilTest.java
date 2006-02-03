@@ -37,7 +37,7 @@ public class BeanUtilTest extends TestCase
         
         JLabel label = new JLabel("Whoopee!");
         
-        logger_.info(
+        logger_.debug(
             StringUtil.banner(
                 StringUtils.center("JLabel BeanInfo", 80)
                 + "\n"

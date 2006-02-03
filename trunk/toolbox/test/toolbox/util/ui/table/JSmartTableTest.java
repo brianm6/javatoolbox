@@ -123,7 +123,7 @@ public class JSmartTableTest extends UITestCase
 
             Element root = new Element("root");
             table.savePrefs(root);
-            logger_.info("Saved preferences:\n" + XOMUtil.toXML(root));
+            logger_.debug("Saved preferences:\n" + XOMUtil.toXML(root));
 
             JSmartTable restored = new JSmartTable();
             restored.applyPrefs(root);
@@ -136,7 +136,7 @@ public class JSmartTableTest extends UITestCase
 
             Element root = new Element("root");
             table.savePrefs(root);
-            logger_.info("Saved preferences:\n" + XOMUtil.toXML(root));
+            logger_.debug("Saved preferences:\n" + XOMUtil.toXML(root));
 
             JSmartTable restored = new JSmartTable();
             restored.applyPrefs(root);

@@ -85,7 +85,7 @@ public class ResourceUtilTest extends TestCase
         InputStream is = ResourceUtil.getResource(FILE_TEXT);
         assertNotNull("stream is null", is);        
         String contents = IOUtils.toString(is);
-        logger_.info("Resource: " + contents);
+        logger_.debug("Resource: " + contents);
         assertTrue("string match failure", contents.indexOf(MATCH_STRING) >= 0);
     }
     
@@ -118,7 +118,7 @@ public class ResourceUtilTest extends TestCase
             assertNotNull("stream is null", is);        
             
             String newContents = IOUtils.toString(is);
-            logger_.info("Contents: " + newContents);
+            logger_.debug("Contents: " + newContents);
             assertEquals("File contents don't match", contents, newContents);
         }
         finally
@@ -140,7 +140,7 @@ public class ResourceUtilTest extends TestCase
         InputStream is =  ResourceUtil.getResource(TEST_URL);
         assertNotNull("stream is null", is);
         String contents = IOUtils.toString(is);
-        logger_.info("Resource length: " + contents.length());
+        logger_.debug("Resource length: " + contents.length());
         assertTrue(contents.length() > 0);
     }
 
@@ -195,7 +195,7 @@ public class ResourceUtilTest extends TestCase
         byte[] data = ResourceUtil.getResourceAsBytes(FILE_TEXT);
         assertNotNull("data is null", data);
         String contents = new String(data);
-        logger_.info("Resource: " + contents);
+        logger_.debug("Resource: " + contents);
         assertTrue("string match failure", contents.indexOf(MATCH_STRING) >= 0);
     }
 
@@ -212,7 +212,7 @@ public class ResourceUtilTest extends TestCase
         String data = ResourceUtil.getResourceAsString(FILE_TEXT);
         assertNotNull("data is null", data);
         String contents = new String(data);
-        logger_.info("Resource: " + contents);
+        logger_.debug("Resource: " + contents);
         assertTrue("string match failure", contents.indexOf(MATCH_STRING) >= 0);
     }
     
@@ -237,7 +237,7 @@ public class ResourceUtilTest extends TestCase
             String contents = new String(
                 FileUtil.getFileContents(tempFile.getCanonicalPath()));
             
-            logger_.info("Resource: " + contents);
+            logger_.debug("Resource: " + contents);
             
             assertTrue(
                 "string match failure", contents.indexOf(MATCH_STRING) >= 0);
@@ -304,7 +304,7 @@ public class ResourceUtilTest extends TestCase
               classfile,
               FileUtil.getTempDir());
 
-        logger_.info("Wrote " + classfile + ".java to " + 
+        logger_.debug("Wrote " + classfile + ".java to " + 
             FileUtil.getTempDir().getCanonicalPath() + "\n" + 
             StringUtil.banner(javaSrc.substring(0, 200) + "..."));
         

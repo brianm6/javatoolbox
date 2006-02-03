@@ -106,7 +106,7 @@ public class SocketConnectionTest extends TestCase
                     SocketConnection sc = 
                         new SocketConnection("localhost", port, true, 2);
                         
-                    logger_.info("Client: Connected after retry!");
+                    logger_.debug("Client: Connected after retry!");
                     sc.connect();
                     sc.close();
                     mutex.release();
@@ -119,9 +119,9 @@ public class SocketConnectionTest extends TestCase
         }).start();
         
         server.start();
-        logger_.info("Mutex : server waiting to acquire...");
+        logger_.debug("Mutex : server waiting to acquire...");
         mutex.acquire();
-        logger_.info("Mutex : acquired by server");
+        logger_.debug("Mutex : acquired by server");
         server.stop();
     }        
    
@@ -224,7 +224,7 @@ public class SocketConnectionTest extends TestCase
         
         for (int i = 0; i < 100; i++)
         {
-            logger_.info("Connection " + i);
+            logger_.debug("Connection " + i);
             
             try
             {
@@ -233,7 +233,7 @@ public class SocketConnectionTest extends TestCase
             }
             catch (ConnectException ce)
             {
-                logger_.info("Failed to connect to server: " + ce.getMessage());
+                logger_.debug("Failed to connect to server: " + ce.getMessage());
             }
             finally
             {
@@ -252,9 +252,10 @@ public class SocketConnectionTest extends TestCase
      */
     public void testIsConnected() throws Exception
     {
+        logger_.info("Running testIsConnected...");
+        
         try
         {
-            logger_.info("Running testIsConnected...");
             
             Server server = new Server(true);
             server.start();        
@@ -406,19 +407,19 @@ public class SocketConnectionTest extends TestCase
             {
                 try
                 {
-                    logger_.info("Server: Waiting to accept...");
+                    logger_.debug("Server: Waiting to accept...");
                     
                     if (!socket_.isClosed())
                     {
                         serverStarted_.release();
                         socket_.accept();
                         keepGoing_ = longLived_;
-                        logger_.info("Server: After accept..");
+                        logger_.debug("Server: After accept..");
                     }
                 }
                 catch (SocketException se)
                 {
-                    logger_.info(se.getMessage());
+                    logger_.debug(se.getMessage());
                 }
                 catch (IOException e)
                 {

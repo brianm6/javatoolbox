@@ -89,7 +89,7 @@ public class JSmartTextAreaTest extends UITestCase
         Element root = new Element("root");
         before.savePrefs(root);
         String xml = XOMUtil.toXML(root);
-        logger_.info("\n" + xml);
+        logger_.debug("\n" + xml);
         
         // 
         // Hydrate from XML

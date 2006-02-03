@@ -82,7 +82,7 @@ public class JFlipPaneTest extends UITestCase
      */
     public void testSaveApplyPrefs() throws Exception
     {
-        logger_.info("Running testSaveApplyPrefs...");
+        logger_.debug("Running testSaveApplyPrefs...");
         
         JFlipPane before = new JFlipPane(JFlipPane.LEFT);
         before.addFlipper("1", new JSmartLabel("Flipper1"));
@@ -98,7 +98,7 @@ public class JFlipPaneTest extends UITestCase
         Element root = new Element("root");
         before.savePrefs(root);
         String xml = XOMUtil.toXML(root);
-        logger_.info("\n" + xml);
+        logger_.debug("\n" + xml);
         
         // 
         // Hydrate from XML

@@ -129,7 +129,7 @@ public class SocketUtilTest extends TestCase
         for (int i = 0; i < 10; i++)
         {
             int freePort = SocketUtil.getFreePort();
-            logger_.info("Freeport = " + freePort);
+            logger_.debug("Freeport = " + freePort);
             assertTrue("Free port cannot be zero", freePort > 0);
         }
     }
@@ -179,7 +179,7 @@ public class SocketUtilTest extends TestCase
     public void testCloseServerSocket() throws Exception
     {
         // TODO: Complete this unit test: testCloseServerSocket()
-        logger_.info("Running testCloseServerSocket...");
+        logger_.debug("Running testCloseServerSocket...");
         
 //        int port = SocketUtil.getFreePort();
 //        ServerSocket ss = new ServerSocket(port);

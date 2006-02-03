@@ -36,8 +36,8 @@ public class MemoryWatcherTest extends TestCase
         mw.start();
         ThreadUtil.sleep(3000);
         assertTrue(mw.isRunning());
-        logger_.info("Min = " + mw.getMin());
-        logger_.info("Max = " + mw.getMax());
+        logger_.debug("Min = " + mw.getMin());
+        logger_.debug("Max = " + mw.getMax());
         mw.stop();
         mw.destroy();
     }

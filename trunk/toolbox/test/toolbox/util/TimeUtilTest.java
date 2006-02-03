@@ -44,6 +44,6 @@ public class TimeUtilTest extends TestCase
         
         Date d = new Date();
         String time = TimeUtil.format(d);
-        logger_.info("Formatted time: " + time);
+        logger_.debug("Formatted time: " + time);
     }
 }

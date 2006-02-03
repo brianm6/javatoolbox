@@ -63,7 +63,7 @@ public class DefaultConnectionListener implements IConnectionListener
      */
     public void connectionClosed(IConnection connection)
     {
-        logger_.info("Notification: Connection closed " + connection);
+        logger_.debug("Notification: Connection closed " + connection);
         
         try
         {
@@ -82,7 +82,7 @@ public class DefaultConnectionListener implements IConnectionListener
      */
     public void connectionClosing(IConnection connection)
     {
-        logger_.info("Notification: Connection closing " + connection);
+        logger_.debug("Notification: Connection closing " + connection);
         
         try
         {
@@ -101,7 +101,7 @@ public class DefaultConnectionListener implements IConnectionListener
      */
     public void connectionInterrupted(IConnection connection)
     {
-        logger_.info("Notification: Connection interrupted" + connection);
+        logger_.debug("Notification: Connection interrupted" + connection);
         
         try
         {
@@ -120,7 +120,7 @@ public class DefaultConnectionListener implements IConnectionListener
      */
     public void connectionStarted(IConnection connection)
     {
-        logger_.info("Notification: Connection started" + connection);
+        logger_.debug("Notification: Connection started" + connection);
         
         try
         {

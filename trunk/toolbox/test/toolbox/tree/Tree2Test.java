@@ -117,7 +117,7 @@ public class Tree2Test extends TestCase
     public void testShowTreeSimpleCascade() throws Exception
     {
         logger_.info("Running testShowTreeSimpleCascade...");
-        logger_.info("Tree with cascading dirs: \n");
+        logger_.debug("Tree with cascading dirs: \n");
         
         File a = new File(rootTestDir_, "a");
         assertTrue(a.mkdir());
@@ -146,7 +146,7 @@ public class Tree2Test extends TestCase
     public void testShowTreeSimpleFlat() throws Exception
     {
         logger_.info("Running testShowTreeSimpleFlat...");
-        logger_.info("Tree with flat struct at level 2: \n");
+        logger_.debug("Tree with flat struct at level 2: \n");
         
         File a = new File(rootTestDir_, "a");
         assertTrue(a.mkdir());
@@ -175,7 +175,7 @@ public class Tree2Test extends TestCase
     public void testShowTreeExtensionBar() throws Exception
     {
         logger_.info("Running testShowTreeExtensionBar...");
-        logger_.info("Tree with an extension bar: \n");
+        logger_.debug("Tree with an extension bar: \n");
                 
         // Create rootDir_\a\b\c\d 
         File a = new File(rootTestDir_, "a");
@@ -216,7 +216,7 @@ public class Tree2Test extends TestCase
     public void testShowTreeManyInRoot() throws Exception
     {
         logger_.info("Running testShowTreeManyInRoot...");
-        logger_.info("Tree with > 1 dir in root: \n");
+        logger_.debug("Tree with > 1 dir in root: \n");
                 
         File a = new File(rootTestDir_, "a");
         assertTrue(a.mkdir());
@@ -250,7 +250,7 @@ public class Tree2Test extends TestCase
     public void testShowTreeEmptyRoot() throws Exception
     {
         logger_.info("Running testShowTreeEmptyRoot...");
-        logger_.info("Tree with an empty root: \n");
+        logger_.debug("Tree with an empty root: \n");
         Tree2 tree = new Tree2(rootTestDir_);
         tree.showTree();
         
@@ -273,7 +273,7 @@ public class Tree2Test extends TestCase
     public void testShowTreeOneDir() throws Exception
     {
         logger_.info("Running testShowTreeOneDir...");
-        logger_.info("Tree with a single directory: \n");
+        logger_.debug("Tree with a single directory: \n");
 
         File a = new File(rootTestDir_, "a");
         assertTrue(a.mkdir());
@@ -307,8 +307,8 @@ public class Tree2Test extends TestCase
      */
     public void testShowTreeSimpleCascadeFile() throws Exception
     {
-        logger_.info("Running testShowTreeSimpleCascadeFile...");
-        logger_.info("Tree2 with cascading dirs and one file: \n");
+        logger_.debug("Running testShowTreeSimpleCascadeFile...");
+        logger_.debug("Tree2 with cascading dirs and one file: \n");
         
         createFile(rootTestDir_);
         
@@ -343,7 +343,7 @@ public class Tree2Test extends TestCase
     public void testShowTreeRootFiles() throws Exception
     {
         logger_.info("Running testShowTreeRootFiles...");
-        logger_.info("Tree with cascading dirs and one file: \n");
+        logger_.debug("Tree with cascading dirs and one file: \n");
         
         createFile(rootTestDir_);
         createFile(rootTestDir_);
@@ -421,7 +421,7 @@ public class Tree2Test extends TestCase
         
         Tree2 t = new Tree2(FileUtil.getTempDir());
         String s = t.toString();
-        logger_.info(s);
+        logger_.debug(s);
         assertNotNull(s);
     }
     
@@ -492,7 +492,7 @@ public class Tree2Test extends TestCase
         
         tree.showTree();
         
-        logger_.info(
+        logger_.debug(
             "Max depth should be 1:" 
             + StringUtil.banner(sw.toString()));
 
@@ -510,7 +510,7 @@ public class Tree2Test extends TestCase
         
         tree.showTree();
         
-        logger_.info(
+        logger_.debug(
             "Max depth should be 2:" 
             + StringUtil.banner(sw.toString()));
         
@@ -528,7 +528,7 @@ public class Tree2Test extends TestCase
         
         tree.showTree();
         
-        logger_.info(
+        logger_.debug(
             "Max depth should be unlimited:" 
             + StringUtil.banner(sw.toString()));
             
@@ -596,7 +596,7 @@ public class Tree2Test extends TestCase
         
         tree.showTree();
 
-        logger_.info(
+        logger_.debug(
             "Full paths should be showing:" 
             + StringUtil.banner(sw.toString()));
 

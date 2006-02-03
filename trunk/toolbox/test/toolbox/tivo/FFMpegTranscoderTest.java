@@ -49,7 +49,7 @@ public class FFMpegTranscoderTest extends AbstractTestCase {
         // =====================================================================
         assertTrue(new File(destFilename).exists());
         MovieInfo result = parser.parse(destFilename);
-        logger_.info(result);
+        logger_.debug(result);
 
         assertNotNull(result.getDuration());
         assertEquals(destFilename, result.getFilename());

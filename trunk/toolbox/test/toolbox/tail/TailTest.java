@@ -116,14 +116,14 @@ public class TailTest extends TestCase
             tail.start();
             listener.waitForStart();
 
-            logger_.info("toString: " + toString());
+            logger_.debug("toString: " + toString());
                  
             String[] paras = StringUtil.tokenize(para, "\n");
                    
             for (int i = 0; i < backlog; i++)
             {
                 String line = listener.waitForNextLine();
-                logger_.info("Backlog line " + i + ": " + line);
+                logger_.debug("Backlog line " + i + ": " + line);
                 assertEquals(paras[i + total - backlog], line);
             }
                 
@@ -135,7 +135,7 @@ public class TailTest extends TestCase
             FileUtil.delete(file);
         }
         
-        logger_.info("Done!");
+        logger_.debug("Done!");
     }
 
     
@@ -170,7 +170,7 @@ public class TailTest extends TestCase
             tail.stop();
             sink.flush();
             
-            logger_.info(StringUtil.banner(sos.toString()));
+            logger_.debug(StringUtil.banner(sos.toString()));
         }
         finally
         {
@@ -231,11 +231,11 @@ public class TailTest extends TestCase
         listener.waitForStop();
         
         // Dump contents of the sinks
-        logger_.info("OutputWriter sink:\n" + sw.toString());
+        logger_.debug("OutputWriter sink:\n" + sw.toString());
         
         tail.removeTailListener(listener);
         
-        logger_.info(tail.toString());
+        logger_.debug(tail.toString());
     }
 
     
@@ -351,7 +351,7 @@ public class TailTest extends TestCase
         // ---------------------------------------------------------------------
         
         // Dump contents of the sinks
-        logger_.info("OutputWriter sink:\n" + sw.toString());
+        logger_.debug("OutputWriter sink:\n" + sw.toString());
         
         tail.removeTailListener(listener);
     }
@@ -391,7 +391,7 @@ public class TailTest extends TestCase
 //        TestTailListener listener = new TestTailListener();        
 //        tail.addTailListener(listener);
 //        
-//        logger_.info(tail.toString());
+//        logger_.debug(tail.toString());
 //        
 //        // Attach the input reader to the tail
 //        tail.setTailReader(pis);
@@ -413,8 +413,8 @@ public class TailTest extends TestCase
 //        listener.waitForStop();
 //        
 //        // Dump contents of the sinks
-//        logger_.info("OutputStream sink:\n" + sos.getBuffer());
-//        logger_.info("OutputWriter sink:\n" + sw.toString());
+//        logger_.debug("OutputStream sink:\n" + sos.getBuffer());
+//        logger_.debug("OutputWriter sink:\n" + sw.toString());
 //        
 //        tail.removeOutputStream(sos);
 //        tail.removeWriter(sw);
@@ -440,7 +440,7 @@ public class TailTest extends TestCase
             int delay, 
             String value)
     {
-        logger_.info("Running writeDelayed...");
+        logger_.debug("Running writeDelayed...");
         
         PrintWriter pw = new PrintWriter(writer);
         
@@ -527,7 +527,7 @@ class MockTailListener implements TailListener
      */
     public void tailStarted(Tail tail)
     {
-        logger_.info("tail started");
+        logger_.debug("tail started");
         
         try
         {
@@ -545,7 +545,7 @@ class MockTailListener implements TailListener
      */
     public void tailStopped(Tail tail)
     {
-        logger_.info("tail stopped");
+        logger_.debug("tail stopped");
         
         try
         {
@@ -563,7 +563,7 @@ class MockTailListener implements TailListener
      */
     public void tailEnded(Tail tail)
     {
-        logger_.info("tail ended");
+        logger_.debug("tail ended");
         
         try
         {
@@ -581,7 +581,7 @@ class MockTailListener implements TailListener
      */
     public void tailPaused(Tail tail)
     {
-        logger_.info("tail paused");
+        logger_.debug("tail paused");
         
         try
         {
@@ -599,7 +599,7 @@ class MockTailListener implements TailListener
      */
     public void tailUnpaused(Tail tail)
     {
-        logger_.info("tail unpaused");
+        logger_.debug("tail unpaused");
         
         try
         {
@@ -617,7 +617,7 @@ class MockTailListener implements TailListener
      */
     public void tailReattached(Tail tail)
     {
-        logger_.info("Tail re-attached");
+        logger_.debug("Tail re-attached");
     }
 
     

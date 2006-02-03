@@ -342,7 +342,7 @@ public class ThreadUtilTest extends TestCase
         ThreadUtil.stop(t);
         et.setEndTime();
         assertTrue(!t.isAlive());
-        logger_.info(et);
+        logger_.debug(et);
     }
 
     
@@ -360,7 +360,7 @@ public class ThreadUtilTest extends TestCase
         ThreadUtil.stop(t, 5000);
         et.setEndTime();
         assertTrue(!t.isAlive());
-        logger_.info(et);
+        logger_.debug(et);
     }
 
     
@@ -374,11 +374,11 @@ public class ThreadUtilTest extends TestCase
         logger_.info("Running testToString...");
         
         Thread t = new Thread(new DelayedRunner(100));
-        logger_.info("toString() before start()\n" + ThreadUtil.toString(t));
+        logger_.debug("toString() before start()\n" + ThreadUtil.toString(t));
         t.start();
-        logger_.info("toString() after start()\n" + ThreadUtil.toString(t));
+        logger_.debug("toString() after start()\n" + ThreadUtil.toString(t));
         t.join();
-        logger_.info("toString() after join()\n" + ThreadUtil.toString(t));
+        logger_.debug("toString() after join()\n" + ThreadUtil.toString(t));
     }
 
     //--------------------------------------------------------------------------
@@ -418,7 +418,7 @@ public class ThreadUtilTest extends TestCase
         public void pingSimple()
         {
             pingSimpleCalled_ = true;
-            logger_.info("Called ping()");
+            logger_.debug("Called ping()");
         }
         
         
@@ -430,7 +430,7 @@ public class ThreadUtilTest extends TestCase
         public void pingOneArg(String str)
         {
             pingOneArgCalled_ = true;
-            logger_.info("Called pingOneArg(" + str + ", " + str + ")");
+            logger_.debug("Called pingOneArg(" + str + ", " + str + ")");
         }
         
         
@@ -443,7 +443,7 @@ public class ThreadUtilTest extends TestCase
         public void pingArgs(String str, String[] strArray)
         {
             pingArgsCalled_ = true;
-            logger_.info("Called pingArgs(" + str + ", " + 
+            logger_.debug("Called pingArgs(" + str + ", " + 
                 ArrayUtil.toString(strArray, false) + ")");
         }
  
@@ -460,7 +460,7 @@ public class ThreadUtilTest extends TestCase
         public void pingComplex(Writer pw,  Integer i, Integer i2, String s)
         {
             pingComplexCalled_ = true;
-            logger_.info("Called write delayed with " + 
+            logger_.debug("Called write delayed with " + 
                 pw + i + " " + i2 + " " + s);
         }
         
@@ -478,7 +478,7 @@ public class ThreadUtilTest extends TestCase
           
             pingPrimitiveCalled_ = true;
             
-            logger_.info("Called pingPrimitive with " + 
+            logger_.debug("Called pingPrimitive with " + 
                 a + " " + b + " " + l + " " + f);
         }
         
@@ -490,7 +490,7 @@ public class ThreadUtilTest extends TestCase
          */
         public void pingAssignable(Writer w)
         {
-            logger_.info(w.getClass().getName());
+            logger_.debug(w.getClass().getName());
             pingAssignableCalled_ = true;        
         }
         
@@ -501,7 +501,7 @@ public class ThreadUtilTest extends TestCase
         public void pingInner()
         {
             pingInnerCalled_ = true;
-            logger_.info("Called pingInner()");
+            logger_.debug("Called pingInner()");
         }
         
         

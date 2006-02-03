@@ -49,7 +49,7 @@ public class CompleteTestCollectorTest extends TestCase
         {
             String classname = (String) e.nextElement();
 
-            logger_.info("Testclass=" + classname);
+            logger_.debug("Testclass=" + classname);
 
             assertTrue(
                 classname + " should end with Test",

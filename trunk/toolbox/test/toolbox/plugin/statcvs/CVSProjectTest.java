@@ -85,6 +85,6 @@ public class CVSProjectTest extends TestCase
 
     public void testSavePrefs()
     {
-        logger_.info("Running testSavePrefs...");
+        logger_.debug("Running testSavePrefs...");
     }
 }

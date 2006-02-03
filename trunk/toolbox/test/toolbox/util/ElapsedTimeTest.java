@@ -57,7 +57,7 @@ public class ElapsedTimeTest extends TestCase
         ElapsedTime elapsed = new ElapsedTime(now, then);
         ElapsedTime compare = new ElapsedTime(0, 0, 0, 0, 1);
         assertEquals("millis is incorrect", compare, elapsed);
-        logger_.info(elapsed);
+        logger_.debug(elapsed);
     }
 
     
@@ -75,7 +75,7 @@ public class ElapsedTimeTest extends TestCase
         ElapsedTime elapsed = new ElapsedTime(now, then);
         ElapsedTime compare = new ElapsedTime(0, 0, 0, 1, 0);
         assertEquals("seconds is incorrect", compare, elapsed);
-        logger_.info(elapsed);
+        logger_.debug(elapsed);
     }
 
     
@@ -93,7 +93,7 @@ public class ElapsedTimeTest extends TestCase
         ElapsedTime elapsed = new ElapsedTime(now, then);
         ElapsedTime compare = new ElapsedTime(0, 0, 1, 0, 0);
         assertEquals("minutes is incorrect", compare, elapsed);
-        logger_.info(elapsed);
+        logger_.debug(elapsed);
     }
 
     
@@ -111,7 +111,7 @@ public class ElapsedTimeTest extends TestCase
         ElapsedTime elapsed = new ElapsedTime(now, then);
         ElapsedTime compare = new ElapsedTime(0, 1, 0, 0, 0);
         assertEquals("hours is incorrect", compare, elapsed);
-        logger_.info(elapsed);
+        logger_.debug(elapsed);
     }
 
     
@@ -129,7 +129,7 @@ public class ElapsedTimeTest extends TestCase
         ElapsedTime elapsed = new ElapsedTime(now, then);
         ElapsedTime compare = new ElapsedTime(1, 0, 0, 0, 0);
         assertEquals("days is incorrect", compare, elapsed);
-        logger_.info(elapsed);
+        logger_.debug(elapsed);
     }
 
     
@@ -143,7 +143,7 @@ public class ElapsedTimeTest extends TestCase
         ElapsedTime elapsed = new ElapsedTime(0, ElapsedTime.SECOND);
         ElapsedTime compare = new ElapsedTime(0, 0, 0, 1, 0);
         assertEquals("seconds is incorrect", compare, elapsed);
-        logger_.info(elapsed);
+        logger_.debug(elapsed);
     }
         
     
@@ -157,7 +157,7 @@ public class ElapsedTimeTest extends TestCase
         ElapsedTime elapsed = new ElapsedTime(0, ElapsedTime.MINUTE);
         ElapsedTime compare = new ElapsedTime(0, 0, 1, 0, 0);
         assertEquals("minutes is incorrect", compare, elapsed);
-        logger_.info(elapsed);
+        logger_.debug(elapsed);
     }
  
     
@@ -171,7 +171,7 @@ public class ElapsedTimeTest extends TestCase
         ElapsedTime elapsed = new ElapsedTime(0, ElapsedTime.HOUR);
         ElapsedTime compare = new ElapsedTime(0, 1, 0, 0, 0);
         assertEquals("hours is incorrect", compare, elapsed);
-        logger_.info(elapsed);
+        logger_.debug(elapsed);
     }
 
     
@@ -185,7 +185,7 @@ public class ElapsedTimeTest extends TestCase
         ElapsedTime elapsed = new ElapsedTime(0, ElapsedTime.DAY);
         ElapsedTime compare = new ElapsedTime(1, 0, 0, 0, 0);
         assertEquals("days is incorrect", compare, elapsed);
-        logger_.info(elapsed);
+        logger_.debug(elapsed);
     }
     
     
@@ -207,7 +207,7 @@ public class ElapsedTimeTest extends TestCase
      */
     public void testEqualsNot()    
     {
-        logger_.info("Running testEqualsNot...");
+        logger_.debug("Running testEqualsNot...");
         
         ElapsedTime time = new ElapsedTime(5, 4, 3, 2, 1);
         ElapsedTime compare = new ElapsedTime(1, 2, 3, 4, 5);
@@ -253,7 +253,7 @@ public class ElapsedTimeTest extends TestCase
         Date end = new Date();   
         
         ElapsedTime time = new ElapsedTime(start, end);
-        logger_.info("Elapsed time = " + time);
+        logger_.debug("Elapsed time = " + time);
         assertTrue(time.getTotalMillis() >= delta);
         assertTrue(time.getStartTime().before(time.getEndTime()));
     }
@@ -275,7 +275,7 @@ public class ElapsedTimeTest extends TestCase
         ElapsedTime copy = new ElapsedTime(time);
         
         assertTrue("times should be equals", time.equals(copy));
-        logger_.info("Elapsed time = " + time);
+        logger_.debug("Elapsed time = " + time);
     }
     
     
@@ -292,7 +292,7 @@ public class ElapsedTimeTest extends TestCase
         Date end = new Date();   
         
         ElapsedTime time = new ElapsedTime(start.getTime(), end.getTime());
-        logger_.info("Elapsed time = " + time);
+        logger_.debug("Elapsed time = " + time);
         
         time.setStartTime(new Date());
     }

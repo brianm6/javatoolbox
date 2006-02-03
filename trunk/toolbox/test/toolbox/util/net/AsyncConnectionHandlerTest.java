@@ -69,7 +69,7 @@ public class AsyncConnectionHandlerTest extends TestCase
                 // Simulates long lived async activity
                 ThreadUtil.sleep(5000);
                 String result = helloWorld;
-                logger_.info(result);
+                logger_.debug(result);
                 return result;
             }
         }
@@ -160,7 +160,7 @@ public class AsyncConnectionHandlerTest extends TestCase
         assertTrue("return should be available", rv.isAvailable());
         assertEquals("return values not same", rv.getValue(), helloWorld);      
         
-        logger_.info(rv.getValue());
+        logger_.debug(rv.getValue());
         
         dispatcher.destroy();
     }

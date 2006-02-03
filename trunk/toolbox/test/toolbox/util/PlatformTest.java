@@ -38,7 +38,7 @@ public class PlatformTest extends TestCase
     public void testHasJava14()
     {
         logger_.info("Running testHasJava14...");
-        logger_.info("Has Java 1.4: " + Platform.hasJava14());
+        logger_.debug("Has Java 1.4: " + Platform.hasJava14());
     }
 
 
@@ -48,7 +48,7 @@ public class PlatformTest extends TestCase
     public void testIsDOSDerived()
     {
         logger_.info("Running testIsDOSDerived...");
-        logger_.info("Is DOS derived: " + Platform.isDOSDerived());
+        logger_.debug("Is DOS derived: " + Platform.isDOSDerived());
     }
 
 
@@ -58,7 +58,7 @@ public class PlatformTest extends TestCase
     public void testIsWindows()
     {
         logger_.info("Running testIsWindows...");
-        logger_.info("Is Windows: " + Platform.isWindows());
+        logger_.debug("Is Windows: " + Platform.isWindows());
     }
 
 
@@ -68,7 +68,7 @@ public class PlatformTest extends TestCase
     public void testIsWindows9x()
     {
         logger_.info("Running testIsWindows9x...");
-        logger_.info("Is Windows 9x: " + Platform.isWindows9x());
+        logger_.debug("Is Windows 9x: " + Platform.isWindows9x());
     }
 
 
@@ -78,7 +78,7 @@ public class PlatformTest extends TestCase
     public void testIsWindowsNT()
     {
         logger_.info("Running testIsWindowsNT...");
-        logger_.info("Is Windows NT: " + Platform.isWindowsNT());
+        logger_.debug("Is Windows NT: " + Platform.isWindowsNT());
     }
 
 
@@ -88,7 +88,7 @@ public class PlatformTest extends TestCase
     public void testIsOS2()
     {
         logger_.info("Running testIsOS2...");
-        logger_.info("Is OS/2: " + Platform.isOS2());
+        logger_.debug("Is OS/2: " + Platform.isOS2());
     }
 
 
@@ -98,7 +98,7 @@ public class PlatformTest extends TestCase
     public void testIsUnix()
     {
         logger_.info("Running testIsUnix...");
-        logger_.info("Is Unix: " + Platform.isUnix());
+        logger_.debug("Is Unix: " + Platform.isUnix());
     }
 
 
@@ -108,6 +108,6 @@ public class PlatformTest extends TestCase
     public void testIsMacOS()
     {
         logger_.info("Running testIsMacOS...");
-        logger_.info("Is Mac OS: " + Platform.isMacOS());
+        logger_.debug("Is Mac OS: " + Platform.isMacOS());
     }
 }

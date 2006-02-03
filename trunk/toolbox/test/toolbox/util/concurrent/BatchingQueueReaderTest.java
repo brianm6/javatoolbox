@@ -112,27 +112,27 @@ public class BatchingQueueReaderTest extends TestCase
         bqr.addBatchingQueueListener(queueListener);
         bqr.start();
         
-        logger_.info("Queue reader started...");
+        logger_.debug("Queue reader started...");
         
         Object[] batch = (Object[]) qout_.take();
         
-        logger_.info("Pulled next batch from queue...");
+        logger_.debug("Pulled next batch from queue...");
         
         assertEquals(batch[0], "one");
         assertEquals(batch[1], "two");
         assertEquals(batch[2], "three");
         
-        logger_.info("About to stop ...");
+        logger_.debug("About to stop ...");
         
         bqr.stop();
         
         assertTrue(q.size() == 0);
         
-        logger_.info("About to restart...");
+        logger_.debug("About to restart...");
         
         bqr.start();
         
-        logger_.info("About to stop again...");
+        logger_.debug("About to stop again...");
         
         bqr.stop();
         
@@ -142,13 +142,13 @@ public class BatchingQueueReaderTest extends TestCase
         q.put("four");
         q.put("five");
         
-        logger_.info(q);
+        logger_.debug(q);
         
-        logger_.info("About to start 3rd time...");
+        logger_.debug("About to start 3rd time...");
         
         bqr.start();
         
-        logger_.info(q);        
+        logger_.debug(q);        
         
         Object[] batch2 = (Object[]) qout_.take();
         
@@ -232,7 +232,7 @@ public class BatchingQueueReaderTest extends TestCase
          */
         public void nextBatch(Object[] elements)
         {
-            logger_.info("nextBatch: " + ArrayUtil.toString(elements));
+            logger_.debug("nextBatch: " + ArrayUtil.toString(elements));
             
             try
             {

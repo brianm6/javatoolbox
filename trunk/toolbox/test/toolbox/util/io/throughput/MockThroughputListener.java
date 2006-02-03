@@ -29,6 +29,6 @@ public class MockThroughputListener implements ThroughputListener
     public void currentThroughput(ThroughputEvent event)
     {
         String thruput = df_.format(event.getThroughput());
-        logger_.info("Transferred " + thruput + " bytes/second");    
+        logger_.debug("Transferred " + thruput + " bytes/second");    
     }
 }

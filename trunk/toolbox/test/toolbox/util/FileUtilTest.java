@@ -54,7 +54,7 @@ public class FileUtilTest extends TestCase
         String tempDir = FileUtil.getTempDir().getCanonicalPath();
         File file = new File(tempDir);
         assertTrue("temp is not a directory", file.isDirectory());
-        logger_.info("Passed: Temp dir = " + tempDir);
+        logger_.debug("Passed: Temp dir = " + tempDir);
     }
 
     //--------------------------------------------------------------------------
@@ -80,7 +80,7 @@ public class FileUtilTest extends TestCase
         File file = new File(tempFile);
         file.delete();
         
-        logger_.info("Passed: Created temp file " + tempFile);
+        logger_.debug("Passed: Created temp file " + tempFile);
     }
 
     
@@ -103,7 +103,7 @@ public class FileUtilTest extends TestCase
         File file = new File(tempFile);
         file.delete();
         
-        logger_.info("Passed: Created temp file " + tempFile);
+        logger_.debug("Passed: Created temp file " + tempFile);
     }
 
     //--------------------------------------------------------------------------
@@ -134,7 +134,7 @@ public class FileUtilTest extends TestCase
 
         // Verify test files created
         String[] before = dir.list();
-        logger_.info("Contents before: " + ArrayUtil.toString(before));
+        logger_.debug("Contents before: " + ArrayUtil.toString(before));
         assertEquals("Dir " + dir + " should have files",
             numFiles, before.length); 
 
@@ -143,7 +143,7 @@ public class FileUtilTest extends TestCase
             // Clean dir and verify no files are left
             FileUtil.cleanDir(dir);
             String[] after = dir.list();
-            logger_.info("Contents after: " + ArrayUtil.toString(after));
+            logger_.debug("Contents after: " + ArrayUtil.toString(after));
             assertEquals("No files should be left in " + dir, 0, after.length);
         }
         finally
@@ -174,7 +174,7 @@ public class FileUtilTest extends TestCase
         }
         catch (IllegalArgumentException e)
         {
-            logger_.info("Passed: " + e);
+            logger_.debug("Passed: " + e);
         }
         finally
         {
@@ -202,7 +202,7 @@ public class FileUtilTest extends TestCase
         }
         catch (IllegalArgumentException e)
         {
-            logger_.info("Passed: " + e);
+            logger_.debug("Passed: " + e);
         }
     }
     
@@ -263,7 +263,7 @@ public class FileUtilTest extends TestCase
         assertEquals("contents should be equals", 
             contents.toString(), currentContents);
         
-        logger_.info("Passed: " + file + " length " + currentContents.length());
+        logger_.debug("Passed: " + file + " length " + currentContents.length());
         
         // Clean up
         File reread = new File(file);        
@@ -324,7 +324,7 @@ public class FileUtilTest extends TestCase
         
         // Compare
         assertEquals("contents should be equals", contents, currentContents);
-        logger_.info("Passed: setFileContents on " + file);
+        logger_.debug("Passed: setFileContents on " + file);
         
         reread.delete();
     }
@@ -376,7 +376,7 @@ public class FileUtilTest extends TestCase
         
         // Compare
         assertEquals("contents should be equals", contents, currentContents);
-        logger_.info("Passed: setFileContents2 on " + file);
+        logger_.debug("Passed: setFileContents2 on " + file);
         
         // Clean up
         reread.delete();
@@ -431,10 +431,10 @@ public class FileUtilTest extends TestCase
             String[] beforeMoveSrc = srcDir.list();
             String[] beforeMoveDest = destDir.list();
             
-            logger_.info(
+            logger_.debug(
                 "Before move:  src=" + ArrayUtil.toString(beforeMoveSrc));
                 
-            logger_.info(
+            logger_.debug(
                 "Before move: dest=" + ArrayUtil.toString(beforeMoveDest));
             
             assertEquals(
@@ -450,10 +450,10 @@ public class FileUtilTest extends TestCase
             String[] afterMoveSrc = srcDir.list();
             String[] afterMoveDest = destDir.list();
     
-            logger_.info(
+            logger_.debug(
                 "After move:  src=" + ArrayUtil.toString(afterMoveSrc));
                 
-            logger_.info(
+            logger_.debug(
                 "After move: dest=" + ArrayUtil.toString(afterMoveDest));
                     
             assertEquals(
@@ -470,7 +470,7 @@ public class FileUtilTest extends TestCase
             assertEquals("contents of moved file should be the same", 
                 srcContents, destContents);
                 
-            logger_.info("Passed: moveFile");
+            logger_.debug("Passed: moveFile");
         }
         finally
         {
@@ -838,7 +838,7 @@ public class FileUtilTest extends TestCase
     {
         logger_.info("Running testGetFileInfo...");
         String s = FileUtil.getInfo(new File(System.getProperty("user.dir")));
-        logger_.info(StringUtil.banner(s));
+        logger_.debug(StringUtil.banner(s));
         assertNotNull(s);
     }
 }

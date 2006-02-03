@@ -93,7 +93,7 @@ public class HTMLFormatterTest extends TestCase
         Formatter f = new HTMLFormatter();
         String t = f.format(HTML_OBFUSCATED);
         assertNotNull(t);
-        logger_.info(StringUtil.banner(t));
+        logger_.debug(StringUtil.banner(t));
         assertNotSame(HTML_OBFUSCATED, t);
     }
         
@@ -115,7 +115,7 @@ public class HTMLFormatterTest extends TestCase
         f.format(sis, sos);
         out = sos.toString().trim();
         assertNotNull(out);
-        logger_.info(StringUtil.banner(out));
+        logger_.debug(StringUtil.banner(out));
         assertNotSame(HTML_OBFUSCATED, out);
     }
 

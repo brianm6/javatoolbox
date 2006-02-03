@@ -82,7 +82,7 @@ public class JFileExplorerTest extends UITestCase
              */
             public void fileDoubleClicked(String file)
             {
-                logger_.info("file " + file + " double clicked");
+                logger_.debug("file " + file + " double clicked");
             }
             
             /**
@@ -91,7 +91,7 @@ public class JFileExplorerTest extends UITestCase
              */
             public void folderSelected(String folder)
             {
-                logger_.info("folder " + folder + " selected");
+                logger_.debug("folder " + folder + " selected");
             }
             
             /**
@@ -100,7 +100,7 @@ public class JFileExplorerTest extends UITestCase
              */
             public void folderDoubleClicked(String folder)
             {
-                logger_.info("folder " + folder + " double clicked");    
+                logger_.debug("folder " + folder + " double clicked");    
             }
             
             /**
@@ -109,7 +109,7 @@ public class JFileExplorerTest extends UITestCase
              */
             public void fileSelected(String file)
             {
-                logger_.info("file " + file + " selected");            
+                logger_.debug("file " + file + " selected");            
             }
             
             /**

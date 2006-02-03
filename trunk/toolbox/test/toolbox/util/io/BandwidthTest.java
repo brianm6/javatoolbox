@@ -33,6 +33,6 @@ public class BandwidthTest extends TestCase
         
         Bandwidth bw = new Bandwidth(1000, 1000, Bandwidth.TYPE_BOTH);
         
-        logger_.info(StringUtil.banner(bw.toString()));
+        logger_.debug(StringUtil.banner(bw.toString()));
     }
 }

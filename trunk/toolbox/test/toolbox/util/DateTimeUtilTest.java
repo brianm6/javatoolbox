@@ -64,10 +64,10 @@ public class DateTimeUtilTest extends TestCase
         logger_.info("Running testAdd...");
         
         Date d = DateTimeUtil.getBeginningOfDay();
-        logger_.info("Before adding: " + DateTimeUtil.format(d));
+        logger_.debug("Before adding: " + DateTimeUtil.format(d));
         
         DateTimeUtil.add(d, 1, 1, 1, 1, 1, 1);
-        logger_.info("After adding: " + DateTimeUtil.format(d));      
+        logger_.debug("After adding: " + DateTimeUtil.format(d));      
     }
     
     
@@ -79,7 +79,7 @@ public class DateTimeUtilTest extends TestCase
         logger_.info("Running testGetBeginningOfTime...");
 
         Date d = DateTimeUtil.getBeginningOfTime();
-        logger_.info("Beginning of time: " + DateTimeUtil.format(d));
+        logger_.debug("Beginning of time: " + DateTimeUtil.format(d));
     }
 
     
@@ -91,7 +91,7 @@ public class DateTimeUtilTest extends TestCase
         logger_.info("Running testGetEndOfDay...");
 
         Date d = DateTimeUtil.getEndOfDay();
-        logger_.info("End of day: " + DateTimeUtil.format(d));
+        logger_.debug("End of day: " + DateTimeUtil.format(d));
     }
 
     
@@ -103,7 +103,7 @@ public class DateTimeUtilTest extends TestCase
         logger_.info("Running testGetEndOfTime...");
 
         Date d = DateTimeUtil.getEndOfTime();
-        logger_.info("End of time: " + DateTimeUtil.format(d));
+        logger_.debug("End of time: " + DateTimeUtil.format(d));
     }
 
     
@@ -115,6 +115,6 @@ public class DateTimeUtilTest extends TestCase
         logger_.info("Running testFormatToSecond...");
 
         Date d = new Date();
-        logger_.info("Formatted to seconds: " + DateTimeUtil.formatToSecond(d));
+        logger_.debug("Formatted to seconds: " + DateTimeUtil.formatToSecond(d));
     }
 }
