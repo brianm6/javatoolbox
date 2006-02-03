@@ -128,7 +128,7 @@ public class TcpTunnelTest extends TestCase
         server.start();
         serverListener.waitForStart();        
         
-        logger_.info("Socket server started!");    
+        logger_.debug("Socket server started!");    
 
         // Setup tunnel
         int tunnelPort = SocketUtil.getFreePort();
@@ -152,7 +152,7 @@ public class TcpTunnelTest extends TestCase
         tunnel.start();
         tunnelListener.waitForStarted();
     
-        logger_.info("Tunnel started!");
+        logger_.debug("Tunnel started!");
         
         // Setup client
         Socket socket = new Socket("localhost", tunnelPort);
@@ -182,8 +182,8 @@ public class TcpTunnelTest extends TestCase
         // Tear down
         write(pw, "terminate");
 
-        //logger_.info(StringUtil.addBars("a->b:\n" + ab));
-        //logger_.info(StringUtil.addBars("b->a:\n" + ba));
+        //logger_.debug(StringUtil.addBars("a->b:\n" + ab));
+        //logger_.debug(StringUtil.addBars("b->a:\n" + ba));
         
         tunnel.stop();
         server.stop();
@@ -192,8 +192,8 @@ public class TcpTunnelTest extends TestCase
         int r = tunnelListener.getTotalBytesRead();
         int w = tunnelListener.getTotalBytesWritten();
         
-        logger_.info("Bytes read   : " + r);
-        logger_.info("Bytes written: " + w);
+        logger_.debug("Bytes read   : " + r);
+        logger_.debug("Bytes written: " + w);
         
         int len = message.length() + "terminate".length() + "\r\n".length() * 2;
         assertEquals(len, r);
@@ -258,7 +258,7 @@ public class TcpTunnelTest extends TestCase
         server.start();
         serverListener.waitForStart();        
         
-        logger_.info("Socket server started!");    
+        logger_.debug("Socket server started!");    
 
         // Setup tunnel
         int tunnelPort = SocketUtil.getFreePort();
@@ -284,7 +284,7 @@ public class TcpTunnelTest extends TestCase
         tunnel.start();
         tunnelListener.waitForStarted();
     
-        logger_.info("Tunnel started!");
+        logger_.debug("Tunnel started!");
         
         // Setup client
         Socket socket = new Socket("localhost", tunnelPort);
@@ -361,7 +361,7 @@ public class TcpTunnelTest extends TestCase
         server.start();
         serverListener.waitForStart();        
         
-        logger_.info("Socket server started!");    
+        logger_.debug("Socket server started!");    
 
         // Tunnel ==============================================================
         
@@ -387,7 +387,7 @@ public class TcpTunnelTest extends TestCase
         {
             public void currentThroughput(ThroughputEvent event)
             {
-                logger_.info("Throughput: " + event.getThroughput());
+                logger_.debug("Throughput: " + event.getThroughput());
             }
         });
         
@@ -401,7 +401,7 @@ public class TcpTunnelTest extends TestCase
         tunnel.start();
         tunnelListener.waitForStarted();
     
-        logger_.info("Tunnel started!");
+        logger_.debug("Tunnel started!");
 
         // Client ==============================================================
         
@@ -480,12 +480,14 @@ public class TcpTunnelTest extends TestCase
         write(pw, "terminate");
         r.join();
         
+        monitor.setMonitoringThroughput(false);
+        
         // Tear down
         tunnel.stop();
         server.stop();
         
-        logger_.info("Bytes read   : " + tunnelListener.getTotalBytesRead());
-        logger_.info("Bytes written: " + tunnelListener.getTotalBytesWritten());
+        logger_.debug("Bytes read   : " + tunnelListener.getTotalBytesRead());
+        logger_.debug("Bytes written: " + tunnelListener.getTotalBytesWritten());
     }
     
     
@@ -501,7 +503,7 @@ public class TcpTunnelTest extends TestCase
      */
     private void write(PrintWriter pw, String msg)
     {
-        //logger_.info("a->b " + msg);
+        //logger_.debug("a->b " + msg);
         pw.println(msg);
         pw.flush();
         ThreadUtil.sleep(1000);
@@ -529,7 +531,7 @@ public class TcpTunnelTest extends TestCase
      */
     private void write(OutputStream os, String msg) throws IOException
     {
-        //logger_.info("a->b " + msg.length() + " - " + msg);
+        //logger_.debug("a->b " + msg.length() + " - " + msg);
         os.write(msg.getBytes());
         os.flush();
         ThreadUtil.sleep(1000);
@@ -546,7 +548,7 @@ public class TcpTunnelTest extends TestCase
     public String read(BufferedReader br) throws Exception
     {
         String msg = br.readLine();
-        //logger_.info("a<-b " + msg);
+        //logger_.debug("a<-b " + msg);
         return msg;
     }
 
@@ -575,7 +577,7 @@ public class TcpTunnelTest extends TestCase
                 break;
         }
 
-        logger_.info("a<-b " + msg.length() + " - " + msg);
+        logger_.debug("a<-b " + msg.length() + " - " + msg);
         return msg.toString();
     }    
 }
