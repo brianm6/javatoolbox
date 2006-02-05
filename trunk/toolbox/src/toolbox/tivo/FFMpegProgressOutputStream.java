@@ -172,11 +172,11 @@ public class FFMpegProgressOutputStream extends FilterOutputStream {
                     buffer_.clear();
                     int secs = Integer.parseInt(secs_.toString());
                     
-                    if ((secs < 5       || 
-                         secs % 10 == 0 || 
+                    if ((secs < 10      || 
+                         secs % 30 == 0 || 
                          secs + 10 > totalSeconds_) && 
                              secs != progressSecs_) {
-                        //logger_.info("Progress: " + secs + "/" + totalSeconds_);
+                        logger_.info("Progress: " + secs + "/" + totalSeconds_);
                         progressSecs_ = secs;
                     }
                 }
