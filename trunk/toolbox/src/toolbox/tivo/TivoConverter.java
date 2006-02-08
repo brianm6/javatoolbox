@@ -354,7 +354,7 @@ public class TivoConverter {
     }
 
     
-    private void printQueue() {
+    public void printQueue() {
     
         StringBuffer sb = new StringBuffer();
         
@@ -366,6 +366,8 @@ public class TivoConverter {
         
         if (sb.length() > 0)
             logger_.info(StringUtil.banner(sb.toString()));
+        else
+        	logger_.info("Work queue is empty!");
     }
     
     // -------------------------------------------------------------------------
