@@ -110,6 +110,14 @@
     </properties>
 
     <body>
+
+        <!-- =================================================================== -->
+        <!-- Feb 2006                                                            -->
+        <!-- =================================================================== -->
+        
+        <release version="2.0.18" date="Feb 2006">
+            <action type="update"   >DirectoryMonitor - Added support for passing in a filename on the command line that contains a list of directories to monitor</action>
+        </release>
     
         <!-- =================================================================== -->
         <!-- Jan 2006                                                            -->
