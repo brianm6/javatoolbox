@@ -6,12 +6,17 @@ import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.LineNumberReader;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ResourceUtil;
@@ -36,6 +41,8 @@ import toolbox.util.ui.textcomponent.FileAutoCompleter;
  * following features.
  * <ul>
  *  <li>Pass in list of directories to monitor on the command line.
+ *  <li>Pass in a file containing a list of directories to monitor on the
+ *      command line using @ symbol.
  *  <li>Tabpanel interface to manage multiple directory monitors.
  *  <li>Sits in the system tray so as not to be intrusive.
  *  <li>Allows monitoring of multiple directories each with its own monitor.
@@ -149,6 +156,13 @@ public class DirMon extends JFrame implements SmartTabbedPaneListener {
     // Main
     // -------------------------------------------------------------------------
 
+    /**
+     * Main entrypoint to the directory monitor.
+     * 
+     * @param args Space delimited set of directories to monitor or an @ symbol
+     *        followed by the name of a file containing a list of directories
+     *        to monitor.
+     */
     public static void main(String[] args) {
 
         try {
@@ -162,16 +176,53 @@ public class DirMon extends JFrame implements SmartTabbedPaneListener {
         dirMon.setVisible(true);
         
         for (int i = 0; i < args.length; i++) {
-            String s = args[i];
-            File f = new File(s);
+            String arg = args[i];
             
-            if (f.isDirectory() && f.canRead()) {
-                MonitorDirectoryAction action = dirMon.new MonitorDirectoryAction();
-                action.monitor(f);
+            // Read in file containing list of directories to mointor
+            if (arg.startsWith("@")) {
+
+                File file = new File(arg.substring(1));
+                LineNumberReader lnr = null;
+                
+                try {
+                    lnr = new LineNumberReader(new FileReader(file));
+                    String line = null;
+                    while ( (line = lnr.readLine()) != null) {
+                        addMonitor(dirMon, line.trim());
+                    }
+                }
+                catch (FileNotFoundException fnfe) {
+                    logger_.error("File not found: " + file, fnfe);
+                }
+                catch (IOException ioe) {
+                    logger_.error("IOException : " + file, ioe);                    
+                }
+                finally {
+                    IOUtils.closeQuietly(lnr);
+                }
             }
+            
+            // Monitor an individual directory passed as an arg on the command
+            // line
             else {
-                logger_.error("'" + s + "' is not a valid directory");
+                addMonitor(dirMon, arg);
             }
+        }
+    }
+
+    
+    /**
+     * @param dirMon
+     * @param dirPath
+     */
+    private static void addMonitor(DirMon dirMon, String dirPath) {
+        File dir = new File(dirPath);
+        
+        if (dir.isDirectory() && dir.canRead()) {
+            dirMon.new MonitorDirectoryAction().monitor(dir);
+        }
+        else {
+            logger_.error("'" + dirPath + "' is not a valid directory");
         }
     }
 
