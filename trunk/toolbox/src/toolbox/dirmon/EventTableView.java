@@ -27,6 +27,8 @@ import org.apache.log4j.Logger;
 
 import com.l2fprod.common.swing.renderer.DateRenderer;
 
+import toolbox.util.Platform;
+import toolbox.util.ProcessUtil;
 import toolbox.util.dirmon.DirectoryMonitor;
 import toolbox.util.dirmon.FileSnapshot;
 import toolbox.util.dirmon.IDirectoryMonitorListener;
@@ -46,6 +48,7 @@ import toolbox.util.ui.table.action.AutoTailAction;
  * shows all generated {@link toolbox.util.dirmon.event.StatusEvent}s in a 
  * table. Features include:
  * <ul>
+ *  <li>Build in table header button to launch selected file.
  *  <li>Built in table header button to diff files.
  *  <li>Built in table header button to show file history.
  *  <li>Built in table header button to autoscroll tables as rows are added.
@@ -136,6 +139,12 @@ public class EventTableView extends JPanel implements IDirectoryMonitorListener 
         
         ////////////////////////////////////////////////////////////////////////
         
+        JButton launchButton =
+            JHeaderPanel.createButton(
+                ImageCache.getIcon(ImageCache.IMAGE_PLAY),
+                "Launch File",
+                new LaunchAction());
+        
         JButton diffButton =
             JHeaderPanel.createButton(
                 ImageCache.getIcon(ImageCache.IMAGE_BRACES),
@@ -178,6 +187,10 @@ public class EventTableView extends JPanel implements IDirectoryMonitorListener 
         }
         
         JToolBar tb = JHeaderPanel.createToolBar();
+        
+        if (Platform.isWindows())
+            tb.add(launchButton);
+        
         tb.add(diffButton);
         tb.add(historyButton);
         tb.add(autoTailButton);
@@ -388,4 +401,39 @@ public class EventTableView extends JPanel implements IDirectoryMonitorListener 
             }
         }
     }
+    
+    // -------------------------------------------------------------------------
+    // LaunchAction 
+    // -------------------------------------------------------------------------
+    
+    class LaunchAction extends SmartAction {
+        
+        LaunchAction() {
+            super("Launch", true, false, null);
+            putValue(SHORT_DESCRIPTION, "Launch file");
+        }
+        
+        
+        public void runAction(ActionEvent e) throws Exception {
+            
+            int idx = table_.getSelectedRow();
+            
+            if (idx >= 0) {
+                String dir = (String) model_.getValueAt(idx, INDEX_DIR); 
+                String file  = (String) model_.getValueAt(idx,INDEX_FILE);
+                String path = dir + File.separator + file;
+                
+                // Only works for windows
+                String command = "cmd /c " + path;
+                
+                Process p = Runtime.getRuntime().exec(command);
+                StringBuffer stdout = new StringBuffer();
+                StringBuffer stderr = new StringBuffer();
+                int exitValue = ProcessUtil.getProcessOutput(p, stdout, stderr);
+                logger_.debug("Launch Output: " + stdout);
+                logger_.debug("Launch Error: " + stderr);
+                logger_.debug("Launch Exit value: " + exitValue);
+            }
+        }
+    }    
 }
