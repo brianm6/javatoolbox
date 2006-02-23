@@ -588,103 +588,105 @@ public class DirectoryMonitor
             while (isRunning() || isSuspended()) {
                 
                 
-                if (!isSuspended()) {
-                    logger_.debug(
-                        (first ? "First" : "Update") 
-                        + " scan started for " 
-                        + monitoredDirectories_.size()
-                        + " directories.");
-                    
-                    fireStatusChanged(
-                        new StatusEvent(
-                            StatusEvent.TYPE_START_SCAN, 
-                            DirectoryMonitor.this, 
+                try {
+                    if (!isSuspended()) {
+                        logger_.debug((first ? "First" : "Update")
+                            + " scan started for "
+                            + monitoredDirectories_.size() + " directories.");
+
+                        fireStatusChanged(new StatusEvent(
+                            StatusEvent.TYPE_START_SCAN, DirectoryMonitor.this,
                             "Started scan"));
-                    
-                    for (Iterator di = monitoredDirectories_.iterator(); 
-                        di.hasNext() && isRunning();) {
-                        
-                        File dir = (File) di.next();
-                        String dirKey = dir.getAbsolutePath();
-                        
-                        DirSnapshot beforeDirSnapshot = (DirSnapshot) 
-                            dirSnapshots_.get(dirKey);
-    
-                        if (beforeDirSnapshot == null) {
-                            dirSnapshots_.put(dirKey, new DirSnapshot(dir));
-                        }
-                        else {
-                            DirSnapshot afterDirSnapshot = new DirSnapshot(dir);
-    
-                            for (Iterator i = recognizers_.iterator(); 
-                                i.hasNext() && isRunning();) {
-       
-                                IFileActivityRecognizer recognizer = 
-                                    (IFileActivityRecognizer) i.next();
-                    
-                                List recognizedEvents = 
-                                    recognizer.getRecognizedEvents(
-                                        beforeDirSnapshot, 
-                                        afterDirSnapshot);
-                                
-                                for (Iterator r = recognizedEvents.iterator();
-                                    r.hasNext(); ) {
-                                    
-                                    try {
-                                        FileEvent event = 
-                                            (FileEvent) r.next();
-                                        
-                                       fireDirectoryActivity(event);
-                                    }
-                                    catch (Exception e) {
-                                       logger_.error("ActivityRunner.run", e);
-                                    }
-                                }
-                               
-                                ThreadUtil.sleep(perDirectoryDelay_);
-                            }
-                            
-                            // Update the snapshot to the latest
-                            dirSnapshots_.put(dirKey, afterDirSnapshot);
-                        }
-                    }
-    
-                    fireStatusChanged(
-                        new StatusEvent(
-                            StatusEvent.TYPE_END_SCAN, 
-                            DirectoryMonitor.this, 
-                            "Ended scan"));
-                }
-                else {
-                    logger_.debug("Skipping scan due to suspension...");
-                }
-                
-                if (!first) {
-                    synchronized (monitor_) {
-                        try {
-                            if (isSuspended()) {
-                                // Wait indefinitely until resumed
-                                logger_.debug("Suspending gracefully..");
-                                monitor_.wait();
-                                logger_.debug("Woken up from suspended..");
+
+                        for (Iterator di = monitoredDirectories_.iterator(); di
+                            .hasNext()
+                            && isRunning();) {
+
+                            File dir = (File) di.next();
+                            String dirKey = dir.getAbsolutePath();
+
+                            DirSnapshot beforeDirSnapshot = (DirSnapshot) dirSnapshots_
+                                .get(dirKey);
+
+                            if (beforeDirSnapshot == null) {
+                                dirSnapshots_.put(dirKey, new DirSnapshot(dir));
                             }
                             else {
-                                logger_.trace("Waiting "
-                                    + getDelay()
-                                    + "ms until next scan...");
-                                
-                                // Wait until delay expires
-                                monitor_.wait(getDelay());
-                                logger_.debug("Woken up from suspended or delay expired");
+                                DirSnapshot afterDirSnapshot = new DirSnapshot(
+                                    dir);
+
+                                for (Iterator i = recognizers_.iterator(); i
+                                    .hasNext()
+                                    && isRunning();) {
+
+                                    IFileActivityRecognizer recognizer = (IFileActivityRecognizer) i
+                                        .next();
+
+                                    List recognizedEvents = recognizer
+                                        .getRecognizedEvents(beforeDirSnapshot,
+                                            afterDirSnapshot);
+
+                                    for (Iterator r = recognizedEvents
+                                        .iterator(); r.hasNext();) {
+
+                                        try {
+                                            FileEvent event = (FileEvent) r
+                                                .next();
+                                            fireDirectoryActivity(event);
+                                        }
+                                        catch (Exception e) {
+                                            logger_.error("ActivityRunner.run",
+                                                e);
+                                        }
+                                    }
+
+                                    ThreadUtil.sleep(perDirectoryDelay_);
+                                }
+
+                                // Update the snapshot to the latest
+                                dirSnapshots_.put(dirKey, afterDirSnapshot);
                             }
                         }
-                        catch (InterruptedException e) {
-                            logger_.debug("Monitor thread interrupted!");
+
+                        fireStatusChanged(new StatusEvent(
+                            StatusEvent.TYPE_END_SCAN, DirectoryMonitor.this,
+                            "Ended scan"));
+                    }
+                    else {
+                        logger_.debug("Skipping scan due to suspension...");
+                    }
+
+                    if (!first) {
+                        synchronized (monitor_) {
+                            try {
+                                if (isSuspended()) {
+                                    // Wait indefinitely until resumed
+                                    logger_.debug("Suspending gracefully..");
+                                    monitor_.wait();
+                                    logger_.debug("Woken up from suspended..");
+                                }
+                                else {
+                                    logger_.trace("Waiting " + getDelay()
+                                        + "ms until next scan...");
+
+                                    // Wait until delay expires
+                                    monitor_.wait(getDelay());
+                                    logger_
+                                        .debug("Woken up from suspended or delay expired");
+                                }
+                            }
+                            catch (InterruptedException e) {
+                                logger_.debug("Monitor thread interrupted!");
+                            }
                         }
                     }
+                    else {
+                        first = false;
+                    }
                 }
-                else {
-                    first = false;
+                catch (Exception e) {
+                    // Dont let unexpected exceptions stop this thread from continuing to run
+                    logger_.error("Error in directory scanning loop", e);
                 }
             }
             
