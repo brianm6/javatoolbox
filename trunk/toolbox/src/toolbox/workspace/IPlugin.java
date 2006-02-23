@@ -14,8 +14,8 @@ import toolbox.workspace.prefs.IConfigurator;
  * @see toolbox.workspace.PluginWorkspace
  * @see toolbox.workspace.host.PluginHost
  */
-public interface IPlugin extends Initializable, Destroyable, IPreferenced
-{
+public interface IPlugin extends Initializable, Destroyable, IPreferenced {
+
     /**
      * Friendly name of the plugin used for identification in the workspace.
      * 
@@ -23,7 +23,7 @@ public interface IPlugin extends Initializable, Destroyable, IPreferenced
      */
     String getPluginName();
 
-    
+
     /**
      * Returns a short description of this plugin.
      * 
@@ -31,22 +31,22 @@ public interface IPlugin extends Initializable, Destroyable, IPreferenced
      */
     String getDescription();
 
-    
+
     /**
      * Returns the user interface component of this plugin.
      * 
      * @return JComponent
      */
     JComponent getView();
-    
-    
+
+
     /**
-     * Returns a configurator for this plugin's preferences. A configurator is 
-     * usually a panel that the plugin host can add to an application wide 
-     * preferences dialog box so that preferences for this plugin can be
-     * viewed and edited.
+     * Returns a configurator for this plugin's preferences. A configurator is
+     * usually a panel that the plugin host can add to an application wide
+     * preferences dialog box so that preferences for this plugin can be viewed
+     * and edited.
      * 
-     * @return ICongifurator   
+     * @return ICongifurator
      */
     IConfigurator getConfigurator();
 }
