@@ -9,9 +9,12 @@ import java.io.StringWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import nu.xom.Element;
 
@@ -22,6 +25,7 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.PosixParser;
 import org.apache.commons.io.output.NullOutputStream;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ExceptionUtil;
@@ -100,7 +104,7 @@ import toolbox.workspace.PreferencedException;
  *   <li>Socket client receives response and processes as normal
  * </ol>
  */
-public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced {
+public class TcpTunnel implements Startable, IPreferenced {
     
     private static final Logger logger_ = Logger.getLogger(TcpTunnel.class);
 
@@ -233,8 +237,8 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced {
             Option quietOption = new Option(
                 "q", "quiet", false, "Quiet (don't print tunneled data)");
                 
-            Option throughputOption = new Option(
-                "t", "throughput", false, "Prints throughput");
+            Option transferredOption = new Option(
+                "t", "transferred", false, "Prints bytes transferred in real time");
             
             Option binaryOption = new Option(
                 "b", "suppressBinary", false, "Suppresses binary output");
@@ -243,14 +247,14 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced {
             
             options.addOption(helpOption);
             options.addOption(quietOption);        
-            options.addOption(throughputOption);
+            options.addOption(transferredOption);
             options.addOption(binaryOption);
     
             // Parse options
             CommandLine cmdLine = parser.parse(options, args, true);
             
             // Create tunnel w/o specifying config
-            TcpTunnel tunnel = new TcpTunnel();
+            final TcpTunnel tunnel = new TcpTunnel();
             
             // Handle options
             for (Iterator i = cmdLine.iterator(); i.hasNext();) {
@@ -264,8 +268,9 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced {
                 else if (opt.equals(binaryOption.getOpt())) {
                     tunnel.setSuppressBinary(true);
                 }
-                else if (opt.equals(throughputOption.getOpt())) {
-                    // TODO
+                else if (opt.equals(transferredOption.getOpt())) {
+                    Timer t = new Timer(true);
+                    t.schedule(new ShowTransferredTask(tunnel), 1000, 1000);
                 }
                 else if (opt.equals(helpOption.getOpt())) {
                     printUsage(options);
@@ -284,7 +289,8 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced {
                     tunnel.setLocalPort(localPort);
                     tunnel.setRemoteHost(tunnelhost);
                     tunnel.setRemotePort(tunnelport);
-                    tunnel.addTcpTunnelListener(tunnel);
+                    //tunnel.addTcpTunnelListener(tunnel);
+                    tunnel.addTcpTunnelListener(new InternalTcpTunnelListener());
                     tunnel.start();
 
                     System.out
@@ -303,6 +309,7 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced {
             logger_.error("main", e);
         }
     }
+
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -446,6 +453,14 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced {
      */
     public void setRemotePort(int remotePort) {
         remotePort_ = remotePort;
+    }
+
+    public long getTotalBytesRead() {
+        return inTotal_;
+    }
+
+    public long getTotalBytesWritten() {
+        return outTotal_;
     }
     
     // --------------------------------------------------------------------------
@@ -608,57 +623,6 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced {
             ((TcpTunnelListener) i.next()).newConnection(mis, mos);
     }
     
-    // --------------------------------------------------------------------------
-    // TcpTunnelListener Interface
-    //--------------------------------------------------------------------------
-
-    /*
-     * @see toolbox.tunnel.TcpTunnelListener#statusChanged(toolbox.tunnel.TcpTunnel, java.lang.String)
-     */
-    public void statusChanged(TcpTunnel tunnel, String status) {
-        System.out.println("[Status changed: " + status + "]");
-    }
-
-
-    /*
-     * @see toolbox.tunnel.TcpTunnelListener#bytesRead(toolbox.tunnel.TcpTunnel, int, int)
-     */
-    public void bytesRead(
-        TcpTunnel tunnel,
-        int connBytesRead,
-        int totalBytesRead) {
-        System.out.println("[Bytes read: " + connBytesRead + "]");
-    }
-
-
-    /*
-     * @see toolbox.tunnel.TcpTunnelListener#bytesWritten(toolbox.tunnel.TcpTunnel, int, int)
-     */
-    public void bytesWritten(
-        TcpTunnel tunnel,
-        int connBytesWritten,
-        int totalBytesWritten) {
-        System.out.println("[Bytes written: " + connBytesWritten + "]");
-    }
-
-
-    /*
-     * @see toolbox.tunnel.TcpTunnelListener#tunnelStarted(toolbox.tunnel.TcpTunnel)
-     */
-    public void tunnelStarted(TcpTunnel tunnel) {
-        System.out.println("Tunnel started");
-    }
-
-    
-    /*
-     * @see toolbox.tunnel.TcpTunnelListener#newConnection(toolbox.util.io.MonitoredOutputStream, toolbox.util.io.MonitoredOutputStream)
-     */
-    public void newConnection(
-        MonitoredOutputStream incomingSink, 
-        MonitoredOutputStream outgoingSink) {
-        System.out.println("New connection!");
-    }
-    
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
@@ -746,7 +710,7 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced {
                     MonitoredOutputStream mos = new MonitoredOutputStream(
                         NAME_STREAM_OUT, new NullOutputStream());
 
-                    mos.addOutputStreamListener(new MyOutputStreamListener());
+                    mos.addOutputStreamListener(new InternalOutputStreamListener());
 
                     printableOutgoingSink_ = new PrintableOutputStream(
                         outgoingSink_, supressBinary_, SUBSTITUTION_CHAR);
@@ -764,7 +728,7 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced {
                     MonitoredOutputStream mis = new MonitoredOutputStream(
                         NAME_STREAM_IN, new NullOutputStream());
 
-                    mis.addOutputStreamListener(new MyOutputStreamListener());
+                    mis.addOutputStreamListener(new InternalOutputStreamListener());
                     inStreams.addStream(mis);
 
                     printableIncomingSink_ = new PrintableOutputStream(
@@ -798,14 +762,14 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced {
     }
     
     //--------------------------------------------------------------------------
-    // OutputStreamListener
+    // InternalOutputStreamListener
     //--------------------------------------------------------------------------
 
     /**
      * Listener that reports total number of bytes written/read from the tunnel
      * after the connection is closed.
      */
-    class MyOutputStreamListener implements
+    class InternalOutputStreamListener implements
         MonitoredOutputStream.OutputStreamListener {
 
         /**
@@ -815,35 +779,108 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced {
          * @see toolbox.util.io.MonitoredOutputStream.OutputStreamListener#streamClosed(MonitoredOutputStream)
          */
         public void streamClosed(MonitoredOutputStream stream) {
+//            String name = stream.getName();
+//            int count = (int) stream.getCount();
+//
+//            if (name.equals(NAME_STREAM_IN)) {
+//                //logger_.debug(
+//                //  "Tallying bytes on stream close event: " +stream.getName());
+//
+//                inTotal_ += count;
+//                fireBytesRead(count);
+//            }
+//            else if (name.equals(NAME_STREAM_OUT)) {
+//                //logger_.debug(
+//                //  "Tallying bytes on stream close event: " +stream.getName());
+//
+//                outTotal_ += count;
+//                fireBytesWritten(count);
+//            }
+//            else {
+//                throw new IllegalArgumentException("Invalid stream name:"
+//                    + name);
+//            }
+        }
+
+        public void streamFlushed(MonitoredOutputStream stream) {
             String name = stream.getName();
             int count = (int) stream.getCount();
 
-            if (name.equals(NAME_STREAM_IN)) {
-                //logger_.debug(
-                //  "Tallying bytes on stream close event: " +stream.getName());
-
-                inTotal_ += count;
-                fireBytesRead(count);
+            if (NAME_STREAM_IN.equals(name)) {
+                fireBytesRead(count - inTotal_);
+                inTotal_ = count;
             }
-            else if (name.equals(NAME_STREAM_OUT)) {
-                //logger_.debug(
-                //  "Tallying bytes on stream close event: " +stream.getName());
-
-                outTotal_ += count;
-                fireBytesWritten(count);
+            else if (NAME_STREAM_OUT.equals(name)) {
+                fireBytesWritten(count - outTotal_);
+                outTotal_ = count;
             }
             else {
-                throw new IllegalArgumentException("Invalid stream name:"
-                    + name);
+                throw new IllegalArgumentException("Invalid stream name:" + name);
             }
+        }
+    }
+    
+    // --------------------------------------------------------------------------
+    // InternalTcpTunnelListener
+    // --------------------------------------------------------------------------
+    
+    static class InternalTcpTunnelListener implements TcpTunnelListener {
+
+        public void statusChanged(TcpTunnel tunnel, String status) {
+            System.out.println("[Status changed: " + status + "]");
         }
 
 
-        /*
-         * @see toolbox.util.io.MonitoredOutputStream.OutputStreamListener#streamFlushed(toolbox.util.io.MonitoredOutputStream)
-         */
-        public void streamFlushed(MonitoredOutputStream stream) {
-            ; // NO-OP
+        public void bytesRead(
+            TcpTunnel tunnel,
+            int connBytesRead,
+            int totalBytesRead) {
+            //System.out.println("[Bytes read: " + connBytesRead + "]");
+        }
+
+
+        public void bytesWritten(
+            TcpTunnel tunnel,
+            int connBytesWritten,
+            int totalBytesWritten) {
+            //System.out.println("[Bytes written: " + connBytesWritten + "]");
+        }
+
+
+        public void tunnelStarted(TcpTunnel tunnel) {
+            System.out.println("Tunnel started");
+        }
+
+        
+        public void newConnection(
+            MonitoredOutputStream incomingSink, 
+            MonitoredOutputStream outgoingSink) {
+            System.out.println("New connection!");
+        }
+    }
+    
+    // --------------------------------------------------------------------------
+    // ShowTransferredTask
+    // --------------------------------------------------------------------------
+    
+    static class ShowTransferredTask extends TimerTask {
+
+        private TcpTunnel tunnel;
+        
+        public ShowTransferredTask(TcpTunnel tunnel) {
+            this.tunnel = tunnel;
+        }
+        
+        public void run() {
+            
+            String stat = 
+                "in = " 
+                + DecimalFormat.getIntegerInstance().format(tunnel.getTotalBytesRead()) 
+                + " out = " 
+                + DecimalFormat.getIntegerInstance().format(tunnel.getTotalBytesWritten());
+            
+            System.out.print(stat);
+            System.out.print(StringUtils.repeat("\b", stat.length()));
         }
     }
 }
