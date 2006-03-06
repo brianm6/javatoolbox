@@ -245,9 +245,11 @@ public class TivoConverter {
                 throw new Exception(
                     "Transcoded file " + destFilename + " does not exist");
 
-            if (f.length() == 0)
+            if (f.length() == 0) {
+                f.delete();
                 throw new Exception(
                     "Transcoded file " + destFilename + " is ZERO bytes");
+            }
             
             moveDestFileToGoBackDir(destFilename); 
             moveSourceFileToOriginalsDir(sourceFilename, sourceFile); 
@@ -260,8 +262,8 @@ public class TivoConverter {
 
     
     /**
-     * Common error handler. Copies the failed transcoded file to the error
-     * directory and logs errors appropriately.
+     * Common error handler. Copies the failed transcoded source file to the 
+     * error directory and logs errors appropriately.
      * 
      * @param sourceFilename
      * @param sourceFile
