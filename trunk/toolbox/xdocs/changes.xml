@@ -93,12 +93,9 @@
  * =============================================================================
  *                              TcpTunnelPlugin
  * =============================================================================
- * TODO: TCPTunnel: Add option just to monitor the count and not output data.
- * TODO: TCPTunnel: Figure out why it freezes up
  * TODO: Allow multiple profiles
  * TODO: Allow multiple tunnels
  * TODO: Fix suppress binary
- * TODO: Fix byte count in header
  * =============================================================================
 -->
 
