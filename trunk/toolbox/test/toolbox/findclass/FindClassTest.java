@@ -9,14 +9,14 @@ import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
 
+import edu.emory.mathcs.backport.java.util.concurrent.Semaphore;
+
 import toolbox.util.ArrayUtil;
 import toolbox.util.ClassUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.ThreadUtil;
 import toolbox.util.collections.AsMap;
-import edu.emory.mathcs.backport.java.util.concurrent.Semaphore;
-
 
 /**
  * Unit test for {@link toolbox.findclass.FindClass}.
