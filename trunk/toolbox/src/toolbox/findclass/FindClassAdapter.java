@@ -1,54 +1,33 @@
 package toolbox.findclass;
 
 /**
- * Adapter class for FindClassListener.
+ * Adapter class for {@link toolbox.findclass.FindClassListener}.
  */
-public class FindClassAdapter implements FindClassListener
-{
-    //--------------------------------------------------------------------------
+public class FindClassAdapter implements FindClassListener {
+
+    // --------------------------------------------------------------------------
     // Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Creates a FindClassAdapter.
-     */
-    public FindClassAdapter()
-    {
+    // --------------------------------------------------------------------------
+
+    public FindClassAdapter() {
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     // FindClassListener Interface
-    //--------------------------------------------------------------------------
-    
-    /**
-     * @see FindClassListener#classFound(FindClassResult)
-     */
-    public void classFound(FindClassResult searchResult)
-    {
+    // --------------------------------------------------------------------------
+
+    public void classFound(FindClassResult searchResult) {
     }
 
-    
-    /**
-     * @see FindClassListener#searchingTarget(String)
-     */
-    public void searchingTarget(String target)
-    {
+
+    public void searchingTarget(String target) {
     }
 
-    
-    /**
-     * @see FindClassListener#searchCanceled()
-     */
-    public void searchCanceled()
-    {
+
+    public void searchCanceled() {
     }
-    
-    
-    /**
-     * @see toolbox.findclass.FindClassListener#searchCompleted(
-     *      java.lang.String)
-     */
-    public void searchCompleted(String search)
-    {
+
+
+    public void searchCompleted(String search) {
     }
 }
