@@ -97,6 +97,10 @@
  * TODO: Allow multiple tunnels
  * TODO: Fix suppress binary
  * =============================================================================
+ *                              DirectoryMonitor
+ * =============================================================================
+ * TODO: Introduce throttler when monitored directory loses connection.
+ * =============================================================================
 -->
 
 <document>
