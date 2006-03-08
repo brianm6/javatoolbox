@@ -111,6 +111,14 @@
     </properties>
 
     <body>
+        <!-- =================================================================== -->
+        <!-- March 2006                                                          -->
+        <!-- =================================================================== -->
+        
+        <release version="3.0.2" date="March 2006">
+            <action type="update"   >Workspace - Updated logging menu window to use fixed width font</action>
+            <action type="update"   >UI - Fixed AutoCompleter to not autocomplete if the attached text component does not have a peer or is not visible</action>
+        </release>
 
         <!-- =================================================================== -->
         <!-- Feb 2006                                                            -->
