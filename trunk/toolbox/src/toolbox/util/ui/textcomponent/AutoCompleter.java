@@ -111,6 +111,7 @@ public abstract class AutoCompleter{
         }
     }; 
  
+    
     DocumentListener documentListener = new DocumentListener() {
 
         public void insertUpdate(DocumentEvent e) {
@@ -125,7 +126,12 @@ public abstract class AutoCompleter{
         }
     }; 
  
+    
     private void showPopup() {
+
+        // Fallthrough if the text component is not tied to a native peer yet
+        if (!textComp.isDisplayable())
+            return;
         
         popup.setVisible(false);
         
@@ -152,12 +158,12 @@ public abstract class AutoCompleter{
 
                 x = textComp.getUI().modelToView(textComp, pos).x;
             }
-            catch (BadLocationException e) {
+            catch (BadLocationException ble) {
                 // this should never happen!!!
-                logger_.error(e);
+                logger_.error(ble);
             }
             
-            popup.show(textComp, x, textComp.getHeight()); 
+            popup.show(textComp, x, textComp.getHeight());
         }
         else { 
             popup.setVisible(false);
