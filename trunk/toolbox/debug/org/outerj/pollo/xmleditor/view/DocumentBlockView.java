@@ -4,6 +4,7 @@
 
 package org.outerj.pollo.xmleditor.view;
 
+import org.apache.log4j.helpers.LogLog;
 import org.outerj.pollo.xmleditor.NodeClickedEvent;
 import org.outerj.pollo.xmleditor.XmlEditor;
 import org.outerj.pollo.xmleditor.XmlTransferable;
@@ -25,7 +26,7 @@ public class DocumentBlockView extends ChildrenBlockView
 {
     static
     {
-        System.out.println(StringUtil.banner(
+        LogLog.debug(StringUtil.banner(
             "Loaded debug org.outerj.pollo.xmleditor.view.DocumentBlockView"));
     }
     

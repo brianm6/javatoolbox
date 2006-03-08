@@ -4,13 +4,15 @@
 
 package com.adobe.acrobat.gui;
 
+import org.apache.log4j.helpers.LogLog;
+
 import toolbox.util.StringUtil;
 
 public class TerminalErrorDialog extends ErrorDialog
 {
     static
     {
-        System.out.println(StringUtil.banner(
+        LogLog.debug(StringUtil.banner(
             "Loaded debug com.adobe.acrobat.gui.TerminalErrorDialog"));
     }
     

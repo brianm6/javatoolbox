@@ -14,6 +14,8 @@ import java.net.URL;
 import java.text.BreakIterator;
 import java.util.Iterator;
 
+import org.apache.log4j.helpers.LogLog;
+
 import D.D;
 import D.S;
 import F.Z;
@@ -29,7 +31,7 @@ public class KC extends UC
 {
     static
     {
-        System.out.println(StringUtil.banner(
+        LogLog.debug(StringUtil.banner(
             "Loaded debug com.javio.webwindow.KC"));
     }
     

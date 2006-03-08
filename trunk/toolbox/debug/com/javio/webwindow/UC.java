@@ -12,6 +12,8 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
 
+import org.apache.log4j.helpers.LogLog;
+
 import D.B;
 import D.C;
 import D.D;
@@ -30,8 +32,7 @@ public abstract class UC
 {
     static
     {
-        System.out.println(StringUtil.banner(
-            "Loaded debug com.javio.webwindow.UC"));
+        LogLog.debug(StringUtil.banner("Loaded debug com.javio.webwindow.UC"));
     }
     
     protected Rectangle G;

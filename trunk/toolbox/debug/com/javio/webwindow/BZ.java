@@ -4,13 +4,15 @@
 
 package com.javio.webwindow;
 
+import org.apache.log4j.helpers.LogLog;
+
 import toolbox.util.StringUtil;
 
 class BZ implements Runnable
 {
     static
     {
-        System.out.println(StringUtil.banner(
+        LogLog.debug(StringUtil.banner(
             "Loaded debug com.javio.webwindow.BZ"));
     }
     

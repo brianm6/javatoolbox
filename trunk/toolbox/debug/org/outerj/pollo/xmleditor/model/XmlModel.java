@@ -4,6 +4,7 @@
 
 package org.outerj.pollo.xmleditor.model;
 
+import org.apache.log4j.helpers.LogLog;
 import org.apache.xml.serialize.OutputFormat;
 import org.apache.xml.serialize.XMLSerializer;
 
@@ -46,7 +47,7 @@ public class XmlModel
 {
     static
     {
-        System.out.println(StringUtil.banner(
+        LogLog.debug(StringUtil.banner(
             "Loaded debug org.outerj.pollo.xmleditor.model.XmlModel"));
     }
     

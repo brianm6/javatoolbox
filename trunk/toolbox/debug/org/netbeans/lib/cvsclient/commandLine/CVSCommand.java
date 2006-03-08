@@ -20,13 +20,12 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.ResourceBundle;
 
+import org.apache.log4j.helpers.LogLog;
 import org.netbeans.lib.cvsclient.*;
-import org.netbeans.lib.cvsclient.CVSRoot;
 import org.netbeans.lib.cvsclient.admin.*;
 import org.netbeans.lib.cvsclient.command.*;
 import org.netbeans.lib.cvsclient.commandLine.command.CommandProvider;
 import org.netbeans.lib.cvsclient.connection.*;
-import org.netbeans.lib.cvsclient.connection.StandardScrambler;
 import org.netbeans.lib.cvsclient.event.CVSListener;
 
 import toolbox.util.StringUtil;
@@ -40,7 +39,7 @@ public class CVSCommand {
     
     static
     {
-        System.out.println(StringUtil.banner(
+        LogLog.debug(StringUtil.banner(
             "Loaded debug org.netbeans.lib.cvsclient.commandLine.CVSCommand"));
     }
     

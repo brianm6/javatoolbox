@@ -12,6 +12,8 @@ import java.awt.TextArea;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import org.apache.log4j.helpers.LogLog;
+
 import com.adobe.acrobat.util.Util;
 
 import toolbox.util.StringUtil;
@@ -20,7 +22,7 @@ public class LicAgreement extends BasicDialog
 {
     static
     {
-        System.out.println(StringUtil.banner(
+        LogLog.debug(StringUtil.banner(
             "Loaded debug com.adobe.acrobat.gui.LicAgreement"));
     }
     

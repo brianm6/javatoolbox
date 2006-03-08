@@ -15,6 +15,13 @@ import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXSource;
 
+import org.apache.log4j.helpers.LogLog;
+import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.DefaultHandler;
+
 import com.renderx.sax.XMLReaderFactory;
 import com.renderx.util.Args;
 import com.renderx.util.Hashtable;
@@ -24,20 +31,13 @@ import com.renderx.xep.lib.Conf;
 import com.renderx.xep.lib.EventLogger;
 import com.renderx.xep.lib.LicenseException;
 
-import org.xml.sax.Attributes;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
-import org.xml.sax.helpers.DefaultHandler;
-
 import toolbox.util.StringUtil;
 
 public class XSLDriver
 {
     static
     {
-        System.out.println(StringUtil.banner(
-            "Loaded debug com.renderx.xep.XSLDriver"));
+        LogLog.debug(StringUtil.banner("Loaded debug com.renderx.xep.XSLDriver"));
     }
     
     static class QuietLogger extends DefaultHandler

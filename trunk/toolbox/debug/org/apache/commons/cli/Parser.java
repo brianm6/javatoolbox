@@ -71,6 +71,8 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Properties;
 
+import org.apache.log4j.helpers.LogLog;
+
 import toolbox.util.StringUtil;
 
 /**
@@ -84,8 +86,7 @@ public abstract class Parser implements CommandLineParser {
 
     static
     {
-        System.out.println(StringUtil.banner(
-            "Loaded debug org.apache.commons.cli.Parser"));
+        LogLog.debug(StringUtil.banner("Loaded debug org.apache.commons.cli.Parser"));
     }
     
     /** commandline instance */
