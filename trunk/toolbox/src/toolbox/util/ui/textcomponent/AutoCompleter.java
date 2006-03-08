@@ -130,7 +130,7 @@ public abstract class AutoCompleter{
     private void showPopup() {
 
         // Fallthrough if the text component is not tied to a native peer yet
-        if (!textComp.isDisplayable())
+        if (!textComp.isDisplayable() || !textComp.isShowing())
             return;
         
         popup.setVisible(false);
