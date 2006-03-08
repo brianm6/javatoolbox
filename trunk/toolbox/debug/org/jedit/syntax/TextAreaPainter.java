@@ -23,6 +23,8 @@ import javax.swing.text.Segment;
 import javax.swing.text.TabExpander;
 import javax.swing.text.Utilities;
 
+import org.apache.log4j.helpers.LogLog;
+
 import toolbox.util.StringUtil;
 
 // ===================================================================
@@ -40,7 +42,7 @@ public class TextAreaPainter extends JComponent implements TabExpander
 {
     static
     {
-        System.out.println(StringUtil.banner(
+        LogLog.debug(StringUtil.banner(
             "Loaded debug org.jedit.syntax.TextAreaPainter"));
     }
     
