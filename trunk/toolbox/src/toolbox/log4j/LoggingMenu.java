@@ -23,6 +23,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
 
+import toolbox.util.FontUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.ui.JSmartCheckBoxMenuItem;
@@ -45,8 +46,8 @@ import toolbox.workspace.PreferencedException;
  *  <li>Saves/restores menu selection state.
  * </ul>
  */
-public class LoggingMenu extends JSmartMenu implements IPreferenced
-{
+public class LoggingMenu extends JSmartMenu implements IPreferenced {
+
     //--------------------------------------------------------------------------
     // XML Constants
     //--------------------------------------------------------------------------
@@ -122,11 +123,7 @@ public class LoggingMenu extends JSmartMenu implements IPreferenced
     // Constructors
     //--------------------------------------------------------------------------
     
-    /**
-     * Creates a {@link LoggingMenu}.
-     */
-    public LoggingMenu()
-    {
+    public LoggingMenu() {
         super("Logging");
         buildView();
         init();
@@ -141,8 +138,7 @@ public class LoggingMenu extends JSmartMenu implements IPreferenced
      * 
      * @param level {@link Level} to set.
      */
-    public void setLogLevel(Level level)
-    {
+    public void setLogLevel(Level level) {
         ((JCheckBoxMenuItem) levelMap_.get(level)).setState(true);
     }
 
@@ -152,10 +148,9 @@ public class LoggingMenu extends JSmartMenu implements IPreferenced
      * 
      * @return Level.
      */
-    public Level getLogLevel()
-    {
-        for (Iterator i = levelMap_.keySet().iterator(); i.hasNext();)
-        {
+    public Level getLogLevel() {
+        
+        for (Iterator i = levelMap_.keySet().iterator(); i.hasNext();) {
             Level level = (Level) i.next();
             JCheckBoxMenuItem cbmi = (JCheckBoxMenuItem) levelMap_.get(level);
             
@@ -163,9 +158,7 @@ public class LoggingMenu extends JSmartMenu implements IPreferenced
                 return level;
         }
 
-        logger_.warn(
-            "None of the log levels were selected in the logging menu.");
-        
+        logger_.warn("None of the log levels were selected in the logging menu.");
         return Level.DEBUG;
     }
     
@@ -176,8 +169,7 @@ public class LoggingMenu extends JSmartMenu implements IPreferenced
     /**
      * Initialzes the selection state of the menu.
      */
-    protected void init()
-    {
+    protected void init() {
         logger_ = Logger.getLogger(LOGGER_TOOLBOX);
         consoleItem_.setSelected(logger_.getAppender(APPENDER_CONSOLE) != null);
     }
@@ -186,14 +178,13 @@ public class LoggingMenu extends JSmartMenu implements IPreferenced
     /**
      * Builds the menus contents.
      */
-    protected void buildView()
-    {
+    protected void buildView() {
+        
         setMnemonic('L');
         
         ButtonGroup group = new ButtonGroup();
         
-        Level[] levels = new Level[]
-        {
+        Level[] levels = new Level[] {
             Level.ALL, 
             Level.TRACE,
             Level.DEBUG, 
@@ -205,8 +196,7 @@ public class LoggingMenu extends JSmartMenu implements IPreferenced
 
         levelMap_ = new HashMap(levels.length);
         
-        for (int i = 0; i < levels.length; i++)
-        {
+        for (int i = 0; i < levels.length; i++) {
             JCheckBoxMenuItem cbmi =
                 new JSmartCheckBoxMenuItem(new SetLogLevelAction(levels[i]));
             
@@ -228,11 +218,10 @@ public class LoggingMenu extends JSmartMenu implements IPreferenced
     // IPreferenced Interface
     //--------------------------------------------------------------------------
     
-    /**
+    /*
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs) throws PreferencedException
-    {
+    public void applyPrefs(Element prefs) throws PreferencedException {
         Element root = XOMUtil.getFirstChildElement(
             prefs, NODE_LOGGING_MENU, new Element(NODE_LOGGING_MENU));
         
@@ -251,20 +240,14 @@ public class LoggingMenu extends JSmartMenu implements IPreferenced
     }
     
     
-    /**
+    /*
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs) throws PreferencedException
-    {
+    public void savePrefs(Element prefs) throws PreferencedException {
         Element root = new Element(NODE_LOGGING_MENU);
         root.addAttribute(new Attribute(ATTR_LEVEL, getLogLevel().toString()));
-        
-        root.addAttribute(new Attribute(ATTR_LOG_TO_CONSOLE, 
-            consoleItem_.isSelected() + ""));
-        
-        root.addAttribute(new Attribute(ATTR_LOG_TO_WINDOW, 
-            windowItem_.isSelected() + ""));
-        
+        root.addAttribute(new Attribute(ATTR_LOG_TO_CONSOLE, consoleItem_.isSelected() + ""));
+        root.addAttribute(new Attribute(ATTR_LOG_TO_WINDOW, windowItem_.isSelected() + ""));
         XOMUtil.insertOrReplace(prefs, root);
     }
     
@@ -311,19 +294,17 @@ public class LoggingMenu extends JSmartMenu implements IPreferenced
     /**
      * Action to send log output to the system console.
      */
-    class LogToConsoleAction extends AbstractAction
-    {
+    class LogToConsoleAction extends AbstractAction {
         /**
          * Reference to the console appender.
          */
         private ConsoleAppender appender_;
         
+        //----------------------------------------------------------------------
+        // Constructors
+        //----------------------------------------------------------------------
         
-        /**
-         * Creates a LogToConsoleAction.
-         */
-        LogToConsoleAction()
-        {
+        LogToConsoleAction() {
             super("Log to Console");
         }
         
@@ -331,54 +312,42 @@ public class LoggingMenu extends JSmartMenu implements IPreferenced
         // ActionListener Interface
         //----------------------------------------------------------------------
         
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
-         */
-        public void actionPerformed(ActionEvent ae)
-        {
-            if (logger_.getAppender(APPENDER_CONSOLE) == null)
-            {
+        public void actionPerformed(ActionEvent ae) {
+            
+            if (logger_.getAppender(APPENDER_CONSOLE) == null) {
+                
                 // Appender never existed in the first place from log4j.xml
-                if (appender_ ==  null)
-                {    
+                if (appender_ == null) {
                     appender_ = new ConsoleAppender();
                     appender_.setTarget("System.out");
                     appender_.setName(APPENDER_CONSOLE);
                     appender_.setLayout(new PatternLayout());
                     appender_.activateOptions();
                 }
-                
+
                 logger_.addAppender(appender_);
             }
-            else
-            {
-                appender_ = (ConsoleAppender) 
-                    logger_.getAppender(APPENDER_CONSOLE);
-                
+            else {
+                appender_ = (ConsoleAppender) logger_.getAppender(APPENDER_CONSOLE);
                 logger_.removeAppender(APPENDER_CONSOLE);
             }
         }
     }
     
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     // LogToWindowAction
     //--------------------------------------------------------------------------
 
     /**
      * Action to send log output to a window.
      */
-    class LogToWindowAction extends AbstractAction
-    {
+    class LogToWindowAction extends AbstractAction {
+        
         //----------------------------------------------------------------------
         // Constructors
         //----------------------------------------------------------------------
         
-        /**
-         * Creates a LogToWindowAction.
-         */
-        LogToWindowAction()
-        {
+        LogToWindowAction() {
             super("Log to Window");
         }
         
@@ -386,33 +355,27 @@ public class LoggingMenu extends JSmartMenu implements IPreferenced
         // ActionListener Interface
         //----------------------------------------------------------------------
         
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
-         */
-        public void actionPerformed(ActionEvent ae)
-        {
-            if (loggingWindow_ == null)
-            {    
+        public void actionPerformed(ActionEvent ae) {
+            
+            if (loggingWindow_ == null) {
                 loggingWindow_ = new LoggingWindow();
                 loggingWindow_.setVisible(true);
             }
-            else
-            {
+            else {
                 loggingWindow_.dispose();
                 loggingWindow_ = null;
             }
         }
         
-        //----------------------------------------------------------------------
+        // ----------------------------------------------------------------------
         // LoggingWindow
         //----------------------------------------------------------------------
         
         /**
          * Log output is sent to the text area embedded in this window.
          */
-        class LoggingWindow extends JSmartFrame
-        {
+        class LoggingWindow extends JSmartFrame {
+            
             //------------------------------------------------------------------
             // Fields
             //------------------------------------------------------------------
@@ -431,11 +394,7 @@ public class LoggingMenu extends JSmartMenu implements IPreferenced
             // Constructors
             //------------------------------------------------------------------
             
-            /**
-             * Creates a LoggingWindow.
-             */
-            public LoggingWindow()
-            {
+            public LoggingWindow() {
                 super("Logging Console");
                 buildView();
                 setSize(300, 400);
@@ -444,19 +403,14 @@ public class LoggingMenu extends JSmartMenu implements IPreferenced
             }
     
             //------------------------------------------------------------------
-            // Buids UI 
+            // Builds UI 
             //------------------------------------------------------------------
-            /**
-             * Constructs the user interface. 
-             */
-            protected void buildView()
-            {
-                area_ = 
-                    new JSmartTextArea(true, SwingUtil.getDefaultAntiAlias());
-                
+            
+            protected void buildView() {
+                area_ = new JSmartTextArea(true, SwingUtil.getDefaultAntiAlias());
+                area_.setFont(FontUtil.getPreferredMonoFont());
                 appender_ = new JTextAreaAppender(area_);
                 logger_.addAppender(appender_);
-                
                 Container cp = getContentPane();
                 cp.setLayout(new BorderLayout());
                 cp.add(new JScrollPane(area_), BorderLayout.CENTER);
@@ -470,14 +424,9 @@ public class LoggingMenu extends JSmartMenu implements IPreferenced
              * On window close, the appender is removed from the logger and then
              * closed.
              */
-            class WindowListener extends WindowAdapter
-            {
-                /**
-                 * @see java.awt.event.WindowAdapter#windowClosing(
-                 *      java.awt.event.WindowEvent)
-                 */
-                public void windowClosing(WindowEvent e)
-                {
+            class WindowListener extends WindowAdapter {
+                
+                public void windowClosing(WindowEvent e) {
                     logger_.removeAppender(appender_);
                     appender_.close();
                     windowItem_.setSelected(false);
