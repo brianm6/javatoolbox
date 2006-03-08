@@ -1,8 +1,12 @@
-<!-- ===========================================================================
+<?xml version="1.0" encoding="UTF-8"?>
 
+<!-- 
+===========================================================================
   Maven Custom Goals for the Java Toolbox
 
-============================================================================ -->
+  type "maven help" for what to do
+============================================================================ 
+-->
 
 <project
   default="help"
@@ -397,6 +401,7 @@ Commands:
     clean       Deletes ./target/fatjar/
     dist        Distribute the fatjars to the local filesystem
     laf         Creates toolbox-laf.jar
+    lib         Creates toolbox-lib.jar
     toolbox     Creates toolbox.jar
     xslfo       Creates toolbox-xslfo.jar
 ================================================================================
@@ -471,6 +476,7 @@ Commands:
 
         <attainGoal name="fatjar:clean"/>
         <attainGoal name="fatjar:toolbox"/>
+        <attainGoal name="fatjar:lib"/>
         <attainGoal name="fatjar:laf"/>
         <attainGoal name="fatjar:xslfo"/>
         <attainGoal name="fatjar:dist"/>
@@ -491,29 +497,18 @@ Commands:
     <!-- =================================================================== -->
     <goal name="fatjar:toolbox" description = "Creates toolbox.jar.">
 
-        <echo message="Jarring..."/>
+        <echo message="Creating toolbox.jar..."/>
 
         <j:set var="dist" value="${basedir}/target/fatjar"/>
         <j:set var="stage" value="${basedir}/target/fatjar/toolbox"/>
+
         <mkdir dir="${stage}"/>
+        
+        <delete verbose="false" failonerror="false" >
+            <fileset dir="${stage}" includes="**/*"/>
+        </delete>
+        
         <delete file="${dist}/toolbox.jar" verbose="false" quiet="off"/>
-
-        <!-- Find all jars tagged with "toolbox" and unjar to staging area -->
-        <j:forEach var="lib" items="${pom.artifacts}">
-            <j:set var="dep" value="${lib.dependency}"/>
-            <j:if test="${dep.getProperty('fatjar')=='toolbox'}">
-                 <unjar src="${lib.file}" dest="${stage}" overwrite="true"/>
-            </j:if>
-        </j:forEach>
-
-        <!-- xml-apis is special because it barfs unit tests if included in  -->
-        <!-- the maven pom as a dependency                                   --> 
-        <unjar dest="${stage}" overwrite="true">
-            <fileset dir="${basedir}/lib">
-                <include name="xml-apis.jar"/>
-            </fileset>
-        </unjar>
-
         
         <!-- Copy toolbox class files to staging area -->
         <copy todir="${stage}" overwrite="yes">
@@ -528,10 +523,48 @@ Commands:
                 excludes="**/test/**,skinlf/**"/>
         </copy>
 
-
         <!-- Jar up staging area to produce toolbox.jar -->
         <jar jarfile="${dist}/toolbox.jar"
              manifest="${basedir}/src/META-INF/MANIFEST.MF"
+             compress="${toolbox.fatjar.compress}">
+             <fileset dir="${stage}"/>
+        </jar>
+
+    </goal>
+
+    <!-- =================================================================== -->
+    <!-- FATJAR:LIB                                                          -->
+    <!-- =================================================================== -->
+    <goal name="fatjar:lib" description = "Creates toolbox-lib.jar.">
+
+        <echo message="Creating toolbox-lib.jar"/>
+
+        <j:set var="dist" value="${basedir}/target/fatjar"/>
+        <j:set var="stage" value="${basedir}/target/fatjar/toolbox-lib"/>
+        <mkdir dir="${stage}"/>
+        <delete file="${dist}/toolbox-lib.jar" verbose="false" quiet="off"/>
+
+        <!-- Find all jars tagged with "toolbox" and unjar to staging area -->
+        <j:forEach var="lib" items="${pom.artifacts}">
+            <j:set var="dep" value="${lib.dependency}"/>
+            
+            <!-- TODO: Change 'toobox' to 'lib' in project.xml -->
+            <j:if test="${dep.getProperty('fatjar')=='toolbox'}">
+                 <unjar src="${lib.file}" dest="${stage}" overwrite="true"/>
+            </j:if>
+        </j:forEach>
+
+        <!-- xml-apis is special because it barfs unit tests if included in  -->
+        <!-- the maven pom as a dependency                                   --> 
+        <unjar dest="${stage}" overwrite="true">
+            <fileset dir="${basedir}/lib">
+                <include name="xml-apis.jar"/>
+            </fileset>
+        </unjar>
+
+
+        <!-- Jar up staging area to produce toolbox-lib.jar -->
+        <jar jarfile="${dist}/toolbox-lib.jar"
              compress="${toolbox.fatjar.compress}">
 
             <!-- The INDEX.LIST file from xom.jar somehow confuses the   -->
@@ -632,7 +665,7 @@ Commands:
     <goal name="fatjar:dist"
           description = "Copies the toolbox fatjars to a local directory.">
 
-        <copy todir="${toolbox.fatjar.dist}" overwrite="yes">
+        <copy todir="${toolbox.fatjar.dist}" overwrite="yes" verbose="true">
             <fileset dir="${basedir}/target/fatjar/" includes="*.jar"/>
         </copy>
     </goal>
