@@ -2,16 +2,19 @@ package toolbox.util.dirmon;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.buffer.BoundedFifoBuffer;
 import org.apache.commons.io.find.FileFinder;
 import org.apache.commons.io.find.Finder;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
+import toolbox.util.ElapsedTime;
 import toolbox.util.ThreadUtil;
 import toolbox.util.dirmon.event.FileEvent;
 import toolbox.util.dirmon.event.StatusEvent;
@@ -536,120 +539,34 @@ public class DirectoryMonitor
     
     class DirectoryScanner implements Runnable {
         
-        /*
-         * @see java.lang.Runnable#run()
-         */
         public void run() {
-
-            // =======================================
-            fireStatusChanged(
-                new StatusEvent(
-                    StatusEvent.TYPE_START_DISCOVERY, 
-                    DirectoryMonitor.this, 
-                    "Started discovery"));
-
-            // Hack alert...
-            File baseDir = new File(getName());
-            
-            if (recurse_) {
-                // Find all subdirs of the starting dir
-                FileFinder finder = new FileFinder();
-                Map findOptions = new HashMap();
-                findOptions.put(Finder.TYPE, "d");
-                
-                logger_.debug("Finding all subdirs of " + baseDir + "...");
-                
-                File[] subdirectories = finder.find(baseDir, findOptions);
-                
-                logger_.debug("Found " + subdirectories.length + " subdirs total!");
-                logger_.debug(ArrayUtil.toString(subdirectories, true));
-                
-                for (int i = 0; i < subdirectories.length; i++) 
-                    addDirectory(subdirectories[i]);
-            }
-            else {
-                addDirectory(baseDir);
-            }
-            
-            fireStatusChanged(
-                new StatusEvent(
-                    StatusEvent.TYPE_END_DISCOVERY, 
-                    DirectoryMonitor.this, 
-                    "Ended discovery"));
-            
-            // =======================================
-            
-            for (Iterator i = recognizers_.iterator(); i.hasNext();)
-                logger_.debug("Recognizer registered: " + i.next());
-            
+            setup();
             boolean first = true;
+            Throttler throttler = new Throttler();
             
             // Check termination flag
             while (isRunning() || isSuspended()) {
                 
-                
                 try {
                     if (!isSuspended()) {
+                        
                         logger_.debug((first ? "First" : "Update")
                             + " scan started for "
                             + monitoredDirectories_.size() + " directories.");
 
                         fireStatusChanged(new StatusEvent(
-                            StatusEvent.TYPE_START_SCAN, DirectoryMonitor.this,
+                            StatusEvent.TYPE_START_SCAN, 
+                            DirectoryMonitor.this,
                             "Started scan"));
 
-                        for (Iterator di = monitoredDirectories_.iterator(); di
-                            .hasNext()
-                            && isRunning();) {
-
+                        for (Iterator di = monitoredDirectories_.iterator(); di.hasNext() && isRunning();) {
                             File dir = (File) di.next();
-                            String dirKey = dir.getAbsolutePath();
-
-                            DirSnapshot beforeDirSnapshot = (DirSnapshot) dirSnapshots_
-                                .get(dirKey);
-
-                            if (beforeDirSnapshot == null) {
-                                dirSnapshots_.put(dirKey, new DirSnapshot(dir));
-                            }
-                            else {
-                                DirSnapshot afterDirSnapshot = new DirSnapshot(
-                                    dir);
-
-                                for (Iterator i = recognizers_.iterator(); i
-                                    .hasNext()
-                                    && isRunning();) {
-
-                                    IFileActivityRecognizer recognizer = (IFileActivityRecognizer) i
-                                        .next();
-
-                                    List recognizedEvents = recognizer
-                                        .getRecognizedEvents(beforeDirSnapshot,
-                                            afterDirSnapshot);
-
-                                    for (Iterator r = recognizedEvents
-                                        .iterator(); r.hasNext();) {
-
-                                        try {
-                                            FileEvent event = (FileEvent) r
-                                                .next();
-                                            fireDirectoryActivity(event);
-                                        }
-                                        catch (Exception e) {
-                                            logger_.error("ActivityRunner.run",
-                                                e);
-                                        }
-                                    }
-
-                                    ThreadUtil.sleep(perDirectoryDelay_);
-                                }
-
-                                // Update the snapshot to the latest
-                                dirSnapshots_.put(dirKey, afterDirSnapshot);
-                            }
+                            scanDirectory(dir);
                         }
 
                         fireStatusChanged(new StatusEvent(
-                            StatusEvent.TYPE_END_SCAN, DirectoryMonitor.this,
+                            StatusEvent.TYPE_END_SCAN, 
+                            DirectoryMonitor.this,
                             "Ended scan"));
                     }
                     else {
@@ -685,12 +602,126 @@ public class DirectoryMonitor
                     }
                 }
                 catch (Exception e) {
-                    // Dont let unexpected exceptions stop this thread from continuing to run
                     logger_.error("Error in directory scanning loop", e);
+                    throttler.poke();
                 }
             }
             
             logger_.debug("Exiting thread run()");
+        }
+
+
+        private void scanDirectory(File dir){
+            String dirKey = dir.getAbsolutePath();
+            DirSnapshot beforeDirSnapshot = (DirSnapshot) dirSnapshots_.get(dirKey);
+
+            if (beforeDirSnapshot == null) {
+                dirSnapshots_.put(dirKey, new DirSnapshot(dir));
+            }
+            else {
+                DirSnapshot afterDirSnapshot = new DirSnapshot(dir);
+
+                for (Iterator i = recognizers_.iterator(); i.hasNext() && isRunning();) {
+                    IFileActivityRecognizer recognizer = (IFileActivityRecognizer) i.next();
+                    List recognizedEvents = recognizer.getRecognizedEvents(beforeDirSnapshot, afterDirSnapshot);
+
+                    for (Iterator r = recognizedEvents.iterator(); r.hasNext();) {
+
+                        try {
+                            FileEvent event = (FileEvent) r.next();
+                            fireDirectoryActivity(event);
+                        }
+                        catch (Exception e) {
+                            logger_.error("ActivityRunner.run", e);
+                        }
+                    }
+                    ThreadUtil.sleep(perDirectoryDelay_);
+                }
+                // Update the snapshot to the latest
+                dirSnapshots_.put(dirKey, afterDirSnapshot);
+            }
+        }
+
+        
+        private void setup() {
+            
+            fireStatusChanged(
+                new StatusEvent(
+                    StatusEvent.TYPE_START_DISCOVERY, 
+                    DirectoryMonitor.this, 
+                    "Started discovery"));
+
+            // Hack alert...
+            File baseDir = new File(getName());
+            
+            if (recurse_) {
+                // Find all subdirs of the starting dir
+                FileFinder finder = new FileFinder();
+                Map findOptions = new HashMap();
+                findOptions.put(Finder.TYPE, "d");
+                logger_.debug("Finding all subdirs of " + baseDir + "...");
+                File[] subdirectories = finder.find(baseDir, findOptions);
+                logger_.debug("Found " + subdirectories.length + " subdirs total!");
+                logger_.debug(ArrayUtil.toString(subdirectories, true));
+                for (int i = 0; i < subdirectories.length; i++) 
+                    addDirectory(subdirectories[i]);
+            }
+            else {
+                addDirectory(baseDir);
+            }
+            
+            fireStatusChanged(
+                new StatusEvent(
+                    StatusEvent.TYPE_END_DISCOVERY, 
+                    DirectoryMonitor.this, 
+                    "Ended discovery"));
+
+            if (logger_.isDebugEnabled())
+                for (Iterator i = recognizers_.iterator(); i.hasNext();)
+                    logger_.debug("Recognizer registered: " + i.next());
+        }
+    }
+    
+    //--------------------------------------------------------------------------
+    // Throttler
+    //--------------------------------------------------------------------------
+    
+    class Throttler {
+
+        BoundedFifoBuffer events = new BoundedFifoBuffer(10);
+        
+        public void poke() {
+            Date d = new Date();
+            events.add(d);
+            if (shouldThrottle())
+                throttle();
+        }
+        
+        public boolean shouldThrottle() {
+            Date now = new Date();
+            int counter = 0;
+            
+            // if there have been more than 10 pokes in the last minute then throttle
+            for (Iterator i = events.iterator(); i.hasNext(); ) {
+                Date poke = (Date) i.next();
+                
+                ElapsedTime range = new ElapsedTime(poke, now);
+                
+                if (range.getTotalMillis() < 60000)
+                    counter++;
+                
+                if (counter == 10) {
+                    events.clear();
+                    return true;
+                }
+            }
+            
+            return false;
+        }
+        
+        public void throttle() {
+            logger_.debug("Throttling for 60 secs...");
+            ThreadUtil.sleep(60000);
         }
     }
 }
