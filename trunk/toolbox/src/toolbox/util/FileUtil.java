@@ -2,24 +2,21 @@ package toolbox.util;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.RandomAccessFile;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -61,23 +58,7 @@ public final class FileUtil
     public static String getFileContents(String filename)
         throws FileNotFoundException, IOException
     {
-        Reader br = null;
-        StringBuffer text = new StringBuffer();
-
-        try
-        {
-            br = new BufferedReader(new FileReader(filename));
-            int i;
-
-            while ((i = br.read()) != -1)
-                text.append((char) i);
-        }
-        finally
-        {
-            IOUtils.closeQuietly(br);
-        }
-
-        return text.toString();
+        return FileUtils.readFileToString(new File(filename), "UTF8");
     }
 
     
