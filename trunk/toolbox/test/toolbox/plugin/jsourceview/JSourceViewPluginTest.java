@@ -169,9 +169,9 @@ public class JSourceViewPluginTest extends TestCase
         finally 
         {
             new ExitAction(workspace_).exitForTesting();
-            FileUtil.delete(saveFile);
-            FileUtil.delete(javaFile);
-            FileUtil.delete(prefsFile_);
+            FileUtil.deleteQuietly(saveFile);
+            FileUtil.deleteQuietly(javaFile);
+            FileUtil.deleteQuietly(prefsFile_);
         }
     }
 }

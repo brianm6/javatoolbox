@@ -54,6 +54,6 @@ public class PropertyPromptTaskTest extends TestCase
             f.getCanonicalPath()
         });
         
-        FileUtil.delete(f);
+        FileUtil.deleteQuietly(f);
     }
 }

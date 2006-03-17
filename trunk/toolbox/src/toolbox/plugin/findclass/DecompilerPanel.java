@@ -238,12 +238,12 @@ public class DecompilerPanel extends JHeaderPanel
                         source = d.decompile(classFile);
                         
                         // Cleanup
-                        FileUtil.delete(classFile);
+                        FileUtil.deleteQuietly(classFile);
                         
                         for (Iterator iter = innerClasses.iterator(); 
                              iter.hasNext();)
                         {
-                            FileUtil.delete((File) iter.next());
+                            FileUtil.deleteQuietly((File) iter.next());
                         }
                     }
                     else

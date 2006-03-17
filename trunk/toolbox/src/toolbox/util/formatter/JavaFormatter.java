@@ -78,7 +78,7 @@ public class JavaFormatter extends AbstractFormatter
         else if (jalopy_.getState() == Jalopy.State.ERROR)
             logger_.error("Java could not be formatted");
         
-        FileUtil.delete(fakeInputFile);
+        FileUtil.deleteQuietly(fakeInputFile);
         output.flush();
     }
 }

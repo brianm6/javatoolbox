@@ -132,7 +132,7 @@ public class TailTest extends TestCase
         }
         finally
         {
-            FileUtil.delete(file);
+            FileUtil.deleteQuietly(file);
         }
         
         logger_.debug("Done!");
@@ -176,7 +176,7 @@ public class TailTest extends TestCase
         {
             tmpFileStuffer.stop();
             IOUtils.closeQuietly(sink);
-            FileUtil.delete(tmpFile);
+            FileUtil.deleteQuietly(tmpFile);
         }
     }
     

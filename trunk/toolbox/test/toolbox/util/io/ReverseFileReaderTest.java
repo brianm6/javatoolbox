@@ -68,7 +68,7 @@ public class ReverseFileReaderTest extends TestCase
     protected void tearDown() throws Exception
     {
         IOUtils.closeQuietly(reader_);   
-        FileUtil.delete(file_);
+        FileUtil.deleteQuietly(file_);
     }
     
     //--------------------------------------------------------------------------

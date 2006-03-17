@@ -97,7 +97,7 @@ public class DecompilerTest extends TestCase
             }
             finally
             {
-                FileUtil.delete(tmpClass);
+                FileUtil.deleteQuietly(tmpClass);
             }
         }
     }

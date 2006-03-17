@@ -194,7 +194,7 @@ public class FileUtilTest extends TestCase
         }
         finally
         {
-            FileUtil.delete(file);
+            FileUtil.deleteQuietly(file);
         }
     }
 
@@ -425,7 +425,7 @@ public class FileUtilTest extends TestCase
         FileUtil.setFileContents(file, "test data", false);
         File f = new File(file);
         assertTrue(f.exists());
-        FileUtil.delete(f);
+        FileUtil.deleteQuietly(f);
         assertTrue(!f.exists());
     }
     
@@ -443,7 +443,7 @@ public class FileUtilTest extends TestCase
         FileUtil.setFileContents(file, "test data", false);
         File f = new File(file);
         assertTrue(f.exists());
-        FileUtil.delete(file);
+        FileUtil.deleteQuietly(file);
         assertTrue(!f.exists());
     }
     
@@ -460,7 +460,7 @@ public class FileUtilTest extends TestCase
         try
         {
             File f = new File("some_bogus_file");
-            FileUtil.delete(f);
+            FileUtil.deleteQuietly(f);
             assertNotNull("Success");
         }
         catch (Exception e)
@@ -472,7 +472,7 @@ public class FileUtilTest extends TestCase
         
         try
         {
-            FileUtil.delete("some_bogus_file");
+            FileUtil.deleteQuietly("some_bogus_file");
             assertNotNull("Success");
         }
         catch (Exception e)
@@ -495,7 +495,7 @@ public class FileUtilTest extends TestCase
         
         try
         {
-            FileUtil.delete((File) null);
+            FileUtil.deleteQuietly((File) null);
             assertNotNull("Success");
         }
         catch (Exception e)
@@ -505,7 +505,7 @@ public class FileUtilTest extends TestCase
         
         try
         {
-            FileUtil.delete((String) null);
+            FileUtil.deleteQuietly((String) null);
             assertNotNull("Success");
         }
         catch (Exception e)

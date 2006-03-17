@@ -376,7 +376,7 @@ public final class FileUtil
      * 
      * @param file File to delete.
      */    
-    public static void delete(String file)
+    public static void deleteQuietly(String file)
     {
         if (file != null && !StringUtils.isBlank(file))
             new File(file).delete();
@@ -389,7 +389,7 @@ public final class FileUtil
      * 
      * @param file File to delete.
      */    
-    public static void delete(File file)
+    public static void deleteQuietly(File file)
     {
         if (file != null && file.exists())
             file.delete();

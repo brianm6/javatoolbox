@@ -68,7 +68,7 @@ public class AbstractConstantTest extends TestCase
         }
         finally
         {
-            FileUtil.delete(FILE_SERIALIZED);
+            FileUtil.deleteQuietly(FILE_SERIALIZED);
         }
     }
 

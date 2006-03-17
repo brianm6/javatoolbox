@@ -123,7 +123,7 @@ public class ResourceUtilTest extends TestCase
         }
         finally
         {
-            FileUtil.delete(tmpFile);
+            FileUtil.deleteQuietly(tmpFile);
         }
     }
     
@@ -244,7 +244,7 @@ public class ResourceUtilTest extends TestCase
         }
         finally
         {
-            FileUtil.delete(tempFile);
+            FileUtil.deleteQuietly(tempFile);
         }
     }
 
@@ -308,6 +308,6 @@ public class ResourceUtilTest extends TestCase
             FileUtil.getTempDir().getCanonicalPath() + "\n" + 
             StringUtil.banner(javaSrc.substring(0, 200) + "..."));
         
-        FileUtil.delete(new File(FileUtil.getTempDir(), classfile + ".java"));
+        FileUtil.deleteQuietly(new File(FileUtil.getTempDir(), classfile + ".java"));
     }
 }

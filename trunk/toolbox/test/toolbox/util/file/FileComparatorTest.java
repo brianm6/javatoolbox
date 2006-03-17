@@ -66,10 +66,10 @@ public class FileComparatorTest extends TestCase
      */
     protected void tearDown() throws Exception
     {
-        FileUtil.delete(fileA_);
-        FileUtil.delete(fileB_);
-        FileUtil.delete(fileC_);
-        FileUtil.delete(fileD_);
+        FileUtil.deleteQuietly(fileA_);
+        FileUtil.deleteQuietly(fileB_);
+        FileUtil.deleteQuietly(fileC_);
+        FileUtil.deleteQuietly(fileD_);
     }
     
     //--------------------------------------------------------------------------
@@ -98,8 +98,8 @@ public class FileComparatorTest extends TestCase
         }
         finally
         {
-            FileUtil.delete(fileA);
-            FileUtil.delete(fileB);
+            FileUtil.deleteQuietly(fileA);
+            FileUtil.deleteQuietly(fileB);
         }
     }
 
