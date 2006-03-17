@@ -51,36 +51,6 @@ public final class FileUtil
     //--------------------------------------------------------------------------
 
     /**
-     * Deletes the contents of a directory including nested directories. The
-     * directory itself is not deleted.
-     *
-     * @param dir Directory to clean.
-     */
-    public static void cleanDir(File dir)
-    {
-        if (!dir.isDirectory())
-        {
-            throw new IllegalArgumentException(
-                "Directory " + dir + " is not a directory.");
-        }
-        else
-        {
-            File[] contents = dir.listFiles();
-
-            for (int i = 0; i < contents.length; i++)
-            {
-                File sub = contents[i];
-
-                if (sub.isDirectory())
-                    cleanDir(sub);
-
-                sub.delete();
-            }
-        }
-    }
-
-    
-    /**
      * Reads in the contents of a text file into a single string.
      *
      * @param filename Name of the file.

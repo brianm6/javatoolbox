@@ -103,105 +103,6 @@ public class FileUtilTest extends TestCase
         logger_.debug("Passed: Created temp file " + tempFile);
     }
 
-    //--------------------------------------------------------------------------
-    // cleanDir()
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Tests cleanDir() for cleaning the contents of a single directory.
-     * 
-     * @throws Exception on error
-     */
-    public void testCleanDir() throws Exception
-    {
-        logger_.info("Running testCleanDirFailure...");
-        
-        int numFiles = 10;
-        
-        // Create a directory
-        File dir = FileUtil.createTempDir();
-        
-        // Populate with files
-        for (int i = 0; i < numFiles; i++)
-        {
-            String filename = i + ".txt";
-            File file = new File(dir, filename);
-            FileUtil.setFileContents(file, "testing..", false);
-        }
-
-        // Verify test files created
-        String[] before = dir.list();
-        logger_.debug("Contents before: " + ArrayUtil.toString(before));
-        assertEquals("Dir " + dir + " should have files",
-            numFiles, before.length); 
-
-        try
-        {   
-            // Clean dir and verify no files are left
-            FileUtil.cleanDir(dir);
-            String[] after = dir.list();
-            logger_.debug("Contents after: " + ArrayUtil.toString(after));
-            assertEquals("No files should be left in " + dir, 0, after.length);
-        }
-        finally
-        {
-            FileUtils.deleteDirectory(dir);
-        }
-    }
-    
-    
-    /**
-     * Tests cleanDir() for failure by passing a file instead of a directory.
-     * 
-     * @throws Exception on error
-     */
-    public void testCleanDirFailure1() throws Exception
-    {
-        logger_.info("Running testCleanDirFailure1...");
-        
-        // Create a file
-        String file = FileUtil.createTempFilename();
-        FileUtil.setFileContents(file, "hello", false);
-        File f = new File(file);
-        
-        try
-        {
-            FileUtil.cleanDir(f);
-            fail("Should have failed on a file, not a directory");
-        }
-        catch (IllegalArgumentException e)
-        {
-            logger_.debug("Passed: " + e);
-        }
-        finally
-        {
-            f.delete();    
-        }
-    }
-    
-    
-    /**
-     * Tests cleanDir() for failure by passing in a non-existant directory.
-     * 
-     * @throws Exception on error
-     */
-    public void testCleanDirFailure2() throws Exception
-    {
-        logger_.info("Running testCleanDirFailure2...");
-        
-        // Create a bogus dir name
-        String dir = FileUtil.createTempFilename();
-        
-        try
-        {
-            FileUtil.cleanDir(new File(dir));
-            fail("Should have failed on a non-existant directory");
-        }
-        catch (IllegalArgumentException e)
-        {
-            logger_.debug("Passed: " + e);
-        }
-    }
     
     //--------------------------------------------------------------------------
     // getFileContents()
@@ -472,8 +373,7 @@ public class FileUtilTest extends TestCase
         finally
         {
             // Cleanup
-            
-            FileUtil.cleanDir(destDir);
+            FileUtils.cleanDirectory(destDir);
             srcDir.delete();
             destDir.delete();
         }
