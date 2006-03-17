@@ -99,7 +99,7 @@ public class DirectoryMonitorTest extends TestCase {
             dm.removeDirectoryMonitorListener(listener);
         }
         finally {
-            FileUtil.removeDir(dir);
+            FileUtils.deleteDirectory(dir);
         }
     }
 
@@ -133,7 +133,7 @@ public class DirectoryMonitorTest extends TestCase {
         }
         finally {
             dm.stop();
-            FileUtil.removeDir(dir);
+            FileUtils.deleteDirectory(dir);
         }
     }
     

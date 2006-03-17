@@ -12,10 +12,7 @@ import org.apache.commons.collections.ListUtils;
 import org.apache.commons.collections.TransformerUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
-import org.apache.commons.lang.math.RandomUtils;
 import org.apache.log4j.Logger;
-
-import toolbox.tree.Tree;
 
 /**
  * Unit test for {@link toolbox.util.FileUtil}.
@@ -148,7 +145,7 @@ public class FileUtilTest extends TestCase
         }
         finally
         {
-            FileUtil.removeDir(dir);
+            FileUtils.deleteDirectory(dir);
         }
     }
     
@@ -724,7 +721,7 @@ public class FileUtilTest extends TestCase
         }
         finally
         {
-            FileUtil.removeDir(dir);
+            FileUtils.deleteDirectory(dir);
         }
     }
 
@@ -773,61 +770,6 @@ public class FileUtilTest extends TestCase
         logger_.info("Running testGetLongestFilenameNegative...");
         assertNull(FileUtil.getLongestFilename(new File[0]));
         assertNull(FileUtil.getLongestFilename(null));
-    }
-    
-    
-    
-    /**
-     * Tests removeDir()
-     * 
-     * @throws Exception on error.
-     */
-    public void testRemoveDir() throws Exception
-    {
-        logger_.info("Running testRemoveDir...");
-        
-        File root = FileUtil.createTempDir();
-        File current = root;
-        
-        for (int i = 0; i < 10; i++)
-        {    
-            File newDir = new File(current, "dir-" + 
-                RandomUtil.nextString(10).toLowerCase());
-            
-            if (!newDir.mkdir())
-                break;
-            
-            FileUtil.setFileContents(
-                newDir.getAbsolutePath() + File.separator + "file-" + 
-                RandomUtils.nextInt(50),
-                RandomUtil.nextString(RandomUtils.nextInt(5000)).toLowerCase(), 
-                false);
-            
-            current = newDir;
-        }
-        
-        Tree before = new Tree(root, true, true);
-        before.showTree();
-        
-        FileUtil.removeDir(root);
-        
-        assertTrue(!root.exists());
-    }
-
-
-    /**
-     * Tests removeDir() failure cases.
-     * 
-     * @throws Exception on error.
-     */
-    public void testRemoveDirFailure() throws Exception
-    {
-        logger_.info("Running testRemoveDirFailure...");
-        
-        FileUtil.removeDir(null);
-
-        // TODO: Readonly files.
-        //       Files current in use/locked.
     }
     
     

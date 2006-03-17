@@ -8,6 +8,7 @@ import java.io.StringWriter;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -64,9 +65,9 @@ public class Tree2Test extends TestCase
     /**
      * Removes the test directory.
      */
-    public void tearDown()
+    public void tearDown() throws IOException
     {
-        FileUtil.removeDir(rootTestDir_);
+        FileUtils.deleteDirectory(rootTestDir_);
     }
 
     //--------------------------------------------------------------------------

@@ -6,6 +6,7 @@ import java.util.List;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.FileUtil;
@@ -71,7 +72,7 @@ public class FileChangedRecognizerTest extends TestCase {
             assertEquals(0, thirdRun.size());
         }
         finally {
-            FileUtil.removeDir(dir);
+            FileUtils.deleteDirectory(dir);
         }
     }
 }

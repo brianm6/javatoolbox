@@ -6,6 +6,7 @@ import java.util.Date;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.apache.log4j.Logger;
 
@@ -298,6 +299,6 @@ public class FileComparatorTest extends TestCase
             fail("Expected IllegalArgumentException");
         }
         
-        FileUtil.removeDir(dir);
+        FileUtils.deleteDirectory(dir);
     }
 }

@@ -51,25 +51,6 @@ public final class FileUtil
     //--------------------------------------------------------------------------
 
     /**
-     * Removes a directory.
-     * 
-     * @param dir Directory to remove.
-     */
-    public static void removeDir(File dir)
-    {
-        if (dir != null)
-        {        
-            cleanDir(dir);
-            dir.delete();
-        }
-        else
-        {
-            ; // Ignore
-        }
-    }
-
-    
-    /**
      * Deletes the contents of a directory including nested directories. The
      * directory itself is not deleted.
      *
