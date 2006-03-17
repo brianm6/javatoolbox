@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
@@ -171,6 +172,9 @@ public class TcpTunnel implements Startable, IPreferenced {
      * Destination port.
      */
     private int remotePort_;
+
+    /** Null value OK */
+    private String bindAddress_;
     
     /**
      * Tunnel event listeners.
@@ -234,17 +238,15 @@ public class TcpTunnel implements Startable, IPreferenced {
             Options options = new Options();
 
             // Create command line options            
-            Option quietOption = new Option(
-                "q", "quiet", false, "Quiet (don't print tunneled data)");
-                
-            Option transferredOption = new Option(
-                "t", "transferred", false, "Prints bytes transferred in real time");
-            
-            Option binaryOption = new Option(
-                "b", "suppressBinary", false, "Suppresses binary output");
-            
+            Option quietOption = new Option("q", "quiet", false, "Quiet (don't print tunneled data)");
+            Option transferredOption = new Option("t", "transferred", false, "Prints bytes transferred in real time");
+            Option binaryOption = new Option("b", "suppressBinary", false, "Suppresses binary output");
             Option helpOption = new Option("h", "help", false, "Print usage");
+            Option bindAddressOption = new Option("l", "bindAddress", true, "Address on this machine to bind to if more than one available");
+            bindAddressOption.setArgName("Bind address");
+            bindAddressOption.setArgs(1);
             
+            options.addOption(bindAddressOption);
             options.addOption(helpOption);
             options.addOption(quietOption);        
             options.addOption(transferredOption);
@@ -272,10 +274,19 @@ public class TcpTunnel implements Startable, IPreferenced {
                     Timer t = new Timer(true);
                     t.schedule(new ShowTransferredTask(tunnel), 1000, 1000);
                 }
+                else if (opt.equals(bindAddressOption.getOpt())) {
+                    tunnel.setBindAddress(option.getValue());
+                    logger_.warn("Bind address set to: " + option.getValue());
+                }
                 else if (opt.equals(helpOption.getOpt())) {
                     printUsage(options);
                     return;
                 }
+                else {
+                    logger_.error("Option not handled: " + option);
+                }
+                
+                logger_.info("handling option: " + option);
             }
 
             // 3 args are : local port, remote host, remote port
@@ -289,7 +300,6 @@ public class TcpTunnel implements Startable, IPreferenced {
                     tunnel.setLocalPort(localPort);
                     tunnel.setRemoteHost(tunnelhost);
                     tunnel.setRemotePort(tunnelport);
-                    //tunnel.addTcpTunnelListener(tunnel);
                     tunnel.addTcpTunnelListener(new InternalTcpTunnelListener());
                     tunnel.start();
 
@@ -332,6 +342,14 @@ public class TcpTunnel implements Startable, IPreferenced {
      * @param remotePort Remote port to connect to.
      */
     public TcpTunnel(int listenPort, String remoteHost, int remotePort) {
+        this(null, listenPort, remoteHost, remotePort);
+    }
+
+    
+    /**
+     * Takes additional bind address.
+     */
+    public TcpTunnel(String bindAddress, int listenPort, String remoteHost, int remotePort) {
         machine_ = ServiceUtil.createStateMachine(this);
         listeners_ = new ArrayList();
         inTotal_ = 0;
@@ -343,8 +361,10 @@ public class TcpTunnel implements Startable, IPreferenced {
         setSuppressBinary(false);
         setIncomingSink(System.out);
         setOutgoingSink(System.out);
+        setBindAddress(bindAddress);
     }
-
+    
+    
     // --------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
@@ -455,6 +475,17 @@ public class TcpTunnel implements Startable, IPreferenced {
         remotePort_ = remotePort;
     }
 
+    
+    public String getBindAddress() {
+        return bindAddress_;
+    }
+
+    
+    public void setBindAddress(String bindAddress) {
+        bindAddress_ = bindAddress;
+    }
+
+
     public long getTotalBytesRead() {
         return inTotal_;
     }
@@ -477,7 +508,18 @@ public class TcpTunnel implements Startable, IPreferenced {
 
         try {
             // Server socket on listenPort
-            serverSocket_ = new ServerSocket(localPort_);
+            InetAddress bindAddress = null;
+
+            if (getBindAddress() != null) {
+                bindAddress = InetAddress.getByName(getBindAddress());
+                logger_.debug("xxx using address: " + bindAddress);
+                logger_.debug("canonical hostname: " + bindAddress.getCanonicalHostName());
+                logger_.debug("host address hostname: " + bindAddress.getHostAddress());
+                logger_.debug("host name: " + bindAddress.getHostName());
+                logger_.debug("xxx");
+            }
+            
+            serverSocket_ = new ServerSocket(localPort_, 0, bindAddress);
             serverSocket_.setSoTimeout(5000);
 
             Thread t = new Thread(new ServerThread());
@@ -667,14 +709,17 @@ public class TcpTunnel implements Startable, IPreferenced {
             while (isRunning()) {
                 try {
                     if (serverSocket_.isClosed()) {
-                        logger_
-                            .debug("Tunnel socket server is closed. Exiting..");
+                        logger_.debug("Tunnel socket server is closed. Exiting..");
                         return;
                     }
                     
-                    if (!alreadyListened)
-                        fireStatusChanged( 
-                            "Listening for connections on port " + localPort_);
+                    if (!alreadyListened) {
+                        fireStatusChanged(
+                            "Listening for connections on " + serverSocket_.getInetAddress() + ":" + serverSocket_.getLocalPort());
+//                            (getBindAddress() == null 
+//                                 ? InetAddress.getLocalHost().getHostAddress()
+//                                 : getBindAddress()) + ":" + localPort_);
+                    }
 
                     // Client socket
                     Socket client = serverSocket_.accept();
