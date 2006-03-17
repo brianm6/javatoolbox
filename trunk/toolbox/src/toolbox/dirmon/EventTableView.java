@@ -409,7 +409,7 @@ public class EventTableView extends JPanel implements IDirectoryMonitorListener 
     class LaunchAction extends SmartAction {
         
         LaunchAction() {
-            super("Launch", true, false, null);
+            super("Launch", true, true, null);
             putValue(SHORT_DESCRIPTION, "Launch file");
         }
         
