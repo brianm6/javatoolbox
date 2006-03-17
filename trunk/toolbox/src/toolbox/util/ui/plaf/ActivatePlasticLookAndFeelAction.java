@@ -43,7 +43,7 @@ public class ActivatePlasticLookAndFeelAction extends ActivateLookAndFeelAction
         //String name  = info.getProperty("theme.name");
         String clazz = info.getProperty("theme.class");
         PlasticTheme theme = (PlasticTheme) Class.forName(clazz).newInstance();
-        PlasticLookAndFeel.setMyCurrentTheme(theme);
+        PlasticLookAndFeel.setPlasticTheme(theme);
         super.activate();
     }
 }
