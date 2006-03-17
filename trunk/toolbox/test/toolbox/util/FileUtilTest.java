@@ -168,35 +168,6 @@ public class FileUtilTest extends TestCase
         reread.delete();
     }
 
-    //--------------------------------------------------------------------------
-    // getFileAsBytes()
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Tests getFileAsBytes().
-     * 
-     * @throws Exception on error
-     */
-    public void testGetFileAsBytes() throws Exception
-    {
-        logger_.info("Running testGetFileAsBytes...");
-        
-        String file = FileUtil.createTempFilename();
-        
-        try
-        {
-            String contents = "blah blah blah";
-            FileUtil.setFileContents(file, contents, false);
-            byte[] currentContents = FileUtil.getFileAsBytes(file);
-            
-            assertEquals("File contents should be equal", contents, 
-                new String(currentContents));
-        }
-        finally
-        {
-            FileUtil.deleteQuietly(file);
-        }
-    }
 
     //--------------------------------------------------------------------------
     // setFileContents()
@@ -243,7 +214,7 @@ public class FileUtilTest extends TestCase
         FileUtil.setFileContents(file, contents, false);
         
         // Read it back in
-        byte[] currentContents = FileUtil.getFileAsBytes(file);
+        byte[] currentContents = FileUtils.readFileToByteArray(new File(file));
         
         // Compare
         assertEquals("contents should be equals", 

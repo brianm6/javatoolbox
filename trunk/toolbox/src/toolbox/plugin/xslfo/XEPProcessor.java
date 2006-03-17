@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.renderx.xep.XSLDriver;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
 import toolbox.util.FileUtil;
@@ -47,9 +48,10 @@ public class XEPProcessor implements FOProcessor
     {
         String foFile = FileUtil.createTempFilename() + ".xml";
         FileUtil.setFileContents(foFile, IOUtils.toByteArray(foStream), false);
-        String pdfFile = foFile + ".pdf";
-        renderPDF(new File(foFile), new File(pdfFile));
-        byte[] pdfBytes = FileUtil.getFileAsBytes(pdfFile);
+        String pdfFilename = foFile + ".pdf";
+        File pdfFile = new File(pdfFilename);
+        renderPDF(new File(foFile), pdfFile);
+        byte[] pdfBytes = FileUtils.readFileToByteArray(pdfFile);
         pdfStream.write(pdfBytes);
         pdfStream.flush();
         IOUtils.closeQuietly(pdfStream);

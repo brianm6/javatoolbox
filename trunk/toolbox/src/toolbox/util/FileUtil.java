@@ -81,42 +81,6 @@ public final class FileUtil
     }
 
     
-    /**
-     * Reads in the contents of a file into byte array.
-     *
-     * @param filename Name of the file to read in.
-     * @return Files contents as a byte array.
-     * @throws FileNotFoundException if file not found.
-     * @throws IOException on I/O error.
-     */
-    public static byte[] getFileAsBytes(String filename)
-        throws FileNotFoundException, IOException
-    {
-        InputStream is = null;
-        List byteBuffer = new ArrayList();
-
-        try
-        {
-            is = new BufferedInputStream(new FileInputStream(filename));
-            int b;
-
-            while ((b = is.read()) != -1)
-                byteBuffer.add(new Byte((byte) b));
-        }
-        finally
-        {
-            IOUtils.closeQuietly(is);
-        }
-
-        byte[] buffer = new byte[byteBuffer.size()];
-        
-        for (int i = 0; i < byteBuffer.size(); i++)
-            buffer[i] = ((Byte) byteBuffer.get(i)).byteValue();
-            
-        return buffer;
-    }
-
-    
     /**     
      * Writes out the contents to a text file from a single string.     
      *     
