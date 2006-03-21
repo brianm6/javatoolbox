@@ -115,6 +115,8 @@
             <action type="update"   >Workspace - Updated logging menu window to use fixed width font</action>
             <action type="update"   >UI - Fixed AutoCompleter to not autocomplete if the attached text component does not have a peer or is not visible</action>
             <action type="update"   >Util - Removed duplicate behavior from toolbox.util.FileUtil and replaced with calls to commons-io FileUtils</action>
+            <action type="update"   >Lib - Upgraded JarJar to jarjar-0.7</action>
+            <action type="update"   >Tivo - Created service wrapper for the Tivo Transcoder application in /apps/TivoTranscoder</action>
         </release>
 
         <!-- =================================================================== -->
