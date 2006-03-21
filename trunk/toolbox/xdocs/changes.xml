@@ -117,6 +117,7 @@
             <action type="update"   >Util - Removed duplicate behavior from toolbox.util.FileUtil and replaced with calls to commons-io FileUtils</action>
             <action type="update"   >Lib - Upgraded JarJar to jarjar-0.7</action>
             <action type="update"   >Tivo - Created service wrapper for the Tivo Transcoder application in /apps/TivoTranscoder</action>
+            <action type="update"   >Lib - Upgraded Apache Jakarta Commons IO to commons-io-1.2</action>
         </release>
 
         <!-- =================================================================== -->
