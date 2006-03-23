@@ -47,6 +47,7 @@ public class Main {
         programMap_.put("tree",          "toolbox.tree.Tree");
         programMap_.put("workspace",     "toolbox.workspace.PluginWorkspace");
         programMap_.put("laflauncher",   "toolbox.launcher.LAFLauncher");
+        programMap_.put("jngrep",        "toolbox.ngrep.JNGrep");
     }
     
     //--------------------------------------------------------------------------
@@ -147,6 +148,7 @@ public class Main {
             "       dirmon        => directory monitor              \n" +
             "       figlet        => creates a text banner          \n" +
             "       findclass     => find a java class file         \n" +
+            "       ngrep         => replace ips with hosts in ngrep\n" +
             "       rtelnet       => executes a telnet command      \n" +
             "       showclasspath => show detailed classpath info   \n" +
             "       showpath      => show detailed path info        \n" +
