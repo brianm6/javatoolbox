@@ -13,6 +13,8 @@ import org.apache.regexp.RESyntaxException;
  */
 public class RegexFileFilter extends AbstractFileFilter
 {
+    // TODO: Replace with file filter from commons if exists
+    
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
