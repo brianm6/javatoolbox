@@ -1,4 +1,4 @@
-package toolbox.ngrep;
+package toolbox.ip2hostname;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,6 +12,7 @@ import org.apache.commons.io.LineIterator;
 import org.apache.commons.lang.StringUtils;
 import org.apache.regexp.RE;
 
+// DELETE ME
 
 public class JNGrep {
 

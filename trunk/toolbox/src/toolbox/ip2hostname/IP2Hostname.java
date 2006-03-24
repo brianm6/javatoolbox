@@ -1,4 +1,4 @@
-package toolbox.ngrep;
+package toolbox.ip2hostname;
 
 import java.io.IOException;
 import java.io.InputStream;
