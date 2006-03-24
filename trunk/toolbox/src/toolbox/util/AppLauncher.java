@@ -9,24 +9,58 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.SystemUtils;
 import org.apache.log4j.Logger;
 
+/**
+ * Tries to launch files (data files) if possible. For example, launching a
+ * text file on windows will open the file in Notepad.exe.
+ */
 public final class AppLauncher  {
 
     private static final Logger logger = Logger.getLogger(AppLauncher.class);
     
     private AppLauncher() {
     }
-     
+
+    // -------------------------------------------------------------------------
+    // Public
+    // -------------------------------------------------------------------------
+    
+    /**
+     * Launches the given file. Filename must include the complete absolute
+     * path.
+     * 
+     * @param filename File to launch.
+     * @throws IOException on I/O Error.
+     */
     public static final void launch(String filename) 
         throws IOException, InterruptedException {
 
-        if (!SystemUtils.IS_OS_WINDOWS)
+        if (SystemUtils.IS_OS_WINDOWS)
+            launchInWindows(filename);
+        
+        // TODO: Fill in other platform specific launchers here.
+        
+        else
             throw new IllegalArgumentException("App launching supported on windows only.");
+    }
     
+    // -------------------------------------------------------------------------
+    // Private
+    // -------------------------------------------------------------------------
+    
+    private static final void launchInWindows(String filename) 
+        throws IOException, InterruptedException {
+
         // Only works for windows
         String[] cmdArray = new String[3];
         cmdArray[0] = "cmd";
         cmdArray[1] = "/c";
-        cmdArray[2] = "\"\"" + filename + "\"\"";
+        cmdArray[2] = "\"" + filename + "\"";
+    
+        // Add extra set of quotes around filename if it contains any special
+        // characters. See cmd /c for more info.
+        String specialChars = "&<>()@^|";
+        if (StringUtils.indexOfAny(filename, specialChars) >= 0)
+            cmdArray[2] = "\"" + cmdArray[2] + "\"";
         
         Process p = Runtime.getRuntime().exec(cmdArray);
         StringBuffer stdout = new StringBuffer();
@@ -34,14 +68,14 @@ public final class AppLauncher  {
         int exitValue = ProcessUtil.getProcessOutput(p, stdout, stderr);
         
         if (exitValue > 0) {
-
+    
             File file = new File(filename);
             
             // Failed...lets try to get around access denied errors on mounted
             // clearcase view if we're certain the file exists and is not a 
             // directory
             
-            if (StringUtil.containsIgnoreCase(stderr.toString(), "Access Denied") && 
+            if (StringUtil.containsIgnoreCase(stderr.toString(), "Access is denied") && 
                             file.exists() && file.isFile()) {
                 
                 File tmpDir = FileUtil.getTempDir();
@@ -81,5 +115,5 @@ public final class AppLauncher  {
                 throw new RuntimeException(sb.toString());
             }
         }
-    }
+    }    
 }
