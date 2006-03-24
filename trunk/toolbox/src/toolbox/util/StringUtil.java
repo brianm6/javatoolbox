@@ -566,4 +566,16 @@ public final class StringUtil
         
         return result.toString();
     }
+    
+    
+    /**
+     * Returns true if searchStr is found in str irrespective of case.
+     * 
+     * @param str String to search through.
+     * @param searchStr String to search for.
+     * @return True if found, false otherwise.
+     */
+    public static boolean containsIgnoreCase(String str, String searchStr) {
+        return StringUtils.contains(str.toUpperCase(), searchStr.toUpperCase());
+    }
 }
