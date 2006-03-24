@@ -118,6 +118,8 @@
             <action type="update"   >Lib - Upgraded JarJar to jarjar-0.7</action>
             <action type="update"   >Tivo - Created service wrapper for the Tivo Transcoder application in /apps/TivoTranscoder</action>
             <action type="update"   >Lib - Upgraded Apache Jakarta Commons IO to commons-io-1.2</action>
+            <action type="add"      >IP2Hostname - Added pipe based console app to transform IP addresses to hostnames in a stream to toolbox.ip2hostname.IP2Hostname</action>
+            <action type="add"      >Util - Added toolbox.util.AppLauncher to launch files from a command shell</action>
         </release>
 
         <!-- =================================================================== -->
