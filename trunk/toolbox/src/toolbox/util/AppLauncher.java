@@ -11,22 +11,24 @@ public final class AppLauncher  {
     
     private AppLauncher() {
     }
-
     
     public static final void launch(String filename) 
         throws IOException, InterruptedException {
 
         // Only works for windows
-        String command = "cmd /c \"" + filename + "\"";
+        String[] cmdArray = new String[3];
+        cmdArray[0] = "cmd";
+        cmdArray[1] = "/c";
+        cmdArray[2] = "\"" + filename + "\"";
         
-        Process p = Runtime.getRuntime().exec(command);
+        Process p = Runtime.getRuntime().exec(cmdArray);
         StringBuffer stdout = new StringBuffer();
         StringBuffer stderr = new StringBuffer();
         int exitValue = ProcessUtil.getProcessOutput(p, stdout, stderr);
         
         if (exitValue > 0) {
             StringBuffer sb = new StringBuffer();
-            sb.append("Launch failed with command '" + command + "'\n");
+            sb.append("Launch failed with command '" + ArrayUtil.toString(cmdArray) + "'\n");
             
             if (StringUtils.isNotEmpty(stdout.toString())) {
                 sb.append("stdout:\n");
