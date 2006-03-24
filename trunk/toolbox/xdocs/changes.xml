@@ -119,7 +119,9 @@
             <action type="update"   >Tivo - Created service wrapper for the Tivo Transcoder application in /apps/TivoTranscoder</action>
             <action type="update"   >Lib - Upgraded Apache Jakarta Commons IO to commons-io-1.2</action>
             <action type="add"      >IP2Hostname - Added pipe based console app to transform IP addresses to hostnames in a stream to toolbox.ip2hostname.IP2Hostname</action>
-            <action type="add"      >Util - Added toolbox.util.AppLauncher to launch files from a command shell</action>
+            <action type="add"      >Util - Added toolbox.util.AppLauncher to launch data files from a java app</action>
+            <action type="update"   >DirMon - Fixed run, history, and diff launchers to handle special chars in filenames and access denied errors</action>
+            <action type="update"   >Util - Added StringUtils.containsIgnoreCase()</action>
         </release>
 
         <!-- =================================================================== -->
