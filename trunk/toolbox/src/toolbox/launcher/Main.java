@@ -47,7 +47,7 @@ public class Main {
         programMap_.put("tree",          "toolbox.tree.Tree");
         programMap_.put("workspace",     "toolbox.workspace.PluginWorkspace");
         programMap_.put("laflauncher",   "toolbox.launcher.LAFLauncher");
-        programMap_.put("ip2hostname",   "toolbox.ngrep.IP2Hostname");
+        programMap_.put("ip2hostname",   "toolbox.ip2hostname.IP2Hostname");
     }
     
     //--------------------------------------------------------------------------
