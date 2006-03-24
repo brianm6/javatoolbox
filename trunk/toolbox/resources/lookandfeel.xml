@@ -131,7 +131,22 @@
       <Property name="group.name" value="Others"/>
   </LookAndFeel>
 
-  <!--
+  <!--  Commented out
+
+  <LookAndFeel
+      name="Trendy"
+      class="com.Trendy.swing.plaf.TrendyLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
+      <Property name="group.name" value="Others"/>
+  </LookAndFeel>
+
+  <LookAndFeel
+      name="Nimrod"
+      class="com.nilo.plaf.nimrod.NimRODLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
+      <Property name="group.name" value="Others"/>
+  </LookAndFeel>
+
   <LookAndFeel
       name="JellyBeans"
       class="workshop.core.plaf.WorkshopLookAndFeel"
