@@ -8,16 +8,24 @@ import junit.textui.TestRunner;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
-
+/**
+ * Unit test for {@link toolbox.util.AppLauncher}.
+ */    
 public class AppLauncherTest extends TestCase {
 
     public static final Logger logger = Logger.getLogger(AppLauncherTest.class);
     
+    // -------------------------------------------------------------------------
+    // Main
+    // -------------------------------------------------------------------------
     
     public static void main(String[] args) {
         TestRunner.run(AppLauncherTest.class);
     }
     
+    // -------------------------------------------------------------------------
+    // Unit Tests
+    // -------------------------------------------------------------------------
     
     public void testLaunch() throws Exception {
         logger.info("Running testLaunch...");
@@ -35,9 +43,9 @@ public class AppLauncherTest extends TestCase {
     }
 
     
-    public void testLaunchVsd() throws Exception {
-        logger.info("Running testLaunchVsd...");
-        File tempFile = new File("M:\\x1700_aas_services_dynamic\\bservices\\Pricing\\design\\PricingServiceUMLDiagrams.vsd");
-        AppLauncher.launch(tempFile.getAbsolutePath());
-    }
+//    public void testLaunchVsd() throws Exception {
+//        logger.info("Running testLaunchVsd...");
+//        File tempFile = new File("M:\\x1700_aas_services_dynamic\\bservices\\Pricing\\design\\PricingServiceUMLDiagrams.vsd");
+//        AppLauncher.launch(tempFile.getAbsolutePath());
+//    }
 }
