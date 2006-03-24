@@ -207,7 +207,7 @@ public class RepositoryAuditor
             sb.append(StringUtils.rightPad(result.getFileOnly(), maxFilename));
             sb.append(StringUtils.rightPad(result.getReason(), maxReason));
             sb.append(StringUtils.rightPad(result.getDate(), maxDate));
-            sb.append(FilenameUtils.getPath(result.getFilename()));
+            sb.append(FilenameUtils.getFullPathNoEndSeparator(result.getFilename()));
             sb.append("\n");
         }
         

@@ -76,7 +76,7 @@ public class AuditResult implements IAuditResult
      */
     public String getPathOnly()
     {
-        return FilenameUtils.getPath(getFilename());
+        return FilenameUtils.getFullPathNoEndSeparator(getFilename());
     }
     
     

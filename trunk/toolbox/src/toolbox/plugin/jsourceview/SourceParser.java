@@ -118,7 +118,7 @@ class SourceParser implements Runnable
                         new Object[JSourceView.COL_NAMES.length];
                     
                     tableRow[0] = new Integer(fileCount);
-                    tableRow[1] = FilenameUtils.getPath(filename);
+                    tableRow[1] = FilenameUtils.getFullPathNoEndSeparator(filename);
                     tableRow[2] = FilenameUtils.getName(filename);
                     tableRow[3] = new Integer(fileStats.getCodeLines());
                     tableRow[4] = new Integer(fileStats.getCommentLines());

@@ -131,7 +131,7 @@ public class EventTableView extends JPanel implements IDirectoryMonitorListener 
         table_.setDefaultRenderer(Integer.class, decoratedRenderer);
         table_.setDefaultRenderer(Long.class, decoratedRenderer);
         
-        // Format dates specially with shortened mm/dd/yyyy
+        // Format dates with shortened mm/dd/yyyy
         table_.setDefaultRenderer(Date.class,
             new BorderedCellRenderer(
                 new DateRenderer(dateTimeFormat),
@@ -163,9 +163,7 @@ public class EventTableView extends JPanel implements IDirectoryMonitorListener 
                 "Automatically tail output",
                 new AutoTailAction(table_));
 
-        autoTailButton.toggleOnProperty(
-            table_, 
-            JSmartTable.PROP_AUTOTAIL);
+        autoTailButton.toggleOnProperty(table_, JSmartTable.PROP_AUTOTAIL);
         
         try {
             // TODO: Move to JSmartToggleButton
@@ -174,16 +172,13 @@ public class EventTableView extends JPanel implements IDirectoryMonitorListener 
                     table_, JSmartTable.PROP_AUTOTAIL)).booleanValue()));
         }
         catch (IllegalAccessException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            logger_.warn(e);
         }
         catch (InvocationTargetException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            logger_.warn(e);
         }
         catch (NoSuchMethodException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            logger_.warn(e);
         }
         
         JToolBar tb = JHeaderPanel.createToolBar();
@@ -246,7 +241,7 @@ public class EventTableView extends JPanel implements IDirectoryMonitorListener 
                 
                 case FileEvent.TYPE_FILE_CHANGED :
                     data[INDEX_ACTIVITY] = "Modified";
-                    data[INDEX_DIR] = FilenameUtils.getPath(after.getAbsolutePath());
+                    data[INDEX_DIR] = FilenameUtils.getFullPathNoEndSeparator(after.getAbsolutePath());
                     data[INDEX_FILE] = FilenameUtils.getName(after.getAbsolutePath());
                     data[INDEX_BEFORE_SIZE] = new Long(before.getLength());
                     data[INDEX_AFTER_SIZE] = new Long(after.getLength());
@@ -256,7 +251,7 @@ public class EventTableView extends JPanel implements IDirectoryMonitorListener 
                     
                 case FileEvent.TYPE_FILE_CREATED :
                     data[INDEX_ACTIVITY] = "New";
-                    data[INDEX_DIR] = FilenameUtils.getPath(after.getAbsolutePath());
+                    data[INDEX_DIR] = FilenameUtils.getFullPathNoEndSeparator(after.getAbsolutePath());
                     data[INDEX_FILE] = FilenameUtils.getName(after.getAbsolutePath());
                     data[INDEX_BEFORE_SIZE] = null;
                     data[INDEX_AFTER_SIZE] = new Long(after.getLength());
@@ -266,7 +261,7 @@ public class EventTableView extends JPanel implements IDirectoryMonitorListener 
                     
                 case FileEvent.TYPE_FILE_DELETED :
                     data[INDEX_ACTIVITY] = "Deleted";
-                    data[INDEX_DIR] = FilenameUtils.getPath(before.getAbsolutePath());
+                    data[INDEX_DIR] = FilenameUtils.getFullPathNoEndSeparator(before.getAbsolutePath());
                     data[INDEX_FILE] = FilenameUtils.getName(before.getAbsolutePath());
                     data[INDEX_BEFORE_SIZE] = new Long(before.getLength());
                     data[INDEX_AFTER_SIZE] = null;
@@ -275,9 +270,7 @@ public class EventTableView extends JPanel implements IDirectoryMonitorListener 
                     break;
     
                 default:
-                    throw new IllegalArgumentException(
-                        "unrecognized event type: " 
-                        + event.getEventType());
+                    throw new IllegalArgumentException("unrecognized event type: " + event.getEventType());
             }
             
             return data;
