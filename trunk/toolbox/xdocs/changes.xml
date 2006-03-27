@@ -122,6 +122,7 @@
             <action type="add"      >Util - Added toolbox.util.AppLauncher to launch data files from a java app</action>
             <action type="update"   >DirMon - Fixed run, history, and diff launchers to handle special chars in filenames and access denied errors</action>
             <action type="update"   >Util - Added StringUtils.containsIgnoreCase()</action>
+            <action type="update"   >Lib - Upgraded Apache Jakarta Commons Lang to commons-lang-2.1</action>
         </release>
 
         <!-- =================================================================== -->
