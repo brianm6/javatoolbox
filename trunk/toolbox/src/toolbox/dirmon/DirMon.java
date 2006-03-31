@@ -364,9 +364,9 @@ public class DirMon extends JFrame implements SmartTabbedPaneListener {
             }
             
             // Events for the directory monitor to recognize
-            dm.addRecognizer(new FileCreatedRecognizer(dm));
-            dm.addRecognizer(new FileDeletedRecognizer(dm));
-            dm.addRecognizer(new FileChangedRecognizer(dm));
+            dm.addRecognizer(new DropUselessEventsRecognizer(new FileCreatedRecognizer(dm)));
+            dm.addRecognizer(new DropUselessEventsRecognizer(new FileDeletedRecognizer(dm)));
+            dm.addRecognizer(new DropUselessEventsRecognizer(new FileChangedRecognizer(dm)));
             
             // Components interested in directory monitor events
             dm.addDirectoryMonitorListener(systemTrayUpdater_);
