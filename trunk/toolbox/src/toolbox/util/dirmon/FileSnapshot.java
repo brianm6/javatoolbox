@@ -64,10 +64,22 @@ public class FileSnapshot {
     // Public 
     // -------------------------------------------------------------------------
     
+    /**
+     * Returns a reference to the {@link java.io.File} referenced by this
+     * snapshot.
+     * 
+     * @return File
+     */
     public File toFile() {
         return new File(getAbsolutePath());
     }
 
+    
+    /**
+     * Returns the absolute path of the file.
+     * 
+     * @return String
+     */
     public String getKey() {
         return getAbsolutePath();
     }

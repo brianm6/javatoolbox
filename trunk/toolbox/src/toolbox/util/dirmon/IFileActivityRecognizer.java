@@ -16,7 +16,7 @@ public interface IFileActivityRecognizer {
      * 
      * @param before Snapshot of a directory before a point in time.
      * @param after Snapshot of a directory after a point in time.
-     * @return List of DirectorMonitorEvents that describe changes between the
+     * @return List of {@link BaseEvent}s that describe changes between the
      *         directory snapshots.
      */
     List getRecognizedEvents(DirSnapshot before, DirSnapshot after);
