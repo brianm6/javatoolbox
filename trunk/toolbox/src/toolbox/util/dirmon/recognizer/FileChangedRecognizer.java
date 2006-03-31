@@ -64,8 +64,9 @@ public class FileChangedRecognizer implements IFileActivityRecognizer {
             FileSnapshot afterFileSnapshot = 
                 (FileSnapshot) afterFileSnapshots.get(fileKey);
             
-            if (beforeFileSnapshot.getLastModified() != 
-                afterFileSnapshot.getLastModified()) {
+            // check for change in timestamp or file size 
+            if (beforeFileSnapshot.getLastModified() != afterFileSnapshot.getLastModified() ||
+                beforeFileSnapshot.getLength() != afterFileSnapshot.getLastModified()) {
                 
                 FileEvent event = 
                     new FileEvent(
