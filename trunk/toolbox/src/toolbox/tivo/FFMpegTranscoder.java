@@ -15,6 +15,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ElapsedTime;
+import toolbox.util.Figlet;
 import toolbox.util.FileUtil;
 import toolbox.util.ProcessUtil;
 import toolbox.util.StringUtil;
@@ -209,6 +210,8 @@ public class FFMpegTranscoder extends AbstractTranscoder {
             float speed = (float) movieSeconds / (float) transcodeSeconds;
             
             logger_.info("Transcoded at " + speed + "x speed");
+            
+            logger_.info("\n" + Figlet.getBanner(speed+"x"));
             
             IOUtils.closeQuietly(fout);
             IOUtils.closeQuietly(ferr);
