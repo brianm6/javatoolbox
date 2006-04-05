@@ -651,14 +651,18 @@ public class Tree
         File[] dirs = rootDir.listFiles(
             (FileFilter) DirectoryFileFilter.INSTANCE);
         
-        Arrays.sort(dirs, (Comparator) sortByMap_.get(sortBy_));
+        if (sortBy_ != SORT_NONE)
+            Arrays.sort(dirs, (Comparator) sortByMap_.get(sortBy_));
+        
         String filler = (dirs.length == 0 ? SPACER : BAR);
         
         // Print files
         if (showFiles_)
         {
             File[] files = rootDir.listFiles( (FileFilter) fileFilter_);
-            Arrays.sort(files, (Comparator) sortByMap_.get(sortBy_));
+            
+            if (sortBy_ != SORT_NONE)
+                Arrays.sort(files, (Comparator) sortByMap_.get(sortBy_));
             
             int longestName = -1; // Number of spaces occupied by longest fname 
             int largestFile = -1; // Number of spaces occupied by largest fsize
@@ -671,8 +675,7 @@ public class Tree
                 if (showSize_)
                 {
                     if (longestName == -1)
-                        longestName = FileUtil
-                            .getLongestFilename(files).getName().length();
+                        longestName = FileUtil.getLongestFilename(files).getName().length();
                     
                     if (largestFile == -1)
                         largestFile = formatter_.format(
