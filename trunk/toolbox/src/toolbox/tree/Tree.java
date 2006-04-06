@@ -2,16 +2,19 @@ package toolbox.tree;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.cli.CommandLine;
@@ -226,6 +229,14 @@ public class Tree
      */
     private NumberFormat formatter_;
 
+    /**
+     * List of directories in canonical form that have already been traversed used to handle the 
+     * non-traversal of links > 1 time.
+     * 
+     * @see String
+     */
+    private List traversedDirs_;
+    
     //--------------------------------------------------------------------------
     // Main
     //--------------------------------------------------------------------------
@@ -548,6 +559,8 @@ public class Tree
                 String regex,
                 Writer writer)
     {
+    	traversedDirs_ = new ArrayList();
+    	
         rootDir_ = rootDir;
 
         // Make sure directory is legit        
@@ -631,6 +644,30 @@ public class Tree
             "");
     }
     
+    protected boolean hasTraversed(File dir) 
+    {
+    	String canonicalPath =  getCanonicalPath(dir);
+    	if (canonicalPath != null && traversedDirs_.contains(canonicalPath))
+    		return true;
+    	else 
+    		return false;
+    }
+
+    private String getCanonicalPath(File dir) 
+    {
+    	String canonicalPath =  null;
+    	
+		try 
+		{
+			canonicalPath = dir.getCanonicalPath();
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return canonicalPath;
+	}
     
     /**
      * Recurses the directory structure of the given rootDir and generates a
@@ -642,27 +679,36 @@ public class Tree
      */
     protected boolean showTree(File rootDir, String level)
     {
+//    	if (hasTraversed(rootDir)) {
+//    		writer_.println(level + SPACER + "[LINK] " + getCanonicalPath(rootDir));
+//    		return false;
+//    	}
+//    	else {
+//    		
+//    	}
+    	
         boolean atRoot = (level.length() == 0);
         
         if (atRoot)
             writer_.println(rootDir.getAbsolutePath());
             
         // Get list of directories in root
-        File[] dirs = rootDir.listFiles(
-            (FileFilter) DirectoryFileFilter.INSTANCE);
+        File[] dirs = rootDir.listFiles((FileFilter) DirectoryFileFilter.INSTANCE);
         
-        if (sortBy_ != SORT_NONE)
-            Arrays.sort(dirs, (Comparator) sortByMap_.get(sortBy_));
+        // If there are permission problems, null is returned
+        if (dirs == null) {
+        	//writer_.println(level + SPACER + "NULL list of files returned for dir " + rootDir);
+        	return false; 
+        }
         
+        Arrays.sort(dirs, (Comparator) sortByMap_.get(sortBy_));
         String filler = (dirs.length == 0 ? SPACER : BAR);
         
         // Print files
         if (showFiles_)
         {
             File[] files = rootDir.listFiles( (FileFilter) fileFilter_);
-            
-            if (sortBy_ != SORT_NONE)
-                Arrays.sort(files, (Comparator) sortByMap_.get(sortBy_));
+            Arrays.sort(files, (Comparator) sortByMap_.get(sortBy_));
             
             int longestName = -1; // Number of spaces occupied by longest fname 
             int largestFile = -1; // Number of spaces occupied by largest fsize
@@ -746,7 +792,7 @@ public class Tree
         // Theres at least one child so go ahead and print a BAR
         if (atRoot)
             writer_.println(BAR);
-            
+        
         // Process each directory    
         for (int i = 0; i < len; i++)
         {
@@ -755,25 +801,34 @@ public class Tree
             writer_.print(level);
             writer_.print(JUNCTION);
             writer_.print(ARM);
-            writer_.print(current.getName());
-            writer_.println();
             
-            // Recurse            
-            if (i == len - 1 && len > 1)  
+            if (hasTraversed(current)) 
             {
-                // At end and more then one dir
-                showTree(current, level + SPACER);
+            	writer_.println("" + current.getName() + " -> " + getCanonicalPath(current) + "");
             }
-            else if (len > 1) 
+            else
             {
-                // More than one dir
-                showTree(current, level + BAR);                
-                writer_.println(level + BAR);                   
-            }
-            else  
-            {
-                // Not at end                
-                showTree(current, level + SPACER);
+            	traversedDirs_.add(getCanonicalPath(current));
+            	writer_.print(current.getName());
+	            writer_.println();
+	            
+	            // Recurse            
+	            if (i == len - 1 && len > 1)  
+	            {
+	                // At end and more then one dir
+	                showTree(current, level + SPACER);
+	            }
+	            else if (len > 1) 
+	            {
+	                // More than one dir
+	                showTree(current, level + BAR);                
+	                writer_.println(level + BAR);                   
+	            }
+	            else  
+	            {
+	                // Not at end                
+	                showTree(current, level + SPACER);
+	            }
             }
         }
         
@@ -783,8 +838,8 @@ public class Tree
     //--------------------------------------------------------------------------
     // Overrides java.lang.Object
     //--------------------------------------------------------------------------
-    
-    /**
+
+	/**
      * @see java.lang.Object#toString()
      */
     public String toString()
