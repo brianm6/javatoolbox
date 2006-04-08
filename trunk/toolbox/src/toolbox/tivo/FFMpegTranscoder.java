@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -47,7 +48,7 @@ public class FFMpegTranscoder extends AbstractTranscoder {
     // -------------------------------------------------------------------------
     
     public static final String getExecutablePath() {
-        return "ffmpeg.exe";
+        return "ffmpeg";
     }
     
     // -------------------------------------------------------------------------
@@ -196,6 +197,11 @@ public class FFMpegTranscoder extends AbstractTranscoder {
         finally {
             timer.setEndTime();
 
+            NumberFormat nf = NumberFormat.getInstance();
+            nf.setMinimumFractionDigits(1);
+            nf.setMaximumFractionDigits(2);
+            nf.setMinimumIntegerDigits(1);
+            
             if (fpos != null) {
                 int transcodeSeconds = (int) timer.getTotalMillis()/1000;
                 int frames = fpos.getProgressFrames();
@@ -203,21 +209,21 @@ public class FFMpegTranscoder extends AbstractTranscoder {
                 //logger_.info("frames = " + frames);
                 //logger_.info("seconds = " + transcodeSeconds);
                 logger_.info("Frames transcoded/sec = " + (frames / transcodeSeconds));
+                logger_.info("\n" + Figlet.getBanner("FPS = " + nf.format(frames/transcodeSeconds)));
             }
-            
+
             int movieSeconds = movieInfo.getTotalSeconds();
             int transcodeSeconds = (int) timer.getTotalMillis()/1000;
             float speed = (float) movieSeconds / (float) transcodeSeconds;
             
             logger_.info("Transcoded at " + speed + "x speed");
-            
-            logger_.info("\n" + Figlet.getBanner(speed+"x"));
+            logger_.info("\n" + Figlet.getBanner("Speed = " + nf.format(speed) + "x"));
             
             IOUtils.closeQuietly(fout);
             IOUtils.closeQuietly(ferr);
             
             FileUtil.setFileContents(errFile, 
-                "\nTranscoded at " + speed + "x speed", true);
+                "\nTranscoded at " + nf.format(speed) + "x speed", true);
             
             if (exitValue != 0) 
                 fireTranscodeError();
