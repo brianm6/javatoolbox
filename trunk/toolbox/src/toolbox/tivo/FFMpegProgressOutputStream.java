@@ -3,6 +3,7 @@ package toolbox.tivo;
 import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.NumberFormat;
 
 import org.apache.log4j.Logger;
 
@@ -99,6 +100,8 @@ public class FFMpegProgressOutputStream extends FilterOutputStream {
      */
     private int progressFrames_;
     
+    private NumberFormat nf = NumberFormat.getInstance();
+    
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
@@ -111,6 +114,8 @@ public class FFMpegProgressOutputStream extends FilterOutputStream {
         frames_ = new StringBuffer();
         progressSecs_ = -1;
         progressFrames_ = 0;
+        nf.setMaximumFractionDigits(1);
+        nf.setMinimumFractionDigits(1);
     }
 
     
@@ -123,6 +128,8 @@ public class FFMpegProgressOutputStream extends FilterOutputStream {
         totalSeconds_ = totalSeconds;
         progressSecs_ = -1;
         progressFrames_ = 0;
+        nf.setMaximumFractionDigits(1);
+        nf.setMinimumFractionDigits(1);
     }
     
     // -------------------------------------------------------------------------
@@ -176,7 +183,9 @@ public class FFMpegProgressOutputStream extends FilterOutputStream {
                          secs % 30 == 0 || 
                          secs + 10 > totalSeconds_) && 
                              secs != progressSecs_) {
-                        logger_.info("Progress: " + secs + "/" + totalSeconds_);
+                        
+                        float percent = secs/ (float) totalSeconds_;
+                        logger_.info("Progress: " + secs + "/" + totalSeconds_ + " (" + nf.format(percent * 100) + "%)");
                         progressSecs_ = secs;
                     }
                 }
