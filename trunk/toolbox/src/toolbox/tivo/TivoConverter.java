@@ -10,8 +10,10 @@ import edu.emory.mathcs.backport.java.util.concurrent.LinkedBlockingQueue;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.log4j.Appender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.apache.log4j.PatternLayout;
 
 import toolbox.util.ElapsedTime;
 import toolbox.util.StringUtil;
@@ -98,7 +100,9 @@ public class TivoConverter {
      * z:\tivo.
      */
     public static void main(String args[]) {
-        Logger.getRootLogger().setLevel(Level.INFO);
+
+        configLogger();
+
         TivoConverter converter = null;
         
         if (args.length == 0)
@@ -126,6 +130,23 @@ public class TivoConverter {
         originalsDir_ = rootDir_ + "\\originals"; 
         goBackDir_ = rootDir_ + "\\goback";
         logDir_ = rootDir_ + "\\logs";
+    }
+
+    /**
+     * 
+     */
+    public static void configLogger() {
+        Logger appLogger = Logger.getRootLogger();
+        appLogger.setLevel(Level.INFO);
+        appLogger.setAdditivity(true);
+        
+//        for (Enumeration e = appLogger.getAllAppenders(); e.hasMoreElements(); ) {
+//            Appender a = (Appender) e.nextElement();
+//            System.out.println(a);
+//        }
+        
+        Appender appAppender = appLogger.getAppender("console");
+        appAppender.setLayout(new PatternLayout("%m%n"));
     }
     
     // -------------------------------------------------------------------------
