@@ -48,10 +48,11 @@ import toolbox.util.ui.table.action.AutoTailAction;
  * shows all generated {@link toolbox.util.dirmon.event.StatusEvent}s in a 
  * table. Features include:
  * <ul>
- *  <li>Built in table header button to launch selected file.
- *  <li>Built in table header button to diff files.
- *  <li>Built in table header button to show file history.
- *  <li>Built in table header button to autoscroll tables as rows are added.
+ *  <li>Table header button to launch the selected file.
+ *  <li>Table header button to diff files (Clearcase specific).
+ *  <li>Table header button to show file history (Clearcase specific).
+ *  <li>Table header button to clear the events.
+ *  <li>Table header button to autoscroll the table as rows are added.
  * </ul> 
  */
 public class EventTableView extends JPanel implements IDirectoryMonitorListener {
@@ -99,16 +100,16 @@ public class EventTableView extends JPanel implements IDirectoryMonitorListener 
     // Constructors
     // -------------------------------------------------------------------------
     
-    public EventTableView() {
+    public EventTableView(String header) {
         this.sequenceNum_ = 1;
-        buildView();
+        buildView(header);
     }
 
     // -------------------------------------------------------------------------
     // Protected
     // -------------------------------------------------------------------------
     
-    protected void buildView() {
+    protected void buildView(String header) {
         setLayout(new BorderLayout());
         
         model_ = new EventTableModel(columnHeaders, 0);
@@ -157,6 +158,12 @@ public class EventTableView extends JPanel implements IDirectoryMonitorListener 
                 "File History",
                 new HistoryAction());
         
+        JButton clearButton =
+            JHeaderPanel.createButton(
+                ImageCache.getIcon(ImageCache.IMAGE_CLEAR),
+                "Clear Events",
+                new ClearEventsAction());
+                
         JSmartToggleButton autoTailButton =
             JHeaderPanel.createToggleButton(
                 ImageCache.getIcon(ImageCache.IMAGE_LOCK),
@@ -188,10 +195,11 @@ public class EventTableView extends JPanel implements IDirectoryMonitorListener 
         
         tb.add(diffButton);
         tb.add(historyButton);
+        tb.add(clearButton);
         tb.add(autoTailButton);
         
         JHeaderPanel tablePanel = 
-            new JHeaderPanel("Activity", tb, new JScrollPane(table_));
+            new JHeaderPanel(header, tb, new JScrollPane(table_));
 
         add(BorderLayout.CENTER, tablePanel);
         
@@ -418,5 +426,21 @@ public class EventTableView extends JPanel implements IDirectoryMonitorListener 
                 AppLauncher.launch(path);
             }
         }
-    }    
+    }
+    
+    //--------------------------------------------------------------------------
+    // ClearEventsAction
+    //--------------------------------------------------------------------------
+
+    class ClearEventsAction extends SmartAction
+    {
+        ClearEventsAction() {
+            super("Clear Events", false, false, null);
+            putValue(SHORT_DESCRIPTION, "Clears events from the table");
+        }
+
+        public void runAction(ActionEvent e) throws Exception {
+            model_.setRowCount(0);
+        }
+    }
 }
