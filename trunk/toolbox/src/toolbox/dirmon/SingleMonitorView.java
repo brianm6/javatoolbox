@@ -32,7 +32,7 @@ public class SingleMonitorView extends JPanel implements SmartTabbedPaneListener
     //--------------------------------------------------------------------------
     
     public SingleMonitorView(DirectoryMonitor monitor) {
-        this.monitor = monitor;
+        setMonitor(monitor);
         buildView();
     }
     
@@ -42,12 +42,9 @@ public class SingleMonitorView extends JPanel implements SmartTabbedPaneListener
     
     protected void buildView() {
         setLayout(new BorderLayout());
-        
-        tableView = new EventTableView();
-        this.monitor.addDirectoryMonitorListener(tableView);
-        
+        tableView = new EventTableView(getMonitor().getRootDirectory().getAbsolutePath());
+        getMonitor().addDirectoryMonitorListener(tableView);
         ControllerView controllerView = new ControllerView(this.monitor);
-        
         add(BorderLayout.CENTER, tableView);
         add(BorderLayout.SOUTH, controllerView);
     }
