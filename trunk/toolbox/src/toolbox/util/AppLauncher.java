@@ -74,8 +74,13 @@ public final class AppLauncher  {
             // Failed...lets try to get around access denied errors on mounted
             // clearcase view if we're certain the file exists and is not a 
             // directory
-            if (StringUtil.containsIgnoreCase(stderr.toString(), "Access is denied") && 
-                            file.exists() && file.isFile()) {
+            
+            String errString = stderr.toString();
+            
+            if ((StringUtil.containsIgnoreCase(errString, "Access is denied") ||
+                 StringUtil.containsIgnoreCase(errString, "used by another process")) 
+                 && file.exists() 
+                 && file.isFile()) {
                 
                 logger.debug("Copying " + filename + " to tmp dir to try to launch...");
                 
