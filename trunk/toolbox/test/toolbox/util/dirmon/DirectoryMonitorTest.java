@@ -32,12 +32,7 @@ public class DirectoryMonitorTest extends TestCase {
     // -------------------------------------------------------------------------
     // Main
     // -------------------------------------------------------------------------
-
-    /**
-     * Entrypoint.
-     * 
-     * @param args None recognized.
-     */
+    
     public static void main(String[] args) {
         TestRunner.run(DirectoryMonitorTest.class);
     }
@@ -48,8 +43,6 @@ public class DirectoryMonitorTest extends TestCase {
 
     /**
      * Tests a full lifecycle of the DirectoryMonitor.
-     * 
-     * @throws Exception on I/O error.
      */
     public void testDirectoryMonitor() throws Exception {
         logger_.info("Running testDirectoryMonitor...");
@@ -107,8 +100,6 @@ public class DirectoryMonitorTest extends TestCase {
     /**
      * Tests failure of an attempt to start an already running directory
      * monitor.
-     * 
-     * @throws Exception on I/O error.
      */
     public void testDirectoryMonitorFalseStart() throws Exception {
         logger_.info("Running testDirectoryMonitorFalseStart...");
@@ -138,9 +129,6 @@ public class DirectoryMonitorTest extends TestCase {
     }
     
     
-    /**
-     * @throws Exception
-     */
     public void testDirectoryMonitorWithSubDirs() throws Exception {
         logger_.info("Running testDirectoryMonitorWithSubDirs...");
         
