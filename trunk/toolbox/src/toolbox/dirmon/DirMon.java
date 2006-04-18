@@ -15,7 +15,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.PropertiesUtil;
@@ -216,7 +215,7 @@ public class DirMon extends JFrame implements SmartTabbedPaneListener {
                     String dirProp  = "dirmon." + j + ".dir";
                     String name = props.getProperty(nameProp).trim();
                     String dir = props.getProperty(dirProp).trim();
-                    addMonitor(dirMon, dir);
+                    addMonitor(dirMon, dir, name);
                 }
             }
             
@@ -228,7 +227,7 @@ public class DirMon extends JFrame implements SmartTabbedPaneListener {
             
             // Monitor an individual directory passed as an arg on the command line
             else {
-                addMonitor(dirMon, arg);
+                addMonitor(dirMon, arg, arg);
             }
         }
     }
@@ -238,11 +237,11 @@ public class DirMon extends JFrame implements SmartTabbedPaneListener {
      * @param dirMon
      * @param dirPath
      */
-    private static void addMonitor(DirMon dirMon, String dirPath) {
+    private static void addMonitor(DirMon dirMon, String dirPath, String name) {
         File dir = new File(dirPath);
         
         if (dir.isDirectory() && dir.canRead()) {
-            dirMon.new MonitorDirectoryAction().monitor(dir);
+            dirMon.new MonitorDirectoryAction().monitor(name, dir);
         }
         else {
             logger_.error("'" + dirPath + "' is not a valid directory");
@@ -268,7 +267,7 @@ public class DirMon extends JFrame implements SmartTabbedPaneListener {
             "/toolbox/util/ui/images/Toolbox.png"));
         
         consoleView_ = new ConsoleView();
-        allEventsTableView_ = new EventTableView();
+        allEventsTableView_ = new EventTableView("Activity");
         systemTrayUpdater_ = new SystemTrayUpdater(this);
         desktopNotifier_ = new DesktopNotifier();
         
@@ -339,7 +338,7 @@ public class DirMon extends JFrame implements SmartTabbedPaneListener {
     // -------------------------------------------------------------------------
 
     /**
-     * Action to creates and start a directory monitor for the currently 
+     * Action to create and start a directory monitor for the currently 
      * entered directory.
      */
     public class MonitorDirectoryAction extends SmartAction {
@@ -356,7 +355,7 @@ public class DirMon extends JFrame implements SmartTabbedPaneListener {
             File f = new File(dirField_.getText().trim());
 
             if (f.isDirectory()) {
-                monitor(f);
+                monitor(f.getAbsolutePath(), f);
             }
             else {
                 JSmartOptionPane.showMessageDialog(
@@ -371,8 +370,8 @@ public class DirMon extends JFrame implements SmartTabbedPaneListener {
          * 
          * @param f Directory to monitor.
          */
-        public void monitor(File f) {
-            DirectoryMonitor dm = new DirectoryMonitor(f, true);
+        public void monitor(String displayName, File f) {
+            DirectoryMonitor dm = new DirectoryMonitor(f, displayName, true);
             String delayValue = delayField_.getText().trim();
             
             // seconds
@@ -406,15 +405,15 @@ public class DirMon extends JFrame implements SmartTabbedPaneListener {
             // service state be something
             
             
-            String dirName = dm.getName(); 
-                //dm.getMonitoredDirectories().iterator().next().toString();
+            //String dirName = dm.getName(); 
+            //dm.getMonitoredDirectories().iterator().next().toString();
             
             tabbedPane_.insertTab(
-                FilenameUtils.getName(dirName), // last dir name as tab name
+                dm.getName(),                            // friendly name as tab name
                 null,
                 singleView,
-                dirName,                        // full dir name as tooltip
-                0);                             // insert as first tab
+                dm.getRootDirectory().getAbsolutePath(), // full dir name as tooltip
+                0);                                      // insert as first tab
         };
     }
 
