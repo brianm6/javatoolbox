@@ -6,19 +6,19 @@ import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.LineNumberReader;
+import java.util.Properties;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
+import toolbox.util.PropertiesUtil;
 import toolbox.util.ResourceUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.dirmon.DirectoryMonitor;
@@ -161,7 +161,15 @@ public class DirMon extends JFrame implements SmartTabbedPaneListener {
      * 
      * @param args Space delimited set of directories to monitor or an @ symbol
      *        followed by the name of a file containing a list of directories
-     *        to monitor.
+     *        to monitor. File should contain dirs in the following format:
+     *        
+     *        <pre>
+     *        dirmon.num=2
+     *        dirmon.1.name=Docs
+     *        dirmon.1.dir=c:\\mydocs
+     *        dirmon.2.name=Java Code
+     *        dirmon.2.dir=c:\\dev\\java
+     *        </pre>
      */
     public static void main(String[] args) {
 
@@ -181,29 +189,44 @@ public class DirMon extends JFrame implements SmartTabbedPaneListener {
             // Read in file containing list of directories to mointor
             if (arg.startsWith("@")) {
 
-                File file = new File(arg.substring(1));
-                LineNumberReader lnr = null;
+                File propsFile = new File(arg.substring(1));
+
+                Properties props = new Properties();
+                FileInputStream fis = null;
                 
                 try {
-                    lnr = new LineNumberReader(new FileReader(file));
-                    String line = null;
-                    while ( (line = lnr.readLine()) != null) {
-                        addMonitor(dirMon, line.trim());
-                    }
+                    fis = new FileInputStream(propsFile);
+                    props.load(fis);
                 }
                 catch (FileNotFoundException fnfe) {
-                    logger_.error("File not found: " + file, fnfe);
+                    logger_.error("File not found: " + propsFile, fnfe);
                 }
                 catch (IOException ioe) {
-                    logger_.error("IOException : " + file, ioe);                    
+                    logger_.error("IOException : " + propsFile, ioe);
                 }
                 finally {
-                    IOUtils.closeQuietly(lnr);
+                    org.apache.commons.io.IOUtils.closeQuietly(fis);
+                }
+                
+                int numDirs = PropertiesUtil.getInteger(props, "dirmon.num", 0);
+                logger_.debug("Number of dirs in props file = " + numDirs);
+                
+                for (int j = 1; j <= numDirs; j++) {
+                    String nameProp = "dirmon." + j + ".name";
+                    String dirProp  = "dirmon." + j + ".dir";
+                    String name = props.getProperty(nameProp).trim();
+                    String dir = props.getProperty(dirProp).trim();
+                    addMonitor(dirMon, dir);
                 }
             }
             
-            // Monitor an individual directory passed as an arg on the command
-            // line
+            // Pring help
+            else if (arg.startsWith("-h") || arg.startsWith("--help") || arg.startsWith("-?") || arg.startsWith("/?")) {
+                System.out.println("Usage: dirmon [<dir> | @<properties file>]");
+                System.exit(0);
+            }
+            
+            // Monitor an individual directory passed as an arg on the command line
             else {
                 addMonitor(dirMon, arg);
             }
