@@ -114,6 +114,7 @@
         
         <release version="3.0.3" date="April 2006">
             <action type="update"   >DirMon - If launcher fails because another process is using the file, then copies fiel to tmp dir and tries to launch again</action>
+            <action type="update"   >DirMon - Added shortened version of directory monitor name to the toaster popup message</action>
         </release>
 
         <!-- =================================================================== -->
