@@ -116,6 +116,9 @@
             <action type="update"   >DirMon - If launcher fails because another process is using the file, then copies fiel to tmp dir and tries to launch again</action>
             <action type="update"   >DirMon - Added shortened version of directory monitor name to the toaster popup message</action>
             <action type="update"   >DirMon - Properties file sent in on the command line can now specify a friendly name for the directory to montior which shows up in the tab names and toaster popups</action>
+            <action type="update"   >DirMon - Added header button to the event table to clear the events</action>
+            <action type="update"   >DirMon - Table header for the events table now contains the absolute path of the root directory being monitored</action>
+            <action type="update"   >Util - Updated DirectoryMonitor to property support a distinction between the root directory being monitored and a friendly name for the directory monitor</action>
         </release>
 
         <!-- =================================================================== -->
