@@ -2,9 +2,9 @@ package toolbox.dirmon;
 
 import javax.swing.Icon;
 
-import com.nitido.utils.toaster.Toaster;
-
 import org.apache.commons.io.FilenameUtils;
+
+import com.nitido.utils.toaster.Toaster;
 
 import toolbox.util.FontUtil;
 import toolbox.util.dirmon.IDirectoryMonitorListener;
@@ -59,7 +59,6 @@ class DesktopNotifier implements IDirectoryMonitorListener {
         switch (event.getEventType()) {
         
             case FileEvent.TYPE_FILE_CHANGED :
-                
                 shortMsg.append("Modified: ");
                 shortMsg.append(
                     FilenameUtils.getName(
@@ -69,7 +68,6 @@ class DesktopNotifier implements IDirectoryMonitorListener {
                 break;
                 
             case FileEvent.TYPE_FILE_CREATED :
-                
                 shortMsg.append("Created: ");
                 shortMsg.append(
                     FilenameUtils.getName(
@@ -79,7 +77,6 @@ class DesktopNotifier implements IDirectoryMonitorListener {
                 break;
 
             case FileEvent.TYPE_FILE_DELETED :
-                
                 shortMsg.append("Deleted: ");
                 shortMsg.append(
                     FilenameUtils.getName(
@@ -94,6 +91,11 @@ class DesktopNotifier implements IDirectoryMonitorListener {
                     + event.getEventType());
         }
 
+        String dirmonName = event.getDirectoryMonitor().getName();
+        
+        if (dirmonName != null) 
+            shortMsg.insert(0, dirmonName + "\n");
+        
         toaster_.showToaster(toasterIcon, shortMsg.toString());
     }
 }
