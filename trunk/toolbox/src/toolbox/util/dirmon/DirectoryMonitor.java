@@ -51,7 +51,7 @@ import toolbox.util.statemachine.StateMachine;
  * 
  *     public void directoryActivity(FileEvent event)
  *         throws Exception {
- *         System.out.println("File activity: " + event);  
+ *         System.out.println("File created: " + event);  
  *      }
  *  });
  *
@@ -67,7 +67,7 @@ import toolbox.util.statemachine.StateMachine;
  * </pre>
  */
 public class DirectoryMonitor 
-    implements Startable, Suspendable, Destroyable, ObservableService, Nameable {
+    implements Startable, Suspendable, Destroyable, ObservableService , Nameable {
     
     private static Logger logger_ =  Logger.getLogger(DirectoryMonitor.class);
 
@@ -99,11 +99,17 @@ public class DirectoryMonitor
     private int perDirectoryDelay_;
 
     /** 
-     * List of directories to monitor for file activity.
+     * List of directories to monitor for file activity if recursive monitoring
+     * is turned on.
      * 
      * @see java.io.File
      */
     private List monitoredDirectories_;
+   
+    /**
+     * The root directory to monitor.
+     */
+    private File rootDirectory_;
     
     /** 
      * Thread that interested listeners are notified on. 
@@ -140,6 +146,10 @@ public class DirectoryMonitor
      */
     private String name_;
 
+    /**
+     * Flag to specify that the monitor should also recursively monitor all
+     * subdirectories.
+     */
     private boolean recurse_;
 
     //--------------------------------------------------------------------------
@@ -147,7 +157,9 @@ public class DirectoryMonitor
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a DirectoryMonitor for the given directory.
+     * Creates a DirectoryMonitor for the given directory. Subdirectories are
+     * not monitored and the friendly name is set to the directory's absolute
+     * path.
      * 
      * @param dir Directory to monitor.
      */
@@ -157,24 +169,37 @@ public class DirectoryMonitor
 
     
     /**
-     * Creates a DirectoryMonitor for the given directory and all known 
-     * subdirectories.
+     * Creates a DirectoryMonitor for the given directory and sets the friendly
+     * name to the directory's absolute path.
      * 
      * @param dir Directory to monitor.
      * @param subdirs Set to true to also monitor subdirectories.
      */
     public DirectoryMonitor(File dir, boolean subdirs) {
+        this(dir, dir.getAbsolutePath(), false);
+    }
+
+    
+    /**
+     * Creates a DirectoryMonitor for the given directory.
+     *
+     * @param dir Directory to monitor.
+     * @param friendlyName Display friendly name for the directory monitor.
+     * @param subdirs Set to true to also monitor subdirectories.
+     */
+    public DirectoryMonitor(File dir, String friendlyName, boolean subdirs) {
+        
         setDelay(DEFAULT_DELAY);
         perDirectoryDelay_ = DEFAULT_PER_DIR_DELAY;
-        
         dirSnapshots_ = new HashMap();
         recognizers_ = new ArrayList();
         stateMachine_ = ServiceUtil.createStateMachine(this);
         notifier_ = new ServiceNotifier(this);
         monitoredDirectories_ = new ArrayList();
         listeners_ = new ArrayList();
-        setName(dir.getAbsolutePath());
+        setName(friendlyName);
         recurse_ = subdirs;
+        rootDirectory_ = dir;
         
 //        fireStatusChanged(
 //            new StatusEvent(
@@ -207,6 +232,7 @@ public class DirectoryMonitor
 //                StatusEvent.TYPE_END_DISCOVERY, 
 //                this, 
 //                "Ended discovery"));
+        
     }
     
     //--------------------------------------------------------------------------
@@ -393,9 +419,6 @@ public class DirectoryMonitor
     // Nameable Interface
     // -------------------------------------------------------------------------
 
-    /*
-     * @see toolbox.util.service.Nameable#getName()
-     */
     public String getName() {
         return name_;
     }
@@ -409,26 +432,18 @@ public class DirectoryMonitor
     //--------------------------------------------------------------------------
 
     /**
-     * @return List of directories being monitored.
+     * @return Root directory being monitored.
      */
-    public List getMonitoredDirectories() {
-        return monitoredDirectories_;
+    public File getRootDirectory() {
+        return rootDirectory_;
     }
 
     
     /**
-     * @param directory
+     * @return List of directories being monitored.
      */
-    public void addDirectory(File directory) {
-        monitoredDirectories_.add(directory);
-    }
-    
-    
-    /**
-     * @param directory
-     */
-    public void removeDirectory(File directory) {
-        monitoredDirectories_.remove(directory);
+    public List getMonitoredDirectories() {
+        return monitoredDirectories_;
     }
 
     
@@ -470,7 +485,27 @@ public class DirectoryMonitor
     public void removeRecognizer(IFileActivityRecognizer r) {
         recognizers_.remove(r);
     }
+
+    // -------------------------------------------------------------------------
+    // Public but for internal usage only 
+    // -------------------------------------------------------------------------
     
+    /**
+     * @param directory Additional directory to monitor. Not for public usage
+     */
+    public void internalAddDirectory(File directory) {
+        monitoredDirectories_.add(directory);
+    }
+    
+    
+    /**
+     * @param directory Additional directory to remove from monitoring. Not for
+     *        public usage.
+     */
+    public void internalRemoveDirectory(File directory) {
+        monitoredDirectories_.remove(directory);
+    }
+
     //--------------------------------------------------------------------------
     // Event Notification Support
     //--------------------------------------------------------------------------
@@ -610,6 +645,43 @@ public class DirectoryMonitor
             logger_.debug("Exiting thread run()");
         }
 
+        
+        private void setup() {
+            
+            fireStatusChanged(
+                new StatusEvent(
+                    StatusEvent.TYPE_START_DISCOVERY, 
+                    DirectoryMonitor.this, 
+                    "Started discovery"));
+
+            File baseDir = getRootDirectory();
+            
+            if (recurse_) {
+                // Find all subdirs of the starting dir
+                FileFinder finder = new FileFinder();
+                Map findOptions = new HashMap();
+                findOptions.put(Finder.TYPE, "d");
+                logger_.debug("Finding all subdirs of " + baseDir + "...");
+                File[] subdirectories = finder.find(baseDir, findOptions);
+                logger_.debug("Found " + subdirectories.length + " subdirs total!");
+                logger_.debug(ArrayUtil.toString(subdirectories, true));
+                for (int i = 0; i < subdirectories.length; i++) 
+                    internalAddDirectory(subdirectories[i]);
+            }
+            else {
+                internalAddDirectory(baseDir);
+            }
+            
+            fireStatusChanged(
+                new StatusEvent(
+                    StatusEvent.TYPE_END_DISCOVERY, 
+                    DirectoryMonitor.this, 
+                    "Ended discovery"));
+
+            if (logger_.isDebugEnabled())
+                for (Iterator i = recognizers_.iterator(); i.hasNext();)
+                    logger_.debug("Recognizer registered: " + i.next());
+        }
 
         private void scanDirectory(File dir){
             String dirKey = dir.getAbsolutePath();
@@ -640,45 +712,6 @@ public class DirectoryMonitor
                 // Update the snapshot to the latest
                 dirSnapshots_.put(dirKey, afterDirSnapshot);
             }
-        }
-
-        
-        private void setup() {
-            
-            fireStatusChanged(
-                new StatusEvent(
-                    StatusEvent.TYPE_START_DISCOVERY, 
-                    DirectoryMonitor.this, 
-                    "Started discovery"));
-
-            // Hack alert...
-            File baseDir = new File(getName());
-            
-            if (recurse_) {
-                // Find all subdirs of the starting dir
-                FileFinder finder = new FileFinder();
-                Map findOptions = new HashMap();
-                findOptions.put(Finder.TYPE, "d");
-                logger_.debug("Finding all subdirs of " + baseDir + "...");
-                File[] subdirectories = finder.find(baseDir, findOptions);
-                logger_.debug("Found " + subdirectories.length + " subdirs total!");
-                logger_.debug(ArrayUtil.toString(subdirectories, true));
-                for (int i = 0; i < subdirectories.length; i++) 
-                    addDirectory(subdirectories[i]);
-            }
-            else {
-                addDirectory(baseDir);
-            }
-            
-            fireStatusChanged(
-                new StatusEvent(
-                    StatusEvent.TYPE_END_DISCOVERY, 
-                    DirectoryMonitor.this, 
-                    "Ended discovery"));
-
-            if (logger_.isDebugEnabled())
-                for (Iterator i = recognizers_.iterator(); i.hasNext();)
-                    logger_.debug("Recognizer registered: " + i.next());
         }
     }
     
