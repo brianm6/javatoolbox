@@ -1100,18 +1100,23 @@
     
     <packageGroup>
       <title>Toolbox GUI Utils</title>
-      <packages>toolbox.util.ui*</packages>
+      <packages>
+        toolbox.util.ui*,
+        toolbox.dirmon
+      </packages>
     </packageGroup>
 
     <packageGroup>
       <title>Toolbox Command Line Tools</title>
       <packages>
         toolbox.findclass,
+        toolbox.ip2hostname,
         toolbox.launcher,
         toolbox.rtelnet,
         toolbox.showclasspath,
         toolbox.showpath,
         toolbox.tail,
+        toolbox.tivo,
         toolbox.tree,
         toolbox.tunnel
       </packages>
