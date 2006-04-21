@@ -56,6 +56,8 @@ public final class AppLauncher  {
         cmdArray[1] = "/c";
         cmdArray[2] = "\"" + filename + "\"";
     
+        logger.debug("Launching file: " + filename);
+        
         // Add extra set of quotes around filename if it contains any special
         // characters. See cmd /c for more info.
         String specialChars = "&<>()@^|";
