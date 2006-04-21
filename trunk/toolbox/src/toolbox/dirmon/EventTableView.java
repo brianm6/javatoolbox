@@ -3,6 +3,7 @@ package toolbox.dirmon;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.text.DateFormat;
@@ -11,6 +12,7 @@ import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -21,13 +23,16 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
 import com.l2fprod.common.swing.renderer.DateRenderer;
 
+import toolbox.jedit.JEditTextArea;
 import toolbox.util.AppLauncher;
+import toolbox.util.FileUtil;
 import toolbox.util.Platform;
 import toolbox.util.dirmon.DirectoryMonitor;
 import toolbox.util.dirmon.FileSnapshot;
@@ -36,6 +41,7 @@ import toolbox.util.dirmon.event.FileEvent;
 import toolbox.util.dirmon.event.StatusEvent;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JHeaderPanel;
+import toolbox.util.ui.JSmartFrame;
 import toolbox.util.ui.JSmartToggleButton;
 import toolbox.util.ui.SmartAction;
 import toolbox.util.ui.table.BorderedCellRenderer;
@@ -139,12 +145,24 @@ public class EventTableView extends JPanel implements IDirectoryMonitorListener 
                 paddedBorder));
         
         ////////////////////////////////////////////////////////////////////////
-        
+
+        JButton launchCopyButton =
+            JHeaderPanel.createButton(
+                ImageCache.getIcon(ImageCache.IMAGE_COPY),
+                "Launch Copy of File",
+                new LaunchCopyAction());
+
         JButton launchButton =
             JHeaderPanel.createButton(
                 ImageCache.getIcon(ImageCache.IMAGE_PLAY),
                 "Launch File",
                 new LaunchAction());
+        
+        JButton viewButton = 
+            JHeaderPanel.createButton(
+                ImageCache.getIcon(ImageCache.IMAGE_INFO),
+                "View File",
+                new ViewAction());
         
         JButton diffButton =
             JHeaderPanel.createButton(
@@ -190,11 +208,17 @@ public class EventTableView extends JPanel implements IDirectoryMonitorListener 
         
         JToolBar tb = JHeaderPanel.createToolBar();
         
-        if (Platform.isWindows())
+        if (Platform.isWindows()) {
+            tb.add(launchCopyButton);
             tb.add(launchButton);
+        }
+    
+        tb.add(viewButton);
         
+        // Clearcase specific buttons 
         tb.add(diffButton);
         tb.add(historyButton);
+        
         tb.add(clearButton);
         tb.add(autoTailButton);
         
@@ -207,6 +231,26 @@ public class EventTableView extends JPanel implements IDirectoryMonitorListener 
         logger_.debug("Setting tail flag in eventtable...");
         table_.setAutoTail(false);
         table_.setRowHeight((int) (table_.getRowHeight() * 1.1));
+    }
+
+    // -------------------------------------------------------------------------
+    // Private 
+    // -------------------------------------------------------------------------
+    
+    /**
+     * Creates a copy of the passed in file in the systems temporary directory.
+     * Also marks the file for deletion when the JVM exits. Returns a reference
+     * to the copied file.
+     *
+     * @param sourceFile File to create a copy of in the system temp dir.
+     * @return File
+     */
+    private File createCopyInTempDir(File sourceFile) throws IOException {
+        File tmpDir = FileUtil.getTempDir();
+        FileUtils.copyFileToDirectory(sourceFile, tmpDir);
+        File destFile = new File(tmpDir, FilenameUtils.getName(sourceFile.getAbsolutePath()));
+        FileUtils.forceDeleteOnExit(destFile);
+        return destFile;
     }
 
     // -------------------------------------------------------------------------
@@ -427,13 +471,44 @@ public class EventTableView extends JPanel implements IDirectoryMonitorListener 
             }
         }
     }
+
+    // -------------------------------------------------------------------------
+    // LaunchCopyAction 
+    // -------------------------------------------------------------------------
+
+    /**
+     * Launches a copy of the selected file after copying it to the system's
+     * temp directory so that the orignal file is not locked by the launched
+     * application.
+     */
+    class LaunchCopyAction extends SmartAction {
+        
+        LaunchCopyAction() {
+            super("Copy file then launch", true, true, null);
+            putValue(SHORT_DESCRIPTION, "Launch file then launch");
+        }
+        
+        
+        public void runAction(ActionEvent e) throws Exception {
+            
+            int idx = table_.getSelectedRow();
+            
+            if (idx >= 0) {
+                String dir = (String) model_.getValueAt(idx, INDEX_DIR); 
+                String file  = (String) model_.getValueAt(idx,INDEX_FILE);
+                String path = dir + File.separator + file;
+                File clone = createCopyInTempDir(new File(path));
+                AppLauncher.launch(clone.getAbsolutePath());
+            }
+        }
+    }
     
     //--------------------------------------------------------------------------
     // ClearEventsAction
     //--------------------------------------------------------------------------
 
-    class ClearEventsAction extends SmartAction
-    {
+    class ClearEventsAction extends SmartAction {
+        
         ClearEventsAction() {
             super("Clear Events", false, false, null);
             putValue(SHORT_DESCRIPTION, "Clears events from the table");
@@ -441,6 +516,42 @@ public class EventTableView extends JPanel implements IDirectoryMonitorListener 
 
         public void runAction(ActionEvent e) throws Exception {
             model_.setRowCount(0);
+        }
+    }
+    
+    // -------------------------------------------------------------------------
+    // ViewAction 
+    // -------------------------------------------------------------------------
+    
+    class ViewAction extends SmartAction {
+        
+        ViewAction() {
+            super("View", true, false, null);
+            putValue(SHORT_DESCRIPTION, "View as text");
+        }
+        
+        
+        public void runAction(ActionEvent e) throws Exception {
+            
+            int idx = table_.getSelectedRow();
+            
+            if (idx >= 0) {
+                String dir = (String) model_.getValueAt(idx, INDEX_DIR); 
+                String file  = (String) model_.getValueAt(idx,INDEX_FILE);
+                String path = dir + File.separator + file;
+                File clone = createCopyInTempDir(new File(path));
+                
+                JFrame viewer = new JSmartFrame(clone.getAbsolutePath());
+                viewer.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                viewer.getContentPane().setLayout(new BorderLayout());
+                JEditTextArea editor = new JEditTextArea();
+                editor.setFont(toolbox.util.FontUtil.getPreferredMonoFont());
+                viewer.getContentPane().add(BorderLayout.CENTER, editor);
+                editor.setText(FileUtils.readFileToString(clone, null));
+                editor.setCaretPosition(0);
+                viewer.pack();
+                viewer.setVisible(true);
+            }
         }
     }
 }
