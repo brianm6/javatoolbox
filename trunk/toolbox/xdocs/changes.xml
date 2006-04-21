@@ -119,6 +119,7 @@
             <action type="update"   >DirMon - Added header button to the event table to clear the events</action>
             <action type="update"   >DirMon - Table header for the events table now contains the absolute path of the root directory being monitored</action>
             <action type="update"   >Util - Updated DirectoryMonitor to property support a distinction between the root directory being monitored and a friendly name for the directory monitor</action>
+            <action type="update"   >DirMon - Buttons added to event table view to launch a copy of the file and view the file in a text editor</action>
         </release>
 
         <!-- =================================================================== -->
