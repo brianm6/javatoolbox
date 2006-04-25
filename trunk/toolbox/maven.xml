@@ -514,7 +514,7 @@ Commands:
         <copy todir="${stage}" overwrite="yes">
 
             <fileset
-                dir="${basedir}/classes"
+                dir="${basedir}/target/classes"
                 includes="**/*.class"
                 excludes="**/MANIFEST.MF,**/test/**"/>
 
@@ -579,14 +579,14 @@ Commands:
     <!-- =================================================================== -->
     <!-- FATJAR:LAF                                                          -->
     <!-- =================================================================== -->
-    <goal name = "fatjar:laf"
+    <goal name = "fatjar:laf-old"
           description = "Creates toolbox-lookandfeel.jar.">
 
         <j:set var="dist" value="${basedir}/target/fatjar"/>
         <j:set var="stage" value="${basedir}/target/fatjar/laf"/>
         <mkdir dir="${stage}"/>
 
-        <delete verbose="true" failonerror="false" >
+        <delete verbose="true" failonerror="true" >
             <fileset dir="${dist}" includes="toolbox-lookandfeel.jar"/>
         </delete>
 
@@ -600,25 +600,72 @@ Commands:
             </j:if>
         </j:forEach>
 
-
         <!-- Copy skinlf themepacks -->
         <copy todir="${stage}" overwrite="yes">
             <fileset dir="${basedir}/resources" includes="skinlf/*"/>
         </copy>
 
-
         <!-- Nuke the META-INF dir cause it just causes problems -->
         <delete dir="${stage}/META-INF" verbose="true"/>
 
-
-        <!-- Jar up staging area to produce toolbox-lookandfeel.jar -->
+        <!-- Jar up staging area to produce toolbox-lookandfeel.jar 
+        manifest="${stage}/META-INF/MANIFEST.MF"> -->
         <jar jarfile ="${dist}/toolbox-lookandfeel.jar"
-             compress="${toolbox.fatjar.compress}"> 
+             compress="${toolbox.fatjar.compress}"
+             casesensitive="true"> 
             <fileset dir="${stage}"/>
         </jar>
+      
+      <jar jarfile ="${dist}/toolbox-lookandfeel.jar"
+           compress="${toolbox.fatjar.compress}"
+           casesensitive="true"
+           update="true">
+           
+           <zipfileset 
+             verbose="true" 
+             src="${basedir}/lib/lipstiklf.jar"
+             includes="**/*.class **/*.gif"/>
+      </jar>
+
     </goal>
 
+    <!-- =================================================================== -->
+    <!-- FATJAR:LAF                                                          -->
+    <!-- =================================================================== -->
 
+    <goal name = "fatjar:laf" description = "Creates toolbox-lookandfeel.jar.">
+
+      <j:set var="dist" value="${basedir}/target/fatjar"/>
+
+      <delete verbose="true" failonerror="true" >
+        <fileset dir="${dist}" includes="toolbox-lookandfeel.jar"/>
+      </delete>
+
+      <!-- Merge each jar file into toolbox-lookandfeel.jar -->
+      <j:forEach var="lib" items="${pom.artifacts}">
+        <j:set var="dep" value="${lib.dependency}"/>
+        <j:if test="${dep.getProperty('fatjar')=='laf'}">
+          <jar jarfile ="${dist}/toolbox-lookandfeel.jar"
+               compress="${toolbox.fatjar.compress}"
+               casesensitive="true"
+               update="true"
+               verbose="true">
+             <!-- exclude META-INF stuff from signed jars, etc -->
+             <zipfileset src="${lib.file}" excludes="**/META-INF/*"/>
+          </jar>
+        </j:if>
+      </j:forEach>
+
+      <!-- Copy skinlf themepacks -->      
+      <jar jarfile ="${dist}/toolbox-lookandfeel.jar"
+           compress="${toolbox.fatjar.compress}"
+           casesensitive="true"
+           update="true">
+           <fileset dir="${basedir}/resources" includes="skinlf/*"/>
+      </jar>
+      
+    </goal>
+  
     <!-- =================================================================== -->
     <!-- FATJAR:XSLFO                                                        -->
     <!-- =================================================================== -->
