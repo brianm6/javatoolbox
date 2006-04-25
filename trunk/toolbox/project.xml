@@ -26,10 +26,10 @@
   <gumpRepositoryId>toolbox</gumpRepositoryId>
   <description>Java Toolbox</description>
   <shortDescription>Toolbox that contains various apps and utilities to make java development easier.</shortDescription>
-  <url>http://hemisfear.cjb.net:8080/</url>
-  <issueTrackingUrl>http://hemisfear.cjb.net:8080/</issueTrackingUrl>
-  <siteAddress>hemisfear.cjb.net</siteAddress>
-  <siteDirectory>/www/hemisfear.cjb.net/</siteDirectory>
+  <url>http://hemisfear.dyndns.org:8080/</url>
+  <issueTrackingUrl>http://hemisfear.dyndns.org:8080/</issueTrackingUrl>
+  <siteAddress>hemisfear.dyndns.org</siteAddress>
+  <siteDirectory>/www/hemisfear.dyndns.org/</siteDirectory>
   <distributionDirectory>/www/jakarta.apache.org/builds/toolbox/</distributionDirectory>
 
   <!-- ===================================================================== -->
@@ -663,6 +663,16 @@
     </dependency>
 
     <dependency>
+      <id>lipstiklf</id>
+      <version></version>
+      <url></url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>laf</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
       <id>liquidlf</id>
       <version></version>
       <url>http://liquidlnf.sf.net</url>
@@ -1003,7 +1013,7 @@
         <exclude>**/DecompilerTest.java</exclude>
         <exclude>**/FigletTaskTest.java</exclude>
         <exclude>**/RepositoryTest.java</exclude>
-        <exclude>**/ServiceViewTest.java</exclude>
+        <exclude>**/ServiceView*Test.java</exclude>
         <exclude>**/SwingUtilTest.java</exclude>
       </excludes>
       
