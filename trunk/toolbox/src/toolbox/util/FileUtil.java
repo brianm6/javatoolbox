@@ -24,7 +24,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.collections.AsMap;
 
 /**
- * File Utility Class.
+ * File Utility Class that has stuff not in commons-io FileUtils.
  * 
  * @see org.apache.commons.io.FileUtils
  */
@@ -398,6 +398,7 @@ public final class FileUtil
      */
     public static String getExtension(File f)
     {
+        // TODO: Remove and replace with calls to commons-lang FinenameUtils
         return FilenameUtils.getExtension(f.getName());
     }
     
@@ -425,6 +426,8 @@ public final class FileUtil
      */    
     public static List find(String startingDir, FilenameFilter filter)
     {
+        // TODO: Write unit test
+        
         File f = new File(startingDir);
         List basket = new ArrayList(20);
     
@@ -436,16 +439,22 @@ public final class FileUtil
             // Process files in the current dir and throw them is the basket
             String[] files = f.list(filter);
             
-            for (int i = 0; i < files.length; i++) 
-                basket.add(startingDir + files[i]);
+            if (files != null)  // null if user doesn't have permissions -- unix 
+            {  
+                for (int i = 0; i < files.length; i++) 
+                    basket.add(startingDir + files[i]);
+            }
             
             // Process immediate child directories
             String[] dirs  = f.list(DirectoryFileFilter.INSTANCE);
-                        
-            for (int i = 0; i < dirs.length; i++)
-            {
-                List subBasket = find(startingDir + dirs[i], filter);
-                basket.addAll(subBasket);
+            
+            if (dirs != null) // null if user doesn't have permissions -- unix 
+            {  
+                for (int i = 0; i < dirs.length; i++)
+                {
+                    List subBasket = find(startingDir + dirs[i], filter);
+                    basket.addAll(subBasket);
+                }
             }
         }
         
