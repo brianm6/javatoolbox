@@ -116,11 +116,18 @@ public class FileFinder implements Finder {
             if (tmp.isDirectory()) {
                 notifyDirectoryStarted(tmp);
                 List sublist = find(tmp, filter, depthFirst);
-                int subsz = sublist.size();
-                for (int j = 0; j < subsz; j++) {
-                    retlist.add(sublist.get(j));
+                
+                // FIXED: Sublist can be null because permission denied
+                if (sublist == null) {
+                    notifyDirectoryFinished(tmp, new File[0]);
                 }
-                notifyDirectoryFinished(tmp, (File[]) sublist.toArray(new File[0]));
+                else {
+                    int subsz = sublist.size();
+                    for (int j = 0; j < subsz; j++) {
+                        retlist.add(sublist.get(j));
+                    }
+                    notifyDirectoryFinished(tmp, (File[]) sublist.toArray(new File[0]));
+                }
             }
             if(depthFirst && filter.accept(tmp)) {
                 retlist.add(tmp);
