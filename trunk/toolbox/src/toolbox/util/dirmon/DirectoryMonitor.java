@@ -10,6 +10,8 @@ import java.util.Map;
 
 import org.apache.commons.collections.buffer.BoundedFifoBuffer;
 import org.apache.commons.io.find.FileFinder;
+import org.apache.commons.io.find.FindEvent;
+import org.apache.commons.io.find.FindListener;
 import org.apache.commons.io.find.Finder;
 import org.apache.log4j.Logger;
 
@@ -659,9 +661,30 @@ public class DirectoryMonitor
             if (recurse_) {
                 // Find all subdirs of the starting dir
                 FileFinder finder = new FileFinder();
+                
                 Map findOptions = new HashMap();
+                
+                // only scan for non hidden directories
                 findOptions.put(Finder.TYPE, "d");
+                findOptions.put(Finder.HIDDEN, "false");
+                
                 logger_.debug("Finding all subdirs of " + baseDir + "...");
+                
+                finder.addFindListener(new FindListener() {
+                    
+                    public void directoryFinished(FindEvent findEvent) {
+                    }
+                    
+                    public void directoryStarted(FindEvent findEvent) {
+                        String dir = findEvent.getDirectory().getAbsolutePath();
+                        if (dir != null)
+                            Thread.currentThread().setName(dir);
+                    }
+                    
+                    public void fileFound(FindEvent findEvent) {
+                    }
+                });
+                    
                 File[] subdirectories = finder.find(baseDir, findOptions);
                 logger_.debug("Found " + subdirectories.length + " subdirs total!");
                 logger_.debug(ArrayUtil.toString(subdirectories, true));
