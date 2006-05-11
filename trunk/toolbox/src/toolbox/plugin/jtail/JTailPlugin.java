@@ -40,7 +40,7 @@ public class JTailPlugin extends AbstractPlugin
     // Initializable Interface
     //--------------------------------------------------------------------------
 
-    /**
+    /*
      * @see toolbox.util.service.Initializable#initialize(java.util.Map)
      */
     public void initialize(Map params)
@@ -58,7 +58,7 @@ public class JTailPlugin extends AbstractPlugin
     // IPlugin Interface
     //--------------------------------------------------------------------------
 
-    /**
+    /*
      * @see toolbox.workspace.IPlugin#getPluginName()
      */
     public String getPluginName()
@@ -67,7 +67,7 @@ public class JTailPlugin extends AbstractPlugin
     }
 
     
-    /**
+    /*
      * @see toolbox.workspace.IPlugin#getView()
      */
     public JComponent getView()
@@ -76,7 +76,7 @@ public class JTailPlugin extends AbstractPlugin
     }
 
     
-    /**
+    /*
      * @see toolbox.workspace.IPlugin#getDescription()
      */
     public String getDescription()
@@ -88,7 +88,7 @@ public class JTailPlugin extends AbstractPlugin
     // Destroyable Interface
     //--------------------------------------------------------------------------
     
-    /**
+    /*
      * @see toolbox.util.service.Destroyable#destroy()
      */
     public void destroy()
@@ -99,7 +99,7 @@ public class JTailPlugin extends AbstractPlugin
     // IPreferenced Interface
     //--------------------------------------------------------------------------
     
-    /**
+    /*
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
     public void applyPrefs(Element prefs) throws PreferencedException
@@ -108,7 +108,7 @@ public class JTailPlugin extends AbstractPlugin
     }
     
     
-    /**
+    /*
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
     public void savePrefs(Element prefs) throws PreferencedException

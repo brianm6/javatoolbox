@@ -171,7 +171,7 @@ public class JUnitPlugin extends AbstractPlugin
     // Initializable Interface
     //--------------------------------------------------------------------------
     
-    /**
+    /*
      * @see toolbox.util.service.Initializable#initialize(java.util.Map)
      */
     public void initialize(Map params)
@@ -183,7 +183,7 @@ public class JUnitPlugin extends AbstractPlugin
     // IPlugin Interface
     //--------------------------------------------------------------------------
     
-    /**
+    /*
      * @see toolbox.workspace.IPlugin#getPluginName()
      */
     public String getPluginName()
@@ -213,7 +213,7 @@ public class JUnitPlugin extends AbstractPlugin
     // IPreferenced Interface
     //--------------------------------------------------------------------------
     
-    /**
+    /*
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
     public void applyPrefs(Element prefs) throws PreferencedException
@@ -226,7 +226,7 @@ public class JUnitPlugin extends AbstractPlugin
     }
 
     
-    /**
+    /*
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
     public void savePrefs(Element prefs) throws PreferencedException
@@ -240,7 +240,7 @@ public class JUnitPlugin extends AbstractPlugin
     // Destroyable Interface
     //--------------------------------------------------------------------------
     
-    /**
+    /*
      * @see toolbox.util.service.Destroyable#destroy()
      */
     public void destroy()
@@ -269,9 +269,8 @@ public class JUnitPlugin extends AbstractPlugin
         }
 
         
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
+        /*
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent e)
         {
@@ -311,9 +310,8 @@ public class JUnitPlugin extends AbstractPlugin
         }
         
         
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
+        /*
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent e)
         { 
@@ -343,7 +341,7 @@ public class JUnitPlugin extends AbstractPlugin
          */
         private String oldValue_ = "";
         
-        /**
+        /*
          * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
          */
         public void keyReleased(KeyEvent e)

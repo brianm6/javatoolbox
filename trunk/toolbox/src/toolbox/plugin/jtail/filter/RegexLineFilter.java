@@ -80,8 +80,7 @@ public class RegexLineFilter extends AbstractLineFilter
     /**
      * Filters a line based on a regular expression.
      * 
-     * @see toolbox.plugin.jtail.filter.ILineFilter#filter(
-     *      java.lang.StringBuffer)
+     * @see toolbox.plugin.jtail.filter.ILineFilter#filter(java.lang.StringBuffer)
      */
     public boolean filter(StringBuffer line)
     {
@@ -91,7 +90,7 @@ public class RegexLineFilter extends AbstractLineFilter
             return true;
     }
     
-    /**
+    /*
      * @see toolbox.plugin.jtail.filter.ILineFilter#filter(java.lang.StringBuffer, java.util.List)
      */
     public boolean filter(StringBuffer line, List segments)

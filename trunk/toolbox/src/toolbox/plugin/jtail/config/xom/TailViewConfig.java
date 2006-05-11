@@ -127,7 +127,7 @@ public class TailViewConfig implements ITailViewConfig, XMLConstants,
     //  IPreferenced Interface
     //--------------------------------------------------------------------------
 
-    /**
+    /*
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
     public void applyPrefs(Element prefs) throws PreferencedException
@@ -174,7 +174,7 @@ public class TailViewConfig implements ITailViewConfig, XMLConstants,
     }
  
 
-    /**
+    /*
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
     public void savePrefs(Element prefs) throws PreferencedException
@@ -218,7 +218,7 @@ public class TailViewConfig implements ITailViewConfig, XMLConstants,
     // Overrides java.lang.Object 
     //--------------------------------------------------------------------------
     
-    /**
+    /*
      * @see java.lang.Object#toString()
      */
     public String toString()
@@ -241,7 +241,7 @@ public class TailViewConfig implements ITailViewConfig, XMLConstants,
     //  ITailViewConfig Interface
     //--------------------------------------------------------------------------
 
-    /**
+    /*
      * @see toolbox.plugin.jtail.config.ITailViewConfig#isAutoTail()
      */
     public boolean isAutoTail()
@@ -250,7 +250,7 @@ public class TailViewConfig implements ITailViewConfig, XMLConstants,
     }
 
     
-    /**
+    /*
      * @see toolbox.plugin.jtail.config.ITailViewConfig#getFilenames()
      */
     public String[] getFilenames()
@@ -259,7 +259,7 @@ public class TailViewConfig implements ITailViewConfig, XMLConstants,
     }
 
     
-    /**
+    /*
      * @see toolbox.plugin.jtail.config.ITailViewConfig#isShowLineNumbers()
      */
     public boolean isShowLineNumbers()
@@ -268,7 +268,7 @@ public class TailViewConfig implements ITailViewConfig, XMLConstants,
     }
  
     
-    /**
+    /*
      * @see toolbox.plugin.jtail.config.ITailViewConfig#setAutoTail(boolean)
      */
     public void setAutoTail(boolean autoTail)
@@ -277,9 +277,8 @@ public class TailViewConfig implements ITailViewConfig, XMLConstants,
     }
 
     
-    /**
-     * @see toolbox.plugin.jtail.config.ITailViewConfig#setFilenames(
-     *      java.lang.String[])
+    /*
+     * @see toolbox.plugin.jtail.config.ITailViewConfig#setFilenames(java.lang.String[])
      */
     public void setFilenames(String[] filenames)
     {
@@ -287,7 +286,7 @@ public class TailViewConfig implements ITailViewConfig, XMLConstants,
     }
 
     
-    /**
+    /*
      * @see toolbox.plugin.jtail.config.ITailViewConfig#setShowLineNumbers(boolean)
      */
     public void setShowLineNumbers(boolean showLineNumbers)
@@ -296,7 +295,7 @@ public class TailViewConfig implements ITailViewConfig, XMLConstants,
     }
 
     
-    /**
+    /*
      * @see toolbox.plugin.jtail.config.ITailViewConfig#getFont()
      */
     public Font getFont()
@@ -305,7 +304,7 @@ public class TailViewConfig implements ITailViewConfig, XMLConstants,
     }
 
     
-    /**
+    /*
      * @see toolbox.plugin.jtail.config.ITailViewConfig#setFont(java.awt.Font)
      */
     public void setFont(Font font)
@@ -314,7 +313,7 @@ public class TailViewConfig implements ITailViewConfig, XMLConstants,
     }
  
     
-    /**
+    /*
      * @see toolbox.plugin.jtail.config.ITailViewConfig#getRegularExpression()
      */
     public String getRegularExpression()
@@ -323,9 +322,8 @@ public class TailViewConfig implements ITailViewConfig, XMLConstants,
     }
 
     
-    /**
-     * @see toolbox.plugin.jtail.config.ITailViewConfig#setRegularExpression(
-     *      java.lang.String)
+    /*
+     * @see toolbox.plugin.jtail.config.ITailViewConfig#setRegularExpression(java.lang.String)
      */
     public void setRegularExpression(String filter)
     {
@@ -333,7 +331,7 @@ public class TailViewConfig implements ITailViewConfig, XMLConstants,
     }
 
     
-    /**
+    /*
      * @see toolbox.plugin.jtail.config.ITailViewConfig#getCutExpression()
      */
     public String getCutExpression()
@@ -342,9 +340,8 @@ public class TailViewConfig implements ITailViewConfig, XMLConstants,
     }
 
     
-    /**
-     * @see toolbox.plugin.jtail.config.ITailViewConfig#setCutExpression(
-     *      java.lang.String)
+    /*
+     * @see toolbox.plugin.jtail.config.ITailViewConfig#setCutExpression(java.lang.String)
      */
     public void setCutExpression(String cutExpression)
     {
@@ -352,7 +349,7 @@ public class TailViewConfig implements ITailViewConfig, XMLConstants,
     }
 
     
-    /**
+    /*
      * @see toolbox.plugin.jtail.config.ITailViewConfig#isAntiAliased()
      */
     public boolean isAntiAliased()
@@ -361,7 +358,7 @@ public class TailViewConfig implements ITailViewConfig, XMLConstants,
     }
 
     
-    /**
+    /*
      * @see toolbox.plugin.jtail.config.ITailViewConfig#setAntiAliased(boolean)
      */
     public void setAntiAliased(boolean b)
@@ -370,7 +367,7 @@ public class TailViewConfig implements ITailViewConfig, XMLConstants,
     }
  
     
-    /**
+    /*
      * @see toolbox.plugin.jtail.config.ITailViewConfig#isAutoStart()
      */
     public boolean isAutoStart()
@@ -379,7 +376,7 @@ public class TailViewConfig implements ITailViewConfig, XMLConstants,
     }
 
     
-    /**
+    /*
      * @see toolbox.plugin.jtail.config.ITailViewConfig#setAutoStart(boolean)
      */
     public void setAutoStart(boolean autoStart)

@@ -62,8 +62,7 @@ public class LineNumberDecorator extends AbstractLineFilter
     /**
      * Adds a line number to the beginning of a string.
      * 
-     * @see toolbox.plugin.jtail.filter.ILineFilter#filter(
-     *      java.lang.StringBuffer)
+     * @see toolbox.plugin.jtail.filter.ILineFilter#filter(java.lang.StringBuffer)
      */
     public boolean filter(StringBuffer line)
     {
@@ -74,9 +73,8 @@ public class LineNumberDecorator extends AbstractLineFilter
     }
     
     
-    /**
-     * @see toolbox.plugin.jtail.filter.ILineFilter#filter(
-     *      java.lang.StringBuffer, java.util.List)
+    /*
+     * @see toolbox.plugin.jtail.filter.ILineFilter#filter(java.lang.StringBuffer, java.util.List)
      */
     public boolean filter(StringBuffer line, List segments)
     {

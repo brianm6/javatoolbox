@@ -34,9 +34,6 @@ public class JTailConfig implements IJTailConfig, XMLConstants, IPreferenced
     //  Constructors
     //--------------------------------------------------------------------------
     
-    /**
-     * Creates a JTailConfig.
-     */
     public JTailConfig()
     {
         defaultConfig_ = new TailViewConfig();
@@ -47,9 +44,8 @@ public class JTailConfig implements IJTailConfig, XMLConstants, IPreferenced
     //  IJTailConfig Interface
     //--------------------------------------------------------------------------
 
-    /**
-     * @see toolbox.plugin.jtail.config.IJTailConfig#setDefaultConfig(
-     *      toolbox.plugin.jtail.config.ITailViewConfig)
+    /*
+     * @see toolbox.plugin.jtail.config.IJTailConfig#setDefaultConfig(toolbox.plugin.jtail.config.ITailViewConfig)
      */
     public void setDefaultConfig(ITailViewConfig defaultConfig)
     {
@@ -57,7 +53,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants, IPreferenced
     }
 
     
-    /**
+    /*
      * @see toolbox.plugin.jtail.config.IJTailConfig#getDefaultConfig()
      */
     public ITailViewConfig getDefaultConfig()
@@ -66,7 +62,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants, IPreferenced
     }
 
     
-    /**
+    /*
      * @see toolbox.plugin.jtail.config.IJTailConfig#getTailConfigs()
      */
     public ITailViewConfig[] getTailConfigs()
@@ -75,9 +71,8 @@ public class JTailConfig implements IJTailConfig, XMLConstants, IPreferenced
     }
 
     
-    /**
-     * @see toolbox.plugin.jtail.config.IJTailConfig#setTailConfigs(
-     *      toolbox.plugin.jtail.config.ITailViewConfig[])
+    /*
+     * @see toolbox.plugin.jtail.config.IJTailConfig#setTailConfigs(toolbox.plugin.jtail.config.ITailViewConfig[])
      */
     public void setTailConfigs(ITailViewConfig[] tailViewConfigs)
     {
@@ -88,7 +83,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants, IPreferenced
     // IPreferenced Interface
     //--------------------------------------------------------------------------
     
-    /**
+    /*
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
     public void applyPrefs(Element prefs) throws PreferencedException
@@ -122,7 +117,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants, IPreferenced
     }
     
     
-    /**
+    /*
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
     public void savePrefs(Element prefs) throws PreferencedException

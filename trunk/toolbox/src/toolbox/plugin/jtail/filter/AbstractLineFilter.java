@@ -43,7 +43,7 @@ public abstract class AbstractLineFilter implements ILineFilter
     // Enableable Interface
     //--------------------------------------------------------------------------
     
-    /**
+    /*
      * @see toolbox.util.service.Enableable#isEnabled()
      */
     public boolean isEnabled()
@@ -52,7 +52,7 @@ public abstract class AbstractLineFilter implements ILineFilter
     }
 
 
-    /**
+    /*
      * @see toolbox.util.service.Enableable#setEnabled(boolean)
      */
     public void setEnabled(boolean b)

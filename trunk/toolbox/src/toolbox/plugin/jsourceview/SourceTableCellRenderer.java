@@ -48,16 +48,8 @@ public class SourceTableCellRenderer extends SmartTableCellRenderer
     // Overrides javax.swing.table.DefaultTableCellRenderer
     //--------------------------------------------------------------------------
     
-    /**
-     * Returns the default table cell renderer.
-     *
-     * @param table JTable.
-     * @param value Value to assign to the cell at [row, column].
-     * @param isSelected True if the cell is selected.
-     * @param hasFocus True if cell has focus.
-     * @param row Row of the cell to render.
-     * @param column Column of the cell to render.
-     * @return Default table cell renderer.
+    /*
+     * @see javax.swing.table.TableCellRenderer#getTableCellRendererComponent(javax.swing.JTable, java.lang.Object, boolean, boolean, int, int)
      */
     public Component getTableCellRendererComponent(
         JTable table,

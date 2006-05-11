@@ -54,8 +54,7 @@ public class CutLineFilter extends AbstractLineFilter
     /**
      * Filters a line by cutting out a column range.
      *  
-     * @see toolbox.plugin.jtail.filter.ILineFilter#filter(
-     *      java.lang.StringBuffer)
+     * @see toolbox.plugin.jtail.filter.ILineFilter#filter(java.lang.StringBuffer)
      */
     public boolean filter(StringBuffer line)
     {
@@ -81,9 +80,8 @@ public class CutLineFilter extends AbstractLineFilter
         return true;
     }
     
-    /**
-     * @see toolbox.plugin.jtail.filter.ILineFilter#filter(
-     *      java.lang.StringBuffer, java.util.List)
+    /*
+     * @see toolbox.plugin.jtail.filter.ILineFilter#filter(java.lang.StringBuffer, java.util.List)
      */
     public boolean filter(StringBuffer line, List segments)
     {
@@ -143,7 +141,7 @@ public class CutLineFilter extends AbstractLineFilter
     // Overrides java.lang.Object
     //--------------------------------------------------------------------------
     
-    /**
+    /*
      * @see java.lang.Object#toString()
      */
     public String toString()

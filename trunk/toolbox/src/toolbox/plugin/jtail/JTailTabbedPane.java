@@ -44,9 +44,8 @@ public class JTailTabbedPane extends JSmartTabbedPane
     // TailViewListener Interface
     //--------------------------------------------------------------------------
 
-    /**
-     * @see toolbox.plugin.jtail.TailViewListener#newDataAvailable(
-     *      toolbox.plugin.jtail.TailPane)
+    /*
+     * @see toolbox.plugin.jtail.TailViewListener#newDataAvailable(toolbox.plugin.jtail.TailPane)
      */
     public void newDataAvailable(TailPane tailPane)
     {
@@ -57,9 +56,8 @@ public class JTailTabbedPane extends JSmartTabbedPane
     }
 
 
-    /**
-     * @see toolbox.plugin.jtail.TailViewListener#tailAggregated(
-     *      toolbox.plugin.jtail.TailPane)
+    /*
+     * @see toolbox.plugin.jtail.TailViewListener#tailAggregated(toolbox.plugin.jtail.TailPane)
      */
     public void tailAggregated(TailPane tailPane)
     {
