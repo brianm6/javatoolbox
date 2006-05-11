@@ -141,9 +141,8 @@ public class ServerView extends JHeaderPanel
     // ServiceListener Interface
     //--------------------------------------------------------------------------
 
-    /**
-     * @see toolbox.util.service.ServiceListener#serviceStateChanged(
-     *      toolbox.util.service.Service)
+    /*
+     * @see toolbox.util.service.ServiceListener#serviceStateChanged(toolbox.util.service.Service)
      */
     public void serviceStateChanged(Service service) throws ServiceException
     {
@@ -154,9 +153,8 @@ public class ServerView extends JHeaderPanel
     // SocketServerListener Interface
     //--------------------------------------------------------------------------
     
-    /**
-     * @see toolbox.util.net.ISocketServerListener#connectionHandled(
-     *      toolbox.util.net.IConnectionHandler)
+    /*
+     * @see toolbox.util.net.ISocketServerListener#connectionHandled(toolbox.util.net.IConnectionHandler)
      */
     public void connectionHandled(IConnectionHandler connectionHandler)
     {
@@ -177,27 +175,24 @@ public class ServerView extends JHeaderPanel
     }
 
 
-    /**
-     * @see toolbox.util.net.ISocketServerListener#serverStarted(
-     *      toolbox.util.net.SocketServer)
+    /*
+     * @see toolbox.util.net.ISocketServerListener#serverStarted(toolbox.util.net.SocketServer)
      */
     public void serverStarted(SocketServer server)
     {
     }
 
 
-    /**
-     * @see toolbox.util.net.ISocketServerListener#serverStopped(
-     *      toolbox.util.net.SocketServer)
+    /* 
+     * @see toolbox.util.net.ISocketServerListener#serverStopped(toolbox.util.net.SocketServer)
      */
     public void serverStopped(SocketServer server)
     {
     }
 
 
-    /**
-     * @see toolbox.util.net.ISocketServerListener#socketAccepted(
-     *      java.net.Socket, toolbox.util.net.IConnection)
+    /* 
+     * @see toolbox.util.net.ISocketServerListener#socketAccepted(java.net.Socket, toolbox.util.net.IConnection)
      */
     public void socketAccepted(Socket socket, IConnection connection)
     {
@@ -207,9 +202,8 @@ public class ServerView extends JHeaderPanel
     // ThroughputListener
     //--------------------------------------------------------------------------
     
-    /**
-     * @see toolbox.util.io.throughput.ThroughputListener#currentThroughput(
-     *      toolbox.util.io.throughput.ThroughputEvent)
+    /*
+     * @see toolbox.util.io.throughput.ThroughputListener#currentThroughput(toolbox.util.io.throughput.ThroughputEvent)
      */
     public void currentThroughput(ThroughputEvent event)
     {

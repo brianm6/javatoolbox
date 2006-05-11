@@ -111,9 +111,8 @@ public class ServerFactoryView extends JHeaderPanel
         }
 
         
-        /**
-         * @see toolbox.util.ui.SmartAction#runAction(
-         *      java.awt.event.ActionEvent)
+        /*
+         * @see toolbox.util.ui.SmartAction#runAction(java.awt.event.ActionEvent)
          */
         public void runAction(ActionEvent e) throws Exception
         {

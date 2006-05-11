@@ -60,9 +60,8 @@ public class ServerConnectionHandler implements IConnectionHandler
     // IConnectionHandler Interface 
     //--------------------------------------------------------------------------
         
-    /**
-     * @see toolbox.util.net.IConnectionHandler#handle(
-     *      toolbox.util.net.IConnection)
+    /*
+     * @see toolbox.util.net.IConnectionHandler#handle(toolbox.util.net.IConnection)
      */
     public Object handle(IConnection conn)
     {

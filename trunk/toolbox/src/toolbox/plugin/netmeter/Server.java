@@ -152,7 +152,7 @@ public class Server implements Startable, Initializable, ObservableService
     // Initializable Interface
     //--------------------------------------------------------------------------
 
-    /**
+    /*
      * @see toolbox.util.service.Initializable#initialize(java.util.Map)
      */
     public void initialize(Map configuration) throws ServiceException
@@ -183,7 +183,7 @@ public class Server implements Startable, Initializable, ObservableService
     // Startable Interface
     //--------------------------------------------------------------------------
     
-    /**
+    /*
      * @see toolbox.util.service.Startable#start()
      */
     public void start() throws ServiceException
@@ -203,7 +203,7 @@ public class Server implements Startable, Initializable, ObservableService
     }
 
 
-    /**
+    /*
      * @see toolbox.util.service.Startable#stop()
      */
     public void stop() throws ServiceException
@@ -223,7 +223,7 @@ public class Server implements Startable, Initializable, ObservableService
     }
 
 
-    /**
+    /*
      * @see toolbox.util.service.Startable#isRunning()
      */
     public boolean isRunning()
@@ -235,7 +235,7 @@ public class Server implements Startable, Initializable, ObservableService
     // Service Interface
     //--------------------------------------------------------------------------
     
-    /**
+    /*
      * @see toolbox.util.service.Service#getState()
      */
     public ServiceState getState()
@@ -247,9 +247,8 @@ public class Server implements Startable, Initializable, ObservableService
     // ObservableService Interface
     //--------------------------------------------------------------------------
     
-    /**
-     * @see toolbox.util.service.ObservableService#addServiceListener(
-     *      toolbox.util.service.ServiceListener)
+    /*
+     * @see toolbox.util.service.ObservableService#addServiceListener(toolbox.util.service.ServiceListener)
      */
     public void addServiceListener(ServiceListener listener)
     {
@@ -257,9 +256,8 @@ public class Server implements Startable, Initializable, ObservableService
     }
 
 
-    /**
-     * @see toolbox.util.service.ObservableService#removeServiceListener(
-     *      toolbox.util.service.ServiceListener)
+    /*
+     * @see toolbox.util.service.ObservableService#removeServiceListener(toolbox.util.service.ServiceListener)
      */
     public void removeServiceListener(ServiceListener listener)
     {
@@ -282,7 +280,7 @@ public class Server implements Startable, Initializable, ObservableService
         }
         
         
-        /**
+        /*
          * @see toolbox.util.net.SocketServer#getConnectionHandler()
          */
         public IConnectionHandler getConnectionHandler()
@@ -305,35 +303,32 @@ public class Server implements Startable, Initializable, ObservableService
      */
     class ServerListener implements ISocketServerListener
     {
-        /**
-         * @see toolbox.util.net.ISocketServerListener#socketAccepted(
-         *      java.net.Socket, toolbox.util.net.IConnection)
+        /*
+         * @see toolbox.util.net.ISocketServerListener#socketAccepted(java.net.Socket, toolbox.util.net.IConnection)
          */
         public void socketAccepted(Socket socket, IConnection connection)
         {
         }
 
 
-        /**
-         * @see toolbox.util.net.ISocketServerListener#serverStarted(
-         *      toolbox.util.net.SocketServer)
+        /*
+         * @see toolbox.util.net.ISocketServerListener#serverStarted(toolbox.util.net.SocketServer)
          */
         public void serverStarted(SocketServer server)
         {
         }
 
 
-        /**
-         * @see toolbox.util.net.ISocketServerListener#connectionHandled(
-         *      toolbox.util.net.IConnectionHandler)
+        /*
+         * @see toolbox.util.net.ISocketServerListener#connectionHandled(toolbox.util.net.IConnectionHandler)
          */
         public void connectionHandled(IConnectionHandler connectionHandler)
         {
         }
         
-        /**
-         * @see toolbox.util.net.ISocketServerListener#serverStopped(
-         *      toolbox.util.net.SocketServer)
+        
+        /*
+         * @see toolbox.util.net.ISocketServerListener#serverStopped(toolbox.util.net.SocketServer)
          */
         public void serverStopped(SocketServer server)
         {

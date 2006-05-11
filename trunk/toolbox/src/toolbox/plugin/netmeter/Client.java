@@ -250,7 +250,7 @@ public class Client implements Initializable, Startable, Destroyable,
     // Service Interface
     //--------------------------------------------------------------------------
     
-    /**
+    /*
      * @see toolbox.util.service.Service#getState()
      */
     public ServiceState getState()
@@ -262,7 +262,7 @@ public class Client implements Initializable, Startable, Destroyable,
     // Initializable Interface 
     //--------------------------------------------------------------------------
     
-    /**
+    /*
      * @see toolbox.util.service.Initializable#initialize(java.util.Map)
      */
     public void initialize(Map configuration) throws ServiceException
@@ -275,7 +275,7 @@ public class Client implements Initializable, Startable, Destroyable,
     // Startable Interface
     //--------------------------------------------------------------------------
     
-    /**
+    /*
      * @see toolbox.util.service.Startable#start()
      */
     public void start() throws ServiceException
@@ -337,7 +337,7 @@ public class Client implements Initializable, Startable, Destroyable,
     }
 
 
-    /**
+    /*
      * @see toolbox.util.service.Startable#stop()
      */
     public void stop() throws ServiceException
@@ -349,7 +349,7 @@ public class Client implements Initializable, Startable, Destroyable,
     }
 
     
-    /**
+    /*
      * @see toolbox.util.service.Startable#isRunning()
      */
     public boolean isRunning()
@@ -361,7 +361,7 @@ public class Client implements Initializable, Startable, Destroyable,
     // Destroyable Interface
     //--------------------------------------------------------------------------
     
-    /**
+    /*
      * @see toolbox.util.service.Destroyable#destroy()
      */
     public void destroy() throws ServiceException
@@ -381,9 +381,8 @@ public class Client implements Initializable, Startable, Destroyable,
     // ObservableService Interface
     //--------------------------------------------------------------------------
     
-    /**
-     * @see toolbox.util.service.ObservableService#addServiceListener(
-     *      toolbox.util.service.ServiceListener)
+    /*
+     * @see toolbox.util.service.ObservableService#addServiceListener(toolbox.util.service.ServiceListener)
      */
     public void addServiceListener(ServiceListener listener)
     {
@@ -391,9 +390,8 @@ public class Client implements Initializable, Startable, Destroyable,
     }
 
 
-    /**
-     * @see toolbox.util.service.ObservableService#removeServiceListener(
-     *      toolbox.util.service.ServiceListener)
+    /*
+     * @see toolbox.util.service.ObservableService#removeServiceListener(toolbox.util.service.ServiceListener)
      */
     public void removeServiceListener(ServiceListener listener)
     {
@@ -412,9 +410,8 @@ public class Client implements Initializable, Startable, Destroyable,
     {
         NumberFormat nf = NumberFormat.getIntegerInstance();
         
-        /**
-         * @see toolbox.util.io.throughput.ThroughputListener#currentThroughput(
-         *      toolbox.util.io.throughput.ThroughputEvent)
+        /*
+         * @see toolbox.util.io.throughput.ThroughputListener#currentThroughput(toolbox.util.io.throughput.ThroughputEvent)
          */
         public void currentThroughput(ThroughputEvent event)
         {

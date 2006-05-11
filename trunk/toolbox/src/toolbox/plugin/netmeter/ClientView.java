@@ -190,9 +190,8 @@ public class ClientView extends JHeaderPanel
     // ThroughputListener Interface
     //--------------------------------------------------------------------------
     
-    /**
-     * @see toolbox.util.io.throughput.ThroughputListener#currentThroughput(
-     *      toolbox.util.io.throughput.ThroughputEvent)
+    /*
+     * @see toolbox.util.io.throughput.ThroughputListener#currentThroughput(toolbox.util.io.throughput.ThroughputEvent)
      */
     public void currentThroughput(ThroughputEvent event)
     {
@@ -203,9 +202,8 @@ public class ClientView extends JHeaderPanel
     // ServiceListener Interface
     //--------------------------------------------------------------------------
 
-    /**
-     * @see toolbox.util.service.ServiceListener#serviceStateChanged(
-     *      toolbox.util.service.Service)
+    /*
+     * @see toolbox.util.service.ServiceListener#serviceStateChanged(toolbox.util.service.Service)
      */
     public void serviceStateChanged(Service service) throws ServiceException
     {

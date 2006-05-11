@@ -42,9 +42,8 @@ public class DefaultStatcvsEngine implements StatcvsEngine
     // StatcvsEngine Interface
     //--------------------------------------------------------------------------
 
-    /**
-     * @see toolbox.plugin.statcvs.StatcvsEngine#setPlugin(
-     *		toolbox.plugin.statcvs.StatcvsPlugin)
+    /*
+     * @see toolbox.plugin.statcvs.StatcvsEngine#setPlugin(toolbox.plugin.statcvs.StatcvsPlugin)
      */
     public void setPlugin(StatcvsPlugin plugin)
     {
@@ -52,7 +51,7 @@ public class DefaultStatcvsEngine implements StatcvsEngine
     }
 
 
-    /**
+    /*
      * @see toolbox.plugin.statcvs.StatcvsEngine#getLaunchURL()
      */
     public String getLaunchURL()
@@ -67,7 +66,7 @@ public class DefaultStatcvsEngine implements StatcvsEngine
     }
 
 
-    /**
+    /*
      * @see toolbox.plugin.statcvs.StatcvsEngine#generateStats()
      */
     public void generateStats() throws Exception

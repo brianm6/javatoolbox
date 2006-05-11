@@ -573,7 +573,7 @@ public class StatcvsPlugin extends AbstractPlugin
     // Initializable Interface
     //--------------------------------------------------------------------------
     
-    /**
+    /*
      * @see toolbox.util.service.Initializable#initialize(java.util.Map)
      */
     public void initialize(Map params) throws ServiceException
@@ -599,7 +599,7 @@ public class StatcvsPlugin extends AbstractPlugin
     // IPlugin Interface
     //--------------------------------------------------------------------------
 
-    /**
+    /*
      * @see toolbox.workspace.IPlugin#getPluginName()
      */
     public String getPluginName()
@@ -608,7 +608,7 @@ public class StatcvsPlugin extends AbstractPlugin
     }
 
 
-    /**
+    /*
      * @see toolbox.workspace.IPlugin#getView()
      */
     public JComponent getView()
@@ -617,7 +617,7 @@ public class StatcvsPlugin extends AbstractPlugin
     }
 
 
-    /**
+    /*
      * @see toolbox.workspace.IPlugin#getDescription()
      */
     public String getDescription()
@@ -629,7 +629,7 @@ public class StatcvsPlugin extends AbstractPlugin
     // Destroyable Interface
     //--------------------------------------------------------------------------
     
-    /**
+    /*
      * @see toolbox.util.service.Destroyable#destroy()
      */
     public void destroy() throws ServiceException
@@ -641,7 +641,7 @@ public class StatcvsPlugin extends AbstractPlugin
     // IPreferenced Interface
     //--------------------------------------------------------------------------
 
-    /**
+    /*
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
     public void applyPrefs(Element prefs) throws PreferencedException
@@ -722,7 +722,7 @@ public class StatcvsPlugin extends AbstractPlugin
     }
 
 
-    /**
+    /*
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
     public void savePrefs(Element prefs) throws PreferencedException
@@ -856,9 +856,8 @@ public class StatcvsPlugin extends AbstractPlugin
         }
 
 
-        /**
-         * @see toolbox.util.ui.SmartAction#runAction(
-         *      java.awt.event.ActionEvent)
+        /*
+         * @see toolbox.util.ui.SmartAction#runAction(java.awt.event.ActionEvent)
          */
         public void runAction(ActionEvent e) throws Exception
         {
@@ -927,9 +926,8 @@ public class StatcvsPlugin extends AbstractPlugin
         }
 
 
-        /**
-         * @see toolbox.util.ui.SmartAction#runAction(
-         *      java.awt.event.ActionEvent)
+        /*
+         * @see toolbox.util.ui.SmartAction#runAction(java.awt.event.ActionEvent)
          */
         public void runAction(ActionEvent e) throws Exception
         {
@@ -986,9 +984,8 @@ public class StatcvsPlugin extends AbstractPlugin
         }
 
 
-        /**
-         * @see toolbox.util.ui.SmartAction#runAction(
-         *      java.awt.event.ActionEvent)
+        /* 
+         * @see toolbox.util.ui.SmartAction#runAction(java.awt.event.ActionEvent)
          */
         public void runAction(ActionEvent e) throws Exception
         {
@@ -1046,9 +1043,8 @@ public class StatcvsPlugin extends AbstractPlugin
         }
 
 
-        /**
-         * @see toolbox.util.ui.SmartAction#runAction(
-         *      java.awt.event.ActionEvent)
+        /*
+         * @see toolbox.util.ui.SmartAction#runAction(java.awt.event.ActionEvent)
          */
         public void runAction(ActionEvent e) throws Exception
         {
@@ -1080,9 +1076,8 @@ public class StatcvsPlugin extends AbstractPlugin
         }
 
 
-        /**
-         * @see toolbox.util.ui.SmartAction#runAction(
-         *      java.awt.event.ActionEvent)
+        /*
+         * @see toolbox.util.ui.SmartAction#runAction(java.awt.event.ActionEvent)
          */
         public void runAction(ActionEvent e) throws Exception
         {
@@ -1100,9 +1095,8 @@ public class StatcvsPlugin extends AbstractPlugin
      */
     class ProjectChangedAction extends AbstractAction
     {
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
+        /*
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent e)
         {
@@ -1154,7 +1148,7 @@ public class StatcvsPlugin extends AbstractPlugin
         }
 
 
-        /**
+        /*
          * @see toolbox.util.ui.SmartAction#runAction(java.awt.event.ActionEvent)
          */
         public void runAction(ActionEvent e) throws Exception
@@ -1232,9 +1226,8 @@ public class StatcvsPlugin extends AbstractPlugin
         }
 
 
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
+        /*
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent e)
         {

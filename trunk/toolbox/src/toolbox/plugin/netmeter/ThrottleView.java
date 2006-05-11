@@ -106,9 +106,8 @@ public class ThrottleView extends JPanel
      */
     class MyChangeListener implements ChangeListener
     {
-        /**
-         * @see javax.swing.event.ChangeListener#stateChanged(
-         *      javax.swing.event.ChangeEvent)
+        /*
+         * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
          */
         public void stateChanged(ChangeEvent e)
         {
