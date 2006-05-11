@@ -15,6 +15,9 @@ import toolbox.util.service.Cancelable;
  */
 public class SourceScanner implements Runnable, Cancelable
 {
+    // TODO: Change findJavaFiles() to use FileFinder with notifications 
+    //       instead of fishing out source files in custom code.
+    
     //--------------------------------------------------------------------------
     // Fields 
     //--------------------------------------------------------------------------
@@ -105,6 +108,8 @@ public class SourceScanner implements Runnable, Cancelable
     
     /** 
      * Cancels the scanning activity.
+     * 
+     * @see toolbox.util.service.Cancelable#cancel()
      */
     public void cancel()
     {
@@ -112,7 +117,7 @@ public class SourceScanner implements Runnable, Cancelable
     }
     
     
-    /**
+    /*
      * @see toolbox.util.service.Cancelable#isCanceled()
      */
     public boolean isCanceled()
@@ -126,6 +131,8 @@ public class SourceScanner implements Runnable, Cancelable
             
     /**
      * Starts the scanning activity on a separate thread.
+     * 
+     * @see java.lang.Runnable#run()
      */
     public void run()
     {
