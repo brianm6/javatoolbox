@@ -29,7 +29,7 @@ public class ControllerView extends JPanel {
     // -------------------------------------------------------------------------
     
     /**
-     * This class really decorates a {@link ServiceView}.
+     * This class really decorates a {@link ServiceView} by composition.
      */
     private ServiceView serviceView_;
     

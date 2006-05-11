@@ -22,6 +22,8 @@ import toolbox.util.ui.JSmartTextArea;
 /**
  * Raw console for directory monitor generated events. Just a text area with
  * the events converted into strings with no formatting.
+ * 
+ * @see toolbox.dirmon.DirMon
  */
 public class ConsoleView extends JPanel implements IDirectoryMonitorListener {
     
@@ -41,8 +43,8 @@ public class ConsoleView extends JPanel implements IDirectoryMonitorListener {
      * Map of start times for each directory scan. Used to sync up with the 
      * end time to determine the elapsed time for each scan.
      * <ul>
-     *   <li>key = DirectoryMonitor
-     *   <li>value = Date representing start time of scan
+     *   <li>key = {@link DirectoryMonitor}
+     *   <li>value = {@link Date} representing start time of scan
      * </ul>
      * @see #statusChanged(StatusEvent)
      */
@@ -52,8 +54,8 @@ public class ConsoleView extends JPanel implements IDirectoryMonitorListener {
      * Map of the start times for each 'discovery scan'. Used to sync up the
      * start and end times for a directory scan.
      * <ul>
-     *   <li>key = DirectoryMonitor
-     *   <li>value = Date represeting start time of scan
+     *   <li>key = {@link DirectoryMonitor}
+     *   <li>value = {@link Date} represeting start time of discovery scan
      * </ul>
      * @see #statusChanged(StatusEvent)
      */

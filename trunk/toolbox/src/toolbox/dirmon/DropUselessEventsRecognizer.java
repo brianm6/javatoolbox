@@ -24,6 +24,9 @@ public class DropUselessEventsRecognizer
     // Fields
     // -------------------------------------------------------------------------
     
+    /**
+     * Recognizer being decorated by this recognizer.
+     */
     private IFileActivityRecognizer delegate;
     
     // -------------------------------------------------------------------------

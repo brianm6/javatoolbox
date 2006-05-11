@@ -18,6 +18,15 @@ import toolbox.util.ui.ImageCache;
  */
 class DesktopNotifier implements IDirectoryMonitorListener {
 
+    // -------------------------------------------------------------------------
+    // Constants
+    // -------------------------------------------------------------------------
+    
+    /**
+     * Default number of milliseconds to display the toaster notification.
+     */
+    private static final int DISPLAY_TOASTER_MILLIS = 5000;
+    
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
@@ -33,7 +42,7 @@ class DesktopNotifier implements IDirectoryMonitorListener {
     
     DesktopNotifier() {
         toaster_ = new Toaster();
-        toaster_.setDisplayTime(5000);
+        toaster_.setDisplayTime(DISPLAY_TOASTER_MILLIS);
         toaster_.setToasterMessageFont(FontUtil.getPreferredSerifFont());
     }
     
