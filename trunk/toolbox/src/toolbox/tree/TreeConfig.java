@@ -8,7 +8,7 @@ import toolbox.util.file.FileComparator;
 
 /**
  * Javabean that contains all the configuration options supported by 
- * {@link toolbox.tree.Tree3}.
+ * {@link toolbox.tree.Tree}.
  */
 public class TreeConfig {
 
