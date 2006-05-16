@@ -30,13 +30,6 @@ public class IP2HostnameReader extends LineNumberReader {
         + "[:digit:]{1,3})"; // 1-3 digits
 
     // -------------------------------------------------------------------------
-    // Static Fields
-    // -------------------------------------------------------------------------
-    
-    /** Caches hostname lookups so DNS is not flooded w/ requests. */
-    //private static Map hostnameCache = new HashMap();
-
-    // -------------------------------------------------------------------------
     // Fields
     // -------------------------------------------------------------------------
 
@@ -103,41 +96,4 @@ public class IP2HostnameReader extends LineNumberReader {
         
         return line;
     }
-    
-    // -------------------------------------------------------------------------
-    // Private
-    // -------------------------------------------------------------------------
-    
-//    private String resolveHostname(String ip) {
-//        String hostname = null;
-//        
-//        try {
-//            logger.debug("Resolving hostname: '" + ip + "'");
-//            InetAddress[] ips = InetAddress.getAllByName(ip);
-//            
-//            switch (ips.length) {
-//                case 0: hostname = ip; break;
-//                default: hostname = ips[0].getCanonicalHostName();
-//                //default: hostname = ips[0].getHostName();
-//            }
-//        }
-//        catch (UnknownHostException uhe) {
-//            hostname = ip;
-//        }
-//        
-//        return hostname;
-//    }
-//
-//    private String getCachedHostname(String ip) {
-//        
-//        String hostname = (String) hostnameCache.get(ip);
-//        
-//        if (hostname == null) {
-//            hostname = resolveHostname(ip);
-//            hostnameCache.put(ip, hostname);
-//            logger.debug("Host cache size = " + hostnameCache.size());
-//        }
-//        
-//        return hostname;
-//    }
 }
