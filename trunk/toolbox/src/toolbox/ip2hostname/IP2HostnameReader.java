@@ -3,10 +3,6 @@ package toolbox.ip2hostname;
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.Reader;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -38,24 +34,36 @@ public class IP2HostnameReader extends LineNumberReader {
     // -------------------------------------------------------------------------
     
     /** Caches hostname lookups so DNS is not flooded w/ requests. */
-    private static Map hostnameCache = new HashMap();
+    //private static Map hostnameCache = new HashMap();
 
     // -------------------------------------------------------------------------
     // Fields
     // -------------------------------------------------------------------------
 
-    /** Regular expression that matches an IP address of the form 127.0.0.1. */
-    private RE ipAddressMatcher;             
+    /** 
+     * Regular expression that matches an IP address of the form 127.0.0.1. 
+     */
+    private RE matcher;             
+   
+    /**
+     * Responsible for resolving an IP address to a hostname. 
+     */
+    private HostnameResolver resolver;
     
     // --------------------------------------------------------------------------
     // Constructors
     // --------------------------------------------------------------------------
 
     public IP2HostnameReader(Reader in) {
-        super(in);
-        ipAddressMatcher = new RE(REGEXP_IP_ADDRESS);
+        this(in, new HostnameResolver(true, true));
     }
 
+    public IP2HostnameReader(Reader in, HostnameResolver resolver) {
+        super(in);
+        this.resolver = resolver;
+        this.matcher = new RE(REGEXP_IP_ADDRESS);
+    }
+    
     // --------------------------------------------------------------------------
     // Overrides java.io.LineNumberReader
     // --------------------------------------------------------------------------
@@ -75,11 +83,12 @@ public class IP2HostnameReader extends LineNumberReader {
             boolean match = false;
             int index = 0;
             
-            while (match = ipAddressMatcher.match(line, index)) {
-                String ipAddress = ipAddressMatcher.getParen(0);
-                String hostname = getCachedHostname(ipAddress);
-                int ipStart = ipAddressMatcher.getParenStart(0);
-                int ipEnd   = ipAddressMatcher.getParenEnd(0);
+            while (match = matcher.match(line, index)) {
+                String ipAddress = matcher.getParen(0);
+                //String hostname = getCachedHostname(ipAddress);
+                String hostname = resolver.resolve(ipAddress);
+                int ipStart = matcher.getParenStart(0);
+                int ipEnd   = matcher.getParenEnd(0);
                 
                 // only replace if resolved to something other than IP
                 if (!ipAddress.equals(hostname)) {
@@ -99,36 +108,36 @@ public class IP2HostnameReader extends LineNumberReader {
     // Private
     // -------------------------------------------------------------------------
     
-    private String resolveHostname(String ip) {
-        String hostname = null;
-        
-        try {
-            logger.debug("Resolving hostname: '" + ip + "'");
-            InetAddress[] ips = InetAddress.getAllByName(ip);
-            
-            switch (ips.length) {
-                case 0: hostname = ip; break;
-                default: hostname = ips[0].getCanonicalHostName();
-                //default: hostname = ips[0].getHostName();
-            }
-        }
-        catch (UnknownHostException uhe) {
-            hostname = ip;
-        }
-        
-        return hostname;
-    }
-
-    private String getCachedHostname(String ip) {
-        
-        String hostname = (String) hostnameCache.get(ip);
-        
-        if (hostname == null) {
-            hostname = resolveHostname(ip);
-            hostnameCache.put(ip, hostname);
-            logger.debug("Host cache size = " + hostnameCache.size());
-        }
-        
-        return hostname;
-    }
+//    private String resolveHostname(String ip) {
+//        String hostname = null;
+//        
+//        try {
+//            logger.debug("Resolving hostname: '" + ip + "'");
+//            InetAddress[] ips = InetAddress.getAllByName(ip);
+//            
+//            switch (ips.length) {
+//                case 0: hostname = ip; break;
+//                default: hostname = ips[0].getCanonicalHostName();
+//                //default: hostname = ips[0].getHostName();
+//            }
+//        }
+//        catch (UnknownHostException uhe) {
+//            hostname = ip;
+//        }
+//        
+//        return hostname;
+//    }
+//
+//    private String getCachedHostname(String ip) {
+//        
+//        String hostname = (String) hostnameCache.get(ip);
+//        
+//        if (hostname == null) {
+//            hostname = resolveHostname(ip);
+//            hostnameCache.put(ip, hostname);
+//            logger.debug("Host cache size = " + hostnameCache.size());
+//        }
+//        
+//        return hostname;
+//    }
 }
