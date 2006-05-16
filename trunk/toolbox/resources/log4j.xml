@@ -16,9 +16,16 @@
   </appender>
 
   <!--
-
-             value="%d{RELATIVE} %-5p  %15.15c{1}.%-20.20M|%x %m%n"/>
-             
+  <appender name="toolbox.log" class="org.apache.log4j.FileAppender">
+    <param name="File" value="toolbox.log"/>
+    <param name="Append" value="false"/>
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="%d [%t] %p - %m%n"/>
+    </layout>
+  </appender>
+  --> 
+  
+  <!--
   <appender name ="sockethub" class="org.apache.log4j.net.SocketHubAppender">
     <param name="Port" value="9999"/>
     <param name="LocationInfo" value="true"/>
@@ -38,7 +45,8 @@
   <root>
     <level value="ERROR"/>
     <appender-ref ref="console"/>
-    <!--appender-ref ref="sockethub"/-->
+    <!-- appender-ref ref="toolbox.log"/ -->
+    <!-- appender-ref ref="sockethub"/ -->
   </root>   
    
    <!-- Toplevel logger for Toolbox -->
