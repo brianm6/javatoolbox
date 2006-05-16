@@ -1,10 +1,13 @@
 package toolbox.launcher;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 import toolbox.util.ArrayUtil;
+import toolbox.util.ResourceUtil;
 
 /**
  * Entrypoint referenced by MANIFEST.MF in toolbox.jar which provides convenient
@@ -140,7 +143,21 @@ public class Main {
      */
     protected void printUsage()
     {
+        Properties p = new Properties();
+        
+        StringBuffer sb = new StringBuffer();
+        
+        try {
+            p.load(ResourceUtil.getResource("version.properties"));
+            sb.append("Version " + p.getProperty("toolbox.version"));
+            //sb.append(" Build " + p.getProperty("toolbox.build.number"));
+            sb.append(" Date " + p.getProperty("toolbox.build.date"));
+        }
+        catch(IOException ioe) {
+        }
+        
         System.out.println(
+            "Toolbox " + sb.toString() + "\n" +        		
             "Usage: java -jar toolbox.jar [program] [args]          \n" +
             "                                                       \n" +
             "       where program is:                               \n" +
