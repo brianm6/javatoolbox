@@ -113,7 +113,9 @@
         <!-- =================================================================== -->
         
         <release version="3.0.3" date="May 2006">
-            <action type="Update    >Tree - Moved all options to TreeConfig</action>
+            <action type="update">Tree - Moved all options to TreeConfig</action>
+            <action type="update">IP2Hostname - Added option to cache hostnames and make DNS lookups asynchronous</action>
+            <action type="update">Launcher - Added version name to usage prinout</action>
         </release>
 
         <!-- =================================================================== -->
@@ -121,14 +123,14 @@
         <!-- =================================================================== -->
         
         <release version="3.0.3" date="April 2006">
-            <action type="update"   >DirMon - If launcher fails because another process is using the file, then copies fiel to tmp dir and tries to launch again</action>
-            <action type="update"   >DirMon - Added shortened version of directory monitor name to the toaster popup message</action>
-            <action type="update"   >DirMon - Properties file sent in on the command line can now specify a friendly name for the directory to montior which shows up in the tab names and toaster popups</action>
-            <action type="update"   >DirMon - Added header button to the event table to clear the events</action>
-            <action type="update"   >DirMon - Table header for the events table now contains the absolute path of the root directory being monitored</action>
-            <action type="update"   >Util - Updated DirectoryMonitor to property support a distinction between the root directory being monitored and a friendly name for the directory monitor</action>
-            <action type="update"   >DirMon - Buttons added to event table view to launch a copy of the file and view the file in a text editor</action>
-            <action type="add"      >Lib - Added Lipstik Look and Feel</action>
+            <action type="update">DirMon - If launcher fails because another process is using the file, then copies fiel to tmp dir and tries to launch again</action>
+            <action type="update">DirMon - Added shortened version of directory monitor name to the toaster popup message</action>
+            <action type="update">DirMon - Properties file sent in on the command line can now specify a friendly name for the directory to montior which shows up in the tab names and toaster popups</action>
+            <action type="update">DirMon - Added header button to the event table to clear the events</action>
+            <action type="update">DirMon - Table header for the events table now contains the absolute path of the root directory being monitored</action>
+            <action type="update">Util - Updated DirectoryMonitor to property support a distinction between the root directory being monitored and a friendly name for the directory monitor</action>
+            <action type="update">DirMon - Buttons added to event table view to launch a copy of the file and view the file in a text editor</action>
+            <action type="add"   >Lib - Added Lipstik Look and Feel</action>
         </release>
 
         <!-- =================================================================== -->
@@ -136,18 +138,18 @@
         <!-- =================================================================== -->
         
         <release version="3.0.2" date="March 2006">
-            <action type="update"   >Workspace - Updated logging menu window to use fixed width font</action>
-            <action type="update"   >UI - Fixed AutoCompleter to not autocomplete if the attached text component does not have a peer or is not visible</action>
-            <action type="update"   >Util - Removed duplicate behavior from toolbox.util.FileUtil and replaced with calls to commons-io FileUtils</action>
-            <action type="update"   >Lib - Upgraded JarJar to jarjar-0.7</action>
-            <action type="update"   >Tivo - Created service wrapper for the Tivo Transcoder application in /apps/TivoTranscoder</action>
-            <action type="update"   >Lib - Upgraded Apache Jakarta Commons IO to commons-io-1.2</action>
-            <action type="add"      >IP2Hostname - Added pipe based console app to transform IP addresses to hostnames in a stream to toolbox.ip2hostname.IP2Hostname</action>
-            <action type="add"      >Util - Added toolbox.util.AppLauncher to launch data files from a java app</action>
-            <action type="update"   >DirMon - Fixed run, history, and diff launchers to handle special chars in filenames and access denied errors</action>
-            <action type="update"   >Util - Added StringUtils.containsIgnoreCase()</action>
-            <action type="update"   >Lib - Upgraded Apache Jakarta Commons Lang to commons-lang-2.1</action>
-            <action type="update"   >DirMon - Now filters out useless events related to temp files and directory modifications</action>
+            <action type="update">Workspace - Updated logging menu window to use fixed width font</action>
+            <action type="update">UI - Fixed AutoCompleter to not autocomplete if the attached text component does not have a peer or is not visible</action>
+            <action type="update">Util - Removed duplicate behavior from toolbox.util.FileUtil and replaced with calls to commons-io FileUtils</action>
+            <action type="update">Lib - Upgraded JarJar to jarjar-0.7</action>
+            <action type="update">Tivo - Created service wrapper for the Tivo Transcoder application in /apps/TivoTranscoder</action>
+            <action type="update">Lib - Upgraded Apache Jakarta Commons IO to commons-io-1.2</action>
+            <action type="add"   >IP2Hostname - Added pipe based console app to transform IP addresses to hostnames in a stream to toolbox.ip2hostname.IP2Hostname</action>
+            <action type="add"   >Util - Added toolbox.util.AppLauncher to launch data files from a java app</action>
+            <action type="update">DirMon - Fixed run, history, and diff launchers to handle special chars in filenames and access denied errors</action>
+            <action type="update">Util - Added StringUtils.containsIgnoreCase()</action>
+            <action type="update">Lib - Upgraded Apache Jakarta Commons Lang to commons-lang-2.1</action>
+            <action type="update">DirMon - Now filters out useless events related to temp files and directory modifications</action>
             
         </release>
 
@@ -156,9 +158,9 @@
         <!-- =================================================================== -->
         
         <release version="2.0.18" date="Feb 2006">
-            <action type="update"   >DirectoryMonitor - File system errors (losing network share) no longer kills the directory scanner</action>
-            <action type="update"   >DirectoryMonitor - Selected file can now be launched from the event table in Windows</action>
-            <action type="update"   >DirectoryMonitor - Added support for passing in a filename on the command line that contains a list of directories to monitor</action>
+            <action type="update">DirectoryMonitor - File system errors (losing network share) no longer kills the directory scanner</action>
+            <action type="update">DirectoryMonitor - Selected file can now be launched from the event table in Windows</action>
+            <action type="update">DirectoryMonitor - Added support for passing in a filename on the command line that contains a list of directories to monitor</action>
         </release>
     
         <!-- =================================================================== -->
@@ -166,11 +168,11 @@
         <!-- =================================================================== -->
         
         <release version="2.0.17" date="Jan 2006">
-            <action type="update"   >Util - Added isDestroyed() method to Destroyable interface</action>
-            <action type="update"   >TivoConverter - Now displays the speed at which the transcoding occurred</action>
-            <action type="update"   >TivoConverter - Added detection for zero byte output file. Now gets caught as a failure</action>
-            <action type="update"   >DirectoryMonitor - Added support for command line parameters which monitor the passed in directories</action>
-            <action type="update"   >Util - ElapsedTimeTest.getTotalMillis() - Fixed improper conversions for seconds, minutes, hours, and days</action>
+            <action type="update">Util - Added isDestroyed() method to Destroyable interface</action>
+            <action type="update">TivoConverter - Now displays the speed at which the transcoding occurred</action>
+            <action type="update">TivoConverter - Added detection for zero byte output file. Now gets caught as a failure</action>
+            <action type="update">DirectoryMonitor - Added support for command line parameters which monitor the passed in directories</action>
+            <action type="update">Util - ElapsedTimeTest.getTotalMillis() - Fixed improper conversions for seconds, minutes, hours, and days</action>
         </release>
 
         <!-- =================================================================== -->
@@ -178,8 +180,8 @@
         <!-- =================================================================== -->
         
         <release version="2.0.16" date="Dec 2005">
-            <action type="update"   >DirMon - Cleartool diff and hisotry can be launched directly from the GUI</action>
-            <action type="add"      >Tivo - Added app to transcode movies to tivo format using FFMpeg</action>
+            <action type="update">DirMon - Cleartool diff and hisotry can be launched directly from the GUI</action>
+            <action type="add"   >Tivo - Added app to transcode movies to tivo format using FFMpeg</action>
         </release>
 
         <!-- =================================================================== -->
@@ -213,7 +215,7 @@
         <!-- =================================================================== -->
 
         <release version="2.0.13" date="March 2005">
-            <action type="update"   >QueryPlugin - Added preference for sql decorators to the query output</action>
+            <action type="update">QueryPlugin - Added preference for sql decorators to the query output</action>
         </release>
 
         <!-- =================================================================== -->
