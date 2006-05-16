@@ -175,8 +175,7 @@ public abstract class Console
                 String command = getNextCommand();
                 handleCommand(command);
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 System.err.println(ex);
                 ex.printStackTrace();    
             }

@@ -23,7 +23,10 @@ public class IP2Hostname {
     }
     
     public void start(InputStream is, OutputStream os) {
-        IP2HostnameReader reader = new IP2HostnameReader(new InputStreamReader(is));
+        
+        IP2HostnameReader reader = new IP2HostnameReader(
+            new InputStreamReader(is));
+        
         PrintWriter writer = new PrintWriter(os);
         String line = null;
         

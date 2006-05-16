@@ -30,7 +30,7 @@ public interface ConsoleIfc {
      * 
      * @param text
      */
-    public void send(String text);
+    void send(String text);
     
     
     /**
