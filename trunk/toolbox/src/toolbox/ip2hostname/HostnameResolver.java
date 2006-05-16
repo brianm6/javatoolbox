@@ -129,6 +129,16 @@ public class HostnameResolver {
     // Public
     //--------------------------------------------------------------------------
     
+    /**
+     * Resolves the given IP to a hostname based. If caching is turned on and 
+     * the hostname is found in the cache, then that hostname is returned. If
+     * async is turned on then the IP is returned for the hostname immediately
+     * and a DNS lookup is queued up of which the result is placed in the 
+     * cache.
+     * 
+     * @param ip IP address to resolve to a hostname.
+     * @return String
+     */
     public String resolve(String ip) {
         
         String hostname = null;
@@ -157,6 +167,13 @@ public class HostnameResolver {
         return hostname;
     }
 
+    /**
+     * Clears the hostname cache.
+     */
+    public void clear() {
+    	cache.clear();
+    }
+    
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
@@ -169,11 +186,20 @@ public class HostnameResolver {
             InetAddress[] ips = InetAddress.getAllByName(ip);
             
             switch (ips.length) {
-                case 0: hostname = ip; break;
-                default: hostname = ips[0].getCanonicalHostName();
+            
+                case 0: 
+                	hostname = ip;
+                	logger.debug("InetAddress.getAllByName(" + ip + ") returned ZERO names");
+                	break;
+                	
+                default: 
+                	hostname = ips[0].getCanonicalHostName();
+                	logger.debug("Total names returned for " + ip + ":" + ips.length);
+                	logger.debug(ip + " = " + hostname);
             }
         }
         catch (UnknownHostException uhe) {
+        	logger.debug("Unknown host: " + hostname);
             hostname = ip;
         }
         
