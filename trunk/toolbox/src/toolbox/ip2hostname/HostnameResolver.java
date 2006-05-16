@@ -8,6 +8,7 @@ import java.util.Map;
 import org.apache.commons.collections.Buffer;
 import org.apache.commons.collections.buffer.BlockingBuffer;
 import org.apache.commons.collections.buffer.UnboundedFifoBuffer;
+import org.apache.commons.lang.time.StopWatch;
 import org.apache.log4j.Logger;
 
 /**
@@ -149,8 +150,11 @@ public class HostnameResolver {
             if (hostname == null) {
                 if (async && Thread.currentThread() != asyncResolver) {
                     if (!queue.contains(ip.intern())) {
-                        logger.debug("Adding " + ip + " to queue: size =" + (queue.size() + 1));
+                        logger.debug("Adding " + ip + " to queue size =" + (queue.size() + 1) + " cache size = " + cache.size());
                         queue.add(ip);
+                    }
+                    else {
+                        //logger.debug("IP " + ip + " alrady in queue..skipping...");
                     }
                     hostname = ip;
                 }
@@ -181,26 +185,41 @@ public class HostnameResolver {
     private String resolveInternal(String ip) {
         String hostname = null;
         
-        try {
-            logger.debug("Resolving " + ip + " ...");
-            InetAddress[] ips = InetAddress.getAllByName(ip);
-            
-            switch (ips.length) {
-            
-                case 0: 
-                	hostname = ip;
-                	logger.debug("InetAddress.getAllByName(" + ip + ") returned ZERO names");
-                	break;
-                	
-                default: 
-                	hostname = ips[0].getCanonicalHostName();
-                	logger.debug("Total names returned for " + ip + ":" + ips.length);
-                	logger.debug(ip + " = " + hostname);
-            }
-        }
-        catch (UnknownHostException uhe) {
-        	logger.debug("Unknown host: " + hostname);
+        if (ip.length() == "1.1.1.1".length()) {
+            logger.debug("Skipping " + ip + "...");
             hostname = ip;
+        }
+        else { 
+
+            StopWatch timer = new StopWatch();
+            timer.start();
+            
+            try {
+                    
+                logger.debug("Resolving " + ip + " ...");
+                InetAddress[] ips = InetAddress.getAllByName(ip);
+                
+                switch (ips.length) {
+                
+                    case 0: 
+                    	hostname = ip;
+                    	logger.debug("InetAddress.getAllByName(" + ip + ") returned ZERO names");
+                    	break;
+                    	
+                    default: 
+                    	hostname = ips[0].getCanonicalHostName();
+                    	logger.debug("Total names returned for " + ip + ":" + ips.length);
+                    	logger.debug(ip + " = " + hostname);
+                }
+            }
+            catch (UnknownHostException uhe) {
+            	logger.debug("Unknown host: " + hostname);
+                hostname = ip;
+            }
+            finally {
+                timer.stop();
+                logger.debug("Resolve of " + hostname + " took: " + timer.toString());
+            }
         }
         
         return hostname;
