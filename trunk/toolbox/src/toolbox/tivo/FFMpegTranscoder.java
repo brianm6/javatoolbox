@@ -30,6 +30,17 @@ public class FFMpegTranscoder extends AbstractTranscoder {
         Logger.getLogger(FFMpegTranscoder.class);
 
     // -------------------------------------------------------------------------
+    // Constants
+    // -------------------------------------------------------------------------
+    
+    /**
+     * Make sure the bit rate passed to ffmpeg never goes about 8000. This
+     * happens when ffmpeg reads the bit rate from a movie incorrectly and ends
+     * up making ffmpeg blow up on the encoding.
+     */
+    private static final int MAX_VIDEO_BITRATE = 8000;
+
+    // -------------------------------------------------------------------------
     // Fields
     // -------------------------------------------------------------------------
     
@@ -54,7 +65,13 @@ public class FFMpegTranscoder extends AbstractTranscoder {
     // -------------------------------------------------------------------------
     // ITranscoder Interface
     // -------------------------------------------------------------------------
-    
+
+    /**
+     * TODO: Split into smaller methods:
+     *          buildCommandLine()
+     *          executeCommand()
+     *          verifyTranscoding()
+     */
     public void transcode(MovieInfo movieInfo, String destFilename)
         throws IOException, InterruptedException {
 
@@ -127,7 +144,10 @@ public class FFMpegTranscoder extends AbstractTranscoder {
         
         
         sb.append("-target ntsc-dvd ");
-        sb.append("-b " + (movieInfo.getBitrate().intValue() + 128) + " ");
+        
+        int videoBitRate = Math.min(MAX_VIDEO_BITRATE, movieInfo.getBitrate().intValue() + 128);
+        
+        sb.append("-b " + videoBitRate + " ");
         sb.append("-aspect 4:3 "); 
         sb.append("-s " + fixer.getWidth() + "x" + fixer.getHeight() + " ");
         
@@ -150,7 +170,6 @@ public class FFMpegTranscoder extends AbstractTranscoder {
         sb.append("-qmin 2 ");
         sb.append("-async 1 ");
         sb.append("-y ");
-        
 
         sb.append("\"" + destFilename + "\"");
 
