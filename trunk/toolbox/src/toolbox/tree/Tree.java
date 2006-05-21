@@ -10,17 +10,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Option;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.PosixParser;
 import org.apache.commons.io.filefilter.AndFileFilter;
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.io.filefilter.IOFileFilter;
@@ -30,13 +21,13 @@ import org.apache.commons.lang.StringUtils;
 import toolbox.util.ArrayUtil;
 import toolbox.util.DateTimeUtil;
 import toolbox.util.FileUtil;
+import toolbox.util.StringUtil;
 import toolbox.util.collections.AsMap;
-import toolbox.util.file.FileComparator;
 import toolbox.util.io.filter.RegexFileFilter;
 
 /**
- * Generates a graphical representation of a directory structure using ascii
- * characters. 
+ * Generates a tree like graphical representation of a directory structure using 
+ * ascii characters. 
  * <p>
  * The listing per directory can:
  * <ul>
@@ -87,6 +78,8 @@ import toolbox.util.io.filter.RegexFileFilter;
  *   +---META-INF
  * 
  * </pre>
+ * For filesystems that support symbolic links, links are traversed only once in
+ * the case of circular references.
  */
 public class Tree {
     
@@ -121,30 +114,6 @@ public class Tree {
         DecimalFormat.getIntegerInstance();
     
     //--------------------------------------------------------------------------
-    // Constants : Sort Options
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Do not sort the results.
-     */
-    public static final String SORT_NONE = "x";
-
-    /**
-     * Sort by file name. 
-     */
-    public static final String SORT_NAME = "n";
-
-    /**
-     * Sort by the file size.
-     */
-    public static final String SORT_SIZE = "s";
-    
-    /**
-     * Sort by the file timestamp.
-     */
-    public static final String SORT_DATE = "d";
-    
-    //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
 
@@ -172,164 +141,11 @@ public class Tree {
      */
     private List traversed;
     
-    //--------------------------------------------------------------------------
-    // Main
-    //--------------------------------------------------------------------------
-        
     /**
-     * Launcher for tree.
-     *
-     * @param args  [-f, -s -os, rootDir]
-     * @throws Exception on error.
+     * Decorator for the writer passed in from treeConfig.
      */
-    public static void main(String args[]) throws Exception {
-        // command line options and arguments
-        String rootDir = null;
-        TreeConfig config = new TreeConfig();
-        CommandLineParser parser = new PosixParser();
-        Options options = new Options();
-        
-        Option fileOption = new Option(
-            "f", 
-            "files", 
-            false, 
-            "Includes files in the output");
-            
-        Option sizeOption = new Option(
-            "s", 
-            "size", 
-            false, 
-            "Includes file sizes in the output");
-       
-        Option dateOption = new Option(
-            "d", 
-            "date/time", 
-            false, 
-            "Includes file date/time in the output");
-
-        Option absolutePathsOption = new Option(
-            "a",
-            "absolute",
-            false,
-            "Show absolute paths in output");
-        
-        Option sortOption = new Option(
-            "o", 
-            "sort", 
-            true, 
-            "Sort order");
-            
-        sortOption.setArgs(1);
-        sortOption.setArgName("sort by [n=name|s=size]");
-        
-        //sortOption.setOptionalArg(true);
-        //sortOption.setRequired(false);
-        //sortOption.setValueSeparator('=');
-        
-        Option regexOption = new Option(
-            "r", 
-            "regexp", 
-            true, 
-            "Only shows files matching a regular expression");
-        
-        regexOption.setArgs(1);
-        regexOption.setArgName("regular expression");
-        
-        Option helpOption = new Option(
-            "h", 
-            "help", 
-            false, 
-            "Prints usage");
-        
-        Option helpOption2 = new Option(
-            "?", 
-            "?", 
-            false, 
-            "Prints usage");
-        
-        options.addOption(helpOption2);
-        options.addOption(helpOption);
-        options.addOption(regexOption);
-        options.addOption(fileOption);
-        options.addOption(sizeOption);
-        options.addOption(dateOption);
-        options.addOption(absolutePathsOption);
-        options.addOption(sortOption);
-
-        CommandLine cmdLine = parser.parse(options, args, true);
+    private PrintWriter out;
     
-        for (Iterator i = cmdLine.iterator(); i.hasNext();) {
-            Option option = (Option) i.next();
-            String opt = option.getOpt();
-            
-            if (opt.equals(fileOption.getOpt())) {
-                config.setShowFiles(true);
-            }
-            else if (opt.equals(sizeOption.getOpt())) {
-                config.setShowFilesize(true);
-            }
-            else if (opt.equals(dateOption.getOpt())) {
-                config.setShowFileDate(true);
-            }
-            else if (opt.equals(absolutePathsOption.getOpt())) {
-                config.setShowPath(true);
-            }
-            else if (opt.equals(sortOption.getOpt())) {
-                Map sortByMap = new HashMap();
-                sortByMap.put(SORT_NONE, null);
-                sortByMap.put(SORT_NAME, FileComparator.COMPARE_NAME);
-                sortByMap.put(SORT_SIZE, FileComparator.COMPARE_SIZE);
-                sortByMap.put(SORT_DATE, FileComparator.COMPARE_DATE);
-                
-                String sortValue = sortOption.getValue();
-                
-                if (!sortByMap.containsKey(sortValue))
-                    throw new IllegalArgumentException(
-                        "Sort by option'" + sortValue + "' is invalid.");
-
-                config.setSortBy((FileComparator) sortByMap.get(sortValue));
-            }
-            else if (opt.equals(regexOption.getOpt())) {
-                config.setRegexFilter(regexOption.getValue());
-            }
-            else if (opt.equals(helpOption.getOpt())  ||
-                     opt.equals(helpOption2.getOpt())) {
-                printUsage(options);
-                return;
-            }
-            else {
-                throw new IllegalArgumentException("Option " + opt + " not understood.");
-            }
-        }
-        
-        // Root directory argument        
-        switch (cmdLine.getArgs().length) {
-            
-            case 0  : rootDir = System.getProperty("user.dir"); 
-                      break;
-            
-            case 1  : rootDir = cmdLine.getArgs()[0]; 
-                      break;
-            
-            default : System.err.println("ERROR: Invalid arguments " + 
-                          ArrayUtil.toString(cmdLine.getArgs()));
-                      printUsage(options); 
-                      return;
-        }
-        
-        // Create us a tree and let it ride..
-        try {
-            if (rootDir != null) {
-                Tree t = new Tree(new File(rootDir), config);
-                t.showTree();
-            }
-        }
-        catch (IllegalArgumentException e) {
-            System.err.println("ERROR: " + e.getMessage());
-            printUsage(options);
-        }
-    }
-
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -339,26 +155,21 @@ public class Tree {
     }
     
     /**
-     * Creates a tree with the given criteria.
+     * Creates a tree with the given configuration.
      * 
      * @param rootDir Root directory of the tree.
-     * @param showFiles Set to true if you want file info in the tree, false 
-     *        otherwise.
-     * @param showSize Set to true to print out the size of the file next to the
-     *        filename.
-     * @param showDate Set to true to print out the files timestamp.
-     * @param showAbolutePath Set to true to print out the files abs
-     * @param sortBy Set to any of SORT_[NAME|SIZE|NONE] to specify sort order.
-     * @param regex File filter expressed as a regular expression.
-     * @param writer Output destination.
+     * @param treeConfig Configuration options.
      * @throws IllegalArgumentException on invalid root dir.
      */
     public Tree(File rootDir, TreeConfig treeConfig) {
         
+        System.out.println(StringUtil.banner(treeConfig.toString()));
+        
     	this.traversed = new ArrayList();
         this.rootDir = rootDir;
         this.config = treeConfig;
-
+        this.out = new PrintWriter(config.getOutputWriter(), true);
+        
         // Make sure directory is legit        
         if (!this.rootDir.exists())
             throw new IllegalArgumentException(
@@ -411,24 +222,10 @@ public class Tree {
     }
     
     //--------------------------------------------------------------------------
-    // Protected
+    // Private
     //--------------------------------------------------------------------------
     
-    /**
-     * Prints program usage.
-     * 
-     * @param options Command line options.
-     */
-    protected static void printUsage(Options options) {
-        HelpFormatter hf = new HelpFormatter();
-        hf.printHelp(
-            "tree [options] <directory>",
-            "Shows directory structure in a tree hierarchy.",
-            options,
-            "");
-    }
-    
-    protected boolean hasTraversed(File dir) {
+    private boolean hasTraversed(File dir) {
     	String canonicalPath =  getCanonicalPath(dir);
     	if (canonicalPath != null && traversed.contains(canonicalPath))
     		return true;
@@ -449,15 +246,19 @@ public class Tree {
 		return canonicalPath;
 	}
     
+    private boolean reachedMaxLevel(String levelString) {
+        int currentLevel = levelString.length() / SPACER.length();
+        return currentLevel >= config.getMaxLevels();
+    }
+    
     /**
      * Recurses the directory structure of the given rootDir and generates a
      * hierarchical text representation.
      * 
-     * @param rootDir Root directory.
+     * @param dir Root directory.
      * @param level Current level of decorated indentation.
-     * @return boolean True.
      */
-    protected boolean showTree(File rootDir, String level) {
+    protected void showTree(File dir, String level) {
 //    	if (hasTraversed(rootDir)) {
 //    		writer_.println(level + SPACER + "[LINK] " + getCanonicalPath(rootDir));
 //    		return false;
@@ -465,29 +266,27 @@ public class Tree {
 //    	else {
 //    		
 //    	}
-    	
-        PrintWriter out = new PrintWriter(config.getOutputWriter(), true);
-        
+
         boolean atRoot = (level.length() == 0);
+        boolean reachedMaxLevel = reachedMaxLevel(level);
         
         if (atRoot)
-            out.println(rootDir.getAbsolutePath());
+            out.println(dir.getAbsolutePath());
             
         // Get list of directories in root
-        File[] dirs = rootDir.listFiles((FileFilter) DirectoryFileFilter.INSTANCE);
+        File[] dirs = dir.listFiles((FileFilter) DirectoryFileFilter.INSTANCE);
         
         // If there are permission problems, null is returned
         if (dirs == null) {
-        	//writer_.println(level + SPACER + "NULL list of files returned for dir " + rootDir);
-        	return false; 
+        	return; 
         }
         
         Arrays.sort(dirs, (Comparator) config.getSortBy());
-        String filler = (dirs.length == 0 ? SPACER : BAR);
+        String filler = (dirs.length == 0 || reachedMaxLevel ? SPACER : BAR);
         
         // Print files
         if (config.isShowFiles()) {
-            File[] files = rootDir.listFiles( (FileFilter) fileFilter);
+            File[] files = dir.listFiles( (FileFilter) fileFilter);
             Arrays.sort(files, (Comparator) config.getSortBy());
             
             int longestName = -1; // Number of spaces occupied by longest fname 
@@ -525,39 +324,31 @@ public class Tree {
                 out.println();
             }
             
-            
             // Print out the size of the directory
             if (dirSize > 0 && config.isShowFilesize()) {
                 String total = FILESIZE_FORMATTER.format(dirSize);
                 int tlen = total.length();
-                //String dashy = StringUtils.repeat("-", tlen);
                 int alotted = longestName + largestFile + 1;
-                //String header = StringUtils.repeat(" ", alotted - tlen); 
-                
-                //writer_.println(level + filler + header + dashy);
-                //writer_.println(level + filler + 
-                //          header.substring(1) + "." + total + ".");
-                
                 String s = files.length + " file(s) ";
-                
-                String gap =
-                    StringUtils.repeat(" ", alotted - s.length() - tlen);
-                
+                String gap = StringUtils.repeat(" ", alotted - s.length() - tlen);
                 out.println(level + filler + s + gap + total);
             }
             
             // Extra line after last file in a dir        
-            if (dirs.length > 0)
+            if (dirs.length > 0 && !reachedMaxLevel)
                 out.println(level + BAR);
         }
+
+        if (reachedMaxLevel)
+            return;
         
-        // Bow out if nothing todo
+        // No sub dirs == nothing to do
         if (ArrayUtil.isNullOrEmpty(dirs)) {
             if (atRoot)
                 out.println("No subfolders exist");
-            return false;
+            return;
         }
-
+        
         int len = dirs.length; 
 
         // Theres at least one child so go ahead and print a BAR
@@ -596,8 +387,6 @@ public class Tree {
                 }
             }
         }
-        
-        return true;
     }
         
     //--------------------------------------------------------------------------

@@ -309,34 +309,6 @@ public class TreeTest extends TestCase {
         printNativeFileTree(rootDir_);
     }
 
-    
-    /**
-     * Tests printing the help/usage information.
-     * 
-     * @throws Exception on error.
-     */
-    public void testPrintUsage() throws Exception {
-        logger_.info("Running testPrintUsage...");
-        
-        // Send in an invalid flag so usage information is shown
-        Tree.main(new String[] {"-xyz"});
-    }
-    
-    
-    /**
-     * Tests execution via main().
-     * 
-     * @throws Exception on error.
-     */
-    public void xxxtestMain() throws Exception {
-        // TODO: Fix me to use options when upgrading to cli2
-        
-        logger_.info("Running testMain...");
-        
-        Tree.main(new String[] {"-os", FileUtil.getTempDir().getAbsolutePath()});
-    }
-    
-
     public void testShowTree_Show_FileSizes() throws Exception {
         logger_.info("Running testShowTree_Show_FileSizes...");
         logger_.debug("Tree with file sizes: \n");
@@ -465,6 +437,22 @@ public class TreeTest extends TestCase {
         TreeConfig config = new TreeConfig();
         config.setShowFiles(true);
         config.setRegexFilter("2");
+        Tree tree = new Tree(rootDir_, config);
+        tree.showTree();
+        
+        printNativeFileTree(rootDir_);
+    }
+    
+    public void testShowTree_MaxLevels() throws Exception {
+        logger_.info("Running testShowTree_MaxLevels...");
+        logger_.debug("Tree w/ maxlevels = 2: \n");
+        
+        createFile(rootDir_);
+        createRandomTree(rootDir_);
+        
+        TreeConfig config = new TreeConfig();
+        config.setShowFiles(true);
+        config.setMaxLevels(2);
         Tree tree = new Tree(rootDir_, config);
         tree.showTree();
         

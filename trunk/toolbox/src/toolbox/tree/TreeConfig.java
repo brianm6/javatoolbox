@@ -52,6 +52,11 @@ public class TreeConfig {
      */
     public static final String DEFAULT_REGEX = null;
 
+    /**
+     * Default max number of levels to recurse is all.
+     */
+    public static final int DEFAULT_MAX_LEVELS = Integer.MAX_VALUE;
+    
     // -------------------------------------------------------------------------
     // Fields
     // -------------------------------------------------------------------------
@@ -91,6 +96,11 @@ public class TreeConfig {
      */
     private Writer outputWriter;
     
+    /**
+     * Maximum number of directory levels to recurse into.
+     */
+    private int maxLevels;
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -103,6 +113,7 @@ public class TreeConfig {
         setSortBy(DEFAULT_SORTBY);
         setRegexFilter(DEFAULT_REGEX);
         setOutputWriter(DEFAULT_OUTPUT_WRITER);
+        setMaxLevels(DEFAULT_MAX_LEVELS);
     }
     
     // -------------------------------------------------------------------------
@@ -163,6 +174,14 @@ public class TreeConfig {
     
     public void setOutputWriter(Writer outputWriter) {
         this.outputWriter = outputWriter;
+    }
+
+    public int getMaxLevels() {
+        return maxLevels;
+    }
+
+    public void setMaxLevels(int maxLevels) {
+        this.maxLevels = maxLevels;
     }
     
     //--------------------------------------------------------------------------
