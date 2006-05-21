@@ -47,7 +47,7 @@ public class Main {
         programMap_.put("tail",          "toolbox.tail.Main");
         programMap_.put("tcptunnel",     "toolbox.tunnel.TcpTunnel");
         programMap_.put("tivo",          "toolbox.tivo.TivoConverter");
-        programMap_.put("tree",          "toolbox.tree.Tree");
+        programMap_.put("tree",          "toolbox.tree.Main");
         programMap_.put("workspace",     "toolbox.workspace.PluginWorkspace");
         programMap_.put("laflauncher",   "toolbox.launcher.LAFLauncher");
         programMap_.put("ip2hostname",   "toolbox.ip2hostname.IP2Hostname");
