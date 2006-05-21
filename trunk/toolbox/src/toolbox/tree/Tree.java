@@ -21,7 +21,6 @@ import org.apache.commons.lang.StringUtils;
 import toolbox.util.ArrayUtil;
 import toolbox.util.DateTimeUtil;
 import toolbox.util.FileUtil;
-import toolbox.util.StringUtil;
 import toolbox.util.collections.AsMap;
 import toolbox.util.io.filter.RegexFileFilter;
 
@@ -163,7 +162,7 @@ public class Tree {
      */
     public Tree(File rootDir, TreeConfig treeConfig) {
         
-        System.out.println(StringUtil.banner(treeConfig.toString()));
+        //System.out.println(StringUtil.banner(treeConfig.toString()));
         
     	this.traversed = new ArrayList();
         this.rootDir = rootDir;
