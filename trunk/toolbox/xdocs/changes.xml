@@ -113,6 +113,7 @@
         <!-- =================================================================== -->
         
         <release version="3.0.3" date="May 2006">
+            <action type="update">Tree - Added flag to limit max number of directory levels to traverse</action>
             <action type="update">Tivo - Limited video encoding bitrate to 8000kb/s</action>
             <action type="update">Tree - Moved all options to TreeConfig</action>
             <action type="update">IP2Hostname - Added option to cache hostnames and make DNS lookups asynchronous</action>
