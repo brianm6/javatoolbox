@@ -61,11 +61,11 @@ public class FindClass implements Cancelable
         new SuffixFileFilter(".class"); 
     
     /** 
-     * Filter that identifies the various archives that can possible contain
-     * class files.
+     * File filter that identifies the the types of archive files that can 
+     * contain java class files.
      */
     private static final IOFileFilter FILEFILTER_ARCHIVES = 
-        new SuffixFileFilter(new String[]{".jar", ".zip", ".ear", ".war"});
+        new SuffixFileFilter(new String[]{".jar", ".zip", ".ear", ".war", ".rar"});
     
     //--------------------------------------------------------------------------
     // Fields
