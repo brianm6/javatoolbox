@@ -34,29 +34,40 @@ public class Main {
     /**
      * Sort by file name. 
      */
-    public static final String SORT_NAME = "n";
+    public static final String SORT_NAME = "name";
 
     /**
      * Sort by the file size.
      */
-    public static final String SORT_SIZE = "s";
+    public static final String SORT_SIZE = "size";
     
     /**
      * Sort by the file timestamp.
      */
-    public static final String SORT_DATE = "d";
+    public static final String SORT_DATE = "date";
     
     //--------------------------------------------------------------------------
     // Main
     //--------------------------------------------------------------------------
-        
+
     /**
      * Launcher for tree.
      *
      * @param args  [-f, -s -os, rootDir]
      * @throws Exception on error.
      */
-    public static void main(String args[]) throws Exception {
+    public static void main(String args[])  {
+        
+        try {
+            mainPropagateErrors(args);
+        } 
+        catch (Throwable t) {
+            System.err.println(t.getMessage());
+        }
+    }
+    
+    private static void mainPropagateErrors(String[] args) throws Exception {
+        
         // command line options and arguments
         String rootDir = null;
         TreeConfig config = new TreeConfig();
@@ -88,7 +99,7 @@ public class Main {
             "Controls how directory names are printed in the tree.");
         
         dirNameRendererOption.setArgs(1);
-        dirNameRendererOption.setArgName("n=name only | r=relative | a=absolute");
+        dirNameRendererOption.setArgName("name | relative | absolute");
         
         Option sortOption = new Option(
             "o", 
@@ -97,7 +108,7 @@ public class Main {
             "Sorts based on file attribute.");
             
         sortOption.setArgs(1);
-        sortOption.setArgName("n=name | s=size | d=date");
+        sortOption.setArgName("name | size | date");
         
         //sortOption.setOptionalArg(true);
         //sortOption.setRequired(false);
@@ -144,7 +155,15 @@ public class Main {
         options.addOption(dirNameRendererOption);
         options.addOption(sortOption);
 
-        CommandLine cmdLine = parser.parse(options, args, true);
+        CommandLine cmdLine = null;
+        
+        try {
+            cmdLine = parser.parse(options, args, true);
+        }
+        catch (Exception e) {
+            warnAndAbort(options, "ERROR: " + e.getMessage());
+        }
+            
     
         for (Iterator i = cmdLine.iterator(); i.hasNext();) {
             Option option = (Option) i.next();
@@ -163,11 +182,11 @@ public class Main {
                 String rendererValue = dirNameRendererOption.getValue();
                 TreeConfig.IDirNameRenderer renderer = config.getDirNameRenderer();
                 
-                if (rendererValue.equals("n"))
+                if (rendererValue.equals("name"))
                     renderer = TreeConfig.DIR_NAME_RENDERER_NAME_ONLY;
-                else if (rendererValue.equals("r"))
+                else if (rendererValue.equals("relative"))
                     renderer = TreeConfig.DIR_NAME_RENDERER_RELATIVE;
-                else if (rendererValue.equals("a"))
+                else if (rendererValue.equals("absolute"))
                     renderer = TreeConfig.DIR_NAME_RENDERER_ABSOLUTE;
                 else
                     warnAndAbort(options,
