@@ -1,5 +1,6 @@
 package toolbox.tree;
 
+import java.io.File;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 
@@ -12,6 +13,19 @@ import toolbox.util.file.FileComparator;
  */
 public class TreeConfig {
 
+    // -------------------------------------------------------------------------
+    // Constant DirNameRenderers
+    // -------------------------------------------------------------------------
+    
+    public static final IDirNameRenderer DIR_NAME_RENDERER_NAME_ONLY = 
+        new NameOnlyDirNameRenderer();
+    
+    public static final IDirNameRenderer DIR_NAME_RENDERER_ABSOLUTE =
+        new AbsoluteDirNameRenderer();
+    
+    public static final IDirNameRenderer DIR_NAME_RENDERER_RELATIVE =
+        new RelativeDirNameRenderer();
+    
     //--------------------------------------------------------------------------
     // Constants : Defaults
     //--------------------------------------------------------------------------
@@ -32,9 +46,10 @@ public class TreeConfig {
     public static final boolean DEFAULT_SHOW_FILEDATE = false;
 
     /** 
-     * Default is not to show absolute paths. 
+     * Default is not to show only the directory names in the tree. 
      */
-    public static final boolean DEFAULT_SHOW_FILEPATH = false;
+    public static final IDirNameRenderer DEFAULT_DIR_NAME_RENDERER = 
+        DIR_NAME_RENDERER_NAME_ONLY;
     
     /** 
      * Default output goes to System.out. 
@@ -53,9 +68,9 @@ public class TreeConfig {
     public static final String DEFAULT_REGEX = null;
 
     /**
-     * Default max number of levels to recurse is all.
+     * Default maximum depth of the tree.
      */
-    public static final int DEFAULT_MAX_LEVELS = Integer.MAX_VALUE;
+    public static final int DEFAULT_MAX_DEPTH = Integer.MAX_VALUE;
     
     // -------------------------------------------------------------------------
     // Fields
@@ -77,9 +92,9 @@ public class TreeConfig {
     private boolean showFileDate;
     
     /** 
-     * Flag to toggle the showing of a file's absolute path. 
+     * Renderer for the name of the directory in the tree. 
      */
-    private boolean showPath;
+    private IDirNameRenderer dirNameRenderer;
     
     /**
      * Specifies the sort order. Only valid if showFiles is true.
@@ -97,9 +112,9 @@ public class TreeConfig {
     private Writer outputWriter;
     
     /**
-     * Maximum number of directory levels to recurse into.
+     * Maximum depth of the tree.
      */
-    private int maxLevels;
+    private int maxDepth;
     
     // -------------------------------------------------------------------------
     // Constructors
@@ -109,11 +124,11 @@ public class TreeConfig {
         setShowFiles(DEFAULT_SHOW_FILES);
         setShowFilesize(DEFAULT_SHOW_FILESIZE);
         setShowFileDate(DEFAULT_SHOW_FILEDATE);
-        setShowPath(DEFAULT_SHOW_FILEPATH);
+        setDirNameRenderer(DEFAULT_DIR_NAME_RENDERER);
         setSortBy(DEFAULT_SORTBY);
         setRegexFilter(DEFAULT_REGEX);
         setOutputWriter(DEFAULT_OUTPUT_WRITER);
-        setMaxLevels(DEFAULT_MAX_LEVELS);
+        setMaxDepth(DEFAULT_MAX_DEPTH);
     }
     
     // -------------------------------------------------------------------------
@@ -152,12 +167,12 @@ public class TreeConfig {
         this.showFilesize = showFilesize;
     }
     
-    public boolean isShowPath() {
-        return showPath;
+    public IDirNameRenderer getDirNameRenderer() {
+        return dirNameRenderer;
     }
     
-    public void setShowPath(boolean showPath) {
-        this.showPath = showPath;
+    public void setDirNameRenderer(IDirNameRenderer renderer) {
+        this.dirNameRenderer = renderer;
     }
     
     public FileComparator getSortBy() {
@@ -176,12 +191,12 @@ public class TreeConfig {
         this.outputWriter = outputWriter;
     }
 
-    public int getMaxLevels() {
-        return maxLevels;
+    public int getMaxDepth() {
+        return maxDepth;
     }
 
-    public void setMaxLevels(int maxLevels) {
-        this.maxLevels = maxLevels;
+    public void setMaxDepth(int maxLevels) {
+        this.maxDepth = maxLevels;
     }
     
     //--------------------------------------------------------------------------
@@ -193,5 +208,51 @@ public class TreeConfig {
      */
     public String toString() {
         return AsMap.of(this).toString();
+    }
+    
+    // -------------------------------------------------------------------------
+    // Interface IDirPathRenderer
+    // -------------------------------------------------------------------------
+    
+    /**
+     * Enumeration class that expressses how the name of the directory is
+     * rendered in the tree. 
+     */
+    interface IDirNameRenderer {
+        String render(File root, File dir);
+    }
+
+    // -------------------------------------------------------------------------
+    // Class AbsoluteDirPathRenderer
+    // -------------------------------------------------------------------------
+    
+    private static class AbsoluteDirNameRenderer implements IDirNameRenderer {
+        
+        public String render(File root, File dir) {
+            return dir.getAbsolutePath();
+        }
+    }
+    
+    // -------------------------------------------------------------------------
+    // Class RelativeDirPathRenderer
+    // -------------------------------------------------------------------------
+    
+    private static class RelativeDirNameRenderer implements IDirNameRenderer {
+        
+        public String render(File root, File dir) {
+            return dir.getAbsolutePath().substring(
+                root.getAbsolutePath().length()+1); 
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // Class NameOnlyDirPathRenderer
+    // -------------------------------------------------------------------------
+    
+    private static class NameOnlyDirNameRenderer implements IDirNameRenderer {
+        
+        public String render(File root, File dir) {
+            return dir.getName();
+        }
     }
 }

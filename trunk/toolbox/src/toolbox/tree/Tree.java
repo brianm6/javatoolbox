@@ -44,6 +44,15 @@ import toolbox.util.io.filter.RegexFileFilter;
  *       <li>File date/time
  *     </ul>
  *   </li>
+ *   <li>Show directory name as
+ *     <ul>
+ *       <li>Name only
+ *       <li>Relative path
+ *       <li>Absolute path
+ *     </ul>
+ *   </li>
+ *   <li>Limit the maximum depth of directory traversal
+ *   <li>Only traverses circular file system links once
  * </ul>
  * <p>
  * 
@@ -79,6 +88,8 @@ import toolbox.util.io.filter.RegexFileFilter;
  * </pre>
  * For filesystems that support symbolic links, links are traversed only once in
  * the case of circular references.
+ * 
+ * @see toolbox.tree.TreeConfig
  */
 public class Tree {
     
@@ -224,32 +235,6 @@ public class Tree {
     // Private
     //--------------------------------------------------------------------------
     
-    private boolean hasTraversed(File dir) {
-    	String canonicalPath =  getCanonicalPath(dir);
-    	if (canonicalPath != null && traversed.contains(canonicalPath))
-    		return true;
-    	else 
-    		return false;
-    }
-
-    private String getCanonicalPath(File dir) {
-    	String canonicalPath =  null;
-    	
-		try {
-            canonicalPath = dir.getCanonicalPath();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-		
-		return canonicalPath;
-	}
-    
-    private boolean reachedMaxLevel(String levelString) {
-        int currentLevel = levelString.length() / SPACER.length();
-        return currentLevel >= config.getMaxLevels();
-    }
-    
     /**
      * Recurses the directory structure of the given rootDir and generates a
      * hierarchical text representation.
@@ -267,7 +252,7 @@ public class Tree {
 //    	}
 
         boolean atRoot = (level.length() == 0);
-        boolean reachedMaxLevel = reachedMaxLevel(level);
+        boolean reachedMaxDepth = reachedMaxDepth(level);
         
         if (atRoot)
             out.println(dir.getAbsolutePath());
@@ -281,7 +266,7 @@ public class Tree {
         }
         
         Arrays.sort(dirs, (Comparator) config.getSortBy());
-        String filler = (dirs.length == 0 || reachedMaxLevel ? SPACER : BAR);
+        String filler = (dirs.length == 0 || reachedMaxDepth ? SPACER : BAR);
         
         // Print files
         if (config.isShowFiles()) {
@@ -307,8 +292,8 @@ public class Tree {
                     String formatted = FILESIZE_FORMATTER.format(files[i].length());
                               
                     out.print(
-                        " " + 
-                        StringUtils.repeat(" ", largestFile - formatted.length())
+                        " " 
+                        + StringUtils.repeat(" ", largestFile - formatted.length())
                         + formatted);
             
                     // Accumulate directory size
@@ -334,11 +319,11 @@ public class Tree {
             }
             
             // Extra line after last file in a dir        
-            if (dirs.length > 0 && !reachedMaxLevel)
+            if (dirs.length > 0 && !reachedMaxDepth)
                 out.println(level + BAR);
         }
 
-        if (reachedMaxLevel)
+        if (reachedMaxDepth)
             return;
         
         // No sub dirs == nothing to do
@@ -361,13 +346,17 @@ public class Tree {
             out.print(level);
             out.print(JUNCTION);
             out.print(ARM);
-            
+
+            // Catch already traversed file system links and print reference only
             if (hasTraversed(current)) {
             	out.println("" + current.getName() + " -> " + getCanonicalPath(current) + "");
             }
             else {
-            	traversed.add(getCanonicalPath(current));
-                out.print(current.getName());
+            	//traversed.add(getCanonicalPath(current));
+                setTraversed(current);
+                
+                // Delegate how directory name is printed out...
+                out.print(config.getDirNameRenderer().render(rootDir, current));
                 out.println();
                 
                 // Recurse            
@@ -387,7 +376,64 @@ public class Tree {
             }
         }
     }
+
+    /**
+     * Checks if the passed in directory has been previously traversed.
+     * 
+     * @param dir Directory to check for traversal.
+     * @return True if the directory has been previously traversed, false 
+     *         otherwise.
+     */
+    private boolean hasTraversed(File dir) {
+        // Must convert to canonical otherwise embedded "../../.." and other
+        // gotchas will not be caught
+        String canonicalPath =  getCanonicalPath(dir);
+        return canonicalPath != null && traversed.contains(canonicalPath);
+    }
+
+    
+    /**
+     * Sets the passed in directory as having been traversed.
+     * 
+     * @param dir Directory to mark traversed.
+     */
+    private void setTraversed(File dir) {
+        traversed.add(getCanonicalPath(dir));        
+    }
+    
+    
+    /**
+     * Returns the canonical (in its simplest shortest form) representation of 
+     * the passed in directory.
+     * 
+     * @param dir Directory to get the canonical representation of.
+     * @return String
+     */
+    private String getCanonicalPath(File dir) {
+        String canonicalPath =  null;
         
+        try {
+            canonicalPath = dir.getCanonicalPath();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        return canonicalPath;
+    }
+    
+    
+    /**
+     * Checks if the maximum depth of traversel has been reached.
+     * 
+     * @param depthString String that represents the current traversal depth.
+     * @return True if max depth reached, false otherwise.
+     */
+    private boolean reachedMaxDepth(String depthString) {
+        int currentLevel = depthString.length() / SPACER.length();
+        return currentLevel >= config.getMaxDepth();
+    }
+
     //--------------------------------------------------------------------------
     // Overrides java.lang.Object
     //--------------------------------------------------------------------------

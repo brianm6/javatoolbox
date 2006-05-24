@@ -452,7 +452,52 @@ public class TreeTest extends TestCase {
         
         TreeConfig config = new TreeConfig();
         config.setShowFiles(true);
-        config.setMaxLevels(2);
+        config.setMaxDepth(2);
+        Tree tree = new Tree(rootDir_, config);
+        tree.showTree();
+        
+        printNativeFileTree(rootDir_);
+    }
+
+    public void testShowTree_Relative_Dir_Names() throws Exception {
+        logger_.info("Running testShowTree_Relative_Dir_Names ...");
+        logger_.debug("Tree showing RELATIVE directory names: \n");
+        
+        createFile(rootDir_);
+        createRandomTree(rootDir_);
+        
+        TreeConfig config = new TreeConfig();
+        config.setDirNameRenderer(TreeConfig.DIR_NAME_RENDERER_RELATIVE);
+        Tree tree = new Tree(rootDir_, config);
+        tree.showTree();
+        
+        printNativeFileTree(rootDir_);
+    }
+
+    public void testShowTree_Absolute_Dir_Names() throws Exception {
+        logger_.info("Running testShowTree_Absolute_Dir_Names ...");
+        logger_.debug("Tree showing ABSOLUTE directory names: \n");
+        
+        createFile(rootDir_);
+        createRandomTree(rootDir_);
+        
+        TreeConfig config = new TreeConfig();
+        config.setDirNameRenderer(TreeConfig.DIR_NAME_RENDERER_ABSOLUTE);
+        Tree tree = new Tree(rootDir_, config);
+        tree.showTree();
+        
+        printNativeFileTree(rootDir_);
+    }
+
+    public void testShowTree_NameOnly_Dir_Names() throws Exception {
+        logger_.info("Running testShowTree_NameOnly_Dir_Names ...");
+        logger_.debug("Tree showing NAMEONLY directory names: \n");
+        
+        createFile(rootDir_);
+        createRandomTree(rootDir_);
+        
+        TreeConfig config = new TreeConfig();
+        config.setDirNameRenderer(TreeConfig.DIR_NAME_RENDERER_NAME_ONLY);
         Tree tree = new Tree(rootDir_, config);
         tree.showTree();
         

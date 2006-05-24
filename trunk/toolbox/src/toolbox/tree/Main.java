@@ -11,13 +11,14 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.PosixParser;
+import org.apache.commons.lang.StringUtils;
 
 import toolbox.util.ArrayUtil;
 import toolbox.util.file.FileComparator;
 
 /**
- * Command line wrapper for {@link Tree} that support passing tree configuration
- * options via command line options.
+ * Command line wrapper for {@link Tree} that supports passing tree 
+ * configuration options via command line options.
  */
 public class Main {
     
@@ -72,41 +73,44 @@ public class Main {
             "s", 
             "size", 
             false, 
-            "Includes file sizes in the output");
+            "Includes file sizes in the output.");
        
         Option dateOption = new Option(
             "d", 
-            "date/time", 
+            "date", 
             false, 
-            "Includes file date/time in the output");
+            "Includes file date/time in the output.");
 
-        Option absolutePathsOption = new Option(
-            "a",
-            "absolute",
-            false,
-            "Show absolute paths in output");
+        Option dirNameRendererOption = new Option(
+            "n",
+            "dirname",
+            true,
+            "Controls how directory names are printed in the tree.");
+        
+        dirNameRendererOption.setArgs(1);
+        dirNameRendererOption.setArgName("n=name only | r=relative | a=absolute");
         
         Option sortOption = new Option(
             "o", 
             "sort", 
             true, 
-            "Sort order");
+            "Sorts based on file attribute.");
             
         sortOption.setArgs(1);
-        sortOption.setArgName("sort by [n=name|s=size]");
+        sortOption.setArgName("n=name | s=size | d=date");
         
         //sortOption.setOptionalArg(true);
         //sortOption.setRequired(false);
         //sortOption.setValueSeparator('=');
         
-        Option maxLevelsOption = new Option(
-            "l",
-            "levels",
+        Option maxDepthOption = new Option(
+            "m",
+            "depth",
             true,
-            "Max number of levels to recurse");
+            "Maximum depth of the tree.");
         
-        maxLevelsOption.setArgs(1);
-        maxLevelsOption.setArgName("max levels");
+        maxDepthOption.setArgs(1);
+        maxDepthOption.setArgName("max depth");
         
         
         Option regexOption = new Option(
@@ -136,8 +140,8 @@ public class Main {
         options.addOption(fileOption);
         options.addOption(sizeOption);
         options.addOption(dateOption);
-        options.addOption(maxLevelsOption);
-        options.addOption(absolutePathsOption);
+        options.addOption(maxDepthOption);
+        options.addOption(dirNameRendererOption);
         options.addOption(sortOption);
 
         CommandLine cmdLine = parser.parse(options, args, true);
@@ -155,8 +159,22 @@ public class Main {
             else if (opt.equals(dateOption.getOpt())) {
                 config.setShowFileDate(true);
             }
-            else if (opt.equals(absolutePathsOption.getOpt())) {
-                config.setShowPath(true);
+            else if (opt.equals(dirNameRendererOption.getOpt())) {
+                String rendererValue = dirNameRendererOption.getValue();
+                TreeConfig.IDirNameRenderer renderer = config.getDirNameRenderer();
+                
+                if (rendererValue.equals("n"))
+                    renderer = TreeConfig.DIR_NAME_RENDERER_NAME_ONLY;
+                else if (rendererValue.equals("r"))
+                    renderer = TreeConfig.DIR_NAME_RENDERER_RELATIVE;
+                else if (rendererValue.equals("a"))
+                    renderer = TreeConfig.DIR_NAME_RENDERER_ABSOLUTE;
+                else
+                    warnAndAbort(options,
+                        "Invalid valid for directory name renderer: " 
+                        + rendererValue);
+                    
+                config.setDirNameRenderer(renderer);
             }
             else if (opt.equals(sortOption.getOpt())) {
                 Map sortByMap = new HashMap();
@@ -164,20 +182,29 @@ public class Main {
                 sortByMap.put(SORT_NAME, FileComparator.COMPARE_NAME);
                 sortByMap.put(SORT_SIZE, FileComparator.COMPARE_SIZE);
                 sortByMap.put(SORT_DATE, FileComparator.COMPARE_DATE);
-                
                 String sortValue = sortOption.getValue();
                 
                 if (!sortByMap.containsKey(sortValue))
-                    throw new IllegalArgumentException(
-                        "Sort by option'" + sortValue + "' is invalid.");
-
+                    warnAndAbort(options, "Sort option invalid: " + sortValue);
+                
                 config.setSortBy((FileComparator) sortByMap.get(sortValue));
             }
-            else if (opt.equals(maxLevelsOption.getOpt())) {
-                config.setMaxLevels(Integer.parseInt(maxLevelsOption.getValue()));
+            else if (opt.equals(maxDepthOption.getOpt())) {
+                try {
+                    config.setMaxDepth(Integer.parseInt(maxDepthOption.getValue()));
+                }
+                catch (NumberFormatException nfe) {
+                    warnAndAbort(options, 
+                        "Invalid max depth: " + maxDepthOption.getValue());
+                }
             }
             else if (opt.equals(regexOption.getOpt())) {
-                config.setRegexFilter(regexOption.getValue());
+                String regex = regexOption.getValue();
+                
+                if (StringUtils.isEmpty(regex))
+                    warnAndAbort(options, "Invalid regular expression: " + regex);
+                
+                config.setRegexFilter(regex);
             }
             else if (opt.equals(helpOption.getOpt())  ||
                      opt.equals(helpOption2.getOpt())) {
@@ -185,7 +212,7 @@ public class Main {
                 return;
             }
             else {
-                throw new IllegalArgumentException("Option " + opt + " not understood.");
+                warnAndAbort(options, "Invalid option: " + opt);
             }
         }
         
@@ -218,15 +245,26 @@ public class Main {
     }
     
     //--------------------------------------------------------------------------
-    // Protected
+    // Private
     //--------------------------------------------------------------------------
     
+    /**
+     * Warns user than an invalid options was used and aborts execution.
+     * 
+     * @param options Command line options.
+     * @param message Error message.
+     */
+    private static void warnAndAbort(Options options, String message) {
+        printUsage(options);
+        throw new IllegalArgumentException(message);
+    }
+
     /**
      * Prints program usage.
      * 
      * @param options Command line options.
      */
-    protected static void printUsage(Options options) {
+    private static void printUsage(Options options) {
         HelpFormatter hf = new HelpFormatter();
         hf.printHelp(
             "tree [options] <directory>",
