@@ -712,7 +712,7 @@ Commands:
     <goal name="fatjar:dist"
           description = "Copies the toolbox fatjars to ${toolbox.fatjar.dist}.">
 
-    	<echo>Override property toolbox.fathar.dist to set the distribution directory</echo>
+    	<echo>Override property toolbox.fatjar.dist to set the distribution directory</echo>
         <copy todir="${toolbox.fatjar.dist}" overwrite="yes" verbose="true">
             <fileset dir="${basedir}/target/fatjar/" includes="*.jar"/>
         </copy>
