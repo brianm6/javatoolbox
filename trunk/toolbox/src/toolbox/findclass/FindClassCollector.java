@@ -22,7 +22,9 @@ public class FindClassCollector extends FindClassAdapter
     private Semaphore cancels_;
     
     /** 
-     * Storage for search results. 
+     * Storage for search results.
+     * 
+     * @see FindClassResult
      */
     private List results_;
     
@@ -43,9 +45,8 @@ public class FindClassCollector extends FindClassAdapter
     // Overrides FindClassAdapter
     //--------------------------------------------------------------------------
         
-    /**
-     * @see toolbox.findclass.FindClassListener#classFound(
-     *      toolbox.findclass.FindClassResult)
+    /*
+     * @see toolbox.findclass.FindClassListener#classFound(toolbox.findclass.FindClassResult)
      */
     public void classFound(FindClassResult result)
     {
@@ -53,7 +54,7 @@ public class FindClassCollector extends FindClassAdapter
     }
 
     
-    /**
+    /*
      * @see toolbox.findclass.FindClassAdapter#searchCanceled()
      */
     public void searchCanceled()
@@ -81,8 +82,7 @@ public class FindClassCollector extends FindClassAdapter
      */
     public FindClassResult[] getResults()
     {
-        return (FindClassResult[]) 
-            results_.toArray(new FindClassResult[results_.size()]);
+        return (FindClassResult[]) results_.toArray(new FindClassResult[results_.size()]);
     }
     
     

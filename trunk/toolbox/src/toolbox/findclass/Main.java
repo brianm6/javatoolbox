@@ -68,12 +68,8 @@ public class Main extends FindClassAdapter
             Options options = new Options();
 
             // Valid options            
-            Option caseOption = new Option(
-                "c", "caseSensetive", false, "Case sensetive search");
-                
-            Option targetsOption = 
-                new Option("t", "targets", false, "Lists the search targets");
-                
+            Option caseOption = new Option("c", "caseSensetive", false, "Case sensetive search");
+            Option targetsOption = new Option("t", "targets", false, "Lists the search targets");
             Option helpOption = new Option("h", "help", false, "Print usage");
             Option helpOption2 = new Option("?", "/?", false, "Print Usage");
             
