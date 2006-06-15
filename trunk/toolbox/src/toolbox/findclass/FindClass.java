@@ -57,14 +57,13 @@ public class FindClass implements Cancelable
     /** 
      * Filter that identifies java class files.
      */
-    private static final IOFileFilter FILEFILTER_CLASSES = 
-        new SuffixFileFilter(".class"); 
+    private static final IOFileFilter FILEFILTER_CLASSFILE = new SuffixFileFilter(".class"); 
     
     /** 
      * File filter that identifies the the types of archive files that can 
      * contain java class files.
      */
-    private static final IOFileFilter FILEFILTER_ARCHIVES = 
+    private static final IOFileFilter FILEFILTER_ARCHIVE = 
         new SuffixFileFilter(new String[]{".jar", ".zip", ".ear", ".war", ".rar"});
     
     //--------------------------------------------------------------------------
@@ -221,7 +220,7 @@ public class FindClass implements Cancelable
         if (target.isDirectory())
         {
             searchTargets_.addAll(FileUtil.find(
-                target.getAbsolutePath(), FILEFILTER_ARCHIVES));
+                target.getAbsolutePath(), FILEFILTER_ARCHIVE));
         }
         else
         {
@@ -259,7 +258,7 @@ public class FindClass implements Cancelable
      */
     public List getArchivesInDir(File dir)
     {
-        return FileUtil.find(dir.getAbsolutePath(), FILEFILTER_ARCHIVES);    
+        return FileUtil.find(dir.getAbsolutePath(), FILEFILTER_ARCHIVE);    
     }
 
     //--------------------------------------------------------------------------
@@ -328,7 +327,7 @@ public class FindClass implements Cancelable
      */
     protected List getArchiveTargets()
     {
-        return FileUtil.find(".", FILEFILTER_ARCHIVES);        
+        return FileUtil.find(".", FILEFILTER_ARCHIVE);        
     }
 
     
@@ -395,7 +394,7 @@ public class FindClass implements Cancelable
         dirPath = FileUtil.trailWithSeparator(dirPath);
         
         // Regular expression search
-        List classFiles = FileUtil.find(dirPath, FILEFILTER_CLASSES);
+        List classFiles = FileUtil.find(dirPath, FILEFILTER_CLASSFILE);
         
         for (Iterator i = classFiles.iterator(); i.hasNext();)
         {
@@ -484,8 +483,7 @@ public class FindClass implements Cancelable
      */   
     public void addSearchListener(FindClassListener listener)
     {
-        findListeners_ =
-            (FindClassListener[]) ArrayUtil.add(findListeners_, listener);
+        findListeners_ = (FindClassListener[]) ArrayUtil.add(findListeners_, listener);
     }
     
     
@@ -496,8 +494,7 @@ public class FindClass implements Cancelable
      */
     public void removeSearchListener(FindClassListener listener)
     {
-        findListeners_ = 
-            (FindClassListener[]) ArrayUtil.remove(findListeners_, listener);
+        findListeners_ = (FindClassListener[]) ArrayUtil.remove(findListeners_, listener);
     }
     
     
