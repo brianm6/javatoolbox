@@ -1,5 +1,6 @@
 package toolbox.util.dump;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Collection;
@@ -71,6 +72,11 @@ public class Dumper
      */
     private static final int MAX_PRESENTABLE_LENGTH = 100;
 
+    /**
+     * Comparator used to sort fieldname alphabetically.
+     */
+    private static final Comparator COMPARATOR_FIELDNAME = new FieldNameComparator();
+    
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
@@ -275,13 +281,51 @@ public class Dumper
             {
                 Class c = (Class) stack.pop();
                 
-                // This is different from reachedMaxDepth!
-                if (depth.length() / 4 <= maxDepth_)           
+                if (c.isArray())
+                {
+                    dump((Object[]) obj, buffer, depth);
+                }
+                else if (depth.length() / 4 <= maxDepth_) // This is different from reachedMaxDepth!
+                {
                     dump(c, obj, buffer, depth);
+                }
             }
         }
     }
 
+    /**
+     * Dumps an array or collection class.
+     * 
+     * @param arrayField Field thas is an array.
+     * @param array Array object.
+     * @param buffer Dump buffer.
+     * @param depth Recursion depth.
+     * @throws IllegalAccessException if attribute/method not accessible.
+     */
+    protected void dump(
+        Object[] array, 
+        StringBuffer buffer, 
+        String depth) 
+        throws IllegalAccessException
+    {
+        cache_.put(array);
+        
+        // Iterator over array, dumping the value at each index
+        
+        for (int i = 0; i < array.length; i++)
+        {
+            buffer.append(makeBranch(depth));
+                        
+            buffer.append(
+                //formatter_.formatFieldName("Array") + 
+                "[" + i + "]");
+                
+            buffer.append(" = ");
+            buffer.append(makePresentable(array[i]));
+            buffer.append(StringUtil.NL);
+            dump(array[i], buffer, depth + BAR);
+        }
+    }
     
     /**
      * Dumps an array or collection class.
@@ -371,26 +415,49 @@ public class Dumper
                 }
                 else
                 {
-                    if ((!type.isPrimitive()) && 
-                        (value != null) &&
+                    if ((!type.isPrimitive())          && 
+                        (value != null)                &&
                         (cache_.hasTraversed(value)))
                     {
                         buffer.append("[Visited] ");
-                        
-                        buffer.append(formatter_.formatFieldName(
-                            cache_.getInfo(value).getField().getName()));
-                            
+                        buffer.append(formatter_.formatFieldName(cache_.getInfo(value).getField().getName()));
                         buffer.append(StringUtil.NL);
+                    }
+                    else if (type.isArray())
+                    {
+                        if (!type.getComponentType().isPrimitive())
+                        {
+                            // Array of Objects
+                            checkTraversed(value);
+                            buffer.append(ClassUtils.getShortClassName(value.getClass().getName()));
+                            Object objs[] = (Object[]) value;
+                            buffer.append("[" + objs.length + "]");
+                            buffer.append(StringUtil.NL);
+                            
+                            if (!reachedMaxDepth(depth))
+                                dump(field, objs, buffer, depth + BAR);
+                        }
+                        else
+                        {
+                            checkTraversed(value);
+                            int length = Array.getLength(value);
+                            buffer.append(type.getComponentType() + "[" + length + "] {");
+                            
+                            for (int j = 0; j < length; j++)
+                            {
+                                Object v = Array.get(value, j);
+                                buffer.append(v);
+                                buffer.append(j == (length - 1) ? "}" : ",");
+                            }
+                            
+                            buffer.append(StringUtil.NL);
+                        }
                     }
                     else if (Collection.class.isAssignableFrom(type))
                     {
                         checkTraversed(value);
-                        
                         Collection c = (Collection) value;
-                        
-                        buffer.append(
-                            ClassUtils.getShortClassName(value.getClass().getName()));
-                            
+                        buffer.append(ClassUtils.getShortClassName(value.getClass().getName()));
                         buffer.append("[" + c.size() + "]"); 
                         buffer.append(StringUtil.NL);
                         
@@ -561,11 +628,8 @@ public class Dumper
     /** 
      * Comparator for field names.
      */
-    class FieldNameComparator implements Comparator
+    static class FieldNameComparator implements Comparator
     {
-        /**
-         * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
-         */
         public int compare(Object o1, Object o2)
         {
             String name1 = ((Field) o1).getName();
