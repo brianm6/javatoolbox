@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Stack;
 
+import javax.swing.JFrame;
+
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
@@ -22,11 +24,6 @@ public class DumperTest extends TestCase
     // Main
     //--------------------------------------------------------------------------
 
-    /**
-     * Entrypoint.
-     * 
-     * @param args None recognized.
-     */
     public static void main(String[] args)
     {
         TestRunner.run(DumperTest.class);
@@ -44,7 +41,6 @@ public class DumperTest extends TestCase
         logger_.info("Running testDumpEmptyObject...");
         logger_.debug(StringUtil.banner(Dumper.dump(new EmptyClass())));
     }
-
     
     /**
      * Tests a class with simple fields. 
@@ -55,7 +51,6 @@ public class DumperTest extends TestCase
         logger_.debug(StringUtil.banner(Dumper.dump(new Address())));
     }
 
-    
     /**
      * Tests object dumper for a simple test case.
      */
@@ -65,7 +60,6 @@ public class DumperTest extends TestCase
         logger_.debug(StringUtil.banner(Dumper.dump(new Employee())));
     }
     
-    
     /**
      * Tests dump of JFrame.
      */
@@ -74,9 +68,8 @@ public class DumperTest extends TestCase
         logger_.info("Running testDumpJFrame...");
         
         // Too much output
-        //logger_.debug(StringUtil.addBars(Dumper.dump(new JPanel())));
+        logger_.debug(StringUtil.banner(Dumper.dump(new JFrame(), 2)));
     }
-    
     
     /**
      * Tests dump of duplicate objects existing in the object graph.
@@ -84,10 +77,8 @@ public class DumperTest extends TestCase
     public void testDumpMultipleReferences()
     {
         logger_.info("Running testDumpMultipleReferences...");
-        logger_.debug(
-            StringUtil.banner(Dumper.dump(new MultipleReferences())));        
+        logger_.debug(StringUtil.banner(Dumper.dump(new MultipleReferences())));        
     }
-    
     
     /** 
      * Tests dump of object with a constraining maxDepth.
@@ -113,7 +104,6 @@ public class DumperTest extends TestCase
             StringUtil.NL + StringUtil.BRNL +
             StringUtil.banner(Dumper.dump(emp, 3)));        
     }
-    
     
     /**
      * Tests dumping of collection classes.
@@ -154,7 +144,6 @@ public class DumperTest extends TestCase
         
         logger_.debug(StringUtil.banner(Dumper.dump(new CollectionDump())));
     }
-
     
     /**
      * Tests dump(obj, depth, formatter). Creates a new formatter and adds
@@ -174,7 +163,6 @@ public class DumperTest extends TestCase
         logger_.debug(StringUtil.banner(dump));
         assertTrue(dump.indexOf("lastName_") < 0);        
     }
-     
     
     /**
      * Tests legacy version. 
@@ -185,14 +173,66 @@ public class DumperTest extends TestCase
         String dump = Dumper.dump(new D());
         logger_.debug(StringUtil.banner(dump));
     }
-            
+    
+    public void testDumpArray()
+    {
+        logger_.info("Running testDumpArray...");
+        
+        Employee[] emps = new Employee[2];
+        emps[0] = new Employee();
+        emps[1] = new Employee();
+        String dump = Dumper.dump(emps);
+        logger_.debug(StringUtil.banner(dump));
+    }
+
+    public void testDumpObjectWithArrayObjectField()
+    {
+        logger_.info("Running testDumpObjectWithArrayObjectField ...");
+        String dump = Dumper.dump(new Department());
+        logger_.debug(StringUtil.banner(dump));
+    }
+    
+    public void testDumpObjectWithArrayPrimitiveField()
+    {
+        logger_.info("Running testDumpObjectWithArrayPrimitiveField ...");
+        String dump = Dumper.dump(new Budget());
+        logger_.debug(StringUtil.banner(dump));
+    }
+    
+    // -------------------------------------------------------------------------
+    // Budget 
+    // -------------------------------------------------------------------------
+    
+    public class Budget
+    {
+        private int[] debits = new int[] {Integer.MIN_VALUE, Integer.MAX_VALUE};
+        private boolean[] b = new boolean[] {true, false};
+        private short[] s = new short[] {Short.MIN_VALUE, Short.MAX_VALUE};
+        private byte[] by = new byte[] {Byte.MIN_VALUE, Byte.MAX_VALUE};
+        private long[] l = new long[] {Long.MIN_VALUE, Long.MAX_VALUE};
+        private float[] f = new float[] {Float.MIN_VALUE, Float.MAX_VALUE};
+        private double[] d = new double[] {Double.MIN_VALUE, Double.MAX_VALUE};
+        private Integer[] ia = new Integer[] {new Integer(1), new Integer(2)};
+    }
+    
+    // -------------------------------------------------------------------------
+    // Department 
+    // -------------------------------------------------------------------------
+    
+    public class Department
+    {
+        private Employee emps[];
+        
+        public Department()
+        {
+            emps = new Employee[] { new Employee(), new Employee() };
+        }
+    }
+    
     //--------------------------------------------------------------------------
     // EmptyClass
     //--------------------------------------------------------------------------
             
-    /**
-     * EmptyClass
-     */
     class EmptyClass
     {
     }
@@ -201,9 +241,6 @@ public class DumperTest extends TestCase
     // Employee
     //--------------------------------------------------------------------------
     
-    /**
-     * Employee
-     */            
     class Employee
     {
         private String  firstName_;
@@ -213,9 +250,6 @@ public class DumperTest extends TestCase
         private Address address_;
         private Status  status_;
             
-        /**
-         * Creates a Employee.
-         */
         public Employee()
         {
             firstName_ = "Daffy";
@@ -232,9 +266,6 @@ public class DumperTest extends TestCase
     // Address
     //--------------------------------------------------------------------------
     
-    /**
-     * Address
-     */
     class Address
     {
         private String street_;
@@ -243,9 +274,6 @@ public class DumperTest extends TestCase
         private String zipCode_;
         private Country country_;
                 
-        /**
-         * Creates a Address.
-         */
         public Address()
         {
             street_ = "1010 Main St";
@@ -272,9 +300,6 @@ public class DumperTest extends TestCase
     // Status
     //--------------------------------------------------------------------------
     
-    /**
-     * Status 
-     */
     public class Status
     {
         private boolean citizen_ = true;
@@ -285,9 +310,6 @@ public class DumperTest extends TestCase
     // MultipleReferences
     //--------------------------------------------------------------------------
     
-    /**
-     * MultipleReferences
-     */
     public class MultipleReferences
     {
         private Address address_   = new Address();
@@ -298,35 +320,23 @@ public class DumperTest extends TestCase
     // Legacy Test Objects
     //--------------------------------------------------------------------------
     
-    /**
-     * A
-     */
     class A
     {
         private int anAVariable;
         private int xDeclaredInAandB = 5;
     }
     
-    /**
-     * B
-     */
     class B extends A
     {
         protected transient int aBVariable;
         private int xDeclaredInAandB = 8;
     }
 
-    /**
-     * C
-     */
     class C extends B
     {
         volatile boolean aCVariable = false;
     }
 
-    /**
-     * D
-     */
     class D extends C
     {
         //  protected Object aDVariable = new Object();
@@ -338,34 +348,22 @@ public class DumperTest extends TestCase
         public Stack stack = new Stack();
         //  public javax.swing.JLabel jLabel= new javax.swing.JLabel();
     }
-
-    /**
-     * Fun
-     */
+    
     class Fun extends Object
     {
         private Integer funInteger = new Integer(13);
     }
 
-    /**
-     * MegaFun
-     */
     class MegaFun extends Fun
     {
         private Integer megaFunInteger = new Integer(14);
         
-        /**
-         * @see java.lang.Object#toString()
-         */
         public String toString()
         {
             return "this is what you get from calling \"toString()\" !!!";
         }
     }
 
-    /**
-     * TestObject2
-     */
     class TestObject2
     {
 
