@@ -113,7 +113,8 @@
         <!-- =================================================================== -->
         
         <release version="3.0.4" date="July 2006">
-            <action type="update">Lib - Upgraded to log4j-1.2.13</action>
+            <action type="update">Lib - Upgraded Log4J to log4j-1.2.13</action>
+            <action type="update">Lib - Upgraded JGoodies Looks to looks-2.0.4</action>
         </release>
         
         <!-- =================================================================== -->
