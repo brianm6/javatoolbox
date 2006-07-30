@@ -116,6 +116,7 @@
             <action type="update">Lib - Upgraded Log4J to log4j-1.2.13</action>
             <action type="update">Lib - Upgraded JGoodies Looks to looks-2.0.4</action>
             <action type="update">Lib - Upgraded JGoodies Forms to forms-1.0.7</action>
+            <action type="update">Lib - Upgraded Apache Ant to ant-1.6.5</action>
         </release>
         
         <!-- =================================================================== -->
