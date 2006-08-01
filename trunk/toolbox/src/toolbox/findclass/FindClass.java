@@ -347,7 +347,19 @@ public class FindClass implements Cancelable
         }
         catch (Exception e) 
         { 
-            System.out.println("Error: Could not locate " + jarName + ".");
+            // Exceptions to the Rule for these two troublesome jar files:
+            // Error: Could not locate C:\Program Files\Java\j2re1.4.2_06\lib\i18n.jar.
+            // Error: Could not locate C:\Program Files\Java\j2re1.4.2_06\lib\charsets.jar            
+            
+            if (StringUtil.containsIgnoreCase(jarName, "i18n.jar") ||
+                StringUtil.containsIgnoreCase(jarName, "charsets.jar"))
+            {
+				// Skip
+            }
+            else
+            {
+                System.out.println("Error: Could not locate " + jarName + ".");
+            }
             return;
         }
         

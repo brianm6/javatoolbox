@@ -16,11 +16,6 @@ public class MainTest extends TestCase
     // Main
     //--------------------------------------------------------------------------
     
-    /**
-     * Test entry point.
-     * 
-     * @param args None recognized.
-     */
     public static void main(String[] args)
     {
         TestRunner.run(MainTest.class);
@@ -30,54 +25,36 @@ public class MainTest extends TestCase
     // Unit Tests
     //--------------------------------------------------------------------------
     
-    /**
-     * Test finding a class in a jarfile.
-     * 
-     * @throws Exception on error.
-     */
-    public void testFindInJar() throws Exception
+    public void testMain_FindInJar() throws Exception
     {
-        logger_.info("Running testFindInJar...");
-        
+        logger_.info("Running testMain_FindInJar ...");
         Main.main(new String[] {"filter$"});
     }
     
     
-    /**
-     * Test invalid option.
-     */
-    public void testPrintUsage()
+    public void testMain_HelpOption()
     {
-        logger_.info("Running testPrintUsage...");
-        
-        Main.main(new String[] {"-badflag"});
+        logger_.info("Running testMain_HelpOption ...");
         Main.main(new String[] {"-h"});
-        Main.main(new String[] {"-?"});
     }
     
     
-    /**
-     * Test show targets option.
-     * 
-     * @throws Exception on error.
-     */
-    public void testFindShowTargetsOption() throws Exception
+    public void testMain_ShowTargetsOption() throws Exception
     {
-        logger_.info("Running testFindShowTargetsOption...");
-        
+        logger_.info("Running testMain_ShowTargetsOption ...");
         Main.main(new String[] {"-t", "xxx"});
     }
     
     
-    /**
-     * Test case sensetive option.
-     * 
-     * @throws Exception on error.
-     */
-    public void testFindCaseOption() throws Exception
+    public void testMain_CaseSensetiveOption() throws Exception
     {
-        logger_.info("Running testFindShowTargets...");
-        
+        logger_.info("Running testMain_CaseSensetiveOption ...");
         Main.main(new String[] {"-c", "XYZ"});
+    }
+    
+    public void testMain_NoArguments()
+    {
+        logger_.info("Running testMain_NoArguments ...");
+        Main.main(new String[0]);
     }
 }
