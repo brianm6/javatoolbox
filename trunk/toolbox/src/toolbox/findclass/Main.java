@@ -9,8 +9,12 @@ import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.PosixParser;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 import org.apache.log4j.Logger;
 import org.apache.regexp.RESyntaxException;
+
+import toolbox.util.collections.AsMap;
 
 /**
  * Utility that finds all occurences of a given class in the CLASSPATH, current
@@ -68,8 +72,12 @@ public class Main extends FindClassAdapter
             Options options = new Options();
 
             // Valid options            
-            Option caseOption = new Option("c", "caseSensetive", false, "Case sensetive search");
-            Option targetsOption = new Option("t", "targets", false, "Lists the search targets");
+            Option caseOption = new Option(
+                "c", "caseSensetive", false, "Case sensetive search");
+                
+            Option targetsOption = 
+                new Option("t", "targets", false, "Lists the search targets");
+                
             Option helpOption = new Option("h", "help", false, "Print usage");
             Option helpOption2 = new Option("?", "/?", false, "Print Usage");
             
@@ -81,6 +89,8 @@ public class Main extends FindClassAdapter
             // Parse options
             CommandLine cmdLine = parser.parse(options, args, true);
     
+            logger_.debug("cmdLine=\n" + ToStringBuilder.reflectionToString(cmdLine, ToStringStyle.MULTI_LINE_STYLE));
+            
             // Send output to System.out
             Main mainClass = new Main(new PrintWriter(System.out, true));
             
@@ -100,6 +110,11 @@ public class Main extends FindClassAdapter
                 }
                 else if (opt.equals(helpOption.getOpt()) ||
                          opt.equals(helpOption2.getOpt()))
+                {
+                    mainClass.printUsage();
+                    return;
+                }
+                else 
                 {
                     mainClass.printUsage();
                     return;
