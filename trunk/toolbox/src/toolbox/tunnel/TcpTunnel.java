@@ -238,11 +238,21 @@ public class TcpTunnel implements Startable, IPreferenced {
             Options options = new Options();
 
             // Create command line options            
-            Option quietOption = new Option("q", "quiet", false, "Quiet (don't print tunneled data)");
-            Option transferredOption = new Option("t", "transferred", false, "Prints bytes transferred in real time");
-            Option binaryOption = new Option("b", "suppressBinary", false, "Suppresses binary output");
-            Option helpOption = new Option("h", "help", false, "Print usage");
-            Option bindAddressOption = new Option("l", "bindAddress", true, "Address on this machine to bind to if more than one available");
+            Option quietOption = 
+                new Option("q", "quiet", false, "Quiet (don't print tunneled data)");
+            
+            Option transferredOption = 
+                new Option("t", "transferred", false, "Prints bytes transferred in real time");
+            
+            Option binaryOption = 
+                new Option("b", "suppressBinary", false, "Suppresses binary output");
+            
+            Option helpOption = 
+                new Option("h", "help", false, "Print usage");
+            
+            Option bindAddressOption = 
+                new Option("l", "bindAddress", true, "Address on this machine to bind to if more than one available");
+            
             bindAddressOption.setArgName("Bind address");
             bindAddressOption.setArgs(1);
             
@@ -317,6 +327,13 @@ public class TcpTunnel implements Startable, IPreferenced {
         }
         catch (Exception e) {
             logger_.error("main", e);
+        }
+        
+        try {
+            Thread.currentThread().join();
+        }
+        catch (InterruptedException e) {
+            logger_.warn("blocking so program does not terminate", e);
         }
     }
 
