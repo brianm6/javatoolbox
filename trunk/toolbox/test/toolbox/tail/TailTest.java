@@ -45,11 +45,6 @@ public class TailTest extends TestCase
     // Main
     //--------------------------------------------------------------------------
     
-    /**
-     * Entrypoint.
-     * 
-     * @param args None recognized.
-     */
     public static void main(String[] args)
     {
         TestRunner.run(TailTest.class);
@@ -141,8 +136,6 @@ public class TailTest extends TestCase
     
     /**
      * Tests tailing a file.
-     * 
-     * @throws Exception on error.
      */
     public void testTailFile() throws Exception
     {
