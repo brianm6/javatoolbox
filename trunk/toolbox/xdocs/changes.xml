@@ -116,6 +116,7 @@
             <action type="update">IP2Hostname - Added command line options for verbose, sync/async lookup, and caching/noncaching of hostname lookups</action>
             <action type="update">FindClass - Fixed help screen not getting printed because stream was not flushed</action>
             <action type="update">FindClass - Excluded i18n.jar and charsets.jar from error messages since they always seem to not be found</action>
+            <action type="update">Tail - Now supports the -f flag which will prepend each line of output with the filename being followed</action>            
         </release>
 
         <!-- =================================================================== -->
