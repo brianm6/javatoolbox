@@ -275,7 +275,7 @@ public class Tree {
             
             int longestName = -1; // Number of spaces occupied by longest fname 
             int largestFile = -1; // Number of spaces occupied by largest fsize
-            long dirSize = 0;     // Running total of a directory's size
+            long dirSize    = 0;  // Running total of a directory's size
             
             for (int i = 0; i < files.length; i++) {
                 out.print(level + filler + files[i].getName());
@@ -309,7 +309,7 @@ public class Tree {
             }
             
             // Print out the size of the directory
-            if (dirSize > 0 && config.isShowFilesize()) {
+            if (dirSize >= 0 && config.isShowFilesize()) {
                 String total = FILESIZE_FORMATTER.format(dirSize);
                 int tlen = total.length();
                 int alotted = longestName + largestFile + 1;
