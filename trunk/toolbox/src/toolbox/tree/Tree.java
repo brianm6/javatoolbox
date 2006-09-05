@@ -309,13 +309,14 @@ public class Tree {
             }
             
             // Print out the size of the directory
-            if (dirSize >= 0 && config.isShowFilesize()) {
+            if (dirSize >= 0 && files.length > 1 && config.isShowFilesize()) {
                 String total = FILESIZE_FORMATTER.format(dirSize);
                 int tlen = total.length();
                 int alotted = longestName + largestFile + 1;
                 String s = files.length + " file(s) ";
                 String gap = StringUtils.repeat(" ", alotted - s.length() - tlen);
-                out.println(level + filler + s + gap + total);
+                //out.println(level + filler + StringUtils.repeat("-", alotted) + " bytes".length());
+                out.println(level + filler + s + gap + total + " bytes");
             }
             
             // Extra line after last file in a dir        
