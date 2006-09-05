@@ -19,7 +19,7 @@ import toolbox.util.file.FileComparator;
  */
 public class TreeTest extends TestCase {
     
-    private static final Logger logger_ = Logger.getLogger(TreeTest.class);
+    private static final Logger logger = Logger.getLogger(TreeTest.class);
     
     //--------------------------------------------------------------------------
     // Fields
@@ -28,7 +28,7 @@ public class TreeTest extends TestCase {
     /** 
      * Temporary directory that will serve as the root dir for tests. 
      */
-    private File rootDir_;
+    private File rootDir;
 
     //--------------------------------------------------------------------------
     // Main
@@ -49,7 +49,7 @@ public class TreeTest extends TestCase {
      */
     public void setUp() throws IOException{
         System.out.println(StringUtils.repeat("=", 80));
-        rootDir_ = FileUtil.createTempDir();
+        rootDir = FileUtil.createTempDir();
     }
 
     
@@ -59,7 +59,7 @@ public class TreeTest extends TestCase {
      * @see junit.framework.TestCase#tearDown()
      */
     public void tearDown() throws IOException {
-        FileUtils.deleteDirectory(rootDir_);
+        FileUtils.deleteDirectory(rootDir);
     }
 
     //--------------------------------------------------------------------------
@@ -72,10 +72,10 @@ public class TreeTest extends TestCase {
      * @throws Exception on error.
      */
     public void testShowTree_Cascade_Dirs() throws Exception {
-        logger_.info("Running testShowTree_Cascade_Dirs...");
-        logger_.debug("Tree with cascading dirs: \n");
+        logger.info("Running testShowTree_Cascade_Dirs...");
+        logger.debug("Tree with cascading dirs: \n");
         
-        File a = new File(rootDir_, "a");
+        File a = new File(rootDir, "a");
         assertTrue(a.mkdir());
         
         File b = new File(a, "b");
@@ -87,10 +87,10 @@ public class TreeTest extends TestCase {
         File d = new File(c, "d");
         assertTrue(d.mkdir());
         
-        Tree tree = new Tree(rootDir_);
+        Tree tree = new Tree(rootDir);
         tree.showTree();
         
-        printNativeTree(rootDir_);
+        printNativeTree(rootDir);
     }
 
     
@@ -100,10 +100,10 @@ public class TreeTest extends TestCase {
      * @throws Exception on error.
      */
     public void testShowTreeSimpleFlat() throws Exception {
-        logger_.info("Running testShowTreeSimpleFlat...");
-        logger_.debug("Tree with flat struct at level 2: \n");
+        logger.info("Running testShowTreeSimpleFlat...");
+        logger.debug("Tree with flat struct at level 2: \n");
         
-        File a = new File(rootDir_, "a");
+        File a = new File(rootDir, "a");
         assertTrue(a.mkdir());
         
         File b = new File(a, "b");
@@ -115,10 +115,10 @@ public class TreeTest extends TestCase {
         File d = new File(a, "d");
         assertTrue(d.mkdir());
         
-        Tree tree = new Tree(rootDir_);
+        Tree tree = new Tree(rootDir);
         tree.showTree();
         
-        printNativeTree(rootDir_);
+        printNativeTree(rootDir);
     }
 
     
@@ -128,11 +128,11 @@ public class TreeTest extends TestCase {
      * @throws Exception on error.
      */
     public void testShowTreeExtensionBar() throws Exception {
-        logger_.info("Running testShowTreeExtensionBar...");
-        logger_.debug("Tree with an extension bar: \n");
+        logger.info("Running testShowTreeExtensionBar...");
+        logger.debug("Tree with an extension bar: \n");
                 
         // Create rootDir_\a\b\c\d 
-        File a = new File(rootDir_, "a");
+        File a = new File(rootDir, "a");
         assertTrue(a.mkdir());
         
         File b = new File(a, "b");
@@ -144,10 +144,10 @@ public class TreeTest extends TestCase {
         File d = new File(a, "d");
         assertTrue(d.mkdir());
         
-        Tree tree = new Tree(rootDir_);
+        Tree tree = new Tree(rootDir);
         tree.showTree();
         
-        printNativeTree(rootDir_);
+        printNativeTree(rootDir);
     }
 
     
@@ -168,25 +168,25 @@ public class TreeTest extends TestCase {
      * @throws Exception on error.
      */
     public void testShowTree_Root_Dirs_Many() throws Exception {
-        logger_.info("Running testShowTree_Root_Dirs_Many...");
-        logger_.debug("Tree with > 1 dir in root: \n");
+        logger.info("Running testShowTree_Root_Dirs_Many...");
+        logger.debug("Tree with > 1 dir in root: \n");
                 
-        File a = new File(rootDir_, "a");
+        File a = new File(rootDir, "a");
         assertTrue(a.mkdir());
         
         File b = new File(a, "b");
         assertTrue(b.mkdir());
         
-        File c = new File (rootDir_, "c");
+        File c = new File (rootDir, "c");
         assertTrue(c.mkdir());
         
         File d = new File(c, "d");
         assertTrue(d.mkdir());
         
-        Tree tree = new Tree(rootDir_);
+        Tree tree = new Tree(rootDir);
         tree.showTree();
         
-        printNativeTree(rootDir_);
+        printNativeTree(rootDir);
     }
 
     
@@ -201,12 +201,12 @@ public class TreeTest extends TestCase {
      * @throws Exception on error.
      */
     public void testShowTree_Root_Dirs_Zero() throws Exception {
-        logger_.info("Running testShowTree_Root_Dirs_Zero...");
-        logger_.debug("Tree with an empty root: \n");
-        Tree tree = new Tree(rootDir_);
+        logger.info("Running testShowTree_Root_Dirs_Zero...");
+        logger.debug("Tree with an empty root: \n");
+        Tree tree = new Tree(rootDir);
         tree.showTree();
         
-        printNativeTree(rootDir_);
+        printNativeTree(rootDir);
     }
 
     
@@ -223,16 +223,16 @@ public class TreeTest extends TestCase {
      * @throws Exception on error.
      */
     public void testShowTree_Root_Dirs_One() throws Exception {
-        logger_.info("Running testShowTree_Root_Dirs_One...");
-        logger_.debug("Tree with a single directory: \n");
+        logger.info("Running testShowTree_Root_Dirs_One...");
+        logger.debug("Tree with a single directory: \n");
 
-        File a = new File(rootDir_, "a");
+        File a = new File(rootDir, "a");
         assertTrue(a.mkdir());
         
-        Tree tree = new Tree(rootDir_);
+        Tree tree = new Tree(rootDir);
         tree.showTree();
         
-        printNativeTree(rootDir_);
+        printNativeTree(rootDir);
     }
 
     
@@ -242,7 +242,7 @@ public class TreeTest extends TestCase {
      * @throws Exception on error.
      */
     public void xtestShowTreeLargeTree() throws Exception {
-        logger_.info("Running xtestShowTreeLargeTree...");
+        logger.info("Running xtestShowTreeLargeTree...");
         Tree tree = new Tree(new File("/"));
         tree.showTree();
         
@@ -256,12 +256,12 @@ public class TreeTest extends TestCase {
      * @throws Exception on error.
      */
     public void testShowTree_Cascade_DirAndFile() throws Exception {
-        logger_.info("Running testShowTree_Cascade_DirAndFile...");
-        logger_.debug("Tree with cascading dirs and one file: \n");
+        logger.info("Running testShowTree_Cascade_DirAndFile...");
+        logger.debug("Tree with cascading dirs and one file: \n");
         
-        createFile(rootDir_);
+        createFile(rootDir);
         
-        File a = new File(rootDir_, "a");
+        File a = new File(rootDir, "a");
         assertTrue(a.mkdir());
         createFile(a);
                 
@@ -279,10 +279,10 @@ public class TreeTest extends TestCase {
         
         TreeConfig config = new TreeConfig();
         config.setShowFiles(true);
-        Tree tree = new Tree(rootDir_, config);
+        Tree tree = new Tree(rootDir, config);
         tree.showTree();
         
-        printNativeFileTree(rootDir_);
+        printNativeFileTree(rootDir);
     }
 
     
@@ -292,216 +292,232 @@ public class TreeTest extends TestCase {
      * @throws Exception on error.
      */
     public void testShowTree_Root_Files_Many() throws Exception {
-        logger_.info("Running testShowTree_Root_Files_Many...");
-        logger_.debug("Tree with cascading dirs and one file: \n");
+        logger.info("Running testShowTree_Root_Files_Many...");
+        logger.debug("Tree with cascading dirs and one file: \n");
         
-        createFile(rootDir_);
-        createFile(rootDir_);
-        createFile(rootDir_);
-        createFile(rootDir_);
-        createFile(rootDir_);
+        createFile(rootDir);
+        createFile(rootDir);
+        createFile(rootDir);
+        createFile(rootDir);
+        createFile(rootDir);
                
         TreeConfig config = new TreeConfig();
         config.setShowFiles(true);
-        Tree tree = new Tree(rootDir_, config);
+        Tree tree = new Tree(rootDir, config);
         tree.showTree();
         
-        printNativeFileTree(rootDir_);
+        printNativeFileTree(rootDir);
     }
 
     public void testShowTree_Show_FileSizes() throws Exception {
-        logger_.info("Running testShowTree_Show_FileSizes...");
-        logger_.debug("Tree with file sizes: \n");
+        logger.info("Running testShowTree_Show_FileSizes...");
+        logger.debug("Tree with file sizes: \n");
         
-        createFile(rootDir_);
-        createRandomTree(rootDir_);
+        createFile(rootDir);
+        createRandomTree(rootDir);
         
         TreeConfig config = new TreeConfig();
         config.setShowFiles(true);
         config.setShowFilesize(true);
-        Tree tree = new Tree(rootDir_, config);
+        Tree tree = new Tree(rootDir, config);
         tree.showTree();
         
-        printNativeFileTree(rootDir_);
+        printNativeFileTree(rootDir);
     }
 
-    public void testShowTree_Show_FileDates() throws Exception {
-        logger_.info("Running testShowTree_Show_FileDates...");
-        logger_.debug("Tree with file dates: \n");
+    public void testShowTree_Show_FileSizes_ZeroLength() throws Exception {
+        logger.info("Running testShowTree_Show_FileSizes_ZeroLength ...");
+        logger.debug("Tree with file of zero bytes length: \n");
         
-        createFile(rootDir_);
-        createRandomTree(rootDir_);
+        File f = createFile(rootDir);
+        FileUtils.writeStringToFile(f, "", "utf8");
+        
+        TreeConfig config = new TreeConfig();
+        config.setShowFiles(true);
+        config.setShowFilesize(true);
+        Tree tree = new Tree(rootDir, config);
+        tree.showTree();
+        
+        printNativeFileTree(rootDir);
+    }
+    
+    public void testShowTree_Show_FileDates() throws Exception {
+        logger.info("Running testShowTree_Show_FileDates...");
+        logger.debug("Tree with file dates: \n");
+        
+        createFile(rootDir);
+        createRandomTree(rootDir);
         
         TreeConfig config = new TreeConfig();
         config.setShowFiles(true);
         config.setShowFileDate(true);
-        Tree tree = new Tree(rootDir_, config);
+        Tree tree = new Tree(rootDir, config);
         tree.showTree();
         
-        printNativeFileTree(rootDir_);
+        printNativeFileTree(rootDir);
     }
 
     public void testShowTree_Show_FileDateAndSize() throws Exception {
-        logger_.info("Running testShowTree_Show_FileDateAndSize...");
-        logger_.debug("Tree with file dates and size: \n");
+        logger.info("Running testShowTree_Show_FileDateAndSize...");
+        logger.debug("Tree with file dates and size: \n");
         
-        createFile(rootDir_);
-        createRandomTree(rootDir_);
+        createFile(rootDir);
+        createRandomTree(rootDir);
         
         TreeConfig config = new TreeConfig();
         config.setShowFiles(true);
         config.setShowFileDate(true);
         config.setShowFilesize(true);
-        Tree tree = new Tree(rootDir_, config);
+        Tree tree = new Tree(rootDir, config);
         tree.showTree();
         
-        printNativeFileTree(rootDir_);
+        printNativeFileTree(rootDir);
     }
 
     public void testShowTree_Show_FileDateAndSize_Sort_Size() throws Exception {
-        logger_.info("Running testShowTree_Show_FileDateAndSize_Sort_Size...");
-        logger_.debug("Tree with file dates and size sorted by size: \n");
+        logger.info("Running testShowTree_Show_FileDateAndSize_Sort_Size...");
+        logger.debug("Tree with file dates and size sorted by size: \n");
         
-        createFile(rootDir_);
-        createRandomTree(rootDir_);
+        createFile(rootDir);
+        createRandomTree(rootDir);
         
         TreeConfig config = new TreeConfig();
         config.setShowFiles(true);
         config.setShowFileDate(true);
         config.setShowFilesize(true);
         config.setSortBy(FileComparator.COMPARE_SIZE);
-        Tree tree = new Tree(rootDir_, config);
+        Tree tree = new Tree(rootDir, config);
         tree.showTree();
         
-        printNativeFileTree(rootDir_);
+        printNativeFileTree(rootDir);
     }
     
     public void testShowTree_Sort_FileSize() throws Exception {
-        logger_.info("Running testShowTree_Sort_FileSize...");
-        logger_.debug("Tree sorted by file size: \n");
+        logger.info("Running testShowTree_Sort_FileSize...");
+        logger.debug("Tree sorted by file size: \n");
         
-        createFile(rootDir_);
-        createRandomTree(rootDir_);
+        createFile(rootDir);
+        createRandomTree(rootDir);
         
         TreeConfig config = new TreeConfig();
         config.setShowFiles(true);
         config.setShowFilesize(true);
         config.setSortBy(FileComparator.COMPARE_SIZE);
-        Tree tree = new Tree(rootDir_, config);
+        Tree tree = new Tree(rootDir, config);
         tree.showTree();
         
-        printNativeFileTree(rootDir_);
+        printNativeFileTree(rootDir);
     }
 
     public void testShowTree_Sort_FileName() throws Exception {
-        logger_.info("Running testShowTree_Sort_FileName...");
-        logger_.debug("Tree sorted by file name: \n");
+        logger.info("Running testShowTree_Sort_FileName...");
+        logger.debug("Tree sorted by file name: \n");
         
-        createFile(rootDir_);
-        createRandomTree(rootDir_);
+        createFile(rootDir);
+        createRandomTree(rootDir);
         
         TreeConfig config = new TreeConfig();
         config.setShowFiles(true);
         config.setShowFilesize(true);
         config.setSortBy(FileComparator.COMPARE_NAME);
-        Tree tree = new Tree(rootDir_, config);
+        Tree tree = new Tree(rootDir, config);
         tree.showTree();
         
-        printNativeFileTree(rootDir_);
+        printNativeFileTree(rootDir);
     }
 
     public void testShowTree_Sort_Date() throws Exception {
-        logger_.info("Running testShowTree_Sort_Date...");
-        logger_.debug("Tree sorted by file date: \n");
+        logger.info("Running testShowTree_Sort_Date...");
+        logger.debug("Tree sorted by file date: \n");
         
-        createFile(rootDir_);
-        createRandomTree(rootDir_);
+        createFile(rootDir);
+        createRandomTree(rootDir);
         
         TreeConfig config = new TreeConfig();
         config.setShowFiles(true);
         config.setShowFilesize(true);
         config.setSortBy(FileComparator.COMPARE_DATE);
-        Tree tree = new Tree(rootDir_, config);
+        Tree tree = new Tree(rootDir, config);
         tree.showTree();
         
-        printNativeFileTree(rootDir_);
+        printNativeFileTree(rootDir);
     }
 
     public void testShowTree_Regex_Match() throws Exception {
-        logger_.info("Running testShowTree_Regex_Match...");
-        logger_.debug("Tree matching regex - files containing 2: \n");
+        logger.info("Running testShowTree_Regex_Match...");
+        logger.debug("Tree matching regex - files containing 2: \n");
         
-        createFile(rootDir_);
-        createRandomTree(rootDir_);
+        createFile(rootDir);
+        createRandomTree(rootDir);
         
         TreeConfig config = new TreeConfig();
         config.setShowFiles(true);
         config.setRegexFilter("2");
-        Tree tree = new Tree(rootDir_, config);
+        Tree tree = new Tree(rootDir, config);
         tree.showTree();
         
-        printNativeFileTree(rootDir_);
+        printNativeFileTree(rootDir);
     }
     
     public void testShowTree_MaxLevels() throws Exception {
-        logger_.info("Running testShowTree_MaxLevels...");
-        logger_.debug("Tree w/ maxlevels = 2: \n");
+        logger.info("Running testShowTree_MaxLevels...");
+        logger.debug("Tree w/ maxlevels = 2: \n");
         
-        createFile(rootDir_);
-        createRandomTree(rootDir_);
+        createFile(rootDir);
+        createRandomTree(rootDir);
         
         TreeConfig config = new TreeConfig();
         config.setShowFiles(true);
         config.setMaxDepth(2);
-        Tree tree = new Tree(rootDir_, config);
+        Tree tree = new Tree(rootDir, config);
         tree.showTree();
         
-        printNativeFileTree(rootDir_);
+        printNativeFileTree(rootDir);
     }
 
     public void testShowTree_Relative_Dir_Names() throws Exception {
-        logger_.info("Running testShowTree_Relative_Dir_Names ...");
-        logger_.debug("Tree showing RELATIVE directory names: \n");
+        logger.info("Running testShowTree_Relative_Dir_Names ...");
+        logger.debug("Tree showing RELATIVE directory names: \n");
         
-        createFile(rootDir_);
-        createRandomTree(rootDir_);
+        createFile(rootDir);
+        createRandomTree(rootDir);
         
         TreeConfig config = new TreeConfig();
         config.setDirNameRenderer(TreeConfig.DIR_NAME_RENDERER_RELATIVE);
-        Tree tree = new Tree(rootDir_, config);
+        Tree tree = new Tree(rootDir, config);
         tree.showTree();
         
-        printNativeFileTree(rootDir_);
+        printNativeFileTree(rootDir);
     }
 
     public void testShowTree_Absolute_Dir_Names() throws Exception {
-        logger_.info("Running testShowTree_Absolute_Dir_Names ...");
-        logger_.debug("Tree showing ABSOLUTE directory names: \n");
+        logger.info("Running testShowTree_Absolute_Dir_Names ...");
+        logger.debug("Tree showing ABSOLUTE directory names: \n");
         
-        createFile(rootDir_);
-        createRandomTree(rootDir_);
+        createFile(rootDir);
+        createRandomTree(rootDir);
         
         TreeConfig config = new TreeConfig();
         config.setDirNameRenderer(TreeConfig.DIR_NAME_RENDERER_ABSOLUTE);
-        Tree tree = new Tree(rootDir_, config);
+        Tree tree = new Tree(rootDir, config);
         tree.showTree();
         
-        printNativeFileTree(rootDir_);
+        printNativeFileTree(rootDir);
     }
 
     public void testShowTree_NameOnly_Dir_Names() throws Exception {
-        logger_.info("Running testShowTree_NameOnly_Dir_Names ...");
-        logger_.debug("Tree showing NAMEONLY directory names: \n");
+        logger.info("Running testShowTree_NameOnly_Dir_Names ...");
+        logger.debug("Tree showing NAMEONLY directory names: \n");
         
-        createFile(rootDir_);
-        createRandomTree(rootDir_);
+        createFile(rootDir);
+        createRandomTree(rootDir);
         
         TreeConfig config = new TreeConfig();
         config.setDirNameRenderer(TreeConfig.DIR_NAME_RENDERER_NAME_ONLY);
-        Tree tree = new Tree(rootDir_, config);
+        Tree tree = new Tree(rootDir, config);
         tree.showTree();
         
-        printNativeFileTree(rootDir_);
+        printNativeFileTree(rootDir);
     }
     
     //--------------------------------------------------------------------------
@@ -542,7 +558,7 @@ public class TreeTest extends TestCase {
     protected File createFile(File dir) throws IOException
     {
         File f = FileUtil.createTempFile(dir);
-        FileUtil.setFileContents(f, StringUtils.repeat("testing", RandomUtil.nextInt(1, 1000)), false);
+        FileUtils.writeStringToFile(f, StringUtils.repeat("testing", RandomUtil.nextInt(1, 1000)), "utf8");
         return f;
     }
 
