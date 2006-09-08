@@ -48,6 +48,8 @@ import toolbox.workspace.PreferencedException;
  */
 public class LoggingMenu extends JSmartMenu implements IPreferenced {
 
+    private static final Logger logger = Logger.getLogger(LoggingMenu.class);
+    
     //--------------------------------------------------------------------------
     // XML Constants
     //--------------------------------------------------------------------------
@@ -139,7 +141,12 @@ public class LoggingMenu extends JSmartMenu implements IPreferenced {
      * @param level {@link Level} to set.
      */
     public void setLogLevel(Level level) {
-        ((JCheckBoxMenuItem) levelMap_.get(level)).setState(true);
+        try {
+            ((JCheckBoxMenuItem) levelMap_.get(level)).setState(true);
+        }
+        catch (NullPointerException npe) {
+            logger.warn("Tried to set logging level before UI realized.");
+        }
     }
 
     
