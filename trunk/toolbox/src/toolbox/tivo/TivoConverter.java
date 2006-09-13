@@ -121,20 +121,16 @@ public class TivoConverter {
         this("z:\\tivo");
     }
     
-    
     public TivoConverter(String rootDir) {
         rootDir_ = rootDir;
-        incomingDir_ = rootDir_ + "\\incoming";
-        workingDir_ = rootDir_ + "\\working";
-        errorDir_ = rootDir_ + "\\error";
-        originalsDir_ = rootDir_ + "\\originals"; 
-        goBackDir_ = rootDir_ + "\\goback";
-        logDir_ = rootDir_ + "\\logs";
+        incomingDir_ = rootDir_ + File.separator + "incoming";
+        workingDir_ = rootDir_ + File.separator + "working";
+        errorDir_ = rootDir_ + File.separator + "error";
+        originalsDir_ = rootDir_ + File.separator + "originals"; 
+        goBackDir_ = rootDir_ + File.separator + "goback";
+        logDir_ = rootDir_ + File.separator + "logs";
     }
 
-    /**
-     * 
-     */
     public static void configLogger() {
         Logger appLogger = Logger.getRootLogger();
         appLogger.setLevel(Level.INFO);

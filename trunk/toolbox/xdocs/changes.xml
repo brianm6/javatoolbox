@@ -114,6 +114,7 @@
         
         <release version="3.0.6" date="September 2006">
             <action type="update">Tree - Fixed omission of zero byte files from file size count</action>
+            <action type="update">Tivo - Added unix support</action>
         </release>
 
         <!-- =================================================================== -->
