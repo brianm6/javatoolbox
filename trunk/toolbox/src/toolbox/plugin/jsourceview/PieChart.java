@@ -9,7 +9,8 @@ import javax.swing.UIManager;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.labels.StandardPieItemLabelGenerator;
+import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
+import org.jfree.chart.labels.StandardPieToolTipGenerator;
 import org.jfree.chart.plot.PiePlot3D;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
@@ -19,6 +20,13 @@ import org.jfree.data.general.PieDataset;
  */
 public class PieChart extends JPanel 
 {
+    private static final NumberFormat format = NumberFormat.getPercentInstance();
+
+    static
+    {
+        format.setMaximumFractionDigits(1);
+    }
+    
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
@@ -120,16 +128,8 @@ public class PieChart extends JPanel
         chart.setBackgroundPaint(UIManager.getColor("JOptionFrame.background"));
         PiePlot3D plot = (PiePlot3D) chart.getPlot();
         plot.setForegroundAlpha(0.5f);
-        
-        NumberFormat format = NumberFormat.getPercentInstance();
-        format.setMaximumFractionDigits(1);
-        
-        plot.setLabelGenerator(
-            new StandardPieItemLabelGenerator("{1} {0}", format, format));
-        
-        plot.setToolTipGenerator(
-            new StandardPieItemLabelGenerator("{0} {1}", format, format));
-        
+        plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{1} {0}", format, format));
+        plot.setToolTipGenerator(new StandardPieToolTipGenerator("{0} {1}", format, format));
         plot.setNoDataMessage("No data to display");
         return chart;
     }
