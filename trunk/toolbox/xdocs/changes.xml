@@ -107,6 +107,15 @@
     </properties>
 
     <body>
+        <!-- =================================================================== -->
+        <!-- October 2006                                                        -->
+        <!-- =================================================================== -->
+        
+        <release version="3.0.7" date="October 2006">
+            <action type="update">Lib - Upgraded StatCVS to 2.0.3</action>
+            <action type="update">Lib - Upgraded JFreechart to 1.0.2</action>
+            <action type="update">Lib - Upgraded JCommon to 1.0.5</action>            
+        </release>
 
         <!-- =================================================================== -->
         <!-- September 2006                                                      -->
