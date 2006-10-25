@@ -115,6 +115,7 @@
             <action type="update">Lib - Upgraded StatCVS to 2.0.3</action>
             <action type="update">Lib - Upgraded JFreechart to 1.0.2</action>
             <action type="update">Lib - Upgraded JCommon to 1.0.5</action>            
+            <action type="update">Lib - Upgraded LipstikLF to 1.0 RC1</action>
         </release>
 
         <!-- =================================================================== -->
