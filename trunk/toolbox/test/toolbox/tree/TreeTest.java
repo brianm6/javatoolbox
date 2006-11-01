@@ -124,8 +124,6 @@ public class TreeTest extends TestCase {
     
     /**
      * Tests for an extension bar.
-     * 
-     * @throws Exception on error.
      */
     public void testShowTreeExtensionBar() throws Exception {
         logger.info("Running testShowTreeExtensionBar...");

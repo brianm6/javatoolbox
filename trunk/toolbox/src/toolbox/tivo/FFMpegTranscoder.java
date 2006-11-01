@@ -26,8 +26,7 @@ import toolbox.util.StringUtil;
  */
 public class FFMpegTranscoder extends AbstractTranscoder {
 
-    public static final Logger logger_ = 
-        Logger.getLogger(FFMpegTranscoder.class);
+    public static final Logger logger_ = Logger.getLogger(FFMpegTranscoder.class);
 
     // -------------------------------------------------------------------------
     // Constants

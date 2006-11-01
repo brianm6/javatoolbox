@@ -173,8 +173,6 @@ public class Tree {
      */
     public Tree(File rootDir, TreeConfig treeConfig) {
         
-        //System.out.println(StringUtil.banner(treeConfig.toString()));
-        
     	this.traversed = new ArrayList();
         this.rootDir = rootDir;
         this.config = treeConfig;
@@ -243,16 +241,9 @@ public class Tree {
      * @param level Current level of decorated indentation.
      */
     protected void showTree(File dir, String level) {
-//    	if (hasTraversed(rootDir)) {
-//    		writer_.println(level + SPACER + "[LINK] " + getCanonicalPath(rootDir));
-//    		return false;
-//    	}
-//    	else {
-//    		
-//    	}
 
         boolean atRoot = (level.length() == 0);
-        boolean reachedMaxDepth = reachedMaxDepth(level);
+        boolean atMaxDepth = reachedMaxDepth(level);
         
         if (atRoot)
             out.println(dir.getAbsolutePath());
@@ -266,7 +257,7 @@ public class Tree {
         }
         
         Arrays.sort(dirs, (Comparator) config.getSortBy());
-        String filler = (dirs.length == 0 || reachedMaxDepth ? SPACER : BAR);
+        String filler = (dirs.length == 0 || atMaxDepth ? SPACER : BAR);
         
         // Print files
         if (config.isShowFiles()) {
@@ -320,14 +311,14 @@ public class Tree {
             }
             
             // Extra line after last file in a dir        
-            if (dirs.length > 0 && !reachedMaxDepth)
+            if (dirs.length > 0 && !atMaxDepth)
                 out.println(level + BAR);
         }
 
-        if (reachedMaxDepth)
+        if (atMaxDepth)
             return;
         
-        // No sub dirs == nothing to do
+        // No sub dirs --> nothing to do
         if (ArrayUtil.isNullOrEmpty(dirs)) {
             if (atRoot)
                 out.println("No subfolders exist");
