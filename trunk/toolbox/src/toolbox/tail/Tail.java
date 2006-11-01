@@ -462,16 +462,6 @@ public class Tail implements Startable, Suspendable
      */
     protected void fireNextLine(String line)
     {
-        try
-        {
-            //sink_.write(line + StringUtil.NL);
-            //sink_.flush();
-        }
-        catch (Exception e)
-        {
-            logger_.error("fireNextLine", e);
-        }
-
         for (int i = 0; i < listeners_.length; i++)
         {
             try
@@ -602,13 +592,9 @@ public class Tail implements Startable, Suspendable
                             if (resetTimeStamp.after(preTimeStamp))
                             {
                                 // reset the stream and resume...
-                                reader_ =
-                                    new BufferedReader(new FileReader(file_));
-
+                                reader_ = new BufferedReader(new FileReader(file_));
                                 fireReattached();
-
-                                logger_.debug(
-                                    "Re-attached to " + file_.getName());
+                                logger_.debug("Re-attached to " + file_.getName());
                             }
                             else
                             {
