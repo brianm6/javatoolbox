@@ -30,12 +30,12 @@ public class MainTest extends TestCase
     }
 
     // -------------------------------------------------------------------------
-    // Unit Tests
+    // Positive Unit Tests
     // -------------------------------------------------------------------------
     
-    public void testMain_PrefixWithFilename() throws Exception  
+    public void testMain_OneFile_LineNumbers() throws Exception  
     {
-        logger.info("Running testMain_PrefixWithFilename ...");
+        logger.info("Running testMain_OneFile_LineNumbers ...");
 
         File tmpFile = FileUtil.createTempFile();
         FileStuffer tmpFileStuffer = new FileStuffer(tmpFile, 100);
@@ -44,7 +44,70 @@ public class MainTest extends TestCase
         try
         {
             ThreadUtil.sleep(1000);
+            Main.main(new String[] {"-l", tmpFile.getAbsolutePath()});
+            ThreadUtil.sleep(1000);
+        }
+        finally
+        {
+            tmpFileStuffer.stop();
+            FileUtil.deleteQuietly(tmpFile);
+        }
+    }
+
+    public void testMain_OneFile_PrefixFilename() throws Exception  
+    {
+        logger.info("Running testMain_OneFile_PrefixFilename...");
+        
+        File tmpFile = FileUtil.createTempFile();
+        FileStuffer tmpFileStuffer = new FileStuffer(tmpFile, 100);
+        tmpFileStuffer.start();
+         
+        try
+        {
+            ThreadUtil.sleep(1000);
             Main.main(new String[] {"-f", tmpFile.getAbsolutePath()});
+            ThreadUtil.sleep(1000);
+        }
+        finally
+        {
+            tmpFileStuffer.stop();
+            FileUtil.deleteQuietly(tmpFile);
+        }
+    }
+
+    public void testMain_OneFile() throws Exception  
+    {
+        logger.info("Running testMain_OneFile ...");
+
+        File tmpFile = FileUtil.createTempFile();
+        FileStuffer tmpFileStuffer = new FileStuffer(tmpFile, 100);
+        tmpFileStuffer.start();
+         
+        try
+        {
+            ThreadUtil.sleep(1000);
+            Main.main(new String[] {tmpFile.getAbsolutePath()});
+            ThreadUtil.sleep(1000);
+        }
+        finally
+        {
+            tmpFileStuffer.stop();
+            FileUtil.deleteQuietly(tmpFile);
+        }
+    }
+
+    public void testMain_OneFile_PrefixFilename_and_LineNumbers() throws Exception  
+    {
+        logger.info("Running testMain_OneFile_PrefixFilename_and_LineNumbers...");
+        
+        File tmpFile = FileUtil.createTempFile();
+        FileStuffer tmpFileStuffer = new FileStuffer(tmpFile, 100);
+        tmpFileStuffer.start();
+         
+        try
+        {
+            ThreadUtil.sleep(1000);
+            Main.main(new String[] {"-f", "-l", tmpFile.getAbsolutePath()});
             ThreadUtil.sleep(1000);
         }
         finally
@@ -54,24 +117,15 @@ public class MainTest extends TestCase
         }
     }
     
-    public void testMain() throws Exception  
+    //--------------------------------------------------------------------------
+    // Negative Unit Tests
+    //--------------------------------------------------------------------------
+    
+    public void testMain_NoArgs() throws Exception
     {
-        logger.info("Running testMain ...");
-
-        File tmpFile = FileUtil.createTempFile();
-        FileStuffer tmpFileStuffer = new FileStuffer(tmpFile, 100);
-        tmpFileStuffer.start();
-         
-        try
-        {
-            ThreadUtil.sleep(1000);
-            Main.main(new String[] {"-f", tmpFile.getAbsolutePath()});
-            ThreadUtil.sleep(1000);
-        }
-        finally
-        {
-            tmpFileStuffer.stop();
-            FileUtil.deleteQuietly(tmpFile);
-        }
+        logger.info("Running testMain_NoArgs...");
+        
+        Main.main(new String[0]);
     }
+    
 }
