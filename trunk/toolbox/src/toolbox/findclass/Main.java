@@ -241,44 +241,6 @@ public class Main extends FindClassAdapter
      */
     private void printUsage(Options options)
     {
-        //String usage = 
-        //"NAME\n"
-        //+ "    findClass - finds classes in directories, jars, and the CLASSPATH\n"
-        //+ "\n"
-        //+ "    Search order:\n"
-        //+ "    1. Jars and directories in the CLASSPATH\n"
-        //+ "    2. Current directory\n"
-        //+ "    3. Jars that exist in the current directory and subdirectories (recursive)\n"
-        //+ "       \n"
-        //+ "    The regular expression is evaluated against the fully qualified class name.\n"
-        //+ "                   \n"
-        //+ "SYNOPSIS\n"
-        //+ "\n"
-        //+ "    findclass [-h] [-c] [-t] <regular expression>  \n"
-        //+ "\n"
-        //+ "OPTIONS\n"
-        //+ "\n"
-        //+ "    -h  --help           Displays this help message\n"
-        //+ "    -c  --caseSensetive  Case sensetive regular expression\n"
-        //+ "    -t  --targets        List search targets\n"
-        //+ "\n"
-        //+ "EXAMPLES\n"
-        //+ "\n"
-        //+ "    Example 1: Search for classes matching java.lang.Object\n"
-        //+ "\n"
-        //+ "        " + getClass().getName() + " java.lang.Object\n"
-        //+ "\n"
-        //+ "    Example 2: Search for classes ending in Proxy (match case)\n"
-        //+ "\n"
-        //+ "        " + getClass().getName() + " -c Proxy$\n"
-        //+ "\n"
-        //+ "    Example 3: Search for all classes in package org.gnu and list search targets\n"
-        //+ "       \n"
-        //+ "        " + getClass().getName() + " -t org.gnu\n";
-        //
-        //writer_.print(usage);
-        //writer_.flush();
-        
         HelpFormatter f = new HelpFormatter();
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
