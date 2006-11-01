@@ -2,8 +2,17 @@ package toolbox.tail;
 
 import java.io.File;
 import java.io.OutputStreamWriter;
-import java.io.Writer;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.Iterator;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.PosixParser;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import toolbox.util.io.NullWriter;
@@ -14,10 +23,11 @@ import toolbox.util.service.ServiceException;
  */
 public class Main extends TailAdapter
 {
+    // TODO: Consolidate line number decorator into 1 per all instances of a 
+    //       given tail instead of one per tail instance.
+    
     private static final Logger logger_ = Logger.getLogger(Main.class);
 
-    private boolean prefixWithFilename = false;
-    
     //--------------------------------------------------------------------------
     // Main
     //--------------------------------------------------------------------------
@@ -32,53 +42,111 @@ public class Main extends TailAdapter
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a Main.
+     * Simple constructor.
      *
-     * @param args Array of files to tail.
+     * @param args 
+     *      Array of files to tail. Pass in -f flag to prefix each line with
+     *      the name of the file being tailed (useful when tailing multiple 
+     *      files and need the ability to know which line of output came from
+     *      which file).
      */
     public Main(String args[])
     {
-        if (args.length == 0)
+        try
         {
-            printUsage();
-            return;
-        }
+            Option showLineNumbersOption = new Option("l", "lineNumbers", false, "Show line numbers");
+            Option showFilenameOption = new Option("f", "filename", false, "Show filenames");
+            Option helpOption = new Option("h", "help", false, "Show help");
+            Option verboseOption = new Option("v", "verbose", false, "Verbose logging");
 
-        String files[] = args;
-        int fi = 0;
-        
-        if ("-f".equals(files[0]))
-        {
-            prefixWithFilename = true;
-            fi = 1;
-        }
-                        
-
-        for (int i = fi; i < files.length; i++)
-        {
-            try
+            Options options = new Options();
+            options.addOption(helpOption);
+            options.addOption(showLineNumbersOption);        
+            options.addOption(showFilenameOption);
+            options.addOption(verboseOption);
+    
+            CommandLineParser parser = new PosixParser();
+            CommandLine cmdLine = parser.parse(options, args, true);
+    
+            boolean useFilenamePrefix = false;
+            boolean useLineNumbers = false;
+            
+            for (Iterator i = cmdLine.iterator(); i.hasNext();)
             {
-                Tail tail = new Tail();
+                Option option = (Option) i.next();
+                String opt = option.getOpt();
                 
-                if (!prefixWithFilename)
-                    tail.follow(new File(files[i]), new OutputStreamWriter(System.out));
-                else
+                if (opt.equals(showLineNumbersOption.getOpt()))
                 {
-                    tail.follow(new File(files[i]), new NullWriter());
-                    tail.addTailListener(
-                        new LineBeginsWithFilenameDecorator(
-                            new TailToWriter(
-                                new OutputStreamWriter(System.out)), 
-                            files[i]));
+                    useLineNumbers = true;
                 }
-                
-                tail.start();
+                else if (opt.equals(showFilenameOption.getOpt()))
+                {
+                    useFilenamePrefix = true;
+                }
+                else if (opt.equals(verboseOption.getOpt()))
+                {
+                    Logger l = Logger.getLogger("toolbox.tail");
+                    l.setAdditivity(true);
+                    l.setLevel(Level.DEBUG);
+                }
+                else if (opt.equals(helpOption.getOpt()))
+                {
+                    printUsage(options);
+                    return;
+                }
+                else 
+                {
+                    printUsage(options);
+                    return;
+                }
             }
-            catch (ServiceException se)
+                
+            // Make sure class to find is the only arg
+            switch (cmdLine.getArgs().length)
             {
-                logger_.error("Main", se);
+                // Start the search...
+                case 0:
+                    printUsage(options); 
+                    break;                
+                
+                default:
+                    
+                    String[] filenames = cmdLine.getArgs();
+                
+                    //LineNumberDecorator lineNumberDecorator = new LineNumberDecorator(null);
+                    
+                    for (int i = 0; i < filenames.length; i++)
+                    {
+
+                        Tail tail = new Tail();
+                        tail.follow(new File(filenames[i]), new NullWriter()); // appease the gods
+                        TailAdapter sink = new TailToWriter(new OutputStreamWriter(System.out));
+
+                        try
+                        {
+                            if (useLineNumbers)
+                                sink = new LineNumberDecorator(sink);
+
+                            if (useFilenamePrefix)
+                                sink = new LineBeginsWithFilenameDecorator(sink, filenames[i]);
+                            
+                            tail.addTailListener(sink);
+                            tail.start();
+                        }
+                        catch (ServiceException se)
+                        {
+                            logger_.error("Main", se);
+                        }
+                    }
+                    
+                    return;
             }
         }
+        catch (Exception e)
+        {
+            logger_.error("main", e);   
+        }        
     }
 
     //--------------------------------------------------------------------------
@@ -88,47 +156,66 @@ public class Main extends TailAdapter
     /**
      * Prints program usage to standard output.
      */
-    private void printUsage()
+    private void printUsage(Options options)
     {
-        System.out.println("Program : Tails a list of files");
-        System.out.println("Usage   : java toolbox.tail.Main [file1 file2 ... file n]");
-        System.out.println("Example : java toolbox.tail.Main appserver.log");
+        HelpFormatter f = new HelpFormatter();
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        
+        f.printHelp(
+            pw, 
+            80, 
+            "tail " + "[options] <filename> [,<filename>]", 
+            "", 
+            options, 
+            2, 
+            4,
+            "",
+            false);
+        
+        System.out.println(sw.toString());
     }
     
     // -------------------------------------------------------------------------
-    // 
+    // Class LineBeginsWithFilenameDecorator 
     // -------------------------------------------------------------------------
     
     class LineBeginsWithFilenameDecorator extends TailAdapter
     {
-        private TailToWriter delegate;
+        private TailAdapter delegate;
         private String filename;
         
-        public LineBeginsWithFilenameDecorator(TailToWriter delegate, String filename)
+        public LineBeginsWithFilenameDecorator(
+            TailAdapter delegate, 
+            String filename)
         {
             this.delegate = delegate;
             this.filename = filename;
         }
  
-        public void nextLine(Tail tail, String line) {
-            
-            Writer w = delegate.getWriter();
-            
-            try 
-            {
-                w.write("[");
-                w.write(filename);
-                w.write("] ");
-            }
-            catch (Exception e) 
-            {
-                System.err.println(e);
-            }
-            finally
-            {
-                delegate.nextLine(tail, line);
-            }
+        public void nextLine(Tail tail, String line) 
+        {
+            delegate.nextLine(tail, "[" + filename + "] " + line);
         }
     }
     
+    // -------------------------------------------------------------------------
+    // Class LineNumberDecorator 
+    // -------------------------------------------------------------------------
+    
+    class LineNumberDecorator extends TailAdapter
+    {
+        private TailAdapter delegate;
+        int counter = 1;
+        
+        public LineNumberDecorator(TailAdapter delegate)
+        {
+            this.delegate = delegate;
+        }
+ 
+        public void nextLine(Tail tail, String line) 
+        {
+            delegate.nextLine(tail, "[" + (counter++) + "] " + line);
+        }
+    }
 }
