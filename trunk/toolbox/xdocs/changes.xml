@@ -120,6 +120,7 @@
             <action type="update">Lib - Upgraded TinyLAF to 1.3.0.4</action>
             <action type="update">Lib - Upgraded LiquidLF to 0.2.9</action>            
             <action type="update">Lib - Upgraded L2FProdCommon to 6.9.1</action>                        
+            <action type="update">Tail - Added line numbers to output with -l switch</action>
         </release>
 
         <!-- =================================================================== -->
