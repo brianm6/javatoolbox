@@ -1,0 +1,71 @@
+<project name="pdfdoclet" default="build" basedir=".">
+
+    <!-- ************************************************************************ -->
+    <!-- Configuration properties                                                 -->
+    <!-- ************************************************************************ -->
+
+    <property name="lib.dir"       value="${basedir}/build/lib" />
+    <property name="pdf.dir" value="${basedir}/target/pdfdoclet" />
+
+    <!-- project name above is available in property "ant.project.name" -->
+    <property name="project.name" value="${ant.project.name}"/>
+    <property name="version.id" value="@VERSION-ID@"/>
+
+    <!-- name of the java library -->
+    <property name="library.name" value="pdfdoclet"/>
+
+    <!-- 3rt party libraries -->
+    <property name="itext.lib"       value="itext-1.00.jar" />
+    <property name="itext.asian.lib" value="iTextAsian.jar" />
+    <property name="oro.lib"         value="jakarta-oro-2.0.7.jar" />
+    <property name="jtidy.lib"       value="Tidy.jar" />
+    <property name="pdfdoclet.lib"   value="pdfdoclet-0.8.0-rc1.jar" />
+
+    <!-- ************************************************************************ -->
+    <!-- Create the example PDF files                                             -->
+    <!-- ************************************************************************ -->
+            
+    <target name="build" description="Builds PDF of javadoc api">
+
+        <delete dir="${pdf.dir}"/>
+        <mkdir  dir="${pdf.dir}"/>
+
+        <property name = "stylesheet" 
+                  value = "${basedir}/build/conf/javadoc-stylesheet.css"/>
+
+        <!-- Create the PDF javadoc first...        -debug      -->
+        <javadoc 
+            doclet          = "com.tarsec.javadoc.pdfdoclet.PDFDoclet"
+            docletpath      = "${lib.dir}/${jtidy.lib}:${lib.dir}/${itext.lib}:${lib.dir}/${itext.asian.lib}:${lib.dir}/${oro.lib}:${lib.dir}/${pdfdoclet.lib}"
+            packagenames    = "toolbox.*"
+            additionalparam = "-pdf ${basedir}/target/toolbox-javadoc.pdf -config ${basedir}/build/conf/pdfdoclet.properties"
+            private         = "yes"
+            sourcepath      = "${basedir}/src">
+            
+            <!--
+        	overview="${pdf.dir}/overview_toolbox.html"
+            <sourcepath>
+            stylesheetfile="${stylesheet}">
+                <pathelement location="${basedir}/src"/>
+            </sourcepath>
+            -->
+        </javadoc>
+
+        <!-- ...and the HTML javadoc afterwards, to allow for comparison    -->
+        <!--
+        <javadoc
+            packagenames="${javadoc.laby.packages}"
+        	overview="${pdf.dir}/overview_laby.html"
+            destDir="${pdf.dir}/results/laby"
+            private="no">
+            <sourcepath>
+                <pathelement location="${pdf.dir}/src1"/>
+            </sourcepath>
+        </javadoc>
+        -->
+
+        <echo message="The PDF files should have been created in ${pdf.dir}/results." />
+
+    </target>
+
+</project>

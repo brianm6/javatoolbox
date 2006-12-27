@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<project name="FigletTaskTest" default="testFigletTask" basedir=".">
+
+  <description>Unit Test for FigletTask</description>
+  <taskdef name="figlet" classname="toolbox.ant.FigletTask"/>
+  
+  <target name="testFigletTask">
+    <figlet message="Figlet works!" />
+  </target>
+  
+</project>

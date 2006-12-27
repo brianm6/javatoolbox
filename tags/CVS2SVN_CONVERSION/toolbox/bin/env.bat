@@ -1,0 +1,1 @@
+@set ANT_OPTS=-Xms128m -Xmx512m
