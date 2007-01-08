@@ -157,6 +157,7 @@ public class TextToolsPlugin extends AbstractPlugin
         buttonPanel.add(new JSmartButton(new SortAction()));
         buttonPanel.add(new JSmartButton(new BannerAction()));
         buttonPanel.add(new JSmartButton(new QuoteAction()));
+        buttonPanel.add(new JSmartButton(new AddLineNumbersAction()));
         buttonPanel.add(new JSmartButton(new WrapAction()));
         buttonPanel.add(wrapField_ = new JSmartTextField(3));
         wrapField_.setText("80");
@@ -261,7 +262,7 @@ public class TextToolsPlugin extends AbstractPlugin
     // Initializable Interface
     //--------------------------------------------------------------------------
 
-    /**
+    /*
      * @see toolbox.util.service.Initializable#initialize(java.util.Map)
      */
     public void initialize(Map params) throws ServiceException
@@ -279,7 +280,7 @@ public class TextToolsPlugin extends AbstractPlugin
     // IPlugin Interface
     //--------------------------------------------------------------------------
 
-    /**
+    /*
      * @see toolbox.workspace.IPlugin#getPluginName()
      */
     public String getPluginName()
@@ -288,7 +289,7 @@ public class TextToolsPlugin extends AbstractPlugin
     }
 
 
-    /**
+    /*
      * @see toolbox.workspace.IPlugin#getView()
      */
     public JComponent getView()
@@ -297,7 +298,7 @@ public class TextToolsPlugin extends AbstractPlugin
     }
 
 
-    /**
+    /*
      * @see toolbox.workspace.IPlugin#getDescription()
      */
     public String getDescription()
@@ -307,7 +308,7 @@ public class TextToolsPlugin extends AbstractPlugin
     }
 
     
-    /**
+    /*
      * @see toolbox.workspace.AbstractPlugin#getConfigurator()
      */
     public IConfigurator getConfigurator()
@@ -322,7 +323,7 @@ public class TextToolsPlugin extends AbstractPlugin
     // Destroyable Interface
     //--------------------------------------------------------------------------
     
-    /**
+    /*
      * @see toolbox.util.service.Destroyable#destroy()
      */
     public void destroy() throws ServiceException
@@ -340,7 +341,7 @@ public class TextToolsPlugin extends AbstractPlugin
     // IPreferenced Interface
     //--------------------------------------------------------------------------
 
-    /**
+    /*
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
     public void applyPrefs(Element prefs) throws PreferencedException
@@ -375,7 +376,7 @@ public class TextToolsPlugin extends AbstractPlugin
     }
 
 
-    /**
+    /*
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
     public void savePrefs(Element prefs) throws PreferencedException
@@ -406,9 +407,6 @@ public class TextToolsPlugin extends AbstractPlugin
      */
     class SortAction extends AbstractAction
     {
-        /**
-         * Creates a SortAction.
-         */
         SortAction()
         {
             super("Sort");
@@ -417,10 +415,6 @@ public class TextToolsPlugin extends AbstractPlugin
         }
 
 
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
-         */
         public void actionPerformed(ActionEvent e)
         {
             String text = getInputText();
@@ -455,9 +449,6 @@ public class TextToolsPlugin extends AbstractPlugin
      */
     class BannerAction extends SmartAction
     {
-        /**
-         * Creates a BannerAction.
-         */
         BannerAction()
         {
             super("Figlet", true, false, null);
@@ -466,10 +457,6 @@ public class TextToolsPlugin extends AbstractPlugin
         }
 
 
-        /**
-         * @see toolbox.util.ui.SmartAction#runAction(
-         *      java.awt.event.ActionEvent)
-         */
         public void runAction(ActionEvent e) throws Exception
         {
             String[] lines = StringUtil.tokenize(getInputText(), StringUtil.NL);
@@ -488,9 +475,6 @@ public class TextToolsPlugin extends AbstractPlugin
      */
     class QuoteAction extends AbstractAction
     {
-        /**
-         * Creates a QuoteAction.
-         */
         QuoteAction()
         {
             super("Quote");
@@ -499,10 +483,6 @@ public class TextToolsPlugin extends AbstractPlugin
         }
 
 
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
-         */
         public void actionPerformed(ActionEvent e)
         {
             String text = getInputText();
@@ -542,9 +522,6 @@ public class TextToolsPlugin extends AbstractPlugin
      */
     class WrapAction extends AbstractAction
     {
-        /**
-         * Creates a WrapAction.
-         */
         WrapAction()
         {
             super("Wrap");
@@ -553,10 +530,6 @@ public class TextToolsPlugin extends AbstractPlugin
         }
 
 
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
-         */
         public void actionPerformed(ActionEvent e)
         {
             String text = getInputText();
@@ -590,13 +563,11 @@ public class TextToolsPlugin extends AbstractPlugin
     //--------------------------------------------------------------------------
 
     /**
-     * Copies the contents of the output text area to the input text area.
+     * Copies the contents of the output text area to the input text area if
+     * there is no selection, otherwise copies only the selected text.
      */
     class CopyOutputToInputAction extends AbstractAction
     {
-        /**
-         * Creates a CopyOutputToInputAction.
-         */
         CopyOutputToInputAction()
         {
             super("", ImageCache.getIcon(ImageCache.IMAGE_SWAP_PANES));
@@ -604,13 +575,36 @@ public class TextToolsPlugin extends AbstractPlugin
             putValue(SHORT_DESCRIPTION, "Copies output text to input area");
         }
 
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
-         */
         public void actionPerformed(ActionEvent e)
         {
-            inputArea_.setText(outputArea_.getText());
+            inputArea_.setText(getInputText());
         }
     }
+    
+    
+    //--------------------------------------------------------------------------
+    // AddLineNumbersAction
+    //--------------------------------------------------------------------------
+
+    class AddLineNumbersAction extends AbstractAction
+    {
+        AddLineNumbersAction()
+        {
+            super("Add Line Numbers");
+            putValue(MNEMONIC_KEY, new Integer('A'));
+            putValue(SHORT_DESCRIPTION, "Prefixes each line with a line number");
+        }
+
+
+        public void actionPerformed(ActionEvent e)
+        {
+            String[] lines = StringUtil.tokenize(getInputText(), StringUtil.NL, true);
+            StringBuffer sb = new StringBuffer(getInputText().length() + (4 * lines.length));
+
+            for (int i = 0; i < lines.length; i++)
+            	sb.append((i + 1) + " " + lines[i]);
+
+            outputArea_.append(sb.toString());
+        }
+    }    
 }
