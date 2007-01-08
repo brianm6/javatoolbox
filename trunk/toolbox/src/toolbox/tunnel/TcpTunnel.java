@@ -173,7 +173,9 @@ public class TcpTunnel implements Startable, IPreferenced {
      */
     private int remotePort_;
 
-    /** Null value OK */
+    /** 
+     * Null value OK 
+     */
     private String bindAddress_;
     
     /**
