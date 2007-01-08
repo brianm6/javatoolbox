@@ -108,6 +108,15 @@
 
     <body>
         <!-- =================================================================== -->
+        <!-- January 2007                                                        -->
+        <!-- =================================================================== -->
+        
+        <release version="3.0.8" date="January 2007">
+            <action type="update">TextToolsPlugin - Added Add Line Numbers button</action>
+            <action type="update">Launcher - Turned debug to true when logj4.debug property set to true</action>
+        </release>
+    
+        <!-- =================================================================== -->
         <!-- October 2006                                                        -->
         <!-- =================================================================== -->
         
