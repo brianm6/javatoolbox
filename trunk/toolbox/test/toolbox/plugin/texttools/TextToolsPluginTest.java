@@ -43,14 +43,17 @@ public class TextToolsPluginTest extends TestCase
         plugin.buildView();
         plugin.savePrefs(prefs);
         plugin.destroy();
-        
-        logger_.debug(StringUtil.banner(
-            new XMLFormatter().format(prefs.toXML())));
-
+        String toXML = prefs.toXML();
+		logger_.debug(StringUtil.banner(new XMLFormatter().format(toXML)));
+		assertNotNull(toXML);
+		
         TextToolsPlugin plugin2 = new TextToolsPlugin();
         plugin2.initialize(MapUtils.EMPTY_MAP);
         plugin2.buildView();
         plugin2.applyPrefs(prefs);
         plugin2.destroy();
+        toXML = prefs.toXML();
+        logger_.debug(StringUtil.banner(new XMLFormatter().format(toXML)));
+        assertNotNull(toXML);
     }
 }
