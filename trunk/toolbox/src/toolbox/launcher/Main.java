@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import toolbox.util.ArrayUtil;
 import toolbox.util.ResourceUtil;
 
@@ -81,6 +84,7 @@ public class Main {
      */
     public Main(String[] args)
     {
+    	checkDebugOverride();
         switch (args.length)
         {
             case 0 :
@@ -113,7 +117,20 @@ public class Main {
     // Protected
     //--------------------------------------------------------------------------
     
-    /**
+    private void checkDebugOverride() 
+    {
+    	if ("true".equalsIgnoreCase(System.getProperty("log4j.debug")))
+    	{
+    		System.out.println("Overriding root logger to DEBUG");
+    		System.out.println("Forcing initialization..");
+    		Logger.getLogger(getClass()).error("This log msg forces init of Log4J subsystem");
+    		System.out.println("Changing log level...");
+    		Logger.getRootLogger().setLevel(Level.DEBUG);
+    		Logger.getRootLogger().debug("This is a debug stmt");
+    	}
+	}
+
+	/**
      * Launches a toolbox executable with the given classname and arguments.
      * 
      * @param className Name of class to launch.
