@@ -77,7 +77,7 @@ public class SQLUtil
                 new StringTokenizer(withOutComments.toString(), ";"); 
              st.hasMoreTokens(); ) {
             
-            String stmt = stmt = st.nextToken().trim();
+            String stmt = st.nextToken().trim();
             if (!StringUtils.isBlank(stmt))
                 results.add(stmt + ";");
         }
