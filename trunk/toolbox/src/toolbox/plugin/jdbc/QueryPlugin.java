@@ -219,7 +219,7 @@ public class QueryPlugin extends AbstractPlugin implements QueryPluginConstants
     /**
      * Database configuration panel.
      */
-    private DBConfig dbConfigPane_;
+    private DBProfilesView dbConfigPane_;
     
     /**
      * Pretty prints SQL statements.
@@ -541,9 +541,9 @@ public class QueryPlugin extends AbstractPlugin implements QueryPluginConstants
         
         // Databases
         leftFlipPane_.addFlipper(
-            DBConfig.ICON_DBCONFIG, 
+            DBProfilesView.ICON_DBPROFILE, 
             "Databases", 
-            dbConfigPane_ = new DBConfig(this));
+            dbConfigPane_ = new DBProfilesView(this));
         
         leftFlipPane_.addFlipper(
             JFileExplorer.ICON, 

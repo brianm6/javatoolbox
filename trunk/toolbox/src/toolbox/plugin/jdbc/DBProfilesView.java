@@ -44,13 +44,11 @@ import toolbox.workspace.IStatusBar;
 import toolbox.workspace.PreferencedException;
 
 /**
- * JDBC driver and connection settings configuration panel.
+ * JDBC driver and connection settings configuration panel aka. DBProfile view.
  */    
-public class DBConfig extends JHeaderPanel implements IPreferenced
+public class DBProfilesView extends JHeaderPanel implements IPreferenced
 {
-    // TODO: Rename to DBProfilesView
-    
-    private static final Logger logger_ = Logger.getLogger(DBConfig.class);
+    private static final Logger logger_ = Logger.getLogger(DBProfilesView.class);
     
     //--------------------------------------------------------------------------
     // Icon Constants
@@ -59,27 +57,26 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
     /**
      * Icon for header and flipper.
      */
-    public static final Icon ICON_DBCONFIG =
-        ImageCache.getIcon(ImageCache.IMAGE_DATASOURCE);
+    public static final Icon ICON_DBPROFILE = ImageCache.getIcon(ImageCache.IMAGE_DATASOURCE);
     
     //--------------------------------------------------------------------------
     // IPreferenced Constants
     //--------------------------------------------------------------------------
     
     /**
-     * DBConfig has zero or more DBProfile children.
+     * DBProfilesView has zero or more DBProfile children.
      */
-    private static final String NODE_DBCONFIG = "DBConfig";
+    private static final String NODE_DBPROFILES = "DBProfiles";
 
     /**
      * Index of last selected database profile.
      */
-    private static final String ATTR_SELECTED = "selected";
+    private static final String  ATTR_SELECTED = "selected";
     
     /**
-     * DBProfile is a child of DBConfig.
+     * DBProfile is a child of DBProfilesView.
      */
-    private static final String NODE_DBPROFILE = "DBProfile";
+    private static final String  NODE_DBPROFILE = "DBProfile";
     
     //--------------------------------------------------------------------------
     // Fields
@@ -136,13 +133,13 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a DBConfig for the given plugin.
+     * Creates a DBProfilesView for the given plugin.
      * 
      * @param plugin Query plugin.
      */
-    public DBConfig(QueryPlugin plugin)
+    public DBProfilesView(QueryPlugin plugin)
     {
-        super(ICON_DBCONFIG, "Databases");
+        super(ICON_DBPROFILE, "Databases");
         plugin_ = plugin;
         statusBar_ = plugin.getStatusBar();
         buildView();
@@ -273,12 +270,12 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
     // IPreferenced Interface
     //--------------------------------------------------------------------------
         
-    /**
+    /*
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
     public void applyPrefs(Element prefs) throws PreferencedException
     {
-        Element dbConfig = prefs.getFirstChildElement(NODE_DBCONFIG);
+        Element dbConfig = prefs.getFirstChildElement(NODE_DBPROFILES);
           
         if (dbConfig == null || dbConfig.getChildCount() == 0)      
         {
@@ -323,6 +320,15 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
                 "jdbc:oracle:thin:@<host>:<port>:<sid>",
                 "",
                 ""));
+            
+            profileCombo_.addItem(new DBProfile(
+                "Sybase",
+                "",
+                "com.sybase.jdbc2.jdbc.SybDriver",
+                "jdbc:sybase:Tds:<host>:<port>/<dbname>",
+                "",
+                ""));
+            
         }
         else
         {
@@ -346,12 +352,12 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
     }
 
     
-    /**
+    /*
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
     public void savePrefs(Element prefs) throws PreferencedException
     {
-        Element dbConfig = new Element(NODE_DBCONFIG);
+        Element dbConfig = new Element(NODE_DBPROFILES);
             
         for (int i = 0, n = profileCombo_.getItemCount(); i < n; i++)
         {
@@ -412,9 +418,8 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
         }
 
         
-        /**
-         * @see toolbox.util.ui.SmartAction#runAction(
-         *      java.awt.event.ActionEvent)
+        /*
+         * @see toolbox.util.ui.SmartAction#runAction(java.awt.event.ActionEvent)
          */
         public void runAction(ActionEvent e) throws Exception
         {
@@ -496,9 +501,8 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
      */
     class ProfileChangedAction extends AbstractAction
     {
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
+        /*
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent e)
         { 
@@ -527,9 +531,6 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
      */
     class SaveAction extends AbstractAction
     {
-        /**
-         * Creates a SaveAction.
-         */
         SaveAction()
         {
             super("", ImageCache.getIcon(ImageCache.IMAGE_SAVE));
@@ -537,9 +538,8 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
         }
 
         
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
+        /*
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent e)
         {
@@ -591,9 +591,6 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
      */
     class DeleteAction extends AbstractAction
     {
-        /**
-         * Creates a DeleteAction.
-         */
         public DeleteAction()  
         {
             super("", ImageCache.getIcon(ImageCache.IMAGE_DELETE));
@@ -601,9 +598,8 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
         }
 
         
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
+        /*
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent e)
         {
@@ -647,9 +643,6 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
      */
     class JarChooserAction extends SmartAction
     {
-        /**
-         * Creates a JarChooserAction.
-         */
         JarChooserAction()
         {
             super("...", true, false, null);
@@ -657,13 +650,12 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
         }
 
         
-        /**
-         * @see toolbox.util.ui.SmartAction#runAction(
-         *      java.awt.event.ActionEvent)
+        /*
+         * @see toolbox.util.ui.SmartAction#runAction(java.awt.event.ActionEvent)
          */
         public void runAction(ActionEvent e) throws Exception
         {
-            if (chooser_.showDialog(DBConfig.this, 
+            if (chooser_.showDialog(DBProfilesView.this, 
                 "Select JDBC Driver Jar File") == JFileChooser.APPROVE_OPTION)
             {
                 jarField_.setText(
