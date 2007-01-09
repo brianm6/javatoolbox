@@ -79,8 +79,8 @@ public final class AppLauncher  {
             
             String errString = stderr.toString();
             
-            if ((StringUtil.containsIgnoreCase(errString, "Access is denied") ||
-                 StringUtil.containsIgnoreCase(errString, "used by another process")) 
+            if ((StringUtils.containsIgnoreCase(errString, "Access is denied") ||
+                 StringUtils.containsIgnoreCase(errString, "used by another process")) 
                  && file.exists() 
                  && file.isFile()) {
                 

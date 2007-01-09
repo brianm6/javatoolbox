@@ -641,28 +641,4 @@ public class StringUtilTest extends TestCase
         assertEquals("123", 
             StringUtil.replaceIgnoreCase("AbC123aBC", "aBc", ""));
     }
-    
-    /**
-     * containsIgnoreCase()
-     */
-    public void testContainsIgnoreCase() {
-        logger_.info("Running testContainsIgnoreCase ...");
-
-        // String = 1
-        assertTrue(StringUtil.containsIgnoreCase("a", "a"));
-        assertTrue(StringUtil.containsIgnoreCase("a", "A"));
-        assertTrue(StringUtil.containsIgnoreCase("A", "a"));
-        assertFalse(StringUtil.containsIgnoreCase("a", "b"));
-        assertFalse(StringUtil.containsIgnoreCase("a", "B"));
-        assertFalse(StringUtil.containsIgnoreCase("B", "a"));
-        
-        assertTrue(StringUtil.containsIgnoreCase("abc", "ABC"));
-        assertTrue(StringUtil.containsIgnoreCase("ABC", "abc"));
-        assertTrue(StringUtil.containsIgnoreCase("AbC", "aBc"));
-        assertFalse(StringUtil.containsIgnoreCase("abc", "bce"));
-        assertFalse(StringUtil.containsIgnoreCase("ABC", "BcE"));
-        assertFalse(StringUtil.containsIgnoreCase("AbC", "BCE"));
-        
-        assertTrue(StringUtil.containsIgnoreCase("you have been access denied!", "Access Denied"));
-    }
 }

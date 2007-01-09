@@ -13,6 +13,7 @@ import java.util.zip.ZipFile;
 
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.regexp.RE;
 import org.apache.regexp.RESyntaxException;
@@ -351,8 +352,8 @@ public class FindClass implements Cancelable
             // Error: Could not locate C:\Program Files\Java\j2re1.4.2_06\lib\i18n.jar.
             // Error: Could not locate C:\Program Files\Java\j2re1.4.2_06\lib\charsets.jar            
             
-            if (StringUtil.containsIgnoreCase(jarName, "i18n.jar") ||
-                StringUtil.containsIgnoreCase(jarName, "charsets.jar"))
+            if (StringUtils.containsIgnoreCase(jarName, "i18n.jar") ||
+                StringUtils.containsIgnoreCase(jarName, "charsets.jar"))
             {
 				// Skip
             }
