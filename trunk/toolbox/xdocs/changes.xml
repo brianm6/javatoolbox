@@ -112,6 +112,7 @@
         <!-- =================================================================== -->
         
         <release version="3.0.8" date="January 2007">
+            <action type="update">Lib - Upgraded Beanshell to 2.0b4</action>           
             <action type="update">QueryPlugin - Added Sybase profile</action>        
             <action type="update">TextToolsPlugin - Added Add Line Numbers button</action>
             <action type="update">Launcher - Turned debug to true when logj4.debug property set to true</action>
