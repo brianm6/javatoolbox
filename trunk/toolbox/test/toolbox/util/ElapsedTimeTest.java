@@ -13,8 +13,7 @@ import org.apache.log4j.Logger;
  */
 public class ElapsedTimeTest extends TestCase
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(ElapsedTimeTest.class);
+    private static final Logger logger_ = Logger.getLogger(ElapsedTimeTest.class);
     
     //--------------------------------------------------------------------------
     // Constants
@@ -247,14 +246,11 @@ public class ElapsedTimeTest extends TestCase
     {
         logger_.info("Running testConstructor1...");
         
-        int delta = RandomUtils.nextInt(MAX_WAIT);
         Date start = new Date();
-        ThreadUtil.sleep(delta);
-        Date end = new Date();   
-        
+        Date end = new Date(start.getTime() + 1000);   
         ElapsedTime time = new ElapsedTime(start, end);
         logger_.debug("Elapsed time = " + time);
-        assertTrue(time.getTotalMillis() >= delta);
+        assertEquals(end.getTime() - start.getTime(), time.getTotalMillis());
         assertTrue(time.getStartTime().before(time.getEndTime()));
     }
      
@@ -266,8 +262,8 @@ public class ElapsedTimeTest extends TestCase
     {       
         logger_.info("Running testCopyConstructor...");
         
-        int delta = RandomUtils.nextInt(MAX_WAIT);
         Date start = new Date();
+        int delta = 1000 + RandomUtils.nextInt(MAX_WAIT);
         ThreadUtil.sleep(delta);
         Date end = new Date();   
  
@@ -286,8 +282,8 @@ public class ElapsedTimeTest extends TestCase
     {
         logger_.info("Running testConstructor3...");
         
-        int delta = RandomUtils.nextInt(MAX_WAIT);
         Date start = new Date();
+        int delta = 1000 + RandomUtils.nextInt(MAX_WAIT);
         ThreadUtil.sleep(delta);
         Date end = new Date();   
         
