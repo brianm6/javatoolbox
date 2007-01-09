@@ -25,7 +25,7 @@
 	<classpathentry kind="lib" path="lib/commons-io.jar" sourcepath="lib/src/commons-io-src.zip"/>
 	<classpathentry kind="lib" path="lib/commons-lang.jar" sourcepath="lib/src/commons-lang-src.zip"/>
 	<classpathentry kind="lib" path="lib/commons-logging.jar" sourcepath="lib/src/commons-logging-src.zip"/>
-	<classpathentry kind="lib" path="lib/commons-math.jar"/>
+	<classpathentry kind="lib" path="lib/commons-math.jar" sourcepath="lib/src/commons-math-src.zip"/>
 	<classpathentry kind="lib" path="lib/commons-net.jar" sourcepath="lib/src/commons-net-src.zip"/>
 	<classpathentry kind="lib" path="lib/commons-pool.jar" sourcepath="lib/src/commons-pool-src.zip"/>
 	<classpathentry kind="lib" path="lib/cryptix32.jar"/>
