@@ -14,7 +14,6 @@ import javax.swing.JPanel;
 import org.apache.commons.collections.MapUtils;
 import org.apache.log4j.Logger;
 
-import toolbox.junit.AssertUtil;
 import toolbox.util.statemachine.StateMachine;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartLabel;
