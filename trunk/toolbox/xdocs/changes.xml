@@ -112,6 +112,7 @@
         <!-- =================================================================== -->
         
         <release version="3.0.8" date="January 2007">
+            <action type="update">Lib - Upgraded Jakarta Commons-Pool to 1.3</action>
             <action type="update">Lib - Upgraded Office Look and Feel to 2.6</action>        
             <action type="update">Lib - Upgraded Beanshell to 2.0b4</action>           
             <action type="update">QueryPlugin - Added Sybase profile</action>        
