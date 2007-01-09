@@ -115,7 +115,7 @@ public class JMultiSplitPane extends JPanel
         
         butPanel.add(butThick);
         f.pack();
-        f.show();
+        f.setVisible(true);
     }    
     
     //--------------------------------------------------------------------------
