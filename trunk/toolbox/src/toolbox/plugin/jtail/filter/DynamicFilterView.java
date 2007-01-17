@@ -14,6 +14,7 @@ import com.thoughtworks.qdox.model.JavaClass;
 
 import nu.xom.Element;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -115,9 +116,7 @@ public class DynamicFilterView extends JHeaderPanel implements IPreferenced
      */
     protected void buildView()
     {
-        sourceArea_ = 
-            new JEditTextArea(new JavaTokenMarker(), new JavaDefaults());
-        
+        sourceArea_ = new JEditTextArea(new JavaTokenMarker(), new JavaDefaults());
         sourceArea_.setSaveContents(true);
         sourceArea_.setTabSize(4);
         sourceArea_.setFont(FontUtil.getPreferredMonoFont());
@@ -141,7 +140,7 @@ public class DynamicFilterView extends JHeaderPanel implements IPreferenced
     // IPreferenced Interface
     //--------------------------------------------------------------------------
     
-    /**
+    /*
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
     public void applyPrefs(Element prefs) throws PreferencedException
@@ -150,10 +149,37 @@ public class DynamicFilterView extends JHeaderPanel implements IPreferenced
             NODE_DYNAMIC_FILTER_VIEW, new Element(NODE_DYNAMIC_FILTER_VIEW));
         
         sourceArea_.applyPrefs(root);
+        
+        // Fill with default code template if nothing there
+        if (StringUtils.isBlank(sourceArea_.getText()))
+        {
+        	String template = 
+        		"import org.apache.commons.lang.*;\n"
+        		+ "\n"
+        		+ "import toolbox.plugin.jtail.filter.*;\n"
+        		+ "\n"
+        		+ "\n"
+        		+ "public class MyLineFilter extends AbstractLineFilter {\n"
+        		+ "    public boolean filter(StringBuffer line) {\n"
+        		+ "        if (isEnabled() && (line != null)) {\n"
+        		+ "            line.insert(0, \"(\");\n"
+        		+ "            line.append(\")\");\n"
+        		+ "        }\n"
+        		+ "\n"
+        		+ "        return true;\n"
+        		+ "    }\n"
+        		+ "\n"
+        		+ "    boolean filter(StringBuffer line, java.util.List segments) {\n"
+        		+ "        return filter(line);\n"
+        		+ "    }\n"
+        		+ "}\n";
+        	
+        	sourceArea_.setText(template);
+        }
     }
 
     
-    /**
+    /*
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
     public void savePrefs(Element prefs) throws PreferencedException
@@ -177,14 +203,12 @@ public class DynamicFilterView extends JHeaderPanel implements IPreferenced
             super("Format", true, false, null);
         }
         
-        /**
-         * @see toolbox.util.ui.SmartAction#runAction(
-         *      java.awt.event.ActionEvent)
+        /*
+         * @see toolbox.util.ui.SmartAction#runAction(java.awt.event.ActionEvent)
          */
         public void runAction(ActionEvent e) throws Exception
         {
-           sourceArea_.setText(
-               new JavaFormatter().format(sourceArea_.getText()));
+           sourceArea_.setText(new JavaFormatter().format(sourceArea_.getText()));
         }
     }
     
@@ -202,9 +226,8 @@ public class DynamicFilterView extends JHeaderPanel implements IPreferenced
             super("Compile", true, false, null);
         }
         
-        /**
-         * @see toolbox.util.ui.SmartAction#runAction(
-         *      java.awt.event.ActionEvent)
+        /*
+         * @see toolbox.util.ui.SmartAction#runAction(java.awt.event.ActionEvent)
          */
         public void runAction(ActionEvent e) throws Exception
         {
@@ -253,20 +276,19 @@ public class DynamicFilterView extends JHeaderPanel implements IPreferenced
 import org.apache.commons.lang.*;
 import toolbox.plugin.jtail.filter.*;
 
-public class CrapFilter extends AbstractLineFilter {
+public class MyLineFilter 
+	extends AbstractLineFilter {
 
-    public String filter(String line) {
+    public boolean filter(StringBuffer line) {
+		if (isEnabled() && line != null) {		
+	        line.insert(0,"(");
+	        line.append(")");
+	    }
+		return true;
+    }
 
-        if (!isEnabled()) {
-            return line;
-        }
-
-        if (line == null) {
-            return line;
-        }
-
-        return StringUtils.repeat("$", 10) + line +
-            StringUtils.repeat("#", 10);
+    boolean filter(StringBuffer line, java.util.List segments) {
+        return filter(line);
     }
 }
 */
