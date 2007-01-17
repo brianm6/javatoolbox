@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
- * TODO: SSH on CVS
  * TODO: Move Tomcat server to goober2
  * TODO: Add support to minimize to system tray - systray4j
  * TODO: Get PropertyPrompt working properly
  * TODO: Fix tailing of Log4j in JTail
  * TODO: Add detach notification to tail.
  * TODO: Upgrade to CLI2
- * TODO: add .cvspass to conf
  * TODO: Add way to copy the current selection from the file explorer dir pane.
  * TODO: Really pick apart JSmartTextArea and figure out a good way optimizing
  *       the addition of large sections of text. Unhook model, insert, rehook 
@@ -21,8 +19,7 @@
  * TODO: Investigate JModalWindow
  * TODO: Update banner with more external fonts.
  * TODO: Fix JTail recent menu
- * TODO: Update all command line tools using new help format in findclass
- * TODO: Tree - add inverse regex, case sensetive regex, and html output
+ * TODO: Tree - add exclude file/dir, inverse regex, case sensetive regex, and html output
  * TODO: Change String parameter to a File object in FileExplorerListener
  * TODO: Added number of files/selected files to the JFileExplorer InfoBar
  * TODO: Add Swing preferences (window drag, resize outline, etc)
@@ -30,11 +27,9 @@
  * TODO: Save db profiles to a separate file.
  * TODO: Add undo to TextToolsPlugin
  * TODO: Beef up junit plugin with junitx classes
- * TODO: Write a CVS log formatter to append logs to bottom of a file.
  * TODO: Get jode decompiler to work on File input.
  * TODO: Fix broken stop on JTail
  * TODO: Find out why Tiny LAFs are not working
- * TODO: Checkout SIGAR http://www.hyperic.net/downloads/sigar-download.htm
  * TODO: Redo ObservableService using decorator pattern
  * TODO: Implements Service Transitions using Aspects
  * TODO: JFileExplorer - color code directories and file names based on  file attribs
