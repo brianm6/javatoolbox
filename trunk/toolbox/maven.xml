@@ -399,7 +399,8 @@ Commands:
   fatjar:       Creates an executable jar version of the toolbox.
     all         Create all fatjars and distributes them
     clean       Deletes ${target}/fatjar directory
-    dist        Copies the fatjars to ${toolbox.fatjar.dist}
+    dist        Copies the fatjars to ${toolbox.fatjar.dist} or override
+                property toolbox.fatjar.dist
     laf         Creates toolbox-laf.jar
     lib         Creates toolbox-lib.jar
     toolbox     Creates toolbox.jar
@@ -710,7 +711,7 @@ Commands:
     <!-- FATJAR:DIST                                                         -->
     <!-- =================================================================== -->
     <goal name="fatjar:dist"
-          description = "Copies the toolbox fatjars to ${toolbox.fatjar.dist}.">
+          description = "Copies the toolbox fatjars to ${toolbox.fatjar.dist} or override toolbox.fatjar.dist property">
 
     	<echo>Override property toolbox.fatjar.dist to set the distribution directory</echo>
         <copy todir="${toolbox.fatjar.dist}" overwrite="yes" verbose="true">
