@@ -1,13 +1,11 @@
-set lib=c:\workspaces\workspace-toolbox\toolbox\lib
+set lib=t:\workspaces\workspace-toolbox\toolbox\lib
 
 call mvn install:install-file -Dfile=%LIB%\3dlf.jar             -DartifactId=3dlf             -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 call mvn install:install-file -Dfile=%LIB%\acrobat.jar          -DartifactId=acrobat          -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 call mvn install:install-file -Dfile=%LIB%\alloy.jar            -DartifactId=alloy            -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 call mvn install:install-file -Dfile=%LIB%\apple-mrj.jar        -DartifactId=apple-mrj        -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
-call mvn install:install-file -Dfile=%LIB%\avalon-framework.jar -DartifactId=avalon-framework -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
-call mvn install:install-file -Dfile=%LIB%\batik.jar            -DartifactId=batik            -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 call mvn install:install-file -Dfile=%LIB%\calphahtml.jar       -DartifactId=calphahtml       -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
-call mvn install:install-file -Dfile=%LIB%\commons-io.jar       -DartifactId=commons-io       -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+:call mvn install:install-file -Dfile=%LIB%\commons-io.jar       -DartifactId=commons-io       -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 call mvn install:install-file -Dfile=%LIB%\cryptix32-pgp.jar    -DartifactId=cryptix32-pgp    -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 call mvn install:install-file -Dfile=%LIB%\fhlaf.jar            -DartifactId=fhlaf            -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 call mvn install:install-file -Dfile=%LIB%\hamsam.jar           -DartifactId=hamsam           -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
@@ -23,7 +21,7 @@ call mvn install:install-file -Dfile=%LIB%\jreversepro.jar      -DartifactId=jre
 call mvn install:install-file -Dfile=%LIB%\jsap.jar             -DartifactId=jsap             -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 call mvn install:install-file -Dfile=%LIB%\jtidy.jar            -DartifactId=jtidy            -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 call mvn install:install-file -Dfile=%LIB%\jtoaster.jar         -DartifactId=jtoaster         -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
-call mvn install:install-file -Dfile=%LIB%\jung.jar             -DartifactId=jung             -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+:call mvn install:install-file -Dfile=%LIB%\jung.jar             -DartifactId=jung             -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 call mvn install:install-file -Dfile=%LIB%\junit-addons.jar     -DartifactId=junit-addons     -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 call mvn install:install-file -Dfile=%LIB%\kunststoff.jar       -DartifactId=kunststoff       -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 call mvn install:install-file -Dfile=%LIB%\l2fprod-common.jar   -DartifactId=l2fprod-common   -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
@@ -48,26 +46,3 @@ call mvn install:install-file -Dfile=%LIB%\webwindow.jar        -DartifactId=web
 call mvn install:install-file -Dfile=%LIB%\xep.jar              -DartifactId=xep              -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 call mvn install:install-file -Dfile=%LIB%\xplookandfeel.jar    -DartifactId=xplookandfeel    -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 call mvn install:install-file -Dfile=%LIB%\xt.jar               -DartifactId=xt               -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
