@@ -107,6 +107,7 @@
         <!-- =================================================================== -->
         
         <release version="3.0.8" date="January 2007">
+            <action type="update">Lib - Upgraded Classworlds to 1.1</action>                
             <action type="update">Lib - Upgraded QDox to 1.6.1</action>        
             <action type="update">JTailPlugin - Updated DynamicFilterView for Janino 2.5.3</action> 
             <action type="update">Lib - Upgraded Janino to 2.5.3</action>
