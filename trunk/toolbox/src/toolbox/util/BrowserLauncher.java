@@ -51,14 +51,13 @@ import org.apache.log4j.Logger;
  * functionality or any adverse or unexpected effects of using this software.
  * <p>
  * Credits: <br>
- * Steven Spencer, JavaWorld magazine ( <a
- * href="http://www.javaworld.com/javaworld/javatips/jw-javatip66.html">Java Tip
- * 66 </a>) <br>
+ * Steven Spencer, JavaWorld magazine ( 
+ * <a href="http://www.javaworld.com/javaworld/javatips/jw-javatip66.html">Java Tip 66</a>) 
+ * <br>
  * Thanks also to Ron B. Yeh, Eric Shapiro, Ben Engber, Paul Teitlebaum, Andrea
  * Cantatore, Larry Barowski, Trevor Bedzek, Frank Miedrich, and Ron Rabakukk
  * 
- * @author Eric Albert ( <a
- *         href="mailto:ejalbert@cs.stanford.edu">ejalbert@cs.stanford.edu </a>)
+ * @author Eric Albert ( <a href="mailto:ejalbert@cs.stanford.edu">ejalbert@cs.stanford.edu </a>)
  * @version 1.4b1 (Released June 20, 2001)
  */
 public class BrowserLauncher 

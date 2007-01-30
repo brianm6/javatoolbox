@@ -19,8 +19,8 @@ import toolbox.util.service.ServiceState;
 
 /**
  * FOPProcessor is a concrete implementation of a {@link FOProcessor} specific
- * to the Apache implementation of formatting objects called <a
- * href=http://xml.apache.org/fop>FOP </a> (Formatting Objects Processor).
+ * to the Apache implementation of formatting objects called 
+ * <a href=http://xml.apache.org/fop>FOP</a> (Formatting Objects Processor).
  */
 public class FOPProcessor implements FOProcessor
 {

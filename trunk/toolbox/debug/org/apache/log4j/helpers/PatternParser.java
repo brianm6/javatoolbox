@@ -1,14 +1,3 @@
-// =============================================================================
-// Log4J - adds RELATIVE support for format string 
-// =============================================================================
-
-/*
- * Copyright (C) The Apache Software Foundation. All rights reserved.
- *
- * This software is published under the terms of the Apache Software License
- * version 1.1, a copy of which has been included  with this distribution in
- * the LICENSE.txt file.
- */
 package org.apache.log4j.helpers;
 
 import java.text.DateFormat;
@@ -21,23 +10,6 @@ import org.apache.log4j.spi.LoggingEvent;
 
 import toolbox.util.StringUtil;
 
-// Contributors:   Nelson Minar <(nelson@monkey.org>
-//                 Igor E. Poteryaev <jah@mail.ru>
-//                 Reinhard Deschler <reinhard.deschler@web.de>
-
-/**
-   Most of the work of the {@link org.apache.log4j.PatternLayout} class
-   is delegated to the PatternParser class.
-
-   <p>It is this class that parses conversion patterns and creates
-   a chained list of {@link OptionConverter OptionConverters}.
-
-   @author <a href=mailto:"cakalijp@Maritz.com">James P. Cakalic</a>
-   @author Ceki G&uuml;lc&uuml;
-   @author Anders Kristensen
-
-   @since 0.8.2
-*/
 public class PatternParser {
 
     static

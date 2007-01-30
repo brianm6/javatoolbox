@@ -21,7 +21,7 @@ import toolbox.workspace.AbstractPlugin;
 import toolbox.workspace.PreferencedException;
 
 /**
- * Interactive <a href=http://www.beanshell.org>Beanshell<a> Plugin.
+ * Interactive <a href=http://www.beanshell.org>Beanshell</a> Plugin.
  */
 public class BeanShellPlugin extends AbstractPlugin
 {

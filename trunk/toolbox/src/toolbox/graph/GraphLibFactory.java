@@ -19,8 +19,8 @@ public final class GraphLibFactory {
     // -------------------------------------------------------------------------
 
     /**
-     * Java Universal Network Graph (JUNG) library at <a
-     * href="http://jung.sf.net"/>.
+     * Java Universal Network Graph (JUNG) library at 
+     * <a href="http://jung.sf.net"/>.
      */
     public static final String TYPE_JUNG = "toolbox.graph.jung.JungGraphLib";
 

@@ -296,8 +296,7 @@ public class Dumper
     /**
      * Dumps an array or collection class.
      * 
-     * @param arrayField Field thas is an array.
-     * @param array Array object.
+     * @param array Array of objects to dump.
      * @param buffer Dump buffer.
      * @param depth Recursion depth.
      * @throws IllegalAccessException if attribute/method not accessible.

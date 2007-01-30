@@ -40,12 +40,6 @@ import toolbox.util.service.Cancelable;
  * 
  * @see toolbox.findclass.FindClassResult
  * @see toolbox.findclass.FindClassListener
- * 
- * @has * - - toolbox.findclass.FindClassListener
- * @has - - - toolbox.findclass.FindClassCollector
- * @depend - util - toolbox.util.ArrayUtil
- * @depend - util - toolbox.util.ClassUtil
- * @depend - util - toolbox.util.FileUtil
  */
 public class FindClass implements Cancelable 
 { 

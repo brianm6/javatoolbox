@@ -575,7 +575,6 @@ public class LRUMap implements Map, Serializable
      * up the results.
      *
      * @return the hash code value for this map.
-     * @see Map.Entry#hashCode()
      * @see Object#hashCode()
      * @see Object#equals(Object)
      * @see Set#equals(Object)

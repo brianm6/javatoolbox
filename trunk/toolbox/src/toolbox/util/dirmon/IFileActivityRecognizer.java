@@ -2,6 +2,8 @@ package toolbox.util.dirmon;
 
 import java.util.List;
 
+import toolbox.util.dirmon.event.BaseEvent;
+
 /**
  * Interface that supports a the recognition of file activity within a 
  * directory.

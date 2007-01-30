@@ -136,7 +136,7 @@ public class FileCreationFinishedRecognizer
      * Files are not recognized on the DirectoryMonitor's time table so we have 
      * nothing to return here but an empty list.
      * 
-     * @see toolbox.util.file.activity.IFileActivityRecognizer#getRecognizedEvents(toolbox.util.file.snapshot.DirSnapshot, toolbox.util.file.snapshot.DirSnapshot)
+     * @see IFileActivityRecognizer#getRecognizedEvents(DirSnapshot, DirSnapshot)
      */
     public List getRecognizedEvents(DirSnapshot before, DirSnapshot after) {
         return ListUtils.EMPTY_LIST;

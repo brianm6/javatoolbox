@@ -70,7 +70,7 @@ public class FileFinder implements Finder {
     }
 
     /**
-     * @todo add maxdepth and mindepth somehow
+     * TODO add maxdepth and mindepth somehow
      */
     public File[] find(File directory, Map options) {
         notifyDirectoryStarted(directory);
