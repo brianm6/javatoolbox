@@ -1,0 +1,48 @@
+#set lib=t:\workspaces\workspace-toolbox\toolbox\lib
+#call mvn install:install-file -Dfile=%LIB%\commons-io.jar       -DartifactId=commons-io       -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+#call mvn install:install-file -Dfile=%LIB%\jung.jar             -DartifactId=jung             -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+
+mvn install:install-file -Dfile=../lib/3dlf.jar             -DartifactId=3dlf             -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+mvn install:install-file -Dfile=../lib/acrobat.jar          -DartifactId=acrobat          -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+mvn install:install-file -Dfile=../lib/alloy.jar            -DartifactId=alloy            -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+mvn install:install-file -Dfile=../lib/apple-mrj.jar        -DartifactId=apple-mrj        -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+mvn install:install-file -Dfile=../lib/calphahtml.jar       -DartifactId=calphahtml       -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+mvn install:install-file -Dfile=../lib/cryptix32-pgp.jar    -DartifactId=cryptix32-pgp    -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+mvn install:install-file -Dfile=../lib/fhlaf.jar            -DartifactId=fhlaf            -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+mvn install:install-file -Dfile=../lib/hamsam.jar           -DartifactId=hamsam           -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+mvn install:install-file -Dfile=../lib/hippolf.jar          -DartifactId=hippolf          -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+mvn install:install-file -Dfile=../lib/infonodelf.jar       -DartifactId=infonodelf       -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+mvn install:install-file -Dfile=../lib/jarjar.jar           -DartifactId=jarjar           -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+mvn install:install-file -Dfile=../lib/jcommon.jar          -DartifactId=jcommon          -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+mvn install:install-file -Dfile=../lib/jedit-syntax.jar     -DartifactId=jedit-syntax     -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+mvn install:install-file -Dfile=../lib/jemmy.jar            -DartifactId=jemmy            -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+mvn install:install-file -Dfile=../lib/jfreechart.jar       -DartifactId=jfreechart       -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+mvn install:install-file -Dfile=../lib/jode.jar             -DartifactId=jode             -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+mvn install:install-file -Dfile=../lib/jreversepro.jar      -DartifactId=jreversepro      -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+mvn install:install-file -Dfile=../lib/jsap.jar             -DartifactId=jsap             -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+mvn install:install-file -Dfile=../lib/jtidy.jar            -DartifactId=jtidy            -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+mvn install:install-file -Dfile=../lib/jtoaster.jar         -DartifactId=jtoaster         -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+mvn install:install-file -Dfile=../lib/junit-addons.jar     -DartifactId=junit-addons     -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+mvn install:install-file -Dfile=../lib/kunststoff.jar       -DartifactId=kunststoff       -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+mvn install:install-file -Dfile=../lib/l2fprod-common.jar   -DartifactId=l2fprod-common   -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+mvn install:install-file -Dfile=../lib/liquidlf.jar         -DartifactId=liquidlf         -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+mvn install:install-file -Dfile=../lib/looks.jar            -DartifactId=looks            -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+mvn install:install-file -Dfile=../lib/matra.jar            -DartifactId=matra            -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+mvn install:install-file -Dfile=../lib/metouia.jar          -DartifactId=metouia          -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+mvn install:install-file -Dfile=../lib/multivalent.jar      -DartifactId=multivalent      -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+mvn install:install-file -Dfile=../lib/napkinlf.jar         -DartifactId=napkinlf         -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+mvn install:install-file -Dfile=../lib/officelf.jar         -DartifactId=officelf         -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+mvn install:install-file -Dfile=../lib/oyoahalf.jar         -DartifactId=oyoahalf         -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+mvn install:install-file -Dfile=../lib/pollo.jar            -DartifactId=pollo            -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+mvn install:install-file -Dfile=../lib/prefuse.jar          -DartifactId=prefuse          -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+mvn install:install-file -Dfile=../lib/qdox.jar             -DartifactId=qdox             -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+mvn install:install-file -Dfile=../lib/skinlf.jar           -DartifactId=skinlf           -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+mvn install:install-file -Dfile=../lib/squarenesslf.jar     -DartifactId=squarenesslf     -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+mvn install:install-file -Dfile=../lib/statcvs.jar          -DartifactId=statcvs          -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+mvn install:install-file -Dfile=../lib/systray4j.jar        -DartifactId=systray4j        -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+mvn install:install-file -Dfile=../lib/tinylaf.jar          -DartifactId=tinylaf          -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+mvn install:install-file -Dfile=../lib/toniclf.jar          -DartifactId=toniclf          -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+mvn install:install-file -Dfile=../lib/webwindow.jar        -DartifactId=webwindow        -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+mvn install:install-file -Dfile=../lib/xep.jar              -DartifactId=xep              -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+mvn install:install-file -Dfile=../lib/xplookandfeel.jar    -DartifactId=xplookandfeel    -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+mvn install:install-file -Dfile=../lib/xt.jar               -DartifactId=xt               -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
