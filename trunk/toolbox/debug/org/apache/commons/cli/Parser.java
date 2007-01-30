@@ -75,13 +75,6 @@ import org.apache.log4j.helpers.LogLog;
 
 import toolbox.util.StringUtil;
 
-/**
- * <p><code>Parser</code> creates {@link CommandLine}s.</p>
- *
- * @author John Keyes (john at integralsource.com)
- * @see Parser
- * @version $Revision$
- */
 public abstract class Parser implements CommandLineParser {
 
     static
@@ -112,16 +105,6 @@ public abstract class Parser implements CommandLineParser {
     protected abstract String[] flatten(Options opts, String[] arguments, 
                                         boolean stopAtNonOption);
 
-    /**
-     * <p>Parses the specified <code>arguments</code> 
-     * based on the specifed {@link Options}.</p>
-     *
-     * @param options the <code>Options</code>
-     * @param arguments the <code>arguments</code>
-     * @return the <code>CommandLine</code>
-     * @throws ParseException if an error occurs when parsing the
-     * arguments.
-     */
     public CommandLine parse(Options options, String[] arguments)
                       throws ParseException
     {
@@ -147,21 +130,6 @@ public abstract class Parser implements CommandLineParser {
         return parse(options, arguments, properties, false);
     }
 
-    /**
-     * <p>Parses the specified <code>arguments</code> 
-     * based on the specifed {@link Options}.</p>
-     *
-     * @param options the <code>Options</code>
-     * @param arguments the <code>arguments</code>
-     * @param stopAtNonOption specifies whether to stop 
-     * interpreting the arguments when a non option has 
-     * been encountered and to add them to the CommandLines
-     * args list.
-     *
-     * @return the <code>CommandLine</code>
-     * @throws ParseException if an error occurs when parsing the
-     * arguments.
-     */
     public CommandLine parse(Options options, String[] arguments, 
                              boolean stopAtNonOption)
         throws ParseException
@@ -330,13 +298,6 @@ public abstract class Parser implements CommandLineParser {
         }
     }
 
-    /**
-     * <p>Throws a {@link MissingOptionException} if all of the
-     * required options are no present.</p>
-     *
-     * @throws MissingOptionException if any of the required Options
-     * are not present.
-     */
     private void checkRequiredOptions()
         throws MissingOptionException
     {
@@ -414,7 +375,7 @@ public abstract class Parser implements CommandLineParser {
 
                 try
                 {
-                    opt.addValue( Util.stripLeadingAndTrailingQuotes(str) );
+                    opt.addValue( org.apache.commons.cli.Util.stripLeadingAndTrailingQuotes(str) );
                 }
                 catch (RuntimeException exp)
                 {
@@ -427,8 +388,7 @@ public abstract class Parser implements CommandLineParser {
 
         if ((opt.getValues() == null) && !opt.hasOptionalArg())
         {
-            throw new MissingArgumentException("no argument for:"
-                                               + opt.getKey());
+            throw new MissingArgumentException("no argument for:" + opt /*.getKey()*/);
         }
     }
 
