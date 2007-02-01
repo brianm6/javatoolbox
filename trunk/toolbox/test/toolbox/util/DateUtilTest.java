@@ -163,7 +163,7 @@ public class DateUtilTest extends TestCase
         Date beforeRange = DateUtil.subtractDays(DateUtil.copy(beginRange), 1);
         Date afterRange  = DateUtil.addDays(DateUtil.copy(endRange), 1);
 
-        Date beginBorder = DateTimeUtil.getBeginningOfDay(beginRange);
+        Date beginBorder = DateTimeUtil.getStartOfDay(beginRange);
         Date endBorder   = DateTimeUtil.getEndOfDay(endRange);
 
         assertTrue(

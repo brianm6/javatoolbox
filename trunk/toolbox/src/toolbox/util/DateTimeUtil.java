@@ -106,9 +106,9 @@ public final class DateTimeUtil
      * 
      * @return Date
      */
-    public static Date getBeginningOfDay()
+    public static Date getStartOfDay()
     {
-        return getBeginningOfDay(new Date());
+        return getStartOfDay(new Date());
     }
     
     
@@ -119,7 +119,7 @@ public final class DateTimeUtil
      * @param d Date to get beginning of.
      * @return Date set to the beginning of the day.
      */
-    public static Date getBeginningOfDay(final Date d)
+    public static Date getStartOfDay(final Date d)
     {
         Date start = new Date(d.getTime());
         Calendar c = Calendar.getInstance();
@@ -137,7 +137,7 @@ public final class DateTimeUtil
      * 
      * @return Beginning of time.
      */
-    public static Date getBeginningOfTime()
+    public static Date getStartOfTime()
     {
         return new Date(0);
     }
