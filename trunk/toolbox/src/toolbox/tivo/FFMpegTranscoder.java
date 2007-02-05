@@ -9,12 +9,14 @@ import java.io.OutputStream;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
+import toolbox.util.ArrayUtil;
 import toolbox.util.ElapsedTime;
 import toolbox.util.Figlet;
 import toolbox.util.FileUtil;
@@ -97,7 +99,7 @@ public class FFMpegTranscoder extends AbstractTranscoder {
         //
         // 656 x 480  -32 + 32  1.36
         // 
-        StringBuffer sb = new StringBuffer();
+        List sb = new ArrayList();
         
         Collection videoFormatDimensions = new ArrayList();
         videoFormatDimensions.addAll(TivoStandards.VIDEO_FORMATS);
@@ -122,7 +124,7 @@ public class FFMpegTranscoder extends AbstractTranscoder {
                 
         fixer.calc();
         
-        sb.append(getExecutablePath() + " ");
+        sb.add(getExecutablePath());
         
         // only do the last minute
 
@@ -135,25 +137,39 @@ public class FFMpegTranscoder extends AbstractTranscoder {
 //            + StringUtils.leftPad(movieInfo.getSeconds() + "", 2, '0')
 //            + " ");
         
-        sb.append(" -i ");
-        sb.append("\"" + movieInfo.getFilename()  + "\" ");
+        sb.add("-i");
+        sb.add(movieInfo.getFilename());
         
         // latest ffmpeg does not like this
         // sb.append("-hq "); 
         
         
-        sb.append("-target ntsc-dvd ");
+        sb.add("-target");
+        sb.add("ntsc-dvd");
         
         int videoBitRate = Math.min(MAX_VIDEO_BITRATE, movieInfo.getBitrate().intValue() + 128);
         
-        sb.append("-b " + videoBitRate + " ");
-        sb.append("-aspect 4:3 "); 
-        sb.append("-s " + fixer.getWidth() + "x" + fixer.getHeight() + " ");
+        sb.add("-b");
+        sb.add(videoBitRate + "");
+        sb.add("-aspect");
+        sb.add("4:3"); 
+        sb.add("-s");
+        sb.add(fixer.getWidth() + "x" + fixer.getHeight());
         
         if (fixer.getLeftPad() > 0 || fixer.getRightPad() > 0) {
-            sb.append(fixer.getPadLeftRight() 
-                ? "-padleft " + fixer.getLeftPad() + " -padright " + fixer.getRightPad() + " "
-                : "-padtop " + fixer.getLeftPad() + " -padbottom " + fixer.getRightPad() + " ");
+        	
+            if (fixer.getPadLeftRight()) {
+            	sb.add("-padleft");
+            	sb.add(fixer.getLeftPad()+"");
+            	sb.add("-padright");
+            	sb.add(fixer.getRightPad()+"");            	
+            }
+            else {
+            	sb.add("-padtop");
+            	sb.add(fixer.getLeftPad() + "");
+            	sb.add("-padbottom");
+            	sb.add(fixer.getRightPad() + "");            	
+            }
         }
 
 //        if (fixer.getPad() > 0) {
@@ -162,24 +178,23 @@ public class FFMpegTranscoder extends AbstractTranscoder {
 //                : "-padtop " + fixer.getPad() + " -padbottom " + fixer.getPad() + " ");
 //        }
         
-        sb.append("-acodec mp2 ");
-        sb.append("-ab " + TivoStandards.AUDIO_128.getBitrate() + " "); 
-        sb.append("-ac 2 ");
-        sb.append("-mbd 2 ");
-        sb.append("-qmin 2 ");
-        sb.append("-async 1 ");
-        sb.append("-y ");
+        sb.add("-acodec"); sb.add("mp2");
+        sb.add("-ab"); sb.add(TivoStandards.AUDIO_128.getBitrate() + ""); 
+        sb.add("-ac"); sb.add("2");
+        sb.add("-mbd"); sb.add("2");
+        sb.add("-qmin"); sb.add("2");
+        sb.add("-async"); sb.add("1");
+        sb.add("-y");
+        sb.add(destFilename);
 
-        sb.append("\"" + destFilename + "\"");
-
-        logger_.info("Command: " + sb);
+        logger_.info("Command: " + ArrayUtil.toString(sb.toArray(), true));
         
         ElapsedTime timer = new ElapsedTime();
         timer.setStartTime();
         
         fireTranscodeStarted();
         
-        Process p = Runtime.getRuntime().exec(sb.toString());
+        Process p = Runtime.getRuntime().exec((String[]) sb.toArray(new String[0]));
         StringBuffer stdout = new StringBuffer();
         StringBuffer stderr = new StringBuffer();
         
