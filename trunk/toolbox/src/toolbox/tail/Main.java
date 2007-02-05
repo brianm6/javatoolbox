@@ -12,10 +12,10 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.PosixParser;
+import org.apache.commons.io.output.NullWriter;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
-import toolbox.util.io.NullWriter;
 import toolbox.util.service.ServiceException;
 
 /**

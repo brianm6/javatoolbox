@@ -9,13 +9,13 @@ import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.output.NullWriter;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.FileUtil;
 import toolbox.util.RandomUtil;
 import toolbox.util.StringUtil;
-import toolbox.util.io.NullWriter;
 
 /**
  * Unit test for {@link toolbox.tree.Tree2}.

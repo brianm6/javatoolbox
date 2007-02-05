@@ -28,6 +28,7 @@ import javax.swing.text.StyleConstants;
 import edu.emory.mathcs.backport.java.util.concurrent.BlockingQueue;
 import edu.emory.mathcs.backport.java.util.concurrent.LinkedBlockingQueue;
 
+import org.apache.commons.io.output.NullWriter;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -48,7 +49,6 @@ import toolbox.util.ExceptionUtil;
 import toolbox.util.FontUtil;
 import toolbox.util.concurrent.BatchingQueueReader;
 import toolbox.util.concurrent.IBatchingQueueListener;
-import toolbox.util.io.NullWriter;
 import toolbox.util.service.ServiceException;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JHeaderPanel;

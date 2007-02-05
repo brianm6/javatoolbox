@@ -8,13 +8,14 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 
-import junit.framework.TestCase;
-import junit.textui.TestRunner;
-
 import edu.emory.mathcs.backport.java.util.concurrent.BlockingQueue;
 import edu.emory.mathcs.backport.java.util.concurrent.LinkedBlockingQueue;
 
+import junit.framework.TestCase;
+import junit.textui.TestRunner;
+
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.output.NullWriter;
 import org.apache.log4j.Logger;
 
 import toolbox.util.FileUtil;
@@ -22,7 +23,6 @@ import toolbox.util.RandomUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.ThreadUtil;
 import toolbox.util.file.FileStuffer;
-import toolbox.util.io.NullWriter;
 import toolbox.util.io.StringOutputStream;
 
 /**

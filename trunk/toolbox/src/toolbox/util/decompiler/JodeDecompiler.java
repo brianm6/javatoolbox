@@ -5,10 +5,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import org.apache.commons.io.output.NullWriter;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-
-import toolbox.util.io.NullWriter;
 
 /**
  * Decompiler adapter for the <a href="http://jode.sf.net">Jode</a> decompiler.
