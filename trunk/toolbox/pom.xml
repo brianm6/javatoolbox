@@ -182,7 +182,7 @@ Cheat sheet:
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
-      <version>1.2</version>
+      <version>1.3</version>
       <!--          <url>http://jakarta.apache.org/commons/io</url>-->
       <!--          <properties>-->
       <!--            <jnlp.jar>true</jnlp.jar>-->
