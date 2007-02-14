@@ -5,13 +5,10 @@ import java.io.LineNumberReader;
 import java.io.StringReader;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
-
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
-import toolbox.log4j.SmartLogger;
-import toolbox.util.PropertiesUtil;
+import org.apache.log4j.Logger;
 
 /**
  * Unit Test for {@link toolbox.util.PropertiesUtil}.
@@ -25,11 +22,6 @@ public class PropertiesUtilTest extends TestCase
     // Main
     //--------------------------------------------------------------------------
             
-    /**
-     * Entrypoint.
-     * 
-     * @param args None recognized.
-     */
     public static void main(String[] args)
     {
         TestRunner.run(PropertiesUtilTest.class);
@@ -174,33 +166,55 @@ public class PropertiesUtilTest extends TestCase
     }
     
     
-    /**
-     * Tests toString()
-     * 
-     * @throws IOException on I/O error.
-     */
-    public void testToString() throws IOException
+    public void testToString_Zero() throws IOException 
     {
-        logger_.info("Running testToString...");
-        
+		logger_.info("Running testToString_Zero...");
+
+		Properties p = new Properties();
+		String s = PropertiesUtil.toString(p);
+		logger_.debug(s);
+		assertEquals("", s);
+	}
+
+	public void testToString_One() throws IOException 
+	{
+		logger_.info("Running testToString_One...");
+
+		// Setup
+		Properties p = new Properties();
+		p.setProperty("alpha.centauri", "rhombus");
+
+		// Test
+		String s = PropertiesUtil.toString(p);
+
+		// Verify
+		logger_.debug(s);
+		LineNumberReader lnr = new LineNumberReader(new StringReader(s));
+		assertTrue(lnr.readLine().startsWith("alpha.centauri"));
+		assertNull(lnr.readLine());
+	}
+
+	public void testToString_Many() throws IOException 
+	{
+	    logger_.info("Running testToString_Many...");
+
+        // Setup
         Properties p = new Properties();
         p.setProperty("alpha.centauri", "rhombus");
         p.setProperty("alpha.beta", "cube");
-        p.setProperty("zulu.tango", "zebra");
-        p.setProperty("foxtrot.mango", "tail");
-        
+        p.setProperty("zulu.tango", "trapezoid");
+        p.setProperty("foxtrot.charlie", "torus");
+
+        // Test
         String s = PropertiesUtil.toString(p);
-        
-        SmartLogger.info(logger_, s);
-        
+
+        // Verify - props sorted
+        logger_.debug(s);
         LineNumberReader lnr = new LineNumberReader(new StringReader(s));
-        
-        // Make sure output is sorted correctly
         assertTrue(lnr.readLine().startsWith("alpha.beta"));
         assertTrue(lnr.readLine().startsWith("alpha.centauri"));
-        assertTrue(lnr.readLine().startsWith("foxtrot.mango"));
+        assertTrue(lnr.readLine().startsWith("foxtrot.charlie"));
         assertTrue(lnr.readLine().startsWith("zulu.tango"));
-        
-        lnr.close();
+        assertNull(lnr.readLine());
     }
 }
