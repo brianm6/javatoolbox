@@ -35,11 +35,11 @@ public class FFMpegTranscoder extends AbstractTranscoder {
     // -------------------------------------------------------------------------
     
     /**
-     * Make sure the bit rate passed to ffmpeg never goes about 8000. This
+     * Make sure the bit rate passed to ffmpeg never goes about 8000 kbits/sec. This
      * happens when ffmpeg reads the bit rate from a movie incorrectly and ends
      * up making ffmpeg blow up on the encoding.
      */
-    private static final int MAX_VIDEO_BITRATE = 8000;
+    private static final int MAX_VIDEO_BITRATE = 8000; 
 
     // -------------------------------------------------------------------------
     // Fields
@@ -150,7 +150,9 @@ public class FFMpegTranscoder extends AbstractTranscoder {
         int videoBitRate = Math.min(MAX_VIDEO_BITRATE, movieInfo.getBitrate().intValue() + 128);
         
         sb.add("-b");
-        sb.add(videoBitRate + "");
+        
+        // latest ffmpeg (2007) uses bits/sec vs. old kbits/sec so have to multiply by 1000
+        sb.add((videoBitRate * 1000) + "");
         sb.add("-aspect");
         sb.add("4:3"); 
         sb.add("-s");
@@ -179,7 +181,10 @@ public class FFMpegTranscoder extends AbstractTranscoder {
 //        }
         
         sb.add("-acodec"); sb.add("mp2");
-        sb.add("-ab"); sb.add(TivoStandards.AUDIO_128.getBitrate() + ""); 
+        
+        // latest ffmpeg uses bits/sec vs. old kbits/sec so have to multiply by 1000        
+        sb.add("-ab"); sb.add((TivoStandards.AUDIO_128.getBitrate().intValue() * 1000)+ "");
+        
         sb.add("-ac"); sb.add("2");
         sb.add("-mbd"); sb.add("2");
         sb.add("-qmin"); sb.add("2");
@@ -187,7 +192,7 @@ public class FFMpegTranscoder extends AbstractTranscoder {
         sb.add("-y");
         sb.add(destFilename);
 
-        logger_.info("Command: " + ArrayUtil.toString(sb.toArray(), true));
+        logger_.info("FFMpeg Command: " + ArrayUtil.toString(sb.toArray(), true));
         
         ElapsedTime timer = new ElapsedTime();
         timer.setStartTime();
@@ -219,9 +224,9 @@ public class FFMpegTranscoder extends AbstractTranscoder {
             
             
             ferr = new BufferedOutputStream(
-                        fpos = new FFMpegProgressOutputStream(
-                            totalSeconds, 
-                            new FileOutputStream(errFile)));
+                fpos = new FFMpegProgressOutputStream(
+                    totalSeconds, 
+                    new FileOutputStream(errFile)));
 
             ferr.write(new String("FFMpeg command: \n" + sb + "\n\n").getBytes());
             

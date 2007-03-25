@@ -102,6 +102,15 @@
     </properties>
 
     <body>
+    
+        <!-- =================================================================== -->
+        <!-- February 2007                                                       -->
+        <!-- =================================================================== -->
+        
+        <release version="3.0.10" date="March 2007">
+            <action type="update">Tivo - Added support for latest ffmpeg from trunk (3-2007). Specifically, bitrates changed from kbits/sec to bits/sec</action>
+        </release>
+    
         <!-- =================================================================== -->
         <!-- February 2007                                                       -->
         <!-- =================================================================== -->
