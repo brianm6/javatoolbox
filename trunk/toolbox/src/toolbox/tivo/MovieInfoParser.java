@@ -1,8 +1,8 @@
 package toolbox.tivo;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.ArrayList;
 
 import junit.framework.Assert;
 
@@ -72,16 +72,23 @@ public class MovieInfoParser {
 
     }
 
+    /**
+     * Parse duration and bitrate.
+     */
     void parseMovieLine(String line, MovieInfo movie) {
 
         // Duration: 00:32:27.2, start: 0.000000, bitrate: 521 kb/s
-
+    	// 
+    	// Matroska:
+    	//
+    	// Duration: 02:06:23.4, bitrate: N/A
+    	
         // TODO: Convert to TokenScanner interface once something breaks it!
 
         String[] tokens = StringUtils.split(line);
 
-        Assert.assertEquals(
-            "Expected 7 tokens for duration line", 7, tokens.length);
+        //Assert.assertEquals(
+        //    "Expected 7 tokens for duration line", 7, tokens.length);
 
         Assert.assertEquals(
             "Expected 'Duration:' as first token",

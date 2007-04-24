@@ -246,8 +246,8 @@ public class FFMpegTranscoder extends AbstractTranscoder {
                 //logger_.info("elapsed = " + timer + " or " + timer.getTotalMillis());
                 //logger_.info("frames = " + frames);
                 //logger_.info("seconds = " + transcodeSeconds);
-                logger_.info("Frames transcoded/sec = " + (frames / transcodeSeconds));
-                logger_.info("\n" + Figlet.getBanner("FPS = " + nf.format(frames/transcodeSeconds)));
+                logger_.info("Frames transcoded/sec = " + (frames / Math.max(1,transcodeSeconds)));
+                logger_.info("\n" + Figlet.getBanner("FPS = " + nf.format(frames/ Math.max(1, transcodeSeconds))));
             }
 
             int movieSeconds = movieInfo.getTotalSeconds();
