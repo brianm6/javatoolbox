@@ -366,7 +366,6 @@ Cheat sheet:
       <version>SNAPSHOT</version>
     </dependency>
 
-
     <!--    Versio is cvs is 1.0.0 pre2 and ibiblio has 1.0 -->
     <dependency>
       <groupId>toolbox</groupId>
@@ -558,31 +557,31 @@ Cheat sheet:
     <plugins>
 
       <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <configuration>
-              <source>1.4</source>
-              <target>1.4</target>
-          </configuration>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.4</source>
+          <target>1.4</target>
+        </configuration>
       </plugin>
 
       <plugin>
-          <groupId>org.codehaus.mojo</groupId>
-          <artifactId>build-helper-maven-plugin</artifactId>
-          <executions>
-              <execution>
-                  <id>add-source</id>
-                  <phase>generate-sources</phase>
-                  <goals>
-                      <goal>add-source</goal>
-                  </goals>
-                  <configuration>
-                      <sources>
-                          <source>${basedir}/debug</source>
-                      </sources>
-                  </configuration>
-              </execution>
-          </executions>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>add-source</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>${basedir}/debug</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
       
       <plugin>
@@ -608,6 +607,15 @@ Cheat sheet:
         </configuration>
       </plugin>
 
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-eclipse-plugin</artifactId>
+        <configuration>
+          <!-- Force download of source jars when running 'mvn eclipse:eclipse' -->
+          <downloadSources>true</downloadSources>
+        </configuration>
+      </plugin>
+
     </plugins>
   </build>
 
@@ -620,28 +628,28 @@ Cheat sheet:
     <plugins>
 
       <plugin>
-          <groupId>org.codehaus.mojo</groupId>
-          <artifactId>surefire-report-maven-plugin</artifactId>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>surefire-report-maven-plugin</artifactId>
       </plugin>
 
       <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-javadoc-plugin</artifactId>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
       </plugin>
 
       <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-jxr-plugin</artifactId>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jxr-plugin</artifactId>
       </plugin>
 
       <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-pmd-plugin</artifactId>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
       </plugin>      
       
       <plugin>
-          <groupId>org.codehaus.mojo</groupId>
-          <artifactId>cobertura-maven-plugin</artifactId>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>cobertura-maven-plugin</artifactId>
       </plugin>
 
     </plugins>
