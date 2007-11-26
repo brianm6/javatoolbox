@@ -15,7 +15,7 @@ import junit.runner.TestCollector;
 import toolbox.util.ClassUtil;
 
 /**
- * JarTestCollector finds JUnit tests embeded in jar/zip files that are 
+ * JarTestCollector finds JUnit tests embedded in jar/zip files that are 
  * specified in the CLASSPATH.
  */
 public class JarTestCollector implements TestCollector

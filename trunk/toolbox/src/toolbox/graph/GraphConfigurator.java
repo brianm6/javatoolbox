@@ -142,7 +142,7 @@ public class GraphConfigurator extends JPanel {
 
 
     /**
-     * Populates the graph library combobox with teh available graphing
+     * Populates the graph library combobox with the available graphing
      * libraries.
      */
     protected void populateGraphLib() {

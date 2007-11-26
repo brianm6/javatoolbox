@@ -184,7 +184,7 @@ public class FindClassPane extends JPanel implements IPreferenced
     //--------------------------------------------------------------------------
 
     /**
-     * Initiailizes the GUI.
+     * Initializes the GUI.
      *
      * @param params Map of initialization objects
      */
@@ -518,7 +518,7 @@ public class FindClassPane extends JPanel implements IPreferenced
 
 
         /**
-         * When a search is cancelled, update the status bar.
+         * When a search is canceled, update the status bar.
          *
          * @see toolbox.findclass.FindClassListener#searchCanceled()
          */
@@ -858,7 +858,7 @@ public class FindClassPane extends JPanel implements IPreferenced
 
                 case ResultsTableModel.COL_CLASS:
 
-                    // Hilight search string match in the entire classes' FQCN
+                    // Highlight search string match in the entire classes' FQCN
                     if (hiliteToggleButton_.isSelected())
                     {
                         // Apparently, the number value has to pulled from the

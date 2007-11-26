@@ -25,7 +25,7 @@ public class JungEdge implements toolbox.graph.Edge {
      * Creates a JungEdge.
      * 
      * @param from Source vertex of this edge.
-     * @param to Destination vertext of this edge.
+     * @param to Destination vertex of this edge.
      */
     public JungEdge(toolbox.graph.Vertex from, toolbox.graph.Vertex to) {
         Vertex fromVertex = (Vertex) from.getDelegate();

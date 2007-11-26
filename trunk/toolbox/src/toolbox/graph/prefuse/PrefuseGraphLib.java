@@ -16,7 +16,7 @@ import toolbox.graph.GraphView;
 import toolbox.graph.Vertex;
 
 /**
- * Prefuse implemenatation of a {@link toolbox.graph.GraphLib}.
+ * Prefuse implementation of a {@link toolbox.graph.GraphLib}.
  */
 public class PrefuseGraphLib implements GraphLib {
 

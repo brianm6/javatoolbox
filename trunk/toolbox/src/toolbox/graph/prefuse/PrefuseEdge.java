@@ -28,7 +28,7 @@ public class PrefuseEdge implements toolbox.graph.Edge {
      * Creates a non-directed PrefuseEdge.
      * 
      * @param from Source vertex of this edge.
-     * @param to Destination vertext of this edge.
+     * @param to Destination vertex of this edge.
      */
     public PrefuseEdge(toolbox.graph.Vertex from, toolbox.graph.Vertex to) {
         this(from, to, true);
@@ -39,7 +39,7 @@ public class PrefuseEdge implements toolbox.graph.Edge {
      * Creates a PrefuseEdge.
      * 
      * @param from Source vertex of this edge.
-     * @param to Destination vertext of this edge.
+     * @param to Destination vertex of this edge.
      * @param directed True for directed edge, false otherwise.
      */
     public PrefuseEdge(

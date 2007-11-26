@@ -33,7 +33,7 @@ public class FileStats
     
     /** 
      * Number of misc lines in the file. This can include import statement,
-     * licences embedded as comments, etc. Basically, lines of text which don't
+     * licenses embedded as comments, etc. Basically, lines of text which don't
      * really represent in full the category to which they belong.
      */
     private int thrownOutLines_;

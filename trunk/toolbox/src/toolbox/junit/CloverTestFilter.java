@@ -74,7 +74,7 @@ public class CloverTestFilter extends BasicTestFilter
     //--------------------------------------------------------------------------
 
     /**
-     * Rejects classes that exetnd UITestCase and also rejects classes that 
+     * Rejects classes that extend UITestCase and also rejects classes that 
      * implement StandAloneTestCase.
      *
      * @see junitx.util.TestFilter#include(java.lang.Class)

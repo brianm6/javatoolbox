@@ -11,7 +11,7 @@ import toolbox.util.service.ServiceListener;
 public interface StatsListener extends ServiceListener
 {
     /**
-     * Notifcation of data throughput in kilobytes per second.
+     * Notification of data throughput in kilobytes per second.
      * 
      * @param kbs Throughput per second.
      */

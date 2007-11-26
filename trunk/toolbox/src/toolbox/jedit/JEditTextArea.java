@@ -236,7 +236,7 @@ public class JEditTextArea extends org.jedit.syntax.JEditTextArea
     //--------------------------------------------------------------------------
     
     /**
-     * Returns the pooup menu for the text area.
+     * Returns the popup menu for the text area.
      * 
      * @return JPopupMenu
      */

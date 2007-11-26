@@ -132,7 +132,7 @@ public class StatsCollector
     interface CodeCollector
     {
         /**
-         * Identify a category to which a line of souce code belongs
+         * Identify a category to which a line of source code belongs
          * 
          * @param stats Increments category counter here.
          * @param line Line of source code.

@@ -19,7 +19,7 @@ import toolbox.graph.GraphView;
 import toolbox.graph.Vertex;
 
 /**
- * Jung implemenatation of a {@link toolbox.graph.GraphLib}.
+ * Jung implementation of a {@link toolbox.graph.GraphLib}.
  */
 public class JungGraphLib implements GraphLib {
 

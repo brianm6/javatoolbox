@@ -55,7 +55,7 @@ public class ServerView extends JHeaderPanel
     private JTextField serverPortField_;
     
     /**
-     * Service statis field.
+     * Service status field.
      */
     private JTextField statusField_;
     

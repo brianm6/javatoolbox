@@ -31,7 +31,7 @@ public abstract class BaseAction extends WorkspaceAction
      * 
      * @param plugin Query plugin which invoked this action.
      * @param name Action name.
-     * @param async True to run asynchrously.
+     * @param async True to run asynchronously.
      * @param scope Scope of the busy cursor.
      * @param statusBar Status bar for updates.
      */

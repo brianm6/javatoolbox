@@ -1,5 +1,6 @@
 package toolbox.ip2hostname;
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.HashMap;
@@ -10,6 +11,8 @@ import org.apache.commons.collections.buffer.BlockingBuffer;
 import org.apache.commons.collections.buffer.UnboundedFifoBuffer;
 import org.apache.commons.lang.time.StopWatch;
 import org.apache.log4j.Logger;
+
+import toolbox.util.FileUtil;
 
 /**
  * Resolves an IP address to a hostname but also cached lookups and can be
@@ -75,12 +78,12 @@ public class HostnameResolver {
     private Buffer queue;
     
     /**
-     * Thead that performs the async lookups.
+     * Thread that performs the async lookups.
      */
     private Thread asyncResolver;
     
     //--------------------------------------------------------------------------
-    // Constuctors
+    // Constructors
     //--------------------------------------------------------------------------
     
     /**
@@ -154,13 +157,21 @@ public class HostnameResolver {
                         queue.add(ip);
                     }
                     else {
-                        //logger.debug("IP " + ip + " alrady in queue..skipping...");
+                        //logger.debug("IP " + ip + " already in queue..skipping...");
                     }
                     hostname = ip;
                 }
                 else {
                     hostname = resolveInternal(ip);
                     cache.put(ip, hostname);
+                    
+                    // log to file
+                    try {
+						FileUtil.setFileContents("hostnames", hostname + "\n", true);
+					} 
+                    catch (IOException e) {
+                    	logger.error(e);
+					}
                 }
             }
         }

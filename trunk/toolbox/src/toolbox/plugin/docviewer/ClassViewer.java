@@ -14,7 +14,7 @@ import toolbox.util.io.StringInputStream;
 
 /**
  * Java class file viewer that decompiles a <code>class</code> file and
- * displays the resulting source code in a syntax hilighting editor.
+ * displays the resulting source code in a syntax highlighting editor.
  */
 public class ClassViewer extends JavaViewer {
 

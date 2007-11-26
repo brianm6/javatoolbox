@@ -118,7 +118,7 @@ public class TailPane extends JHeaderPanel
     public static final String LOG_SYSTEM_OUT = "[System.out]";
 
     /**
-     * Specital tail type for Log4J.
+     * Special tail type for Log4J.
      */
     public static final String LOG_LOG4J = "[Log4J]";
 
@@ -522,7 +522,7 @@ public class TailPane extends JHeaderPanel
         {
             File f = contexts_[i].getTail().getFile();
 
-            // TODO: Fix me. Temp fix for handlding non-file based tails
+            // TODO: Fix me. Temp fix for handling non-file based tails
             files = (String[]) ArrayUtil.add(files,
                 (f == null) ? "[Log4J]" : f.getCanonicalPath());
         }
