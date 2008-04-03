@@ -245,6 +245,10 @@ Cheat sheet:
           <groupId>com.sun.jmx</groupId>
           <artifactId>jmxri</artifactId>
         </exclusion>
+        <exclusion>
+          <groupId>javax.mail</groupId>
+          <artifactId>mail</artifactId>
+        </exclusion>
       </exclusions>     
     </dependency>
 
