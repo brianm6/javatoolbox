@@ -6,7 +6,6 @@ if exist %sf% set sa=--settings %sf%
 
 call mvn %sa% install:install-file -Dfile=%lib%\3dlf.jar             -DartifactId=3dlf             -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 call mvn %sa% install:install-file -Dfile=%LIB%\acrobat.jar          -DartifactId=acrobat          -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
-call mvn %sa% install:install-file -Dfile=%LIB%\alloy.jar            -DartifactId=alloy            -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 call mvn %sa% install:install-file -Dfile=%LIB%\apple-mrj.jar        -DartifactId=apple-mrj        -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 call mvn %sa% install:install-file -Dfile=%LIB%\calphahtml.jar       -DartifactId=calphahtml       -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 call mvn %sa% install:install-file -Dfile=%LIB%\cryptix32-pgp.jar    -DartifactId=cryptix32-pgp    -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true

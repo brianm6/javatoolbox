@@ -283,7 +283,6 @@
                 <include name="toniclf.jar"/>
                 <include name="liquidlf.jar"/>
                 <include name="hippolf.jar"/>
-                <include name="alloy.jar"/>
                 <include name="oyoahalf.jar"/>
                 <include name="squarenesslf.jar"/>
                 <include name="napkinlf.jar"/>

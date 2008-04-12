@@ -298,12 +298,6 @@ Cheat sheet:
 
     <dependency>
       <groupId>toolbox</groupId>
-      <artifactId>alloy</artifactId>
-      <version>SNAPSHOT</version>
-    </dependency>
-
-    <dependency>
-      <groupId>toolbox</groupId>
       <artifactId>apple-mrj</artifactId>
       <version>SNAPSHOT</version>
     </dependency>

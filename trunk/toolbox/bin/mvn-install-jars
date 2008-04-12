@@ -4,7 +4,6 @@
 
 mvn install:install-file -Dfile=../lib/3dlf.jar             -DartifactId=3dlf             -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 mvn install:install-file -Dfile=../lib/acrobat.jar          -DartifactId=acrobat          -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
-mvn install:install-file -Dfile=../lib/alloy.jar            -DartifactId=alloy            -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 mvn install:install-file -Dfile=../lib/apple-mrj.jar        -DartifactId=apple-mrj        -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 mvn install:install-file -Dfile=../lib/calphahtml.jar       -DartifactId=calphahtml       -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 mvn install:install-file -Dfile=../lib/cryptix32-pgp.jar    -DartifactId=cryptix32-pgp    -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
