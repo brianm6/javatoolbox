@@ -12,5 +12,4 @@
     <docviewer name="Multivalent Text Viewer" class="toolbox.plugin.docviewer.MultivalentViewer"/>
     <docviewer name="Pollo Viewer"       class="toolbox.plugin.docviewer.PolloViewer"/>
     <docviewer name="Text Viewer"        class="toolbox.plugin.docviewer.TextViewer"/>
-    <docviewer name="WebWindow Viewer"   class="toolbox.plugin.docviewer.WebWindowViewer"/>
 </docviewers>

@@ -202,7 +202,6 @@
                 <include name="classworlds.jar"/>
 
                 <!-- Doc viewer plugin -->
-                <include name="webwindow.jar"/>
                 <include name="calphahtml.jar"/>
                 <include name="jaxen.jar"/>
                 <include name="pollo.jar"/>

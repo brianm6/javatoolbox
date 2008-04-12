@@ -41,7 +41,6 @@ mvn install:install-file -Dfile=../lib/statcvs.jar          -DartifactId=statcvs
 mvn install:install-file -Dfile=../lib/systray4j.jar        -DartifactId=systray4j        -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 mvn install:install-file -Dfile=../lib/tinylaf.jar          -DartifactId=tinylaf          -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 mvn install:install-file -Dfile=../lib/toniclf.jar          -DartifactId=toniclf          -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
-mvn install:install-file -Dfile=../lib/webwindow.jar        -DartifactId=webwindow        -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 mvn install:install-file -Dfile=../lib/xep.jar              -DartifactId=xep              -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 mvn install:install-file -Dfile=../lib/xplookandfeel.jar    -DartifactId=xplookandfeel    -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 mvn install:install-file -Dfile=../lib/xt.jar               -DartifactId=xt               -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true

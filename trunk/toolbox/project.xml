@@ -853,16 +853,6 @@
     </dependency>
     
     <dependency>
-      <id>webwindow</id>
-      <version></version>
-      <url>http://www.javio.com</url>
-      <properties>
-        <jnlp.jar>true</jnlp.jar>
-        <fatjar>toolbox</fatjar>
-      </properties>
-    </dependency>
-
-    <dependency>
       <id>velocity</id>
       <version></version>
       <url></url>

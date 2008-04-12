@@ -30,7 +30,7 @@ import org.apache.log4j.Logger;
 import org.netbeans.lib.cvsclient.commandLine.CVSCommand;
 
 import toolbox.plugin.docviewer.DocumentViewer;
-import toolbox.plugin.docviewer.WebWindowViewer;
+import toolbox.plugin.docviewer.MultivalentViewer;
 import toolbox.util.ArrayUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.StringUtil;
@@ -382,7 +382,7 @@ public class StatcvsPlugin extends AbstractPlugin
      */
     protected JComponent buildReportView()
     {
-        reportViewer_ = new WebWindowViewer();
+        reportViewer_ = new MultivalentViewer();
         return reportViewer_.getComponent();
     }
 

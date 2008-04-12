@@ -89,6 +89,5 @@
 	<classpathentry kind="lib" path="lib/xom.jar" sourcepath="lib/src/xom-src.zip"/>
 	<classpathentry kind="lib" path="lib/xplookandfeel.jar" sourcepath="lib/src/xplookandfeel-src.zip"/>
 	<classpathentry kind="lib" path="lib/xt.jar" sourcepath="lib/src/xt-src.zip"/>
-	<classpathentry kind="lib" path="lib/webwindow.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>
