@@ -1,0 +1,40 @@
+#
+# Custom compile for ffmpeg
+#
+
+./configure \
+--enable-gpl \
+--enable-swscaler \
+--enable-liba52 \
+--enable-liba52bin \
+--enable-libmp3lame \
+--enable-libogg \
+--enable-libtheora \
+--enable-libvorbis \
+--enable-libx264 \
+--enable-pthreads \
+--enable-libxvid \
+--enable-libfaac \
+--enable-libfaad \
+--enable-dc1394 \
+--enable-libfaadbin \
+--enable-libgsm \
+--enable-libmp3lame \
+--enable-pp \
+--arch=i686 \
+--cpu=i686 \
+--disable-ffserver
+
+
+#
+# sudo apt-get install \
+#   libxvidcore4-dev \
+#   libx264-dev \
+#
+#
+# --enable-sunmlib : error: mlib_types.h
+# --enable-avisynth : error: windows.h, vfw.h
+# --enable-libamr-nb : error: interf_dec.h
+# --enable-libamr-wb: error: amrwb/dec_if.h
+# --enable-libnut : error; libnut.h
+#
