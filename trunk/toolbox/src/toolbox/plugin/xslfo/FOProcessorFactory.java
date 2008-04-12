@@ -27,11 +27,6 @@ public final class FOProcessorFactory
      */
     public static final String FO_IMPL_APACHE = "fop";
     
-    /** 
-     * RenderX XEP http://www.renderx.com 
-     */
-    public static final String FO_IMPL_RENDERX  = "xep";
-    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -53,7 +48,6 @@ public final class FOProcessorFactory
      * @param foImpl Implementation to create.
      * @return FOProcessor
      * @see #FO_IMPL_APACHE
-     * @see #FO_IMPL_RENDERX
      */
     public static FOProcessor create(String foImpl)
     {
@@ -61,8 +55,6 @@ public final class FOProcessorFactory
         
         if (foImpl.equals(FO_IMPL_APACHE))
             processor = new FOPProcessor();
-        else if (foImpl.equals(FO_IMPL_RENDERX))
-            processor = new XEPProcessor();
         else
             throw new IllegalArgumentException(
                 "FO implementation " + foImpl + " not valid.");

@@ -515,12 +515,6 @@ Cheat sheet:
 
     <dependency>
       <groupId>toolbox</groupId>
-      <artifactId>xep</artifactId>
-      <version>SNAPSHOT</version>
-    </dependency>
-
-    <dependency>
-      <groupId>toolbox</groupId>
       <artifactId>xplookandfeel</artifactId>
       <version>SNAPSHOT</version>
     </dependency>

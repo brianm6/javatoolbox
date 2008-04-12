@@ -83,7 +83,6 @@
 	<classpathentry kind="lib" path="lib/toniclf.jar" sourcepath="lib/src/toniclf-src.zip"/>
 	<classpathentry kind="lib" path="lib/util-concurrent.jar" sourcepath="lib/src/util-concurrent-src.zip"/>
 	<classpathentry kind="lib" path="lib/velocity.jar"/>
-	<classpathentry kind="lib" path="lib/xep.jar"/>
 	<classpathentry kind="lib" path="lib/xercesImpl.jar" sourcepath="lib/src/xercesImpl-src.zip"/>
 	<classpathentry kind="lib" path="lib/xml-apis.jar" sourcepath="lib/src/xml-apis-src.zip"/>
 	<classpathentry kind="lib" path="lib/xom.jar" sourcepath="lib/src/xom-src.zip"/>

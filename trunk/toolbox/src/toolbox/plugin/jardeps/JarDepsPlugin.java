@@ -160,7 +160,7 @@ public class JarDepsPlugin extends AbstractPlugin
     protected void viewDependencies(List files) 
     {
         String cp = "\\lib\\junit.jar:\\lib\\commons-io.jar:\\lib\\commons-lang.jar:\\lib\\commons-beanutils.jar:\\lib\\commons-math.jar:\\lib\\commons-dbcp.jar:\\lib\\commons-logging.jar:\\lib\\log4j.jar:\\lib\\hsqldb.jar:\\lib\\acrobat.jar:";
-        cp = cp + "\\lib\\ant.jar:\\lib\\batik.jar:\\lib\\bsh.jar:\\lib\\classworlds.jar:\\lib\\commons-cli.jar:\\lib\\commons-codec.jar:\\lib\\commons-collections.jar:\\lib\\commons-net.jar:\\lib\\commons-pool.jar:\\lib\\cvslib.jar:\\lib\\fop.jar:\\lib\\forms.jar:\\lib\\hamsam.jar:\\lib\\jakarta-oro.jar:\\lib\\jakarta-regexp.jar:\\lib\\jalopy.jar:\\lib\\janino.jar:\\lib\\javassist.jar:\\lib\\jaxen.jar:\\lib\\jcommon.jar:\\lib\\jdom.jar:\\lib\\jemmy.jar:\\lib\\jfreechart.jar:\\lib\\jode.jar:\\lib\\jsap.jar:\\lib\\jtidy.jar:\\lib\\junit-addons.jar:\\lib\\looks.jar:\\lib\\matra.jar:\\lib\\multivalent.jar:\\lib\\pollo.jar:\\lib\\qdox.jar:\\lib\\saxon.jar:\\lib\\statcvs.jar:\\lib\\util-concurrent.jar:\\lib\\xep.jar:\\lib\\xercesimpl.jar:\\lib\\xml-apis.jar:\\lib\\xom.jar:\\lib\\xt.jar";
+        cp = cp + "\\lib\\ant.jar:\\lib\\batik.jar:\\lib\\bsh.jar:\\lib\\classworlds.jar:\\lib\\commons-cli.jar:\\lib\\commons-codec.jar:\\lib\\commons-collections.jar:\\lib\\commons-net.jar:\\lib\\commons-pool.jar:\\lib\\cvslib.jar:\\lib\\fop.jar:\\lib\\forms.jar:\\lib\\hamsam.jar:\\lib\\jakarta-oro.jar:\\lib\\jakarta-regexp.jar:\\lib\\jalopy.jar:\\lib\\janino.jar:\\lib\\javassist.jar:\\lib\\jaxen.jar:\\lib\\jcommon.jar:\\lib\\jdom.jar:\\lib\\jemmy.jar:\\lib\\jfreechart.jar:\\lib\\jode.jar:\\lib\\jsap.jar:\\lib\\jtidy.jar:\\lib\\junit-addons.jar:\\lib\\looks.jar:\\lib\\matra.jar:\\lib\\multivalent.jar:\\lib\\pollo.jar:\\lib\\qdox.jar:\\lib\\saxon.jar:\\lib\\statcvs.jar:\\lib\\util-concurrent.jar:\\lib\\xercesimpl.jar:\\lib\\xml-apis.jar:\\lib\\xom.jar:\\lib\\xt.jar";
         
         try
         {
@@ -230,9 +230,6 @@ public class JarDepsPlugin extends AbstractPlugin
             + "C:\\workspaces\\workspace-toolbox\\toolbox\\lib\\statcvs.jar -> C:\\workspaces\\workspace-toolbox\\toolbox\\lib\\ant.jar\n"
             + "C:\\workspaces\\workspace-toolbox\\toolbox\\lib\\statcvs.jar -> C:\\workspaces\\workspace-toolbox\\toolbox\\lib\\jfreechart.jar\n"
             + "C:\\workspaces\\workspace-toolbox\\toolbox\\lib\\statcvs.jar -> C:\\workspaces\\workspace-toolbox\\toolbox\\lib\\jcommon.jar\n"
-            + "C:\\workspaces\\workspace-toolbox\\toolbox\\lib\\xep.jar -> C:\\workspaces\\workspace-toolbox\\toolbox\\lib\\xml-apis.jar\n"
-            + "C:\\workspaces\\workspace-toolbox\\toolbox\\lib\\xep.jar -> C:\\workspaces\\workspace-toolbox\\toolbox\\lib\\junit.jar\n"
-            + "C:\\workspaces\\workspace-toolbox\\toolbox\\lib\\xep.jar -> C:\\workspaces\\workspace-toolbox\\toolbox\\lib\\xt.jar\n"
             + "C:\\workspaces\\workspace-toolbox\\toolbox\\lib\\xercesimpl.jar -> C:\\workspaces\\workspace-toolbox\\toolbox\\lib\\xml-apis.jar\n"
             + "C:\\workspaces\\workspace-toolbox\\toolbox\\lib\\xom.jar -> C:\\workspaces\\workspace-toolbox\\toolbox\\lib\\xml-apis.jar\n"
             + "C:\\workspaces\\workspace-toolbox\\toolbox\\lib\\xom.jar -> C:\\workspaces\\workspace-toolbox\\toolbox\\lib\\xercesimpl.jar\n"

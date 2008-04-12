@@ -331,7 +331,6 @@
                 <include name="acrobat.jar"/>
                 <include name="avalon-framework.jar"/>
                 <include name="apple-mrj.jar"/>
-                <include name="xep.jar"/>
                 <include name="xt.jar"/>
                 <include name="saxon.jar"/>
                 <include name="cryptix32.jar"/>

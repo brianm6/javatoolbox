@@ -873,16 +873,6 @@
     </dependency>
 
     <dependency>
-      <id>xep</id>
-      <version></version>
-      <url>http://www.renderx.com</url>
-      <properties>
-        <jnlp.jar>true</jnlp.jar>
-        <fatjar>xslfo</fatjar>
-      </properties>
-    </dependency>
-
-    <dependency>
       <id>xom</id>
       <version></version>
       <url>http://xom.dev.java.net</url>

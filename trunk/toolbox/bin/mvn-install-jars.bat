@@ -40,6 +40,5 @@ call mvn %sa% install:install-file -Dfile=%LIB%\statcvs.jar          -DartifactI
 call mvn %sa% install:install-file -Dfile=%LIB%\systray4j.jar        -DartifactId=systray4j        -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 call mvn %sa% install:install-file -Dfile=%LIB%\tinylaf.jar          -DartifactId=tinylaf          -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 call mvn %sa% install:install-file -Dfile=%LIB%\toniclf.jar          -DartifactId=toniclf          -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
-call mvn %sa% install:install-file -Dfile=%LIB%\xep.jar              -DartifactId=xep              -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 call mvn %sa% install:install-file -Dfile=%LIB%\xplookandfeel.jar    -DartifactId=xplookandfeel    -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 call mvn %sa% install:install-file -Dfile=%LIB%\xt.jar               -DartifactId=xt               -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true

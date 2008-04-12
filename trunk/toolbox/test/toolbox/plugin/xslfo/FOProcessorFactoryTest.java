@@ -49,23 +49,6 @@ public class FOProcessorFactoryTest extends TestCase
 
 
     /**
-     * Simple case: create processor for RenderX XEP.
-     *
-     * @throws Exception on error.
-     */
-    public void testCreateXEP() throws Exception
-    {
-        logger_.info("Running testCreateXEP...");
-
-        FOProcessor fop =
-            FOProcessorFactory.create(
-                FOProcessorFactory.FO_IMPL_RENDERX);
-
-        assertNotNull(fop);
-    }
-
-
-    /**
      * Test fault generation on unknown FO implementation.
      *
      * @throws Exception on error.
