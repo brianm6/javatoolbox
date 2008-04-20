@@ -508,8 +508,8 @@
 
         <!-- <junit printSummary="yes" haltonfailure="no"> "withOutAndErr" -->
 
-        <junit printSummary="no"
-               haltonfailure="no"
+        <junit printSummary="yes"
+               haltonfailure="yes"
                fork="no"
                maxmemory="1024"
                showoutput="true">
@@ -722,62 +722,13 @@
                includes = "checkstyle_report.xml"
                style    = "${build.conf}/checkstyle-noframes-sorted.xsl"/>
 
+    	  <!--
         <exec executable="cmd.exe">
             <arg line="/c start ${checkstyle}/checkstyle_report.html"/>
         </exec>
-
+        -->
+    	
     </target>
-
-
-    <!--=============================-->
-    <!--          CVSLOG             -->
-    <!--=============================-->
-    <target name="cvslog" depends="init">
-
-        <mkdir dir="${statcvs}"/>
-
-        <delete file="${top}/.cvspass" verbose="true"/>
-
-        <input message="Enter CVS password:" addproperty="cvs.password"/>
-
-        <property
-            name="cvsroot"
-            value=":pserver:${cvs.user}@${cvs.server}:${cvs.port}/cvs/cvsrep"/>
-
-        <cvspass password = "${cvs.password}"
-                 cvsroot  = "${cvsroot}"
-                 passfile = "${top}/.cvspass"/>
-
-         <loadfile property="cvspass" srcFile="${top}/.cvspass"/>
-         <echo message="${cvspass}"/>
-
-         <cvs cvsroot  = "${cvsroot}"
-              output   = "${statcvs}/cvs.log"
-              command  = "log"
-              passfile = "${top}/.cvspass"/>
-
-        <delete file="${top}/.cvspass"/>
-
-    </target>
-
-
-    <!--=============================-->
-    <!--          STATCVS            -->
-    <!--=============================-->
-    <target name        = "statcvs"
-            depends     = "init, cvslog"
-            description = "Generates a report with CVS statistics">
-
-        <statcvs
-            projectName      = "Java Toolbox"
-            projectDirectory = "${top}"
-            cvsLogFile       = "${statcvs}/cvs.log"
-            outputDirectory  = "${statcvs}"
-            cssFile          = "http://statcvs.sf.net/stats/statcvs.css"
-            showCredits      = "no"/>
-
-    </target>
-
 
     <!--=============================-->
     <!--       JAVA2HTML             -->
@@ -823,10 +774,6 @@
     <taskdef name      = "java2html"
              classname = "com.java2html.Java2HTMLTask"
              classpath = "build/lib/j2h.jar"/>
-
-    <taskdef name      = "statcvs"
-             classname = "net.sf.statcvs.ant.StatCvsTask"
-             classpath = "build/lib/statcvs.jar"/>
 
     <taskdef resource  = "checkstyletask.properties"
              classpath = "build/lib/checkstyle.jar"/>
