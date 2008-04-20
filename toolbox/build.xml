@@ -55,7 +55,7 @@
         <property name="os.type" value="windows"/>
 
         <!-- set standard properties -->
-        <property name="javavm" value="1.2"/>
+        <property name="javavm" value="1.4"/>
 
         <!-- Compiler Settings -->
         <property name="build.compiler.fulldepend" value="true"/>
@@ -78,11 +78,6 @@
 
         <echo message="${os.name} ${os.arch} ${os.version}"/>
         <echo message="environment prepared on ${os.type} "/>
-
-        <property name="cvs.server" value="hemisfear.cjb.net"/>
-        <property name="cvs.port" value="2401"/>
-        <property name="cvs.user" value="analogue"/>
-
     </target>
 
 
