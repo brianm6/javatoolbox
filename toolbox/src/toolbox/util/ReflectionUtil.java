@@ -15,7 +15,7 @@ public class ReflectionUtil
     //--------------------------------------------------------------------------
     
     /**
-     * Prevent construction of this static singletion.
+     * Prevent construction of this static singleton.
      */
     private ReflectionUtil()
     {

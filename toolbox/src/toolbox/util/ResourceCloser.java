@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.net.IConnection;
 
 /**
- * Convenience class that removes the ugliness of closing resoures that is so
+ * Convenience class that removes the ugliness of closing resources that is so
  * common in managed resources. The premise of this class is to close resources
  * without concern for any exceptional conditions that may arise from doing so.
  * <p>
@@ -88,34 +88,6 @@ public final class ResourceCloser
         }
     }
     
-    
-    /**
-     * Removes an EJB quietly
-     *
-     * @param  ejb  EJB to remove
-     */
-//    public static void remove(EJBObject ejb)
-//    {
-//        if (ejb != null)
-//        {
-//            try
-//            {
-//                ejb.remove();
-//            }
-//            catch (RemoteException e)
-//            {
-//                logger_.warn(
-//                  "An error occurred while removing an EJBObject.", e);
-//            }
-//            catch (RemoveException e)
-//            {
-//                logger_.warn(
-//                      "An error occurred while removing an EJBObject.", e);
-//            }
-//        }
-//    }
-
-    
     /**
      * Closes an IConnection quietly.
      * 
@@ -136,26 +108,4 @@ public final class ResourceCloser
             }
         }        
     }
-
-    
-    /**
-     * Closes a QueueReceiver quietly.
-     * 
-     * @param queueReceiver Queue receiver to close.
-     */
-//    public static void close(QueueReceiver queueReceiver)
-//    {
-//        if (queueReceiver != null)
-//        {
-//            try
-//            {
-//                queueReceiver.close(); 
-//            }
-//            catch (JMSException e)
-//            {
-//                logger_.warn(
-//                      "An error occurred while closing a QueueReceiver.", e);
-//            }
-//        }        
-//    }
 }
