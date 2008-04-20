@@ -317,7 +317,7 @@ public final class ResourceUtil
         }
         else
         {
-            url = file.toURL();
+            url = file.toURI().toURL();
             //logger_.debug("Loaded " + filename + " by URL " + url);
         }                
 
