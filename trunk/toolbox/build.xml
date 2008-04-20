@@ -532,20 +532,17 @@
                 <fileset dir="${src}">
 
                     <!-- if junit.class is defined, run only tests that match the class name -->
-                    <!--include name="**/*Test.java" unless="junit.class"/-->
+                    <include name="**/*Test.java" unless="junit.class"/>
                     <!-- <include name="**/test/*${junit.class}*.java"/> -->
-
-                    <include name="toolbox/junit/CloverTestSuite.java"/>
+                    <!-- include name="toolbox/junit/CloverTestSuite.java"/ -->
 
                     <!-- exclude the GUI tests -->
-                    <!--
                     <exclude name="**/ui/**/*Test.java" />
                     <exclude name="**/SwingUtilTest.java"/>
                     <exclude name="**/jedit/**"/>
                     <exclude name="**/log4j/im/**/*Test.java"/>
                     <exclude name="**/BannerTaskTest.java"/>
                     <exclude name="**/PropertyPromptTaskTest.java"/>
-                    -->
                 </fileset>
             </batchtest>
 
