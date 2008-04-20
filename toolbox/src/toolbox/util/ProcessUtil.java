@@ -25,9 +25,9 @@ public final class ProcessUtil {
      * {@link Runtime#exec(java.lang.String)}. Returns the exit value returned
      * from the process.
      * 
-     * @param process Process returned from Runtime.exect(...)
-     * @param stdout String buffer that the process' stdout will be appeneded to.
-     * @param stderr String buffer that the process' stderr will be appeneded to.
+     * @param process Process returned from Runtime.exec(...)
+     * @param stdout String buffer that the process' stdout will be appended to.
+     * @param stderr String buffer that the process' stderr will be appended to.
      * @return int 
      * @throws InterruptedException on error.
      */
@@ -51,7 +51,7 @@ public final class ProcessUtil {
      * via {@link Runtime#exec(java.lang.String)}. Returns the exit value 
      * returned from the process.
      * 
-     * @param process Process returned from Runtime.exect(...)
+     * @param process Process returned from Runtime.exec(...)
      * @param stdout Stream that the process' stdout will be written to.
      * @param stderr Stream that the process' stderr will be written to.
      * @return int 
