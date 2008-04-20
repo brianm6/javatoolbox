@@ -25,7 +25,7 @@ import toolbox.util.StringUtil;
 import toolbox.util.service.Cancelable;
 
 /**
- * Find class is a utility that can find all occurences of a given class (can be
+ * Find class is a utility that can find all occurrences of a given class (can be
  * expressed as a regular expression) in the classpath, one or more directories 
  * (including child directories), and/or any number of arbitrary archives 
  * (includes both jars and zips). There is a public API for use as a third 
@@ -139,7 +139,7 @@ public class FindClass implements Cancelable
         
         defaultCollector_.clear();
 
-        // Setup regexp based on case sensetivity flag
+        // Setup regexp based on case sensitivity flag
         regExp_ = new RE(classToFind_);
         
         if (ignoreCase_)
@@ -304,7 +304,7 @@ public class FindClass implements Cancelable
         searchTargets_.addAll(Arrays.asList(ClassUtil.getClassPathElements()));
         searchTargets_.addAll(getArchiveTargets());
         
-        // print out search targets if debub is on
+        // print out search targets if debug is on
         //if (logger_.isDebugEnabled())
         //{
         //    logger_.debug("Search targets:");

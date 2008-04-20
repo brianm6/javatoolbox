@@ -87,7 +87,7 @@ public class FindClassCollector extends FindClassAdapter
     
     
     /**
-     * Clears the contents of the colletor and returns the number of elements
+     * Clears the contents of the collector and returns the number of elements
      * cleared.
      * 
      * @return int

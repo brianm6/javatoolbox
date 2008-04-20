@@ -63,7 +63,7 @@ public class DirMon extends JFrame implements SmartTabbedPaneListener {
     //       start/stop and suspend/resume instead of two buttons for each.
     //       Also allow optionally icons or text or both.
     
-    // TODO: Find someway to save all the preferences set on the UI
+    // TODO: Find some way to save all the preferences set on the UI
     
     // TODO: For directories that are deleted, remove subdirectories from the
     //       list of scanned dirs. THis is really a DirectoryMonitor thing.
@@ -300,9 +300,6 @@ public class DirMon extends JFrame implements SmartTabbedPaneListener {
 
         SwingUtil.setSizeAsDesktopPercentage(this, 50, 50); 
         SwingUtil.centerWindow(this);
-        
-        //dirField_.setText("M:\\x1700_vacany_10_dynamic\\staffplanning\\vacancy\\build");
-        //delayField_.setText("10s");
     }
 
     // -------------------------------------------------------------------------
