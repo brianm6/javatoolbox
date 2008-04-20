@@ -32,7 +32,7 @@ public interface FindClassListener {
 
 
     /**
-     * Notification that a search was cancelled.
+     * Notification that a search was canceled.
      */
     void searchCanceled();
 }

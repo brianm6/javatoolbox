@@ -55,7 +55,7 @@ public class ConsoleView extends JPanel implements IDirectoryMonitorListener {
      * start and end times for a directory scan.
      * <ul>
      *   <li>key = {@link DirectoryMonitor}
-     *   <li>value = {@link Date} represeting start time of discovery scan
+     *   <li>value = {@link Date} representing start time of discovery scan
      * </ul>
      * @see #statusChanged(StatusEvent)
      */

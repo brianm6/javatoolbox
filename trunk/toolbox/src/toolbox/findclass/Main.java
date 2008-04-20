@@ -16,7 +16,7 @@ import org.apache.log4j.Logger;
 import org.apache.regexp.RESyntaxException;
 
 /**
- * Utility that finds all occurences of a given class in the CLASSPATH, current
+ * Utility that finds all occurrences of a given class in the CLASSPATH, current
  * directory, and archives (recursively).
  * 
  * @see toolbox.findclass.FindClass
@@ -40,9 +40,9 @@ public class Main extends FindClassAdapter
     private int numFound_;
     
     /**
-     * Case sensetivity search flag.
+     * Case sensitivity search flag.
      */
-    private boolean caseSensetive_;
+    private boolean caseSensitive_;
     
     /**
      * Flag to show the list of search targets. 
@@ -97,7 +97,7 @@ public class Main extends FindClassAdapter
                 
                 if (opt.equals(caseSensetiveOption.getOpt()))
                 {
-                    mainClass.setCaseSensetive(true);
+                    mainClass.setCaseSensitive(true);
                 }
                 else if (opt.equals(showTargetsOption.getOpt()))
                 {
@@ -182,7 +182,7 @@ public class Main extends FindClassAdapter
             writer_.println("==============================");                
         }        
         
-        finder.findClass(classToFind_, !caseSensetive_);
+        finder.findClass(classToFind_, !caseSensitive_);
         
         if (numFound_ == 0)
             writer_.println("No matches found.");
@@ -190,13 +190,13 @@ public class Main extends FindClassAdapter
 
     
     /**
-     * Mutator for case sensetive flag.
+     * Mutator for case sensitive flag.
      * 
-     * @param b Case sensetive flag.
+     * @param b Case sensitive flag.
      */    
-    public void setCaseSensetive(boolean b)
+    public void setCaseSensitive(boolean b)
     {
-        caseSensetive_ = b;
+        caseSensitive_ = b;
     }
 
     
