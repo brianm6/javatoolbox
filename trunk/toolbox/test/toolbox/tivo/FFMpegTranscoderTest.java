@@ -6,6 +6,7 @@ import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
 
+import toolbox.util.ClassUtil;
 import toolbox.util.FileUtil;
 
 /**
@@ -30,6 +31,12 @@ public class FFMpegTranscoderTest extends AbstractTestCase {
     
     public void testTranscode_H264() throws Exception {
         logger_.info("Running testTranscode...");
+        
+        if ((ClassUtil.findInPath("ffmpeg") == null) &&
+            (ClassUtil.findInPath("ffmpeg.exe") == null)) {
+        	logger_.debug("Skipping test..ffmpeg not on system path");
+        	return;
+        }
         
         // Setup
         // =====================================================================
