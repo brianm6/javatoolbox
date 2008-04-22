@@ -659,7 +659,7 @@ public class TableSorter extends AbstractTableModel
                 JLabel label = (JLabel) c;
                 label.setHorizontalTextPosition(JLabel.LEFT);
                 
-                // FIXME: Workaround for FH LAF..table is null sometimes.
+                // Workaround for FH LAF..table is null sometimes.
                 if (table != null)
                 {
                     int modelColumn = table.convertColumnIndexToModel(column);
