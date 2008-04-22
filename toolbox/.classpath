@@ -4,6 +4,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="debug"/>
 	<classpathentry kind="src" path="test"/>
+	<classpathentry kind="src" path="itest"/>
 	<classpathentry kind="lib" path="resources"/>
 	<classpathentry kind="lib" path="lib/3dlf.jar"/>
 	<classpathentry kind="lib" path="lib/apple-mrj.jar"/>
