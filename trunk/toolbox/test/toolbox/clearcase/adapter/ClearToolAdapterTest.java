@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 import toolbox.clearcase.IClearCaseAdapter;
 import toolbox.clearcase.domain.Revision;
 import toolbox.clearcase.domain.VersionedFile;
+import toolbox.util.ClassUtil;
 
 /**
  * Unit test for {@link toolbox.clearcase.adapter.ClearToolAdapter}. 
@@ -38,10 +39,17 @@ public class ClearToolAdapterTest extends TestCase
     
     public void testFindChangedFiles() throws Exception
     {
-        logger_.info("Running testFindChangedFiles...");
-        
+    	logger_.info("Running testFindChangedFiles...");
+
+    	// Skip if cleartool executable not found
+    	if ((ClassUtil.findInPath("cleartool") == null) &&
+    	   (ClassUtil.findInPath("cleartool.exe") == null)) {
+    		logger_.debug("Skipping testFindChangedFiles...");
+    		return;
+    	}
+    	
         IClearCaseAdapter cc = ClearCaseAdapterFactory.create();
-        cc.setViewPath(new File("m:\\x1700_sandbox\\staffplanning"));
+        cc.setViewPath(new File("c:\\clearcase\\myDynamicView"));
         
         List changed = 
             cc.findChangedFiles(
