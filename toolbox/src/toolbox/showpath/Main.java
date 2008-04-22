@@ -8,7 +8,7 @@ import toolbox.util.Platform;
 import toolbox.util.collections.CaseInsensetiveSet;
 
 /**
- * Print out the contents of the system path environemnt variable.
+ * Print out the contents of the system path environment variable.
  */
 public class Main {
     
@@ -44,7 +44,7 @@ public class Main {
     public Main() {
         pathSet_ = new HashSet();
 
-        // Make sure paths are treated as case-insensetive when not on a unix
+        // Make sure paths are treated as case-insensitive when not on a unix
         // platform.
         if (!Platform.isUnix())
             pathSet_ = new CaseInsensetiveSet(pathSet_);

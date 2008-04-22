@@ -31,7 +31,7 @@ import toolbox.util.statemachine.StateMachine;
  * process. This includes start/stop/pause/unpause behavior for easy inclusion
  * in your own applications. Additionally, for those of you interested in an
  * event driven interface, TailListener is available to provide notification on
- * the key events occuring in the tail's lifecycle.
+ * the key events occurring in the tail's lifecycle.
  * <p>
  * To tail a file and send the output to System.out:
  *
