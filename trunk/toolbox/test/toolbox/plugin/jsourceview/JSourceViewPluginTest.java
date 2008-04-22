@@ -67,7 +67,7 @@ public class JSourceViewPluginTest extends TestCase
     {
         // TODO: SunAWTRobot does not let the JVM exit properly on linux so
         //       we need to make sure it isn't used on linux especially.
-        //       Move behavior up to superclass on wich model to use based on
+        //       Move behavior up to superclass on which model to use based on
         //       operating system.
         
         //JemmyProperties.setCurrentDispatchingModel(
@@ -154,7 +154,7 @@ public class JSourceViewPluginTest extends TestCase
             new JTextFieldOperator(saveOp).enterText(saveFile);
             saveOp.waitClosed();
             
-            // FIXME:
+            // WORKAROUND:
             // If this delay is not here, the output file is not ready to be
             // read for some reason on linux only...
             logger_.debug("Sleeping (linux workaround)...");
