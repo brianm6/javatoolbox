@@ -57,7 +57,7 @@ public final class Main
     private static final String COL_ARCHIVE = "JAR/Directory";
 
     /**
-     * Column heading for the jar file/direcotry date.
+     * Column heading for the jar file/directory date.
      */
     private static final String COL_DATE = "Date";
 
