@@ -27,8 +27,11 @@ public class AppLauncherTest extends TestCase {
     // Unit Tests
     // -------------------------------------------------------------------------
     
-    public void testLaunch() throws Exception {
+    public void testLaunchOnWindows() throws Exception {
         logger.info("Running testLaunch...");
+        
+        if (!Platform.isWindows())
+        	return;
         
         File tempDir = FileUtil.createTempDir();
         File tempFile = new File(tempDir, "AppLauncherTestFile.txt");
