@@ -191,7 +191,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
     /**
      * Drop down combo with drive letters. This combo usually only has one
      * element on unix filesystems. Otherwise, drive letters are available for
-     * selection on FAT and other simililar filesystems. The currently selected
+     * selection on FAT and other similar filesystems. The currently selected
      * root element is saved between application instances.
      */
     private JComboBox rootsComboBox_;
@@ -322,11 +322,6 @@ public class JFileExplorer extends JPanel implements IPreferenced
         {
             processingTreeEvent_ = true;
                 
-            //logger_.debug("path = " + path);
-            //logger_.debug(Stringz.BR);
-            //logger_.debug("**", new Exception("From selectFolder()"));
-            //logger_.debug(Stringz.BR);
-            
             String[] pathTokens = StringUtil.tokenize(path, File.separator);
             
             if (Platform.isUnix())
@@ -962,7 +957,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
         }
 
         //----------------------------------------------------------------------
-        // ListCellRenderer Inteface
+        // ListCellRenderer Interface
         //----------------------------------------------------------------------
         
         /**

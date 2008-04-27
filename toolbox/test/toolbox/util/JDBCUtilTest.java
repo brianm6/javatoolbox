@@ -916,7 +916,7 @@ public class JDBCUtilTest extends TestCase
 
             //
             // The table names may not be in the same case so the search has
-            // to be case insensetive.
+            // to be case insensitive.
             //
 
             assertTrue(

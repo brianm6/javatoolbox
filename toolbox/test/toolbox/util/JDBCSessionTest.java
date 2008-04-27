@@ -196,7 +196,6 @@ public class JDBCSessionTest extends TestCase
                 getDBJar(), 
                 DB_DRIVER, 
                 DB_URL + session, 
-                //"jdbc:hsqldb:hsql://localhost/bard_hsql1",
                 DB_USER, 
                 DB_PASSWORD, 
                 true);
@@ -968,7 +967,7 @@ public class JDBCSessionTest extends TestCase
 
 
     /**
-     * Tests dropTable() for failures: null, non-existant table.
+     * Tests dropTable() for failures: null, non-existent table.
      *
      * @throws Exception on error.
      */
@@ -1049,7 +1048,7 @@ public class JDBCSessionTest extends TestCase
 
             //
             // The table names may not be in the same case so the search has
-            // to be case insensetive.
+            // to be case insensitive.
             //
 
             assertTrue(

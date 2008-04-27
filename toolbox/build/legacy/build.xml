@@ -319,7 +319,6 @@
         <unjar dest="${build.stage}/xslfo" overwrite="true">
 
             <fileset dir="${lib}">
-
                 <!-- ===== XSL-FO Plugin Dependencies ==== -->
                 <include name="fop.jar"/>
                 <include name="batik.jar"/>
@@ -329,8 +328,6 @@
                 <include name="xt.jar"/>
                 <include name="saxon.jar"/>
                 <include name="cryptix32.jar"/>
-                <include name="cryptix32-pgp.jar"/>
-
             </fileset>
         </unjar>
 

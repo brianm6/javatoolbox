@@ -43,7 +43,7 @@ public class InfoBar extends JStatusBar
     //--------------------------------------------------------------------------
 
     /**
-     * Refererence to the parent file explorer.
+     * Reference to the parent file explorer.
      */
     private final JFileExplorer explorer_;
     
@@ -58,7 +58,7 @@ public class InfoBar extends JStatusBar
     private JLabel modifiedLabel_;
     
     /**
-     * Shows an R if the file is readonly and/or a W if the file is writeable. 
+     * Shows an R if the file is readonly and/or a W if the file is writable. 
      */
     private JLabel attribLabel_;
     

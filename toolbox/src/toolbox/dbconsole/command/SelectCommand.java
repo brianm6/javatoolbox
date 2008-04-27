@@ -144,6 +144,6 @@ public class SelectCommand implements Command {
      */
     protected void printHelp(PrintStream ps) {
         ps.println("\nExecutes a sql select statement against the appropriate test database.");
-        ps.println("Example: select * from crew_mbr");
+        ps.println("Example: select * from address");
     }
 }

@@ -13,7 +13,7 @@ import toolbox.util.ArrayUtil;
 import toolbox.util.JDBCSession;
 
 /**
- * Unit test for {@link toolbox.util.db.oracle.OracleUtil}.
+ * Unit test for {@link OracleUtil}.
  */
 public class OracleUtilTest extends TestCase 
 {
