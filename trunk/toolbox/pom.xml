@@ -6,7 +6,8 @@ Cheat sheet:
     Compile unit tests  : mvn test-compile
     Run unit tests      : mvn test
     Run one unit test   : mvn test -Dtest=ArrayUtilTest
-    Generate site       : mvn -Dmaven.test.failure.ignore=true clean site 
+    Generate site       : mvn -Dmaven.test.failure.ignore=true clean site
+    Webstart artifacts  : mvn clean install webstart:jnlp
 -->
 
 <project 
@@ -20,7 +21,7 @@ Cheat sheet:
   <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
   <name>Toolbox</name>
-  <url>http://hemisfear.dyndns.org/</url>
+  <url>http://code.google.com/p/javatoolbox</url>
 
   <!-- ===================================================================== -->
   <!-- DEPENDENCIES                                                          -->
@@ -90,6 +91,7 @@ Cheat sheet:
       <version>1.3</version>
     </dependency>
 
+    <!-- TODO: Upgrade to 3.2.1 -->
     <dependency>
       <groupId>commons-collections</groupId>
       <artifactId>commons-collections</artifactId>
@@ -102,12 +104,14 @@ Cheat sheet:
       <version>1.2.2</version>
     </dependency>
 
+    <!-- TODO: Upgrade to 1.4 -->
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-io</artifactId>
       <version>1.3.2</version>
     </dependency>
 
+    <!-- TODO: Upgrade to 2.4 -->
     <dependency>
       <groupId>commons-lang</groupId>
       <artifactId>commons-lang</artifactId>
@@ -132,6 +136,7 @@ Cheat sheet:
       <version>1.4.1</version>
     </dependency>
 
+    <!-- TODO: Upgrade to 1.4 -->
     <dependency>
       <groupId>commons-pool</groupId>
       <artifactId>commons-pool</artifactId>
@@ -144,6 +149,7 @@ Cheat sheet:
       <version>3.2.0</version>
     </dependency>
 
+    <!-- TODO: Upgrade to 2.2.1 -->
     <dependency>
       <groupId>org.dbunit</groupId>
       <artifactId>dbunit</artifactId>
@@ -305,12 +311,6 @@ Cheat sheet:
     <dependency>
       <groupId>toolbox</groupId>
       <artifactId>calphahtml</artifactId>
-      <version>SNAPSHOT</version>
-    </dependency>
-
-    <dependency>
-      <groupId>toolbox</groupId>
-      <artifactId>cryptix32-pgp</artifactId>
       <version>SNAPSHOT</version>
     </dependency>
 
@@ -519,11 +519,6 @@ Cheat sheet:
       <version>SNAPSHOT</version>
     </dependency>
 
-    <dependency>
-      <groupId>toolbox</groupId>
-      <artifactId>xt</artifactId>
-      <version>SNAPSHOT</version>
-    </dependency>
   </dependencies>
 
   <!-- ===================================================================== -->
@@ -602,6 +597,114 @@ Cheat sheet:
         </configuration>
       </plugin>
 
+      <!-- ================================================================= -->
+      <!-- Webstart Plugin                                                   -->
+      <!-- ================================================================= -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>webstart-maven-plugin</artifactId>
+        <version>1.0-alpha-2-SNAPSHOT</version>
+        <executions>
+          <execution>
+            <goals>
+              <!-- use jnlp, jnlp-inline or jnlp-single as appropriate -->
+              <goal>jnlp</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+           <!--outputDirectory></outputDirectory--> <!-- not required?? -->
+
+           <!-- The path where the libraries are stored within the jnlp structure. not required. by default the libraries are within the working directory -->
+<!--           <libPath>lib</libPath>-->
+           
+           <!-- 
+           [optional] transitive dependencies filter - if omitted, all 
+                      transitive dependencies are included
+
+           Note that only groupId and artifactId must be specified here. 
+           because of a limitation of the Include/ExcludesArtifactFilter 
+           -->
+           <!-- 
+           <dependencies>
+             <includes>
+                <include>commons-logging:commons-logging</include>
+                <include>commons-cli:commons-cli</include>
+             </includes>
+             <excludes>
+                <exclude></exclude>
+             </excludes>
+           </dependencies>
+            -->
+           
+           <resourcesDirectory>${project.basedir}/build/conf/jnlp/resources</resourcesDirectory>
+             
+           <jnlp>
+             <!-- default values -->
+<!--             <resources>${project.basedir}/build/conf/jnlp/resources</resources>-->
+             <inputTemplateResourcePath>${project.basedir}</inputTemplateResourcePath>
+             <inputTemplate>build/conf/jnlp/template.vm</inputTemplate> <!-- relative to inputTemplateResourcePath -->
+             <outputFile>app.jnlp</outputFile> <!-- defaults to launch.jnlp -->
+
+             <!-- used to automatically identify the jar containing the main class. -->
+             <!-- this is perhaps going to change -->
+             <mainClass>toolbox.workspace.PluginWorkspace</mainClass>
+           </jnlp>
+
+           <!-- SIGNING -->
+           <!-- defining this will automatically sign the jar and its dependencies, if necessary -->
+           <!-- we need to override passwords easily from the command line. ${keypass} -->
+           <!-- ${storepass} -->
+             <!-- KEYSTORE MANGEMENT -->
+             <!-- delete the keystore -->
+             <!-- optional shortcut to generate the store. -->
+           <!--  used to gen keystore -->
+           <!--  keytool -genkey -keyalg RSA -keystore keystore.ks -alias toolbox -->
+           <sign>
+             <keystore>${project.basedir}/build/conf/keystore.ks</keystore>
+             <keypass>toolbox</keypass>
+             <storepass>toolbox</storepass> 
+<!--             <storetype>jks</storetype>-->
+             <alias>toolbox</alias>
+<!--             <validity>720</validity>-->
+          
+<!--             <dnameCn>A</dnameCn>-->
+<!--             <dnameOu>B</dnameOu>-->
+<!--             <dnameO>C</dnameO>-->
+<!--             <dnameL>D</dnameL>-->
+<!--             <dnameSt>E</dnameSt>-->
+<!--             <dnameC>F</dnameC>-->
+
+             <verify>true</verify>
+
+             <!-- 
+             <keystoreConfig>
+               <delete>true</delete> 
+               <gen>true</gen>       
+             </keystoreConfig>
+             -->
+           </sign>
+
+           <!-- BUILDING PROCESS -->
+           <!--usejnlpservlet>true</usejnlpservlet--> <!-- not yet supported -->
+
+           <!-- should we have some more configurations here? E.g. compression level (aka packing effort) -->
+           <!-- not yet implemented -->
+           <pack200>false</pack200>
+           <gzip>false</gzip> <!-- default force when pack200 false, true when pack200 selected ?? -->
+           <!-- causes a version attribute to be output in each jar resource element, optional, default is false -->
+           <outputJarVersions>false</outputJarVersions>
+
+           <!-- misc -->
+           <!-- if there are multiple apps, do we need to mark one as default? (app/ redirects to app/default.jnlp in jnlp servlet ??)-->
+           <!-- -->
+
+           <!--install>false</install--> <!-- not yet supported -->
+           <verbose>false</verbose>
+           <unsignAlreadySignedJars>true</unsignAlreadySignedJars>
+        </configuration>
+      </plugin>
+
     </plugins>
   </build>
 
@@ -640,5 +743,16 @@ Cheat sheet:
 
     </plugins>
   </reporting>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>codehaus.org</id>
+      <name>Maven Central Development Plugin Repository</name>
+      <url>http://snapshots.repository.codehaus.org</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+    </pluginRepository>
+  </pluginRepositories>
 
 </project>

@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.FileUtil;
 
 /**
- * Unit test for {@link toolbox.util.dirmon.trash.FileCreatedActivity}.
+ * Unit test for {@link FileCreatedRecognizer}.
  */
 public class FileCreatedRecognizerTest extends TestCase {
 

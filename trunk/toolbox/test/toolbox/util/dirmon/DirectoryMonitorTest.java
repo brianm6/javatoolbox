@@ -22,7 +22,7 @@ import toolbox.util.dirmon.recognizer.FileCreatedRecognizer;
 import toolbox.util.dirmon.recognizer.FileDeletedRecognizer;
 
 /**
- * Unit test for {@link toolbox.util.dirmon.DirectoryMonitor}.
+ * Unit test for {@link DirectoryMonitor}.
  */
 public class DirectoryMonitorTest extends TestCase {
 

@@ -15,7 +15,7 @@ import toolbox.util.dirmon.DirectoryMonitor;
 import toolbox.util.dirmon.IFileActivityRecognizer;
 
 /**
- * Unit test for {@link toolbox.util.dirmon.recognizer.FileChangedRecognizer}.
+ * Unit test for {@link FileChangedRecognizer}.
  */
 public class FileChangedRecognizerTest extends TestCase {
 

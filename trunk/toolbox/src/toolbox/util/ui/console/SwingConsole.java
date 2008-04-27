@@ -488,7 +488,7 @@ public class SwingConsole extends AbstractConsole
      * <ul>
      *  <li>Cursor keys left and right - move the caret and update the current
      *      insertLine value.
-     *  <li><Home> - Move cursor to the begining of the current line.
+     *  <li><Home> - Move cursor to the beginning of the current line.
      *  <li><End> - Move cursor to the end of the current line.
      * </ul>
      * 

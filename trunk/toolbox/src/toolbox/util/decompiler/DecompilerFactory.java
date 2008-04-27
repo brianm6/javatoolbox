@@ -101,7 +101,7 @@ public final class DecompilerFactory
 
     
     /**
-     * Creates the preferred decompiler. Jad is preferrred if found, otherwise
+     * Creates the preferred decompiler. Jad is preferred if found, otherwise
      * Jode is returned. 
      * 
      * @return Instance of the preferred decompiler.

@@ -15,7 +15,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.FileUtil;
 
 /**
- * Resolves an IP address to a hostname but also cached lookups and can be
+ * Resolves an IP address to a hostname but also caches lookups and can be
  * configured to do the lookup asynchronously. 
  * <p>
  * If caching is turned off, all lookups are forwarded to DNS regardless of
