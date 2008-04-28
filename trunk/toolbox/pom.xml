@@ -8,6 +8,7 @@ Cheat sheet:
     Run one unit test   : mvn test -Dtest=ArrayUtilTest
     Generate site       : mvn -Dmaven.test.failure.ignore=true clean site
     Webstart artifacts  : mvn clean install webstart:jnlp
+    Gen' eclipse project: mvn eclipse:eclipse
 -->
 
 <project 
@@ -571,28 +572,18 @@ Cheat sheet:
         <configuration>
           <forkMode>pertest</forkMode>
           <excludes>
-            <exclude>**/toolbox/graph/**</exclude>
-            <exclude>**/toolbox/jedit/**</exclude>
             <exclude>**/toolbox/log4j/im/**</exclude>
-            <exclude>**/toolbox/plugin/jsourceview/JSourceViewPluginTest.java</exclude>
-            <exclude>**/toolbox/util/db/SQLFormatterViewTest.java</exclude>
-            <exclude>**/toolbox/util/service/ServiceView*Test.java</exclude>
-            <exclude>**/toolbox/util/ui/**</exclude>
-            <exclude>**/toolbox/util/BrowserLauncherTest.java</exclude>
-            <exclude>**/toolbox/util/SwingUtilTest.java</exclude>
-            <exclude>**/toolbox/workspace/PluginWorkspaceTest.java</exclude>
-            <!--            <exclude>**/DecompilerTest.java</exclude>-->
-            <!--            <exclude>**/FigletTaskTest.java</exclude>-->
-            <!--            <exclude>**/RepositoryTest.java</exclude>-->
           </excludes>
         </configuration>
       </plugin>
 
+      <!-- ================================================================= -->
+      <!-- Eclipse Project Generation Plugin                                 -->
+      <!-- ================================================================= -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-eclipse-plugin</artifactId>
         <configuration>
-          <!-- Force download of source jars when running 'mvn eclipse:eclipse' -->
           <downloadSources>true</downloadSources>
         </configuration>
       </plugin>
@@ -644,7 +635,7 @@ Cheat sheet:
 <!--             <resources>${project.basedir}/build/conf/jnlp/resources</resources>-->
              <inputTemplateResourcePath>${project.basedir}</inputTemplateResourcePath>
              <inputTemplate>build/conf/jnlp/template.vm</inputTemplate> <!-- relative to inputTemplateResourcePath -->
-             <outputFile>app.jnlp</outputFile> <!-- defaults to launch.jnlp -->
+             <outputFile>toolbox.jnlp</outputFile> <!-- defaults to launch.jnlp -->
 
              <!-- used to automatically identify the jar containing the main class. -->
              <!-- this is perhaps going to change -->
@@ -661,7 +652,7 @@ Cheat sheet:
            <!--  used to gen keystore -->
            <!--  keytool -genkey -keyalg RSA -keystore keystore.ks -alias toolbox -->
            <sign>
-             <keystore>${project.basedir}/build/conf/keystore.ks</keystore>
+             <keystore>${project.basedir}/build/conf/jnlp/keystore.ks</keystore>
              <keypass>toolbox</keypass>
              <storepass>toolbox</storepass> 
 <!--             <storetype>jks</storetype>-->
@@ -755,4 +746,10 @@ Cheat sheet:
     </pluginRepository>
   </pluginRepositories>
 
+  <scm>
+    <connection>scm:svn:http://javatoolbox.googlecode.com/svn/trunk/toolbox</connection>
+    <developerConnection>scm:svn:https://javatoolbox.googlecode.com/svn/trunk/toolbox</developerConnection>
+    <url>http://code.google.com/p/javatoolbox/source/browse</url>
+  </scm>
+  
 </project>

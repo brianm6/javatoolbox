@@ -73,12 +73,7 @@ public class RepositoryAuditor
     static
     {
         userMap_ = new HashMap();
-        userMap_.put("x1700", "Semir");
-        userMap_.put("e74254", "Clay");
-        userMap_.put("e68041", "Bob");
-        userMap_.put("e47457", "Rama");
-        userMap_.put("e63591", "Alan");
-        userMap_.put("e68202", "BuildGuy");
+        userMap_.put("x1234", "John Doe");
     }
     
     //--------------------------------------------------------------------------

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <jnlp
     spec="1.0+"
-    codebase="http://zaran/jnlp/"
+    codebase="http://muggles.dyndns.org/javatoolbox/"
     href="$outputFile">
     
   <information>
-    <title>$project.Name</title>
-    <vendor>$project.Organization.Name<vendor/>
-    <homepage>$project.Organization.Url<homepage/>
-    <description kind="one-line">$project.Description</description>
+    <title>Java Toolbox</title>
+    <vendor>None</vendor>
+    <homepage>http://code.google.com/p/javatoolbox</homepage>
+    <description kind="one-line">Java Developers Toolbox</description>
   </information>
   
   <security>
@@ -16,13 +16,12 @@
   </security>
   
   <resources>
-    <j2se version="1.4+"
-     initial-heap-size="32m"
+    <j2se version="1.5+"
+     initial-heap-size="64m"
      max-heap-size="512m"/>
      $dependencies
   </resources>
   
   <application-desc main-class="$mainClass">
   </application-desc>
-  
 </jnlp>
