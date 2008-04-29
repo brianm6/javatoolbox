@@ -5,9 +5,6 @@ import org.apache.log4j.Logger;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
-/**
- * Unit test for {@link toolbox.ip2hostname.IP2Hostname}.
- */
 public class IP2HostnameTest extends TestCase {
 
     private static final Logger logger = Logger.getLogger(IP2HostnameTest.class);
@@ -26,7 +23,6 @@ public class IP2HostnameTest extends TestCase {
     
     public void testPrintUsage() {
         logger.info("Running testPrintUsage ...");
-        
         IP2Hostname.main(new String[] {"-help"} );
     }
 }
