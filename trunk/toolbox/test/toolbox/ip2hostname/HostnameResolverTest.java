@@ -5,9 +5,6 @@ import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
 
-/**
- * HostnameResolverTest is responsible for _____.
- */
 public class HostnameResolverTest extends TestCase {
 
     private static final Logger logger = Logger.getLogger(HostnameResolverTest.class);
