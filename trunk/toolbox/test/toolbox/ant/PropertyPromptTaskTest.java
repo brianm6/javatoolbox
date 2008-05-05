@@ -23,11 +23,6 @@ public class PropertyPromptTaskTest extends TestCase
     // Main
     //--------------------------------------------------------------------------
     
-    /**
-     * Entry point.
-     * 
-     * @param args None recognized.
-     */
     public static void main(String[] args)
     {
         TestRunner.run(PropertyPromptTaskTest.class);
@@ -37,11 +32,6 @@ public class PropertyPromptTaskTest extends TestCase
     // Unit Tests
     //--------------------------------------------------------------------------
     
-    /**
-     * Tests property prompt task.
-     * 
-     * @throws Exception on error.
-     */
     public void testPropertyPrompt() throws Exception
     {
         File f = ResourceUtil.getResourceAsTempFile(

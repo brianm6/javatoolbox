@@ -9,7 +9,8 @@ import org.apache.log4j.Logger;
 import org.apache.regexp.RE;
 
 /**
- * Reader that transforms IP addresses to hostnames. 
+ * Reader that replaces all occurrences of an IPv4 ip address with its 
+ * associated hostname (if it has one). 
  */
 public class IP2HostnameReader extends LineNumberReader {
 
@@ -47,10 +48,6 @@ public class IP2HostnameReader extends LineNumberReader {
     // Constructors
     // --------------------------------------------------------------------------
 
-    public IP2HostnameReader(Reader in) {
-        this(in, new HostnameResolver(true, true));
-    }
-
     public IP2HostnameReader(Reader in, HostnameResolver resolver) {
         super(in);
         this.resolver = resolver;
@@ -78,7 +75,6 @@ public class IP2HostnameReader extends LineNumberReader {
             
             while (match = matcher.match(line, index)) {
                 String ipAddress = matcher.getParen(0);
-                //String hostname = getCachedHostname(ipAddress);
                 String hostname = resolver.resolve(ipAddress);
                 int ipStart = matcher.getParenStart(0);
                 int ipEnd   = matcher.getParenEnd(0);

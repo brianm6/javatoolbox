@@ -61,7 +61,7 @@ public class IP2HostnameReaderTest extends TestCase {
         	return;
         
         String input = "";
-        IP2HostnameReader reader = new IP2HostnameReader(new StringReader(input));
+        IP2HostnameReader reader = new IP2HostnameReader(new StringReader(input), new DnsHostnameResolver());
         String output = reader.readLine();
         logger.debug("Output: " + output);
         assertNull(output);
@@ -74,7 +74,7 @@ public class IP2HostnameReaderTest extends TestCase {
         	return;
         
         String input = "\n";
-        IP2HostnameReader reader = new IP2HostnameReader(new StringReader(input));
+        IP2HostnameReader reader = new IP2HostnameReader(new StringReader(input), new DnsHostnameResolver());
         String output = reader.readLine();
         logger.debug("Output: " + output);
         assertEquals("", output);
@@ -87,7 +87,7 @@ public class IP2HostnameReaderTest extends TestCase {
         	return;
         
         String input = TEST_IP;
-        IP2HostnameReader reader = new IP2HostnameReader(new StringReader(input));
+        IP2HostnameReader reader = new IP2HostnameReader(new StringReader(input), new DnsHostnameResolver());
         String output = reader.readLine();
         logger.debug("Output: " + output);
         assertNotSame(TEST_HOSTNAME, output);
@@ -100,7 +100,7 @@ public class IP2HostnameReaderTest extends TestCase {
         	return;
         
         String input = "172.18.92.1";
-        IP2HostnameReader reader = new IP2HostnameReader(new StringReader(input));
+        IP2HostnameReader reader = new IP2HostnameReader(new StringReader(input), new DnsHostnameResolver());
         String output = reader.readLine();
         logger.debug("Output: " + output);
         assertEquals(input, output);
@@ -113,7 +113,7 @@ public class IP2HostnameReaderTest extends TestCase {
         	return;
         
         String input = TEST_IP + " " + TEST_IP + "\n";
-        IP2HostnameReader reader = new IP2HostnameReader(new StringReader(input));
+        IP2HostnameReader reader = new IP2HostnameReader(new StringReader(input), new DnsHostnameResolver());
         String output = reader.readLine();
         logger.debug("Output: " + output);
         assertEquals(TEST_HOSTNAME + " " + TEST_HOSTNAME, output);
@@ -126,7 +126,7 @@ public class IP2HostnameReaderTest extends TestCase {
         if (skipTest)
         	return;
         String input = TEST_IP + " " + TEST_HOSTNAME + "\n";
-        IP2HostnameReader reader = new IP2HostnameReader(new StringReader(input));
+        IP2HostnameReader reader = new IP2HostnameReader(new StringReader(input), new DnsHostnameResolver());
         String output = reader.readLine();
         logger.debug("Output: " + output);
         assertEquals(TEST_HOSTNAME + " " + TEST_HOSTNAME, output);
@@ -140,7 +140,7 @@ public class IP2HostnameReaderTest extends TestCase {
         	return;
         
         String input = TEST_IP + "\n" + TEST_IP + "\n";
-        IP2HostnameReader reader = new IP2HostnameReader(new StringReader(input));
+        IP2HostnameReader reader = new IP2HostnameReader(new StringReader(input), new DnsHostnameResolver());
         String output1 = reader.readLine();
         String output2 = reader.readLine();
         logger.debug("Output: " + output1 + " "  + output2);

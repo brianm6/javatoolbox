@@ -30,8 +30,7 @@ public class IP2Hostname {
     // Fields
     // -------------------------------------------------------------------------
     
-    private boolean async;
-    private boolean caching;
+    private HostnameResolver resolver;
     
     // -------------------------------------------------------------------------
     // Main
@@ -110,11 +109,19 @@ public class IP2Hostname {
                     return;
             }
             
-            IP2Hostname ip2hostname = new IP2Hostname();
-            ip2hostname.setAsync(async);
-            ip2hostname.setCaching(caching);
-            ip2hostname.start(System.in, System.out);
+            HostnameResolver resolver;
             
+            if (caching && async)
+                resolver = new AsyncHostnameResolver();
+            else if (caching && !async)
+                resolver = new CachingHostnameResolver();
+            else if (!caching)
+                resolver = new DnsHostnameResolver();
+            else
+                throw new IllegalArgumentException("Could not determine with hostname resolver to use");
+            
+            IP2Hostname ip2hostname = new IP2Hostname(resolver);
+            ip2hostname.start(System.in, System.out);
         }
         catch (Exception e) {
             logger.error("main", e);
@@ -127,6 +134,11 @@ public class IP2Hostname {
     // -------------------------------------------------------------------------
     
     public IP2Hostname() {
+        this(new AsyncHostnameResolver());
+    }
+    
+    public IP2Hostname(HostnameResolver resolver) {
+        this.resolver = resolver;
     }
     
     // -------------------------------------------------------------------------
@@ -135,8 +147,7 @@ public class IP2Hostname {
     
     public void start(InputStream is, OutputStream os) {
         
-        IP2HostnameReader reader = new IP2HostnameReader(
-            new InputStreamReader(is), new HostnameResolver(caching, async));
+        IP2HostnameReader reader = new IP2HostnameReader(new InputStreamReader(is), resolver);
         
         PrintWriter writer = new PrintWriter(os);
         String line = null;
@@ -156,25 +167,6 @@ public class IP2Hostname {
         }
     }
 
-    public boolean isAsync() {
-        return async;
-    }
-
-    
-    public void setAsync(boolean async) {
-        this.async = async;
-    }
-
-    
-    public boolean isCaching() {
-        return caching;
-    }
-
-    
-    public void setCaching(boolean caching) {
-        this.caching = caching;
-    }
-    
     // -------------------------------------------------------------------------
     // Private 
     // -------------------------------------------------------------------------
