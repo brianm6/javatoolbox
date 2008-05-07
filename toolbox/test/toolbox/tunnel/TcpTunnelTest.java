@@ -63,12 +63,7 @@ public class TcpTunnelTest extends TestCase
     //--------------------------------------------------------------------------
     // Main
     //--------------------------------------------------------------------------
-    
-    /**
-     * Entrypoint.
-     * 
-     * @param args None recognized.
-     */
+
     public static void main(String[] args)
     {
         TestRunner.run(TcpTunnelTest.class);
@@ -114,15 +109,12 @@ public class TcpTunnelTest extends TestCase
         // Setup server
         SocketServerConfig serverConfig = new SocketServerConfig();
         
-        serverConfig.setConnectionHandlerType(
-            EchoConnectionHandler.class.getName());
-            
+        serverConfig.setConnectionHandlerType(EchoConnectionHandler.class.getName());
         serverConfig.setName("TcpTunnelServer");
         serverConfig.setServerPort(SocketUtil.getFreePort());
         SocketServer server = new SocketServer(serverConfig);
         
-        DefaultSocketServerListener serverListener = 
-            new DefaultSocketServerListener();
+        DefaultSocketServerListener serverListener = new DefaultSocketServerListener();
             
         server.addSocketServerListener(serverListener);
         server.start();
@@ -133,11 +125,7 @@ public class TcpTunnelTest extends TestCase
         // Setup tunnel
         int tunnelPort = SocketUtil.getFreePort();
         
-        TcpTunnel tunnel = 
-            new TcpTunnel(
-                tunnelPort, 
-                "localhost", 
-                serverConfig.getServerPort());
+        TcpTunnel tunnel = new TcpTunnel(tunnelPort, "localhost", serverConfig.getServerPort());
         
         OutputStream ab = new StringOutputStream();
         tunnel.setIncomingSink(ab);
@@ -145,8 +133,7 @@ public class TcpTunnelTest extends TestCase
         OutputStream ba = new StringOutputStream();
         tunnel.setOutgoingSink(ba);
         
-        DefaultTcpTunnelListener tunnelListener =
-            new DefaultTcpTunnelListener();
+        DefaultTcpTunnelListener tunnelListener = new DefaultTcpTunnelListener();
         
         tunnel.addTcpTunnelListener(tunnelListener);
         tunnel.start();
@@ -156,6 +143,8 @@ public class TcpTunnelTest extends TestCase
         
         // Setup client
         Socket socket = new Socket("localhost", tunnelPort);
+        
+        logger_.debug(socket);
         
         PrintWriter pw = 
             new PrintWriter(
@@ -171,12 +160,16 @@ public class TcpTunnelTest extends TestCase
         
         // Send some data
         write(pw, message);
+        logger_.debug("wrote to socket..");
         
         // Send of data should trigger tunnel to connect to server
         serverListener.waitForAccept();
+        logger_.debug("server accepted...");
         
         // Read result
         String response = read(br);
+        logger_.debug("read response...");
+        
         assertEquals(message, response);
         
         // Tear down
@@ -331,6 +324,11 @@ public class TcpTunnelTest extends TestCase
     public void testTcpTunnel_StressTest() throws Exception 
     {   
         logger_.info("Running testTcpTunnel_StressTest...");
+        
+        if (!("true".equals(System.getProperty("stress", "false")))) {
+        	logger_.debug("Skipping test_TcpTunnel_StressTest...");
+        	return;
+        }
         
         // Socket Server =======================================================
         
