@@ -225,6 +225,19 @@ public class TextToolsPlugin extends AbstractPlugin
                     : selected);
     }
 
+    
+    /**
+     * @return If no selection in output textarea, then entire text, otherwise
+     *         only the selected text.
+     */
+    protected String getOutputText()
+    {
+        String selected = outputArea_.getSelectedText();
+        return (StringUtils.isBlank(selected)
+                    ? outputArea_.getText()
+                    : selected);
+    }
+    
 
     /**
      * Returns the statusBar.
@@ -577,7 +590,8 @@ public class TextToolsPlugin extends AbstractPlugin
 
         public void actionPerformed(ActionEvent e)
         {
-            inputArea_.setText(getInputText());
+            inputArea_.setText(getOutputText());
+            outputArea_.setText("");
         }
     }
     
