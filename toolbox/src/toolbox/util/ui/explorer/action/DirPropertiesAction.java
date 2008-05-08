@@ -12,13 +12,13 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
-import org.apache.commons.io.find.FileFinder;
-import org.apache.commons.io.find.FindEvent;
-import org.apache.commons.io.find.FindListener;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.forms.SmartComponentFactory;
+import toolbox.org.apache.commons.io.find.FileFinder;
+import toolbox.org.apache.commons.io.find.FindEvent;
+import toolbox.org.apache.commons.io.find.FindListener;
 import toolbox.util.DateTimeUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.JSmartButton;
@@ -221,8 +221,8 @@ public class DirPropertiesAction extends AbstractDirAction
         //----------------------------------------------------------------------
 
         /**
-         * @see org.apache.commons.io.find.FindListener#fileFound(
-         *      org.apache.commons.io.find.FindEvent)
+         * @see toolbox.org.apache.commons.io.find.FindListener#fileFound(
+         *      toolbox.org.apache.commons.io.find.FindEvent)
          */
         public void fileFound(FindEvent findEvent)
         {
@@ -239,8 +239,8 @@ public class DirPropertiesAction extends AbstractDirAction
 
 
         /**
-         * @see org.apache.commons.io.find.FindListener#directoryFinished(
-         *      org.apache.commons.io.find.FindEvent)
+         * @see toolbox.org.apache.commons.io.find.FindListener#directoryFinished(
+         *      toolbox.org.apache.commons.io.find.FindEvent)
          */
         public void directoryFinished(FindEvent findEvent)
         {
@@ -249,8 +249,8 @@ public class DirPropertiesAction extends AbstractDirAction
 
 
         /**
-         * @see org.apache.commons.io.find.FindListener#directoryStarted(
-         *      org.apache.commons.io.find.FindEvent)
+         * @see toolbox.org.apache.commons.io.find.FindListener#directoryStarted(
+         *      toolbox.org.apache.commons.io.find.FindEvent)
          */
         public void directoryStarted(FindEvent findEvent)
         {
