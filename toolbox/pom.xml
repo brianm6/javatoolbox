@@ -26,6 +26,8 @@ Generate website    : mvn site
   <version>1.0-SNAPSHOT</version>
   <name>Toolbox</name>
   <url>http://code.google.com/p/javatoolbox</url>
+  <description>Java Developer Toolbox</description>
+  <inceptionYear>2002</inceptionYear>
   
   <!-- ===================================================================== -->
   <!-- DEPENDENCIES                                                          -->
@@ -761,7 +763,7 @@ Generate website    : mvn site
   </scm>
 
   <!-- ===================================================================== -->
-  <!-- Deployment                                                            -->
+  <!-- Misc                                                                  -->
   <!-- ===================================================================== -->
 
   <distributionManagement>
@@ -770,5 +772,41 @@ Generate website    : mvn site
       <url>scp://muggles.dyndns.org/var/www/apache2-default/javatoolbox/docs</url>
     </site>
   </distributionManagement>
+
+  <licenses>
+  	<license>
+  	  <name>GPLv2</name>
+  	  <distribution>repo</distribution>
+  	  <url>http://www.fsf.org/licensing/licenses/info/GPLv2.html</url>
+  	</license>
+  </licenses>
   
+  <developers>
+    <developer>
+      <id>analogue@yahoo.com</id>
+      <email>analogue@yahoo.com</email>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+  </developers>
+  
+  <ciManagement>
+    <system>Hudson</system>
+    <notifiers>
+      <notifier>
+        <address>analogue@yahoo.com</address>
+      </notifier>
+    </notifiers>
+  </ciManagement>
+
+  <issueManagement>
+    <system>Google Code</system>
+    <url>http://code.google.com/p/javatoolbox/issues/list</url>
+  </issueManagement>
+    
+  <prerequisites>
+    <maven>2.0.9</maven>
+  </prerequisites>
+      
 </project>
