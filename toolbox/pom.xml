@@ -767,7 +767,7 @@ Generate website    : mvn site
   <distributionManagement>
     <site>
       <id>muggles.dyndns.org</id>
-      <url>scp://muggles.dyndns.org/var/www/apache2-default/javatoolbox-site</url>
+      <url>scp://muggles.dyndns.org/var/www/apache2-default/javatoolbox/docs</url>
     </site>
   </distributionManagement>
   
