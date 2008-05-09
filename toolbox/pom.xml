@@ -1,15 +1,18 @@
-<!-- 
-Cheat sheet:
+<!-- =====================================================================
 
-    Compile             : mvn compile
-    Clean               : mvn clean
-    Compile unit tests  : mvn test-compile
-    Run unit tests      : mvn test
-    Run one unit test   : mvn test -Dtest=ArrayUtilTest
-    Generate site       : mvn -Dmaven.test.failure.ignore=true clean site
-    Webstart artifacts  : mvn clean install webstart:jnlp
-    Gen' eclipse project: mvn eclipse:eclipse
--->
+CHEAT SHEET:
+
+Compile             : mvn compile
+Clean               : mvn clean
+Compile unit tests  : mvn test-compile
+Run unit tests      : mvn test
+Run one unit test   : mvn test -Dtest=ArrayUtilTest
+Generate site       : mvn -Dmaven.test.failure.ignore=true clean site
+Webstart artifacts  : mvn clean install webstart:jnlp
+Gen' eclipse project: mvn eclipse:eclipse
+Generate website    : mvn site
+
+====================================================================== -->
 
 <project 
   xmlns="http://maven.apache.org/POM/4.0.0"
@@ -23,7 +26,7 @@ Cheat sheet:
   <version>1.0-SNAPSHOT</version>
   <name>Toolbox</name>
   <url>http://code.google.com/p/javatoolbox</url>
-
+  
   <!-- ===================================================================== -->
   <!-- DEPENDENCIES                                                          -->
   <!-- ===================================================================== -->
@@ -604,95 +607,92 @@ Cheat sheet:
           </execution>
         </executions>
         <configuration>
-           <!--outputDirectory></outputDirectory--> <!-- not required?? -->
-
-           <!-- The path where the libraries are stored within the jnlp structure. not required. by default the libraries are within the working directory -->
-<!--           <libPath>lib</libPath>-->
+          <!--outputDirectory></outputDirectory--> <!-- not required?? -->
+          <!-- The path where the libraries are stored within the jnlp structure. not required. by default the libraries are within the working directory -->
+          <!-- <libPath>lib</libPath>-->
            
-           <!-- 
-           [optional] transitive dependencies filter - if omitted, all 
-                      transitive dependencies are included
+          <!-- 
+          [optional] transitive dependencies filter - if omitted, all 
+                     transitive dependencies are included
 
-           Note that only groupId and artifactId must be specified here. 
-           because of a limitation of the Include/ExcludesArtifactFilter 
-           -->
-           <!-- 
-           <dependencies>
-             <includes>
-                <include>commons-logging:commons-logging</include>
-                <include>commons-cli:commons-cli</include>
-             </includes>
-             <excludes>
-                <exclude></exclude>
-             </excludes>
-           </dependencies>
-            -->
-           
-           <resourcesDirectory>${project.basedir}/build/conf/jnlp/resources</resourcesDirectory>
+          Note that only groupId and artifactId must be specified here. 
+          because of a limitation of the Include/ExcludesArtifactFilter 
+          -->
+          <!-- 
+          <dependencies>
+            <includes>
+              <include>commons-logging:commons-logging</include>
+              <include>commons-cli:commons-cli</include>
+            </includes>
+            <excludes>
+              <exclude></exclude>
+            </excludes>
+          </dependencies>
+          -->           
+          <resourcesDirectory>${project.basedir}/build/conf/jnlp/resources</resourcesDirectory>
              
-           <jnlp>
+          <jnlp>
              <!-- default values -->
-<!--             <resources>${project.basedir}/build/conf/jnlp/resources</resources>-->
+             <!-- <resources>${project.basedir}/build/conf/jnlp/resources</resources>-->
              <inputTemplateResourcePath>${project.basedir}</inputTemplateResourcePath>
              <inputTemplate>build/conf/jnlp/template.vm</inputTemplate> <!-- relative to inputTemplateResourcePath -->
              <outputFile>toolbox.jnlp</outputFile> <!-- defaults to launch.jnlp -->
-
              <!-- used to automatically identify the jar containing the main class. -->
              <!-- this is perhaps going to change -->
              <mainClass>toolbox.workspace.PluginWorkspace</mainClass>
-           </jnlp>
+          </jnlp>
 
-           <!-- SIGNING -->
-           <!-- defining this will automatically sign the jar and its dependencies, if necessary -->
-           <!-- we need to override passwords easily from the command line. ${keypass} -->
-           <!-- ${storepass} -->
-             <!-- KEYSTORE MANGEMENT -->
-             <!-- delete the keystore -->
-             <!-- optional shortcut to generate the store. -->
-           <!--  used to gen keystore -->
-           <!--  keytool -genkey -keyalg RSA -keystore keystore.ks -alias toolbox -->
-           <sign>
-             <keystore>${project.basedir}/build/conf/jnlp/keystore.ks</keystore>
-             <keypass>toolbox</keypass>
-             <storepass>toolbox</storepass> 
-<!--             <storetype>jks</storetype>-->
-             <alias>toolbox</alias>
-<!--             <validity>720</validity>-->
+          <!-- SIGNING -->
+          <!-- defining this will automatically sign the jar and its dependencies, if necessary -->
+          <!-- we need to override passwords easily from the command line. ${keypass} -->
+          <!-- ${storepass} -->
+          <!-- KEYSTORE MANGEMENT -->
+          <!-- delete the keystore -->
+          <!-- optional shortcut to generate the store. -->
+          <!--  used to gen keystore -->
+          <!--  keytool -genkey -keyalg RSA -keystore keystore.ks -alias toolbox -->
+          <sign>
+            <keystore>${project.basedir}/build/conf/jnlp/keystore.ks</keystore>
+            <keypass>toolbox</keypass>
+            <storepass>toolbox</storepass> 
+            <!-- <storetype>jks</storetype> -->
+            <alias>toolbox</alias>
+            <!-- <validity>720</validity> -->
           
-<!--             <dnameCn>A</dnameCn>-->
-<!--             <dnameOu>B</dnameOu>-->
-<!--             <dnameO>C</dnameO>-->
-<!--             <dnameL>D</dnameL>-->
-<!--             <dnameSt>E</dnameSt>-->
-<!--             <dnameC>F</dnameC>-->
+            <!--             <dnameCn>A</dnameCn>-->
+            <!--             <dnameOu>B</dnameOu>-->
+            <!--             <dnameO>C</dnameO>-->
+            <!--             <dnameL>D</dnameL>-->
+            <!--             <dnameSt>E</dnameSt>-->
+            <!--             <dnameC>F</dnameC>-->
+            
+            <verify>true</verify>
+            
+            <!-- 
+            <keystoreConfig>
+              <delete>true</delete> 
+              <gen>true</gen>       
+            </keystoreConfig>
+            -->
+          </sign>
 
-             <verify>true</verify>
+          <!-- BUILDING PROCESS -->
+          <!--usejnlpservlet>true</usejnlpservlet--> <!-- not yet supported -->
 
-             <!-- 
-             <keystoreConfig>
-               <delete>true</delete> 
-               <gen>true</gen>       
-             </keystoreConfig>
-             -->
-           </sign>
+          <!-- should we have some more configurations here? E.g. compression level (aka packing effort) -->
+          <!-- not yet implemented -->
+          <pack200>false</pack200>
+          <gzip>false</gzip> <!-- default force when pack200 false, true when pack200 selected ?? -->
+          <!-- causes a version attribute to be output in each jar resource element, optional, default is false -->
+          <outputJarVersions>false</outputJarVersions>
 
-           <!-- BUILDING PROCESS -->
-           <!--usejnlpservlet>true</usejnlpservlet--> <!-- not yet supported -->
+          <!-- misc -->
+          <!-- if there are multiple apps, do we need to mark one as default? (app/ redirects to app/default.jnlp in jnlp servlet ??)-->
+          <!-- -->
 
-           <!-- should we have some more configurations here? E.g. compression level (aka packing effort) -->
-           <!-- not yet implemented -->
-           <pack200>false</pack200>
-           <gzip>false</gzip> <!-- default force when pack200 false, true when pack200 selected ?? -->
-           <!-- causes a version attribute to be output in each jar resource element, optional, default is false -->
-           <outputJarVersions>false</outputJarVersions>
-
-           <!-- misc -->
-           <!-- if there are multiple apps, do we need to mark one as default? (app/ redirects to app/default.jnlp in jnlp servlet ??)-->
-           <!-- -->
-
-           <!--install>false</install--> <!-- not yet supported -->
-           <verbose>false</verbose>
-           <unsignAlreadySignedJars>true</unsignAlreadySignedJars>
+          <!--install>false</install--> <!-- not yet supported -->
+          <verbose>false</verbose>
+          <unsignAlreadySignedJars>true</unsignAlreadySignedJars>
         </configuration>
       </plugin>
 
@@ -735,6 +735,10 @@ Cheat sheet:
     </plugins>
   </reporting>
 
+  <!-- ===================================================================== -->
+  <!-- Repositories                                                          -->
+  <!-- ===================================================================== -->
+
   <pluginRepositories>
     <pluginRepository>
       <id>codehaus.org</id>
@@ -746,10 +750,25 @@ Cheat sheet:
     </pluginRepository>
   </pluginRepositories>
 
+  <!-- ===================================================================== -->
+  <!-- Revision Control                                                      -->
+  <!-- ===================================================================== -->
+
   <scm>
     <connection>scm:svn:http://javatoolbox.googlecode.com/svn/trunk/toolbox</connection>
     <developerConnection>scm:svn:https://javatoolbox.googlecode.com/svn/trunk/toolbox</developerConnection>
     <url>http://code.google.com/p/javatoolbox/source/browse</url>
   </scm>
+
+  <!-- ===================================================================== -->
+  <!-- Deployment                                                            -->
+  <!-- ===================================================================== -->
+
+  <distributionManagement>
+    <site>
+      <id>muggles.dyndns.org</id>
+      <url>scp://muggles.dyndns.org/var/www/apache2-default/javatoolbox-site</url>
+    </site>
+  </distributionManagement>
   
 </project>
