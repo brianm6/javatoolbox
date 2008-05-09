@@ -2,15 +2,18 @@
 
 CHEAT SHEET:
 
-Compile             : mvn compile
-Clean               : mvn clean
-Compile unit tests  : mvn test-compile
-Run unit tests      : mvn test
-Run one unit test   : mvn test -Dtest=ArrayUtilTest
-Generate site       : mvn -Dmaven.test.failure.ignore=true clean site
-Webstart artifacts  : mvn clean install webstart:jnlp
-Gen' eclipse project: mvn eclipse:eclipse
-Generate website    : mvn site
+  Compile             : mvn compile
+  Clean               : mvn clean
+  Compile unit tests  : mvn test-compile
+  Run unit tests      : mvn test
+  Run one unit test   : mvn test -Dtest=ArrayUtilTest
+  Generate site       : mvn -Dmaven.test.failure.ignore=true clean site
+  Webstart artifacts  : mvn clean install webstart:jnlp
+  Gen' eclipse project: mvn eclipse:eclipse
+  Generate website    : mvn site:site
+  Deploy website      : mvn site:deploy
+  Headless            : mvn -Djava.awt.headless=true <goals>
+  Skip unit tests     : mvn -Dmaven.test.skip <goals>
 
 ====================================================================== -->
 
