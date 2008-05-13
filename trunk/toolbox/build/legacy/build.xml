@@ -2,7 +2,7 @@
 
 <!-- build.xml for toolbox -->
 
-<project name="toolbox" default="all" basedir=".">
+<project name="toolbox" default="all" basedir="../..">
 
     <description>
         Java Toolbox
