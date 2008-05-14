@@ -12,6 +12,7 @@ import javassist.CtClass;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.log4j.SmartLogger;
@@ -29,11 +30,6 @@ public class ClassUtilTest extends TestCase
     // Main
     //--------------------------------------------------------------------------
         
-    /**
-     * Entrypoint.
-     * 
-     * @param args None recognized.
-     */
     public static void main(String[] args)
     {
         TestRunner.run(ClassUtilTest.class);
@@ -43,23 +39,15 @@ public class ClassUtilTest extends TestCase
     // Unit Tests
     //--------------------------------------------------------------------------
     
-    /**
-     * Tests getPackagesInClasspath(). 
-     */
     public void testGetPackagesInClasspath()
     {   
         logger_.info("Running testGetPackagesInClasspath...");
         
         String[] packages = ClassUtil.getPackagesInClasspath();
-        SmartLogger.info(logger_, ArrayUtil.toString(packages, true));
+        SmartLogger.debug(logger_, ArrayUtil.toString(packages, true));
         assertTrue("tgpic1", ArrayUtil.contains(packages, "java.lang"));
-        assertTrue("tgpic3", ArrayUtil.contains(packages, "junit.textui"));
     }
     
-    
-    /**
-     * Tests getClasspath()
-     */
     public void testGetClasspath()
     {
         logger_.info("Running testGetClasspath...");
@@ -67,13 +55,9 @@ public class ClassUtilTest extends TestCase
         String classpath = ClassUtil.getClasspath();
         assertNotNull("cp null", classpath);
         String[] paths = StringUtil.tokenize(classpath, File.pathSeparator);
-        SmartLogger.info(logger_, ArrayUtil.toString(paths, true));
+        SmartLogger.debug(logger_, ArrayUtil.toString(paths, true));
     }
 
-    
-    /**
-     * Tests packageToPath()
-     */
     public void testPackageToPath()
     {
         logger_.info("Running testPackageToPath...");
@@ -89,10 +73,6 @@ public class ClassUtilTest extends TestCase
                      "d", ClassUtil.packageToPath("a.b.c.d"));
     }
 
-    
-    /**
-     * Tests pathToPackage()
-     */
     public void testPathToPackage()
     {
         logger_.info("Running testPathToPackage...");
@@ -144,10 +124,6 @@ public class ClassUtilTest extends TestCase
         assertEquals(ArrayList.class, many[2]);
     }
 
-    
-    /**
-     * Tests isInnerClass()
-     */
     public void testIsInnerClass()
     {
         logger_.info("Running testIsInnerClass...");
@@ -163,7 +139,6 @@ public class ClassUtilTest extends TestCase
         assertTrue(ClassUtil.isInnerClass("a$b"));
         assertTrue(ClassUtil.isInnerClass("one$two"));
         assertTrue(ClassUtil.isInnerClass("one$two$three"));
-        
     }
 
     //--------------------------------------------------------------------------
@@ -199,12 +174,9 @@ public class ClassUtilTest extends TestCase
     {
         logger_.info("Running testGetClassesInPackageArchive...");
         
-        String[] classes = ClassUtil.getClassesInPackage("junit.textui");
-        
-        //logger_.debug("\n"+ArrayUtil.toString(classes, true));
-        
-        assertTrue(TestRunner.class.getName() + " not found in package", 
-            ArrayUtil.contains(classes, TestRunner.class.getName()));
+        String[] classes = ClassUtil.getClassesInPackage("org.apache.commons.lang");
+        assertTrue(StringUtils.class.getName() + " not found in package", 
+            ArrayUtil.contains(classes, StringUtils.class.getName()));
     }
     
     
@@ -227,9 +199,6 @@ public class ClassUtilTest extends TestCase
     // Tests isArchive()
     //--------------------------------------------------------------------------
     
-    /**
-     * Positive tests isArchive()
-     */
     public void testIsArchive()
     {
         logger_.info("Running testIsArchive...");
@@ -249,10 +218,6 @@ public class ClassUtilTest extends TestCase
         assertTrue("testIsArchive 12", ClassUtil.isArchive("C.D.war"));
     }
 
-    
-    /**
-     * Negative tests isArchive()
-     */
     public void testIsArchiveNegative()
     {
         logger_.info("Running testIsArchiveNegative...");
@@ -274,9 +239,6 @@ public class ClassUtilTest extends TestCase
     // Tests isClassFile()
     //--------------------------------------------------------------------------
     
-    /**
-     * Positive tests isClassFile()
-     */ 
     public void testIsClassFile()
     {
         logger_.info("Running testIsClassFile...");
@@ -289,10 +251,6 @@ public class ClassUtilTest extends TestCase
         assertTrue(ClassUtil.isClassFile("abc_123.CLASS"));
     }
     
-    
-    /**
-     * Negative tests for isClassFile()
-     */ 
     public void testIsClassFileNegative()
     {
         logger_.info("Running testIsClassFileNegative...");
@@ -309,9 +267,6 @@ public class ClassUtilTest extends TestCase
     // Tests findInPath()
     //--------------------------------------------------------------------------
     
-    /**
-     * Tests findInPath()
-     */
     public void testFindInPath() throws Exception
     {
         logger_.info("Running testFindInPath...");
@@ -333,10 +288,6 @@ public class ClassUtilTest extends TestCase
         logger_.debug("Found " + f);
     }
     
-    
-    /**
-     * Test findInPath() for a file not found.
-     */
     public void testFindInPathNotFound() throws Exception
     {
         logger_.info("Running testFindInPathNotFound...");
@@ -347,9 +298,6 @@ public class ClassUtilTest extends TestCase
     // Tests getClassLocation()
     //--------------------------------------------------------------------------
     
-    /**
-     * Tests getClassLocation() from a jar file.
-     */
     public void testGetClassLocationFromJar() throws Exception
     {
         logger_.info("Running testGetClassLocationFromJar...");
@@ -362,10 +310,6 @@ public class ClassUtilTest extends TestCase
         assertTrue(loc1.toString().indexOf("Object.class") >= 0);
     }
     
-    
-    /**
-     * Tests getClassLocation() from the file system
-     */
     public void testGetClassLocationFromFileSystem() throws Exception
     {
         logger_.info("Running testGetClassLocationFromFileSystem...");
@@ -378,10 +322,6 @@ public class ClassUtilTest extends TestCase
         assertTrue(loc2.toString().indexOf("ClassUtil.class") >= 0);
     }
     
-    
-    /**
-     * Tests getClassLocation() from a dynamically created class file.
-     */
     public void testGetClassLocationFromDynamicClass() throws Exception
     {
         logger_.info("Running testGetClassLocationFromDynamicClass...");
@@ -399,29 +339,18 @@ public class ClassUtilTest extends TestCase
     // Tests toClass()
     //--------------------------------------------------------------------------
     
-    /**
-     * Tests toClass() for null input.
-     */
     public void testToClassNull() 
     {
         logger_.info("Running testToClassNull...");
         assertEquals(0, ClassUtil.toClass((Object[]) null).length);
     }
     
-    
-    /**
-     * Tests toClass() for empty array input.
-     */
     public void testToClassZero() 
     {
         logger_.info("Running testToClassZero...");
         assertEquals(0, ClassUtil.toClass(new String[0]).length);
     }
     
-    
-    /**
-     * Tests toClass() for an array of size = 1.
-     */
     public void testToClassOne() 
     {
         logger_.info("Running testToClassOne...");
@@ -431,10 +360,6 @@ public class ClassUtilTest extends TestCase
         assertEquals(result[0], String.class);
     }
     
-    
-    /**
-     * Tests toClass() for an array of size > 1.
-     */
     public void testToClassMany() 
     {
         logger_.info("Running testToClassMany...");
