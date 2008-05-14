@@ -39,8 +39,7 @@ public class StreamRelay implements Runnable {
     /**
      * Default flushing policy is not to flush at all.
      */
-    private static final IFlushPolicy DEFAULT_FLUSH_POLICY = 
-        new NeverFlushPolicy();
+    private static final IFlushPolicy DEFAULT_FLUSH_POLICY = new NeverFlushPolicy();
     
     // -------------------------------------------------------------------------
     // Fields
@@ -87,13 +86,18 @@ public class StreamRelay implements Runnable {
      * @param out Output stream to write bytes to.
      */
     public StreamRelay(InputStream in, OutputStream out) {
+        this(in, out, DEFAULT_FLUSH_POLICY);
+    }
+
+    public StreamRelay(InputStream in, OutputStream out, IFlushPolicy flushPolicy) {
         in_ = in;
         out_ = out;
         count_ = 0;
         buffer_ = new byte[BUFFER_SIZE];
         iterations_ = 0;
+        flushPolicy_ = flushPolicy;
     }
-
+    
     // -------------------------------------------------------------------------
     // Runnable Interface
     // -------------------------------------------------------------------------
