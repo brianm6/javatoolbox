@@ -41,8 +41,7 @@ public final class ClassUtil
     /** 
      * Filter for class files.
      */
-    private static final IOFileFilter FILTER_CLASS = 
-        new RegexFileFilter(".class$", false);
+    private static final IOFileFilter FILTER_CLASS = new RegexFileFilter(".class$", false);
     
     //--------------------------------------------------------------------------
     // Constructors
@@ -218,9 +217,7 @@ public final class ClassUtil
                 }
                 catch (IOException ioe)
                 {
-                    logger_.info(
-                        "Problem with archive " + pathElement + 
-                        " : " + ioe.getMessage());
+                    logger_.info("Problem with archive " + pathElement + " : " + ioe.getMessage());
                 }
             }
             else

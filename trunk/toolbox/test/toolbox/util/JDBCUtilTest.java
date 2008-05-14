@@ -23,10 +23,9 @@ import toolbox.util.random.SequenceEndedException;
  */
 public class JDBCUtilTest extends TestCase
 {
-    private static final Logger logger_ =
-        Logger.getLogger(JDBCUtilTest.class);
+    private static final Logger logger_ = Logger.getLogger(JDBCUtilTest.class);
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     // Constants
     //--------------------------------------------------------------------------
     
@@ -35,7 +34,7 @@ public class JDBCUtilTest extends TestCase
     private static String DB_DRIVER   = "org.hsqldb.jdbcDriver";
     private static String DB_USER     = "SA";
     private static String DB_PASSWORD = "";
-    private static String DB_URL = "jdbc:hsqldb:" + FileUtil.getTempDir() + FS;
+    private static String DB_URL      = "jdbc:hsqldb:" + FileUtil.getTempDir() + FS;
     
     //--------------------------------------------------------------------------
     // Fields
@@ -47,11 +46,6 @@ public class JDBCUtilTest extends TestCase
     // Main
     //--------------------------------------------------------------------------
 
-    /**
-     * Entrypoint.
-     *
-     * @param args None recognized.
-     */
     public static void main(String[] args)
     {
         TestRunner.run(JDBCUtilTest.class);
@@ -153,33 +147,28 @@ public class JDBCUtilTest extends TestCase
     
     /**
      * Tests init() loading the jdbc driver from a jar file.
-     *
-     * @throws Exception on error.
      */
-    public void testInitUsingJar() throws Exception
-    {
+    public void testInitUsingJar() throws Exception {
         logger_.info("Running testInitUsingJar...");
-
         String prefix = nextPrefix("initUsingJar");
-        
-        try
-        {
-            JDBCUtil.init(
-                getDBJar(), DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD);
+        String dbJarFile = getDBJar();
+
+        // Skip test if jar file not found..
+        if (dbJarFile == null) {
+            logger_.debug("Skipping testInitUsingJar...");
         }
-        finally
-        {
-            JDBCUtil.shutdown();
-            cleanup(prefix);
+        else {
+            try {
+                logger_.debug("Test jar file = " + dbJarFile);
+                JDBCUtil.init(dbJarFile, DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD);
+            }
+            finally {
+                JDBCUtil.shutdown();
+                cleanup(prefix);
+            }
         }
     }
 
-
-    /**
-     * Tests getConnection()
-     *
-     * @throws Exception on error.
-     */
     public void testGetConnection() throws Exception
     {
         logger_.info("Running testGetConnection...");
@@ -189,7 +178,6 @@ public class JDBCUtilTest extends TestCase
         try
         {
             JDBCUtil.init(DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD);
-
             Connection conn = JDBCUtil.getConnection();
             logger_.debug("Connection: " + conn);
             logger_.debug("Autocommit: " + conn.getAutoCommit());
@@ -948,6 +936,7 @@ public class JDBCUtilTest extends TestCase
         (new File(FileUtil.getTempDir() + FS + prefx + ".properties")).delete();
         (new File(FileUtil.getTempDir() + FS + prefx + ".data")).delete();
         (new File(FileUtil.getTempDir() + FS + prefx + ".script")).delete();
+        (new File(FileUtil.getTempDir() + FS + prefx + ".log")).delete();
     }
 
 
