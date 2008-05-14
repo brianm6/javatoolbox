@@ -70,22 +70,15 @@ public class TcpTunnelTest extends TestCase
     }
     
     //--------------------------------------------------------------------------
-    // Overrides TestCase
+    // Setup/Teardown
     //--------------------------------------------------------------------------
     
-    /**
-     * @see junit.framework.TestCase#setUp()
-     */
     protected void setUp() throws Exception
     {
         os_ = System.out;
         es_ = System.err;
     }
     
-    
-    /**
-     * @see junit.framework.TestCase#tearDown()
-     */
     protected void tearDown() throws Exception
     {
         System.setOut(os_);
@@ -99,8 +92,6 @@ public class TcpTunnelTest extends TestCase
     /**
      * Tests the TcpTunnel for an end to end scenario of sending/receiving
      * data though the tunnel.
-     * 
-     * @throws Exception on error.
      */
     public void testTcpTunnel() throws Exception 
     {   
@@ -146,15 +137,9 @@ public class TcpTunnelTest extends TestCase
         
         logger_.debug(socket);
         
-        PrintWriter pw = 
-            new PrintWriter(
-                new OutputStreamWriter(
-                    socket.getOutputStream()));
+        PrintWriter pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
             
-        BufferedReader br = 
-            new BufferedReader(
-                new InputStreamReader(
-                    socket.getInputStream()));
+        BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
         String message = RandomStringUtils.randomAlphanumeric(100); //"Hello";
         
@@ -188,7 +173,7 @@ public class TcpTunnelTest extends TestCase
         logger_.debug("Bytes read   : " + r);
         logger_.debug("Bytes written: " + w);
         
-        int len = message.length() + "terminate".length() + "\r\n".length() * 2;
+        int len = message.length() + "terminate".length() + System.getProperty("line.separator").length() * 2;
         assertEquals(len, r);
         assertEquals(len, w);
     }
@@ -318,8 +303,6 @@ public class TcpTunnelTest extends TestCase
     
     /**
      * Stress tests throughput of the tunnel.
-     * 
-     * @throws Exception on error.
      */
     public void testTcpTunnel_StressTest() throws Exception 
     {   
