@@ -451,12 +451,6 @@ CHEAT SHEET:
 
     <dependency>
       <groupId>toolbox</groupId>
-      <artifactId>napkinlf</artifactId>
-      <version>SNAPSHOT</version>
-    </dependency>
-
-    <dependency>
-      <groupId>toolbox</groupId>
       <artifactId>officelf</artifactId>
       <version>SNAPSHOT</version>
     </dependency>

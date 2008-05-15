@@ -703,16 +703,6 @@
     </dependency>
 
     <dependency>
-      <id>napkinlf</id>
-      <version></version>
-      <url>http://napkinlaf.sf.net</url>
-      <properties>
-        <jnlp.jar>true</jnlp.jar>
-        <fatjar>laf</fatjar>
-      </properties>
-    </dependency>
-
-    <dependency>
       <id>officelf</id>
       <version></version>
       <url>http://officelnfs.sf.net</url>
