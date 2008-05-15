@@ -27,7 +27,7 @@ CHEAT SHEET:
   <artifactId>toolbox</artifactId>
   <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
-  <name>Toolbox</name>
+  <name>Java Developer Toolbox</name>
   <url>http://code.google.com/p/javatoolbox</url>
   <description>Java Developer Toolbox</description>
   <inceptionYear>2002</inceptionYear>
