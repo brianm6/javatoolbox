@@ -97,13 +97,6 @@
   </LookAndFeel>
 
   <LookAndFeel
-      name="3D"
-      class="swing.addon.plaf.threeD.ThreeDLookAndFeel"
-      action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
-      <Property name="group.name" value="Others"/>
-  </LookAndFeel>
-
-  <LookAndFeel
       name="Office 2003"
       class="org.fife.plaf.Office2003.Office2003LookAndFeel"
       action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
