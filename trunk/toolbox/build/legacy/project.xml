@@ -692,16 +692,6 @@
     </dependency>
 
     <dependency>
-      <id>officelf</id>
-      <version></version>
-      <url>http://officelnfs.sf.net</url>
-      <properties>
-        <jnlp.jar>true</jnlp.jar>
-        <fatjar>laf</fatjar>
-      </properties>
-    </dependency>
-
-    <dependency>
       <id>oyoahalf</id>
       <version></version>
       <url>http://www.oyoaha.com/lookandfeel</url>
@@ -838,16 +828,6 @@
       <properties>
         <jnlp.jar>true</jnlp.jar>
         <fatjar>toolbox</fatjar>
-      </properties>
-    </dependency>
-
-    <dependency>
-      <id>xplookandfeel</id>
-      <version></version>
-      <url>http://www.stefan-krause.com/java</url>
-      <properties>
-        <jnlp.jar>true</jnlp.jar>
-        <fatjar>laf</fatjar>
       </properties>
     </dependency>
 

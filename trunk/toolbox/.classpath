@@ -65,7 +65,6 @@
 	<classpathentry kind="lib" path="lib/matra.jar" sourcepath="lib/src/matra-src.zip"/>
 	<classpathentry kind="lib" path="lib/metouia.jar"/>
 	<classpathentry kind="lib" path="lib/multivalent.jar" sourcepath="lib/src/multivalent-src.zip"/>
-	<classpathentry kind="lib" path="lib/officelf.jar"/>
 	<classpathentry kind="lib" path="lib/oyoahalf.jar" sourcepath="lib/src/oyoahalf-src.zip"/>
 	<classpathentry kind="lib" path="lib/pagosoftlf.jar"/>
 	<classpathentry kind="lib" path="lib/pollo.jar" sourcepath="lib/src/pollo-src.zip"/>
@@ -83,6 +82,5 @@
 	<classpathentry kind="lib" path="lib/xercesImpl.jar" sourcepath="lib/src/xercesImpl-src.zip"/>
 	<classpathentry kind="lib" path="lib/xml-apis.jar" sourcepath="lib/src/xml-apis-src.zip"/>
 	<classpathentry kind="lib" path="lib/xom.jar" sourcepath="lib/src/xom-src.zip"/>
-	<classpathentry kind="lib" path="lib/xplookandfeel.jar" sourcepath="lib/src/xplookandfeel-src.zip"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>
