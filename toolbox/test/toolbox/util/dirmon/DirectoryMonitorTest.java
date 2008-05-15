@@ -55,27 +55,20 @@ public class DirectoryMonitorTest extends TestCase {
             // Mock Recognizer
             IFileActivityRecognizer recognizer = new IFileActivityRecognizer() {
 
-                public List getRecognizedEvents(
-                    DirSnapshot before, DirSnapshot after){
+                public List getRecognizedEvents(DirSnapshot before, DirSnapshot after) {
                     return new ArrayList();
                 }
             };
 
             // Mock Listener
-            IDirectoryMonitorListener listener = 
-                new IDirectoryMonitorListener() {
+            IDirectoryMonitorListener listener = new IDirectoryMonitorListener() {
 
-                public void directoryActivity(
-                    FileEvent directoryMonitorEvent) 
-                    throws Exception{
-                    
-                    logger_.debug(
-                        "File activity reported: " 
-                        + directoryMonitorEvent);
+                public void directoryActivity(FileEvent directoryMonitorEvent) throws Exception {
+                    logger_.debug("Listener: activity = " + directoryMonitorEvent);
                 }
                 
-                public void statusChanged(StatusEvent statusEvent) 
-                    throws Exception {
+                public void statusChanged(StatusEvent statusEvent) throws Exception {
+                    logger_.debug("Listener: status = " + statusEvent.getMessage());
                 }
             };
 
@@ -133,13 +126,6 @@ public class DirectoryMonitorTest extends TestCase {
         logger_.info("Running testDirectoryMonitorWithSubDirs...");
         
         File mockDir = FileUtil.createTempDir();
-        //File sub1 = FileUtil.createTempDir(root);
-        //File sub11 = FileUtil.createTempDir(sub1);
-        //File sub2 = FileUtil.createTempDir(root);
-        
-        //File root = new File("c:\\tmp\\crap");
-        
-        //File root = new File("M:\\x1700_vacany_10_dynamic\\staffplanning\\vacancy\\dev\\Ophelia\\src");
         
         try {
             DirectoryMonitor dm = new DirectoryMonitor(mockDir, true);
