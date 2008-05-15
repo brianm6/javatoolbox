@@ -6,7 +6,6 @@
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="src" path="itest"/>
 	<classpathentry kind="src" path="resources"/>
-	<classpathentry kind="lib" path="lib/3dlf.jar"/>
 	<classpathentry kind="lib" path="lib/apple-mrj.jar"/>
 	<classpathentry kind="lib" path="lib/acrobat.jar"/>
 	<classpathentry kind="lib" path="lib/ant.jar" sourcepath="lib/src/ant-src.zip"/>

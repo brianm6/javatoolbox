@@ -295,12 +295,6 @@ CHEAT SHEET:
     
     <dependency>
       <groupId>toolbox</groupId>
-      <artifactId>3dlf</artifactId>
-      <version>SNAPSHOT</version>
-    </dependency>
-
-    <dependency>
-      <groupId>toolbox</groupId>
       <artifactId>acrobat</artifactId>
       <version>SNAPSHOT</version>
     </dependency>

@@ -279,7 +279,6 @@
                 <include name="hippolf.jar"/>
                 <include name="oyoahalf.jar"/>
                 <include name="squarenesslf.jar"/>
-                <include name="3dlf.jar"/>                
 
             </fileset>
         </unjar>

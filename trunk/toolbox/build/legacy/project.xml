@@ -117,17 +117,6 @@
     
     <!--======================= UNIT END ====================================-->
     
-    
-    <dependency>
-      <id>3dlf</id>
-      <version></version>
-      <url>http://www.markus-hillenbrand.de/3dlf</url>
-      <properties>
-        <jnlp.jar>true</jnlp.jar>
-        <fatjar>laf</fatjar>
-      </properties>
-    </dependency>
-          
     <dependency>
       <id>acrobat</id>
       <version></version>
