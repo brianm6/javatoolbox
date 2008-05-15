@@ -28,7 +28,6 @@ mvn install:install-file -Dfile=../lib/looks.jar            -DartifactId=looks  
 mvn install:install-file -Dfile=../lib/matra.jar            -DartifactId=matra            -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 mvn install:install-file -Dfile=../lib/metouia.jar          -DartifactId=metouia          -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 mvn install:install-file -Dfile=../lib/multivalent.jar      -DartifactId=multivalent      -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
-mvn install:install-file -Dfile=../lib/napkinlf.jar         -DartifactId=napkinlf         -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 mvn install:install-file -Dfile=../lib/officelf.jar         -DartifactId=officelf         -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 mvn install:install-file -Dfile=../lib/oyoahalf.jar         -DartifactId=oyoahalf         -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 mvn install:install-file -Dfile=../lib/pollo.jar            -DartifactId=pollo            -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true

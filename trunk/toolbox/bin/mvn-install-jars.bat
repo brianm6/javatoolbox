@@ -28,7 +28,6 @@ call mvn %sa% install:install-file -Dfile=%LIB%\looks.jar            -DartifactI
 call mvn %sa% install:install-file -Dfile=%LIB%\matra.jar            -DartifactId=matra            -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 call mvn %sa% install:install-file -Dfile=%LIB%\metouia.jar          -DartifactId=metouia          -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 call mvn %sa% install:install-file -Dfile=%LIB%\multivalent.jar      -DartifactId=multivalent      -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
-call mvn %sa% install:install-file -Dfile=%LIB%\napkinlf.jar         -DartifactId=napkinlf         -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 call mvn %sa% install:install-file -Dfile=%LIB%\officelf.jar         -DartifactId=officelf         -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 call mvn %sa% install:install-file -Dfile=%LIB%\oyoahalf.jar         -DartifactId=oyoahalf         -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 call mvn %sa% install:install-file -Dfile=%LIB%\pollo.jar            -DartifactId=pollo            -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
