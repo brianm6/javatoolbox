@@ -27,7 +27,7 @@ import org.apache.log4j.Logger;
 import toolbox.clearcase.adapter.ClearCaseAdapterFactory;
 import toolbox.clearcase.audit.ContainsTabsAudit;
 import toolbox.clearcase.audit.MissingCommentAudit;
-import toolbox.util.DateUtil;
+import toolbox.util.DateOnlyUtil;
 import toolbox.util.ResourceUtil;
 import toolbox.util.collections.ObjectComparator;
 
@@ -151,7 +151,7 @@ public class RepositoryAuditor
         // Find changed files between now and 'history days' back.
         List changedFiles = 
             cc.findChangedFiles(
-                DateUtil.addDays(new Date(), -getHistoryDays()), 
+                DateOnlyUtil.addDays(new Date(), -getHistoryDays()), 
                 new Date(), 
                 new SuffixFileFilter("*"));
 
