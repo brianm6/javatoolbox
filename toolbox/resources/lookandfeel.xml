@@ -97,20 +97,6 @@
   </LookAndFeel>
 
   <LookAndFeel
-      name="Office 2003"
-      class="org.fife.plaf.Office2003.Office2003LookAndFeel"
-      action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
-      <Property name="group.name" value="Others"/>
-  </LookAndFeel>
-
-  <LookAndFeel
-      name="Office XP"
-      class="org.fife.plaf.OfficeXP.OfficeXPLookAndFeel"
-      action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
-      <Property name="group.name" value="Others"/>
-  </LookAndFeel>
-
-  <LookAndFeel
       name="Pagosoft"
       class="com.pagosoft.plaf.PgsLookAndFeel"
       action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">

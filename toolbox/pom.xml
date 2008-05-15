@@ -445,12 +445,6 @@ CHEAT SHEET:
 
     <dependency>
       <groupId>toolbox</groupId>
-      <artifactId>officelf</artifactId>
-      <version>SNAPSHOT</version>
-    </dependency>
-
-    <dependency>
-      <groupId>toolbox</groupId>
       <artifactId>oyoahalf</artifactId>
       <version>SNAPSHOT</version>
     </dependency>
@@ -501,12 +495,6 @@ CHEAT SHEET:
     <dependency>
       <groupId>toolbox</groupId>
       <artifactId>toniclf</artifactId>
-      <version>SNAPSHOT</version>
-    </dependency>
-
-    <dependency>
-      <groupId>toolbox</groupId>
-      <artifactId>xplookandfeel</artifactId>
       <version>SNAPSHOT</version>
     </dependency>
 
