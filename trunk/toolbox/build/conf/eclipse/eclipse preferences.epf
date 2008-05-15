@@ -52,7 +52,7 @@
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.formatter.indent_switchstatements_compare_to_switch=true
 /instance/org.eclipse.help.ui/browser.maximized=false
 /instance/org.eclipse.jdt.ui/java_doc_keyword_bold=false
-/instance/org.eclipse.jdt.ui/org.eclipse.jdt.ui.typefilter.enabled=cryptix.*;org.hsqldb.*;
+/instance/org.eclipse.jdt.ui/org.eclipse.jdt.ui.typefilter.enabled=org.hsqldb.*;
 /instance/org.eclipse.ui.workbench/SWITCH_PERSPECTIVE_ON_PROJECT_CREATION=always
 /instance/org.eclipse.update.scheduler/enabled=true
 /instance/org.eclipse.jdt.ui/semanticHighlighting.enabled=true

@@ -333,16 +333,6 @@
     </dependency>
             
     <dependency>
-      <id>cryptix32</id>
-      <version></version>
-      <url>http://www.cryptix.org</url>
-      <properties>
-        <jnlp.jar>true</jnlp.jar>
-        <fatjar>xslfo</fatjar>
-      </properties>
-    </dependency>
-
-    <dependency>
       <id>cvslib</id>
       <version></version>
       <url>http://javacvs.netbeans.org</url>

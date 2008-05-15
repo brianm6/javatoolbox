@@ -327,7 +327,6 @@
                 <include name="apple-mrj.jar"/>
                 <include name="xt.jar"/>
                 <include name="saxon.jar"/>
-                <include name="cryptix32.jar"/>
             </fileset>
         </unjar>
 

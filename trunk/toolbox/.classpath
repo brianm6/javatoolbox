@@ -28,7 +28,6 @@
 	<classpathentry kind="lib" path="lib/commons-math.jar" sourcepath="lib/src/commons-math-src.zip"/>
 	<classpathentry kind="lib" path="lib/commons-net.jar" sourcepath="lib/src/commons-net-src.zip"/>
 	<classpathentry kind="lib" path="lib/commons-pool.jar" sourcepath="lib/src/commons-pool-src.zip"/>
-	<classpathentry kind="lib" path="lib/cryptix32.jar"/>
 	<classpathentry kind="lib" path="lib/cvslib.jar" sourcepath="lib/cvslib.jar"/>
 	<classpathentry kind="lib" path="lib/dbunit.jar"/>
 	<classpathentry kind="lib" path="lib/fhlaf.jar" sourcepath="lib/src/fhlaf-src.zip"/>
