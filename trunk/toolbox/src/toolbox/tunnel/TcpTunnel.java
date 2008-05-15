@@ -48,7 +48,7 @@ import toolbox.workspace.PreferencedException;
 /**
  * Tunnels TCP traffic through a local proxy port before it is forwarded to the 
  * intended recipient. This allows a view into a "real time" window of the data 
- * being sent back and forth. Very useful for socket level degugging.
+ * being sent back and forth. Very useful for socket level debugging.
  * 
  * <pre class="snippet">
  *
@@ -240,21 +240,12 @@ public class TcpTunnel implements Startable, IPreferenced {
             Options options = new Options();
 
             // Create command line options            
-            Option quietOption = 
-                new Option("q", "quiet", false, "Quiet (don't print tunneled data)");
-            
-            Option transferredOption = 
-                new Option("t", "transferred", false, "Prints bytes transferred in real time");
-            
-            Option binaryOption = 
-                new Option("b", "suppressBinary", false, "Suppresses binary output");
-            
-            Option helpOption = 
-                new Option("h", "help", false, "Print usage");
-            
-            Option bindAddressOption = 
-                new Option("l", "bindAddress", true, "Address on this machine to bind to if more than one available");
-            
+            Option quietOption = new Option("q", "quiet", false, "Quiet (don't print tunneled data)");
+            Option transferredOption = new Option("t", "transferred", false, "Prints bytes transferred in real time");
+            Option binaryOption = new Option("b", "suppressBinary", false, "Suppresses binary output");
+            Option helpOption = new Option("h", "help", false, "Print usage");
+
+            Option bindAddressOption = new Option("l", "bindAddress", true, "Address on this machine to bind to if more than one available");
             bindAddressOption.setArgName("Bind address");
             bindAddressOption.setArgs(1);
             
@@ -592,8 +583,7 @@ public class TcpTunnel implements Startable, IPreferenced {
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
     public void applyPrefs(Element prefs) throws PreferencedException {
-        Element root = XOMUtil.getFirstChildElement(
-            prefs, NODE_TCPTUNNEL, new Element(NODE_TCPTUNNEL));
+        Element root = XOMUtil.getFirstChildElement(prefs, NODE_TCPTUNNEL, new Element(NODE_TCPTUNNEL));
         PreferencedUtil.readPreferences(this, root, PROPS_SAVED);
     }
 
@@ -622,7 +612,7 @@ public class TcpTunnel implements Startable, IPreferenced {
 
 
     /**
-     * Fires notifcation that the status of the tunnel has changed to all
+     * Fires notification that the status of the tunnel has changed to all
      * registered listeners.
      * 
      * @param status New status
@@ -634,7 +624,7 @@ public class TcpTunnel implements Startable, IPreferenced {
 
 
     /**
-     * Fires notifcation that the number of bytes read has changed to all
+     * Fires notification that the number of bytes read has changed to all
      * registered listeners.
      * 
      * @param connRead Bytes read during the life of the last connection.
@@ -646,7 +636,7 @@ public class TcpTunnel implements Startable, IPreferenced {
 
 
     /**
-     * Fires notifcation that the number of bytes written has changed to all
+     * Fires notification that the number of bytes written has changed to all
      * registered listeners.
      * 
      * @param connWritten Bytes written during the life of the last connection.
@@ -659,7 +649,7 @@ public class TcpTunnel implements Startable, IPreferenced {
 
 
     /**
-     * Fires notifcation that the tunnel has started.
+     * Fires notification that the tunnel has started.
      */
     protected void fireTunnelStarted() {
         for (Iterator i = listeners_.iterator(); i.hasNext();)
@@ -672,14 +662,10 @@ public class TcpTunnel implements Startable, IPreferenced {
      * tunnel.
      * 
      * @param mis Monitor for the incoming sink.
-     * @param mos Monitor for the outgoign sink.
+     * @param mos Monitor for the outgoing sink.
      */
-    protected void fireNewConnection(
-        MonitoredOutputStream mis,
-        MonitoredOutputStream mos) {
-
+    protected void fireNewConnection(MonitoredOutputStream mis, MonitoredOutputStream mos) {
         logger_.debug("fireNewConnection: " + listeners_);
-
         for (Iterator i = listeners_.iterator(); i.hasNext();)
             ((TcpTunnelListener) i.next()).newConnection(mis, mos);
     }
@@ -771,13 +757,10 @@ public class TcpTunnel implements Startable, IPreferenced {
 
                     //----------Outgoing streams--------------------------------
 
-                    MonitoredOutputStream mos = new MonitoredOutputStream(
-                        NAME_STREAM_OUT, new NullOutputStream());
-
+                    MonitoredOutputStream mos = new MonitoredOutputStream(NAME_STREAM_OUT, new NullOutputStream());
                     mos.addOutputStreamListener(new InternalOutputStreamListener());
 
-                    printableOutgoingSink_ = new PrintableOutputStream(
-                        outgoingSink_, supressBinary_, SUBSTITUTION_CHAR);
+                    printableOutgoingSink_ = new PrintableOutputStream(outgoingSink_, supressBinary_, SUBSTITUTION_CHAR);
 
                     MulticastOutputStream outStreams = new MulticastOutputStream();
                     outStreams.addStream(remote.getOutputStream());
@@ -789,15 +772,10 @@ public class TcpTunnel implements Startable, IPreferenced {
                     MulticastOutputStream inStreams = new MulticastOutputStream();
                     inStreams.addStream(client.getOutputStream());
 
-                    MonitoredOutputStream mis = new MonitoredOutputStream(
-                        NAME_STREAM_IN, new NullOutputStream());
-
+                    MonitoredOutputStream mis = new MonitoredOutputStream(NAME_STREAM_IN, new NullOutputStream());
                     mis.addOutputStreamListener(new InternalOutputStreamListener());
                     inStreams.addStream(mis);
-
-                    printableIncomingSink_ = new PrintableOutputStream(
-                        incomingSink_, supressBinary_, SUBSTITUTION_CHAR);
-
+                    printableIncomingSink_ = new PrintableOutputStream(incomingSink_, supressBinary_, SUBSTITUTION_CHAR);
                     inStreams.addStream(printableIncomingSink_);
 
                     //----------------------------------------------------------
@@ -818,8 +796,12 @@ public class TcpTunnel implements Startable, IPreferenced {
                     alreadyListened = true;
                 }
                 catch (Exception e) {
-                    if (getState() != ServiceState.STOPPED)
-                        ExceptionUtil.handleUI(e, logger_);
+                    if (getState() != ServiceState.STOPPED) {
+                        if (System.getProperty("java.awt.headless") == null)
+                            ExceptionUtil.handleUI(e, logger_);
+                        else
+                            logger_.error(e.getMessage(), e);
+                    }
                 }
             }
         }
