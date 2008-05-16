@@ -26,8 +26,7 @@ import toolbox.util.dirmon.recognizer.FileDeletedRecognizer;
  */
 public class DirectoryMonitorTest extends TestCase {
 
-    private static final Logger logger_ = 
-        Logger.getLogger(DirectoryMonitorTest.class);
+    private static final Logger log = Logger.getLogger(DirectoryMonitorTest.class);
 
     // -------------------------------------------------------------------------
     // Main
@@ -45,7 +44,7 @@ public class DirectoryMonitorTest extends TestCase {
      * Tests a full lifecycle of the DirectoryMonitor.
      */
     public void testDirectoryMonitor() throws Exception {
-        logger_.info("Running testDirectoryMonitor...");
+        log.info("Running testDirectoryMonitor...");
 
         File dir = FileUtil.createTempDir();
 
@@ -64,11 +63,11 @@ public class DirectoryMonitorTest extends TestCase {
             IDirectoryMonitorListener listener = new IDirectoryMonitorListener() {
 
                 public void directoryActivity(FileEvent directoryMonitorEvent) throws Exception {
-                    logger_.debug("Listener: activity = " + directoryMonitorEvent);
+                    log.debug("Listener: activity = " + directoryMonitorEvent);
                 }
                 
                 public void statusChanged(StatusEvent statusEvent) throws Exception {
-                    logger_.debug("Listener: status = " + statusEvent.getMessage());
+                    log.debug("Listener: status = " + statusEvent.getMessage());
                 }
             };
 
@@ -95,7 +94,7 @@ public class DirectoryMonitorTest extends TestCase {
      * monitor.
      */
     public void testDirectoryMonitorFalseStart() throws Exception {
-        logger_.info("Running testDirectoryMonitorFalseStart...");
+        log.info("Running testDirectoryMonitorFalseStart...");
 
         File dir = FileUtil.createTempDir();
 
@@ -110,7 +109,7 @@ public class DirectoryMonitorTest extends TestCase {
         }
         catch (IllegalStateException ise) {
             // Success
-            logger_.debug("SUCCESS: start twice failed.");
+            log.debug("SUCCESS: start twice failed.");
         }
         catch (Exception e) {
             fail("Expected IllegalStateException");
@@ -123,7 +122,7 @@ public class DirectoryMonitorTest extends TestCase {
     
     
     public void testDirectoryMonitorWithSubDirs() throws Exception {
-        logger_.info("Running testDirectoryMonitorWithSubDirs...");
+        log.info("Running testDirectoryMonitorWithSubDirs...");
         
         File mockDir = FileUtil.createTempDir();
         
@@ -131,28 +130,20 @@ public class DirectoryMonitorTest extends TestCase {
             DirectoryMonitor dm = new DirectoryMonitor(mockDir, true);
             
             dm.addRecognizer(new FileCreatedRecognizer(dm));
-            dm.addRecognizer(new FileDeletedRecognizer(dm));
             dm.addRecognizer(new FileChangedRecognizer(dm));
-            dm.setDelay(1000);
+            dm.addRecognizer(new FileDeletedRecognizer(dm));
+            dm.setDelay(500);
             
             final BlockingQueue eventQueue = new ArrayBlockingQueue(3);
             
             dm.addDirectoryMonitorListener(new IDirectoryMonitorListener() {
                 
-                public void directoryActivity(
-                    FileEvent event) 
-                    throws Exception{
+                public void directoryActivity(FileEvent event) throws Exception {
                     
                     switch (event.getEventType()) {
                         
                         case FileEvent.TYPE_FILE_CREATED:
-                            eventQueue.offer(event);
-                            break;
-                            
                         case FileEvent.TYPE_FILE_CHANGED:
-                            eventQueue.offer(event);
-                            break;
-                            
                         case FileEvent.TYPE_FILE_DELETED:
                             eventQueue.offer(event);
                             break;
@@ -162,8 +153,7 @@ public class DirectoryMonitorTest extends TestCase {
                     }
                 }
                 
-                public void statusChanged(StatusEvent statusEvent) 
-                    throws Exception {
+                public void statusChanged(StatusEvent statusEvent) throws Exception {
                 }
             });
             
@@ -185,10 +175,11 @@ public class DirectoryMonitorTest extends TestCase {
                 mockFile.getAbsolutePath(), 
                 e.getAfterSnapshot().getAbsolutePath());
             
-            logger_.debug("SUCCESS: Notified of file creation");
+            log.debug("SUCCESS: Notified of file creation");
             
             // Test file changed
             // =================================================================
+            ThreadUtil.sleep(3000);
             FileUtils.touch(mockFile);
             FileEvent e2 = (FileEvent) eventQueue.take();
             assertEquals(FileEvent.TYPE_FILE_CHANGED, e2.getEventType());
@@ -197,10 +188,11 @@ public class DirectoryMonitorTest extends TestCase {
                 mockFile.getAbsolutePath(), 
                 e2.getAfterSnapshot().getAbsolutePath());
             
-            logger_.debug("SUCCESS: Notified of file changed");
+            log.debug("SUCCESS: Notified of file changed");
             
             // Test file deleted            
             // =================================================================            
+            ThreadUtil.sleep(3000);
             mockFile.delete();
             FileEvent e3 = (FileEvent) eventQueue.take();
             assertEquals(FileEvent.TYPE_FILE_DELETED, e3.getEventType());
@@ -209,8 +201,9 @@ public class DirectoryMonitorTest extends TestCase {
                 mockFile.getAbsolutePath(), 
                 e3.getBeforeSnapshot().getAbsolutePath());
             
-            logger_.debug("SUCCESS: Notified of file deletion");
+            log.debug("SUCCESS: Notified of file deletion");
             
+            ThreadUtil.sleep(3000);
             dm.stop();
         }
         finally {
