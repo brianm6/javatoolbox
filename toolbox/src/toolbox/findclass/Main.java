@@ -3,6 +3,7 @@ package toolbox.findclass;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.text.NumberFormat;
 import java.util.Iterator;
 
 import org.apache.commons.cli.CommandLine;
@@ -25,6 +26,8 @@ public class Main extends FindClassAdapter
 { 
     private static final Logger logger_ = Logger.getLogger(Main.class);
 
+    private static final NumberFormat nf = NumberFormat.getNumberInstance();
+    
     //--------------------------------------------------------------------------
     // Fields 
     //--------------------------------------------------------------------------
@@ -54,6 +57,8 @@ public class Main extends FindClassAdapter
      */    
     private String classToFind_;
     
+    private boolean showFileSize_;
+    
     //--------------------------------------------------------------------------
     // Main
     //--------------------------------------------------------------------------
@@ -75,11 +80,13 @@ public class Main extends FindClassAdapter
             Option showTargetsOption = new Option("t", "targets", false, "Lists the search targets");
             Option helpOption = new Option("h", "help", false, "Print usage");
             Option verboseOption = new Option("v", "verbose", false, "Verbose logging");
+            Option showFileSizeOption = new Option("s", "size", false, "Show file sizes");
             
             options.addOption(helpOption);
             options.addOption(caseSensetiveOption);        
             options.addOption(showTargetsOption);
             options.addOption(verboseOption);
+            options.addOption(showFileSizeOption);
     
             // Parse options
             CommandLine cmdLine = parser.parse(options, args, true);
@@ -102,6 +109,10 @@ public class Main extends FindClassAdapter
                 else if (opt.equals(showTargetsOption.getOpt()))
                 {
                     mainClass.setShowTargets(true);
+                }
+                else if (opt.equals(showFileSizeOption.getOpt()))
+                {
+                	mainClass.setShowFileSize(true);
                 }
                 else if (opt.equals(verboseOption.getOpt()))
                 {
@@ -145,7 +156,7 @@ public class Main extends FindClassAdapter
     //  Constructors
     //--------------------------------------------------------------------------
 
-    /**
+	/**
      * Creates main with the given writer for output.
      * 
      * @param  writer  Writer that output will be written to.
@@ -231,6 +242,11 @@ public class Main extends FindClassAdapter
     {
         writer_ = writer;
     }
+    
+    public void setShowFileSize(boolean b) 
+    {
+    	showFileSize_ = b;
+	}
 
     //--------------------------------------------------------------------------
     // Private
@@ -273,8 +289,19 @@ public class Main extends FindClassAdapter
     {
         numFound_++;
         
-        writer_.println(
-            searchResult.getClassLocation() + " => " + 
-            searchResult.getClassFQN());   
+        StringBuffer sb = new StringBuffer();
+        sb.append(searchResult.getClassLocation());
+        sb.append(" => ");
+        
+        if (showFileSize_)  {
+        	sb.append("[");
+        	sb.append(nf.format(searchResult.getFileSize()));
+        	sb.append("] ");
+        }
+        
+        sb.append(searchResult.getClassFQN());
+        
+
+        writer_.println(sb.toString());
     }
 }

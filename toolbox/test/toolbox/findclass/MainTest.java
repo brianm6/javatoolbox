@@ -57,4 +57,10 @@ public class MainTest extends TestCase
         logger_.info("Running testMain_NoArguments ...");
         Main.main(new String[0]);
     }
+    
+    public void testMain_ShowFileSize() throws Exception 
+    {
+        logger_.info("Running testMain_ShowFileSize ...");
+        Main.main(new String[] {"-s", "Dataset$"});
+    }
 }
