@@ -157,6 +157,7 @@ public class TextToolsPlugin extends AbstractPlugin
         buttonPanel.add(new JSmartButton(new SortAction()));
         buttonPanel.add(new JSmartButton(new BannerAction()));
         buttonPanel.add(new JSmartButton(new QuoteAction()));
+        buttonPanel.add(new JSmartButton(new StripAction()));
         buttonPanel.add(new JSmartButton(new AddLineNumbersAction()));
         buttonPanel.add(new JSmartButton(new WrapAction()));
         buttonPanel.add(wrapField_ = new JSmartTextField(3));
@@ -617,6 +618,32 @@ public class TextToolsPlugin extends AbstractPlugin
 
             for (int i = 0; i < lines.length; i++)
             	sb.append((i + 1) + " " + lines[i]);
+
+            outputArea_.append(sb.toString());
+        }
+    }
+    
+    //--------------------------------------------------------------------------
+    // StripAction
+    //--------------------------------------------------------------------------
+
+    class StripAction extends AbstractAction
+    {
+        StripAction()
+        {
+            super("Strip");
+            putValue(MNEMONIC_KEY, new Integer('T'));
+            putValue(SHORT_DESCRIPTION, "Strips leading and trailing whitespace from each line of text");
+        }
+
+
+        public void actionPerformed(ActionEvent e)
+        {
+            String[] lines = StringUtil.tokenize(getInputText(), System.getProperty("line.separator"), false);
+            StringBuffer sb = new StringBuffer();
+
+            for (int i = 0; i < lines.length; i++)
+            	sb.append(StringUtils.strip(lines[i]) + "\n");
 
             outputArea_.append(sb.toString());
         }
