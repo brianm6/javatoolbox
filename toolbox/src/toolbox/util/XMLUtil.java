@@ -1,10 +1,12 @@
 package toolbox.util;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 
 import org.apache.log4j.Logger;
+import org.apache.xerces.dom.DocumentImpl;
 import org.apache.xerces.parsers.DOMParser;
 import org.apache.xml.serialize.Method;
 import org.apache.xml.serialize.OutputFormat;
@@ -100,5 +102,46 @@ public class XMLUtil
         DOMParser parser = new DOMParser();
         parser.parse(new InputSource(new StringReader(xml)));
         return parser.getDocument().getDocumentElement();
+    }
+    
+    
+    /**
+     * Converts an xml document to a string and formats it. 
+     * 
+     * @param doc XML document.
+     * @return String
+     */
+    public static String format(Document doc) throws SAXException, IOException 
+    {
+        OutputFormat outputFormat = new OutputFormat(doc);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        XMLSerializer serializer = new XMLSerializer(baos, outputFormat);
+        serializer.serialize(doc);
+        return format(baos.toString());
+    }
+    
+    
+    /**
+     * Converts an xml element to a string and formats it.
+     * 
+     * @param elem Element to format
+     * @return String
+     */
+    public static String format(Element elem) throws SAXException, IOException 
+    {
+        String formattedXML = "";
+        
+        if (elem.getOwnerDocument() == null) 
+        {
+            Document doc = new DocumentImpl();
+            doc.appendChild(elem);
+            formattedXML = format(doc);
+            doc.removeChild(elem);
+        }
+        else 
+        {
+            formattedXML = format(elem.getOwnerDocument());
+        }
+        return formattedXML;
     }
 }
