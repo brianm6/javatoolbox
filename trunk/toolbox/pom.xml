@@ -451,6 +451,12 @@ CHEAT SHEET:
 
     <dependency>
       <groupId>toolbox</groupId>
+      <artifactId>pdfrenderer</artifactId>
+      <version>SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+      <groupId>toolbox</groupId>
       <artifactId>pollo</artifactId>
       <version>SNAPSHOT</version>
     </dependency>

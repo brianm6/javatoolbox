@@ -30,9 +30,6 @@ public class DTDViewer extends JEditViewer {
     // Constructors
     // --------------------------------------------------------------------------
 
-    /**
-     * Creates a DTDViewer.
-     */
     public DTDViewer() {
         super("DTD Viewer");
     }
@@ -41,9 +38,6 @@ public class DTDViewer extends JEditViewer {
     // Overrides JEditViewer
     // --------------------------------------------------------------------------
 
-    /*
-     * @see toolbox.plugin.docviewer.DocumentViewer#view(java.io.File)
-     */
     public void view(File file) throws DocumentViewerException {
         try {
             createTextArea(file);
@@ -88,18 +82,12 @@ public class DTDViewer extends JEditViewer {
     }
 
 
-    /*
-     * @see toolbox.plugin.docviewer.DocumentViewer#canView(java.io.File)
-     */
     public boolean canView(File file) {
         return (ArrayUtil.contains(getViewableFileTypes(), FileUtil
             .getExtension(file).toLowerCase()));
     }
 
 
-    /*
-     * @see toolbox.plugin.docviewer.DocumentViewer#getViewableFileTypes()
-     */
     public String[] getViewableFileTypes() {
         return new String[] { "dtd" };
     }

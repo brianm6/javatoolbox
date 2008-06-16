@@ -45,9 +45,6 @@ public class PolloViewer extends AbstractViewer {
     // Constructors
     // --------------------------------------------------------------------------
 
-    /**
-     * Creates a PolloViewer.
-     */
     public PolloViewer() {
         super("Pollo");
     }
@@ -93,9 +90,6 @@ public class PolloViewer extends AbstractViewer {
     // Initializable Interface
     // --------------------------------------------------------------------------
 
-    /*
-     * @see toolbox.util.service.Initializable#initialize(java.util.Map)
-     */
     public void initialize(Map init) {
         ; // No-op
     }
@@ -104,35 +98,23 @@ public class PolloViewer extends AbstractViewer {
     // DocumentViewer Interface
     // --------------------------------------------------------------------------
 
-    /*
-     * @see toolbox.plugin.docviewer.DocumentViewer#getComponent()
-     */
     public JComponent getComponent() {
         lazyLoad();
         return scroller_;
     }
 
 
-    /*
-     * @see toolbox.plugin.docviewer.DocumentViewer#getViewableFileTypes()
-     */
     public String[] getViewableFileTypes() {
         return FileTypes.XML;
     }
 
 
-    /*
-     * @see toolbox.plugin.docviewer.DocumentViewer#canView(java.io.File)
-     */
     public boolean canView(File file) {
         return ArrayUtil.contains(getViewableFileTypes(), FileUtil
             .getExtension(file).toLowerCase());
     }
 
 
-    /*
-     * @see toolbox.plugin.docviewer.DocumentViewer#view(java.io.File)
-     */
     public void view(File file) throws DocumentViewerException {
         lazyLoad();
 
@@ -149,9 +131,6 @@ public class PolloViewer extends AbstractViewer {
     }
 
 
-    /*
-     * @see toolbox.plugin.docviewer.DocumentViewer#view(java.io.InputStream)
-     */
     public void view(InputStream is) throws DocumentViewerException {
         throw new IllegalArgumentException("view(InputStream) not supported");
     }
@@ -160,9 +139,6 @@ public class PolloViewer extends AbstractViewer {
     // Destroyable Interface
     // --------------------------------------------------------------------------
 
-    /*
-     * @see toolbox.util.service.Destroyable#destroy()
-     */
     public void destroy() {
         scroller_ = null;
         editor_ = null;

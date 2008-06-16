@@ -18,7 +18,8 @@ public interface FileTypes {
         "xml",
         "xsd",
         "xsl",
-        "xslt", };
+        "xslt"
+    };
 
     /**
      * File extensions that are characteristic of HTML content.

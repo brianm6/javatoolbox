@@ -166,9 +166,6 @@ public class JEditViewer extends AbstractViewer {
     // Initializable Interface
     // -------------------------------------------------------------------------
 
-    /*
-     * @see toolbox.util.service.Initializable#initialize(java.util.Map)
-     */
     public void initialize(Map configuration) throws ServiceException {
         ; // No-op
     }
@@ -177,9 +174,6 @@ public class JEditViewer extends AbstractViewer {
     // DocumentViewer Interface
     // -------------------------------------------------------------------------
 
-    /*
-     * @see toolbox.plugin.docviewer.DocumentViewer#view(java.io.File)
-     */
     public void view(File file) throws DocumentViewerException {
         try {
             createTextArea(file);
@@ -196,9 +190,6 @@ public class JEditViewer extends AbstractViewer {
     }
 
 
-    /*
-     * @see toolbox.plugin.docviewer.DocumentViewer#view(java.io.InputStream)
-     */
     public void view(InputStream is) throws DocumentViewerException {
         createTextArea("???");
         String text;
@@ -215,26 +206,17 @@ public class JEditViewer extends AbstractViewer {
     }
 
 
-    /*
-     * @see toolbox.plugin.docviewer.DocumentViewer#canView(java.io.File)
-     */
     public boolean canView(File file) {
         // View all files
         return true;
     }
 
 
-    /*
-     * @see toolbox.plugin.docviewer.DocumentViewer#getViewableFileTypes()
-     */
     public String[] getViewableFileTypes() {
         return null;
     }
 
 
-    /*
-     * @see toolbox.plugin.docviewer.DocumentViewer#getComponent()
-     */
     public JComponent getComponent() {
         return textArea_;
     }
@@ -243,9 +225,6 @@ public class JEditViewer extends AbstractViewer {
     // Destroyable Interface
     // -------------------------------------------------------------------------
 
-    /*
-     * @see toolbox.util.service.Destroyable#destroy()
-     */
     public void destroy() {
         textArea_.setText("");
         textArea_ = null;

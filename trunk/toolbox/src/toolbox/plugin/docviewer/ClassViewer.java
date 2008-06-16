@@ -24,9 +24,6 @@ public class ClassViewer extends JavaViewer {
     // Constructors
     // -------------------------------------------------------------------------
 
-    /**
-     * Creates a ClassViewer.
-     */
     public ClassViewer() {
         super("Class Viewer");
     }
@@ -35,9 +32,6 @@ public class ClassViewer extends JavaViewer {
     // Overrides JavaViewer
     // -------------------------------------------------------------------------
 
-    /*
-     * @see toolbox.plugin.docviewer.DocumentViewer#view(java.io.InputStream)
-     */
     public void view(InputStream is) throws DocumentViewerException {
         try {
             byte[] bytecode = IOUtils.toByteArray(is);
@@ -52,9 +46,6 @@ public class ClassViewer extends JavaViewer {
     }
 
 
-    /*
-     * @see toolbox.plugin.docviewer.DocumentViewer#view(java.io.File)
-     */
     public void view(File file) throws DocumentViewerException {
         Decompiler d = DecompilerFactory.createPreferred();
         String javacode = d.decompile(file);
@@ -62,9 +53,6 @@ public class ClassViewer extends JavaViewer {
     }
 
 
-    /*
-     * @see toolbox.plugin.docviewer.DocumentViewer#getViewableFileTypes()
-     */
     public String[] getViewableFileTypes() {
         return new String[] { "class" };
     }

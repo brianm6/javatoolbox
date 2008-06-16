@@ -56,9 +56,6 @@ public class MultivalentViewer extends AbstractViewer {
     // Constructors
     // -------------------------------------------------------------------------
 
-    /**
-     * Creates a MultivalentViewer.
-     */
     public MultivalentViewer() {
         super("Multivalent");
     }
@@ -67,9 +64,6 @@ public class MultivalentViewer extends AbstractViewer {
     // Initializable Interface
     // -------------------------------------------------------------------------
 
-    /*
-     * @see toolbox.util.service.Initializable#initialize(java.util.Map)
-     */
     public void initialize(Map init) {
         extensions_ = new CaseInsensetiveSet(new HashSet());
         extensions_.addAll(Arrays.asList(new String[] {
@@ -95,42 +89,27 @@ public class MultivalentViewer extends AbstractViewer {
     // DocumentViewer Interface
     // -------------------------------------------------------------------------
 
-    /*
-     * @see toolbox.plugin.docviewer.DocumentViewer#view(java.io.File)
-     */
     public void view(File file) {
         lazyLoad();
         browser_.eventq(Document.MSG_OPEN, file.toURI());
     }
 
 
-    /*
-     * @see toolbox.plugin.docviewer.DocumentViewer#view(java.io.InputStream)
-     */
     public void view(InputStream is) {
         throw new RuntimeException("Not supported");
     }
 
 
-    /*
-     * @see toolbox.plugin.docviewer.DocumentViewer#getViewableFileTypes()
-     */
     public String[] getViewableFileTypes() {
         return (String[]) extensions_.toArray();
     }
 
 
-    /*
-     * @see toolbox.plugin.docviewer.DocumentViewer#canView(java.io.File)
-     */
     public boolean canView(File file) {
         return extensions_.contains(FileUtil.getExtension(file));
     }
 
 
-    /*
-     * @see toolbox.plugin.docviewer.DocumentViewer#getComponent()
-     */
     public JComponent getComponent() {
         lazyLoad();
         return panel_;
@@ -140,9 +119,6 @@ public class MultivalentViewer extends AbstractViewer {
     // Destroyable Interface
     // -------------------------------------------------------------------------
 
-    /*
-     * @see toolbox.util.service.Destroyable#destroy()
-     */
     public void destroy() {
         browser_ = null;
         panel_ = null;
@@ -242,9 +218,6 @@ public class MultivalentViewer extends AbstractViewer {
         }
 
 
-        /*
-         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-         */
         public void actionPerformed(ActionEvent e) {
             br_.eventq(cmd_, arg_);
         }

@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <docviewers>
-    <!-- List of document viewers that will be registered with the DocumentViewer plugin -->
-    <docviewer name="Acrobat Viewer"     class="toolbox.plugin.docviewer.AcrobatViewer"/>
-    <docviewer name="Calpha Viewer"      class="toolbox.plugin.docviewer.CalphaViewer"/>
-    <docviewer name="Class Viewer"       class="toolbox.plugin.docviewer.ClassViewer"/>        
-    <docviewer name="DTD Viewer"         class="toolbox.plugin.docviewer.DTDViewer"/>
-    <docviewer name="Java Viewer"        class="toolbox.plugin.docviewer.JavaViewer"/>    
-    <docviewer name="JEdit Viewer"       class="toolbox.plugin.docviewer.JEditViewer"/>
-    <docviewer name="Multivalent Viewer" class="toolbox.plugin.docviewer.MultivalentViewer"/>
+    <!-- List of document viewers that will be registered with the DocumentViewer plugin when running as a webstart app -->
+    <docviewer name="Acrobat Viewer"          class="toolbox.plugin.docviewer.AcrobatViewer"/>
+    <docviewer name="Calpha Viewer"           class="toolbox.plugin.docviewer.CalphaViewer"/>
+    <docviewer name="Class Viewer"            class="toolbox.plugin.docviewer.ClassViewer"/>        
+    <docviewer name="DTD Viewer"              class="toolbox.plugin.docviewer.DTDViewer"/>
+    <docviewer name="Java Viewer"             class="toolbox.plugin.docviewer.JavaViewer"/>    
+    <docviewer name="JEdit Viewer"            class="toolbox.plugin.docviewer.JEditViewer"/>
+    <docviewer name="Multivalent Viewer"      class="toolbox.plugin.docviewer.MultivalentViewer"/>
     <docviewer name="Multivalent Text Viewer" class="toolbox.plugin.docviewer.MultivalentViewer"/>
-    <docviewer name="Pollo Viewer"       class="toolbox.plugin.docviewer.PolloViewer"/>
-    <docviewer name="Text Viewer"        class="toolbox.plugin.docviewer.TextViewer"/>
+    <docviewer name="PDF Renderer Viewer"     class="toolbox.plugin.docviewer.PDFRendererViewer"/>
+    <docviewer name="Pollo Viewer"            class="toolbox.plugin.docviewer.PolloViewer"/>
+    <docviewer name="Text Viewer"             class="toolbox.plugin.docviewer.TextViewer"/>
 </docviewers>

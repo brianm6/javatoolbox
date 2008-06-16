@@ -29,6 +29,7 @@ mvn install:install-file -Dfile=../lib/metouia.jar          -DartifactId=metouia
 mvn install:install-file -Dfile=../lib/multivalent.jar      -DartifactId=multivalent      -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 mvn install:install-file -Dfile=../lib/oyoahalf.jar         -DartifactId=oyoahalf         -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 mvn install:install-file -Dfile=../lib/pollo.jar            -DartifactId=pollo            -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+mvn install:install-file -Dfile=../lib/pdfrenderer.jar      -DartifactId=pdfrenderer      -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 mvn install:install-file -Dfile=../lib/prefuse.jar          -DartifactId=prefuse          -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 mvn install:install-file -Dfile=../lib/qdox.jar             -DartifactId=qdox             -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 mvn install:install-file -Dfile=../lib/skinlf.jar           -DartifactId=skinlf           -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true

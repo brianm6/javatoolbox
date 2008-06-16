@@ -128,9 +128,6 @@ public class JavaViewer extends JEditViewer {
     // Overrides JEditViewer
     // --------------------------------------------------------------------------
 
-    /*
-     * @see toolbox.plugin.docviewer.JEditViewer#createTextArea(java.lang.String)
-     */
     protected void createTextArea(String fileExtension) {
         super.createTextArea("java");
 
@@ -151,44 +148,29 @@ public class JavaViewer extends JEditViewer {
     }
 
 
-    /*
-     * @see toolbox.plugin.docviewer.JEditViewer#getComponent()
-     */
     public JComponent getComponent() {
         return sourceView_;
     }
 
 
-    /*
-     * @see toolbox.plugin.docviewer.JEditViewer#view(java.io.InputStream)
-     */
     public void view(InputStream is) throws DocumentViewerException {
         super.view(is);
         populateMethods();
     }
 
 
-    /*
-     * @see toolbox.plugin.docviewer.DocumentViewer#view(java.io.File)
-     */
     public void view(File file) throws DocumentViewerException {
         super.view(file);
         populateMethods();
     }
 
 
-    /*
-     * @see toolbox.plugin.docviewer.DocumentViewer#canView(java.io.File)
-     */
     public boolean canView(File file) {
         return (ArrayUtil.contains(getViewableFileTypes(), FileUtil
             .getExtension(file).toLowerCase()));
     }
 
 
-    /*
-     * @see toolbox.plugin.docviewer.DocumentViewer#getViewableFileTypes()
-     */
     public String[] getViewableFileTypes() {
         return new String[] { "java" };
     }
@@ -203,9 +185,6 @@ public class JavaViewer extends JEditViewer {
      */
     class MethodSelector implements ListSelectionListener {
 
-        /*
-         * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
-         */
         public void valueChanged(ListSelectionEvent e) {
             if (e.getValueIsAdjusting())
                 return;
