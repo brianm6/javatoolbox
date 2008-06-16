@@ -28,6 +28,7 @@ call mvn %sa% install:install-file -Dfile=%LIB%\matra.jar            -DartifactI
 call mvn %sa% install:install-file -Dfile=%LIB%\metouia.jar          -DartifactId=metouia          -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 call mvn %sa% install:install-file -Dfile=%LIB%\multivalent.jar      -DartifactId=multivalent      -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 call mvn %sa% install:install-file -Dfile=%LIB%\oyoahalf.jar         -DartifactId=oyoahalf         -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+call mvn %sa% install:install-file -Dfile=%LIB%\pdfrenderer.jar      -DartifactId=pdfrenderer      -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 call mvn %sa% install:install-file -Dfile=%LIB%\pollo.jar            -DartifactId=pollo            -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 call mvn %sa% install:install-file -Dfile=%LIB%\prefuse.jar          -DartifactId=prefuse          -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 call mvn %sa% install:install-file -Dfile=%LIB%\skinlf.jar           -DartifactId=skinlf           -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true

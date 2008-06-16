@@ -47,8 +47,7 @@ import toolbox.workspace.WorkspaceAction;
  */
 public class DocumentViewerPlugin extends AbstractPlugin {
 
-    private static final Logger logger_ = 
-        Logger.getLogger(DocumentViewerPlugin.class);
+    private static final Logger logger_ = Logger.getLogger(DocumentViewerPlugin.class);
 
     // --------------------------------------------------------------------------
     // Constants
@@ -67,8 +66,7 @@ public class DocumentViewerPlugin extends AbstractPlugin {
      *  
      * </pre>
      */
-    private static final String FILE_DOCVIEWERS = 
-        "/toolbox/plugin/docviewer/docviewers.xml";
+    private static final String FILE_DOCVIEWERS = "/toolbox/plugin/docviewer/docviewers.xml";
 
     // XML Preferences nodes and attributes.
     private static final String NODE_DOCVIEWER = "docviewer";
@@ -118,7 +116,7 @@ public class DocumentViewerPlugin extends AbstractPlugin {
     private JPanel viewerButtons_;
 
     /**
-     * List of viewers registered to show documents.
+     * List of {@link DocumentViewer}s registered to show documents.
      */
     private List viewers_;
 
@@ -136,9 +134,6 @@ public class DocumentViewerPlugin extends AbstractPlugin {
     // Constructors
     // --------------------------------------------------------------------------
 
-    /**
-     * Creates a DocumentViewerPlugin.
-     */
     public DocumentViewerPlugin() {
     }
 
@@ -146,9 +141,6 @@ public class DocumentViewerPlugin extends AbstractPlugin {
     // Protected
     // --------------------------------------------------------------------------
 
-    /**
-     * Builds the GUI.
-     */
     protected void buildView() {
         view_ = new JPanel(new BorderLayout());
 
@@ -179,17 +171,30 @@ public class DocumentViewerPlugin extends AbstractPlugin {
      */
     protected void viewDocument(DocumentViewer viewer, File file)
         throws Exception {
-        if (lastActive_ != null)
+        if (lastActive_ != null) {
             outputPanel_.remove(lastActive_);
+            outputPanel_.revalidate();
+        }
+
+        
+        boolean postAdd = false;
+        lastActive_ = viewer.getComponent();
+        
+        if (lastActive_ != null) {
+            outputPanel_.add(BorderLayout.CENTER, lastActive_);
+            outputPanel_.revalidate();
+            postAdd = true;
+        }
 
         viewer.view(file);
-        lastActive_ = viewer.getComponent();
-
+        
+        if (postAdd) {
+            lastActive_ = viewer.getComponent();
+            outputPanel_.add(BorderLayout.CENTER, lastActive_);
+            outputPanel_.revalidate();
+        }
+        
         lastViewedWith_.put(FileUtil.getExtension(file).toLowerCase(), viewer);
-
-        outputPanel_.add(BorderLayout.CENTER, lastActive_);
-        outputPanel_.validate();
-        outputPanel_.repaint();
     }
 
 
@@ -291,9 +296,6 @@ public class DocumentViewerPlugin extends AbstractPlugin {
     // Initializable Interface
     // --------------------------------------------------------------------------
 
-    /*
-     * @see toolbox.util.service.Initializable#initialize(java.util.Map)
-     */
     public void initialize(Map params) throws ServiceException {
         checkTransition(ServiceTransition.INITIALIZE);
 
@@ -312,25 +314,14 @@ public class DocumentViewerPlugin extends AbstractPlugin {
     // IPlugin Interface
     // --------------------------------------------------------------------------
 
-    /*
-     * @see toolbox.workspace.IPlugin#getPluginName()
-     */
     public String getPluginName() {
         return "Document Viewer";
     }
 
-
-    /*
-     * @see toolbox.workspace.IPlugin#getView()
-     */
     public JComponent getView() {
         return view_;
     }
 
-
-    /*
-     * @see toolbox.workspace.IPlugin#getDescription()
-     */
     public String getDescription() {
         return "Views documents.";
     }
@@ -339,9 +330,6 @@ public class DocumentViewerPlugin extends AbstractPlugin {
     // Destroyable Interface
     // --------------------------------------------------------------------------
 
-    /*
-     * @see toolbox.util.service.Destroyable#destroy()
-     */
     public void destroy() throws ServiceException {
         checkTransition(ServiceTransition.DESTROY);
 
@@ -366,9 +354,6 @@ public class DocumentViewerPlugin extends AbstractPlugin {
     // IPreferenced Interface
     // --------------------------------------------------------------------------
 
-    /*
-     * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
-     */
     public void applyPrefs(Element prefs) throws PreferencedException {
         Element root = XOMUtil.getFirstChildElement(
             prefs, NODE_DOCVIEWER_PLUGIN, new Element(NODE_DOCVIEWER_PLUGIN));
@@ -377,10 +362,6 @@ public class DocumentViewerPlugin extends AbstractPlugin {
         flipPane_.applyPrefs(root);
     }
 
-
-    /*
-     * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
-     */
     public void savePrefs(Element prefs) throws PreferencedException {
         Element root = new Element(NODE_DOCVIEWER_PLUGIN);
         explorer_.savePrefs(root);
@@ -420,10 +401,6 @@ public class DocumentViewerPlugin extends AbstractPlugin {
             file_ = file;
         }
 
-
-        /*
-         * @see toolbox.util.ui.SmartAction#runAction(java.awt.event.ActionEvent)
-         */
         public void runAction(ActionEvent e) throws Exception {
             viewDocument(viewer_, file_);
         }
@@ -438,9 +415,6 @@ public class DocumentViewerPlugin extends AbstractPlugin {
      */
     class FileSelectionListener extends FileExplorerAdapter {
 
-        /*
-         * @see toolbox.util.ui.explorer.FileExplorerListener#fileDoubleClicked(java.lang.String)
-         */
         public void fileDoubleClicked(String file) {
             try {
                 File f = new File(file);
@@ -463,10 +437,6 @@ public class DocumentViewerPlugin extends AbstractPlugin {
             }
         }
 
-
-        /*
-         * @see toolbox.util.ui.explorer.FileExplorerListener#fileSelected(java.lang.String)
-         */
         public void fileSelected(String file) {
             logger_.debug("File selected: " + file);
 

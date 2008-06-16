@@ -45,9 +45,6 @@ public class AcrobatViewer extends AbstractViewer {
     // Constructors
     // -------------------------------------------------------------------------
 
-    /**
-     * Creates an AcrobatViewer.
-     */
     public AcrobatViewer() {
         super("Acrobat");
     }
@@ -56,9 +53,6 @@ public class AcrobatViewer extends AbstractViewer {
     // Protected
     // -------------------------------------------------------------------------
 
-    /**
-     * Lazily loads the UI component.
-     */
     protected void lazyLoad() {
         if (viewer_ == null) {
             try {
@@ -77,9 +71,6 @@ public class AcrobatViewer extends AbstractViewer {
     // Initializable Interface
     // -------------------------------------------------------------------------
 
-    /*
-     * @see toolbox.util.service.Initializable#initialize(java.util.Map)
-     */
     public void initialize(Map init) throws ServiceException {
         ; // No-op
     }
@@ -88,9 +79,6 @@ public class AcrobatViewer extends AbstractViewer {
     // DocumentViewer Interface
     // -------------------------------------------------------------------------
 
-    /*
-     * @see toolbox.plugin.docviewer.DocumentViewer#view(java.io.File)
-     */
     public void view(File file) throws DocumentViewerException {
         lazyLoad();
 
@@ -106,9 +94,6 @@ public class AcrobatViewer extends AbstractViewer {
     }
 
 
-    /*
-     * @see toolbox.plugin.docviewer.DocumentViewer#view(java.io.InputStream)
-     */
     public void view(InputStream is) throws DocumentViewerException {
         lazyLoad();
 
@@ -117,36 +102,18 @@ public class AcrobatViewer extends AbstractViewer {
             viewer_.setDocumentInputStream(is);
             viewer_.execMenuItem("FitVisibleWidth");
             viewer_.execMenuItem("OneColumn");
-
-
-            // SwingUtilities.invokeLater(new Runnable()
-            // {
-            // public void run()
-            // {
-            // invalidate();
-            // repaint();
-            // setSize(viewer_.getSize().width+1, viewer_.getSize().height+1);
-            // }
-            // });
-
         }
         catch (Exception e) {
             throw new DocumentViewerException(e);
         }
     }
 
-
-    /*
-     * @see toolbox.plugin.docviewer.DocumentViewer#getViewableFileTypes()
-     */
+    
     public String[] getViewableFileTypes() {
         return new String[] { "pdf" };
     }
 
 
-    /*
-     * @see toolbox.plugin.docviewer.DocumentViewer#canView(java.io.File)
-     */
     public boolean canView(File file) {
         return ArrayUtil.contains(
             getViewableFileTypes(), 
@@ -154,9 +121,6 @@ public class AcrobatViewer extends AbstractViewer {
     }
 
 
-    /*
-     * @see toolbox.plugin.docviewer.DocumentViewer#getComponent()
-     */
     public JComponent getComponent() {
         lazyLoad();
         return panel_;
@@ -166,9 +130,6 @@ public class AcrobatViewer extends AbstractViewer {
     // Destroyable Interface
     // -------------------------------------------------------------------------
 
-    /*
-     * @see toolbox.util.service.Destroyable#destroy()
-     */
     public void destroy() {
         viewer_.deactivate();
         viewer_ = null;
