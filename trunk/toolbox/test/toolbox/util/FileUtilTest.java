@@ -25,11 +25,6 @@ public class FileUtilTest extends TestCase
     // Main
     //--------------------------------------------------------------------------
     
-    /**
-     * Entrypoint.
-     * 
-     * @param args None recognized.
-     */
     public static void main(String[] args)
     {
         TestRunner.run(FileUtilTest.class);
@@ -39,11 +34,6 @@ public class FileUtilTest extends TestCase
     // Unit Tests
     //--------------------------------------------------------------------------
     
-    /**
-     * Tests the getTempDir() method. 
-     * 
-     * @throws Exception on error
-     */    
     public void testGetTempDir() throws Exception
     {
         logger_.info("Running testGetTempDir...");
@@ -55,17 +45,12 @@ public class FileUtilTest extends TestCase
     }
 
     //--------------------------------------------------------------------------
-    // generateTempFilename()
+    // createTempFilename()
     //--------------------------------------------------------------------------
     
-    /**
-     * Tests the generateTempFilename() method. 
-     * 
-     * @throws Exception on error
-     */    
-    public void testGenerateTempFilename() throws Exception
+    public void testCreateTempFilename() throws Exception
     {
-        logger_.info("Running testGenerateTempFilename...");
+        logger_.info("Running testCreateTempFilename...");
         
         // Generate temp file name
         String tempFile = FileUtil.createTempFilename();
@@ -81,14 +66,9 @@ public class FileUtilTest extends TestCase
     }
 
     
-    /**
-     * Tests the generateTempFilename(File forDir) method. 
-     * 
-     * @throws Exception on error
-     */    
-    public void testGenerateTempFilenameForDir() throws Exception
+    public void testCreateTempFilenameForDir() throws Exception
     {
-        logger_.info("Running testGenerateTempFilenameForDir...");
+        logger_.info("Running testCreateTempFilenameForDir...");
         
         // Generate temp file name in temp directory
         String tempFile = FileUtil.createTempFilename(FileUtil.getTempDir());
@@ -108,11 +88,6 @@ public class FileUtilTest extends TestCase
     // getFileContents()
     //--------------------------------------------------------------------------
     
-    /**
-     * Tests getFileContents().
-     * 
-     * @throws Exception on error
-     */
     public void testGetFileContents() throws Exception
     {
         logger_.info("Running testGetFileContents...");
@@ -135,8 +110,6 @@ public class FileUtilTest extends TestCase
     
     /**
      * Tests getFileContents() for a large file (500k).
-     * 
-     * @throws Exception on error
      */
     public void testGetFileContentsLargeFile() throws Exception
     {
@@ -173,11 +146,6 @@ public class FileUtilTest extends TestCase
     // setFileContents()
     //--------------------------------------------------------------------------
 
-    /**
-     * Tests setFileContents().
-     * 
-     * @throws Exception on error
-     */
     public void testSetFileContents() throws Exception
     {
         logger_.info("Running testSetFileContents...");
@@ -199,11 +167,6 @@ public class FileUtilTest extends TestCase
     }
 
     
-    /**
-     * Tests setFileContents().
-     * 
-     * @throws Exception on error
-     */
     public void testSetFileContentsBytes() throws Exception
     {
         logger_.info("Running testSetFileContentsBytes...");
@@ -225,11 +188,6 @@ public class FileUtilTest extends TestCase
     }
 
     
-    /**
-     * Tests setFileContents(File).
-     * 
-     * @throws Exception on error
-     */
     public void testSetFileContents2() throws Exception
     {
         logger_.info("Running testSetFileContents2...");
@@ -383,11 +341,6 @@ public class FileUtilTest extends TestCase
     // delete()
     //--------------------------------------------------------------------------
     
-    /**
-     * Tests delete(File).
-     * 
-     * @throws Exception on error
-     */
     public void testDeleteByFile() throws Exception
     {
         logger_.info("Running testDeleteByFile...");
@@ -401,11 +354,6 @@ public class FileUtilTest extends TestCase
     }
     
     
-    /**
-     * Tests delete(String).
-     * 
-     * @throws Exception on error
-     */
     public void testDeleteByFilename() throws Exception
     {
         logger_.info("Running testDeleteByFilename...");
@@ -419,11 +367,6 @@ public class FileUtilTest extends TestCase
     }
     
     
-    /**
-     * Tests delete() on a non-existant file.
-     * 
-     * @throws Exception on error
-     */
     public void testDeleteBogusFile() throws Exception
     {
         logger_.info("Running testDeleteBogusFile...");
@@ -455,11 +398,6 @@ public class FileUtilTest extends TestCase
     }
     
     
-    /**
-     * Tests delete() passed a null object.
-     * 
-     * @throws Exception on error
-     */
     public void testDeleteNull() throws Exception
     {
         logger_.info("Running testDeleteNull...");
@@ -489,9 +427,6 @@ public class FileUtilTest extends TestCase
     // getExtension()
     //--------------------------------------------------------------------------
     
-    /**
-     * Tests getExtension(File)
-     */
     public void testGetExtensionByFile()
     {
         logger_.info("Running testGetExtensionByFile...");
@@ -509,11 +444,6 @@ public class FileUtilTest extends TestCase
     // Misc
     //--------------------------------------------------------------------------
     
-    /**
-     * Tests createTempDir().
-     * 
-     * @throws Exception on error
-     */
     public void testCreateTempDir() throws Exception
     {
         logger_.info("Running testCreateTempDir...");
@@ -559,11 +489,6 @@ public class FileUtilTest extends TestCase
     }
     
     
-    /**
-     * Tests getLargestFile()
-     * 
-     * @throws Exception on error
-     */
     public void testGetLargestFile() throws Exception
     {
         logger_.info("Running testGetLargestFile...");
@@ -599,8 +524,6 @@ public class FileUtilTest extends TestCase
     
     /**
      * Tests getLargestFile() for parameters null and empty array. 
-     * 
-     * @throws Exception on error.
      */
     public void testGetLargestFileNegative() throws Exception
     {
@@ -610,11 +533,6 @@ public class FileUtilTest extends TestCase
     }
     
     
-    /**
-     * Tests getLongestFilename()
-     * 
-     * @throws Exception on error
-     */
     public void testGetLongestFilename() throws Exception
     {
         logger_.info("Running testGetLongestFilename...");
@@ -633,8 +551,6 @@ public class FileUtilTest extends TestCase
     
     /**
      * Tests getLongestFilename() for parameters null and empty array. 
-     * 
-     * @throws Exception on error.
      */
     public void testGetLongestFilenameNegative() throws Exception
     {
@@ -644,9 +560,6 @@ public class FileUtilTest extends TestCase
     }
     
     
-    /**
-     * Tests getInfo()
-     */
     public void testGetInfo() throws Exception
     {
         logger_.info("Running testGetFileInfo...");
