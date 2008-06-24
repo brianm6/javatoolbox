@@ -4,9 +4,12 @@ set sf=t:/workspaces/workspace-toolbox/toolbox/toolbox/settings.xml
 
 if exist %sf% set sa=--settings %sf% 
 
+call mvn %sa% install:install-file -Dfile=%lib%\3dlf.jar             -DartifactId=3dlf             -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 call mvn %sa% install:install-file -Dfile=%LIB%\acrobat.jar          -DartifactId=acrobat          -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+call mvn %sa% install:install-file -Dfile=%LIB%\alloy.jar            -DartifactId=alloy            -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 call mvn %sa% install:install-file -Dfile=%LIB%\apple-mrj.jar        -DartifactId=apple-mrj        -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 call mvn %sa% install:install-file -Dfile=%LIB%\calphahtml.jar       -DartifactId=calphahtml       -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+call mvn %sa% install:install-file -Dfile=%LIB%\cryptix32-pgp.jar    -DartifactId=cryptix32-pgp    -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 call mvn %sa% install:install-file -Dfile=%LIB%\fhlaf.jar            -DartifactId=fhlaf            -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 call mvn %sa% install:install-file -Dfile=%LIB%\hamsam.jar           -DartifactId=hamsam           -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 call mvn %sa% install:install-file -Dfile=%LIB%\hippolf.jar          -DartifactId=hippolf          -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
@@ -27,8 +30,9 @@ call mvn %sa% install:install-file -Dfile=%LIB%\looks.jar            -DartifactI
 call mvn %sa% install:install-file -Dfile=%LIB%\matra.jar            -DartifactId=matra            -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 call mvn %sa% install:install-file -Dfile=%LIB%\metouia.jar          -DartifactId=metouia          -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 call mvn %sa% install:install-file -Dfile=%LIB%\multivalent.jar      -DartifactId=multivalent      -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+call mvn %sa% install:install-file -Dfile=%LIB%\napkinlf.jar         -DartifactId=napkinlf         -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+call mvn %sa% install:install-file -Dfile=%LIB%\officelf.jar         -DartifactId=officelf         -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 call mvn %sa% install:install-file -Dfile=%LIB%\oyoahalf.jar         -DartifactId=oyoahalf         -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
-call mvn %sa% install:install-file -Dfile=%LIB%\pdfrenderer.jar      -DartifactId=pdfrenderer      -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 call mvn %sa% install:install-file -Dfile=%LIB%\pollo.jar            -DartifactId=pollo            -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 call mvn %sa% install:install-file -Dfile=%LIB%\prefuse.jar          -DartifactId=prefuse          -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 call mvn %sa% install:install-file -Dfile=%LIB%\skinlf.jar           -DartifactId=skinlf           -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
@@ -37,3 +41,7 @@ call mvn %sa% install:install-file -Dfile=%LIB%\statcvs.jar          -DartifactI
 call mvn %sa% install:install-file -Dfile=%LIB%\systray4j.jar        -DartifactId=systray4j        -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 call mvn %sa% install:install-file -Dfile=%LIB%\tinylaf.jar          -DartifactId=tinylaf          -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
 call mvn %sa% install:install-file -Dfile=%LIB%\toniclf.jar          -DartifactId=toniclf          -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+call mvn %sa% install:install-file -Dfile=%LIB%\webwindow.jar        -DartifactId=webwindow        -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+call mvn %sa% install:install-file -Dfile=%LIB%\xep.jar              -DartifactId=xep              -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+call mvn %sa% install:install-file -Dfile=%LIB%\xplookandfeel.jar    -DartifactId=xplookandfeel    -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+call mvn %sa% install:install-file -Dfile=%LIB%\xt.jar               -DartifactId=xt               -DgroupId=toolbox -Dversion=SNAPSHOT -Dpackaging=jar -DgeneratePom=true

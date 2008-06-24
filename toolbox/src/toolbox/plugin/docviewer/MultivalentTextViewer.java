@@ -30,6 +30,9 @@ public class MultivalentTextViewer extends TextViewer {
     // Constructors
     // --------------------------------------------------------------------------
 
+    /**
+     * Creates a MultivalentTextViewer.
+     */
     public MultivalentTextViewer() {
         super("Multivalent Text Viewer");
     }
@@ -58,6 +61,9 @@ public class MultivalentTextViewer extends TextViewer {
     }
 
 
+    /*
+     * @see toolbox.plugin.docviewer.TextViewer#canView(java.io.File)
+     */
     public boolean canView(File file) {
         return extensions_.contains(FileUtil.getExtension(file));
     }

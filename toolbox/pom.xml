@@ -1,21 +1,13 @@
-<!-- =====================================================================
+<!-- 
+Cheat sheet:
 
-CHEAT SHEET:
-
-  Compile             : mvn compile
-  Clean               : mvn clean
-  Compile unit tests  : mvn test-compile
-  Run unit tests      : mvn test
-  Run one unit test   : mvn test -Dtest=ArrayUtilTest
-  Generate site       : mvn -Dmaven.test.failure.ignore=true clean site
-  Webstart artifacts  : mvn clean install webstart:jnlp
-  Gen' eclipse project: mvn eclipse:eclipse
-  Generate website    : mvn site:site
-  Deploy website      : mvn site:deploy
-  Headless            : mvn -Djava.awt.headless=true <goals>
-  Skip unit tests     : mvn -Dmaven.test.skip <goals>
-
-====================================================================== -->
+    Compile             : mvn compile
+    Clean               : mvn clean
+    Compile unit tests  : mvn test-compile
+    Run unit tests      : mvn test
+    Run one unit test   : mvn test -Dtest=ArrayUtilTest
+    Generate site       : mvn -Dmaven.test.failure.ignore=true clean site 
+-->
 
 <project 
   xmlns="http://maven.apache.org/POM/4.0.0"
@@ -27,11 +19,9 @@ CHEAT SHEET:
   <artifactId>toolbox</artifactId>
   <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
-  <name>Java Developer Toolbox</name>
-  <url>http://code.google.com/p/javatoolbox</url>
-  <description>Java Developer Toolbox</description>
-  <inceptionYear>2002</inceptionYear>
-  
+  <name>Toolbox</name>
+  <url>http://hemisfear.dyndns.org/</url>
+
   <!-- ===================================================================== -->
   <!-- DEPENDENCIES                                                          -->
   <!-- ===================================================================== -->
@@ -100,7 +90,6 @@ CHEAT SHEET:
       <version>1.3</version>
     </dependency>
 
-    <!-- TODO: Upgrade to 3.2.1 -->
     <dependency>
       <groupId>commons-collections</groupId>
       <artifactId>commons-collections</artifactId>
@@ -113,14 +102,12 @@ CHEAT SHEET:
       <version>1.2.2</version>
     </dependency>
 
-    <!-- TODO: Upgrade to 1.4 -->
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-io</artifactId>
       <version>1.3.2</version>
     </dependency>
 
-    <!-- TODO: Upgrade to 2.4 -->
     <dependency>
       <groupId>commons-lang</groupId>
       <artifactId>commons-lang</artifactId>
@@ -145,14 +132,18 @@ CHEAT SHEET:
       <version>1.4.1</version>
     </dependency>
 
-    <!-- TODO: Upgrade to 1.4 -->
     <dependency>
       <groupId>commons-pool</groupId>
       <artifactId>commons-pool</artifactId>
       <version>1.3</version>
     </dependency>
 
-    <!-- TODO: Upgrade to 2.2.1 -->
+    <dependency>
+      <groupId>cryptix</groupId>
+      <artifactId>cryptix</artifactId>
+      <version>3.2.0</version>
+    </dependency>
+
     <dependency>
       <groupId>org.dbunit</groupId>
       <artifactId>dbunit</artifactId>
@@ -295,7 +286,19 @@ CHEAT SHEET:
     
     <dependency>
       <groupId>toolbox</groupId>
+      <artifactId>3dlf</artifactId>
+      <version>SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+      <groupId>toolbox</groupId>
       <artifactId>acrobat</artifactId>
+      <version>SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+      <groupId>toolbox</groupId>
+      <artifactId>alloy</artifactId>
       <version>SNAPSHOT</version>
     </dependency>
 
@@ -308,6 +311,12 @@ CHEAT SHEET:
     <dependency>
       <groupId>toolbox</groupId>
       <artifactId>calphahtml</artifactId>
+      <version>SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+      <groupId>toolbox</groupId>
+      <artifactId>cryptix32-pgp</artifactId>
       <version>SNAPSHOT</version>
     </dependency>
 
@@ -445,13 +454,19 @@ CHEAT SHEET:
 
     <dependency>
       <groupId>toolbox</groupId>
-      <artifactId>oyoahalf</artifactId>
+      <artifactId>napkinlf</artifactId>
       <version>SNAPSHOT</version>
     </dependency>
 
     <dependency>
       <groupId>toolbox</groupId>
-      <artifactId>pdfrenderer</artifactId>
+      <artifactId>officelf</artifactId>
+      <version>SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+      <groupId>toolbox</groupId>
+      <artifactId>oyoahalf</artifactId>
       <version>SNAPSHOT</version>
     </dependency>
 
@@ -504,6 +519,29 @@ CHEAT SHEET:
       <version>SNAPSHOT</version>
     </dependency>
 
+    <dependency>
+      <groupId>toolbox</groupId>
+      <artifactId>webwindow</artifactId>
+      <version>SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+      <groupId>toolbox</groupId>
+      <artifactId>xep</artifactId>
+      <version>SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+      <groupId>toolbox</groupId>
+      <artifactId>xplookandfeel</artifactId>
+      <version>SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+      <groupId>toolbox</groupId>
+      <artifactId>xt</artifactId>
+      <version>SNAPSHOT</version>
+    </dependency>
   </dependencies>
 
   <!-- ===================================================================== -->
@@ -556,124 +594,29 @@ CHEAT SHEET:
         <configuration>
           <forkMode>pertest</forkMode>
           <excludes>
+            <exclude>**/toolbox/graph/**</exclude>
+            <exclude>**/toolbox/jedit/**</exclude>
             <exclude>**/toolbox/log4j/im/**</exclude>
+            <exclude>**/toolbox/plugin/jsourceview/JSourceViewPluginTest.java</exclude>
+            <exclude>**/toolbox/util/db/SQLFormatterViewTest.java</exclude>
+            <exclude>**/toolbox/util/service/ServiceView*Test.java</exclude>
+            <exclude>**/toolbox/util/ui/**</exclude>
+            <exclude>**/toolbox/util/BrowserLauncherTest.java</exclude>
+            <exclude>**/toolbox/util/SwingUtilTest.java</exclude>
+            <exclude>**/toolbox/workspace/PluginWorkspaceTest.java</exclude>
+            <!--            <exclude>**/DecompilerTest.java</exclude>-->
+            <!--            <exclude>**/FigletTaskTest.java</exclude>-->
+            <!--            <exclude>**/RepositoryTest.java</exclude>-->
           </excludes>
         </configuration>
       </plugin>
 
-      <!-- ================================================================= -->
-      <!-- Eclipse Project Generation Plugin                                 -->
-      <!-- ================================================================= -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-eclipse-plugin</artifactId>
         <configuration>
+          <!-- Force download of source jars when running 'mvn eclipse:eclipse' -->
           <downloadSources>true</downloadSources>
-        </configuration>
-      </plugin>
-
-      <!-- ================================================================= -->
-      <!-- Webstart Plugin                                                   -->
-      <!-- ================================================================= -->
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>webstart-maven-plugin</artifactId>
-        <version>1.0-alpha-2-SNAPSHOT</version>
-        <executions>
-          <execution>
-            <goals>
-              <!-- use jnlp, jnlp-inline or jnlp-single as appropriate -->
-              <goal>jnlp</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <!--outputDirectory></outputDirectory--> <!-- not required?? -->
-          <!-- The path where the libraries are stored within the jnlp structure. not required. by default the libraries are within the working directory -->
-          <!-- <libPath>lib</libPath>-->
-           
-          <!-- 
-          [optional] transitive dependencies filter - if omitted, all 
-                     transitive dependencies are included
-
-          Note that only groupId and artifactId must be specified here. 
-          because of a limitation of the Include/ExcludesArtifactFilter 
-          -->
-          <!-- 
-          <dependencies>
-            <includes>
-              <include>commons-logging:commons-logging</include>
-              <include>commons-cli:commons-cli</include>
-            </includes>
-            <excludes>
-              <exclude></exclude>
-            </excludes>
-          </dependencies>
-          -->           
-          <resourcesDirectory>${project.basedir}/build/conf/jnlp/resources</resourcesDirectory>
-             
-          <jnlp>
-             <!-- default values -->
-             <!-- <resources>${project.basedir}/build/conf/jnlp/resources</resources>-->
-             <inputTemplateResourcePath>${project.basedir}</inputTemplateResourcePath>
-             <inputTemplate>build/conf/jnlp/template.vm</inputTemplate> <!-- relative to inputTemplateResourcePath -->
-             <outputFile>toolbox.jnlp</outputFile> <!-- defaults to launch.jnlp -->
-             <!-- used to automatically identify the jar containing the main class. -->
-             <!-- this is perhaps going to change -->
-             <mainClass>toolbox.workspace.PluginWorkspace</mainClass>
-          </jnlp>
-
-          <!-- SIGNING -->
-          <!-- defining this will automatically sign the jar and its dependencies, if necessary -->
-          <!-- we need to override passwords easily from the command line. ${keypass} -->
-          <!-- ${storepass} -->
-          <!-- KEYSTORE MANGEMENT -->
-          <!-- delete the keystore -->
-          <!-- optional shortcut to generate the store. -->
-          <!--  used to gen keystore -->
-          <!--  keytool -genkey -keyalg RSA -keystore keystore.ks -alias toolbox -->
-          <sign>
-            <keystore>${project.basedir}/build/conf/jnlp/keystore.ks</keystore>
-            <keypass>toolbox</keypass>
-            <storepass>toolbox</storepass> 
-            <!-- <storetype>jks</storetype> -->
-            <alias>toolbox</alias>
-            <!-- <validity>720</validity> -->
-          
-            <!--             <dnameCn>A</dnameCn>-->
-            <!--             <dnameOu>B</dnameOu>-->
-            <!--             <dnameO>C</dnameO>-->
-            <!--             <dnameL>D</dnameL>-->
-            <!--             <dnameSt>E</dnameSt>-->
-            <!--             <dnameC>F</dnameC>-->
-            
-            <verify>true</verify>
-            
-            <!-- 
-            <keystoreConfig>
-              <delete>true</delete> 
-              <gen>true</gen>       
-            </keystoreConfig>
-            -->
-          </sign>
-
-          <!-- BUILDING PROCESS -->
-          <!--usejnlpservlet>true</usejnlpservlet--> <!-- not yet supported -->
-
-          <!-- should we have some more configurations here? E.g. compression level (aka packing effort) -->
-          <!-- not yet implemented -->
-          <pack200>false</pack200>
-          <gzip>false</gzip> <!-- default force when pack200 false, true when pack200 selected ?? -->
-          <!-- causes a version attribute to be output in each jar resource element, optional, default is false -->
-          <outputJarVersions>false</outputJarVersions>
-
-          <!-- misc -->
-          <!-- if there are multiple apps, do we need to mark one as default? (app/ redirects to app/default.jnlp in jnlp servlet ??)-->
-          <!-- -->
-
-          <!--install>false</install--> <!-- not yet supported -->
-          <verbose>false</verbose>
-          <unsignAlreadySignedJars>true</unsignAlreadySignedJars>
         </configuration>
       </plugin>
 
@@ -716,76 +659,4 @@ CHEAT SHEET:
     </plugins>
   </reporting>
 
-  <!-- ===================================================================== -->
-  <!-- Repositories                                                          -->
-  <!-- ===================================================================== -->
-
-  <pluginRepositories>
-    <pluginRepository>
-      <id>codehaus.org</id>
-      <name>Maven Central Development Plugin Repository</name>
-      <url>http://snapshots.repository.codehaus.org</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-    </pluginRepository>
-  </pluginRepositories>
-
-  <!-- ===================================================================== -->
-  <!-- Revision Control                                                      -->
-  <!-- ===================================================================== -->
-
-  <scm>
-    <connection>scm:svn:http://javatoolbox.googlecode.com/svn/trunk/toolbox</connection>
-    <developerConnection>scm:svn:https://javatoolbox.googlecode.com/svn/trunk/toolbox</developerConnection>
-    <url>http://code.google.com/p/javatoolbox/source/browse</url>
-  </scm>
-
-  <!-- ===================================================================== -->
-  <!-- Misc                                                                  -->
-  <!-- ===================================================================== -->
-
-  <distributionManagement>
-    <site>
-      <id>muggles.dyndns.org</id>
-      <url>scp://muggles.dyndns.org/var/www/apache2-default/javatoolbox/docs</url>
-    </site>
-  </distributionManagement>
-
-  <licenses>
-  	<license>
-  	  <name>GPLv2</name>
-  	  <distribution>repo</distribution>
-  	  <url>http://www.fsf.org/licensing/licenses/info/GPLv2.html</url>
-  	</license>
-  </licenses>
-  
-  <developers>
-    <developer>
-      <id>analogue@yahoo.com</id>
-      <email>analogue@yahoo.com</email>
-      <roles>
-        <role>Developer</role>
-      </roles>
-    </developer>
-  </developers>
-  
-  <ciManagement>
-    <system>Hudson</system>
-    <notifiers>
-      <notifier>
-        <address>analogue@yahoo.com</address>
-      </notifier>
-    </notifiers>
-  </ciManagement>
-
-  <issueManagement>
-    <system>Google Code</system>
-    <url>http://code.google.com/p/javatoolbox/issues/list</url>
-  </issueManagement>
-    
-  <prerequisites>
-    <maven>2.0.9</maven>
-  </prerequisites>
-      
 </project>

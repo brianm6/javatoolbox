@@ -21,11 +21,14 @@ import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
+import com.adobe.acrobat.Viewer;
+
 import nu.xom.Element;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.fop.apps.Fop;
 import org.apache.log4j.Logger;
+
 import org.jedit.syntax.TextAreaDefaults;
 import org.jedit.syntax.XMLTokenMarker;
 
@@ -52,8 +55,6 @@ import toolbox.workspace.PluginWorkspace;
 import toolbox.workspace.PreferencedException;
 import toolbox.workspace.WorkspaceAction;
 
-import com.adobe.acrobat.Viewer;
-
 /**
  * XSLFO Plugin is a simple GUI interface to edit, process and view transformed
  * XSL-FO documents.
@@ -61,6 +62,7 @@ import com.adobe.acrobat.Viewer;
  * Features:
  * <p>
  * <ul>
+ *   <li>Selectable XSL-FO implementation (Apache FOP or RenderX XEP)
  *   <li>Selectable output format (PDF or Postscript)
  *   <li>Selectable viewer  (Embedded PDF viewer or launched Acrobat Viewer)
  *   <li>XML editor with syntax-hiliting
@@ -124,6 +126,11 @@ public class XSLFOPlugin extends AbstractPlugin
      */
     private FOProcessor fopProcessor_;
     
+    /** 
+     * RenderX XSLFO implementation = XEP.
+     */
+    private FOProcessor xepProcessor_;
+
     /**
      * Subcomponents that implement IPreferenced.
      */
@@ -178,6 +185,8 @@ public class XSLFOPlugin extends AbstractPlugin
         buttonPane.add(new JSmartButton(new FOPLaunchAction()));
         buttonPane.add(new JSmartButton(new FOPExportToPDFAction()));
         buttonPane.add(new JSmartButton(new FOPExportToPostscriptAction()));
+        buttonPane.add(new JSmartButton(new XEPRenderAction()));
+        buttonPane.add(new JSmartButton(new XEPLaunchAction()));
         
         view_.add(BorderLayout.WEST, flipPane);
         view_.add(BorderLayout.CENTER, splitPane);
@@ -286,6 +295,26 @@ public class XSLFOPlugin extends AbstractPlugin
         return fopProcessor_;
     }
 
+
+    /**
+     * Returns the RenderX XEP processor.
+     * 
+     * @return FOProcessor
+     */
+    protected FOProcessor getXEP()
+    {
+        if (xepProcessor_ == null)
+        {
+            xepProcessor_ = 
+                FOProcessorFactory.create(
+                    FOProcessorFactory.FO_IMPL_RENDERX);
+              
+            xepProcessor_.initialize(new Properties());
+        }
+        
+        return xepProcessor_;
+    }
+
     //--------------------------------------------------------------------------
     // Initializable Interface
     //--------------------------------------------------------------------------
@@ -332,7 +361,7 @@ public class XSLFOPlugin extends AbstractPlugin
     public String getDescription()
     {
         return "Transforms valid XSL-FO to either PDF or Postscript using " + 
-               "Apache FOP.";
+               "Apache FOP or RenderX XEP.";
     }
 
     //--------------------------------------------------------------------------
@@ -611,6 +640,71 @@ public class XSLFOPlugin extends AbstractPlugin
             lastDir_ = chooser.getCurrentDirectory();
         }
     }
+    
+    //--------------------------------------------------------------------------
+    // XEPRenderAction
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Uses XEP formatter and views as PDF.
+     */
+    class XEPRenderAction extends WorkspaceAction
+    {
+        /**
+         * Creates a XEPRenderAction. 
+         */
+        XEPRenderAction()
+        {
+            super("Render with XEP", true, getView(), statusBar_);
+        }
+        
+        
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
+        public void runAction(ActionEvent e) throws Exception
+        {
+            InputStream input = new StringInputStream(xmlArea_.getText());
+            ByteArrayOutputStream output = new ByteArrayOutputStream();
+            getXEP().renderPDF(input, output);
+            viewPDFEmbedded(new ByteArrayInputStream(output.toByteArray()));
+        }
+    }
+    
+    //--------------------------------------------------------------------------
+    // XEPLaunchAction
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Uses XEP formatter and views externally as a PDF.
+     */
+    class XEPLaunchAction extends WorkspaceAction
+    {
+        /**
+         * Creates a XEPLaunchAction. 
+         */
+        XEPLaunchAction()
+        {
+            super("Launch with XEP", true, getView(), statusBar_);
+        }
+        
+        
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
+        public void runAction(ActionEvent e) throws Exception
+        {
+            InputStream input = new StringInputStream(xmlArea_.getText());
+            ByteArrayOutputStream output = new ByteArrayOutputStream();
+            getXEP().renderPDF(input, output);
+             
+            String pdfFile = FileUtil.createTempFilename() + ".pdf";
+            FileUtil.setFileContents(pdfFile, output.toByteArray(), false);
+            viewPDFExternal(pdfFile);
+        }
+    }    
     
     //--------------------------------------------------------------------------
     // FOPExportToPostcriptAction

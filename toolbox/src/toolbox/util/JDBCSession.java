@@ -87,7 +87,7 @@ public final class JDBCSession
     //--------------------------------------------------------------------------
 
     /**
-     * Initializes the JDBC properties. Must be called before any of the other
+     * Initialzies the JDBC properties. Must be called before any of the other
      * methods are invoked. Connection pooling is set to the DEFAUILT_POOLED
      * value.
      * 
@@ -116,7 +116,7 @@ public final class JDBCSession
 
     
     /**
-     * Initializes the JDBC properties. Must be called before any of the other
+     * Initialzies the JDBC properties. Must be called before any of the other
      * methods are invoked.
      * 
      * @param driver JDBC driver to use.
@@ -222,7 +222,7 @@ public final class JDBCSession
 
     
     /**
-     * Initializes the JDBC properties using a specific jdbc driver jar file.
+     * Initialzies the JDBC properties using a specific jdbc driver jar file.
      * Must be called before any of the other methods are invoked.
      * 
      * @param jarFile Jar file containing jdbc drivers.
@@ -254,7 +254,7 @@ public final class JDBCSession
     
     
     /**
-     * Initializes the JDBC properties using a specific jdbc driver jar file.
+     * Initialzies the JDBC properties using a specific jdbc driver jar file.
      * Must be called before any of the other methods are invoked.
      * 
      * @param jarFiles Jar files containing jdbc drivers.
@@ -292,7 +292,7 @@ public final class JDBCSession
         // jarFiles[] -> jarURLs[]
         URL[] jarURLs = new URL[jarFiles.length];
         for (int i = 0; i< jarFiles.length; i++)
-            jarURLs[i] = new File(jarFiles[i]).toURI().toURL();
+            jarURLs[i] = new File(jarFiles[i]).toURL();
         
         URLClassLoader ucl = new URLClassLoader(jarURLs);
         Driver d = (Driver) Class.forName(driver, true, ucl).newInstance();
@@ -367,7 +367,7 @@ public final class JDBCSession
                 File jarFile = new File(jar); 
                 
                 URLClassLoader ucl = 
-                    new URLClassLoader(new URL[] { jarFile.toURI().toURL()});
+                    new URLClassLoader(new URL[] { jarFile.toURL()});
                 
                 Driver d = (Driver) 
                     Class.forName(driver, true, ucl).newInstance();
@@ -520,9 +520,9 @@ public final class JDBCSession
 
     
     /**
-     * Retrieves the given session from the session map.
+     * Retrives the given session from the session map.
      * 
-     * @param sessionName Name of the session to retrieve.
+     * @param sessionName Name of the sessio to retrieve.
      * @return Session
      */
     public static Session getSession(String sessionName)
@@ -664,7 +664,7 @@ public final class JDBCSession
 
     
     /**
-     * De-registers the current driver. Must call init() to use again.
+     * Deregisters the current driver. Must call init() to use again.
      * 
      * @throws SQLException on SQL error.
      */

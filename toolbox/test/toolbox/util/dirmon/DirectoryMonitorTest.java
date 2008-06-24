@@ -22,11 +22,12 @@ import toolbox.util.dirmon.recognizer.FileCreatedRecognizer;
 import toolbox.util.dirmon.recognizer.FileDeletedRecognizer;
 
 /**
- * Unit test for {@link DirectoryMonitor}.
+ * Unit test for {@link toolbox.util.dirmon.DirectoryMonitor}.
  */
 public class DirectoryMonitorTest extends TestCase {
 
-    private static final Logger log = Logger.getLogger(DirectoryMonitorTest.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(DirectoryMonitorTest.class);
 
     // -------------------------------------------------------------------------
     // Main
@@ -43,8 +44,8 @@ public class DirectoryMonitorTest extends TestCase {
     /**
      * Tests a full lifecycle of the DirectoryMonitor.
      */
-    public void xxxtestDirectoryMonitor() throws Exception {
-        log.info("Running testDirectoryMonitor...");
+    public void testDirectoryMonitor() throws Exception {
+        logger_.info("Running testDirectoryMonitor...");
 
         File dir = FileUtil.createTempDir();
 
@@ -54,20 +55,27 @@ public class DirectoryMonitorTest extends TestCase {
             // Mock Recognizer
             IFileActivityRecognizer recognizer = new IFileActivityRecognizer() {
 
-                public List getRecognizedEvents(DirSnapshot before, DirSnapshot after) {
+                public List getRecognizedEvents(
+                    DirSnapshot before, DirSnapshot after){
                     return new ArrayList();
                 }
             };
 
             // Mock Listener
-            IDirectoryMonitorListener listener = new IDirectoryMonitorListener() {
+            IDirectoryMonitorListener listener = 
+                new IDirectoryMonitorListener() {
 
-                public void directoryActivity(FileEvent directoryMonitorEvent) throws Exception {
-                    log.debug("Listener: activity = " + directoryMonitorEvent);
+                public void directoryActivity(
+                    FileEvent directoryMonitorEvent) 
+                    throws Exception{
+                    
+                    logger_.debug(
+                        "File activity reported: " 
+                        + directoryMonitorEvent);
                 }
                 
-                public void statusChanged(StatusEvent statusEvent) throws Exception {
-                    log.debug("Listener: status = " + statusEvent.getMessage());
+                public void statusChanged(StatusEvent statusEvent) 
+                    throws Exception {
                 }
             };
 
@@ -94,7 +102,7 @@ public class DirectoryMonitorTest extends TestCase {
      * monitor.
      */
     public void testDirectoryMonitorFalseStart() throws Exception {
-        log.info("Running testDirectoryMonitorFalseStart...");
+        logger_.info("Running testDirectoryMonitorFalseStart...");
 
         File dir = FileUtil.createTempDir();
 
@@ -109,7 +117,7 @@ public class DirectoryMonitorTest extends TestCase {
         }
         catch (IllegalStateException ise) {
             // Success
-            log.debug("SUCCESS: start twice failed.");
+            logger_.debug("SUCCESS: start twice failed.");
         }
         catch (Exception e) {
             fail("Expected IllegalStateException");
@@ -121,29 +129,44 @@ public class DirectoryMonitorTest extends TestCase {
     }
     
     
-    public void xxxtestDirectoryMonitorWithSubDirs() throws Exception {
-        log.info("Running testDirectoryMonitorWithSubDirs...");
+    public void testDirectoryMonitorWithSubDirs() throws Exception {
+        logger_.info("Running testDirectoryMonitorWithSubDirs...");
         
         File mockDir = FileUtil.createTempDir();
+        //File sub1 = FileUtil.createTempDir(root);
+        //File sub11 = FileUtil.createTempDir(sub1);
+        //File sub2 = FileUtil.createTempDir(root);
+        
+        //File root = new File("c:\\tmp\\crap");
+        
+        //File root = new File("M:\\x1700_vacany_10_dynamic\\staffplanning\\vacancy\\dev\\Ophelia\\src");
         
         try {
             DirectoryMonitor dm = new DirectoryMonitor(mockDir, true);
             
             dm.addRecognizer(new FileCreatedRecognizer(dm));
-            dm.addRecognizer(new FileChangedRecognizer(dm));
             dm.addRecognizer(new FileDeletedRecognizer(dm));
-            dm.setDelay(500);
+            dm.addRecognizer(new FileChangedRecognizer(dm));
+            dm.setDelay(1000);
             
             final BlockingQueue eventQueue = new ArrayBlockingQueue(3);
             
             dm.addDirectoryMonitorListener(new IDirectoryMonitorListener() {
                 
-                public void directoryActivity(FileEvent event) throws Exception {
+                public void directoryActivity(
+                    FileEvent event) 
+                    throws Exception{
                     
                     switch (event.getEventType()) {
                         
                         case FileEvent.TYPE_FILE_CREATED:
+                            eventQueue.offer(event);
+                            break;
+                            
                         case FileEvent.TYPE_FILE_CHANGED:
+                            eventQueue.offer(event);
+                            break;
+                            
                         case FileEvent.TYPE_FILE_DELETED:
                             eventQueue.offer(event);
                             break;
@@ -153,7 +176,8 @@ public class DirectoryMonitorTest extends TestCase {
                     }
                 }
                 
-                public void statusChanged(StatusEvent statusEvent) throws Exception {
+                public void statusChanged(StatusEvent statusEvent) 
+                    throws Exception {
                 }
             });
             
@@ -175,11 +199,10 @@ public class DirectoryMonitorTest extends TestCase {
                 mockFile.getAbsolutePath(), 
                 e.getAfterSnapshot().getAbsolutePath());
             
-            log.debug("SUCCESS: Notified of file creation");
+            logger_.debug("SUCCESS: Notified of file creation");
             
             // Test file changed
             // =================================================================
-            ThreadUtil.sleep(3000);
             FileUtils.touch(mockFile);
             FileEvent e2 = (FileEvent) eventQueue.take();
             assertEquals(FileEvent.TYPE_FILE_CHANGED, e2.getEventType());
@@ -188,11 +211,10 @@ public class DirectoryMonitorTest extends TestCase {
                 mockFile.getAbsolutePath(), 
                 e2.getAfterSnapshot().getAbsolutePath());
             
-            log.debug("SUCCESS: Notified of file changed");
+            logger_.debug("SUCCESS: Notified of file changed");
             
             // Test file deleted            
             // =================================================================            
-            ThreadUtil.sleep(3000);
             mockFile.delete();
             FileEvent e3 = (FileEvent) eventQueue.take();
             assertEquals(FileEvent.TYPE_FILE_DELETED, e3.getEventType());
@@ -201,9 +223,8 @@ public class DirectoryMonitorTest extends TestCase {
                 mockFile.getAbsolutePath(), 
                 e3.getBeforeSnapshot().getAbsolutePath());
             
-            log.debug("SUCCESS: Notified of file deletion");
+            logger_.debug("SUCCESS: Notified of file deletion");
             
-            ThreadUtil.sleep(3000);
             dm.stop();
         }
         finally {

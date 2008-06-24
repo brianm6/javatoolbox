@@ -16,7 +16,7 @@ import toolbox.util.dirmon.IFileActivityRecognizer;
 import toolbox.util.dirmon.event.FileEvent;
 
 /**
- * Unit test for {@link FileDeletedRecognizer}.
+ * Unit test for {@link toolbox.util.dirmon.trash.FileDeletedActivity}.
  */
 public class FileDeletedRecognizerTest extends TestCase {
 

@@ -126,6 +126,7 @@ public class XmlModel
                 // a new inputstream
                 if (file != null)
                 {
+                    // FIXME encoding!!
                     InputStream is = new FileInputStream(file);
                     try
                     {

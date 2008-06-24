@@ -27,7 +27,7 @@ import org.apache.log4j.Logger;
 import toolbox.clearcase.adapter.ClearCaseAdapterFactory;
 import toolbox.clearcase.audit.ContainsTabsAudit;
 import toolbox.clearcase.audit.MissingCommentAudit;
-import toolbox.util.DateOnlyUtil;
+import toolbox.util.DateUtil;
 import toolbox.util.ResourceUtil;
 import toolbox.util.collections.ObjectComparator;
 
@@ -73,7 +73,12 @@ public class RepositoryAuditor
     static
     {
         userMap_ = new HashMap();
-        userMap_.put("x1234", "John Doe");
+        userMap_.put("x1700", "Semir");
+        userMap_.put("e74254", "Clay");
+        userMap_.put("e68041", "Bob");
+        userMap_.put("e47457", "Rama");
+        userMap_.put("e63591", "Alan");
+        userMap_.put("e68202", "BuildGuy");
     }
     
     //--------------------------------------------------------------------------
@@ -151,7 +156,7 @@ public class RepositoryAuditor
         // Find changed files between now and 'history days' back.
         List changedFiles = 
             cc.findChangedFiles(
-                DateOnlyUtil.addDays(new Date(), -getHistoryDays()), 
+                DateUtil.addDays(new Date(), -getHistoryDays()), 
                 new Date(), 
                 new SuffixFileFilter("*"));
 

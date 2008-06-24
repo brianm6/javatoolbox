@@ -3,7 +3,6 @@ package toolbox.findclass;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.text.NumberFormat;
 import java.util.Iterator;
 
 import org.apache.commons.cli.CommandLine;
@@ -17,7 +16,7 @@ import org.apache.log4j.Logger;
 import org.apache.regexp.RESyntaxException;
 
 /**
- * Utility that finds all occurrences of a given class in the CLASSPATH, current
+ * Utility that finds all occurences of a given class in the CLASSPATH, current
  * directory, and archives (recursively).
  * 
  * @see toolbox.findclass.FindClass
@@ -26,8 +25,6 @@ public class Main extends FindClassAdapter
 { 
     private static final Logger logger_ = Logger.getLogger(Main.class);
 
-    private static final NumberFormat nf = NumberFormat.getNumberInstance();
-    
     //--------------------------------------------------------------------------
     // Fields 
     //--------------------------------------------------------------------------
@@ -43,9 +40,9 @@ public class Main extends FindClassAdapter
     private int numFound_;
     
     /**
-     * Case sensitivity search flag.
+     * Case sensetivity search flag.
      */
-    private boolean caseSensitive_;
+    private boolean caseSensetive_;
     
     /**
      * Flag to show the list of search targets. 
@@ -56,8 +53,6 @@ public class Main extends FindClassAdapter
      * Search string expressed as a regular expression.
      */    
     private String classToFind_;
-    
-    private boolean showFileSize_;
     
     //--------------------------------------------------------------------------
     // Main
@@ -80,13 +75,11 @@ public class Main extends FindClassAdapter
             Option showTargetsOption = new Option("t", "targets", false, "Lists the search targets");
             Option helpOption = new Option("h", "help", false, "Print usage");
             Option verboseOption = new Option("v", "verbose", false, "Verbose logging");
-            Option showFileSizeOption = new Option("s", "size", false, "Show file sizes");
             
             options.addOption(helpOption);
             options.addOption(caseSensetiveOption);        
             options.addOption(showTargetsOption);
             options.addOption(verboseOption);
-            options.addOption(showFileSizeOption);
     
             // Parse options
             CommandLine cmdLine = parser.parse(options, args, true);
@@ -104,15 +97,11 @@ public class Main extends FindClassAdapter
                 
                 if (opt.equals(caseSensetiveOption.getOpt()))
                 {
-                    mainClass.setCaseSensitive(true);
+                    mainClass.setCaseSensetive(true);
                 }
                 else if (opt.equals(showTargetsOption.getOpt()))
                 {
                     mainClass.setShowTargets(true);
-                }
-                else if (opt.equals(showFileSizeOption.getOpt()))
-                {
-                	mainClass.setShowFileSize(true);
                 }
                 else if (opt.equals(verboseOption.getOpt()))
                 {
@@ -156,7 +145,7 @@ public class Main extends FindClassAdapter
     //  Constructors
     //--------------------------------------------------------------------------
 
-	/**
+    /**
      * Creates main with the given writer for output.
      * 
      * @param  writer  Writer that output will be written to.
@@ -193,7 +182,7 @@ public class Main extends FindClassAdapter
             writer_.println("==============================");                
         }        
         
-        finder.findClass(classToFind_, !caseSensitive_);
+        finder.findClass(classToFind_, !caseSensetive_);
         
         if (numFound_ == 0)
             writer_.println("No matches found.");
@@ -201,13 +190,13 @@ public class Main extends FindClassAdapter
 
     
     /**
-     * Mutator for case sensitive flag.
+     * Mutator for case sensetive flag.
      * 
-     * @param b Case sensitive flag.
+     * @param b Case sensetive flag.
      */    
-    public void setCaseSensitive(boolean b)
+    public void setCaseSensetive(boolean b)
     {
-        caseSensitive_ = b;
+        caseSensetive_ = b;
     }
 
     
@@ -242,11 +231,6 @@ public class Main extends FindClassAdapter
     {
         writer_ = writer;
     }
-    
-    public void setShowFileSize(boolean b) 
-    {
-    	showFileSize_ = b;
-	}
 
     //--------------------------------------------------------------------------
     // Private
@@ -289,19 +273,8 @@ public class Main extends FindClassAdapter
     {
         numFound_++;
         
-        StringBuffer sb = new StringBuffer();
-        sb.append(searchResult.getClassLocation());
-        sb.append(" => ");
-        
-        if (showFileSize_)  {
-        	sb.append("[");
-        	sb.append(nf.format(searchResult.getFileSize()));
-        	sb.append("] ");
-        }
-        
-        sb.append(searchResult.getClassFQN());
-        
-
-        writer_.println(sb.toString());
+        writer_.println(
+            searchResult.getClassLocation() + " => " + 
+            searchResult.getClassFQN());   
     }
 }

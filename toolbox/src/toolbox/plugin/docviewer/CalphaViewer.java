@@ -48,6 +48,9 @@ public class CalphaViewer extends AbstractViewer {
     // Constructors
     // --------------------------------------------------------------------------
 
+    /**
+     * Creates a CalphaViewer.
+     */
     public CalphaViewer() {
         super("HTML Viewer");
     }
@@ -56,6 +59,9 @@ public class CalphaViewer extends AbstractViewer {
     // Initializable Interface
     // --------------------------------------------------------------------------
 
+    /*
+     * @see toolbox.util.service.Initializable#initialize(java.util.Map)
+     */
     public void initialize(Map init) throws ServiceException {
         CalHTMLPreferences prefs = new CalHTMLPreferences();
         prefs.setFormRenderingStyle(CalCons.USE_LOOK_AND_FEEL);
@@ -90,9 +96,12 @@ public class CalphaViewer extends AbstractViewer {
     // DocumentViewer Interface
     // --------------------------------------------------------------------------
 
+    /*
+     * @see toolbox.plugin.docviewer.DocumentViewer#view(java.io.File)
+     */
     public void view(File file) throws DocumentViewerException {
         try {
-            htmlPane_.showHTMLDocument(file.toURI().toURL());
+            htmlPane_.showHTMLDocument(file.toURL());
         }
         catch (MalformedURLException e) {
             throw new DocumentViewerException(e);
@@ -100,22 +109,34 @@ public class CalphaViewer extends AbstractViewer {
     }
 
 
+    /*
+     * @see toolbox.plugin.docviewer.DocumentViewer#view(java.io.InputStream)
+     */
     public void view(InputStream is) throws DocumentViewerException {
         throw new UnsupportedOperationException("Not implemented");
     }
 
 
+    /*
+     * @see toolbox.plugin.docviewer.DocumentViewer#canView(java.io.File)
+     */
     public boolean canView(File file) {
         return ArrayUtil.contains(getViewableFileTypes(), FileUtil
             .getExtension(file).toLowerCase());
     }
 
 
+    /*
+     * @see toolbox.plugin.docviewer.DocumentViewer#getViewableFileTypes()
+     */
     public String[] getViewableFileTypes() {
         return FileTypes.HTML;
     }
 
 
+    /*
+     * @see toolbox.plugin.docviewer.DocumentViewer#getComponent()
+     */
     public JComponent getComponent() {
         return viewerPane_;
     }
@@ -124,6 +145,9 @@ public class CalphaViewer extends AbstractViewer {
     // Destroyable Interface
     // --------------------------------------------------------------------------
 
+    /*
+     * @see toolbox.util.service.Destroyable#destroy()
+     */
     public void destroy() throws ServiceException {
         ; // no-op
     }
@@ -138,6 +162,9 @@ public class CalphaViewer extends AbstractViewer {
         // Overrides JComponent
         // ----------------------------------------------------------------------
 
+        /*
+         * @see javax.swing.JLayeredPane#paint(java.awt.Graphics)
+         */
         public void paint(Graphics g) {
             SwingUtil.makeAntiAliased(g, true);
             super.paint(g);
@@ -148,14 +175,26 @@ public class CalphaViewer extends AbstractViewer {
     // ButtonListener
     // --------------------------------------------------------------------------
 
+    /**
+     * Listener for the button panel.
+     */
     private static class ButtonListener implements ActionListener {
 
         private CalHTMLPane pane_;
 
+        /**
+         * Creates a ButtonListener.
+         * 
+         * @param pane Html pane.
+         */
         public ButtonListener(CalHTMLPane pane) {
             pane_ = pane;
         }
 
+
+        /*
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e) {
             String s = e.getActionCommand();
 

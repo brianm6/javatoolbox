@@ -18,6 +18,11 @@ public class FigletTaskTest extends TestCase implements StandaloneTestCase
     // Main
     //--------------------------------------------------------------------------
     
+    /**
+     * Entrypoint.
+     * 
+     * @param args None recognized.
+     */
     public static void main(String[] args)
     {
         TestRunner.run(FigletTaskTest.class);
@@ -27,6 +32,9 @@ public class FigletTaskTest extends TestCase implements StandaloneTestCase
     // Unit Tests
     //--------------------------------------------------------------------------
 
+    /**
+     * Tests the banner task.
+     */        
     public void testBannerTask()
     {
         //-Dant.home=c:\ant 

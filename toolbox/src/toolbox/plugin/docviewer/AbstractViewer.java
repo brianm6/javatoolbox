@@ -28,6 +28,11 @@ public abstract class AbstractViewer implements DocumentViewer {
     // Constructors
     // -------------------------------------------------------------------------
 
+    /**
+     * Creates a AbstractViewer.
+     * 
+     * @param name Viewer name.
+     */
     public AbstractViewer(String name) {
         setName(name);
         machine_ = ServiceUtil.createStateMachine(this);
@@ -37,14 +42,16 @@ public abstract class AbstractViewer implements DocumentViewer {
     // Service Interface
     // -------------------------------------------------------------------------
 
+    /*
+     * @see toolbox.util.service.Service#getState()
+     */
     public ServiceState getState() {
         return (ServiceState) machine_.getState();
     }
-    
-    // -------------------------------------------------------------------------
-    // Destroyable Interface
-    // -------------------------------------------------------------------------
 
+    /*
+     * @see toolbox.util.service.Destroyable#isDestroyed()
+     */
     public boolean isDestroyed() {
         return getState() == ServiceState.DESTROYED;
     }
@@ -53,10 +60,17 @@ public abstract class AbstractViewer implements DocumentViewer {
     // Nameable Interface
     // -------------------------------------------------------------------------
 
+    /*
+     * @see toolbox.util.service.Nameable#getName()
+     */
     public String getName() {
         return name_;
     }
 
+
+    /*
+     * @see toolbox.util.service.Nameable#setName(java.lang.String)
+     */
     public void setName(String name) {
         name_ = name;
     }

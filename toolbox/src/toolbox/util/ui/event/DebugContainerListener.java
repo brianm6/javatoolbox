@@ -6,7 +6,8 @@ import java.awt.event.ContainerListener;
 import org.apache.log4j.Logger;
 
 /**
- * DebugContainerListener is useful for tracing container events.
+ * DebugContainerListener is useful for tracing container events on a given
+ * contaner.
  */
 public class DebugContainerListener implements ContainerListener
 {

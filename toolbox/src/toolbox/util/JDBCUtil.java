@@ -113,7 +113,7 @@ public final class JDBCUtil
     
     
     /**
-     * Initializes the JDBC properties. Must be called before any of the other
+     * Initialzies the JDBC properties. Must be called before any of the other
      * methods are invoked.
      * 
      * @param driver JDBC driver to use.
@@ -148,7 +148,7 @@ public final class JDBCUtil
 
     
     /**
-     * Initializes the JDBC properties using a specific jdbc driver jar file.
+     * Initialzies the JDBC properties using a specific jdbc driver jar file.
      * Must be called before any of the other methods are invoked.
      * 
      * @param jarFile Jar file containing jdbc drivers.
@@ -186,7 +186,7 @@ public final class JDBCUtil
     
     
     /**
-     * Initializes the JDBC properties using a specific jdbc driver jar file.
+     * Initialzies the JDBC properties using a specific jdbc driver jar file.
      * Must be called before any of the other methods are invoked.
      * 
      * @param jarFiles Jar files containing jdbc drivers.

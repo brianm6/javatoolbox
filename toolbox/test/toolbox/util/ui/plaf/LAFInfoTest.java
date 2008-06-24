@@ -21,6 +21,11 @@ public class LAFInfoTest extends TestCase
     // Main
     //--------------------------------------------------------------------------
     
+    /**
+     * Entrypoint.
+     * 
+     * @param args None recognized.
+     */
     public static void main(String[] args)
     {
         TestRunner.run(LAFInfoTest.class);

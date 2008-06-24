@@ -37,11 +37,19 @@ public class TextViewer extends AbstractViewer {
     // Constructors
     // -------------------------------------------------------------------------
 
+    /**
+     * Creates a TextViewer.
+     */
     public TextViewer() {
         this("Text Viewer");
     }
 
 
+    /**
+     * Creates a TextViewer.
+     * 
+     * @param name Name of this viewer.
+     */
     public TextViewer(String name) {
         super(name);
     }
@@ -64,6 +72,9 @@ public class TextViewer extends AbstractViewer {
     // Initializable Interface
     // -------------------------------------------------------------------------
 
+    /*
+     * @see toolbox.util.service.Initializable#initialize(java.util.Map)
+     */
     public void initialize(Map init) {
         textArea_ = new JSmartTextArea();
         textArea_.setAntiAliased(SwingUtil.getDefaultAntiAlias());
@@ -94,6 +105,9 @@ public class TextViewer extends AbstractViewer {
     }
 
 
+    /*
+     * @see toolbox.plugin.docviewer.DocumentViewer#view(java.io.InputStream)
+     */
     public void view(InputStream is) throws DocumentViewerException {
         throw new UnsupportedOperationException("Not implemented");
     }
@@ -110,6 +124,9 @@ public class TextViewer extends AbstractViewer {
     }
 
 
+    /*
+     * @see toolbox.plugin.docviewer.DocumentViewer#getViewableFileTypes()
+     */
     public String[] getViewableFileTypes() {
         return null;
     }
@@ -128,6 +145,9 @@ public class TextViewer extends AbstractViewer {
     // Destroyable Interface
     // -------------------------------------------------------------------------
 
+    /*
+     * @see toolbox.util.service.Destroyable#destroy()
+     */
     public void destroy() {
         ; // No-op
     }

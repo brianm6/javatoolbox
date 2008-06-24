@@ -13,14 +13,13 @@ import toolbox.util.ArrayUtil;
 import toolbox.util.JDBCSession;
 
 /**
- * Unit test for {@link OracleUtil}.
+ * Unit test for {@link toolbox.util.db.oracle.OracleUtil}.
  */
 public class OracleUtilTest extends TestCase 
 {
-    private static final Logger logger_ = Logger.getLogger(OracleUtilTest.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(OracleUtilTest.class);
 
-    private boolean oracleAvailable;
-    
     //--------------------------------------------------------------------------
     // Constants
     //--------------------------------------------------------------------------
@@ -34,6 +33,9 @@ public class OracleUtilTest extends TestCase
     // Main
     //--------------------------------------------------------------------------
     
+    /**
+     * Entrypoint.
+     */
     public static void main(String[] args) 
     {
         TestRunner.run(OracleUtilTest.class);
@@ -50,18 +52,12 @@ public class OracleUtilTest extends TestCase
      */
     protected void setUp() throws Exception 
     {
-    	try {
-	        JDBCSession.init(
-	            SESSION,
-	            "oracle.jdbc.driver.OracleDriver",
-	            "jdbc:oracle:thin:fixme!!!",
-	            "user_fixme",
-	            "password_fixme");
-	        oracleAvailable = true;
-    	}
-    	catch (ClassNotFoundException cnfe) {
-    		oracleAvailable = false;
-    	}
+        JDBCSession.init(
+            SESSION,
+            "oracle.jdbc.driver.OracleDriver",
+            "jdbc:oracle:thin:fixme!!!",
+            "user_fixme",
+            "password_fixme");
     }
 
 
@@ -72,8 +68,7 @@ public class OracleUtilTest extends TestCase
      */
     protected void tearDown() throws Exception 
     {
-    	if (oracleAvailable)
-    		JDBCSession.shutdown(SESSION);
+        JDBCSession.shutdown(SESSION);
     }
 
     //--------------------------------------------------------------------------
@@ -82,8 +77,6 @@ public class OracleUtilTest extends TestCase
     
     public void testSetConstraintsEnabled() 
     {
-    	if (!oracleAvailable)
-    		return;
     }
 
 
@@ -92,9 +85,6 @@ public class OracleUtilTest extends TestCase
      */
     public void testGetSequence() throws Exception 
     {
-    	if (!oracleAvailable)
-    		return;
-    	
         logger_.info("Running testGetSequence...");
         
         String sequenceName = "TEST_GET_SEQUENCE_" + RandomUtils.nextInt();
@@ -133,9 +123,6 @@ public class OracleUtilTest extends TestCase
      */
     public void testGetSequences() throws Exception 
     {
-    	if (!oracleAvailable)
-    		return;
-
         logger_.info("Running testGetSequences...");
         
         String sequenceName = "TEST_GET_SEQUENCES_" + RandomUtils.nextInt();
@@ -180,9 +167,6 @@ public class OracleUtilTest extends TestCase
      */
     public void testSetSequenceValueHigher() throws Exception 
     {
-    	if (!oracleAvailable)
-    		return;
-
         logger_.info("Running testSetSequenceValue...");
         
         String sequenceName = "TSSV" + RandomUtils.nextInt();
@@ -229,9 +213,6 @@ public class OracleUtilTest extends TestCase
      */
     public void testSetSequenceValueLower() throws Exception 
     {
-    	if (!oracleAvailable)
-    		return;
-
         logger_.info("Running testSetSequenceValueLower...");
         
         String sequenceName = "TSSVL" + RandomUtils.nextInt();
