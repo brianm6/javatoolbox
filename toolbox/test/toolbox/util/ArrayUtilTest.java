@@ -11,8 +11,6 @@ import org.apache.log4j.Logger;
 
 /**
  * Unit test for {@link toolbox.util.ArrayUtil}.
- * 
- * @see toolbox.util.ArrayUtil
  */
 public class ArrayUtilTest extends TestCase
 {
@@ -22,11 +20,6 @@ public class ArrayUtilTest extends TestCase
     // Main
     //--------------------------------------------------------------------------
     
-    /**
-     * Entrypoint.
-     *
-     * @param args None recognized.
-     */
     public static void main(String[] args)
     {
         TestRunner.run(ArrayUtilTest.class);
@@ -336,13 +329,8 @@ public class ArrayUtilTest extends TestCase
     // Unit Tests: toString()
     //--------------------------------------------------------------------------
         
-    /**
-     * Tests toString()
-     */
     public void testToString()
     {
-        logger_.info("Running testToString...");
-        
         String[] s = new String[]
         {
             "one", "two", "three", "four", "five", "six", "seven", "eight", 
@@ -357,11 +345,7 @@ public class ArrayUtilTest extends TestCase
         assertEquals("strings don't match", expected, result);
 
     }
-
     
-    /**
-     * Tests toString() for empty array.
-     */
     public void testToStringEmpty()
     {
         logger_.info("Running testToStringEmpty...");
@@ -369,49 +353,54 @@ public class ArrayUtilTest extends TestCase
         String[] s = new String[0];
         logger_.debug(ArrayUtil.toString(s));
     }
-
     
-    /**
-     * Tests toString() for array with one element.
-     */
-    public void testToStringOne()
+    public void testToString_ManyElements_OneLine() 
     {
-        logger_.info("Running testToStringOne...");
-        
-        String[] s = new String[] {"blah"};
-        logger_.debug(ArrayUtil.toString(s));
-    }
-    
-    
-    /**
-     * Tests toString() for single element array with one per line = true.
-     */
-    public void testToStringOneElementOnePerLine()
-    {
-        logger_.info("Running testToStringOneElementOnePerLine...");
-        
-        String[] s = new String[] {"hello"};
-        logger_.debug(ArrayUtil.toString(s, true));
-        logger_.debug(ArrayUtil.toString(s, false));        
+        String[] s = new String[] { "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten" };
+        String expected = "[10]{one, two, three, four, five, six, seven, eight, nine, ten}";
+        String result = ArrayUtil.toString(s, false);
+        System.out.println(result);
+        assertEquals("strings don't match", expected, result);
     }
 
-    
-    /**
-     * Tests toString() for one element per line.
-     */
-    public void testToStringOnePerLine()
+    public void testToString_ZeroElements() 
     {
-        logger_.info("Running testToStringOnePerLine...");
-        
-        String[] s = new String[]
-        {
-            "one", "two", "three", "four", "five", "six", "seven", "eight", 
-            "nine", "ten"
-        };
-        
-        String result   = ArrayUtil.toString(s, true);
-        logger_.debug("\n " + result);
+        String[] s = new String[0];
+        assertEquals("[0]{}", ArrayUtil.toString(s, false));
     }
+
+    public void testToString_OneElement() 
+    {
+        String[] s = new String[] { "blah" };
+        assertEquals("[1]{blah}", ArrayUtil.toString(s, false));
+    }
+
+    public void testToString_OneElementOnePerLine() 
+    {
+        String[] s = new String[] { "hello" };
+        assertEquals("[1]{hello}", ArrayUtil.toString(s, true));
+        assertEquals("[1]{hello}", ArrayUtil.toString(s, false));
+    }
+
+    public void testToString_ManyElementsOnePerLine() 
+    {
+        String[] s = new String[] { "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten" };
+
+        String expected = "[10]{\n" +
+            "one, \n" + 
+            "two, \n" + 
+            "three, \n" + 
+            "four, \n" + 
+            "five, \n" + 
+            "six, \n" + 
+            "seven, \n" + 
+            "eight, \n" + 
+            "nine, \n" + 
+            "ten}";
+        
+        String result = ArrayUtil.toString(s, true);
+        assertEquals(expected, result);
+    }    
     
     //--------------------------------------------------------------------------
     // Unit Tests: indexOf()
