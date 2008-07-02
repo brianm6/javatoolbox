@@ -1,5 +1,10 @@
-set lib=t:\workspaces\workspace-toolbox\toolbox\toolbox\lib
-set sf=t:/workspaces/workspace-toolbox/toolbox/toolbox/settings.xml 
+: =======================================
+: Installs jar files to local maven repo.
+: Must be run from the 'bin' directory.
+: =======================================
+
+set LIB=..\lib
+:set sf=t:/workspaces/workspace-toolbox/toolbox/toolbox/settings.xml 
 
 
 if exist %sf% set sa=--settings %sf% 
