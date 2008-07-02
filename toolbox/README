@@ -7,9 +7,10 @@ Build Instructions
 
 	Pre-requisites
 	--------------
-	1. Linux or Windows (MacOS not tested)
-    2. Maven 2.0.9 or later installed
-    3. Subversion command line client
+	- Linux or Windows (MacOS not tested)
+	- JDK 1.5 or later 
+    - Maven 2.0.9 or later - http://maven.apache.org
+    - Subversion command line client 
     
     Steps
     -----
@@ -17,7 +18,8 @@ Build Instructions
        
        svn co https://javatoolbox.googlecode.com/trunk/toolbox toolbox
        
-    2. Populate local maven repo with dependencies not available from master maven repo
+    2. Populate local maven repo with dependencies not available from master maven repo.
+       This can take a few mins...
     
        cd toolbox/bin
        ./mvn-install-jars      (linux)
@@ -26,7 +28,7 @@ Build Instructions
     3. Build
     
        cd ..
-       mvn install
+       mvn --fail-never install
 
 
 Launching the Java Toolbox GUI
