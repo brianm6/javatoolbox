@@ -1,0 +1,39 @@
+
+                   Java Developer Toolbox
+              
+
+Build Instructions
+====================
+
+	Pre-requisites
+	--------------
+	1. Linux or Windows (MacOS not tested)
+    2. Maven 2.0.9 or later installed
+    3. Subversion command line client
+    
+    Steps
+    -----
+    1. Checkout code from subversion repo
+       
+       svn co https://javatoolbox.googlecode.com/trunk/toolbox toolbox
+       
+    2. Populate local maven repo with dependencies not available from master maven repo
+    
+       cd toolbox/bin
+       ./mvn-install-jars      (linux)
+       ./mvn-install-jars.bat  (windows)
+       
+    3. Build
+    
+       cd ..
+       mvn install
+
+
+Launching the Java Toolbox GUI
+===============================
+TODO    
+
+
+Feedback
+==========
+Email: analogue@yahoo.com
