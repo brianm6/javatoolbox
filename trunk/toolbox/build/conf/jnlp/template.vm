@@ -24,4 +24,6 @@
   
   <application-desc main-class="$mainClass">
   </application-desc>
+  
+  <offline-allowed/>
 </jnlp>
