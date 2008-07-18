@@ -9,11 +9,18 @@
     <vendor>None</vendor>
     <homepage>http://code.google.com/p/javatoolbox</homepage>
     <description kind="one-line">Java Developers Toolbox</description>
+    <offline-allowed/>
+    <shortcut>
+      <desktop/>
+      <menu/>
+    </shortcut>    
   </information>
   
   <security>
      <all-permissions/>
   </security>
+  
+  <update check="background" policy="prompt-update"/>
   
   <resources>
     <j2se version="1.5+"
@@ -25,5 +32,4 @@
   <application-desc main-class="$mainClass">
   </application-desc>
   
-  <offline-allowed/>
 </jnlp>
