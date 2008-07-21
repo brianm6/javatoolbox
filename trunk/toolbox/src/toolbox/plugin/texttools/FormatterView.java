@@ -59,11 +59,6 @@ public class FormatterView extends JPanel implements IPreferenced
     // Constructors
     //--------------------------------------------------------------------------
 
-    /**
-     * Creates a FormatterView.
-     *
-     * @param plugin Parent plugin.
-     */
     public FormatterView(TextToolsPlugin plugin)
     {
         buildView();
@@ -95,9 +90,6 @@ public class FormatterView extends JPanel implements IPreferenced
     // Protected
     //--------------------------------------------------------------------------
 
-    /**
-     * Constructs the user interface.
-     */
     protected void buildView()
     {
         setLayout(new FlowLayout());
@@ -120,9 +112,6 @@ public class FormatterView extends JPanel implements IPreferenced
     {
         private Formatter formatter_;
         
-        /**
-         * Creates a FormatAction.
-         */
         FormatAction(String label, Formatter formatter)
         {
             super(label, true, false, null);
@@ -130,10 +119,6 @@ public class FormatterView extends JPanel implements IPreferenced
         }
 
         
-        /**
-         * @see toolbox.util.ui.SmartAction#runAction(
-         *      java.awt.event.ActionEvent)
-         */
         public void runAction(ActionEvent e) throws Exception
         {
             plugin_.getOutputArea().setText(
@@ -145,9 +130,6 @@ public class FormatterView extends JPanel implements IPreferenced
     // IPreferenced Interface
     //--------------------------------------------------------------------------
 
-    /**
-     * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
-     */
     public void applyPrefs(Element prefs) throws PreferencedException
     {
         Element root = XOMUtil.getFirstChildElement(prefs, NODE_FORMAT_VIEW,
@@ -159,9 +141,6 @@ public class FormatterView extends JPanel implements IPreferenced
     }
 
 
-    /**
-     * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
-     */
     public void savePrefs(Element prefs) throws PreferencedException
     {
         Element root = new Element(NODE_FORMAT_VIEW);

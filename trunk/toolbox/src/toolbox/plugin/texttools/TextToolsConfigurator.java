@@ -44,11 +44,6 @@ public class TextToolsConfigurator extends JPanel implements IConfigurator
     // Constructors
     //--------------------------------------------------------------------------
     
-    /**
-     * Creates a DBPrefsView.
-     * 
-     * @param plugin Query plugin.
-     */
     public TextToolsConfigurator(TextToolsPlugin plugin)
     {
         plugin_ = plugin;
@@ -96,65 +91,44 @@ public class TextToolsConfigurator extends JPanel implements IConfigurator
     }
 
     //--------------------------------------------------------------------------
-    // Preferences Interface
+    // IConfigurator Interface
     //--------------------------------------------------------------------------
 
-    /**
-     * @see toolbox.workspace.prefs.IConfigurator#getLabel()
-     */
     public String getLabel()
     {
         return "Text Tools";
     }
 
 
-    /**
-     * @see toolbox.workspace.prefs.IConfigurator#getView()
-     */
     public JComponent getView()
     {
         return this;
     }
 
     
-    /**
-     * @see toolbox.workspace.prefs.IConfigurator#getIcon()
-     */
     public Icon getIcon()
     {
         return ImageCache.getIcon(ImageCache.IMAGE_BRACES);
     }
     
     
-    /**
-     * @see toolbox.workspace.prefs.IConfigurator#onOK()
-     */
     public void onOK()
     {
         onApply();
     }
 
 
-    /**
-     * @see toolbox.workspace.prefs.IConfigurator#onApply()
-     */
     public void onApply()
     {
     }
 
 
-    /**
-     * @see toolbox.workspace.prefs.IConfigurator#onCancel()
-     */
     public void onCancel()
     {
         // Nothing to do
     }
     
     
-    /**
-     * @see toolbox.workspace.prefs.IConfigurator#isApplyOnStartup()
-     */
     public boolean isApplyOnStartup()
     {
         return false;
@@ -164,17 +138,11 @@ public class TextToolsConfigurator extends JPanel implements IConfigurator
     // IPreferenced Interface
     //--------------------------------------------------------------------------
 
-    /**
-     * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
-     */
     public void applyPrefs(Element prefs) throws PreferencedException
     {
     }
 
 
-    /**
-     * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
-     */
     public void savePrefs(Element prefs) throws PreferencedException
     {
     }

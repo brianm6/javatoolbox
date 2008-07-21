@@ -53,11 +53,6 @@ public class FilterView extends JPanel
     // Constructors
     //--------------------------------------------------------------------------
 
-    /**
-     * Creates a FilterView.
-     *
-     * @param plugin Parent TextToolsPlugin.
-     */
     FilterView(TextToolsPlugin plugin)
     {
         plugin_ = plugin;
@@ -68,9 +63,6 @@ public class FilterView extends JPanel
     // Protected
     //--------------------------------------------------------------------------
 
-    /**
-     * Constructs the user interface.
-     */
     protected void buildView()
     {
         setLayout(new FlowLayout());
@@ -152,10 +144,6 @@ public class FilterView extends JPanel
         private String oldValue_ = "";
 
         
-        /**
-         * @see java.awt.event.KeyListener#keyReleased(
-         *      java.awt.event.KeyEvent)
-         */
         public void keyReleased(KeyEvent e)
         {
             super.keyReleased(e);
@@ -181,41 +169,24 @@ public class FilterView extends JPanel
      */
     class TextChangedListener implements DocumentListener
     {
-        /**
-         * @see javax.swing.event.DocumentListener#changedUpdate(
-         *      javax.swing.event.DocumentEvent)
-         */
         public void changedUpdate(DocumentEvent e)
         {
             crud("changed ");
         }
 
 
-        /**
-         * @see javax.swing.event.DocumentListener#insertUpdate(
-         *      javax.swing.event.DocumentEvent)
-         */
         public void insertUpdate(DocumentEvent e)
         {
             crud("insert ");
         }
 
 
-        /**
-         * @see javax.swing.event.DocumentListener#removeUpdate(
-         *      javax.swing.event.DocumentEvent)
-         */
         public void removeUpdate(DocumentEvent e)
         {
             crud("remove ");
         }
 
 
-        /**
-         * Resets the cache.
-         *
-         * @param s String
-         */
         protected void crud(String s)
         {
             s.toString();
