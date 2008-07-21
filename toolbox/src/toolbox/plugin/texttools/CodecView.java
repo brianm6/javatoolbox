@@ -31,11 +31,6 @@ public class CodecView extends JPanel
     // Constructors
     //--------------------------------------------------------------------------
 
-    /**
-     * Creates a CodecView.
-     *
-     * @param plugin Parent plugin.
-     */
     CodecView(TextToolsPlugin plugin)
     {
         buildView();
@@ -46,9 +41,6 @@ public class CodecView extends JPanel
     // Protected
     //--------------------------------------------------------------------------
 
-    /**
-     * Constructs the user interface.
-     */
     protected void buildView()
     {
         setLayout(new FlowLayout());
@@ -70,19 +62,12 @@ public class CodecView extends JPanel
      */
     class Base64EncodeAction extends AbstractAction
     {
-        /**
-         * Creates a Base64EncodeAction.
-         */
         Base64EncodeAction()
         {
             super("Base64 Encode");
         }
 
 
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
-         */
         public void actionPerformed(ActionEvent e)
         {
             byte[] b = Base64.encodeBase64(plugin_.getInputText().getBytes());
@@ -99,19 +84,12 @@ public class CodecView extends JPanel
      */
     class Base64DecodeAction extends AbstractAction
     {
-        /**
-         * Creates a Base64DecodeAction.
-         */
         Base64DecodeAction()
         {
             super("Base64 Decode");
         }
 
 
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
-         */
         public void actionPerformed(ActionEvent e)
         {
             byte[] b = Base64.decodeBase64(plugin_.getInputText().getBytes());
@@ -128,19 +106,12 @@ public class CodecView extends JPanel
      */
     class HTMLEncodeAction extends AbstractAction
     {
-        /**
-         * Creates a HTMLEncodeAction.
-         */
         HTMLEncodeAction()
         {
             super("HTML Encode");
         }
 
 
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
-         */
         public void actionPerformed(ActionEvent e)
         {
             plugin_.getOutputArea().setText(
@@ -157,19 +128,12 @@ public class CodecView extends JPanel
      */
     class HTMLDecodeAction extends AbstractAction
     {
-        /**
-         * Creates a HTMLDecodeAction.
-         */
         HTMLDecodeAction()
         {
             super("HTML Decode");
         }
 
 
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
-         */
         public void actionPerformed(ActionEvent e)
         {
             plugin_.getOutputArea().setText(
@@ -186,19 +150,12 @@ public class CodecView extends JPanel
      */
     class XMLEncodeAction extends AbstractAction
     {
-        /**
-         * Creates a XMLEncodeAction.
-         */
         XMLEncodeAction()
         {
             super("XML Encode");
         }
 
 
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
-         */
         public void actionPerformed(ActionEvent e)
         {
             plugin_.getOutputArea().setText(
@@ -215,19 +172,12 @@ public class CodecView extends JPanel
      */
     class XMLDecodeAction extends AbstractAction
     {
-        /**
-         * Creates a XMLDecodeAction.
-         */
         XMLDecodeAction()
         {
             super("XML Decode");
         }
 
 
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
-         */
         public void actionPerformed(ActionEvent e)
         {
             plugin_.getOutputArea().setText(
@@ -245,19 +195,12 @@ public class CodecView extends JPanel
      */
     class SkipLinesAction extends AbstractAction
     {
-        /**
-         * Creates a SkipLinesAction.
-         */
         SkipLinesAction()
         {
             super("Skip Lines");
         }
 
 
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
-         */
         public void actionPerformed(ActionEvent e)
         {
             String text = plugin_.getInputText();

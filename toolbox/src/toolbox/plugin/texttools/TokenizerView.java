@@ -37,11 +37,6 @@ public class TokenizerView extends JPanel
     // Constructors
     //--------------------------------------------------------------------------
 
-    /**
-     * Creates a TokenizerView.
-     *
-     * @param plugin TextTools plugin parent.
-     */
     TokenizerView(TextToolsPlugin plugin)
     {
         buildView();
@@ -52,9 +47,6 @@ public class TokenizerView extends JPanel
     // Protected
     //--------------------------------------------------------------------------
 
-    /**
-     * Constructs the user interface.
-     */
     protected void buildView()
     {
         setLayout(new FlowLayout());
@@ -75,19 +67,12 @@ public class TokenizerView extends JPanel
      */
     class TokenizeAction extends AbstractAction
     {
-        /**
-         * Creates a TokenizeAction.
-         */
         TokenizeAction()
         {
             super("Tokenize");
         }
 
 
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
-         */
         public void actionPerformed(ActionEvent e)
         {
             StringTokenizer st =
@@ -113,19 +98,12 @@ public class TokenizerView extends JPanel
      */
     class SingleLineAction extends AbstractAction
     {
-        /**
-         * Creates a SingleLineAction.
-         */
         SingleLineAction()
         {
             super("Convert to single line");
         }
 
-
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
-         */
+        
         public void actionPerformed(ActionEvent e)
         {
             StringTokenizer st =

@@ -8,6 +8,7 @@ import nu.xom.Element;
 import org.apache.commons.collections.MapUtils;
 import org.apache.log4j.Logger;
 
+import toolbox.plugin.texttools.TextToolsPlugin.UnquoteAction;
 import toolbox.util.StringUtil;
 import toolbox.util.formatter.XMLFormatter;
 
@@ -16,8 +17,7 @@ import toolbox.util.formatter.XMLFormatter;
  */
 public class TextToolsPluginTest extends TestCase
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(TextToolsPluginTest.class);
+    private static final Logger log = Logger.getLogger(TextToolsPluginTest.class);
     
     //--------------------------------------------------------------------------
     // Main
@@ -34,7 +34,7 @@ public class TextToolsPluginTest extends TestCase
     
     public void testPreferenced() throws Exception
     {
-        logger_.info("Running testPreferenced...");
+        log.info("Running testPreferenced...");
         
         Element prefs = new Element("testPreferenced");
         
@@ -44,7 +44,7 @@ public class TextToolsPluginTest extends TestCase
         plugin.savePrefs(prefs);
         plugin.destroy();
         String toXML = prefs.toXML();
-		logger_.debug(StringUtil.banner(new XMLFormatter().format(toXML)));
+		log.debug(StringUtil.banner(new XMLFormatter().format(toXML)));
 		assertNotNull(toXML);
 		
         TextToolsPlugin plugin2 = new TextToolsPlugin();
@@ -53,7 +53,42 @@ public class TextToolsPluginTest extends TestCase
         plugin2.applyPrefs(prefs);
         plugin2.destroy();
         toXML = prefs.toXML();
-        logger_.debug(StringUtil.banner(new XMLFormatter().format(toXML)));
+        log.debug(StringUtil.banner(new XMLFormatter().format(toXML)));
         assertNotNull(toXML);
     }
+    
+    public void testUnquoteAction_SingleLine() 
+    {
+    	TextToolsPlugin plugin = new TextToolsPlugin();
+    	UnquoteAction action = plugin.new UnquoteAction();
+    	assertEquals("Hello", action.unquote("\"Hello\""));
+    	assertEquals("Hello", action.unquote("\"Hello\";"));
+    	assertEquals("Hello", action.unquote("  \"Hello\"  ;"));
+    	assertEquals(" Hello ", action.unquote("  \" Hello \"  ; "));
+    }
+    
+    public void testUnquoteAction_EmptyOrBlankString() 
+    {
+    	TextToolsPlugin plugin = new TextToolsPlugin();
+    	UnquoteAction action = plugin.new UnquoteAction();
+        assertEquals("", action.unquote("\"\""));
+        assertEquals("  ", action.unquote("\"  \""));
+    }
+
+    
+    public void testUnquoteAction_MultiLine() 
+    {
+    	TextToolsPlugin plugin = new TextToolsPlugin();
+    	UnquoteAction action = plugin.new UnquoteAction();
+    	assertEquals("Hello\nWorld", action.unquote("\"Hello\" + \n\"World\";"));
+    	assertEquals("Hello\nWorld", action.unquote("\"Hello\"\n  +  \"World\";"));
+    	assertEquals("Hello \n World", action.unquote("\"Hello \"\n  +  \" World\";"));
+    }
+    
+//    public void testUnquoteAction_EmbeddedNewLines() 
+//    {
+//    	TextToolsPlugin plugin = new TextToolsPlugin();
+//    	UnquoteAction action = plugin.new UnquoteAction();
+//    	assertEquals("Hello\nWorld", action.unquote("\"Hello\" + \n\"World\";"));
+//    }
 }

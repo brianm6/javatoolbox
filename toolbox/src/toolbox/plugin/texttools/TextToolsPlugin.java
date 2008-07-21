@@ -21,7 +21,6 @@ import nu.xom.Element;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
-import toolbox.util.ArrayUtil;
 import toolbox.util.Figlet;
 import toolbox.util.FontUtil;
 import toolbox.util.StringUtil;
@@ -127,9 +126,6 @@ public class TextToolsPlugin extends AbstractPlugin
     // Constructors
     //--------------------------------------------------------------------------
 
-    /**
-     * Creates a TextToolsPlugin. Necessary for instantiation via reflection.
-     */
     public TextToolsPlugin()
     {
     }
@@ -138,9 +134,6 @@ public class TextToolsPlugin extends AbstractPlugin
     // Protected
     //--------------------------------------------------------------------------
 
-    /**
-     * Constructs the user interface.
-     */
     protected void buildView()
     {
         view_ = new JPanel(new BorderLayout());
@@ -157,6 +150,7 @@ public class TextToolsPlugin extends AbstractPlugin
         buttonPanel.add(new JSmartButton(new SortAction()));
         buttonPanel.add(new JSmartButton(new BannerAction()));
         buttonPanel.add(new JSmartButton(new QuoteAction()));
+        buttonPanel.add(new JSmartButton(new UnquoteAction()));
         buttonPanel.add(new JSmartButton(new StripAction()));
         buttonPanel.add(new JSmartButton(new AddLineNumbersAction()));
         buttonPanel.add(new JSmartButton(new WrapAction()));
@@ -212,18 +206,14 @@ public class TextToolsPlugin extends AbstractPlugin
 
 
     /**
-     * Returns text to process. If no text is selected then the entire contents
-     * of the input area is returned, otherwise only the selected text is
-     * returned.
-     *
-     * @return Input text to process.
-     */
+	 * @return Text to process. If no text is selected then the entire contents
+	 *         of the input area is returned, otherwise only the selected text
+	 *         is returned.
+	 */
     protected String getInputText()
     {
         String selected = inputArea_.getSelectedText();
-        return (StringUtils.isBlank(selected)
-                    ? inputArea_.getText()
-                    : selected);
+        return (StringUtils.isBlank(selected) ? inputArea_.getText() : selected);
     }
 
     
@@ -234,39 +224,22 @@ public class TextToolsPlugin extends AbstractPlugin
     protected String getOutputText()
     {
         String selected = outputArea_.getSelectedText();
-        return (StringUtils.isBlank(selected)
-                    ? outputArea_.getText()
-                    : selected);
+        return (StringUtils.isBlank(selected) ? outputArea_.getText() : selected);
     }
     
 
-    /**
-     * Returns the statusBar.
-     *
-     * @return IStatusBar
-     */
     public IStatusBar getStatusBar()
     {
         return statusBar_;
     }
 
 
-    /**
-     * Returns the outputArea.
-     *
-     * @return JSmartTextArea
-     */
     public JSmartTextArea getOutputArea()
     {
         return outputArea_;
     }
 
     
-    /**
-     * Returns the formatterview.
-     * 
-     * @return FormatterView
-     */
     public FormatterView getFormatterView()
     {
         return formatterView_;
@@ -276,9 +249,6 @@ public class TextToolsPlugin extends AbstractPlugin
     // Initializable Interface
     //--------------------------------------------------------------------------
 
-    /*
-     * @see toolbox.util.service.Initializable#initialize(java.util.Map)
-     */
     public void initialize(Map params) throws ServiceException
     {
         checkTransition(ServiceTransition.INITIALIZE);
@@ -294,27 +264,18 @@ public class TextToolsPlugin extends AbstractPlugin
     // IPlugin Interface
     //--------------------------------------------------------------------------
 
-    /*
-     * @see toolbox.workspace.IPlugin#getPluginName()
-     */
     public String getPluginName()
     {
         return "Text Tools";
     }
 
 
-    /*
-     * @see toolbox.workspace.IPlugin#getView()
-     */
     public JComponent getView()
     {
         return view_;
     }
 
 
-    /*
-     * @see toolbox.workspace.IPlugin#getDescription()
-     */
     public String getDescription()
     {
         return "Various text processing utilities including sorting, " +
@@ -322,9 +283,6 @@ public class TextToolsPlugin extends AbstractPlugin
     }
 
     
-    /*
-     * @see toolbox.workspace.AbstractPlugin#getConfigurator()
-     */
     public IConfigurator getConfigurator()
     {
         if (preferences_ == null)
@@ -337,9 +295,6 @@ public class TextToolsPlugin extends AbstractPlugin
     // Destroyable Interface
     //--------------------------------------------------------------------------
     
-    /*
-     * @see toolbox.util.service.Destroyable#destroy()
-     */
     public void destroy() throws ServiceException
     {
         checkTransition(ServiceTransition.DESTROY);
@@ -355,9 +310,6 @@ public class TextToolsPlugin extends AbstractPlugin
     // IPreferenced Interface
     //--------------------------------------------------------------------------
 
-    /*
-     * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
-     */
     public void applyPrefs(Element prefs) throws PreferencedException
     {
         Element root =
@@ -390,9 +342,6 @@ public class TextToolsPlugin extends AbstractPlugin
     }
 
 
-    /*
-     * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
-     */
     public void savePrefs(Element prefs) throws PreferencedException
     {
         Element root = new Element(NODE_TEXTTOOLS_PLUGIN);
@@ -485,7 +434,7 @@ public class TextToolsPlugin extends AbstractPlugin
     //--------------------------------------------------------------------------
 
     /**
-     * Wraps a multiline string in double quotes.
+     * Wraps a multiline string in double quotes to be pasted into java code.
      */
     class QuoteAction extends AbstractAction
     {
@@ -493,7 +442,7 @@ public class TextToolsPlugin extends AbstractPlugin
         {
             super("Quote");
             putValue(MNEMONIC_KEY, new Integer('Q'));
-            putValue(SHORT_DESCRIPTION, "Encloses text in quotes");
+            putValue(SHORT_DESCRIPTION, "Encloses text in quotes for pasting into java code");
         }
 
 
@@ -502,8 +451,6 @@ public class TextToolsPlugin extends AbstractPlugin
             String text = getInputText();
             String[] lines = StringUtil.tokenize(text, StringUtil.NL, true);
             StringBuffer sb = new StringBuffer();
-
-            logger_.debug(StringUtil.banner(ArrayUtil.toString(lines, true)));
 
             for (int i = 0; i < lines.length; i++)
             {
@@ -527,6 +474,55 @@ public class TextToolsPlugin extends AbstractPlugin
         }
     }
 
+    //--------------------------------------------------------------------------
+    // UnquoteAction
+    //--------------------------------------------------------------------------
+
+    /**
+     * Transforms a multiline string embedded in java code to plain text.
+     */
+    public class UnquoteAction extends AbstractAction
+    {
+        UnquoteAction()
+        {
+            super("Unquote");
+            putValue(MNEMONIC_KEY, new Integer('U'));
+            putValue(SHORT_DESCRIPTION, "Converts embedded java text string to plain string");
+        }
+
+
+        public void actionPerformed(ActionEvent e)
+        {
+            outputArea_.append(unquote(getInputText()));
+        }
+
+
+		public String unquote(String text) {
+			String[] lines = StringUtil.tokenize(text, "\n", false);
+            StringBuffer sb = new StringBuffer();
+
+            
+            for (int i = 0; i < lines.length; i++)
+            {
+            	String line = lines[i];
+            	//logger_.debug(i + ":" + line);
+            	
+                // Escape embedded quotes
+                //String line = StringUtils.replace(lines[i], "\"", "\\\"");
+            	line = line.trim();
+            	line = StringUtils.strip(line, ";");
+            	line = line.trim();
+            	line = StringUtils.strip(line, "+");
+            	line = line.trim();
+            	line = StringUtils.strip(line, "\"");
+            	sb.append(line);
+                if (lines.length >= 1 && i != (lines.length - 1))
+                    sb.append("\n");
+            }
+			return sb.toString();
+		}
+    }
+    
     //--------------------------------------------------------------------------
     // WrapAction
     //--------------------------------------------------------------------------
