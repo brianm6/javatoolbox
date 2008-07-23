@@ -51,22 +51,12 @@ public abstract class BaseAction extends WorkspaceAction
     // Public
     //--------------------------------------------------------------------------
     
-    /**
-     * Returns the plugin.
-     * 
-     * @return QueryPlugin
-     */
     public QueryPlugin getPlugin()
     {
         return plugin_;
     }
     
     
-    /**
-     * Sets the plugin.
-     * 
-     * @param plugin The plugin to set.
-     */
     public void setPlugin(QueryPlugin plugin)
     {
         plugin_ = plugin;

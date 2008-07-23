@@ -45,6 +45,7 @@ import toolbox.plugin.jdbc.action.BenchmarkAction;
 import toolbox.plugin.jdbc.action.ExecuteAllAction;
 import toolbox.plugin.jdbc.action.ExecuteCurrentAction;
 import toolbox.plugin.jdbc.action.ExecutePriorAction;
+import toolbox.plugin.jdbc.action.ExportToDbUnitXMLAction;
 import toolbox.plugin.jdbc.action.FormatSQLAction;
 import toolbox.plugin.jdbc.action.ListColumnsAction;
 import toolbox.plugin.jdbc.action.ListTablesAction;
@@ -742,6 +743,12 @@ public class QueryPlugin extends AbstractPlugin implements QueryPluginConstants
                 "List columns",
                 new ListColumnsAction(this));
 
+        JButton exportTableToDbUnitXml = 
+        	JHeaderPanel.createButton(
+        		ImageCache.getIcon(ImageCache.IMAGE_DATASOURCE),
+        		"Export table to DbUnit XML",
+        		new ExportToDbUnitXMLAction(this));
+        		
         JToggleButton switchResults = 
             JHeaderPanel.createToggleButton(
                 ImageCache.getIcon(ImageCache.IMAGE_SWAP_PANES),
@@ -755,11 +762,12 @@ public class QueryPlugin extends AbstractPlugin implements QueryPluginConstants
                 ImageCache.getIcon(ImageCache.IMAGE_FUNNEL),
                 "Show results filter",
                 new ShowResultsFilterAction(this, resultsAreaPanel));
-                
+        
         JToolBar toolbar = JHeaderPanel.createToolBar();
         toolbar.add(switchResults);
         toolbar.add(listTables);
         toolbar.add(listColumns);
+        toolbar.add(exportTableToDbUnitXml);
         toolbar.add(filterResults);
         toolbar.add(clear);
 
@@ -1261,6 +1269,7 @@ public class QueryPlugin extends AbstractPlugin implements QueryPluginConstants
             getStatusBar().setInfo("Loaded " + values.length + " files.");
         }
     }
+    
     
     //--------------------------------------------------------------------------
     // IResultFormatter
