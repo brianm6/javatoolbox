@@ -107,6 +107,7 @@ import toolbox.workspace.PreferencedException;
  *      in batch mode.
  *  <li>Multiple JDBC sessions using different JDBC drivers can be active
  *      simultaneously.
+ *  <li>Exports a database table to DbUnit XML format. Useful for unit testing.
  * </ul>
  *
  * Shortcuts:
@@ -509,9 +510,6 @@ public class QueryPlugin extends AbstractPlugin implements QueryPluginConstants
     // Build UI
     //--------------------------------------------------------------------------
 
-    /**
-     * Constructs the user interface.
-     */
     protected void buildView()
     {
         view_ = new JPanel(new BorderLayout());
@@ -584,8 +582,6 @@ public class QueryPlugin extends AbstractPlugin implements QueryPluginConstants
     
     /**
      * Constructs a special version of the file explorer with a popup menu.
-     *
-     * @return JFileExplorer
      */
     protected JFileExplorer buildFileExplorer()
     {
@@ -601,8 +597,6 @@ public class QueryPlugin extends AbstractPlugin implements QueryPluginConstants
     
     /**
      * Constructs the flipper panel that contains SQL reference information.
-     * 
-     * @return JHeaderPanel
      */
     protected JHeaderPanel buildSQLReferencePane()
     {
@@ -630,11 +624,6 @@ public class QueryPlugin extends AbstractPlugin implements QueryPluginConstants
     }
 
 
-    /**
-     * Constructs the SQL editor text area.
-     *
-     * @return JHeaderPanel
-     */
     protected JHeaderPanel buildSQLEditor()
     {
         sqlMenu_ = new JConveyorMenu("SQL History", 10);
@@ -714,11 +703,6 @@ public class QueryPlugin extends AbstractPlugin implements QueryPluginConstants
     }
 
     
-    /**
-     * Constructs the results area.
-     *
-     * @return JHeaderPanel
-     */
     protected JHeaderPanel buildResultsArea()
     {
         resultsArea_ = new JSmartTextArea();
@@ -867,9 +851,6 @@ public class QueryPlugin extends AbstractPlugin implements QueryPluginConstants
     // Initializable Interface
     //--------------------------------------------------------------------------
 
-    /**
-     * @see toolbox.util.service.Initializable#initialize(java.util.Map)
-     */
     public void initialize(Map params) throws ServiceException
     {
         checkTransition(ServiceTransition.INITIALIZE);
@@ -886,27 +867,18 @@ public class QueryPlugin extends AbstractPlugin implements QueryPluginConstants
     // IPlugin Interface
     //--------------------------------------------------------------------------
 
-    /**
-     * @see toolbox.workspace.IPlugin#getPluginName()
-     */
     public String getPluginName()
     {
         return "JDBC Query";
     }
 
 
-    /**
-     * @see toolbox.workspace.IPlugin#getView()
-     */
     public JComponent getView()
     {
         return view_;
     }
 
 
-    /**
-     * @see toolbox.workspace.IPlugin#getDescription()
-     */
     public String getDescription()
     {
         return "Simple SQL driven interface to a JDBC accessible database.";
@@ -916,9 +888,6 @@ public class QueryPlugin extends AbstractPlugin implements QueryPluginConstants
     // Destroyable Interface
     //--------------------------------------------------------------------------
     
-    /**
-     * @see toolbox.util.service.Destroyable#destroy()
-     */
     public void destroy() throws ServiceException
     {
         checkTransition(ServiceTransition.DESTROY);
@@ -929,9 +898,6 @@ public class QueryPlugin extends AbstractPlugin implements QueryPluginConstants
     // IPreferenced Interface
     //--------------------------------------------------------------------------
 
-    /**
-     * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
-     */
     public void applyPrefs(Element prefs) throws PreferencedException
     {
         Element root =
@@ -970,9 +936,6 @@ public class QueryPlugin extends AbstractPlugin implements QueryPluginConstants
     }
 
 
-    /**
-     * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
-     */
     public void savePrefs(Element prefs) throws PreferencedException
     {
         Element root = new Element(NODE_QUERY_PLUGIN);
@@ -1161,10 +1124,6 @@ public class QueryPlugin extends AbstractPlugin implements QueryPluginConstants
         }
 
         
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
-         */
         public void actionPerformed(ActionEvent e)
         {
             statusBar_.setWarning("TODO: Implement ctrl-up");
@@ -1182,10 +1141,6 @@ public class QueryPlugin extends AbstractPlugin implements QueryPluginConstants
      */
     public class ToggleTableAction extends AbstractAction
     {
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
-         */
         public void actionPerformed(ActionEvent e)
         {
             resultsLayout_.next(resultsCardPanel_);
@@ -1201,10 +1156,6 @@ public class QueryPlugin extends AbstractPlugin implements QueryPluginConstants
      */
     class FileSelectionListener extends FileExplorerAdapter
     {
-        /**
-         * @see toolbox.util.ui.explorer.FileExplorerListener#fileDoubleClicked(
-         *      java.lang.String)
-         */
         public void fileDoubleClicked(String file)
         {
             try
@@ -1237,10 +1188,6 @@ public class QueryPlugin extends AbstractPlugin implements QueryPluginConstants
         }
         
         
-        /**
-         * @see toolbox.util.ui.SmartAction#runAction(
-         *      java.awt.event.ActionEvent)
-         */
         public void runAction(ActionEvent e) throws Exception
         {
             JList list = fileExplorer_.getFileList();
