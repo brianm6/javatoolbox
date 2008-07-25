@@ -4,6 +4,8 @@ import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
 
+import toolbox.util.ClassUtil;
+
 public class MovieInfoParserTest extends AbstractTestCase {
 
     private static final Logger logger_ = 
@@ -24,6 +26,11 @@ public class MovieInfoParserTest extends AbstractTestCase {
     
     public void testParse_H264() throws Exception {
         logger_.info("Running testParse_H264...");
+
+        if ( ClassUtil.findInPath("ffmpeg") == null || ClassUtil.findInPath("ffmpeg.exe") == null) {
+            logger_.info("Skipping test...ffmpeg not found on path");
+            return;
+        }
 
         // Setup
         // =====================================================================
