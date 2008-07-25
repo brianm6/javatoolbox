@@ -39,6 +39,12 @@ CHEAT SHEET:
   <dependencies>
 
     <!-- Public -->
+
+    <dependency>
+      <groupId>toolbox</groupId>
+      <artifactId>pja</artifactId>
+      <version>SNAPSHOT</version>
+    </dependency>
     
     <dependency>
       <groupId>org.apache.ant</groupId>
