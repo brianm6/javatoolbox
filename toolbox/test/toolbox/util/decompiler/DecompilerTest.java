@@ -14,120 +14,81 @@ import toolbox.util.FileUtil;
 import toolbox.util.ResourceUtil;
 import toolbox.util.StringUtil;
 
-/**
- * Unit test for all {@link toolbox.util.decompiler.Decompiler} implementations.
- */
-public class DecompilerTest extends TestCase
-{
-    private static final Logger logger_ = 
-        Logger.getLogger(DecompilerTest.class);
+public class DecompilerTest extends TestCase {
     
-    //--------------------------------------------------------------------------
-    // Fields
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Array of decompilers to test.
-     */
+    private static final Logger logger_ = Logger.getLogger(DecompilerTest.class);
+
     private Decompiler[] decompilers_;
-    
-    //--------------------------------------------------------------------------
+
+    // --------------------------------------------------------------------------
     // Main
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Entrypoint.
-     * 
-     * @param args None recognized.
-     */
-    public static void main(String[] args)
-    {
+    // --------------------------------------------------------------------------
+
+    public static void main(String[] args) {
         TestRunner.run(DecompilerTest.class);
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     // Constructors
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
-    /**
-     * Creates a DecompilerTest.
-     * 
-     * @throws Exception on error.
-     */
-    public DecompilerTest() throws Exception
-    {
+    public DecompilerTest() throws Exception {
         decompilers_ = DecompilerFactory.createAll();
     }
-    
-    //--------------------------------------------------------------------------
+
+    // --------------------------------------------------------------------------
     // Unit Tests
-    //--------------------------------------------------------------------------
-    
+    // --------------------------------------------------------------------------
+
     /**
      * Class to test for String decompile(File).
-     * 
-     * @throws Exception on error.
      */
-    public void testDecompileFile() throws Exception
-    {
+    public void testDecompileFile() throws Exception {
         logger_.info("Running testDecompileFile...");
-        
-        for (int i = 0; i < decompilers_.length; i++)
-        {
+
+        for (int i = 0; i < decompilers_.length; i++) {
             String tmpClass = null;
             Decompiler d = decompilers_[i];
-            
-            try
-            {
-                InputStream is = 
-                    ResourceUtil.getResource("java/lang/Object.class");
-                
+
+            try {
+                InputStream is = ResourceUtil.getResource("java/lang/Object.class");
                 tmpClass = FileUtil.createTempFilename() + ".class";
-                
-                FileUtil.setFileContents(
-                    tmpClass, IOUtils.toByteArray(is), false);
-                
+                FileUtil.setFileContents(tmpClass, IOUtils.toByteArray(is), false);
                 String source = d.decompile(new File(tmpClass));
                 logger_.debug(StringUtil.banner("// " + d + "\n" + source));
+            } 
+            catch (IllegalArgumentException iae) {
+                logger_.debug("Decompiler " + d.getClass().getName() + " does not support this method.");
+            } 
+            catch (UnsupportedOperationException uoe) {
+                logger_.debug("Decompiler " + d.getClass().getName() + " does not support this method.");
+            } 
+            catch (DecompilerException de) {
+                logger_.debug("Decompiler " + d.getClass().getName() + " error: " + de.getMessage());
             }
-            catch (IllegalArgumentException iae)
-            {
-                logger_.debug("Decompiler " + d.getClass().getName() + 
-                    " does not support this method.");                
-            }
-            finally
-            {
+            finally {
                 FileUtil.deleteQuietly(tmpClass);
             }
         }
     }
 
-    
     /**
      * Tests decompile(className, classPath).
-     * 
-     * @throws Exception on error.
      */
-    public void testDecompileClassnameClasspath() throws Exception
-    {
+    public void testDecompileClassnameClasspath() throws Exception {
         logger_.info("Running testDecompileClassnameClasspath...");
-        
-        for (int i = 0; i < decompilers_.length; i++)
-        {
-            try
-            {
-                String source = 
-                    decompilers_[i].decompile(
-                        "java.lang.Object", ClassUtil.getClasspath());
-                
+
+        for (int i = 0; i < decompilers_.length; i++) {
+            try {
+                String source = decompilers_[i].decompile("java.lang.Object", ClassUtil.getClasspath());
                 logger_.debug(StringUtil.banner(source));
+            } 
+            catch (IllegalArgumentException iae) {
+                logger_.debug("Decompiler " + decompilers_[i].getClass().getName() + " does not support this method.");
             }
-            catch (IllegalArgumentException iae)
-            {
-                logger_.debug("Decompiler " + 
-                    decompilers_[i].getClass().getName() + 
-                    " does not support this method.");                
-            }
+            catch (UnsupportedOperationException uoe) {
+                logger_.debug("Decompiler " + decompilers_[i].getClass().getName() + " does not support this method.");                
+            } 
         }
     }
 }

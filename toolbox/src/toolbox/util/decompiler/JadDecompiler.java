@@ -11,36 +11,32 @@ import toolbox.util.ClassUtil;
  * Decompiler adapter for the <a href="http://kpdus.tripod.com/jad.html">JAD</a>
  * decompiler.
  * 
- * @see toolbox.util.decompiler.DecompilerFactory 
+ * @see toolbox.util.decompiler.DecompilerFactory
  */
-public class JadDecompiler extends AbstractDecompiler
-{
+public class JadDecompiler extends AbstractDecompiler {
+    
     private static final Logger logger_ = Logger.getLogger(JadDecompiler.class);
-    
-    //--------------------------------------------------------------------------
+
+    // --------------------------------------------------------------------------
     // Static Fields
-    //--------------------------------------------------------------------------
-    
+    // --------------------------------------------------------------------------
+
     /**
      * Flag set if the jad executable is found on the filesystem.
      */
     private static Boolean executableFound_;
-    
-    //--------------------------------------------------------------------------
-    // Constructors
-    //--------------------------------------------------------------------------
 
-    /**
-     * Creates a JadDecompiler.
-     */
-    public JadDecompiler()
-    {
+    // --------------------------------------------------------------------------
+    // Constructors
+    // --------------------------------------------------------------------------
+
+    public JadDecompiler() {
         super("Jad");
     }
-    
-    //--------------------------------------------------------------------------
+
+    // --------------------------------------------------------------------------
     // Public
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     /**
      * Returns true if the jad executable is found on the system path, false
@@ -48,59 +44,41 @@ public class JadDecompiler extends AbstractDecompiler
      * 
      * @return boolean
      */
-    public static boolean isFound()
-    {
+    public static boolean isFound() {
         if (executableFound_ == null)
-            executableFound_ = 
-                new Boolean(ClassUtil.findInPath("jad.exe") != null);
-        
+            executableFound_ = new Boolean(ClassUtil.findInPath("jad.exe") != null);
+
         return executableFound_.booleanValue();
     }
-    
-    //--------------------------------------------------------------------------
+
+    // --------------------------------------------------------------------------
     // Decompiler Interface
-    //--------------------------------------------------------------------------
-    
-    /**
-     * @see toolbox.util.decompiler.Decompiler#decompile(java.io.File)
-     */
-    public String decompile(File classFile) throws DecompilerException 
-    {
+    // --------------------------------------------------------------------------
+
+    public String decompile(File classFile) throws DecompilerException {
+        
         if (!isFound())
-            throw new DecompilerException(
-                "Jad.exe executable not found on the system path.");
+            throw new UnsupportedOperationException("Jad.exe executable not found on the system path.");
 
         String javaSource = null;
-        
-        try
-        {
-            String cmdLine = 
-                "jad -space -o -ff -s java -p -& \"" + 
-                    classFile.getCanonicalPath() + "\"";
-            
+
+        try {
+            String cmdLine = "jad -space -o -ff -s java -p -& \"" + classFile.getCanonicalPath() + "\"";
             Process process = Runtime.getRuntime().exec(cmdLine);
-            
             javaSource = IOUtils.toString(process.getInputStream());
-            
-        }
-        catch (Exception e)
-        {
+
+        } 
+        catch (Exception e) {
             throw new DecompilerException(e);
         }
-        
+
         return javaSource;
     }
-    
-    
+
     /**
      * Not supported.
-     * 
-     * @see toolbox.util.decompiler.Decompiler#decompile(
-     *      java.lang.String, java.lang.String)
      */
-    public String decompile(String className, String classPath)
-        throws DecompilerException
-    {
+    public String decompile(String className, String classPath) throws DecompilerException {
         throw new UnsupportedOperationException("Not supported");
     }
 }
