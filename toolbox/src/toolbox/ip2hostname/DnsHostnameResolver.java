@@ -8,8 +8,7 @@ import org.apache.log4j.Logger;
 
 public class DnsHostnameResolver implements HostnameResolver {
 
-    private static final Logger logger = 
-        Logger.getLogger(DnsHostnameResolver.class);
+    private static final Logger logger = Logger.getLogger(DnsHostnameResolver.class);
 
     public String resolve(String ip) {
         

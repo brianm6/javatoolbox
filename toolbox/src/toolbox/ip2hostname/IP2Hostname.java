@@ -112,9 +112,9 @@ public class IP2Hostname {
             HostnameResolver resolver;
             
             if (caching && async)
-                resolver = new AsyncHostnameResolver();
+                resolver = new AsyncHostnameResolver(new DefaultCachingHostnameResolver(new DnsHostnameResolver()));
             else if (caching && !async)
-                resolver = new CachingHostnameResolver();
+                resolver = new DefaultCachingHostnameResolver(new DnsHostnameResolver());
             else if (!caching)
                 resolver = new DnsHostnameResolver();
             else
@@ -134,7 +134,7 @@ public class IP2Hostname {
     // -------------------------------------------------------------------------
     
     public IP2Hostname() {
-        this(new AsyncHostnameResolver());
+        this(new AsyncHostnameResolver(new DefaultCachingHostnameResolver(new DnsHostnameResolver())));
     }
     
     public IP2Hostname(HostnameResolver resolver) {
