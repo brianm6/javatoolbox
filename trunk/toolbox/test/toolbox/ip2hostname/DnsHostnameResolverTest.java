@@ -6,15 +6,15 @@ import junit.framework.TestCase;
 
 public class DnsHostnameResolverTest extends TestCase {
 
-    private static final Logger log = 
-        Logger.getLogger(DnsHostnameResolverTest.class);
+    private static final Logger log = Logger.getLogger(DnsHostnameResolverTest.class);
 
     public void testResolveIPAddressToHostnameSuccessful() throws Exception {
         log.info("Running testResolveIPAddressToHostnameSuccessful...");
         DnsHostnameResolver resolver = new DnsHostnameResolver();
-        String hostname = resolver.resolve("72.14.207.99");
+        String ipAddress = "127.0.0.1";
+        String hostname = resolver.resolve(ipAddress);
         log.debug(hostname);
-        assertNotNull(hostname);
+        assertFalse(ipAddress.equals(hostname));
     }
     
     public void testResolveBogusIPAddress() throws Exception {
