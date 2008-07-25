@@ -5,6 +5,7 @@ import java.awt.MediaTracker;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.UnknownHostException;
 
 import javax.swing.Icon;
 import javax.swing.JPanel;
@@ -20,8 +21,7 @@ import org.apache.log4j.Logger;
  */
 public class ResourceUtilTest extends TestCase
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(ResourceUtilTest.class);
+    private static final Logger logger_ = Logger.getLogger(ResourceUtilTest.class);
     
     //--------------------------------------------------------------------------
     // Constants 
@@ -59,11 +59,6 @@ public class ResourceUtilTest extends TestCase
     // Main
     //--------------------------------------------------------------------------
         
-    /**
-     * Entrypoint.
-     * 
-     * @param args None recognized.
-     */
     public static void main(String[] args)
     {
         TestRunner.run(ResourceUtilTest.class);    
@@ -75,12 +70,10 @@ public class ResourceUtilTest extends TestCase
     
     /**
      * Tests getResource() on a text file in the classpath.
-     * 
-     * @throws Exception on error.
      */
     public void testGetResourceFileInClasspath() throws Exception
     {
-        logger_.info("Running testGetResource_FileInClasspath...");
+        logger_.info("Running testGetResourceFileInClasspath...");
         
         InputStream is = ResourceUtil.getResource(FILE_TEXT);
         assertNotNull("stream is null", is);        
@@ -93,12 +86,10 @@ public class ResourceUtilTest extends TestCase
     /**
      * Tests getResource() on a text file in the system temp directory by 
      * using an absolute file path.
-     * 
-     * @throws Exception on error.
      */
     public void testGetResourceFileAbsolute() throws Exception
     {
-        logger_.info("Running testGetResource_FileAbsolute...");
+        logger_.info("Running testGetResourceFileAbsolute...");
 
         // Create a file in the tmp dir
         File tmpFile = null;
@@ -130,29 +121,30 @@ public class ResourceUtilTest extends TestCase
     
     /**
      * Tests getResource() on a HTTP URL.
-     * 
-     * @throws Exception on error.
      */
     public void testGetResourceFileOverHTTP() throws Exception
     {
-        logger_.info("Running testGetResource_FileOverHTTP...");
+        logger_.info("Running testGetResourceFileOverHTTP...");
         
-        InputStream is =  ResourceUtil.getResource(TEST_URL);
-        assertNotNull("stream is null", is);
-        String contents = IOUtils.toString(is);
-        logger_.debug("Resource length: " + contents.length());
-        assertTrue(contents.length() > 0);
+        try {
+            InputStream is =  ResourceUtil.getResource(TEST_URL);
+            assertNotNull("stream is null", is);
+            String contents = IOUtils.toString(is);
+            logger_.debug("Resource length: " + contents.length());
+            assertTrue(contents.length() > 0);
+        }
+        catch (UnknownHostException uhe) {
+            logger_.debug("Can't resolve host..probably not connected to the net. Skipping test...");
+        }
     }
 
     
     /**
      * Tests getResource() failure.
-     * 
-     * @throws Exception on error.
      */
     public void testGetResourceFailure() throws Exception
     {
-        logger_.info("Running testGetResource_Failure...");
+        logger_.info("Running testGetResourceFailure...");
         
         // Non-existant file
         try
@@ -185,8 +177,6 @@ public class ResourceUtilTest extends TestCase
     
     /**
      * Tests getResourceAsBytes() on a text file.
-     * 
-     * @throws Exception on error.
      */
     public void testGetResourceAsBytes() throws Exception
     {
@@ -202,8 +192,6 @@ public class ResourceUtilTest extends TestCase
 
     /**
      * Tests getResourceAsString() on a text file.
-     * 
-     * @throws Exception on error.
      */
     public void testGetResourceAsString() throws Exception
     {
@@ -219,8 +207,6 @@ public class ResourceUtilTest extends TestCase
     
     /**
      * Tests getResourceAsTempFile() on a text file.
-     * 
-     * @throws Exception on error.
      */
     public void testGetResourceAsTempFile() throws Exception
     {
@@ -251,8 +237,6 @@ public class ResourceUtilTest extends TestCase
     
     /**
      * Tests getResourceAsIcon() on a GIF file.
-     * 
-     * @throws Exception on error.
      */
     public void testGetResourceAsIcon() throws Exception
     {
@@ -267,8 +251,6 @@ public class ResourceUtilTest extends TestCase
     
     /**
      * Tests getResourceAsImage() on a GIF file.
-     * 
-     * @throws Exception on error.
      */
     public void testGetResourceAsImage() throws Exception
     {
@@ -288,8 +270,6 @@ public class ResourceUtilTest extends TestCase
     
     /**
      * Tests the exportToClass() method.
-     * 
-     * @throws Exception on error.
      */
     public void testExportToClass() throws Exception
     {
