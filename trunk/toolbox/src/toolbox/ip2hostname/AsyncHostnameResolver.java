@@ -1,5 +1,8 @@
 package toolbox.ip2hostname;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.collections.Buffer;
 import org.apache.commons.collections.buffer.BlockingBuffer;
 import org.apache.commons.collections.buffer.UnboundedFifoBuffer;
@@ -11,16 +14,26 @@ public class AsyncHostnameResolver implements HostnameResolver, Runnable {
     
     private CachingHostnameResolver delegate;
     
+    /** Buffer of Strings which represent ip addresses */
     private Buffer queue;
 
-    private Thread asyncResolver;
+    /** List of Threads */
+    private List asyncResolvers;
+    
+    /** Number of async threads to perform dns lookups */
+    private int numThreads;
 
     // =======================================================================
     // Constructors
     // =======================================================================
 
     public AsyncHostnameResolver(CachingHostnameResolver delegate) {
+        this(delegate, 1);
+    }
+    
+    public AsyncHostnameResolver(CachingHostnameResolver delegate, int numThreads) {
         this.delegate = delegate;
+        this.numThreads = numThreads;
     }
 
     // =======================================================================
@@ -49,7 +62,7 @@ public class AsyncHostnameResolver implements HostnameResolver, Runnable {
     // =======================================================================
     
     public void run() {
-        while(true) {
+        while (true) {
             String ipAddress = (String) queue.remove();
             String hostname = delegate.resolve(ipAddress);
             log.debug("Popped " + ipAddress + " resolved to " + hostname);
@@ -63,8 +76,12 @@ public class AsyncHostnameResolver implements HostnameResolver, Runnable {
     private void checkInitialized() {
         if (queue == null) {
             queue = BlockingBuffer.decorate(new UnboundedFifoBuffer());
-            asyncResolver = new Thread(this);
-            asyncResolver.start();
+            asyncResolvers = new ArrayList();
+            for (int i = 0; i < numThreads; i++)  {
+                Thread t = new Thread(this);
+                t.start();
+                asyncResolvers.add(t);
+            }
         }
     }
 }
