@@ -49,6 +49,7 @@ public class IP2Hostname {
             Option nonCachingOption = new Option("n", "noncaching", false, "Do not cache resolved hostnames");
             Option verboseOption = new Option("v", "verbose", false, "Verbose logging");
             Option helpOption = new Option("h", "help", false, "Print usage");
+            Option maxThreadsOption = new Option("m", "maxthreads", true, "Max number of concurrent DNS lookups");
             
             options.addOption(helpOption);
             options.addOption(asyncOption);        
@@ -56,6 +57,7 @@ public class IP2Hostname {
             options.addOption(cachingOption);
             options.addOption(nonCachingOption);
             options.addOption(verboseOption);
+            options.addOption(maxThreadsOption);
     
             // Parse options
             CommandLine cmdLine = parser.parse(options, args, true);
@@ -85,6 +87,9 @@ public class IP2Hostname {
                     l.setAdditivity(true);
                     l.setLevel(Level.DEBUG);
                 }
+                else if (opt.equals(maxThreadsOption.getOpt())) {
+                    // TODO - parse maxThreads
+                }
                 else if (opt.equals(helpOption.getOpt())) {
                     printUsage(options);
                     return;
@@ -112,7 +117,7 @@ public class IP2Hostname {
             HostnameResolver resolver;
             
             if (caching && async)
-                resolver = new AsyncHostnameResolver(new DefaultCachingHostnameResolver(new DnsHostnameResolver()));
+                resolver = new AsyncHostnameResolver(new DefaultCachingHostnameResolver(new DnsHostnameResolver()), 5);
             else if (caching && !async)
                 resolver = new DefaultCachingHostnameResolver(new DnsHostnameResolver());
             else if (!caching)
@@ -126,7 +131,6 @@ public class IP2Hostname {
         catch (Exception e) {
             logger.error("main", e);
         }
-        
     }
     
     // -------------------------------------------------------------------------
