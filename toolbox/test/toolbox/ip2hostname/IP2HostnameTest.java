@@ -23,6 +23,6 @@ public class IP2HostnameTest extends TestCase {
     
     public void testPrintUsage() {
         logger.info("Running testPrintUsage ...");
-        IP2Hostname.main(new String[] {"-help"} );
+        IP2Hostname.main(new String[] {"--help"} );
     }
 }
