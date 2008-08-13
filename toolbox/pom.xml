@@ -689,10 +689,11 @@ CHEAT SHEET:
       	<artifactId>maven-shade-plugin</artifactId>
       	<!-- <version>1.0.1</version> -->
       	<configuration>
-      		<!-- put your configurations here -->
+      	  <!-- Produces toolbox.jar in target dir. Leaves original artifact alone -->
+          <finalName>toolbox</finalName>
       	</configuration>
       	
-		<executions>
+        <executions>
           <execution>
             <phase>package</phase>
             <goals>
