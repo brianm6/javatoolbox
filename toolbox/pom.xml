@@ -1,7 +1,7 @@
 <!-- =====================================================================
 
 CHEAT SHEET:
-
+  Build uber-jar      : mvn -Dmaven.test.skip package 
   Compile             : mvn compile
   Clean               : mvn clean
   Compile unit tests  : mvn test-compile
@@ -14,6 +14,7 @@ CHEAT SHEET:
   Deploy website      : mvn site:deploy
   Headless            : mvn -Djava.awt.headless=true <goals>
   Skip unit tests     : mvn -Dmaven.test.skip <goals>
+  Webstart deployment : mvn webstart:jnlp
 
 ====================================================================== -->
 
@@ -701,25 +702,61 @@ CHEAT SHEET:
             
               <artifactSet>
                 <excludes>
+                  <exclude>com.martiansoftware:jsap</exclude>
                   <exclude>classworlds:classworlds</exclude>
-                  <exclude>junit:junit</exclude>
                   <exclude>jmock:jmock</exclude>
                   <exclude>xml-apis:xml-apis</exclude>
-                  <exclude>org.beanshell:bsh</exclude>
-                  <exclude>commons-cli:commons-cli</exclude>
-                  <exclude>commons-collections:commons-collections</exclude>
                   <exclude>batik:batik-1.5-fop</exclude>
                   <exclude>jaxen:jaxen</exclude>
-                  <exclude>toolbox:acrobat</exclude>
                   <exclude>org.netbeans:lib</exclude>
-                  <exclude>toolbox:jedit-syntax</exclude>
+                  <exclude>org.mockito:mockito-all</exclude>
                   <exclude>junit-addons:junit-addons</exclude>
                   <exclude>toolbox:squarenesslf</exclude>
                 </excludes>
               </artifactSet>
               
-              
               <filters>
+              
+                <filter>
+                  <artifact>commons-beanutils:commons-beanutils</artifact>
+                  <excludes>
+                    <exclude>org/apache/commons/collections/**</exclude>
+                  </excludes>
+                </filter>
+                <filter>
+                  <artifact>commons-cli:commons-cli</artifact>
+                  <excludes>
+                    <exclude>org/apache/commons/cli/OptionValidator.class</exclude>
+                    <exclude>org/apache/commons/cli/Option.class</exclude>
+                    <exclude>org/apache/commons/cli/Parser.class</exclude>
+                    <exclude>org/apache/commons/cli/Util.class</exclude>
+                  </excludes>
+                </filter>
+                <filter>
+                  <artifact>janino:janino</artifact>
+                  <excludes>
+                    <exclude>META-INF/**</exclude>
+                  </excludes>
+                </filter>
+                <filter>
+                  <artifact>org.beanshell:bsh</artifact>
+                  <excludes>
+                    <exclude>bsh/util/JConsole*</exclude>
+                  </excludes>
+                </filter>
+                <filter>
+                  <artifact>toolbox:acrobat</artifact>
+                  <excludes>
+                    <exclude>com/adobe/acrobat/gui/LicAgreement*</exclude>
+                    <exclude>com/adobe/acrobat/gui/TerminalErrorDialog*</exclude>
+                  </excludes>
+                </filter>
+                <filter>
+                  <artifact>toolbox:jedit-syntax</artifact>
+                  <excludes>
+                    <exclude>org/jedit/syntax/TextAreaPainter*</exclude>
+                  </excludes>
+                </filter>
                 <filter>
                   <artifact>toolbox:multivalent</artifact>
                   <excludes>
@@ -749,7 +786,7 @@ CHEAT SHEET:
                   </excludes>
                 </filter>
               </filters>
-n              
+             
               <transformers>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ComponentsXmlResourceTransformer"/>
               </transformers>
