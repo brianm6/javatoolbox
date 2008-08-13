@@ -683,6 +683,81 @@ CHEAT SHEET:
         </configuration>
       </plugin>
 
+      <plugin>
+      	<groupId>org.apache.maven.plugins</groupId>
+      	<artifactId>maven-shade-plugin</artifactId>
+      	<!-- <version>1.0.1</version> -->
+      	<configuration>
+      		<!-- put your configurations here -->
+      	</configuration>
+      	
+		<executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+            
+              <artifactSet>
+                <excludes>
+                  <exclude>classworlds:classworlds</exclude>
+                  <exclude>junit:junit</exclude>
+                  <exclude>jmock:jmock</exclude>
+                  <exclude>xml-apis:xml-apis</exclude>
+                  <exclude>org.beanshell:bsh</exclude>
+                  <exclude>commons-cli:commons-cli</exclude>
+                  <exclude>commons-collections:commons-collections</exclude>
+                  <exclude>batik:batik-1.5-fop</exclude>
+                  <exclude>jaxen:jaxen</exclude>
+                  <exclude>toolbox:acrobat</exclude>
+                  <exclude>org.netbeans:lib</exclude>
+                  <exclude>toolbox:jedit-syntax</exclude>
+                  <exclude>junit-addons:junit-addons</exclude>
+                  <exclude>toolbox:squarenesslf</exclude>
+                </excludes>
+              </artifactSet>
+              
+              
+              <filters>
+                <filter>
+                  <artifact>toolbox:multivalent</artifact>
+                  <excludes>
+                    <exclude>org/apache/**</exclude>
+                  </excludes>
+                </filter>
+                <filter>
+                  <artifact>toolbox:pollo</artifact>
+                  <excludes>
+                    <exclude>META-INF/**</exclude>
+                    <exclude>org/outerj/pollo/xmleditor/displayspec/GenericDisplaySpecification*</exclude>
+                    <exclude>org/outerj/pollo/xmleditor/model/XmlModel*</exclude>
+                    <exclude>org/outerj/pollo/xmleditor/view/DocumentBlockView*</exclude>
+                  </excludes>
+                </filter>
+                <filter>
+                  <artifact>toolbox:statcvs</artifact>
+                  <excludes>
+                    <exclude>com/keypoint/**</exclude>
+                    <exclude>org/jfree/**</exclude>
+                  </excludes>
+                </filter>
+                <filter>
+                  <artifact>toolbox:pdfrenderer</artifact>
+                  <excludes>
+                    <exclude>META-INF/**</exclude>
+                  </excludes>
+                </filter>
+              </filters>
+n              
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ComponentsXmlResourceTransformer"/>
+              </transformers>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
     </plugins>
   </build>
 
@@ -759,11 +834,11 @@ CHEAT SHEET:
   </distributionManagement>
 
   <licenses>
-  	<license>
-  	  <name>GPLv2</name>
-  	  <distribution>repo</distribution>
-  	  <url>http://www.fsf.org/licensing/licenses/info/GPLv2.html</url>
-  	</license>
+    <license>
+      <name>GPLv2</name>
+      <distribution>repo</distribution>
+      <url>http://www.fsf.org/licensing/licenses/info/GPLv2.html</url>
+    </license>
   </licenses>
   
   <developers>
