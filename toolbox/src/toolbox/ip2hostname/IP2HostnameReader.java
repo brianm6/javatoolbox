@@ -44,14 +44,24 @@ public class IP2HostnameReader extends LineNumberReader {
      */
     private HostnameResolver resolver;
     
+    /**
+     * Replace the ipaddress with the hostname or insert the hostname?
+     */
+    private boolean insertHostname;
+    
     // --------------------------------------------------------------------------
     // Constructors
     // --------------------------------------------------------------------------
 
     public IP2HostnameReader(Reader in, HostnameResolver resolver) {
+        this(in, resolver, false);
+    }
+    
+    public IP2HostnameReader(Reader in, HostnameResolver resolver, boolean insertHostname) {
         super(in);
         this.resolver = resolver;
         this.matcher = new RE(REGEXP_IP_ADDRESS);
+        this.insertHostname = insertHostname;
     }
     
     // --------------------------------------------------------------------------
@@ -81,6 +91,12 @@ public class IP2HostnameReader extends LineNumberReader {
                 
                 // only replace if resolved to something other than IP
                 if (!ipAddress.equals(hostname)) {
+                    
+                    if (insertHostname) {
+                        // Append hostname to ip addr instead of replacing it
+                        hostname = ipAddress + " [" + hostname + "] ";
+                    }
+                    
                     line = StringUtils.replace(line, ipAddress, hostname);
                     index = ipStart + hostname.length() + 1;
                 }
