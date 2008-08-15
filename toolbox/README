@@ -28,14 +28,16 @@ Build Instructions
     3. Build
     
        cd ..
-       mvn --fail-never install
+       mvn -e --fail-never -Dmaven.test.skip package
 
 
 Launching the Java Toolbox GUI
 ===============================
-TODO    
+
+    java -cp target/toolbox.jar toolbox.launcher.Main    
 
 
 Feedback
 ==========
-Email: analogue@yahoo.com
+
+    Email: analogue@yahoo.com
