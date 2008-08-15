@@ -709,7 +709,7 @@ CHEAT SHEET:
                   <exclude>xml-apis:xml-apis</exclude>
                   <exclude>batik:batik-1.5-fop</exclude>
                   <exclude>jaxen:jaxen</exclude>
-                  <exclude>org.netbeans:lib</exclude>
+                  <exclude>org.netbeans:jemmy</exclude>
                   <exclude>org.mockito:mockito-all</exclude>
                   <exclude>junit-addons:junit-addons</exclude>
                   <exclude>toolbox:squarenesslf</exclude>
@@ -743,6 +743,12 @@ CHEAT SHEET:
                   <artifact>org.beanshell:bsh</artifact>
                   <excludes>
                     <exclude>bsh/util/JConsole*</exclude>
+                  </excludes>
+                </filter>
+                <filter>
+                  <artifact>org.netbeans:lib</artifact>
+                  <excludes>
+                    <exclude>org/netbeans/lib/cvsclient/commandLine/CVSCommand*</exclude>
                   </excludes>
                 </filter>
                 <filter>
