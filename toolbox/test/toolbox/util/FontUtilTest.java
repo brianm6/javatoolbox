@@ -2,6 +2,7 @@ package toolbox.util;
 
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
+import java.awt.HeadlessException;
 
 import javax.swing.JPanel;
 
@@ -26,11 +27,6 @@ public class FontUtilTest extends TestCase
     // Main 
     //--------------------------------------------------------------------------
 
-    /**
-     * Entrypoint.
-     * 
-     * @param args None recognized.
-     */
     public static void main(String[] args)
     {
         TestRunner.run(FontUtilTest.class);
@@ -40,28 +36,25 @@ public class FontUtilTest extends TestCase
     // Unit Tests 
     //--------------------------------------------------------------------------
 
-    /**
-     * Makes sure the toElement() and toFont() methods work.
-     * 
-     * @throws Exception on error.
-     */
     public void testToElementToFont() throws Exception
     {
         logger_.info("Running testToElement...");
         
-        Element forward = FontUtil.toElement(FontUtil.getPreferredMonoFont());
-        String xml = XOMUtil.toXML(forward);
-
-        logger_.debug("\n" + xml);
-
-        Font reverse = FontUtil.toFont(forward);
-        assertNotNull(reverse);
+        try {
+            Element forward = FontUtil.toElement(FontUtil.getPreferredMonoFont());
+            String xml = XOMUtil.toXML(forward);
+    
+            logger_.debug("\n" + xml);
+    
+            Font reverse = FontUtil.toFont(forward);
+            assertNotNull(reverse);
+        }
+        catch (HeadlessException he) {
+            logger_.info("Skipping test because: " + he.getMessage());
+        }
     }
 
 
-    /**
-     * Tests to make sure that a components internal font is set to bold.
-     */
     public void testSetBold()
     {
         logger_.info("Running testSetBold...");
@@ -74,9 +67,6 @@ public class FontUtilTest extends TestCase
     }
 
     
-    /**
-     * Tests retrieving the preferred monospaced font.
-     */
     public void testGetPreferredMonoFont()
     {
         logger_.info("Running testGetPreferredMonoFont...");
@@ -87,9 +77,6 @@ public class FontUtilTest extends TestCase
     }
 
 
-    /**
-     * Tests retrieving the preferred serif font.
-     */
     public void testGetPreferredSerifFont()
     {
         logger_.info("Running testGetPreferredSerifFont...");
@@ -100,9 +87,6 @@ public class FontUtilTest extends TestCase
     }
 
     
-    /**
-     * Tests grow()
-     */
     public void testGrow()
     {
         logger_.info("Running testGrow...");
@@ -113,9 +97,6 @@ public class FontUtilTest extends TestCase
     }
     
     
-    /**
-     * Tests shrink()
-     */
     public void testShrink()
     {
         logger_.info("Running testShrink...");
@@ -126,9 +107,6 @@ public class FontUtilTest extends TestCase
     }
     
     
-    /**
-     * Tests setSize()
-     */
     public void testSetSize()
     {
         logger_.info("Running testSetSize...");
@@ -140,9 +118,6 @@ public class FontUtilTest extends TestCase
     }
     
     
-    /**
-     * Tests isMonospaced() for a monospaced font.
-     */
     public void testIsMonospacedTrue() throws Exception
     {
         logger_.info("Running testIsMonospacedTrue...");
@@ -154,9 +129,6 @@ public class FontUtilTest extends TestCase
     }
 
     
-    /**
-     * Tests isMonospaced for a non-monospaced font.
-     */
     public void testIsMonospacedFalse() throws Exception
     {
         logger_.info("Running testIsMonospacedFalse...");
@@ -168,9 +140,6 @@ public class FontUtilTest extends TestCase
     }
     
     
-    /**
-     * Tests all installed fonts for monospaced characteristic.
-     */
     public void testIsMonospacedAll()
     {
         logger_.info("Running testIsMonospacedAll...");
@@ -184,9 +153,6 @@ public class FontUtilTest extends TestCase
     }
     
     
-    /**
-     * Tests save/restore of preferences.
-     */
     public void testPreferenced() throws Exception
     {
         logger_.info("Running testPreferenced...");

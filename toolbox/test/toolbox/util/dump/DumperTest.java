@@ -1,5 +1,6 @@
 package toolbox.util.dump;
 
+import java.awt.HeadlessException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Stack;
@@ -60,15 +61,17 @@ public class DumperTest extends TestCase
         logger_.debug(StringUtil.banner(Dumper.dump(new Employee())));
     }
     
-    /**
-     * Tests dump of JFrame.
-     */
     public void testDumpJFrame()
     {
         logger_.info("Running testDumpJFrame...");
-        
-        // Too much output
-        logger_.debug(StringUtil.banner(Dumper.dump(new JFrame(), 2)));
+
+        try {
+            // Too much output
+            logger_.debug(StringUtil.banner(Dumper.dump(new JFrame(), 2)));
+        }
+        catch (HeadlessException he) {
+            logger_.info("Skipping test because: " + he.getMessage());
+        }
     }
     
     /**
