@@ -12,18 +12,12 @@ import toolbox.junit.testcase.StandaloneTestCase;
  */
 public class LAFLauncherTest extends TestCase implements StandaloneTestCase
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(LAFLauncherTest.class);
+    private static final Logger logger_ = Logger.getLogger(LAFLauncherTest.class);
     
     //--------------------------------------------------------------------------
     // Main
     //--------------------------------------------------------------------------
     
-    /**
-     * Entrypoint.
-     * 
-     * @param args None recognized.
-     */
     public static void main(String[] args)
     {
         TestRunner.run(LAFLauncherTest.class);
@@ -33,11 +27,6 @@ public class LAFLauncherTest extends TestCase implements StandaloneTestCase
     // Unit Tests
     //--------------------------------------------------------------------------
     
-    /**
-     * Tests main() with no args for the target class.
-     * 
-     * @throws Exception on error. 
-     */
     public void testMainNoArgs() throws Exception
     {
         logger_.info("Running testMainNoArgs...");
@@ -47,11 +36,6 @@ public class LAFLauncherTest extends TestCase implements StandaloneTestCase
     }
     
     
-    /**
-     * Tests main() with one args for the target class.
-     * 
-     * @throws Exception on error.
-     */
     public void testMainOneArg() throws Exception
     {
         logger_.info("Running testMainOneArg...");
@@ -61,26 +45,15 @@ public class LAFLauncherTest extends TestCase implements StandaloneTestCase
     }
 
 
-    /**
-     * Tests main() with > 1 args.
-     * 
-     * @throws Exception on error. 
-     */
     public void testMainManyArgs() throws Exception
     {
         logger_.info("Running testMainManyArgs...");
         
         String target = "toolbox.launcher.Main";
-        LAFLauncher.main(
-            new String[] {target, "banner", "testing", "LAFLauncher"});
+        LAFLauncher.main(new String[] {target, "banner", "testing", "LAFLauncher"});
     }
     
     
-    /**
-     * Tests printUsage()
-     * 
-     * @throws Exception on error. 
-     */
     public void testPrintUsage() throws Exception
     {
         logger_.info("Running testPrintUsage...");

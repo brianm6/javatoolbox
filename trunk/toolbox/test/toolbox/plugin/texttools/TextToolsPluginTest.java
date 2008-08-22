@@ -1,5 +1,7 @@
 package toolbox.plugin.texttools;
 
+import java.awt.HeadlessException;
+
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
@@ -36,25 +38,30 @@ public class TextToolsPluginTest extends TestCase
     {
         log.info("Running testPreferenced...");
         
-        Element prefs = new Element("testPreferenced");
-        
-        TextToolsPlugin plugin = new TextToolsPlugin();
-        plugin.initialize(MapUtils.EMPTY_MAP);
-        plugin.buildView();
-        plugin.savePrefs(prefs);
-        plugin.destroy();
-        String toXML = prefs.toXML();
-		log.debug(StringUtil.banner(new XMLFormatter().format(toXML)));
-		assertNotNull(toXML);
-		
-        TextToolsPlugin plugin2 = new TextToolsPlugin();
-        plugin2.initialize(MapUtils.EMPTY_MAP);
-        plugin2.buildView();
-        plugin2.applyPrefs(prefs);
-        plugin2.destroy();
-        toXML = prefs.toXML();
-        log.debug(StringUtil.banner(new XMLFormatter().format(toXML)));
-        assertNotNull(toXML);
+        try {
+            Element prefs = new Element("testPreferenced");
+            
+            TextToolsPlugin plugin = new TextToolsPlugin();
+            plugin.initialize(MapUtils.EMPTY_MAP);
+            plugin.buildView();
+            plugin.savePrefs(prefs);
+            plugin.destroy();
+            String toXML = prefs.toXML();
+    		log.debug(StringUtil.banner(new XMLFormatter().format(toXML)));
+    		assertNotNull(toXML);
+    		
+            TextToolsPlugin plugin2 = new TextToolsPlugin();
+            plugin2.initialize(MapUtils.EMPTY_MAP);
+            plugin2.buildView();
+            plugin2.applyPrefs(prefs);
+            plugin2.destroy();
+            toXML = prefs.toXML();
+            log.debug(StringUtil.banner(new XMLFormatter().format(toXML)));
+            assertNotNull(toXML);
+        }
+        catch (HeadlessException he) {
+            log.info("Skipping test because: " + he.getMessage());
+        }
     }
     
     public void testUnquoteAction_SingleLine() 
