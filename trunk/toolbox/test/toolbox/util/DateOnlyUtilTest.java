@@ -260,7 +260,7 @@ public class DateOnlyUtilTest extends TestCase
         Calendar cal = Calendar.getInstance();
         cal.setTime(today);
         
-        assertEquals(cal.get(Calendar.HOUR), 0);
+        assertEquals(cal.get(Calendar.HOUR_OF_DAY), 0);
         assertEquals(cal.get(Calendar.MINUTE), 0);
         assertEquals(cal.get(Calendar.SECOND), 0);
         assertEquals(cal.get(Calendar.MILLISECOND), 0);
@@ -364,7 +364,7 @@ public class DateOnlyUtilTest extends TestCase
         Calendar c = Calendar.getInstance();
         c.setTime(zeroed);
                 
-        assertEquals(0, c.get(Calendar.HOUR));
+        assertEquals(0, c.get(Calendar.HOUR_OF_DAY));
         assertEquals(0, c.get(Calendar.MINUTE));
         assertEquals(0, c.get(Calendar.SECOND));
         assertEquals(0, c.get(Calendar.MILLISECOND));
